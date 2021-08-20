@@ -1915,7 +1915,7 @@
     model	 uk	part	director	BD013_CRBFD_MRS2	BD013_CRBFD_MRS2.model
     model	 uk	part	director	BD036_Director_Mk_6M	BD036_Director_Mk_6M.model
     model	 uk	part	director	BD013_CRBFD_MRS2	BD013_CRBFD_MRS2.model
-    model	 uk	cap	BX001_Radar_Type_268	BX001_Radar_Type_268.model
+    model	 uk	part	cap	BX001_Radar_Type_268	BX001_Radar_Type_268.model
    model	 uk	ship	cruiser	BSC016_Neptune_1947	BSC016_Neptune_1947.model
     model	 uk	radar	fcontrol	BRF036_Anemometer	BRF036_Anemometer.model
     model	 uk	radar	search	BRS030_Radar_Type_268	BRS030_Radar_Type_268.model
