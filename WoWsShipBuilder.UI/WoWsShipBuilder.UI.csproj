@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="Models\" />
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="0.10.3" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="..\stylecop.json">
+        <Link>stylecop.json</Link>
+      </AdditionalFiles>
+    </ItemGroup>
+</Project>

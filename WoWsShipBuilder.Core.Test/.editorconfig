@@ -1,0 +1,3 @@
+﻿# noinspection EditorConfigKeyCorrectness
+[*.cs]
+dotnet_diagnostic.SA1649.severity = none # Ignore file name and first element name

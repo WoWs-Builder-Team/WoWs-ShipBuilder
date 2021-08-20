@@ -1,0 +1,40 @@
+﻿root = true
+
+[*]
+indent_style = space
+
+# noinspection EditorConfigKeyCorrectness
+[*.cs]
+max_line_length = 140
+indent_size = 4
+tab_width = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+dotnet_diagnostic.SA0001.severity = none # Ignore disabled xml documentation
+dotnet_diagnostic.SA1009.severity = none # Ignore missing space after closing parenthesis
+dotnet_diagnostic.SA1028.severity = none # Ignore trailing whitespace 
+dotnet_diagnostic.SA1100.severity = none # Ignore base. prefix if there is no local override
+dotnet_diagnostic.SA1101.severity = none # Ignore missing this prefix for local calls
+dotnet_diagnostic.SA1122.severity = none # Don't force the use of string.Empty
+dotnet_diagnostic.SA1124.severity = none # Allow the use of regions
+dotnet_diagnostic.SA1127.severity = none # Generic constraints may share a line with other declarations
+dotnet_diagnostic.SA1135.severity = none # Allow the use of not qualified using directives
+dotnet_diagnostic.SA1136.severity = none # Enum values may be on the same line
+dotnet_diagnostic.SA1202.severity = none # Ignore element order by access
+dotnet_diagnostic.SA1400.severity = none # Access modifier is optional
+dotnet_diagnostic.SA1600.severity = none # Elements don't have to be documented
+dotnet_diagnostic.SA1608.severity = none # Default summary in docs is allowed
+dotnet_diagnostic.SA1625.severity = none # Copy-paste documentation is allowed
+dotnet_diagnostic.SA1633.severity = none # File does not need a header
+dotnet_diagnostic.SA1634.severity = none # No header copyright
+dotnet_diagnostic.SA1635.severity = none # No header copyright text
+dotnet_diagnostic.SA1636.severity = none # No header copyright text match check
+dotnet_diagnostic.SA1637.severity = none # No filename in header
+dotnet_diagnostic.SA1638.severity = none # No filename in header matching real filename
+dotnet_diagnostic.SA1640.severity = none # No company text in header
+dotnet_diagnostic.SA1641.severity = none # Company text does not have to match
+dotnet_diagnostic.SA1642.severity = none # Constructor summary can have any text
+dotnet_diagnostic.SA1643.severity = none # Destructor summary can have any text
+dotnet_diagnostic.SA1648.severity = none # Inherit doc can be used wherever you want
