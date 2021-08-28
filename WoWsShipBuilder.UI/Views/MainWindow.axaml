@@ -3,6 +3,7 @@
         xmlns:vm="using:WoWsShipBuilder.UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
         Icon="/Assets/logo.ico"
@@ -12,6 +13,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
+    <customControls:FiringAngleVisualizer Height="400" Width="400" Turrets="{Binding TurretModule}" />
 
 </Window>

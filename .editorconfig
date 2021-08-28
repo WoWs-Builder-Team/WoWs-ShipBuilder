@@ -5,7 +5,7 @@ indent_style = space
 
 # noinspection EditorConfigKeyCorrectness
 [*.cs]
-max_line_length = 140
+max_line_length = 160
 indent_size = 4
 tab_width = 4
 charset = utf-8
@@ -13,6 +13,7 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 dotnet_diagnostic.SA0001.severity = none # Ignore disabled xml documentation
+dotnet_diagnostic.SA1000.severity = none # Ignore missing space after "new"
 dotnet_diagnostic.SA1009.severity = none # Ignore missing space after closing parenthesis
 dotnet_diagnostic.SA1028.severity = none # Ignore trailing whitespace 
 dotnet_diagnostic.SA1100.severity = none # Ignore base. prefix if there is no local override
