@@ -25,6 +25,7 @@ dotnet_diagnostic.SA1136.severity = none # Enum values may be on the same line
 dotnet_diagnostic.SA1202.severity = none # Ignore element order by access
 dotnet_diagnostic.SA1400.severity = none # Access modifier is optional
 dotnet_diagnostic.SA1600.severity = none # Elements don't have to be documented
+dotnet_diagnostic.SA1601.severity = none # Elements don't have to be documented
 dotnet_diagnostic.SA1608.severity = none # Default summary in docs is allowed
 dotnet_diagnostic.SA1625.severity = none # Copy-paste documentation is allowed
 dotnet_diagnostic.SA1633.severity = none # File does not need a header
