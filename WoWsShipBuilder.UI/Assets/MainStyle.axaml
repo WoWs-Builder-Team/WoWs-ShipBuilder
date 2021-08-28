@@ -1,0 +1,32 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith >
+        <Border Padding="20">
+            <ToggleButton Classes="Captain" Width="200" Height="200"/>
+        </Border>
+    </Design.PreviewWith>
+
+    <!--Toggle Button Style for captain skill selection -->
+    <Style Selector="ToggleButton.Captain:checked /template/ ContentPresenter">
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Background" Value="#00FCFCFC"/>
+        <Setter Property="BorderBrush" Value="Red"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="TextBlock.Foreground" Value="Red"/>
+        <Setter Property="Content" Value="1"/>
+        <Setter Property="Padding" Value="15"/>
+    </Style>
+    <Style Selector="ToggleButton.Captain:unchecked /template/ ContentPresenter">
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Background" Value="#00FCFCFC"/>
+    </Style>
+    <Style Selector="ToggleButton.Captain:pressed /template/ ContentPresenter">
+        <Setter Property="Background">
+            <SolidColorBrush Color="Gray" Opacity="0.5"/>
+        </Setter>
+    </Style>
+    <Style Selector="ToggleButton.Captain">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+    </Style>
+</Styles>
