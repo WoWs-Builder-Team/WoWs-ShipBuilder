@@ -14,7 +14,33 @@ namespace WoWsShipBuilder.UI.CustomControls
     /// </summary>
     public class FiringAngleVisualizer : Control
     {
+        #region Static Fields and Constants
+
         private const double VerticalPadding = 50.0;
+
+        /// <summary>
+        /// Styled Property for the background color of the control's area.
+        /// </summary>
+        public static readonly StyledProperty<SolidColorBrush> ShipBackgroundProperty =
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipBackground), new SolidColorBrush(Colors.LightBlue, 0.5));
+
+        /// <summary>
+        /// StyledProperty for the color of the ship.
+        /// </summary>
+        public static readonly StyledProperty<SolidColorBrush> ShipColorProperty =
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipColor), new SolidColorBrush(Colors.Blue, 0.7));
+
+        /// <summary>
+        /// StyledProperty for the color of ship turrets.
+        /// </summary>
+        public static readonly StyledProperty<SolidColorBrush> TurretColorProperty =
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(TurretColor), new SolidColorBrush(Colors.Gray, 0.9));
+
+        /// <summary>
+        /// Styled property for the color of the turret angle visualization.
+        /// </summary>
+        public static readonly StyledProperty<SolidColorBrush> TurretAngleColorProperty =
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(TurretAngleColor), new SolidColorBrush(Colors.LightGray, 0.7));
 
         /// <summary>
         /// StyledProperty for the <see cref="TurretModule"/> of the ship.
@@ -23,27 +49,16 @@ namespace WoWsShipBuilder.UI.CustomControls
             AvaloniaProperty.Register<FiringAngleVisualizer, TurretModule>(nameof(Turrets));
 
         /// <summary>
-        /// StyledProperty for the color of the ship.
+        /// Styled properties determining whether all turret angles are shown at once.
         /// </summary>
-        public static readonly StyledProperty<SolidColorBrush> ShipBackgroundProperty =
-            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipBackground), new SolidColorBrush(Colors.Blue, 0.7));
-
-        /// <summary>
-        /// StyledProperty for the color of ship turrets.
-        /// </summary>
-        public static readonly StyledProperty<SolidColorBrush> TurretColorProperty =
-            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(TurretColor), new SolidColorBrush(Colors.Gray, 0.9));
-
         public static readonly StyledProperty<bool> ShowAllAnglesProperty =
             AvaloniaProperty.Register<FiringAngleVisualizer, bool>(nameof(ShowAllAngles), notifying: OnShowAllAnglesChanged);
 
-        private (Gun gun, Point center, Geometry geometry)? selectedPosition;
-        private List<(Gun gun, Geometry geometry, Point center)> turretGeometries = new();
+        #endregion
 
-        static FiringAngleVisualizer()
-        {
-            FocusableProperty.OverrideDefaultValue(typeof(FiringAngleVisualizer), true);
-        }
+        private readonly List<(Gun gun, Geometry geometry, Point center)> turretGeometries = new();
+
+        private (Gun gun, Point center, Geometry geometry)? selectedPosition;
 
         /// <summary>
         /// Gets or sets the <see cref="TurretModule"/> of the ship that has the turrets that should be displayed.
@@ -55,12 +70,21 @@ namespace WoWsShipBuilder.UI.CustomControls
         }
 
         /// <summary>
-        /// Gets or sets the background color for the ship ellipse.
+        /// Gets or sets the background color of the area behind the ship ellipse.
         /// </summary>
         public SolidColorBrush ShipBackground
         {
             get => GetValue(ShipBackgroundProperty);
             set => SetValue(ShipBackgroundProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the background color for the ship ellipse.
+        /// </summary>
+        public SolidColorBrush ShipColor
+        {
+            get => GetValue(ShipColorProperty);
+            set => SetValue(ShipColorProperty, value);
         }
 
         /// <summary>
@@ -72,16 +96,33 @@ namespace WoWsShipBuilder.UI.CustomControls
             set => SetValue(TurretColorProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the fill color of the turret angle visualization.
+        /// </summary>
+        public SolidColorBrush TurretAngleColor
+        {
+            get => GetValue(TurretAngleColorProperty);
+            set => SetValue(TurretAngleColorProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether all angles should be shown regardless of mouse position/click.
+        /// </summary>
         public bool ShowAllAngles
         {
             get => GetValue(ShowAllAnglesProperty);
             set => SetValue(ShowAllAnglesProperty, value);
         }
 
+        /// <summary>
+        /// Renders the content of the control, drawing the turrets as well as their firing angles.
+        /// For more details, see <see cref="Visual.Render"/>.
+        /// </summary>
+        /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
         public override void Render(DrawingContext context)
         {
             turretGeometries.Clear();
-            context.FillRectangle(new SolidColorBrush(Colors.LightBlue, 0.5), new Rect(Bounds.Size));
+            context.FillRectangle(ShipBackground, new Rect(Bounds.Size));
             double maxHeight = Bounds.Height - VerticalPadding;
             Size shipRectSize = CalculateSize(maxHeight);
             double rectWidth = shipRectSize.Width;
@@ -93,11 +134,16 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             var shipRect = new Rect(point, shipRectSize);
             var shipBase = new EllipseGeometry(shipRect);
-            context.DrawGeometry(ShipBackground, pen, shipBase);
+            context.DrawGeometry(ShipColor, pen, shipBase);
 
             DrawTurrets(context, shipRect);
         }
 
+        /// <summary>
+        /// Processes a pointer event. If the event location is on a turret, the firing angles of the turret are rendered.
+        /// A click anywhere else in the control hides the angle visualization.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (ShowAllAngles)
@@ -114,16 +160,26 @@ namespace WoWsShipBuilder.UI.CustomControls
 
                 (Gun gun, Point center, Geometry geometry) thisPosition = (entry.gun, entry.center, entry.geometry);
 
-                selectedPosition = thisPosition;
+                if (selectedPosition != thisPosition)
+                {
+                    selectedPosition = thisPosition;
+                    InvalidateVisual();
+                }
 
-                InvalidateVisual();
                 return;
             }
 
-            selectedPosition = null;
-            InvalidateVisual();
+            if (selectedPosition != null)
+            {
+                selectedPosition = null;
+                InvalidateVisual();
+            }
         }
 
+        /// <summary>
+        /// Hides the firing angles if the pointer leaves the control except when <see cref="ShowAllAngles"/> is true.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             if (ShowAllAngles)
@@ -139,6 +195,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             }
         }
 
+        /// <summary>
+        /// Triggers a rerender of all turrets and angles when the <see cref="ShowAllAngles"/> property is changed.
+        /// </summary>
+        /// <param name="target">The owner of the changed property.</param>
+        /// <param name="beforeNotify"><see langword="true"/> if called before notifying the property of the change, <see langword="false"/> otherwise.</param>
         private static void OnShowAllAnglesChanged(IAvaloniaObject target, bool beforeNotify)
         {
             if (!beforeNotify)
@@ -160,12 +221,18 @@ namespace WoWsShipBuilder.UI.CustomControls
             // Polar angle is relative to horizontal but we need vertical angle.
             angle -= 90;
 
-            double radiant = (Math.PI / 180) * angle;
-            double x = center.X + (radius * Math.Cos(radiant));
-            double y = center.Y + (radius * Math.Sin(radiant));
+            double radian = (Math.PI / 180) * angle;
+            double x = center.X + (radius * Math.Cos(radian));
+            double y = center.Y + (radius * Math.Sin(radian));
             return new Point(x, y);
         }
 
+        /// <summary>
+        /// Helper method to check if the angle between the two values is a large or a small angle.
+        /// </summary>
+        /// <param name="startAngle">The start of the firing sector in degrees. Can be negative.</param>
+        /// <param name="endAngle">The end of the firing sector in degrees. Should not be negative.</param>
+        /// <returns><see langword="true"/> if the difference is greater than 180 degrees, <see langword="false"/> otherwise.</returns>
         private static bool IsLargeArc(double startAngle, double endAngle)
         {
             return startAngle switch
@@ -264,7 +331,6 @@ namespace WoWsShipBuilder.UI.CustomControls
             };
 
             var center = new Point(horizontalPosition, verticalPosition);
-            var pen = new Pen();
 
             float startAngle = shipTurret.HorizontalSector[0];
             float endAngle = shipTurret.HorizontalSector[1];
@@ -275,19 +341,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 endAngle += 180;
             }
 
-            Point start = PolarToCartesian(startAngle, radius, center);
-            Point end = PolarToCartesian(endAngle, radius, center);
-
-            var geometry = new StreamGeometry();
-            StreamGeometryContext geometryContext = geometry.Open();
-            geometryContext.SetFillRule(FillRule.EvenOdd);
-            geometryContext.BeginFigureFluent(center, true)
-                .LineToFluent(start)
-                .ArcToFluent(end, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
-                .LineToFluent(center)
-                .EndFigure(true);
-
-            context.DrawGeometry(TurretColor, pen, geometry);
+            Geometry geometry = DrawArcs(context, startAngle, endAngle, radius, center, TurretColor);
             turretGeometries.Add((shipTurret, geometry, center));
             if (ShowAllAngles)
             {
@@ -295,6 +349,13 @@ namespace WoWsShipBuilder.UI.CustomControls
             }
         }
 
+        /// <summary>
+        /// Renders the firing sectors of a turret.
+        /// </summary>
+        /// <param name="context">The drawing context for the rendering.</param>
+        /// <param name="shipTurret">The ship turret to draw angles for.</param>
+        /// <param name="center">The center of the turret visualization.</param>
+        /// <param name="shipRect">The rectangle enclosing the ship ellipse.</param>
         private void DrawTurretAngles(DrawingContext context, Gun shipTurret, Point center, Rect shipRect)
         {
             double radius = CalculateRadius(shipRect) * 3;
@@ -309,21 +370,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 facingBackwards = true;
             }
 
-            var geometry = new StreamGeometry();
-            StreamGeometryContext geometryContext = geometry.Open();
-            geometryContext.SetFillRule(FillRule.EvenOdd);
-
-            Point startPoint = PolarToCartesian(startAngle, radius, center);
-            Point endPoint = PolarToCartesian(endAngle, radius, center);
-
-            geometryContext.BeginFigureFluent(center, true)
-                .LineToFluent(startPoint)
-                .ArcToFluent(endPoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
-                .LineToFluent(center)
-                .EndFigure(true);
-
-            context.DrawGeometry(new SolidColorBrush(Colors.LightGray, 0.7), new Pen(), geometry);
-
+            DrawArcs(context, startAngle, endAngle, radius, center, TurretAngleColor, new SolidColorBrush(Colors.DarkGray));
             var text = new FormattedText($"{startAngle}° - {endAngle}°", Typeface.Default, 14, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
 
             double textY = center.Y;
@@ -341,6 +388,50 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             var textOrigin = new Point(textX, textY);
             context.DrawText(new SolidColorBrush(Colors.Black), textOrigin, text);
+        }
+
+        /// <summary>
+        /// Helper method that draws a firing sector between two angles.
+        /// </summary>
+        /// <param name="context">The drawing context used to draw.</param>
+        /// <param name="startAngle">The start angle.</param>
+        /// <param name="endAngle">The end angle.</param>
+        /// <param name="radius">The radius of the arc.</param>
+        /// <param name="center">The center of the turret visualization.</param>
+        /// <param name="areaBrush">The brush to use for the area within the arc.</param>
+        /// <param name="borderBrush">The brush to use for drawing the border of the arc.</param>
+        /// <returns>A <see cref="Geometry"/> representing the generated structure.</returns>
+        private Geometry DrawArcs(
+            DrawingContext context,
+            double startAngle,
+            double endAngle,
+            double radius,
+            Point center,
+            IBrush areaBrush,
+            IBrush? borderBrush = null)
+        {
+            var pen = new Pen();
+            if (borderBrush != null)
+            {
+                pen.Brush = borderBrush;
+            }
+
+            var geometry = new StreamGeometry();
+            StreamGeometryContext geometryContext = geometry.Open();
+            geometryContext.SetFillRule(FillRule.EvenOdd);
+
+            Point startPoint = PolarToCartesian(startAngle, radius, center);
+            Point endPoint = PolarToCartesian(endAngle, radius, center);
+
+            geometryContext.BeginFigureFluent(center, true)
+                .LineToFluent(startPoint)
+                .ArcToFluent(endPoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
+                .LineToFluent(center)
+                .EndFigure(true);
+
+            context.DrawGeometry(areaBrush, pen, geometry);
+
+            return geometry;
         }
     }
 }
