@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<Patterns xmlns="urn:schemas-jetbrains-com:member-reordering-patterns">
+    <TypePattern DisplayName="Non-reorderable types">
+        <TypePattern.Match>
+            <Or>
+                <And>
+                    <Kind Is="Interface"/>
+                    <Or>
+                        <HasAttribute Name="System.Runtime.InteropServices.InterfaceTypeAttribute"/>
+                        <HasAttribute Name="System.Runtime.InteropServices.ComImport"/>
+                    </Or>
+                </And>
+                <Kind Is="Struct"/>
+                <HasAttribute Name="JetBrains.Annotations.NoReorderAttribute"/>
+                <HasAttribute Name="JetBrains.Annotations.NoReorder"/>
+            </Or>
+        </TypePattern.Match>
+    </TypePattern>
+    <TypePattern DisplayName="xUnit.net Test Classes" RemoveRegions="All">
+        <TypePattern.Match>
+            <And>
+                <Kind Is="Class"/>
+                <HasMember>
+                    <And>
+                        <Kind Is="Method"/>
+                        <HasAttribute Name="Xunit.FactAttribute" Inherited="True"/>
+                        <HasAttribute Name="Xunit.TheoryAttribute" Inherited="True"/>
+                    </And>
+                </HasMember>
+            </And>
+        </TypePattern.Match>
+        <Entry DisplayName="Setup/Teardown Methods">
+            <Entry.Match>
+                <Or>
+                    <Kind Is="Constructor"/>
+                    <And>
+                        <Kind Is="Method"/>
+                        <ImplementsInterface Name="System.IDisposable"/>
+                    </And>
+                </Or>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Kind Order="Constructor"/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry DisplayName="All other members"/>
+        <Entry Priority="100" DisplayName="Test Methods">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Method"/>
+                    <HasAttribute Name="Xunit.FactAttribute"/>
+                    <HasAttribute Name="Xunit.TheoryAttribute"/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Name/>
+            </Entry.SortBy>
+        </Entry>
+    </TypePattern>
+    <TypePattern DisplayName="NUnit Test Fixtures" RemoveRegions="All">
+        <TypePattern.Match>
+            <And>
+                <Kind Is="Class"/>
+                <Or>
+                    <HasAttribute Name="NUnit.Framework.TestFixtureAttribute" Inherited="True"/>
+                    <HasAttribute Name="NUnit.Framework.TestFixtureSourceAttribute" Inherited="True"/>
+                    <HasMember>
+                        <And>
+                            <Kind Is="Method"/>
+                            <HasAttribute Name="NUnit.Framework.TestAttribute"/>
+                            <HasAttribute Name="NUnit.Framework.TestCaseAttribute"/>
+                            <HasAttribute Name="NUnit.Framework.TestCaseSourceAttribute"/>
+                        </And>
+                    </HasMember>
+                </Or>
+            </And>
+        </TypePattern.Match>
+        <Entry DisplayName="Setup/Teardown Methods">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Method"/>
+                    <Or>
+                        <HasAttribute Name="NUnit.Framework.SetUpAttribute" Inherited="True"/>
+                        <HasAttribute Name="NUnit.Framework.TearDownAttribute" Inherited="True"/>
+                        <HasAttribute Name="NUnit.Framework.TestFixtureSetUpAttribute" Inherited="True"/>
+                        <HasAttribute Name="NUnit.Framework.TestFixtureTearDownAttribute" Inherited="True"/>
+                        <HasAttribute Name="NUnit.Framework.OneTimeSetUpAttribute" Inherited="True"/>
+                        <HasAttribute Name="NUnit.Framework.OneTimeTearDownAttribute" Inherited="True"/>
+                    </Or>
+                </And>
+            </Entry.Match>
+        </Entry>
+        <Entry DisplayName="All other members"/>
+        <Entry Priority="100" DisplayName="Test Methods">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Method"/>
+                    <HasAttribute Name="NUnit.Framework.TestAttribute"/>
+                    <HasAttribute Name="NUnit.Framework.TestCaseAttribute"/>
+                    <HasAttribute Name="NUnit.Framework.TestCaseSourceAttribute"/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Name/>
+            </Entry.SortBy>
+        </Entry>
+    </TypePattern>
+    <TypePattern DisplayName="Default Pattern">
+        <Entry Priority="100" DisplayName="Public Delegates">
+            <Entry.Match>
+                <And>
+                    <Access Is="Public"/>
+                    <Kind Is="Delegate"/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Name/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry Priority="100" DisplayName="Public Enums">
+            <Entry.Match>
+                <And>
+                    <Access Is="Public"/>
+                    <Kind Is="Enum"/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Name/>
+            </Entry.SortBy>
+        </Entry>
+        <Region Name="Static Fields and Constants">
+            <Entry DisplayName="Static Fields and Constants">
+                <Entry.Match>
+                    <Or>
+                        <Kind Is="Constant"/>
+                        <And>
+                            <Kind Is="Field"/>
+                            <Static/>
+                        </And>
+                    </Or>
+                </Entry.Match>
+                <Entry.SortBy>
+                    <Kind Order="Constant Field"/>
+                </Entry.SortBy>
+            </Entry>
+        </Region>
+        <Entry DisplayName="Fields">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Field"/>
+                    <Not>
+                        <Static/>
+                    </Not>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Readonly/>
+                <Name/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry DisplayName="Constructors">
+            <Entry.Match>
+                <Kind Is="Constructor"/>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Static/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry DisplayName="Properties, Indexers">
+            <Entry.Match>
+                <Or>
+                    <Kind Is="Property"/>
+                    <Kind Is="Indexer"/>
+                </Or>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Static/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry Priority="100" DisplayName="Interface Implementations">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Member"/>
+                    <ImplementsInterface/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <ImplementsInterface Immediate="True"/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry DisplayName="All other members">
+            <Entry.SortBy>
+                <Access/>
+                <Static/>
+            </Entry.SortBy>
+        </Entry>
+        <Entry DisplayName="Nested Types">
+            <Entry.Match>
+                <Kind Is="Type"/>
+            </Entry.Match>
+        </Entry>
+    </TypePattern>
+</Patterns>
