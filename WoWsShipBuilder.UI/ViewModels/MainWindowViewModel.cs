@@ -1,11 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
+using ReactiveUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private bool showAllAngles;
+
+        public MainWindowViewModel()
+        {
+            ToggleCommand = ReactiveCommand.Create(() => ShowAllAngles = !ShowAllAngles);
+        }
+
         public string Greeting => "Welcome to Avalonia!";
+
+        public ICommand ToggleCommand { get; }
+
+        public bool ShowAllAngles
+        {
+            get => showAllAngles;
+            set => this.RaiseAndSetIfChanged(ref showAllAngles, value);
+        }
 
         public TurretModule TurretModule
         {

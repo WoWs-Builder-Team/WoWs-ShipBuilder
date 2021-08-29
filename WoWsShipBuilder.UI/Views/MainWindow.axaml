@@ -10,10 +10,17 @@
         Title="WoWsShipBuilder.UI">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
-    <customControls:FiringAngleVisualizer Height="400" Width="400" Turrets="{Binding TurretModule}" />
+    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" >
+        <customControls:FiringAngleVisualizer Height="800" Width="800" Turrets="{Binding TurretModule}" Grid.Column="0"
+                                              Grid.Row="0" Grid.RowSpan="2" ShowAllAngles="{Binding ShowAllAngles}" />
+        <Button Grid.Row="0" Grid.Column="1" Command="{Binding ToggleCommand}">Toggle</Button>
+        <customControls:FiringAngleVisualizer Height="300" Width="300" Turrets="{Binding TurretModule}" Grid.Row="0"
+                                              Grid.Column="1" />
+        <customControls:FiringAngleVisualizer Height="500" Width="500" Turrets="{Binding TurretModule}" Grid.Row="1"
+                                              Grid.Column="1" ShowAllAngles="True" />
+    </Grid>
 
 </Window>
