@@ -34,17 +34,20 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Styled Property to indicate the Horizontal spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberXSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing));
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing), 45);
 
         /// <summary>
         /// Style Property to indicate the Vertical spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberYSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing));
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 5);
 
         static NumberedButton()
         {
             IsCheckedProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
+            HeightProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
+            WidthProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
+            CornerRadiusProperty.OverrideDefaultValue(typeof(NumberedButton), new CornerRadius(15));
         }
 
         /// <summary>
@@ -132,9 +135,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             }
             else
             {
-                SolidColorBrush brush = UnselectedBorder;
-                var pen = new Pen(brush, BorderThickness.Top);
-                context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
+                if (UnselectedBorderThickness > 0)
+                {
+                    var pen = new Pen(UnselectedBorder, BorderThickness.Top);
+                    context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
+                }
             }
         }
 
