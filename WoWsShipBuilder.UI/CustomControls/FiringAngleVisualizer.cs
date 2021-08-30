@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -13,6 +15,7 @@ namespace WoWsShipBuilder.UI.CustomControls
     /// <summary>
     /// Custom control for visualizing the firing angles of a ship's turrets.
     /// </summary>
+    [PseudoClasses(":extended")]
     public class FiringAngleVisualizer : TemplatedControl
     {
         #region Static Fields and Constants
@@ -62,14 +65,29 @@ namespace WoWsShipBuilder.UI.CustomControls
 
         /// <summary>
         /// Styled properties determining whether all turret angles are shown at once.
+        /// Trigger an update of the pseudo classes to make sure the radius factor is increased properly.
         /// </summary>
-        public static readonly StyledProperty<bool> ShowAllAnglesProperty = AvaloniaProperty.Register<FiringAngleVisualizer, bool>(nameof(ShowAllAngles));
+        public static readonly StyledProperty<bool> ShowAllAnglesProperty = AvaloniaProperty.Register<FiringAngleVisualizer, bool>(
+            nameof(ShowAllAngles),
+            notifying:
+            (target, beforeNotifying) =>
+            {
+                if (!beforeNotifying)
+                {
+                    ((FiringAngleVisualizer)target).UpdatePseudoClasses();
+                }
+            });
 
         /// <summary>
-        /// Styled properties determining whether all turret angles texts are shown at once.
+        /// Styled property determining whether all turret angles texts are shown at once.
         /// </summary>
         public static readonly StyledProperty<bool> PermanentAngleTextProperty =
             AvaloniaProperty.Register<FiringAngleVisualizer, bool>(nameof(PermanentAngleText));
+
+        /// <summary>
+        /// Styled property that specifies the factor applied to the turret radius when showing turret firing sectors.
+        /// </summary>
+        public static readonly StyledProperty<double> RadiusFactorProperty = AvaloniaProperty.Register<FiringAngleVisualizer, double>(nameof(RadiusFactor), 1);
 
         #endregion
 
@@ -79,6 +97,9 @@ namespace WoWsShipBuilder.UI.CustomControls
 
         private (Gun gun, Point center, Geometry geometry)? selectedPosition;
 
+        /// <summary>
+        /// Static constructor to override default values.
+        /// </summary>
         static FiringAngleVisualizer()
         {
             FontSizeProperty.OverrideDefaultValue(typeof(FiringAngleVisualizer), 14);
@@ -154,13 +175,29 @@ namespace WoWsShipBuilder.UI.CustomControls
         public bool ShowAllAngles
         {
             get => GetValue(ShowAllAnglesProperty);
-            set => SetValue(ShowAllAnglesProperty, value);
+            set
+            {
+                UpdatePseudoClasses(value);
+                SetValue(ShowAllAnglesProperty, value);
+            }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the turret angle texts should be permanently visible.
+        /// </summary>
         public bool PermanentAngleText
         {
             get => GetValue(PermanentAngleTextProperty);
             set => SetValue(PermanentAngleTextProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the radius factor that is used to determine the size of the firing sector visualization.
+        /// </summary>
+        public double RadiusFactor
+        {
+            get => GetValue(RadiusFactorProperty);
+            set => SetValue(RadiusFactorProperty, value);
         }
 
         /// <summary>
@@ -209,10 +246,11 @@ namespace WoWsShipBuilder.UI.CustomControls
 
                 (Gun gun, Point center, Geometry geometry) thisPosition = (gun, center, geometry);
 
-                if (selectedPosition != thisPosition)
+                if (selectedPosition?.center != thisPosition.center)
                 {
+                    UpdatePseudoClasses(false);
                     selectedPosition = thisPosition;
-                    InvalidateVisual();
+                    UpdatePseudoClasses(true);
                 }
 
                 return;
@@ -221,7 +259,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             if (selectedPosition != null)
             {
                 selectedPosition = null;
-                InvalidateVisual();
+                UpdatePseudoClasses(false);
             }
         }
 
@@ -236,7 +274,10 @@ namespace WoWsShipBuilder.UI.CustomControls
             base.OnPropertyChanged(change);
 #pragma warning restore 8631
 
-            InvalidateVisual();
+            if (change.Property != IsPointerOverProperty)
+            {
+                InvalidateVisual();
+            }
         }
 
         /// <summary>
@@ -254,6 +295,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             if (selectedPosition != null)
             {
                 selectedPosition = null;
+                UpdatePseudoClasses(false);
                 InvalidateVisual();
             }
         }
@@ -476,7 +518,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <param name="shipRect">The rectangle enclosing the ship ellipse.</param>
         private void DrawTurretAngles(DrawingContext context, Gun shipTurret, Point center, Rect shipRect)
         {
-            double radius = CalculateRadius(shipRect) * 2;
+            double radius = CalculateRadius(shipRect) * RadiusFactor;
             double startAngle = shipTurret.HorizontalSector[0];
             double endAngle = shipTurret.HorizontalSector[1];
             var facingBackwards = false;
@@ -601,6 +643,15 @@ namespace WoWsShipBuilder.UI.CustomControls
             }
 
             return geometry;
+        }
+
+        /// <summary>
+        /// Update method to set the extended pseudo class.
+        /// </summary>
+        /// <param name="newValue">A bool indicating whether the class should be set or removed.</param>
+        private void UpdatePseudoClasses(bool? newValue = null)
+        {
+            PseudoClasses.Set(":extended", newValue ?? selectedPosition != null || ShowAllAngles);
         }
     }
 }
