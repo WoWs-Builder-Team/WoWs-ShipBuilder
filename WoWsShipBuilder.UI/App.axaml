@@ -8,5 +8,6 @@
 
     <Application.Styles>
         <FluentTheme Mode="Light"/>
+        <StyleInclude Source="/Styles/FiringAngleVisualizerStyles.axaml"></StyleInclude>
     </Application.Styles>
 </Application>

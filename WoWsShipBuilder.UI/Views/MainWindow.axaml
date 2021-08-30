@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
+        MinWidth="1300" MinHeight="850"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
         Icon="/Assets/logo.ico"
         Title="WoWsShipBuilder.UI">
@@ -25,7 +26,9 @@
                                               Grid.Column="1" />
         <customControls:FiringAngleVisualizer Height="500" Width="500" Turrets="{Binding TurretModule}" Grid.Row="1"
                                               Grid.Column="1" ShowAllAngles="True" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" BackgroundImage="/Assets/detection_aiming.png" Width="60" Height="60" BorderBrush="Red" BorderThickness="1" Number="3" CornerRadius="20"/>
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" BackgroundImage="/Assets/detection_aiming.png"
+                                       Width="60" Height="60" BorderBrush="Red" BorderThickness="1" Number="3"
+                                       CornerRadius="20" />
     </Grid>
 
 </Window>
