@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Media;
 
 namespace WoWsShipBuilder.UI.Extensions
@@ -27,6 +28,28 @@ namespace WoWsShipBuilder.UI.Extensions
         {
             context.ArcTo(point, size, rotationAngle, isLargeArc, sweepDirection);
             return context;
+        }
+
+        public static void Add(this AvaloniaList<Drawing> list, Geometry geometry, IBrush areaBrush, IBrush? borderBrush = null)
+        {
+            var pen = new Pen();
+            if (borderBrush != null)
+            {
+                pen.Brush = borderBrush;
+            }
+
+            var drawing = new GeometryDrawing
+            {
+                Geometry = geometry,
+                Brush = areaBrush,
+                Pen = pen,
+            };
+            list.Add(drawing);
+        }
+
+        public static void AddChild(this DrawingGroup drawingGroup, Geometry geometry, IBrush areaBrush, IBrush? borderBrush = null)
+        {
+            drawingGroup.Children.Add(geometry, areaBrush, borderBrush);
         }
     }
 }

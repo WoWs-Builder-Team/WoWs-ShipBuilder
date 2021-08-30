@@ -1,12 +1,6 @@
-using System;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Media.TextFormatting;
-using Avalonia.Platform;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {
@@ -131,14 +125,14 @@ namespace WoWsShipBuilder.UI.CustomControls
                         context.DrawRectangle(pen, rect);
                     }
                 }
-             
+
                 var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
                 var point = new Point(NumberXSpacing, NumberYSpacing);
                 context.DrawText(Foreground, point, text);
             }
             else
             {
-                SolidColorBrush brush = new SolidColorBrush(Color.FromRgb(5, 4, 255));
+                SolidColorBrush brush = UnselectedBorder;
                 var pen = new Pen(brush, BorderThickness.Top);
                 context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
             }
