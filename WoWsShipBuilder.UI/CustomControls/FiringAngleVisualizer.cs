@@ -32,7 +32,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// StyledProperty for the color of the ship.
         /// </summary>
         public static readonly StyledProperty<SolidColorBrush> ShipColorProperty =
-            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipColor), new SolidColorBrush(Colors.Blue, 0.7));
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipColor), new SolidColorBrush(Colors.Blue, 0.95));
 
         /// <summary>
         /// StyledProperty for the color of ship turrets.
@@ -328,8 +328,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             return startAngle switch
             {
-                < 0 when endAngle < 0 => Math.Abs(startAngle + endAngle) > 180,
-                < 0 => Math.Abs(startAngle) + endAngle > 180,
+                <= 0 when endAngle < 0 => Math.Abs(startAngle) + (endAngle + 360) > 180,
+                < 0 when endAngle > 0 => Math.Abs(startAngle) + endAngle > 180,
                 _ => endAngle - startAngle > 180
             };
         }
@@ -395,6 +395,22 @@ namespace WoWsShipBuilder.UI.CustomControls
                 .ArcToFluent(endPoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
                 .LineToFluent(center)
                 .EndFigure(true);
+        }
+
+        /// <summary>
+        /// Helper method to draw positive and negative angle indicators.
+        /// </summary>
+        /// <param name="context">The drawing context used to draw the indicators.</param>
+        private void DrawIndicators(DrawingContext context)
+        {
+            var typeface = new Typeface(FontFamily, FontStyle, FontWeight.Bold);
+            var fontSize = 28;
+            var plusText = new FormattedText("+", typeface, fontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var minusText = new FormattedText("-", typeface, fontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var leftPoint = new Point(20, (Bounds.Size.Height / 2) - (minusText.Bounds.Height / 2));
+            context.DrawText(Foreground, leftPoint, minusText);
+            var rightPoint = new Point(Bounds.Size.Width - 20 - plusText.Bounds.Width, (Bounds.Size.Height / 2) - (plusText.Bounds.Height / 2));
+            context.DrawText(Foreground, rightPoint, plusText);
         }
 
         /// <summary>
@@ -473,6 +489,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             double endAngle = shipTurret.HorizontalSector[1];
             var angleOffset = 0.0;
 
+            if (endAngle < 0)
+            {
+                endAngle += 360;
+            }
+
             if (shipTurret.VerticalPosition >= 3)
             {
                 angleOffset = 180;
@@ -523,6 +544,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             double endAngle = shipTurret.HorizontalSector[1];
             var facingBackwards = false;
 
+            if (endAngle < 0)
+            {
+                endAngle += 360;
+            }
+
             if (shipTurret.VerticalPosition >= 3)
             {
                 startAngle += 180;
@@ -564,6 +590,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         private void DrawAngleText(DrawingContext context, Point textOrigin, FormattedText text)
         {
             context.DrawText(Foreground, textOrigin, text);
+            DrawIndicators(context);
         }
 
         /// <summary>
@@ -577,8 +604,21 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <returns>The point of origin as well as the formatted text for the provided parameters.</returns>
         private (Point origin, FormattedText text) CalculateTextPosition(double startAngle, double endAngle, Point center, Gun shipTurret, bool facingBackwards)
         {
+            double effectiveStartAngle = startAngle % 360;
+            double effectiveEndAngle = endAngle % 360;
+
+            if (effectiveStartAngle >= 180)
+            {
+                effectiveStartAngle -= 360;
+            }
+
+            if (effectiveEndAngle >= 180)
+            {
+                effectiveEndAngle -= 360;
+            }
+
             var text = new FormattedText(
-                $"{startAngle}° - {endAngle}°",
+                $"{effectiveStartAngle}° to {effectiveEndAngle}°",
                 new Typeface(FontFamily, FontStyle, FontWeight),
                 FontSize,
                 TextAlignment.Center,
