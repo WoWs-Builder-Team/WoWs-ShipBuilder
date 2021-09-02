@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace WoWsShipBuilder.Core.Test
 {
@@ -12,7 +13,8 @@ namespace WoWsShipBuilder.Core.Test
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+            //Assert.Pass();
+            Debug.Assert(false, "test");
         }
     }
 }
