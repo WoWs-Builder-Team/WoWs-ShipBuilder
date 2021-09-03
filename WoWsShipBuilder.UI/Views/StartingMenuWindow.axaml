@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
+        x:Class="WoWsShipBuilder.UI.Views.StartingMenuWindow"
+        xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
+        Title="WoWs Ship Builder"
+        Name="StartWindow"
+        Height="800" Width="400" CanResize="False" 
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="20"/>
+        </Style>
+        <Style Selector="ListBox">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="100"/>
+        </Style>
+    </Window.Styles>
+    
+    <Grid RowDefinitions="30,2*,Auto,*,Auto" ShowGridLines="False">
+        <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="1"/>
+        <Button Command="{Binding NewBuildCommand}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"/>
+        <StackPanel Orientation="Vertical" Grid.Row="3" >
+            <Button Command="{Binding LoadBuildCommand}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
+            <ListBox SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" >
+                <ListBoxItem Content="Test1"/>
+                <ListBoxItem Content="Test2"/>
+                <ListBoxItem Content="Test3"/>
+                <ListBoxItem Content="Test4"/>
+                <ListBoxItem Content="Test5"/>
+                <ListBoxItem Content="Test6"/>
+                <ListBoxItem Content="Test7"/>
+                <ListBoxItem Content="Test8"/>
+                <ListBoxItem Content="Test9"/>
+            </ListBox>
+        </StackPanel>
+        <Button Command="{Binding SettingCommand}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4"/>
+    </Grid>
+</Window>

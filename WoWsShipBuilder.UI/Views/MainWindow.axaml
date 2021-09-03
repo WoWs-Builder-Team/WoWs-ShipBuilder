@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+        xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
         MinWidth="1300" MinHeight="850"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
         Icon="/Assets/logo.ico"
-        Title="WoWsShipBuilder.UI">
+        Title="WoWsShipBuilder.UI"
+        WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -20,7 +22,7 @@
                                               Grid.Row="0" Grid.RowSpan="2" ShowAllAngles="{Binding ShowAllAngles}" />
         <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto, Auto, Auto, Auto">
             <Button Command="{Binding ToggleCommand}">Toggle</Button>
-            <Button Grid.Row="1" Command="{Binding ToggleTextCommand}">Toggle Angle text</Button>
+            <Button Grid.Row="1" Command="{Binding ToggleTextCommand}">Toggle Angles</Button>
             <Button Grid.Row="2" Command="{Binding SelectAtlantaCommand}">Atlanta</Button>
             <Button Grid.Row="3" Command="{Binding SelectKaiserCommand}">Kaiser</Button>
         </Grid>
@@ -28,7 +30,7 @@
                                               Grid.Column="1" />
         <customControls:FiringAngleVisualizer Height="500" Width="500" Turrets="{Binding TurretModule}" Grid.Row="1"
                                               Grid.Column="1" ShowAllAngles="True" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" BackgroundImage="/Assets/detection_aiming.png"
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" BackgroundImage="/Assets/Skills/detection_aiming.png"
                                        Width="60" Height="60" BorderBrush="Red" BorderThickness="1" Number="3"
                                        CornerRadius="20" />
     </Grid>

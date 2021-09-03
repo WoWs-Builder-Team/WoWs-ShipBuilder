@@ -7,6 +7,8 @@
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
+        <None Remove="Assets\Art\logo_white_text.png" />
+        <None Remove="Assets\Art\SplashArt.png" />
         <Folder Include="UserControls" />
     </ItemGroup>
     <ItemGroup>
@@ -168,5 +170,21 @@
       <Content Include="Assets\signal_flags\PCEF027_Leviathan_Flag.png" />
       <Content Include="Assets\signal_flags\PCEF028_Smoke_SignalFlag.png" />
       <Content Include="Assets\signal_flags\PCEF029_Sonar_AirDef_SignalFlag.png" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Translations\Translation.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Translation.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\StartingMenuWindow.axaml.cs">
+        <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Translations\Translation.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Translation.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 </Project>
