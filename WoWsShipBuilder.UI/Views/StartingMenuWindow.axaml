@@ -6,6 +6,7 @@
         x:Class="WoWsShipBuilder.UI.Views.StartingMenuWindow"
         xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
         Title="WoWs Ship Builder"
+        Icon="/Assets/ShipBuilderIcon-background.ico"
         Name="StartWindow"
         Height="800" Width="400" CanResize="False" 
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
@@ -28,7 +29,7 @@
         <Button Command="{Binding NewBuildCommand}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"/>
         <StackPanel Orientation="Vertical" Grid.Row="3" >
             <Button Command="{Binding LoadBuildCommand}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
-            <ListBox SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" >
+            <ListBox SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None">
                 <ListBoxItem Content="Test1"/>
                 <ListBoxItem Content="Test2"/>
                 <ListBoxItem Content="Test3"/>

@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
         MinWidth="1300" MinHeight="850"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
-        Icon="/Assets/logo.ico"
+        Icon="/Assets/ShipBuilderIcon-background.ico"
         Title="WoWsShipBuilder.UI"
         WindowStartupLocation="CenterScreen">
 
@@ -16,7 +16,7 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+    <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="*,*">
         <customControls:FiringAngleVisualizer Height="800" Width="800" Turrets="{Binding TurretModule}"
                                               PermanentAngleText="{Binding PermanentAngleText}" Grid.Column="0"
                                               Grid.Row="0" Grid.RowSpan="2" ShowAllAngles="{Binding ShowAllAngles}" />
@@ -27,10 +27,10 @@
             <Button Grid.Row="3" Command="{Binding SelectKaiserCommand}">Kaiser</Button>
         </Grid>
         <customControls:FiringAngleVisualizer Height="300" Width="300" Turrets="{Binding TurretModule}" Grid.Row="0"
-                                              Grid.Column="1" />
+                                              Grid.Column="2" />
         <customControls:FiringAngleVisualizer Height="500" Width="500" Turrets="{Binding TurretModule}" Grid.Row="1"
-                                              Grid.Column="1" ShowAllAngles="True" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" BackgroundImage="/Assets/Skills/detection_aiming.png"
+                                              Grid.Column="2" ShowAllAngles="True" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="2" BackgroundImage="/Assets/Skills/detection_aiming.png"
                                        Width="60" Height="60" BorderBrush="Red" BorderThickness="1" Number="3"
                                        CornerRadius="20" />
     </Grid>
