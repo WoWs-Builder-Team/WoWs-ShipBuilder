@@ -43,9 +43,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void LoadBuild()
         {
-            MainWindow win = new MainWindow
+            TestWindow win = new TestWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new TestWindowViewModel(),
             };
             win.Show();
             self.Close();
@@ -53,7 +53,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void Setting()
         {
-
+            // open setting window
         }
     }
 }

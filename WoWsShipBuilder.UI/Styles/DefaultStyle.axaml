@@ -1,8 +1,9 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <Button>Test</Button>
+            <customControls:NumberedButton Number="1" UnselectedBorder="Gray" UnselectedBorderThickness="1" BackgroundImage="/Assets/Skills/consumables_duration.png"/>
         </Border>
     </Design.PreviewWith>
 
@@ -15,5 +16,17 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <Style Selector="Border.BorderPanel">
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+    <Style Selector="customControls|NumberedButton">
+        <Setter Property="UnselectedBorder"  Value="Gray"/>
+        <Setter Property="UnselectedBorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Red"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="Red"/>
     </Style>
 </Styles>

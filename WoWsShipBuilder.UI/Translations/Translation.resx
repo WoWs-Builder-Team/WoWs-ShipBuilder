@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MainWindow_BackToMenu" xml:space="preserve">
+    <value>Back to menu</value>
+  </data>
+  <data name="MainWindow_Range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="MainWindow_RateOfFire" xml:space="preserve">
+    <value>Rate of Fire</value>
+  </data>
+  <data name="MainWindow_ResetBuild" xml:space="preserve">
+    <value>Reset Build</value>
+  </data>
+  <data name="MainWindow_ShareBuild" xml:space="preserve">
+    <value>Share Build</value>
+  </data>
+  <data name="MainWindow_TurnTime" xml:space="preserve">
+    <value>180° Turn Time</value>
+  </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
     <value>Load a build</value>
   </data>

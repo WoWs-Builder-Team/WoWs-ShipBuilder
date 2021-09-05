@@ -128,7 +128,6 @@ namespace WoWsShipBuilder.UI.CustomControls
                         context.DrawRectangle(pen, rect);
                     }
                 }
-
                 var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
                 var point = new Point(NumberXSpacing, NumberYSpacing);
                 context.DrawText(Foreground, point, text);
@@ -137,7 +136,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             {
                 if (UnselectedBorderThickness > 0)
                 {
-                    var pen = new Pen(UnselectedBorder, BorderThickness.Top);
+                    var pen = new Pen(UnselectedBorder, UnselectedBorderThickness);
                     context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
                 }
             }

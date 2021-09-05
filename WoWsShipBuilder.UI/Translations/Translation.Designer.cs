@@ -61,6 +61,60 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to menu.
+        /// </summary>
+        public static string MainWindow_BackToMenu {
+            get {
+                return ResourceManager.GetString("MainWindow_BackToMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range.
+        /// </summary>
+        public static string MainWindow_Range {
+            get {
+                return ResourceManager.GetString("MainWindow_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rate of Fire.
+        /// </summary>
+        public static string MainWindow_RateOfFire {
+            get {
+                return ResourceManager.GetString("MainWindow_RateOfFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Build.
+        /// </summary>
+        public static string MainWindow_ResetBuild {
+            get {
+                return ResourceManager.GetString("MainWindow_ResetBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Build.
+        /// </summary>
+        public static string MainWindow_ShareBuild {
+            get {
+                return ResourceManager.GetString("MainWindow_ShareBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 180° Turn Time.
+        /// </summary>
+        public static string MainWindow_TurnTime {
+            get {
+                return ResourceManager.GetString("MainWindow_TurnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load a build.
         /// </summary>
         public static string StartMenu_LoadBuild {
