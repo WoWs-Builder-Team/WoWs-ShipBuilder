@@ -3,6 +3,9 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <ApplicationIcon></ApplicationIcon>
+        <Win32Resource />
+        <SignAssembly>false</SignAssembly>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />

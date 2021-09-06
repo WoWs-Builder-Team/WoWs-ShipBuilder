@@ -7,6 +7,9 @@
         </Border>
     </Design.PreviewWith>
 
+    <Style Selector="Window">
+        <Setter Property="Icon" Value="/Assets/ShipBuilderIcon-white.ico"/>
+    </Style>
     <Style Selector="Button">
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -28,5 +31,7 @@
         <Setter Property="BorderBrush" Value="Red"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
     </Style>
 </Styles>

@@ -6,7 +6,6 @@
         x:Class="WoWsShipBuilder.UI.Views.StartingMenuWindow"
         xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
         Title="WoWs Ship Builder"
-        Icon="/Assets/ShipBuilderIcon-background.ico"
         Name="StartWindow"
         Height="800" Width="400" CanResize="False" 
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"

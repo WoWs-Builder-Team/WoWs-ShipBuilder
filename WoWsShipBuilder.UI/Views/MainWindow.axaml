@@ -3,31 +3,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-        Title="WowsShipBuilder"
-        Height="800" Width="1200" CanResize="False" 
+        Title="WoWs Ship Builder"
+        Height="1000" Width="1200" CanResize="False" 
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
 
     <Grid RowDefinitions="30, *">
         <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
-            <Image Source="/Assets/logo.ico" VerticalAlignment="Center" Margin="5,5,0,0"/>
+            <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0"/>
             <TextBlock Text="WoWs Ship Builder"  VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Grid Grid.Row="1" ShowGridLines="False" RowDefinitions="*,3*,2*" ColumnDefinitions="*,3*,*">
+        <Grid Grid.Row="1" ShowGridLines="False" RowDefinitions="*,4*,3*">
             <!--First row-->
-            <Border Classes="BorderPanel" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="10">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
                 <Grid ColumnDefinitions="*,2*,*" >
                     <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}" Grid.Column="0" VerticalAlignment="Center"/>
                     <!-- The button inside will be Image when we have them-->
-                    <StackPanel Orientation="Horizontal" Spacing="10" Grid.Column="1" HorizontalAlignment="Center">
-                        <Button Content="Previous ship"/>
-                        <Button Content="Current Ship" Height="50" VerticalAlignment="Center"/>
-                        <Button Content="Next Ship"/>
-                    </StackPanel>
+                    <RelativePanel  Grid.Column="1" HorizontalAlignment="Center">
+                        <Button x:Name="PreviousShip" Content="Previous ship" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                        <Button x:Name="CurrentShip" RelativePanel.AlignBottomWith="PreviousShip" RelativePanel.RightOf="PreviousShip" Content="Current Ship" Height="50" Margin="20,0"/>
+                        <Button Content="Next Ship" RelativePanel.RightOf="CurrentShip" RelativePanel.AlignBottomWith="PreviousShip"/>
+                    </RelativePanel>
                     <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="10" VerticalAlignment="Center">
                         <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"/>
                         <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}"/>
@@ -36,47 +36,48 @@
             </Border>
             
             <!--SecondRow-->
-            <StackPanel Grid.Row="1" Grid.Column="0" Spacing="10">
-                <Rectangle Height="300" Width="200" Fill="Aqua"/>
-                <Rectangle Height="60" Width="200" Fill="AntiqueWhite"/>
-            </StackPanel>
-            <Border Classes="BorderPanel" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Padding="5" Margin="0,0,10,0" CornerRadius="5">
-                <WrapPanel Orientation="Horizontal">
-                    <Expander ExpandDirection="Down" IsExpanded="True" Header="Main Guns Name" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                        <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
-                            <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
-                            <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
-                        </Grid>                
-                    </Expander>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Header="Torpedo" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                        <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
-                            <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
-                            <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
-                        </Grid>
-                    </Expander>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Header="AntiAir" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                        <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
-                            <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
-                            <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
-                        </Grid>
-                    </Expander>
-               </WrapPanel>
-            </Border>
-
+            <Grid Grid.Row="1" ColumnDefinitions="2*,4*">
+                <StackPanel Grid.Column="0" Spacing="10">
+                    <Rectangle Height="395" Width="350" Fill="Aqua"/>
+                    <Rectangle Height="80" Width="350" Fill="AntiqueWhite"/>
+                </StackPanel>
+                <Border Classes="BorderPanel" Grid.Column="1" Padding="5" Margin="0,0,10,0" CornerRadius="5">
+                    <WrapPanel Orientation="Horizontal">
+                        <Expander ExpandDirection="Down" IsExpanded="True" Header="Main Guns Name" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
+                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
+                            </Grid>                
+                        </Expander>
+                        <Expander ExpandDirection="Down" IsExpanded="True" Header="Torpedo" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
+                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
+                            </Grid>
+                        </Expander>
+                        <Expander ExpandDirection="Down" IsExpanded="True" Header="AntiAir" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right"/>
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0" Grid.Row="2"/>
+                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right"/>
+                            </Grid>
+                        </Expander>
+                   </WrapPanel>
+                </Border>
+            </Grid>
             <!--Third Row-->
-            <Grid ColumnDefinitions="2*,2*,*" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+            <Grid ColumnDefinitions="3*,2*,*" Grid.Row="2">
                 <Expander Header="Captain Skills" Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10">
                     <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*,*">
                         <customControls:NumberedButton Grid.Row="0" Grid.Column="0" Number="1" BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png" Margin="5"/>

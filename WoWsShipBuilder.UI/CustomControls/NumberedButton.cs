@@ -40,7 +40,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Style Property to indicate the Vertical spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberYSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 5);
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 2.5);
 
         static NumberedButton()
         {
@@ -108,9 +108,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             // get control bounds size
             var rect = new Rect(Bounds.Size);
-
-            // load image from assets. why is this so convoluted pepehands
-            context.DrawImage(BackgroundImage, new Rect(BackgroundImage.Size), rect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+            var imageRect = rect.Deflate(BorderThickness * 2.5);
+            context.DrawImage(BackgroundImage, new Rect(BackgroundImage.Size), imageRect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
 
             // if it's true, draw the number. Draw the border if present)
             if (IsChecked.HasValue && IsChecked.Value)
@@ -128,6 +127,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                         context.DrawRectangle(pen, rect);
                     }
                 }
+
                 var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
                 var point = new Point(NumberXSpacing, NumberYSpacing);
                 context.DrawText(Foreground, point, text);
