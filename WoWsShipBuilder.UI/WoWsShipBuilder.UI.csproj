@@ -3,9 +3,10 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <ApplicationIcon></ApplicationIcon>
+        <ApplicationIcon>Assets\ShipBuilderIcon.ico</ApplicationIcon>
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
+        <AssemblyName>WoWsShipBuilder</AssemblyName>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
@@ -19,6 +20,8 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Sentry.NLog" Version="3.9.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,148 +34,6 @@
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>
       </AdditionalFiles>
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM001_MainGun_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM002_Torpedo_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM003_Airplanes_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM004_AirDefense_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM005_SecondaryGun_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM006_MainGun_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM007_Torpedo_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM008_FireControl_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM009_FlightControl_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM010_Airplanes_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM011_AirDefense_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM012_SecondaryGun_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM013_MainGun_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM014_Torpedo_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM015_FireControl_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM016_FlightControl_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM017_Airplanes_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM018_AirDefense_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM019_SecondaryGun_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM020_DamageControl_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM021_Engine_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM022_SteeringGear_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM023_DamageControl_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM024_Engine_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM025_SteeringGear_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM026_LookoutStation_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM027_ConcealmentMeasures_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM028_FireControl_Mod_I_US.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM029_FireControl_Mod_II_US.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM030_MainWeapon_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM031_SecondaryWeapon_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM032_PowderMagazine_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM033_Guidance_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM034_Guidance_Mod_0.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM035_SteeringGear_Mod_III.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM036_SpeedBooster_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM037_SmokeGenerator_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM038_Spotter_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM039_CrashCrew_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM040_AirDefenseDisp_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM041_SonarSearch_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM042_RLSSearch_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM043_Special_Mod_I_Conqueror.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM044_Special_Mod_I_Republique.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM045_Special_Mod_I_GKurfurst.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM046_Special_Mod_I_Yamato.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM047_Special_Mod_I_Montana.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM048_Special_Mod_I_Zao.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM049_Special_Mod_I_Hindenburg.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM050_Special_Mod_I_Henri_IV.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM051_Special_Mod_I_Minotaur.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM052_Special_Mod_I_Des_Moines.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM053_Special_Mod_I_Worcester.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM054_Special_Mod_I_Moskva.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM055_Special_Mod_I_Khabarovsk.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM056_Special_Mod_I_Z_52.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM057_Special_Mod_I_Shimakaze.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM058_Special_Mod_I_Gearing.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM059_Special_Mod_I_Yueyang.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM060_Special_Mod_I_Grozovoi.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM061_Special_Mod_I_Midway.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM062_Special_Mod_I_Hakuryu.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM063_Fighter_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM064_TorpedoBomber_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM065_DiveBomber_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM066_TorpedoBomber_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM067_Fighter_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM068_PlaneEngine_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM069_Movement_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM070_Torpedo_Mod_IV.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM071_TorpedoBombs_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM072_AbilityWorktimeBoost_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM073_AbilityWorktimeBoostCV_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM074_AuxiliaryArmament_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM075_Special_Mod_I_Daring.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM076_Special_Mod_I_Kleber.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM077_Special_Mod_I_Harugumo.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM078_Special_Mod_I_Kremlin.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM079_Special_Mod_I_Audacious.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM080_Special_Mod_I_ARP_Yamato.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM081_SkipBomber_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM082_Autonomy_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM083_Hydrophone_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM084_Pinger_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM085_Pinger_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM086_Autonomy_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM087_AirSupport_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM088_AirSupport_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM089_DepthCharges_Mod_I.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM090_SteeringGearSubmarine_Mod_II.png" />
-      <Content Include="Assets\modernization_icons\icon_modernization_PCM091_SteeringGearSubmarine_Mod_III.png" />
-      <Content Include="Assets\modules\icon_module_Artillery.png" />
-      <Content Include="Assets\modules\icon_module_Artillery_installed.png" />
-      <Content Include="Assets\modules\icon_module_DiveBomber.png" />
-      <Content Include="Assets\modules\icon_module_DiveBomber_installed.png" />
-      <Content Include="Assets\modules\icon_module_Engine.png" />
-      <Content Include="Assets\modules\icon_module_Engine_installed.png" />
-      <Content Include="Assets\modules\icon_module_Fighter.png" />
-      <Content Include="Assets\modules\icon_module_Fighter_installed.png" />
-      <Content Include="Assets\modules\icon_module_Hull.png" />
-      <Content Include="Assets\modules\icon_module_Hull_installed.png" />
-      <Content Include="Assets\modules\icon_module_SkipBomber.png" />
-      <Content Include="Assets\modules\icon_module_SkipBomber_installed.png" />
-      <Content Include="Assets\modules\icon_module_Sonar.png" />
-      <Content Include="Assets\modules\icon_module_Sonar_installed.png" />
-      <Content Include="Assets\modules\icon_module_Suo.png" />
-      <Content Include="Assets\modules\icon_module_Suo_installed.png" />
-      <Content Include="Assets\modules\icon_module_TorpedoBomber.png" />
-      <Content Include="Assets\modules\icon_module_TorpedoBomber_installed.png" />
-      <Content Include="Assets\modules\icon_module_Torpedoes.png" />
-      <Content Include="Assets\modules\icon_module_Torpedoes_installed.png" />
-      <Content Include="Assets\signal_flags\PCEF001_Zulu_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF002_PP_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF003_EqualSpeed_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF004_ZH_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF005_SM_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF006_HY_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF007_ID_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF008_IY_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF009_JY2_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF010_JC_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF011_IB3_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF012_MY6_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF013_PP_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF014_NF_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF015_ZH_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF016_NE7_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF017_VL_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF018_IX_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF019_JW1_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF020_Blue_Dragon_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF021_Wyvern_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF022_Red_Dragon_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF023_Ouroboros_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF024_Hydra_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF025_Basilisk_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF026_Scylla_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF027_Leviathan_Flag.png" />
-      <Content Include="Assets\signal_flags\PCEF028_Smoke_SignalFlag.png" />
-      <Content Include="Assets\signal_flags\PCEF029_Sonar_AirDef_SignalFlag.png" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Translations\Translation.Designer.cs">
@@ -192,5 +53,7 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Include="Settings\*.json" />
+      <None Remove="Settings\*.json" />
     </ItemGroup>
 </Project>
