@@ -7,6 +7,7 @@
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />

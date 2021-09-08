@@ -1,0 +1,38 @@
+name: Build and create release
+
+on: 
+  push:
+    tags:
+      - 'v*'
+
+jobs: 
+  build-and-release:
+    runs-on: windows-latest
+    name: Build and release application
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Process tag version
+        run: echo ("CURRENT_TAG=" + $env:GITHUB_REF.Replace('refs/tags/v', '')) >> $env:GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build application
+        run: dotnet build --no-restore -c Release
+      - name: Test application
+        run: dotnet test --no-build -c Release --verbosity normal
+      - name: Publish windows executable
+        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG"
+      - name: Publish linux executable
+        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishLinux -p:Version="$env:CURRENT_TAG"
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with: 
+          files: |
+            WoWsShipBuilder.UI\bin\Release\net5.0\publish\WoWsShipBuilder
+            WoWsShipBuilder.UI\bin\Release\net5.0\publish\WoWsShipBuilder.exe
+            LICENSE
+          body_path: ReleaseNotes.md

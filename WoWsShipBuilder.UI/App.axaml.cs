@@ -22,7 +22,8 @@ namespace WoWsShipBuilder.UI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0-alpha";
+            Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
+            string version = $"{versionDetails.Major}.{versionDetails.Minor}.{versionDetails.Build}";
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (desktop.Args.Length > 0 && desktop.Args[0] == "-update")
