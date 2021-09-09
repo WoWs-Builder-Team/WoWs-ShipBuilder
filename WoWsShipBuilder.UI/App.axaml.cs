@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -23,7 +24,6 @@ namespace WoWsShipBuilder.UI
         public override void OnFrameworkInitializationCompleted()
         {
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
-            string version = $"{versionDetails.Major}.{versionDetails.Minor}.{versionDetails.Build}";
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (desktop.Args.Length > 0 && desktop.Args[0] == "-update")
@@ -41,21 +41,27 @@ namespace WoWsShipBuilder.UI
                 win.DataContext = new StartMenuViewModel(win);
                 desktop.MainWindow = win;
 
-                Dispatcher.UIThread.InvokeAsync(RunUpdateCheck(version), DispatcherPriority.Background);
+                Dispatcher.UIThread.InvokeAsync(RunUpdateCheck(versionDetails), DispatcherPriority.Background);
 
                 base.OnFrameworkInitializationCompleted();
             }
         }
 
-        private static Action RunUpdateCheck(string version)
+        private static Action RunUpdateCheck(Version currentVersion)
         {
             return async () =>
             {
                 var logger = Logging.GetLogger("UpdateCheck");
-                logger.Info($"Current application version: {version}");
+                logger.Info($"Current application version: {currentVersion}");
                 logger.Info("Checking for updates...");
                 GithubApiResponse? latestVersion = await ApplicationUpdater.GetLatestVersionNumber();
-                if (latestVersion != null && latestVersion.TagName != version)
+                bool versionParseSuccessful = Version.TryParse(Regex.Replace(latestVersion?.TagName ?? "0.0.0", "[^0-9.]", ""), out Version? newVersion);
+                if (!versionParseSuccessful)
+                {
+                    logger.Warn("Unable to parse the version of the new release.");
+                }
+
+                if (newVersion != null && newVersion > currentVersion)
                 {
                     if (ApplicationSettings.AutoUpdateEnabled)
                     {

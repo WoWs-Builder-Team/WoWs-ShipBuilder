@@ -8,6 +8,7 @@
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
