@@ -77,7 +77,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         {
             var client = WowsClient.Instance;
             Dictionary<long, ImageData> data;
-            List<long> id = request.Keys.ToList<long>();
+            List<long> id = request.Keys.ToList();
 
             if (type == ImageType.Ship)
             {

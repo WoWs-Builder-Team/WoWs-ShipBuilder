@@ -3,6 +3,7 @@ using Avalonia.ReactiveUI;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI
@@ -14,7 +15,7 @@ namespace WoWsShipBuilder.UI
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            Logging.InitializeLogging();
+            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
             Logging.Logger.Info("Starting application...");
 
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);

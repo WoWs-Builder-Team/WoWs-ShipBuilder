@@ -1,9 +1,8 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
-using WoWsShipBuilder.UI.Settings;
 
-namespace WoWsShipBuilder.UI
+namespace WoWsShipBuilder.Core
 {
     public static class Logging
     {
@@ -11,7 +10,7 @@ namespace WoWsShipBuilder.UI
 
         public static Logger GetLogger(string name = "ShipBuilder") => LogManager.GetLogger(name);
 
-        public static void InitializeLogging()
+        public static void InitializeLogging(string? sentryDsn = null)
         {
             var config = new LoggingConfiguration();
             var target = new FileTarget
@@ -32,9 +31,14 @@ namespace WoWsShipBuilder.UI
                 o.AddTag("logger", "${logger}");
 
                 o.SendDefaultPii = false;
-                o.Dsn = ApplicationSettings.ApplicationOptions.SentryDsn;
+                o.Dsn = sentryDsn;
             });
             LogManager.Configuration = config;
+
+            if (sentryDsn != null)
+            {
+                Logger.Debug("Non-null sentry dsn was detected. Trying to initialize sentry sdk.");
+            }
         }
     }
 }

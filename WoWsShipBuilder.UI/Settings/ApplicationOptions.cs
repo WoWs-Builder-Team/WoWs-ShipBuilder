@@ -4,6 +4,6 @@ namespace WoWsShipBuilder.UI.Settings
     {
         public string? SentryDsn { get; set; }
 
-        public string? AppId { get; set; }
+        public string? WgApiKey { get; set; }
     }
 }

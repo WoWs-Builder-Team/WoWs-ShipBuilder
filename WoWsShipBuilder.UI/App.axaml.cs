@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Updater;
 using WoWsShipBuilder.UI.ViewModels;
