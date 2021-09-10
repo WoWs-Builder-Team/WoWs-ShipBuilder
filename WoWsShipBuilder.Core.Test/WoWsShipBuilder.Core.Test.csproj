@@ -22,4 +22,8 @@
       </AdditionalFiles>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
+    </ItemGroup>
+
 </Project>

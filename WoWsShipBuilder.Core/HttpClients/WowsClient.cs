@@ -2,18 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
-    public class WowsClient : WebClient
+    public class WowsClient
     {
-        private static Lazy<WowsClient> instance = new Lazy<WowsClient>(() => new WowsClient());
+        #region Static Fields and Constants
+
+        private static readonly Lazy<WowsClient> InstanceValue = new(() => new WowsClient());
+
+        #endregion
 
         private readonly HttpClient client;
 
@@ -22,46 +26,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             client = new HttpClient();
         }
 
-        public static WowsClient Instance => instance.Value;
-
-        private async Task<WowsApiResponse<T>> Get<T>(string appId, string resource, string[] field, params ValueTuple<string, object>[] additionalParameters)
-        {
-            var host = $"https://api.worldofwarships.ru/wows";
-
-            var paramsString = $"{(additionalParameters.Any() ? "&" : "")}{string.Join("&", additionalParameters.Select(p => $"{p.Item1}={p.Item2}"))}";
-
-            var fields = $"{(field.Any() ? "&fields=" : "")}{string.Join(",", field)}";
-
-            var url = $"{host}/{resource}/?application_id={appId}&language=en{fields}{paramsString}";
-
-            var response = await client.GetAsync(url).ConfigureAwait(false);
-
-            try
-            {
-                response.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException)
-            {
-                throw new WowsApiException("Unsuccessful WG API call");
-            }
-
-            var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            var result = JsonConvert.DeserializeObject<WowsApiResponse<T>>(responseText, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy(),
-                },
-            }) ?? throw new InvalidOperationException();
-
-            if (result.Error != null)
-            {
-                throw new WowsApiException("Status: Error", result.Error.Field, result.Error.Message, result.Error.Code, result.Error.Value);
-            }
-
-            return result;
-        }
+        public static WowsClient Instance => InstanceValue.Value;
 
         /// <summary>
         /// Downloads the images of ships and camos.
@@ -73,22 +38,23 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref="InvalidOperationException">Occurs if the API response cant be deserialized.</exception>
         /// <exception cref="WowsApiException">Occurs if the API call fails or returns an incorrect response.</exception>
-        public static async Task DownloadShipsOrCamosImages(string appId, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
+        public async Task DownloadShipsOrCamosImages(string appId, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
         {
-            var client = WowsClient.Instance;
-            Dictionary<long, ImageData> data;
+            Dictionary<long, ImageData?> data;
             List<long> id = request.Keys.ToList();
 
             if (type == ImageType.Ship)
             {
-                var result = await client.Get<Dictionary<long, ImageData>>(appId, "encyclopedia/ships", new[] { "images" }, ("ship_id", string.Join(",", id))).ConfigureAwait(false);
+                // Request a list of ship data with all specified ship ids.
+                var result = await Get<ImageData>(appId, "encyclopedia/ships", new[] { "images" }, ("ship_id", string.Join(",", id)))
+                    .ConfigureAwait(false);
 
                 if (result.Meta.Total == null || id.Count != result.Meta.Total)
                 {
                     List<long> errors = new();
-                    foreach ((var key, var value) in result.Data)
+                    foreach ((long key, ImageData? value) in result.Data)
                     {
-                        if (value.ShipImages == null)
+                        if (value?.ShipImages == null)
                         {
                             errors.Add(key);
                         }
@@ -97,22 +63,21 @@ namespace WoWsShipBuilder.Core.HttpClients
                     throw new WowsApiException("Unsuccessful call for some ships", string.Join(",", errors));
                 }
 
-                if (result.Meta.Page_total > 1)
+                data = result.Data;
+
+                if (result.Meta.TotalPages > 1)
                 {
-                    Dictionary<long, ImageData>[] datas = new Dictionary<long, ImageData>[(int)result.Meta.Page_total];
-
-                    datas[result.Meta.Page ?? 1] = result.Data;
-
-                    for (int i = (result.Meta.Page ?? 1) + 1; i < result.Meta.Page_total + 1; i++)
+                    for (int i = (result.Meta.Page ?? 1) + 1; i < result.Meta.TotalPages + 1; i++)
                     {
-                        ValueTuple<string, object>[] moreParams = new ValueTuple<string, object>[] { ("page_no", i), ("ship_id", string.Join(",", id)) };
-                        var tmpResult = await client.Get<Dictionary<long, ImageData>>(appId, "encyclopedia/ships", new[] { "images" }, moreParams).ConfigureAwait(false);
+                        (string, object)[] moreParams = { ("page_no", i), ("ship_id", string.Join(",", id)) };
+                        var tmpResult = await Get<ImageData>(appId, "encyclopedia/ships", new[] { "images" }, moreParams)
+                            .ConfigureAwait(false);
                         if (tmpResult.Meta.Total == null || id.Count != tmpResult.Meta.Total)
                         {
                             List<long> errors = new();
-                            foreach ((var key, var value) in tmpResult.Data)
+                            foreach ((long key, ImageData? value) in tmpResult.Data)
                             {
-                                if (value.ShipImages == null)
+                                if (value?.ShipImages == null)
                                 {
                                     errors.Add(key);
                                 }
@@ -121,26 +86,21 @@ namespace WoWsShipBuilder.Core.HttpClients
                             throw new WowsApiException("Unsuccessful call for some ships", string.Join(",", errors));
                         }
 
-                        datas[i] = tmpResult.Data;
+                        data.AddDict(tmpResult.Data);
                     }
-
-                    data = datas.SelectMany(dict => dict).ToDictionary(pair => pair.Key, pair => pair.Value);
-                }
-                else
-                {
-                    data = result.Data;
                 }
             }
             else
             {
-                var result = await client.Get<Dictionary<long, ImageData>>(appId, "encyclopedia/consumables", new[] { "image" }, ("consumable_id", string.Join(",", id))).ConfigureAwait(false);
+                var result = await Get<ImageData>(appId, "encyclopedia/consumables", new[] { "image" }, ("consumable_id", string.Join(",", id)))
+                    .ConfigureAwait(false);
 
                 if (result.Meta.Total == null || id.Count != result.Meta.Total)
                 {
                     List<long> errors = new();
-                    foreach ((var key, var value) in result.Data)
+                    foreach ((long key, ImageData? value) in result.Data)
                     {
-                        if (value.CamoImage == null)
+                        if (value?.CamoImage == null)
                         {
                             errors.Add(key);
                         }
@@ -149,20 +109,20 @@ namespace WoWsShipBuilder.Core.HttpClients
                     throw new WowsApiException("Unsuccessful call for some camos", string.Join(",", errors));
                 }
 
-                if (result.Meta.Page_total > 1)
+                data = result.Data;
+                if (result.Meta.TotalPages > 1)
                 {
-                    Dictionary<long, ImageData>[] datas = new Dictionary<long, ImageData>[(int)result.Meta.Page_total];
-                    datas[result.Meta.Page ?? 1] = result.Data;
-                    for (int i = (result.Meta.Page ?? 1) + 1; i < result.Meta.Page_total + 1; i++)
+                    for (int i = (result.Meta.Page ?? 1) + 1; i < result.Meta.TotalPages + 1; i++)
                     {
-                        ValueTuple<string, object>[] moreParams = new ValueTuple<string, object>[] { ("page_no", i), ("consumable_id", string.Join(",", id)) };
-                        var tmpResult = await client.Get<Dictionary<long, ImageData>>(appId, "encyclopedia/consumables", new[] { "image" }, moreParams).ConfigureAwait(false);
+                        ValueTuple<string, object>[] moreParams = { ("page_no", i), ("consumable_id", string.Join(",", id)) };
+                        var tmpResult = await Get<ImageData>(appId, "encyclopedia/consumables", new[] { "image" }, moreParams)
+                            .ConfigureAwait(false);
                         if (tmpResult.Meta.Total == null || id.Count != tmpResult.Meta.Total)
                         {
                             List<long> errors = new();
-                            foreach ((var key, var value) in tmpResult.Data)
+                            foreach ((long key, var value) in tmpResult.Data)
                             {
-                                if (value.CamoImage == null)
+                                if (value?.CamoImage == null)
                                 {
                                     errors.Add(key);
                                 }
@@ -171,55 +131,89 @@ namespace WoWsShipBuilder.Core.HttpClients
                             throw new WowsApiException("Unsuccessful call for some camos", string.Join(",", errors));
                         }
 
-                        datas[i] = tmpResult.Data;
+                        data.AddDict(tmpResult.Data);
                     }
-
-                    data = datas.SelectMany(dict => dict).ToDictionary(pair => pair.Key, pair => pair.Value);
-                }
-                else
-                {
-                    data = result.Data;
                 }
             }
 
-            await DownloadImages(data, request, type, sizes).ConfigureAwait(false);
+            Dictionary<long, ImageData> finalData = data.Where(entry => entry.Value != null)
+                .ToDictionary(entry => entry.Key, entry => entry.Value!);
+            await DownloadImages(finalData, request, type, sizes).ConfigureAwait(false);
         }
 
-        private static async Task DownloadImages(Dictionary<long, ImageData> data, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
+        internal async Task<WowsApiResponse<T>> Get<T>(string appId, string resource, string[] field, params (string Key, object Value)[] additionalParameters)
+            where T : IWowsApiResponseData
         {
-            var client = WowsClient.Instance;
+            var host = "https://api.worldofwarships.ru/wows";
+            var paramsString = $"{(additionalParameters.Any() ? "&" : "")}{string.Join("&", additionalParameters.Select(p => $"{p.Key}={p.Value}"))}";
+            var fields = $"{(field.Any() ? "&fields=" : "")}{string.Join(",", field)}";
+            var url = $"{host}/{resource}/?application_id={appId}&language=en{fields}{paramsString}";
+
+            await using Stream stream = await client.GetStreamAsync(url);
+            using var streamReader = new StreamReader(stream);
+            using var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy(),
+                },
+            };
+            WowsApiResponse<T> result = serializer.Deserialize<WowsApiResponse<T>>(jsonReader) ??
+                                        throw new WowsApiException("Could not process response from WG api.");
+
+            if (result.Error != null)
+            {
+                throw new WowsApiException("Status: Error", result.Error.Field, result.Error.Message, result.Error.Code, result.Error.Value);
+            }
+
+            return result;
+        }
+
+        private async Task DownloadImages(Dictionary<long, ImageData> data, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
+        {
             List<Task> downloads = new();
             if (type == ImageType.Ship)
             {
-                foreach ((var key, var value) in data)
+                foreach ((long key, var value) in data)
                 {
-                    foreach (var size in sizes)
+                    foreach (ImageSize size in sizes)
                     {
-                        string imageSize;
-                        if (size == ImageSize.Small)
-                        {
-                            imageSize = "";
-                        }
-                        else
-                        {
-                            imageSize = $"_{size}";
-                        }
+                        string imageSize = size == ImageSize.Small ? "" : $"_{size}";
 
-                        var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder", "Images", "Ships", $"{request.GetValueOrDefault(key)}{imageSize}.png");
-                        downloads.Add(client.DownloadFileTaskAsync(new Uri(value.ShipImages[size]), fileName));
+                        string fileName = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                            "WoWsShipBuilder",
+                            "Images",
+                            "Ships",
+                            $"{request.GetValueOrDefault(key)}{imageSize}.png");
+                        downloads.Add(DownloadFileAsync(new Uri(value.ShipImages![size]), fileName));
                     }
                 }
             }
             else
             {
-                foreach ((var key, var value) in data)
+                foreach ((long key, var value) in data)
                 {
-                    var fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder", "Images", "Camos", $"{request.GetValueOrDefault(key)}.png");
-                    downloads.Add(client.DownloadFileTaskAsync(new Uri(value.CamoImage), fileName));
+                    string fileName = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "WoWsShipBuilder",
+                        "Images",
+                        "Camos",
+                        $"{request.GetValueOrDefault(key)}.png");
+                    downloads.Add(DownloadFileAsync(new Uri(value.CamoImage!), fileName));
                 }
             }
 
             await Task.WhenAll(downloads).ConfigureAwait(false);
+        }
+
+        private async Task DownloadFileAsync(Uri uri, string fileName)
+        {
+            await using Stream stream = await client.GetStreamAsync(uri);
+            var fileInfo = new FileInfo(fileName);
+            await using FileStream fileStream = fileInfo.OpenWrite();
+            await stream.CopyToAsync(fileStream);
         }
     }
 }
