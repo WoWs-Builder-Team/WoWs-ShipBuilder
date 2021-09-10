@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI
             var config = new LoggingConfiguration();
             var target = new FileTarget
             {
-                FileName = "${basedir}/logs/WoWsShipBuilder-${shortdate}.log",
+                FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}.log",
                 MaxArchiveFiles = 5,
                 ArchiveAboveSize = 10240,
             };

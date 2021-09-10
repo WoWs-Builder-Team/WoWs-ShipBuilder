@@ -177,6 +177,11 @@
                 <Static/>
             </Entry.SortBy>
         </Entry>
+        <Entry DisplayName="Operators">
+            <Entry.Match>
+                <Kind Is="Operator" />
+            </Entry.Match>
+        </Entry>
         <Entry Priority="100" DisplayName="Interface Implementations">
             <Entry.Match>
                 <And>

@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-C
 ProjectSection(SolutionItems) = preProject
 	LICENSE = LICENSE
 	README.md = README.md
+	ReleaseNotes.md = ReleaseNotes.md
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Core", "WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj", "{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}"
