@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -203,7 +204,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                             "WoWsShipBuilder",
                             "Images",
                             "Ships",
-                            $"{request.GetValueOrDefault(key)}{imageSize}.png");
+                            $"{request[key]}{imageSize}.png");
                         downloads.Add(DownloadFileAsync(new Uri(value.ShipImages![size]), fileName));
                     }
                 }
@@ -217,7 +218,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                         "WoWsShipBuilder",
                         "Images",
                         "Camos",
-                        $"{request.GetValueOrDefault(key)}.png");
+                        $"{request[key]}.png");
                     downloads.Add(DownloadFileAsync(new Uri(value.CamoImage!), fileName));
                 }
             }

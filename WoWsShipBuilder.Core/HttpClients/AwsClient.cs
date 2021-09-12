@@ -45,12 +45,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                 string localFolder;
                 if (type == ImageType.Ship)
                 {
-                    url = @$"{Host}/images/ships/{index}.png";
+                    url = @$"{Host}/images/ship/{index}.png";
                     localFolder = "Ships";
                 }
                 else
                 {
-                    url = @$"{Host}/images/camos/{index}.png";
+                    url = @$"{Host}/images/camo/{index}.png";
                     localFolder = "Camos";
                 }
 
@@ -70,17 +70,33 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <summary>
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
-        /// <param name="zipName">Name of the .zip file (must include .zip extension).</param>
+        /// <param name="type">The type of images to donwload. Can be either Ship or Camo.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
-        public async Task DownloadAllImages(string zipName)
+        public async Task DownloadAllImages(ImageType type)
         {
-            string zipUrl = @$"{Host}/images/{zipName}";
+            string zipUrl;
+            string localFolder;
+            string zipName;
+            if (type == ImageType.Ship)
+            {
+                zipName = "ship.zip";
+                zipUrl = @$"{Host}/images/ship/{zipName}";
+                localFolder = "Ships";
+            }
+            else
+            {
+                zipName = "camo.zip";
+                zipUrl = @$"{Host}/images/camo/{zipName}";
+                localFolder = "Camos";
+            }
+
             string directoryPath = Path.Combine(
                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                    "WoWsShipBuilder",
-                   "Images");
+                   "Images",
+                   localFolder);
             string zipPath = Path.Combine(directoryPath, zipName);
             await DownloadFileAsync(new Uri(zipUrl), zipPath);
             ZipFile.ExtractToDirectory(zipPath, directoryPath);
