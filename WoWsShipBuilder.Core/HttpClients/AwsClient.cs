@@ -34,6 +34,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <param name="type">The type of images to donwload. Can be either Ship or Camo.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
+        /// <exception cref = "ArgumentNullException" > Occurs if files are not available on the server.</exception>
         public async Task DownloadImages(List<string> indexList, ImageType type)
         {
             List<Task> downloads = new();
@@ -72,6 +73,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <param name="zipName">Name of the .zip file (must include .zip extension).</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
+        /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
         public async Task DownloadAllImages(string zipName)
         {
             string zipUrl = @$"{Host}/images/{zipName}";
