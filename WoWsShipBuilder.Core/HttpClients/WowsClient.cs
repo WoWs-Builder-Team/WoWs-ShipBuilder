@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -199,12 +198,18 @@ namespace WoWsShipBuilder.Core.HttpClients
                     {
                         string imageSize = size == ImageSize.Small ? "" : $"_{size}";
 
-                        string fileName = Path.Combine(
+                        string folderPath = Path.Combine(
                             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                             "WoWsShipBuilder",
                             "Images",
-                            "Ships",
-                            $"{request[key]}{imageSize}.png");
+                            "Ships");
+
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+
+                        string fileName = Path.Combine(folderPath, $"{request[key]}{imageSize}.png");
                         downloads.Add(DownloadFileAsync(new Uri(value.ShipImages![size]), fileName));
                     }
                 }
@@ -213,12 +218,18 @@ namespace WoWsShipBuilder.Core.HttpClients
             {
                 foreach ((long key, var value) in data)
                 {
-                    string fileName = Path.Combine(
+                    string folderPath = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                         "WoWsShipBuilder",
                         "Images",
-                        "Camos",
-                        $"{request[key]}.png");
+                        "Camos");
+
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string fileName = Path.Combine(folderPath, $"{request[key]}.png");
                     downloads.Add(DownloadFileAsync(new Uri(value.CamoImage!), fileName));
                 }
             }

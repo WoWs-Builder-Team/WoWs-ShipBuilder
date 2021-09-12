@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
@@ -30,7 +35,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         // Camo ID Valentines        Index
         // 4272877488                PCEC021
         [Test]
-        public void AwsClientShipTest()
+        public async Task WowsClientShipTest()
         {
             Dictionary<long, string> requestShip = new();
             requestShip.Add(3751786480, "PASA518");
@@ -39,11 +44,11 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
             List<ImageSize> sizes = new();
             sizes.Add(ImageSize.Small);
 
-            var wowsClientShip = WowsClient.Instance.DownloadShipsOrCamosImages(appId, requestShip, ImageType.Ship, sizes);
+            await WowsClient.Instance.DownloadShipsOrCamosImages(appId, requestShip, ImageType.Ship, sizes);
         }
 
         [Test]
-        public void AwsClientCamoTest()
+        public async Task WowsClientCamoTest()
         {
             Dictionary<long, string> requestCamo = new();
             requestCamo.Add(4230934448, "PCEC061");
@@ -52,12 +57,14 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
             List<ImageSize> sizes = new();
             sizes.Add(ImageSize.Small);
 
-            var wowsClientCamo = WowsClient.Instance.DownloadShipsOrCamosImages(appId, requestCamo, ImageType.Camo, sizes);
+            await WowsClient.Instance.DownloadShipsOrCamosImages(appId, requestCamo, ImageType.Camo, sizes);
         }
 
         [Test]
-        public void WowsClientTest()
+        public async Task AwsClientTest()
         {
+            await AwsClient.Instance.DownloadAllImages(ImageType.Ship);
+            await AwsClient.Instance.DownloadAllImages(ImageType.Camo);
         }
     }
 }

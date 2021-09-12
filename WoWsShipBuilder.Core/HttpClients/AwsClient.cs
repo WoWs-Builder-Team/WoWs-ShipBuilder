@@ -54,12 +54,18 @@ namespace WoWsShipBuilder.Core.HttpClients
                     localFolder = "Camos";
                 }
 
-                string fileName = Path.Combine(
+                string folderPath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "WoWsShipBuilder",
                     "Images",
-                    localFolder,
-                    $"{index}.png");
+                    localFolder);
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                string fileName = Path.Combine(folderPath, $"{index}.png");
 
                 downloads.Add(DownloadFileAsync(new Uri(url), fileName));
             }
@@ -97,6 +103,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                    "WoWsShipBuilder",
                    "Images",
                    localFolder);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             string zipPath = Path.Combine(directoryPath, zipName);
             await DownloadFileAsync(new Uri(zipUrl), zipPath);
             ZipFile.ExtractToDirectory(zipPath, directoryPath);
