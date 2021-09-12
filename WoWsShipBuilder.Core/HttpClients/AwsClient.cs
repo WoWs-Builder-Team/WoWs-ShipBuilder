@@ -111,7 +111,7 @@ namespace WoWsShipBuilder.Core.HttpClients
 
             string zipPath = Path.Combine(directoryPath, zipName);
             await DownloadFileAsync(new Uri(zipUrl), zipPath);
-            ZipFile.ExtractToDirectory(zipPath, directoryPath);
+            ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
             File.Delete(zipPath);
         }
 

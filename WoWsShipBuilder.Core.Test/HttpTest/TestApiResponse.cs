@@ -51,8 +51,8 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         public async Task WowsClientCamoTest()
         {
             Dictionary<long, string> requestCamo = new();
-            requestCamo.Add(4230934448, "PCEC061");
-            requestCamo.Add(4272877488, "PCEC021");
+            requestCamo.Add(4230934448, "PCEC061_Camo_Gamescom_2018");
+            requestCamo.Add(4272877488, "PCEC021_Valentine_Tile");
 
             List<ImageSize> sizes = new();
             sizes.Add(ImageSize.Small);
@@ -65,6 +65,26 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         {
             await AwsClient.Instance.DownloadAllImages(ImageType.Ship);
             await AwsClient.Instance.DownloadAllImages(ImageType.Camo);
+        }
+
+        [Test]
+        public async Task AwsClientSpecificShipTest()
+        {
+            List<string> indexesShip = new();
+            indexesShip.Add("PASA518");
+            indexesShip.Add("PASB018");
+
+            await AwsClient.Instance.DownloadImages(indexesShip, ImageType.Ship);
+        }
+
+        [Test]
+        public async Task AwsClientSpecificCamoTest()
+        {
+            List<string> indexesCamo = new();
+            indexesCamo.Add("PCEC061_Camo_Gamescom_2018");
+            indexesCamo.Add("PCEC021_Valentine_Tile");
+
+            await AwsClient.Instance.DownloadImages(indexesCamo, ImageType.Camo);
         }
     }
 }
