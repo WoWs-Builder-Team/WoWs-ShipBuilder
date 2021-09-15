@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
+        Title="SettingsWindow"
+        Height="1000" Width="1200" CanResize="False" 
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <SolidColorBrush x:Key="SelectedTabColor" Color="Purple"/>
+    </Window.Resources>
+    
+    <Grid RowDefinitions="30, *">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
+            <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0"/>
+            <TextBlock Text="WoWs Ship Builder"  VerticalAlignment="Center"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                <TabControl>
+                <TabItem Header="General">
+                    <!--
+                    Made by
+                    Donate button
+                    Version info
+                    About
+                    Support server?
+                    Website/Download page?
+                    Changelogs?
+                    -->
+                </TabItem>
+                <TabItem Header="Settings">
+                    <!--
+                    Language selector
+                    Update checkbox
+                    Reset?
+                    -->
+                </TabItem>
+            </TabControl>
+            </Border>
+            
+        </Grid>
+    </Grid>
+    <Window.Styles>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Background" Value="Gray"/>                        
+            <Setter Property="Foreground" Value="White"/>                        
+        </Style>
+    </Window.Styles>
+</Window>
