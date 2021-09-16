@@ -53,7 +53,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void Setting()
         {
-            // open setting window
+            SettingsWindow win = new SettingsWindow
+            {
+
+            };
+            win.Show();
+            self.Close();
         }
     }
 }
