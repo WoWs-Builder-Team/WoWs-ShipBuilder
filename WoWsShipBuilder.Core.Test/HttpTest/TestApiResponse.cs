@@ -1,11 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
@@ -15,15 +9,6 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
     public class TestApiResponse
     {
         private readonly string appId = "6d563fd75651dbf9de009418d3ee7f56";
-
-        [Ignore("temporarily disabled.")]
-        [Test]
-        public async Task RequestImageData()
-        {
-            var apiKey = "";
-            var result = await WowsClient.Instance.Get<ImageData>(apiKey, "encyclopedia/ships", new[] { "images" });
-            Console.WriteLine(result);
-        }
 
         // Ship ID Enterprise        Index
         // 3751786480                PASA518

@@ -4,25 +4,23 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpResponses;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
-    public class AwsClient
+    public class AwsClient : ClientBase
     {
         #region Static Fields and Constants
 
-        private static readonly Lazy<AwsClient> InstanceValue = new(() => new AwsClient());
+        private const string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
 
-        private static readonly string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
+        private static readonly Lazy<AwsClient> InstanceValue = new(() => new AwsClient());
 
         #endregion
 
-        private readonly HttpClient client;
-
         private AwsClient()
         {
-            client = new HttpClient();
         }
 
         public static AwsClient Instance => InstanceValue.Value;
@@ -54,11 +52,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                     localFolder = "Camos";
                 }
 
-                string folderPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "WoWsShipBuilder",
-                    "Images",
-                    localFolder);
+                string folderPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", localFolder);
 
                 if (!Directory.Exists(folderPath))
                 {
@@ -98,11 +92,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                 localFolder = "Camos";
             }
 
-            string directoryPath = Path.Combine(
-                   Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                   "WoWsShipBuilder",
-                   "Images",
-                   localFolder);
+            string directoryPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", localFolder);
 
             if (!Directory.Exists(directoryPath))
             {
@@ -113,14 +103,6 @@ namespace WoWsShipBuilder.Core.HttpClients
             await DownloadFileAsync(new Uri(zipUrl), zipPath);
             ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
             File.Delete(zipPath);
-        }
-
-        private async Task DownloadFileAsync(Uri uri, string fileName)
-        {
-            await using Stream stream = await client.GetStreamAsync(uri);
-            var fileInfo = new FileInfo(fileName);
-            await using FileStream fileStream = fileInfo.OpenWrite();
-            await stream.CopyToAsync(fileStream);
         }
     }
 }
