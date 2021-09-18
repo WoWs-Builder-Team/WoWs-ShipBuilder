@@ -48,6 +48,9 @@
       <Compile Update="Views\StartingMenuWindow.axaml.cs">
         <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\SettingsWindow.axaml.cs">
+        <DependentUpon>SettingsWindow.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="Translations\Translation.resx">

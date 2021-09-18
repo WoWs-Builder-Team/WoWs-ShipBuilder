@@ -1,0 +1,73 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="450"
+        x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
+        Title="SettingsWindow"
+        Height="450" Width="650" CanResize="False"
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="SelectedTabColor" Color="Purple"/>
+    </Window.Resources>
+
+    <Grid RowDefinitions="30, *">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
+            <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0"/>
+            <TextBlock Text="WoWs Ship Builder"  VerticalAlignment="Center"/>
+        </StackPanel>
+        <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                <TabControl>
+                    <TabItem Header="Settings">
+                        <Border Classes="BorderPanel" Margin="10" Padding="10">
+                            <Grid ColumnDefinitions="2*,*" Grid.Column="0" RowDefinitions="35,35,35,*">
+                                <TextBlock Text="Language:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" FontSize="13"/>
+                                <ComboBox Grid.Column="1" Grid.Row="0" SelectedIndex="0" VerticalAlignment="Center" FontSize="13">
+                                    <ComboBoxItem>English</ComboBoxItem>
+                                    <ComboBoxItem>Inline Item 2</ComboBoxItem>
+                                    <ComboBoxItem>Inline Item 3</ComboBoxItem>
+                                    <ComboBoxItem>Inline Item 4</ComboBoxItem>
+                                </ComboBox>
+                                <TextBlock Text="Reset settings to default" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" FontSize="13"/>
+                                <Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Content="Reset"></Button>
+                                <TextBlock Text="Enable automatic updates:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" FontSize="13"/>
+                                <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="true" HorizontalAlignment="Left"></CheckBox>
+                            </Grid>
+                        </Border>
+                    </TabItem>
+                    <TabItem Header="Info">
+                        <Border Classes="BorderPanel" Margin="10">
+                            <Grid RowDefinitions="*,*" Grid.Column="0">
+                                
+                            </Grid>
+                        </Border>
+                    </TabItem>
+                </TabControl>
+                <!--Right panel-->
+            </Border>
+            <Border Classes="BorderPanel" Grid.Column="1" Margin="10">
+                <Grid RowDefinitions="3*,1*">
+                    <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0"></Image>
+                    <Grid Grid.Row="1" RowDefinitions="*,*,*" Margin="10">
+                        <TextBlock Text="Developed by:" Grid.Row="0" FontSize="13"/>
+                        <TextBlock Text="Version:" Grid.Row="1" FontSize="13"/>
+                        <TextBlock Text="Donate" Grid.Row="2" FontSize="13"/><!--placeholder-->
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+    <Window.Styles>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+</Window>

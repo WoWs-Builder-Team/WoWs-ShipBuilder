@@ -80,4 +80,16 @@
     <Style Selector="ComboBox.Upgrades /template/ Border">
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
+    <!--Separator-->
+    <Style Selector="Separator">
+        <Setter Property="Background">
+            <RadialGradientBrush GradientOrigin="50%,50%" Radius="0.7">
+                <RadialGradientBrush.GradientStops>
+                    <GradientStop Color="Gray" Offset="0"></GradientStop>
+                    <GradientStop Color="#00000000" Offset="1"></GradientStop>
+                </RadialGradientBrush.GradientStops>
+            </RadialGradientBrush>
+        </Setter>
+        <Setter Property="Height" Value="2"/>
+    </Style>   
 </Styles>
