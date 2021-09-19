@@ -26,18 +26,13 @@
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <Grid ColumnDefinitions="2*,*" Grid.Column="0" RowDefinitions="35,35,35,35,*">
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" FontSize="13"/>
-                                <ComboBox Grid.Column="1" Grid.Row="0" SelectedIndex="0" VerticalAlignment="Center" FontSize="13">
-                                    <ComboBoxItem>English</ComboBoxItem>
-                                    <ComboBoxItem>Inline Item 2</ComboBoxItem>
-                                    <ComboBoxItem>Inline Item 3</ComboBoxItem>
-                                    <ComboBoxItem>Inline Item 4</ComboBoxItem>
-                                </ComboBox>
+                                <ComboBox Grid.Column="1" Grid.Row="0" SelectedIndex="0" VerticalAlignment="Center" FontSize="13" Items="{Binding Path=Languages}" SelectedItem="{Binding Path=SelectedLanguage}"/>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_ResetSettings}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" FontSize="13"/>
-                                <Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Content="{x:Static t:Translation.SettingsWindow_Reset}"></Button>
+                                <Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding ResetSettingsCommand}" Content="{x:Static t:Translation.SettingsWindow_Reset}"></Button>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_CleanAppData}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" FontSize="13"/>
-                                <Button Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Content="{x:Static t:Translation.SettingsWindow_Clean}"></Button>
+                                <Button Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding CleanAppDataCommand}" Content="{x:Static t:Translation.SettingsWindow_Clean}"></Button>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_AutoUpdate}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" FontSize="13"/>
-                                <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="true" HorizontalAlignment="Left"></CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" IsChecked="{Binding Path=AutoUpdate}"></CheckBox>
                             </Grid>
                         </Border>
                     </TabItem>
