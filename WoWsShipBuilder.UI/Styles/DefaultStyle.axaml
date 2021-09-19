@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls">
+        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.PreviewWith>
         <Border Padding="20">
             <ComboBox Classes="Upgrades" VerticalAlignment="Center" HorizontalAlignment="Center" SelectedIndex="0" CornerRadius="5">
@@ -79,6 +80,16 @@
     </Style>
     <Style Selector="ComboBox.Upgrades /template/ Border">
         <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+    <!--ShipUpgrade selector-->
+    <Style Selector="userControls|DropDownSelector.Upgrades Button">
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
+    <Style Selector="ListBox.ShipModules">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="ListBox.ShipModules>ListBoxItem:selected>Button">
+        <Setter Property="Background" Value="Blue" />
     </Style>
     <!--Separator-->
     <Style Selector="Separator">
