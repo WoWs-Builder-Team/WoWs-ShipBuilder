@@ -20,4 +20,3 @@ namespace WoWsShipBuilder.UI.Views
         }
     }
 }
-
