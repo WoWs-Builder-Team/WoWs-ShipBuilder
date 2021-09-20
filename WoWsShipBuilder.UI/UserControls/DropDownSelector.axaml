@@ -7,28 +7,32 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="DropDownControl"
              x:Class="WoWsShipBuilder.UI.UserControls.DropDownSelector">
+
     <UserControl.Resources>
         <conv:ModernizationImageConverter x:Key="ModernizationImageConverter" />
     </UserControl.Resources>
-    <Panel x:Name="BasePanel" DataContext="{Binding RelativeSource={RelativeSource AncestorType=userControls:DropDownSelector}}">
+
+    <Panel x:Name="BasePanel"
+           DataContext="{Binding RelativeSource={RelativeSource AncestorType=userControls:DropDownSelector}}">
+        <!-- The button that opens the actual dropdown menu in the popup. -->
         <Button x:Name="DropDownButton" Width="{Binding Width}" Height="{Binding Height}" Click="Button_OnClick">
             <Image Source="{Binding SelectedImage}" />
         </Button>
+
+        <!-- The popup containing the list of available upgrades. -->
         <Popup Name="UpgradeListPopup" PlacementAnchor="Bottom" PlacementTarget="DropDownButton" IsOpen="False"
                IsLightDismissEnabled="True">
-            <StackPanel Orientation="Vertical" Width="{Binding Bounds.Width, ElementName=DropDownControl}">
-                <ListBox Classes="ShipModules" SelectedIndex="{Binding ElementName=BasePanel, Path=DataContext.SelectedIndex}" Items="{Binding AvailableModernizations}" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Command="{Binding ElementName=BasePanel, Path=DataContext.UpgradeSelectionCommand}"  CommandParameter="{Binding}">
-                                <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}" />
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
+            <ListBox Classes="ShipModules" Width="{Binding Bounds.Width, ElementName=DropDownControl}"
+                     SelectedIndex="{Binding ElementName=BasePanel, Path=DataContext.SelectedIndex}"
+                     SelectionMode="Single"
+                     Items="{Binding EffectiveModernizationsList}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Popup>
     </Panel>
 </UserControl>
