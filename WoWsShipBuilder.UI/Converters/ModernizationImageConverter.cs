@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Converters
                 throw new NotSupportedException();
             }
 
-            string assemblyName = Assembly.GetEntryAssembly()?.GetName().Name!;
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
             Uri uri;
             if (modernization.Index != null)
