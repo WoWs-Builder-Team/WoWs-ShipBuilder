@@ -16,6 +16,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             self = window;
             ResetSettingsCommand = ReactiveCommand.Create(() => ResetSettings());
             CleanAppDataCommand = ReactiveCommand.Create(() => CleanAppData());
+            DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
             selectedLanguage = languages[0];
         }
 
@@ -48,6 +49,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ICommand CleanAppDataCommand { get; }
 
+        public ICommand DonateCommand { get; }
+
         private void ResetSettings()
         {
             Debug.WriteLine("Reset");
@@ -56,6 +59,31 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void CleanAppData()
         {
             Debug.WriteLine("Clean");
+        }
+
+        private void OpenPaypalPage()
+        {
+            Debug.WriteLine("Paypal");
+            string url = "";
+
+            string business = "my@paypalemail.com";  // your paypal email
+            string description = "Donation";            // '%20' represents a space. remember HTML!
+            string country = "AU";                  // AU, US, etc.
+            string currency = "AUD";                 // AUD, USD, etc.
+
+            url += "https://www.paypal.com/cgi-bin/webscr" +
+                "?cmd=" + "_donations" +
+                "&business=" + business +
+                "&lc=" + country +
+                "&item_name=" + description +
+                "&currency_code=" + currency +
+                "&bn=" + "PP%2dDonationsBF";
+
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true,
+            });
         }
 
         private bool autoUpdate;

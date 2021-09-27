@@ -177,4 +177,13 @@
   <data name="StartMenu_Settings" xml:space="preserve">
     <value>Settings and Info</value>
   </data>
+  <data name="DownloadWindow_Percentage" xml:space="preserve">
+      <value>%</value>
+  </data>
+  <data name="DownloadWindow_Status" xml:space="preserve">
+      <value>Status: </value>
+  </data>
+  <data name="DownloadWindow_StatusText" xml:space="preserve">
+      <value>...</value>
+  </data>s 
 </root>

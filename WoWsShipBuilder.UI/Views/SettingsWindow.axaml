@@ -52,7 +52,7 @@
                     <Grid Grid.Row="1" RowDefinitions="*,*,*" Margin="10">
                         <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}" Grid.Row="0" FontSize="13"/>
                         <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}" Grid.Row="1" FontSize="13"/>
-                        <TextBlock Text="Donate" Grid.Row="2" FontSize="13"/><!--placeholder-->
+                        <Button Content="Donate" Command="{Binding DonateCommand}" Grid.Row="2" FontSize="13"/><!--placeholder-->
                     </Grid>
                 </Grid>
             </Border>
