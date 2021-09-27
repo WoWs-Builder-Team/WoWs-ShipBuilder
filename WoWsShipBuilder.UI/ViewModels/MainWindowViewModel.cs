@@ -1,3 +1,4 @@
+using ReactiveUI;
 using System.Collections.Generic;
 using WoWsShipBuilderDataStructures;
 
@@ -5,6 +6,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
+        public MainWindowViewModel()
+        {
+            FlagNumber = 5;
+        }
+
         public List<Modernization> Slot1ModernizationList => new()
         {
             new Modernization
@@ -70,5 +76,14 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Index = "PCM002",
             },
         };
+
+
+        private int flagNumber;
+
+        public int FlagNumber
+        {
+            get => flagNumber;
+            set => this.RaiseAndSetIfChanged(ref flagNumber, value);
+        }
     }
 }

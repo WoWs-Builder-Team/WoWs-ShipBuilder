@@ -178,12 +178,15 @@
     <value>Settings and Info</value>
   </data>
   <data name="DownloadWindow_Percentage" xml:space="preserve">
-      <value>%</value>
+    <value>%</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-      <value>Status: </value>
+    <value>Status: </value>
   </data>
   <data name="DownloadWindow_StatusText" xml:space="preserve">
-      <value>...</value>
-  </data>s 
+    <value>...</value>
+  </data>
+  <data name="SignalSelector_Flags" xml:space="preserve">
+    <value>Flags </value>
+  </data>
 </root>
