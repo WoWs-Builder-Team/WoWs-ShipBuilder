@@ -1,6 +1,6 @@
-using Newtonsoft.Json;
 using System.IO;
 using System.IO.Compression;
+using Newtonsoft.Json;
 
 namespace WoWsShipBuilder.Core.BuildCreator
 {
@@ -25,7 +25,6 @@ namespace WoWsShipBuilder.Core.BuildCreator
                 var encodedOutput = System.Convert.ToBase64String(bytes);
                 return encodedOutput;
             }
-
         }
 
         public static Build? CreateBuildFromString(string buildString)

@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using Avalonia.Controls;
 using ReactiveUI;
 using WoWsShipBuilder.UI.Views;
 
