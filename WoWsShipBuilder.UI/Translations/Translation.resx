@@ -135,6 +135,36 @@
   <data name="MainWindow_TurnTime" xml:space="preserve">
     <value>180° Turn Time</value>
   </data>
+  <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
+    <value>Enable automatic updates</value>
+  </data>
+  <data name="SettingsWindow_Clean" xml:space="preserve">
+    <value>Clean</value>
+  </data>
+  <data name="SettingsWindow_CleanAppData" xml:space="preserve">
+    <value>Clean stored application data</value>
+  </data>
+  <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
+    <value>Developed by:</value>
+  </data>
+  <data name="SettingsWindow_Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="SettingsWindow_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SettingsWindow_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SettingsWindow_ResetSettings" xml:space="preserve">
+    <value>Reset settings to default</value>
+  </data>
+  <data name="SettingsWindow_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsWindow_Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
     <value>Load a build</value>
   </data>
@@ -146,5 +176,17 @@
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
     <value>Settings and Info</value>
+  </data>
+  <data name="DownloadWindow_Percentage" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="DownloadWindow_Status" xml:space="preserve">
+    <value>Status: </value>
+  </data>
+  <data name="DownloadWindow_StatusText" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="SignalSelector_Flags" xml:space="preserve">
+    <value>Flags </value>
   </data>
 </root>

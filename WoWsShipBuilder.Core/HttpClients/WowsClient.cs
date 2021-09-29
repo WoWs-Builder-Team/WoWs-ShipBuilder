@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
-    public class WowsClient
+    public class WowsClient : ClientBase
     {
         #region Static Fields and Constants
 
@@ -21,11 +21,8 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         #endregion
 
-        private readonly HttpClient client;
-
         private WowsClient()
         {
-            client = new HttpClient();
         }
 
         public static WowsClient Instance => InstanceValue.Value;
@@ -66,17 +63,14 @@ namespace WoWsShipBuilder.Core.HttpClients
             var fields = $"{(field.Any() ? "&fields=" : "")}{string.Join(",", field)}";
             var url = $"{Host}/{resource}/?application_id={appId}&language=en{fields}{paramsString}";
 
-            await using Stream stream = await client.GetStreamAsync(url);
-            using var streamReader = new StreamReader(stream);
-            using var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer
+            var jsonSerializer = new JsonSerializer
             {
                 ContractResolver = new DefaultContractResolver
                 {
                     NamingStrategy = new SnakeCaseNamingStrategy(),
                 },
             };
-            WowsApiResponse<T> result = serializer.Deserialize<WowsApiResponse<T>>(jsonReader) ??
+            WowsApiResponse<T> result = await GetJsonAsync<WowsApiResponse<T>>(url, jsonSerializer) ??
                                         throw new WowsApiException("Could not process response from WG API.");
 
             if (result.Error != null)
@@ -197,12 +191,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                     foreach (ImageSize size in sizes)
                     {
                         string imageSize = size == ImageSize.Small ? "" : $"_{size}";
-
-                        string folderPath = Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                            "WoWsShipBuilder",
-                            "Images",
-                            "Ships");
+                        string folderPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", "Ships");
 
                         if (!Directory.Exists(folderPath))
                         {
@@ -218,11 +207,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             {
                 foreach ((long key, var value) in data)
                 {
-                    string folderPath = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        "WoWsShipBuilder",
-                        "Images",
-                        "Camos");
+                    string folderPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", "Camos");
 
                     if (!Directory.Exists(folderPath))
                     {
@@ -235,14 +220,6 @@ namespace WoWsShipBuilder.Core.HttpClients
             }
 
             await Task.WhenAll(downloads).ConfigureAwait(false);
-        }
-
-        private async Task DownloadFileAsync(Uri uri, string fileName)
-        {
-            await using Stream stream = await client.GetStreamAsync(uri);
-            var fileInfo = new FileInfo(fileName);
-            await using FileStream fileStream = fileInfo.OpenWrite();
-            await stream.CopyToAsync(fileStream);
         }
     }
 }

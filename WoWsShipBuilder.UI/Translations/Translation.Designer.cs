@@ -61,6 +61,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        public static string DownloadWindow_Percentage {
+            get {
+                return ResourceManager.GetString("DownloadWindow_Percentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status: .
+        /// </summary>
+        public static string DownloadWindow_Status {
+            get {
+                return ResourceManager.GetString("DownloadWindow_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ....
+        /// </summary>
+        public static string DownloadWindow_StatusText {
+            get {
+                return ResourceManager.GetString("DownloadWindow_StatusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to menu.
         /// </summary>
         public static string MainWindow_BackToMenu {
@@ -111,6 +138,105 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_TurnTime {
             get {
                 return ResourceManager.GetString("MainWindow_TurnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable automatic updates.
+        /// </summary>
+        public static string SettingsWindow_AutoUpdate {
+            get {
+                return ResourceManager.GetString("SettingsWindow_AutoUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean.
+        /// </summary>
+        public static string SettingsWindow_Clean {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clean stored application data.
+        /// </summary>
+        public static string SettingsWindow_CleanAppData {
+            get {
+                return ResourceManager.GetString("SettingsWindow_CleanAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Developed by:.
+        /// </summary>
+        public static string SettingsWindow_DevelopedBy {
+            get {
+                return ResourceManager.GetString("SettingsWindow_DevelopedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string SettingsWindow_Info {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string SettingsWindow_Language {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string SettingsWindow_Reset {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset settings to default.
+        /// </summary>
+        public static string SettingsWindow_ResetSettings {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ResetSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsWindow_Settings {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version:.
+        /// </summary>
+        public static string SettingsWindow_Version {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flags .
+        /// </summary>
+        public static string SignalSelector_Flags {
+            get {
+                return ResourceManager.GetString("SignalSelector_Flags", resourceCulture);
             }
         }
         

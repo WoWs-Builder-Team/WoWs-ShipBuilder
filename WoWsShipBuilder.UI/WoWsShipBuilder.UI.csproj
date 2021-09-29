@@ -15,7 +15,6 @@
         <AvaloniaResource Include="Assets\**" />
         <None Remove="Assets\Art\logo_white_text.png" />
         <None Remove="Assets\Art\SplashArt.png" />
-        <Folder Include="UserControls" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.7" />
@@ -47,6 +46,9 @@
       </Compile>
       <Compile Update="Views\StartingMenuWindow.axaml.cs">
         <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\SettingsWindow.axaml.cs">
+        <DependentUpon>SettingsWindow.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
     <ItemGroup>
