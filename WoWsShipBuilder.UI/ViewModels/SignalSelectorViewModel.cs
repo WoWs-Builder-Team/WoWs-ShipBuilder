@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Input;
-using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using ReactiveUI;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class SignalSelectorViewModel : ViewModelBase
+    internal class SignalSelectorViewModel : ViewModelBase
     {
+        public SignalSelectorViewModel()
+            : this(0, _ => { })
+        {
+        }
+
         public SignalSelectorViewModel(int signalsNumber, Action<string> addSignalFlagModifiersCommand)
         {
             SignalsNumber = signalsNumber;
@@ -34,7 +36,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             string? flagIndex = parameter.ToString();
             if (flagIndex != null && SelectedSignalIndex.Contains(flagIndex))
             {
-                return true;                
+                return true;
             }
             else
             {
