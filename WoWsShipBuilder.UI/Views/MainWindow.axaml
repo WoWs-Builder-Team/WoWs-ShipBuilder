@@ -65,94 +65,14 @@
                     </Border>
                 </StackPanel>
                 <Border Classes="BorderPanel" Grid.Column="1" Padding="5" Margin="0,0,10,0" CornerRadius="5">
-                    <WrapPanel Orientation="Horizontal">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Main Guns Name"
-                                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
-                                           Grid.Row="0" />
-                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
-                                           Grid.Row="1" />
-                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
-                                           Grid.Row="2" />
-                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
-                            </Grid>
-                        </Expander>
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Torpedo"
-                                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
-                                           Grid.Row="0" />
-                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
-                                           Grid.Row="1" />
-                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
-                                           Grid.Row="2" />
-                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
-                            </Grid>
-                        </Expander>
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AntiAir"
-                                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
-                                           Grid.Row="0" />
-                                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
-                                           Grid.Row="1" />
-                                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
-                                           Grid.Row="2" />
-                                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
-                            </Grid>
-                        </Expander>
-                    </WrapPanel>
+                    <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}"/>
                 </Border>
             </Grid>
             <!--Third Row-->
             <Grid ColumnDefinitions="3*,2*,*" Grid.Row="2">
                 <Expander Header="Captain Skills" Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True"
                           BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10">
-                    <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*,*">
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="0" Number="1"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="1" Number="2"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="2" Number="3"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="3" Number="4"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="4" Number="5"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="0" Grid.Column="5" Number="6"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="0" Number="1"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" Number="2"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="2" Number="3"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="3" Number="4"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="4" Number="5"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                        <customControls:NumberedButton Grid.Row="1" Grid.Column="5" Number="6"
-                                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                                       Margin="5" />
-                    </Grid>
+                    <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}"/>
                 </Expander>
                 <Expander Header="Signals" Grid.Column="1" Grid.Row="0" ExpandDirection="Down" IsExpanded="True"
                           BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10" >

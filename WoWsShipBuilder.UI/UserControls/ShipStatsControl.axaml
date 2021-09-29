@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl">
+    <WrapPanel Orientation="Horizontal">
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Main Guns Name"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Torpedo"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AntiAir"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+    </WrapPanel>
+</UserControl>

@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+             x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector">
+    <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*,*">
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="0" Number="1"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="1" Number="2"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="2" Number="3"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="3" Number="4"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="4" Number="5"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="0" Grid.Column="5" Number="6"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="0" Number="1"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" Number="2"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="2" Number="3"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="3" Number="4"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="4" Number="5"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+        <customControls:NumberedButton Grid.Row="1" Grid.Column="5" Number="6"
+                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
+                                       Margin="5" />
+    </Grid>
+</UserControl>

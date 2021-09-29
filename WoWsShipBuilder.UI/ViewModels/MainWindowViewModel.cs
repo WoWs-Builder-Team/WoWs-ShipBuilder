@@ -14,9 +14,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public MainWindowViewModel()
         {
-            var addSignalFlagModifiersCommand = ReactiveCommand.Create<string>(x => AddSignalModifiers(x));
+            // Signal selector model
             Action<string> action = x => AddSignalModifiers(x);
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);          
+            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);
+
+            // Ship stats model
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
+
+            // Captain Skill model
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel();
         }
 
         private SignalSelectorViewModel? signalSelectorViewModel;
@@ -25,6 +31,22 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => signalSelectorViewModel;
             set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
+        }
+
+        private ShipStatsControlViewModel? shipStatsControlViewModel;
+
+        public ShipStatsControlViewModel? ShipStatsControlViewModel
+        {
+            get => shipStatsControlViewModel;
+            set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
+        }
+
+        private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
+        public CaptainSkillSelectorViewModel? CaptainSkillSelectorViewModel
+        {
+            get => captainSkillSelectorViewModel;
+            set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
         }
 
         public List<Modernization> Slot1ModernizationList => new()
