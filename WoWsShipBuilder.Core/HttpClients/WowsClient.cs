@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// Downloads the images of ships and camos.
         /// </summary>
         /// <param name="appId">ID of the application to access WG API.</param>
-        /// <param name="request">Dictionary containing as key the ID and as value the index of ships or camos.</param>
+        /// <param name="request">Dictionary containing as key the ID and as value the index of the ship or name of the camo.</param>
         /// <param name="type">Can be either ship or camo.</param>
         /// <param name="sizes">The size of the image to download. If type is camo then sizes can be null.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
