@@ -44,9 +44,9 @@ namespace WoWsShipBuilder.UI
                 desktop.MainWindow = win;
 
                 Dispatcher.UIThread.InvokeAsync(RunUpdateCheck(versionDetails), DispatcherPriority.Background);
-
-                base.OnFrameworkInitializationCompleted();
             }
+
+            base.OnFrameworkInitializationCompleted();
         }
 
         private static Action RunUpdateCheck(Version currentVersion)
