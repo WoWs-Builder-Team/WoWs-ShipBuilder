@@ -71,5 +71,11 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
 
             await AwsClient.Instance.DownloadImages(indexesCamo, ImageType.Camo);
         }
+
+        [Test]
+        public async Task CheckFileVersionTest()
+        {
+            await AwsClient.Instance.CheckFileVersion(false);
+        }
     }
 }
