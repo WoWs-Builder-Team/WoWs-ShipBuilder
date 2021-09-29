@@ -1,14 +1,30 @@
-using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using ReactiveUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
+        #region Private internal fields
+        #endregion
+
         public MainWindowViewModel()
         {
-            FlagNumber = 5;
+            var addSignalFlagModifiersCommand = ReactiveCommand.Create<string>(x => AddSignalModifiers(x));
+            Action<string> action = x => AddSignalModifiers(x);
+            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);          
+        }
+
+        private SignalSelectorViewModel? signalSelectorViewModel;
+
+        public SignalSelectorViewModel? SignalSelectorViewModel
+        {
+            get => signalSelectorViewModel;
+            set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
         }
 
         public List<Modernization> Slot1ModernizationList => new()
@@ -77,13 +93,18 @@ namespace WoWsShipBuilder.UI.ViewModels
             },
         };
 
-
-        private int flagNumber;
-
-        public int FlagNumber
+        private void AddSignalModifiers(string flagIndex)
         {
-            get => flagNumber;
-            set => this.RaiseAndSetIfChanged(ref flagNumber, value);
+            if (SignalSelectorViewModel!.SelectedSignalIndex.Contains(flagIndex))
+            {
+                SignalSelectorViewModel.SelectedSignalIndex.Remove(flagIndex);
+                SignalSelectorViewModel.SignalsNumber--;
+            }
+            else
+            {
+                SignalSelectorViewModel.SelectedSignalIndex.Add(flagIndex);
+                SignalSelectorViewModel.SignalsNumber++;
+            }
         }
     }
 }
