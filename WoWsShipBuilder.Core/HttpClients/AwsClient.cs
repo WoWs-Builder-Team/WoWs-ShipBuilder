@@ -139,20 +139,13 @@ namespace WoWsShipBuilder.Core.HttpClients
             string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
 
             List<Task> downloads = new();
-
-            var jsonSerializer = new JsonSerializer
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new SnakeCaseNamingStrategy(),
-                },
-            };
-            VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url, jsonSerializer) ??
+           
+            VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
                                             throw new HttpRequestException("Could not process response from AWS Server.");
 
             if (File.Exists(localVersionInfoPath))
             {
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(localVersionInfoPath) ?? throw new InvalidOperationException();
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath)) ?? throw new InvalidOperationException();
 
                 if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
                 {
@@ -179,7 +172,7 @@ namespace WoWsShipBuilder.Core.HttpClients
 
                     downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
                     await Task.WhenAll(downloads).ConfigureAwait(false);
-                    await DownloadLanguage(true, pts).ConfigureAwait(false);
+                    await DownloadLanguage(pts).ConfigureAwait(false);
                 }
             }
             else
@@ -191,7 +184,6 @@ namespace WoWsShipBuilder.Core.HttpClients
                         string fileName = $"{item.FileName}.json";
                         string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
                         string filePath = Path.Combine(dataPath, key);
-                        Debug.WriteLine(fileUrl);
                         if (!Directory.Exists(filePath))
                         {
                             Directory.CreateDirectory(filePath);
@@ -203,17 +195,16 @@ namespace WoWsShipBuilder.Core.HttpClients
 
                 downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
                 await Task.WhenAll(downloads).ConfigureAwait(false);
-                await DownloadLanguage(true, pts).ConfigureAwait(false);
+                await DownloadLanguage(pts).ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Downloads program languages.
         /// </summary>
-        /// <param name="systemLocale">Downloads all the system locales if true otherwise just the main locale.</param>
         /// <param name="pts">If true donwloads PTS server data instead of the live one.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task DownloadLanguage(bool systemLocale, bool pts)
+        public async Task DownloadLanguage(bool pts)
         {
             string server = "live";
             if (pts)
@@ -221,44 +212,16 @@ namespace WoWsShipBuilder.Core.HttpClients
                 server = "pts";
             }
 
+            string fileName = "en-GB.json";
             string localePath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server, "Localization");
-
-            if (systemLocale)
+            if (!Directory.Exists(localePath))
             {
-                CultureInfo[] localeList = CultureInfo.GetCultures(CultureTypes.AllCultures);
-
-                if (!Directory.Exists(localePath))
-                {
-                    Directory.CreateDirectory(localePath);
-                }
-
-                List<Task> downloads = new();
-
-                if (localeList.ToList().Find(x => x.Name.Equals(CultureInfo.CurrentUICulture.Name)) == null)
-                {
-                    string fileName = $"{CultureInfo.CurrentUICulture.Name}.json";
-                    string url = $"{Host}/api/{server}/Localization/{fileName}";
-                    string localeName = Path.Combine(localePath, fileName);
-                    downloads.Add(DownloadFileAsync(new Uri(url), localeName));
-                }
-
-                foreach (var locale in localeList)
-                {
-                    string fileName = $"{locale.Name}.json";
-                    string url = $"{Host}/api/{server}/Localization/{fileName}";
-                    string localeName = Path.Combine(localePath, fileName);
-                    downloads.Add(DownloadFileAsync(new Uri(url), localeName));
-                }
-
-                await Task.WhenAll(downloads).ConfigureAwait(false);
+                Directory.CreateDirectory(localePath);
             }
-            else
-            {
-                string fileName = $"{CultureInfo.CurrentUICulture.Name}.json";
-                string url = $"{Host}/api/{server}/Localization/{fileName}";
-                string localeName = Path.Combine(localePath, fileName);
-                await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
-            }
+
+            string url = $"{Host}/api/{server}/Localization/{fileName}";
+            string localeName = Path.Combine(localePath, fileName);
+            await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
         }
     }
 }
