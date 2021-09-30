@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         {
             await using Stream stream = await Client.GetStreamAsync(uri);
             var fileInfo = new FileInfo(fileName);
-            await using FileStream fileStream = fileInfo.OpenWrite();
+            await using FileStream fileStream = fileInfo.Open(FileMode.Create);
             await stream.CopyToAsync(fileStream);
         }
 
