@@ -6,16 +6,25 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    // TODO: Integrate with versioning as soon as it is available.
-    public static class AppDataHelper
+    public class AppDataHelper : ILocalDataProvider
     {
-        public static string AppDataDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+        private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new AppDataHelper());
 
-        public static Dictionary<string, T>? ReadLocalJsonData<T>(Nation? nation)
+        public static AppDataHelper Instance => InstanceValue.Value;
+
+        public string AppDataDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+
+        public string GetDataPath(ServerType serverType)
+        {
+            string serverName = serverType == ServerType.Live ? "live" : "pts";
+            return Path.Combine(AppDataDirectory, "json", serverName);
+        }
+
+        public Dictionary<string, T>? ReadLocalJsonData<T>(Nation? nation, ServerType serverType)
         {
             string categoryString = GetCategoryString<T>();
             string nationString = GetNationString(nation);
-            string fileName = Path.Combine(AppDataDirectory, "json", categoryString, $"{nationString}.json");
+            string fileName = Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
             using FileStream fs = File.OpenRead(fileName);
             var streamReader = new StreamReader(fs);
             var jsonReader = new JsonTextReader(streamReader);
@@ -23,7 +32,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             return serializer.Deserialize<Dictionary<string, T>>(jsonReader);
         }
 
-        public static string GetNationString(Nation? nation)
+        private static string GetNationString(Nation? nation)
         {
             return nation switch
             {
@@ -36,7 +45,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             };
         }
 
-        public static string GetCategoryString<T>()
+        private static string GetCategoryString<T>()
         {
             return typeof(T) switch
             {

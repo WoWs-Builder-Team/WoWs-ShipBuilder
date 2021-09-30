@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
+// ReSharper disable VirtualMemberNeverOverridden.Global
 namespace WoWsShipBuilder.Core.HttpClients
 {
     public abstract class ClientBase
@@ -15,7 +16,7 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         protected HttpClient Client { get; }
 
-        protected async Task DownloadFileAsync(Uri uri, string fileName)
+        internal virtual async Task DownloadFileAsync(Uri uri, string fileName)
         {
             await using Stream stream = await Client.GetStreamAsync(uri);
             var fileInfo = new FileInfo(fileName);
@@ -23,13 +24,13 @@ namespace WoWsShipBuilder.Core.HttpClients
             await stream.CopyToAsync(fileStream);
         }
 
-        protected async Task<T?> GetJsonAsync<T>(string url, JsonSerializer? customSerializer = null)
+        internal virtual async Task<T?> GetJsonAsync<T>(string url, JsonSerializer? customSerializer = null)
         {
             await using Stream stream = await Client.GetStreamAsync(url);
             return GetJson<T>(stream, customSerializer);
         }
 
-        protected T? GetJson<T>(Stream stream, JsonSerializer? customSerializer = null)
+        internal T? GetJson<T>(Stream stream, JsonSerializer? customSerializer = null)
         {
             using var streamReader = new StreamReader(stream);
             using var jsonReader = new JsonTextReader(streamReader);

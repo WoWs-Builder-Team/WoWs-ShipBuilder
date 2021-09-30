@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         #endregion
 
-        private AwsClient()
+        internal AwsClient()
         {
         }
 
@@ -31,11 +31,12 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// Downloads images from the AWS server.
         /// </summary>
         /// <param name="fileList">List of indexes of the ships or names of the camos to download.</param>
-        /// <param name="type">The type of images to donwload. Can be either Ship or Camo.</param>
+        /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
+        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if files are not available on the server.</exception>
-        public async Task DownloadImages(List<string> fileList, ImageType type)
+        public async Task DownloadImages(List<string> fileList, ImageType type, ILocalDataProvider dataProvider)
         {
             List<Task> downloads = new();
 
@@ -54,7 +55,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                     localFolder = "Camos";
                 }
 
-                string folderPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", localFolder);
+                string folderPath = Path.Combine(dataProvider.AppDataDirectory, "Images", localFolder);
 
                 if (!Directory.Exists(folderPath))
                 {
@@ -72,11 +73,12 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <summary>
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
-        /// <param name="type">The type of images to donwload. Can be either Ship or Camo.</param>
+        /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
+        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
-        public async Task DownloadAllImages(ImageType type)
+        public async Task DownloadAllImages(ImageType type, ILocalDataProvider dataProvider)
         {
             string zipUrl;
             string localFolder;
@@ -94,7 +96,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                 localFolder = "Camos";
             }
 
-            string directoryPath = Path.Combine(AppDataHelper.AppDataDirectory, "Images", localFolder);
+            string directoryPath = Path.Combine(dataProvider.AppDataDirectory, "Images", localFolder);
 
             if (!Directory.Exists(directoryPath))
             {
@@ -110,33 +112,32 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <summary>
         /// Checks if there are updates to the program data.
         /// </summary>
-        /// <param name="pts">If true donwloads PTS server data instead of the live one.</param>
+        /// <param name="serverType">The <see cref="ServerType"/> for the requested data.</param>
+        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
+        /// <param name="fileProcessingCallback">A callback to invoke each time a file is checked.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task CheckFileVersion(bool pts)
+        public async Task CheckFileVersion(ServerType serverType, ILocalDataProvider dataProvider, Action<int, string, bool>? fileProcessingCallback = null)
         {
-            string server = "live";
-            if (pts)
-            {
-                server = "pts";
-            }
+            string server = serverType == ServerType.Live ? "live" : "pts";
 
             string url = @$"{Host}/api/{server}/VersionInfo.json";
 
             VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
                                             throw new HttpRequestException("Could not process response from AWS Server.");
 
-            string dataPath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server);
+            string dataPath = dataProvider.GetDataPath(serverType);
             if (!Directory.Exists(dataPath))
             {
                 Directory.CreateDirectory(dataPath);
             }
 
+            var fileCounter = 0;
             string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
             if (File.Exists(localVersionInfoPath))
             {
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath)) ??
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await File.ReadAllTextAsync(localVersionInfoPath)) ??
                                                 throw new InvalidOperationException();
 
                 if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
@@ -146,10 +147,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                     {
                         foreach (var item in value)
                         {
-                            var currentFile = localVersionInfo.Categories[key].Find(x => x.FileName.Equals(item.FileName));
-                            if (currentFile == null || currentFile!.Version < item.Version)
+                            FileVersion? currentFile = localVersionInfo.Categories[key].Find(x => x.FileName.Equals(item.FileName));
+                            var fileDownloading = false;
+                            string fileName = $"{item.FileName}.json";
+
+                            if (currentFile == null || currentFile.Version < item.Version)
                             {
-                                string fileName = $"{item.FileName}.json";
                                 string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
                                 string filePath = Path.Combine(dataPath, key);
                                 if (!Directory.Exists(filePath))
@@ -158,13 +161,16 @@ namespace WoWsShipBuilder.Core.HttpClients
                                 }
 
                                 downloads.Add(DownloadFileAsync(new Uri(fileUrl), Path.Combine(filePath, fileName)));
+                                fileDownloading = true;
                             }
+
+                            fileProcessingCallback?.Invoke(fileCounter++, $"{key}: {fileName}", fileDownloading);
                         }
                     }
 
                     downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
                     await Task.WhenAll(downloads).ConfigureAwait(false);
-                    await DownloadLanguage(pts).ConfigureAwait(false);
+                    await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
                 }
             }
             else
@@ -188,24 +194,21 @@ namespace WoWsShipBuilder.Core.HttpClients
 
                 downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
                 await Task.WhenAll(downloads).ConfigureAwait(false);
-                await DownloadLanguage(pts).ConfigureAwait(false);
+                await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Downloads program languages.
         /// </summary>
-        /// <param name="pts">If true donwloads PTS server data instead of the live one.</param>
+        /// <param name="serverType">The <see cref="ServerType"/> of the requested data.</param>
+        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task DownloadLanguage(bool pts)
+        public async Task DownloadLanguage(ServerType serverType, ILocalDataProvider dataProvider)
         {
-            string server = "live";
-            if (pts)
-            {
-                server = "pts";
-            }
+            string server = serverType == ServerType.Live ? "live" : "pts";
 
-            string localePath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server, "Localization");
+            string localePath = Path.Combine(dataProvider.AppDataDirectory, "api", server, "Localization");
             if (!Directory.Exists(localePath))
             {
                 Directory.CreateDirectory(localePath);
