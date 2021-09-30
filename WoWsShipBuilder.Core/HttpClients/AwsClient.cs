@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilderDataStructures;
@@ -121,7 +117,6 @@ namespace WoWsShipBuilder.Core.HttpClients
         public async Task CheckFileVersion(bool pts)
         {
             string server = "live";
-
             if (pts)
             {
                 server = "pts";
@@ -129,26 +124,24 @@ namespace WoWsShipBuilder.Core.HttpClients
 
             string url = @$"{Host}/api/{server}/VersionInfo.json";
 
-            string dataPath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server);
+            VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
+                                            throw new HttpRequestException("Could not process response from AWS Server.");
 
+            string dataPath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server);
             if (!Directory.Exists(dataPath))
             {
                 Directory.CreateDirectory(dataPath);
             }
 
             string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
-
-            List<Task> downloads = new();
-           
-            VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
-                                            throw new HttpRequestException("Could not process response from AWS Server.");
-
             if (File.Exists(localVersionInfoPath))
             {
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath)) ?? throw new InvalidOperationException();
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath)) ??
+                                                throw new InvalidOperationException();
 
                 if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
                 {
+                    List<Task> downloads = new();
                     foreach ((string key, var value) in versionInfo.Categories)
                     {
                         foreach (var item in value)
@@ -159,7 +152,6 @@ namespace WoWsShipBuilder.Core.HttpClients
                                 string fileName = $"{item.FileName}.json";
                                 string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
                                 string filePath = Path.Combine(dataPath, key);
-
                                 if (!Directory.Exists(filePath))
                                 {
                                     Directory.CreateDirectory(filePath);
@@ -177,6 +169,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             }
             else
             {
+                List<Task> downloads = new();
                 foreach ((string key, var value) in versionInfo.Categories)
                 {
                     foreach (var item in value)
@@ -212,13 +205,13 @@ namespace WoWsShipBuilder.Core.HttpClients
                 server = "pts";
             }
 
-            string fileName = "en-GB.json";
             string localePath = Path.Combine(AppDataHelper.AppDataDirectory, "api", server, "Localization");
             if (!Directory.Exists(localePath))
             {
                 Directory.CreateDirectory(localePath);
             }
 
+            string fileName = "en-GB.json";
             string url = $"{Host}/api/{server}/Localization/{fileName}";
             string localeName = Path.Combine(localePath, fileName);
             await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
