@@ -21,6 +21,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Core", "WoW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Core.Test", "WoWsShipBuilder.Core.Test\WoWsShipBuilder.Core.Test.csproj", "{696D5003-8412-411E-B4C6-ADC85FB1C54B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub Workflows", "{C5D1C2CC-CDA1-47AC-8329-8CBFDB751341}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\deployment.yml = .github\workflows\deployment.yml
+	.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
