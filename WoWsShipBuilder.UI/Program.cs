@@ -1,8 +1,7 @@
+using System.Globalization;
+using System.Threading;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.Settings;
 
@@ -17,34 +16,11 @@ namespace WoWsShipBuilder.UI
         {
             Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
             Logging.Logger.Info("Starting application...");
+            var culture = new CultureInfo("en-GB");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-        }
-
-        public static void InitializeLogging()
-        {
-            var config = new LoggingConfiguration();
-            var target = new FileTarget
-            {
-                FileName = "${basedir}/logs/WoWsShipBuilder-${shortdate}.log",
-                MaxArchiveFiles = 5,
-                ArchiveAboveSize = 10240,
-            };
-            config.AddTarget("logfile", target);
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
-
-            config.AddSentry(o =>
-            {
-                o.Layout = "${message}";
-                o.BreadcrumbLayout = "${logger}: ${message}";
-                o.MinimumBreadcrumbLevel = LogLevel.Info;
-                o.MinimumEventLevel = LogLevel.Error;
-                o.AddTag("logger", "${logger}");
-
-                o.SendDefaultPii = false;
-                o.Dsn = ApplicationSettings.ApplicationOptions.SentryDsn;
-            });
-            LogManager.Configuration = config;
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
