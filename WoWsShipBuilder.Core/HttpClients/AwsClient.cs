@@ -80,6 +80,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
         public async Task DownloadAllImages(ImageType type, ILocalDataProvider dataProvider)
         {
+            Logging.Logger.Info("Test " + type);
             string zipUrl;
             string localFolder;
             string zipName;
@@ -114,26 +115,27 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// </summary>
         /// <param name="serverType">The <see cref="ServerType"/> for the requested data.</param>
         /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
-        /// <param name="fileProcessingCallback">A callback to invoke each time a file is checked.</param>
+        /// <param name="progress">A <see cref="IProgress{T}"/> to track the state of the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task CheckFileVersion(ServerType serverType, ILocalDataProvider dataProvider, Action<int, string, bool>? fileProcessingCallback = null)
+        public async Task CheckFileVersion(ServerType serverType, ILocalDataProvider dataProvider, IProgress<(int, string)>? progress = null)
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 
             string url = @$"{Host}/api/{server}/VersionInfo.json";
 
+            progress?.Report((0, "versionInfo"));
             VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
                                             throw new HttpRequestException("Could not process response from AWS Server.");
 
+            progress?.Report((10, "versionProcessing"));
             string dataPath = dataProvider.GetDataPath(serverType);
             if (!Directory.Exists(dataPath))
             {
                 Directory.CreateDirectory(dataPath);
             }
 
-            var fileCounter = 0;
             string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
             if (File.Exists(localVersionInfoPath))
             {
@@ -148,7 +150,6 @@ namespace WoWsShipBuilder.Core.HttpClients
                         foreach (var item in value)
                         {
                             FileVersion? currentFile = localVersionInfo.Categories[key].Find(x => x.FileName.Equals(item.FileName));
-                            var fileDownloading = false;
                             string fileName = $"{item.FileName}.json";
 
                             if (currentFile == null || currentFile.Version < item.Version)
@@ -161,15 +162,14 @@ namespace WoWsShipBuilder.Core.HttpClients
                                 }
 
                                 downloads.Add(DownloadFileAsync(new Uri(fileUrl), Path.Combine(filePath, fileName)));
-                                fileDownloading = true;
                             }
-
-                            fileProcessingCallback?.Invoke(fileCounter++, $"{key}: {fileName}", fileDownloading);
                         }
                     }
 
                     downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
+                    progress?.Report((20, "jsonData"));
                     await Task.WhenAll(downloads).ConfigureAwait(false);
+                    progress?.Report((60, "localizationData"));
                     await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
                 }
             }
@@ -193,9 +193,13 @@ namespace WoWsShipBuilder.Core.HttpClients
                 }
 
                 downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
+                progress?.Report((20, "jsonData"));
                 await Task.WhenAll(downloads).ConfigureAwait(false);
+                progress?.Report((60, "localizationData"));
                 await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
             }
+
+            progress?.Report((100, "done"));
         }
 
         /// <summary>
@@ -208,7 +212,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 
-            string localePath = Path.Combine(dataProvider.AppDataDirectory, "api", server, "Localization");
+            string localePath = Path.Combine(dataProvider.GetDataPath(serverType), "Localization");
             if (!Directory.Exists(localePath))
             {
                 Directory.CreateDirectory(localePath);
