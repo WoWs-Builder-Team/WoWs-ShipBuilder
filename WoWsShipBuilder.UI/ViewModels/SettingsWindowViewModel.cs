@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Windows.Input;
-using Avalonia.Controls;
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -11,21 +16,28 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private SettingsWindow self;
 
-        public SettingsWindowViewModel(SettingsWindow window)
+        public SettingsWindowViewModel(SettingsWindow win)
         {
-            self = window;
+            self = win;
             ResetSettingsCommand = ReactiveCommand.Create(() => ResetSettings());
             CleanAppDataCommand = ReactiveCommand.Create(() => CleanAppData());
             DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
-            selectedLanguage = languages[0];
+            selectedLanguage = languages.Keys.First();
+            LanguagesList = languages.Keys.ToList();
         }
 
-        private List<string> languages = new List<string>() { "English", "German", "language" };
-
-        public List<string> Languages
+        // Add here all the currently supported languages
+        private Dictionary<string, string> languages = new Dictionary<string, string>()
         {
-            get => languages;
-            set => this.RaiseAndSetIfChanged(ref languages, value);
+            { "English", "en_GB" },
+        };
+
+        private List<string>? languagesList;
+
+        public List<string>? LanguagesList
+        {
+            get => languagesList;
+            set => this.RaiseAndSetIfChanged(ref languagesList, value);
         }
 
         private string selectedLanguage;
@@ -42,7 +54,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void SelectedLanguageChanged()
         {
-            Debug.WriteLine("Language changed to: " + selectedLanguage);
+            AppData.Settings!.Locale = languages[SelectedLanguage];
         }
 
         public ICommand ResetSettingsCommand { get; }
@@ -53,12 +65,17 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void ResetSettings()
         {
-            Debug.WriteLine("Reset");
+            var cleanSettings = new AppSettings();
+            AppData.Settings = cleanSettings;
         }
 
-        private void CleanAppData()
+        private async void CleanAppData()
         {
-            Debug.WriteLine("Clean");
+            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will restart the program.", "Warning", MessageBox.MessageBoxButtons.YesNo);
+            Debug.WriteLine(result);
+            //var appData = AppDataHelper.AppDataDirectory;
+            //var appDataDir = new DirectoryInfo(appData);
+            //appDataDir.Delete(true);
         }
 
         private void OpenPaypalPage()
@@ -79,7 +96,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 "&currency_code=" + currency +
                 "&bn=" + "PP%2dDonationsBF";
 
-            System.Diagnostics.Process.Start(new ProcessStartInfo
+            Process.Start(new ProcessStartInfo
             {
                 FileName = url,
                 UseShellExecute = true,
@@ -94,13 +111,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref autoUpdate, value);
-                AutoUpdateChanged();
+                AutoUpdateChanged(value);
             }
         }
 
-        private void AutoUpdateChanged()
+        private void AutoUpdateChanged(bool autoUpdate)
         {
-            Debug.WriteLine("Auto update: " + autoUpdate);
+            AppData.Settings!.AutoUpdateEnabled = autoUpdate;
         }
     }
 }

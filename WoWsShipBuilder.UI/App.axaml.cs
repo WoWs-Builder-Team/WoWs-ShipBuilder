@@ -65,7 +65,7 @@ namespace WoWsShipBuilder.UI
 
                 if (newVersion != null && newVersion > currentVersion)
                 {
-                    if (ApplicationSettings.AutoUpdateEnabled)
+                    if (AppData.Settings.AutoUpdateEnabled)
                     {
                         logger.Info("New version avaialble");
 
