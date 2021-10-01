@@ -6,19 +6,20 @@
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="150"
         x:Class="WoWsShipBuilder.UI.UserControls.MessageBox"
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
-        Width="300" Height="150" WindowStartupLocation="CenterOwner" >
+        WindowStartupLocation="CenterOwner" >
 
     <Grid RowDefinitions="30,*">
         <userControls:AppHeader/>
-        <StackPanel HorizontalAlignment="Center" Grid.Row="1" Spacing="10" Margin="10">
-            <TextBlock HorizontalAlignment="Center" Name="Text"/>
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Name="Buttons">
+        <Grid HorizontalAlignment="Center" RowDefinitions="Auto,*" ColumnDefinitions="*, Auto" Grid.Row="1" Margin="10">
+            <Image Name="Icon" Height="35" Width="35" Grid.Row="0" Grid.Column="0" Margin="0,0,20,0" />
+            <TextBlock HorizontalAlignment="Center" Name="Text" Grid.Row="0" Grid.Column="1"/>
+            <StackPanel HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Name="Buttons">
                 <StackPanel.Styles>
                     <Style Selector="Button">
                         <Setter Property="Margin" Value="5"/>
                     </Style>
                 </StackPanel.Styles>
             </StackPanel>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -1,6 +1,10 @@
+using System;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -27,12 +31,48 @@ namespace WoWsShipBuilder.UI.UserControls
             No,
         }
 
-        public static Task<MessageBoxResult> Show(Window parent, string text, string title, MessageBoxButtons buttons)
+        public enum MessageBoxIcon
+        {
+            None,
+            Error,
+            Info,
+            Question,
+            Warning,
+        }
+
+        public static Task<MessageBoxResult> Show(Window parent, string text, string title, MessageBoxButtons buttons, MessageBoxIcon icon = MessageBoxIcon.None, int width = 300, int height = 150)
         {
             var msgbox = new MessageBox()
             {
                 Title = title,
             };
+            msgbox.Width = width;
+            msgbox.Height = height;
+
+            if (icon != MessageBoxIcon.None)
+            {
+                var iconControl = msgbox.FindControl<Image>("Icon");
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                Bitmap? bitmap = null;
+                switch (icon)
+                {
+                    case MessageBoxIcon.Error:
+                        bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Error.png")));
+                        break;
+                    case MessageBoxIcon.Info:
+                        bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Info.png")));
+                        break;
+                    case MessageBoxIcon.Question:
+                        bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Question.png")));
+                        break;
+                    case MessageBoxIcon.Warning:
+                        bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Warning.png")));
+                        break;
+                }
+                
+                iconControl.Source = bitmap;
+            }
+
             msgbox.FindControl<TextBlock>("Text").Text = text;
             var buttonPanel = msgbox.FindControl<StackPanel>("Buttons");
 
@@ -46,11 +86,12 @@ namespace WoWsShipBuilder.UI.UserControls
                     res = r;
                     msgbox.Close();
                 };
+                btn.Width = 60;
                 buttonPanel.Children.Add(btn);
                 if (def)
                 {
                     res = r;
-                }
+                } 
             }
 
             if (buttons == MessageBoxButtons.Ok || buttons == MessageBoxButtons.OkCancel)

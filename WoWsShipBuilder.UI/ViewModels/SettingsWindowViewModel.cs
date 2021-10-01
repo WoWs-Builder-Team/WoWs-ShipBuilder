@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async void CleanAppData()
         {
-            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will restart the program.", "Warning", MessageBox.MessageBoxButtons.YesNo);
+            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will restart the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
             Debug.WriteLine(result);
 
             // var appData = AppDataHelper.AppDataDirectory;

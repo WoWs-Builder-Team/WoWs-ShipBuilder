@@ -15,6 +15,9 @@
         <AvaloniaResource Include="Assets\**" />
         <None Remove="Assets\Art\logo_white_text.png" />
         <None Remove="Assets\Art\SplashArt.png" />
+        <None Remove="Assets\Error_Full.png" />
+        <None Remove="Assets\Information_Full.png" />
+        <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.7" />
