@@ -1,26 +1,34 @@
 ﻿using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Core.DataProvider;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 namespace WoWsShipBuilder.Core.HttpClients
 {
     public abstract class ClientBase
     {
-        protected ClientBase()
+        protected ClientBase(IFileSystem fileSystem, AppDataHelper appDataHelper)
         {
             Client = new HttpClient();
+            FileSystem = fileSystem;
+            AppDataHelper = appDataHelper;
         }
+
+        protected IFileSystem FileSystem { get; }
+
+        protected AppDataHelper AppDataHelper { get; }
 
         protected HttpClient Client { get; }
 
         internal virtual async Task DownloadFileAsync(Uri uri, string fileName)
         {
             await using Stream stream = await Client.GetStreamAsync(uri);
-            var fileInfo = new FileInfo(fileName);
-            await using FileStream fileStream = fileInfo.Open(FileMode.Create);
+            var fileInfo = FileSystem.FileInfo.FromFileName(fileName);
+            await using Stream fileStream = fileInfo.Open(FileMode.Create);
             await stream.CopyToAsync(fileStream);
         }
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,8 +21,17 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         #endregion
 
+        private readonly IFileSystem fileSystem;
+
         private WowsClient()
+            : this(new FileSystem(), AppDataHelper.Instance)
         {
+        }
+
+        internal WowsClient(IFileSystem fileSystem, AppDataHelper appDataHelper)
+            : base(fileSystem, appDataHelper)
+        {
+            this.fileSystem = fileSystem;
         }
 
         public static WowsClient Instance => InstanceValue.Value;
@@ -34,15 +43,9 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <param name="request">Dictionary containing as key the ID and as value the index of the ship or name of the camo.</param>
         /// <param name="type">Can be either ship or camo.</param>
         /// <param name="sizes">The size of the image to download. If type is camo then sizes can be null.</param>
-        /// <param name="dataProvider">The <see cref="ILocalDataProvider"/> providing local paths.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref="WowsApiException">Occurs if the API call fails or returns an incorrect response.</exception>
-        public async Task DownloadShipsOrCamosImages(
-            string appId,
-            Dictionary<long, string> request,
-            ImageType type,
-            List<ImageSize> sizes,
-            ILocalDataProvider dataProvider)
+        public async Task DownloadShipsOrCamosImages(string appId, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
         {
             Dictionary<long, ImageData?> data;
             List<long> id = request.Keys.ToList();
@@ -59,7 +62,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             Dictionary<long, ImageData> finalData = data.Where(entry => entry.Value != null)
                 .ToDictionary(entry => entry.Key, entry => entry.Value!);
 
-            await DownloadImages(finalData, request, type, sizes, dataProvider).ConfigureAwait(false);
+            await DownloadImages(finalData, request, type, sizes).ConfigureAwait(false);
         }
 
         internal async Task<WowsApiResponse<T>> Get<T>(string appId, string resource, string[] field, params (string Key, object Value)[] additionalParameters)
@@ -187,12 +190,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             return data;
         }
 
-        private async Task DownloadImages(
-            Dictionary<long, ImageData> data,
-            Dictionary<long, string> request,
-            ImageType type,
-            List<ImageSize> sizes,
-            ILocalDataProvider dataProvider)
+        private async Task DownloadImages(Dictionary<long, ImageData> data, Dictionary<long, string> request, ImageType type, List<ImageSize> sizes)
         {
             List<Task> downloads = new();
             if (type == ImageType.Ship)
@@ -202,14 +200,14 @@ namespace WoWsShipBuilder.Core.HttpClients
                     foreach (ImageSize size in sizes)
                     {
                         string imageSize = size == ImageSize.Small ? "" : $"_{size}";
-                        string folderPath = Path.Combine(dataProvider.AppDataDirectory, "Images", "Ships");
+                        string folderPath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", "Ships");
 
-                        if (!Directory.Exists(folderPath))
+                        if (!fileSystem.Directory.Exists(folderPath))
                         {
-                            Directory.CreateDirectory(folderPath);
+                            fileSystem.Directory.CreateDirectory(folderPath);
                         }
 
-                        string fileName = Path.Combine(folderPath, $"{request[key]}{imageSize}.png");
+                        string fileName = fileSystem.Path.Combine(folderPath, $"{request[key]}{imageSize}.png");
                         downloads.Add(DownloadFileAsync(new Uri(value.ShipImages![size]), fileName));
                     }
                 }
@@ -218,14 +216,14 @@ namespace WoWsShipBuilder.Core.HttpClients
             {
                 foreach ((long key, var value) in data)
                 {
-                    string folderPath = Path.Combine(dataProvider.AppDataDirectory, "Images", "Camos");
+                    string folderPath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", "Camos");
 
-                    if (!Directory.Exists(folderPath))
+                    if (!fileSystem.Directory.Exists(folderPath))
                     {
-                        Directory.CreateDirectory(folderPath);
+                        fileSystem.Directory.CreateDirectory(folderPath);
                     }
 
-                    string fileName = Path.Combine(folderPath, $"{request[key]}.png");
+                    string fileName = fileSystem.Path.Combine(folderPath, $"{request[key]}.png");
                     downloads.Add(DownloadFileAsync(new Uri(value.CamoImage!), fileName));
                 }
             }

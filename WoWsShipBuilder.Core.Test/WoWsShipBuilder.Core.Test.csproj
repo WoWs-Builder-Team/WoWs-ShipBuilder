@@ -18,6 +18,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="13.2.47" />
     </ItemGroup>
 
     <ItemGroup>

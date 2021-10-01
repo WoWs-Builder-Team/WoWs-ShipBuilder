@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
@@ -14,6 +14,21 @@ namespace WoWsShipBuilder.UI.ViewModels
         private const int TaskNumber = 4;
 
         private double progress;
+
+        private AwsClient awsClient;
+
+        private IFileSystem fileSystem;
+
+        public SplashScreenViewModel()
+            : this(AwsClient.Instance, new FileSystem())
+        {
+        }
+
+        public SplashScreenViewModel(AwsClient awsClient, IFileSystem fileSystem)
+        {
+            this.awsClient = awsClient;
+            this.fileSystem = fileSystem;
+        }
 
         public double Progress
         {
@@ -46,24 +61,24 @@ namespace WoWsShipBuilder.UI.ViewModels
         private async Task JsonVersionCheck(IProgress<(int, string)> progressTracker)
         {
             progressTracker.Report((1, "jsonData"));
-            await AwsClient.Instance.CheckFileVersion(ServerType.Live, AppDataHelper.Instance);
+            await awsClient.CheckFileVersion(ServerType.Live);
         }
 
         private async Task DownloadImages(IProgress<(int, string)> progressTracker)
         {
-            string imageBasePath = Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images");
-            var shipImageDirectory = new DirectoryInfo(Path.Combine(imageBasePath, "Ships"));
+            string imageBasePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images");
+            var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any())
             {
                 progressTracker.Report((2, "shipImages"));
-                await AwsClient.Instance.DownloadAllImages(ImageType.Ship, AppDataHelper.Instance);
+                await awsClient.DownloadAllImages(ImageType.Ship);
             }
 
-            var camoImageDirectory = new DirectoryInfo(Path.Combine(imageBasePath, "Camos"));
+            var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
             if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any())
             {
                 progressTracker.Report((3, "camoImages"));
-                await AwsClient.Instance.DownloadAllImages(ImageType.Camo, AppDataHelper.Instance);
+                await awsClient.DownloadAllImages(ImageType.Camo);
             }
         }
     }

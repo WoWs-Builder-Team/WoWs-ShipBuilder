@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using Avalonia;
@@ -10,6 +11,8 @@ using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
 {
+    [SuppressMessage("System.IO.Abstractions", "IO0003", Justification = "This class is never tested.")]
+    [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
         public override void Initialize()

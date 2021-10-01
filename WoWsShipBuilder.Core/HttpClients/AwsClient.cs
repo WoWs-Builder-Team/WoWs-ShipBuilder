@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,7 +21,13 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         #endregion
 
-        internal AwsClient()
+        private AwsClient()
+            : this(new FileSystem(), AppDataHelper.Instance)
+        {
+        }
+
+        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper)
+            : base(fileSystem, appDataHelper)
         {
         }
 
@@ -32,11 +38,10 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// </summary>
         /// <param name="fileList">List of indexes of the ships or names of the camos to download.</param>
         /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
-        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if files are not available on the server.</exception>
-        public async Task DownloadImages(List<string> fileList, ImageType type, ILocalDataProvider dataProvider)
+        public async Task DownloadImages(List<string> fileList, ImageType type)
         {
             List<Task> downloads = new();
 
@@ -55,14 +60,14 @@ namespace WoWsShipBuilder.Core.HttpClients
                     localFolder = "Camos";
                 }
 
-                string folderPath = Path.Combine(dataProvider.AppDataDirectory, "Images", localFolder);
+                string folderPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", localFolder);
 
-                if (!Directory.Exists(folderPath))
+                if (!FileSystem.Directory.Exists(folderPath))
                 {
-                    Directory.CreateDirectory(folderPath);
+                    FileSystem.Directory.CreateDirectory(folderPath);
                 }
 
-                string fileName = Path.Combine(folderPath, $"{file}.png");
+                string fileName = FileSystem.Path.Combine(folderPath, $"{file}.png");
 
                 downloads.Add(DownloadFileAsync(new Uri(url), fileName));
             }
@@ -74,11 +79,10 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
         /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
-        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
-        public async Task DownloadAllImages(ImageType type, ILocalDataProvider dataProvider)
+        public async Task DownloadAllImages(ImageType type)
         {
             Logging.Logger.Info("Test " + type);
             string zipUrl;
@@ -97,29 +101,28 @@ namespace WoWsShipBuilder.Core.HttpClients
                 localFolder = "Camos";
             }
 
-            string directoryPath = Path.Combine(dataProvider.AppDataDirectory, "Images", localFolder);
+            string directoryPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", localFolder);
 
-            if (!Directory.Exists(directoryPath))
+            if (!FileSystem.Directory.Exists(directoryPath))
             {
-                Directory.CreateDirectory(directoryPath);
+                FileSystem.Directory.CreateDirectory(directoryPath);
             }
 
-            string zipPath = Path.Combine(directoryPath, zipName);
+            string zipPath = FileSystem.Path.Combine(directoryPath, zipName);
             await DownloadFileAsync(new Uri(zipUrl), zipPath);
             ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
-            File.Delete(zipPath);
+            FileSystem.File.Delete(zipPath);
         }
 
         /// <summary>
         /// Checks if there are updates to the program data.
         /// </summary>
         /// <param name="serverType">The <see cref="ServerType"/> for the requested data.</param>
-        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <param name="progress">A <see cref="IProgress{T}"/> to track the state of the operation.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task CheckFileVersion(ServerType serverType, ILocalDataProvider dataProvider, IProgress<(int, string)>? progress = null)
+        public async Task CheckFileVersion(ServerType serverType, IProgress<(int, string)>? progress = null)
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 
@@ -127,20 +130,20 @@ namespace WoWsShipBuilder.Core.HttpClients
 
             progress?.Report((0, "versionInfo"));
             VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
-                                            throw new HttpRequestException("Could not process response from AWS Server.");
+                                      throw new HttpRequestException("Could not process response from AWS Server.");
 
             progress?.Report((10, "versionProcessing"));
-            string dataPath = dataProvider.GetDataPath(serverType);
-            if (!Directory.Exists(dataPath))
+            string dataPath = AppDataHelper.Instance.GetDataPath(serverType);
+            if (!FileSystem.Directory.Exists(dataPath))
             {
-                Directory.CreateDirectory(dataPath);
+                FileSystem.Directory.CreateDirectory(dataPath);
             }
 
-            string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
-            if (File.Exists(localVersionInfoPath))
+            string localVersionInfoPath = FileSystem.Path.Combine(dataPath, "VersionInfo.json");
+            if (FileSystem.File.Exists(localVersionInfoPath))
             {
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await File.ReadAllTextAsync(localVersionInfoPath)) ??
-                                                throw new InvalidOperationException();
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await FileSystem.File.ReadAllTextAsync(localVersionInfoPath)) ??
+                                               throw new InvalidOperationException();
 
                 if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
                 {
@@ -150,18 +153,18 @@ namespace WoWsShipBuilder.Core.HttpClients
                         foreach (var item in value)
                         {
                             FileVersion? currentFile = localVersionInfo.Categories[key].Find(x => x.FileName.Equals(item.FileName));
-                            string fileName = $"{item.FileName}.json";
+                            string fileName = $"{item.FileName}";
 
                             if (currentFile == null || currentFile.Version < item.Version)
                             {
                                 string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
-                                string filePath = Path.Combine(dataPath, key);
-                                if (!Directory.Exists(filePath))
+                                string filePath = FileSystem.Path.Combine(dataPath, key);
+                                if (!FileSystem.Directory.Exists(filePath))
                                 {
-                                    Directory.CreateDirectory(filePath);
+                                    FileSystem.Directory.CreateDirectory(filePath);
                                 }
 
-                                downloads.Add(DownloadFileAsync(new Uri(fileUrl), Path.Combine(filePath, fileName)));
+                                downloads.Add(DownloadFileAsync(new Uri(fileUrl), FileSystem.Path.Combine(filePath, fileName)));
                             }
                         }
                     }
@@ -170,7 +173,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                     progress?.Report((20, "jsonData"));
                     await Task.WhenAll(downloads).ConfigureAwait(false);
                     progress?.Report((60, "localizationData"));
-                    await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
+                    await DownloadLanguage(serverType).ConfigureAwait(false);
                 }
             }
             else
@@ -180,15 +183,15 @@ namespace WoWsShipBuilder.Core.HttpClients
                 {
                     foreach (var item in value)
                     {
-                        string fileName = $"{item.FileName}.json";
+                        string fileName = $"{item.FileName}";
                         string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
-                        string filePath = Path.Combine(dataPath, key);
-                        if (!Directory.Exists(filePath))
+                        string filePath = FileSystem.Path.Combine(dataPath, key);
+                        if (!FileSystem.Directory.Exists(filePath))
                         {
-                            Directory.CreateDirectory(filePath);
+                            FileSystem.Directory.CreateDirectory(filePath);
                         }
 
-                        downloads.Add(DownloadFileAsync(new Uri(fileUrl), Path.Combine(filePath, fileName)));
+                        downloads.Add(DownloadFileAsync(new Uri(fileUrl), FileSystem.Path.Combine(filePath, fileName)));
                     }
                 }
 
@@ -196,7 +199,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                 progress?.Report((20, "jsonData"));
                 await Task.WhenAll(downloads).ConfigureAwait(false);
                 progress?.Report((60, "localizationData"));
-                await DownloadLanguage(serverType, dataProvider).ConfigureAwait(false);
+                await DownloadLanguage(serverType).ConfigureAwait(false);
             }
 
             progress?.Report((100, "done"));
@@ -206,21 +209,20 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// Downloads program languages.
         /// </summary>
         /// <param name="serverType">The <see cref="ServerType"/> of the requested data.</param>
-        /// <param name="dataProvider">A <see cref="ILocalDataProvider"/> instance used to access local files.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task DownloadLanguage(ServerType serverType, ILocalDataProvider dataProvider)
+        public async Task DownloadLanguage(ServerType serverType)
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 
-            string localePath = Path.Combine(dataProvider.GetDataPath(serverType), "Localization");
-            if (!Directory.Exists(localePath))
+            string localePath = FileSystem.Path.Combine(AppDataHelper.Instance.GetDataPath(serverType), "Localization");
+            if (!FileSystem.Directory.Exists(localePath))
             {
-                Directory.CreateDirectory(localePath);
+                FileSystem.Directory.CreateDirectory(localePath);
             }
 
             string fileName = "en-GB.json";
             string url = $"{Host}/api/{server}/Localization/{fileName}";
-            string localeName = Path.Combine(localePath, fileName);
+            string localeName = FileSystem.Path.Combine(localePath, fileName);
             await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
         }
     }
