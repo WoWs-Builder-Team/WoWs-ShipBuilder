@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia;
@@ -89,7 +89,7 @@ namespace WoWsShipBuilder.UI.Views
 
             if (newVersion != null && newVersion > currentVersion)
             {
-                if (ApplicationSettings.AutoUpdateEnabled)
+                if (AppData.Settings!.AutoUpdateEnabled)
                 {
                     logger.Info("New version avaialble");
 

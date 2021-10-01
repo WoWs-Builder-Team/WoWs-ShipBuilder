@@ -73,9 +73,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will restart the program.", "Warning", MessageBox.MessageBoxButtons.YesNo);
             Debug.WriteLine(result);
-            //var appData = AppDataHelper.AppDataDirectory;
-            //var appDataDir = new DirectoryInfo(appData);
-            //appDataDir.Delete(true);
+
+            // var appData = AppDataHelper.AppDataDirectory;
+            // var appDataDir = new DirectoryInfo(appData);
+            // appDataDir.Delete(true);
         }
 
         private void OpenPaypalPage()
