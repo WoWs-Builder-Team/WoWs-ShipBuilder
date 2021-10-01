@@ -45,6 +45,16 @@ namespace WoWsShipBuilder.Core.DataProvider
             return serializer.Deserialize<Dictionary<string, T>>(jsonReader);
         }
 
+        public List<ShipSummary> GetShipSummaryList(ServerType serverType)
+        {
+            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
+            using Stream fs = fileSystem.File.OpenRead(fileName);
+            var streamReader = new StreamReader(fs);
+            var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer();
+            return serializer.Deserialize<List<ShipSummary>>(jsonReader) ?? new List<ShipSummary>();
+        }
+
         private static string GetNationString(Nation? nation)
         {
             return nation switch
