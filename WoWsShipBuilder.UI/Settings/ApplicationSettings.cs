@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 
@@ -7,8 +7,6 @@ namespace WoWsShipBuilder.UI.Settings
     internal static class ApplicationSettings
     {
         private static ApplicationOptions? instance;
-
-        public static bool AutoUpdateEnabled { get; set; } = true;
 
         public static ApplicationOptions ApplicationOptions => instance ??= LoadOptions();
 
