@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
@@ -35,7 +36,7 @@ namespace WoWsShipBuilder.UI
                     desktop.Shutdown();
                     return;
                 }
-
+                AppSettingsHelper.LoadSettings();
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
             }

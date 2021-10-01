@@ -19,9 +19,16 @@ namespace WoWsShipBuilder.Core.Settings
 
         public static void LoadSettings()
         {
-            var jsonSettings = File.ReadAllText(settingFile);
-            var settings = JsonConvert.DeserializeObject<AppSettings>(jsonSettings);
-            AppData.Settings = settings;
+            if (File.Exists(settingFile))
+            {
+                var jsonSettings = File.ReadAllText(settingFile);
+                var settings = JsonConvert.DeserializeObject<AppSettings>(jsonSettings);
+                AppData.Settings = settings;
+            }
+            else
+            {
+                AppData.Settings = new AppSettings();
+            }
         }
     }
 }
