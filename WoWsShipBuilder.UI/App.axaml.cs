@@ -1,21 +1,18 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Settings;
-using WoWsShipBuilder.UI.Updater;
-using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
 {
+    [SuppressMessage("System.IO.Abstractions", "IO0003", Justification = "This class is never tested.")]
+    [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
         public override void Initialize()
@@ -31,7 +28,7 @@ namespace WoWsShipBuilder.UI
                 if (desktop.Args.Length > 0 && desktop.Args[0] == "-update")
                 {
                     string programPath = desktop.Args[1];
-                    string tempPath = Path.Combine(AppDataHelper.AppDataDirectory, "tempUpdate");
+                    string tempPath = Path.Combine(AppDataHelper.Instance.AppDataDirectory, "tempUpdate");
                     DirectoryCopy(tempPath, programPath, true);
                     string programExe = Path.Combine(programPath, "WoWsShipBuilder.exe");
                     Process.Start(programExe);
@@ -39,71 +36,11 @@ namespace WoWsShipBuilder.UI
                     return;
                 }
 
-                StartingMenuWindow win = new();
-                win.DataContext = new StartMenuViewModel(win);
-                desktop.MainWindow = win;
-
-                Dispatcher.UIThread.InvokeAsync(RunUpdateCheck(versionDetails), DispatcherPriority.Background);
+                SplashScreen splashScreen = new(versionDetails);
+                splashScreen.Show();
             }
 
             base.OnFrameworkInitializationCompleted();
-        }
-
-        private static Action RunUpdateCheck(Version currentVersion)
-        {
-            return async () =>
-            {
-                var logger = Logging.GetLogger("UpdateCheck");
-                logger.Info($"Current application version: {currentVersion}");
-                logger.Info("Checking for updates...");
-                GithubApiResponse? latestVersion = await ApplicationUpdater.GetLatestVersionNumber();
-                bool versionParseSuccessful = Version.TryParse(Regex.Replace(latestVersion?.TagName ?? "0.0.0", "[^0-9.]", ""), out Version? newVersion);
-                if (!versionParseSuccessful)
-                {
-                    logger.Warn("Unable to parse the version of the new release.");
-                }
-
-                if (newVersion != null && newVersion > currentVersion)
-                {
-                    if (ApplicationSettings.AutoUpdateEnabled)
-                    {
-                        logger.Info("New version avaialble");
-
-                        // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
-                        //     "Do you want to update now?", true);
-                        // updateWin.Owner = this;
-                        // var result = (bool)updateWin.ShowDialog();
-                        //
-                        // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to update now?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        // if (result)
-                        // {
-                        //     string fileUrl = latestVersion.Assets[0].BrowserDownloadUrl;
-                        //     DownloadingWindow win = new DownloadingWindow(fileUrl);
-                        //     win.Owner = this;
-                        //     win.ShowDialog();
-                        // }
-                    }
-                    else
-                    {
-                        logger.Info("New version available but auto-update is disabled.");
-
-                        // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
-                        //     "Do you want to open the page for the download?", true);
-                        // updateWin.Owner = this;
-                        // var result = (bool)updateWin.ShowDialog();
-                        //
-                        // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to open the page for the download?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        // if (result)
-                        // {
-                        //     Process.Start(latestVersion.HtmlUrl);
-                        // }
-                    }
-                }
-                else
-                {
-                    logger.Info("No updates found.");
-                }
-            };
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)

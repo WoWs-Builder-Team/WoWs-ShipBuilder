@@ -1,29 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using Newtonsoft.Json;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    // TODO: Integrate with versioning as soon as it is available.
-    public static class AppDataHelper
+    public class AppDataHelper
     {
-        public static string AppDataDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+        private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new AppDataHelper());
 
-        public static Dictionary<string, T>? ReadLocalJsonData<T>(Nation? nation)
+        private readonly IFileSystem fileSystem;
+
+        private AppDataHelper()
+            : this(new FileSystem())
+        {
+        }
+
+        internal AppDataHelper(IFileSystem fileSystem)
+        {
+            this.fileSystem = fileSystem;
+        }
+
+        public static AppDataHelper Instance => InstanceValue.Value;
+
+        public string AppDataDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+
+        public string GetDataPath(ServerType serverType)
+        {
+            string serverName = serverType == ServerType.Live ? "live" : "pts";
+            return fileSystem.Path.Combine(AppDataDirectory, "json", serverName);
+        }
+
+        public Dictionary<string, T>? ReadLocalJsonData<T>(Nation? nation, ServerType serverType)
         {
             string categoryString = GetCategoryString<T>();
             string nationString = GetNationString(nation);
-            string fileName = Path.Combine(AppDataDirectory, "json", categoryString, $"{nationString}.json");
-            using FileStream fs = File.OpenRead(fileName);
+            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
+            using Stream fs = fileSystem.File.OpenRead(fileName);
             var streamReader = new StreamReader(fs);
             var jsonReader = new JsonTextReader(streamReader);
             var serializer = new JsonSerializer();
             return serializer.Deserialize<Dictionary<string, T>>(jsonReader);
         }
 
-        public static string GetNationString(Nation? nation)
+        public List<ShipSummary> GetShipSummaryList(ServerType serverType)
+        {
+            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
+            using Stream fs = fileSystem.File.OpenRead(fileName);
+            var streamReader = new StreamReader(fs);
+            var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer();
+            return serializer.Deserialize<List<ShipSummary>>(jsonReader) ?? new List<ShipSummary>();
+        }
+
+        private static string GetNationString(Nation? nation)
         {
             return nation switch
             {
@@ -36,7 +68,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             };
         }
 
-        public static string GetCategoryString<T>()
+        private static string GetCategoryString<T>()
         {
             return typeof(T) switch
             {
