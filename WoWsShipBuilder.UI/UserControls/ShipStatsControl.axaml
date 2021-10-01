@@ -6,6 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl">
     <WrapPanel Orientation="Horizontal">
+        <!--Main guns-->
         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Main Guns Name"
                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
             <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
@@ -20,6 +21,7 @@
                 <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
             </Grid>
         </Expander>
+        <!--Torpedoes-->
         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Torpedo"
                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
             <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
@@ -34,7 +36,9 @@
                 <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
             </Grid>
         </Expander>
-        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AntiAir"
+        
+        <!--Airstrikes-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Airstrike"
                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
             <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
                 <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
@@ -46,6 +50,165 @@
                 <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
                            Grid.Row="2" />
                 <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <!--Secondary-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Secondary Battery"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <!--AA-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AA Defense"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
+                <TextBlock Text="AA Range" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="2.0 RPM" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="45 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <!--Maneuvrability-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Maneuvrability"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*">
+                <TextBlock Text="Maximum Speed" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="27.0 knots" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="Full power forward" Grid.Column="0"
+                           Grid.Row="1" Margin="20,0,0,0"/>
+                <TextBlock Text="60.0 s" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="Full power backward" Grid.Column="0"
+                           Grid.Row="2" Margin="20,0,0,0"/>
+                <TextBlock Text="30.0 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+                <TextBlock Text="Power to weight ratio" Grid.Column="0"
+                           Grid.Row="3" Margin="20,0,0,0"/>
+                <TextBlock Text="2.06 hp/ton" Grid.Column="2" Grid.Row="3" TextAlignment="Right" />
+                
+                <Separator Grid.Row="4" Grid.ColumnSpan="3" Margin="0,5"></Separator>
+                
+                <TextBlock Text="Turning circle radius" Grid.Column="0"
+                           Grid.Row="5" />
+                <TextBlock Text="900m" Grid.Column="2" Grid.Row="5" TextAlignment="Right" />
+                <TextBlock Text="Rudder shift time" Grid.Column="0"
+                           Grid.Row="6" />
+                <TextBlock Text="22.1 s" Grid.Column="2" Grid.Row="6" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <!--Concealment-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Concealment"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
+                <TextBlock Text="Detectability Range by Sea" Grid.Column="0"
+                           Grid.Row="0"/>
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+                <TextBlock Text="After firing main battery" Grid.Column="0"
+                           Grid.Row="1" Margin="20,0,0,0"/>
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="1" TextAlignment="Right" />
+                <TextBlock Text="After firing main guns in smoke" Grid.Column="0"
+                           Grid.Row="2" Margin="20,0,0,0"/>
+                <TextBlock Text="10.0 Km" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+                <TextBlock Text="When firing AA guns" Grid.Column="0"
+                           Grid.Row="3" Margin="20,0,0,0"/>
+                <TextBlock Text="10.0 Km" Grid.Column="2" Grid.Row="3" TextAlignment="Right" />
+                <TextBlock Text="When on fire" Grid.Column="0"
+                           Grid.Row="4" Margin="20,0,0,0"/>
+                <TextBlock Text="12.0 Km" Grid.Column="2" Grid.Row="4" TextAlignment="Right" />
+                
+                <Separator Grid.Row="5" Grid.ColumnSpan="3" Margin="0,5"></Separator>
+                
+                <TextBlock Text="Detectability Range by Air" Grid.Column="0"
+                           Grid.Row="6"/>
+                <TextBlock Text="8 Km" Grid.Column="2" Grid.Row="6" TextAlignment="Right" />
+                <TextBlock Text="After firing main battery" Grid.Column="0"
+                           Grid.Row="7" Margin="20,0,0,0"/>
+                <TextBlock Text="20.0 Km" Grid.Column="2" Grid.Row="7" TextAlignment="Right" />
+                <TextBlock Text="When firing AA guns" Grid.Column="0"
+                           Grid.Row="8" Margin="20,0,0,0"/>
+                <TextBlock Text="10.0 Km" Grid.Column="2" Grid.Row="8" TextAlignment="Right" />
+                <TextBlock Text="When on fire" Grid.Column="0"
+                           Grid.Row="9" Margin="20,0,0,0"/>
+                <TextBlock Text="12.0 Km" Grid.Column="2" Grid.Row="9" TextAlignment="Right" />
+                
+                <Separator Grid.Row="10" Grid.ColumnSpan="3" Margin="0,5"></Separator>
+                
+                <TextBlock Text="Detectability from submarines" Grid.Column="0"
+                           Grid.Row="11"/>
+                <TextBlock Text="0-15 Km" Grid.Column="2" Grid.Row="11" TextAlignment="Right" />
+                <TextBlock Text="On the surface" Grid.Column="0"
+                           Grid.Row="12" Margin="20,0,0,0"/>
+                <TextBlock Text="15 Km" Grid.Column="2" Grid.Row="12" TextAlignment="Right" />
+                <TextBlock Text="At periscope depth" Grid.Column="0"
+                           Grid.Row="13" Margin="20,0,0,0"/>
+                <TextBlock Text="10 Km" Grid.Column="2" Grid.Row="13" TextAlignment="Right" />
+                <TextBlock Text="At operating depth" Grid.Column="0"
+                           Grid.Row="14" Margin="20,0,0,0"/>
+                <TextBlock Text="10 Km" Grid.Column="2" Grid.Row="14" TextAlignment="Right" />
+                <TextBlock Text="At maximum depth" Grid.Column="0"
+                           Grid.Row="15" Margin="20,0,0,0"/>
+                <TextBlock Text="0 Km" Grid.Column="2" Grid.Row="15" TextAlignment="Right" />
+            </Grid>
+        </Expander>
+        <!--Survivability-->
+        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Survivability"
+                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*">
+                <TextBlock Text="Hit Points" Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="12 345" Grid.Column="2" Grid.Row="0" TextAlignment="Right" />
+
+                <Separator Grid.Row="1" Grid.ColumnSpan="3" Margin="0,5"></Separator>
+
+                <TextBlock Text="Fire Duration" Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="60 s" Grid.Column="2" Grid.Row="2" TextAlignment="Right" />
+                <TextBlock Text="Max number of fires" Grid.Column="0" 
+                           Grid.Row="3" />
+                <TextBlock Text="4" Grid.Column="2" Grid.Row="3" TextAlignment="Right" />
+                <TextBlock Text="Fire probability reduction" Grid.Column="0"
+                           Grid.Row="4" />
+                <TextBlock Text="50 %" Grid.Column="2" Grid.Row="4" TextAlignment="Right" />
+                <TextBlock Text="DPS per fire" Grid.Column="0"
+                           Grid.Row="5" />
+                <TextBlock Text="500" Grid.Column="2" Grid.Row="5" TextAlignment="Right" />
+                <TextBlock Text="Total damage per fire" Grid.Column="0"
+                           Grid.Row="6" />
+                <TextBlock Text="20000" Grid.Column="2" Grid.Row="6" TextAlignment="Right" />
+
+                <Separator Grid.Row="7" Grid.ColumnSpan="3" Margin="0,5"></Separator>
+                
+                <TextBlock Text="Flooding duration" Grid.Column="0"
+                           Grid.Row="8" />
+                <TextBlock Text="20 s" Grid.Column="2" Grid.Row="8" TextAlignment="Right" />
+                <TextBlock Text="Max number of floodings" Grid.Column="0"
+                           Grid.Row="9" />
+                <TextBlock Text="2" Grid.Column="2" Grid.Row="9" TextAlignment="Right" />
+                <TextBlock Text="Flooding probability" Grid.Column="0"
+                           Grid.Row="10" />
+                <TextBlock Text="15 %" Grid.Column="2" Grid.Row="10" TextAlignment="Right" />
+                <TextBlock Text="Torpedo protection" Grid.Column="0"
+                           Grid.Row="11" />
+                <TextBlock Text="55%" Grid.Column="2" Grid.Row="11" TextAlignment="Right" />
+                <TextBlock Text="DPS per flooding" Grid.Column="0"
+                           Grid.Row="12" />
+                <TextBlock Text="500" Grid.Column="2" Grid.Row="12" TextAlignment="Right" />
+                <TextBlock Text="Total damage per flood" Grid.Column="0"
+                           Grid.Row="13" />
+                <TextBlock Text="20000" Grid.Column="2" Grid.Row="13" TextAlignment="Right" />
             </Grid>
         </Expander>
     </WrapPanel>

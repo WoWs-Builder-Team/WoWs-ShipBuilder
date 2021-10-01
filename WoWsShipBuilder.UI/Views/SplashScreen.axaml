@@ -1,0 +1,34 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="566"
+        x:Class="WoWsShipBuilder.UI.Views.SplashScreen"
+        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        Title="SplashScreenWindow"
+        Name="SplashScreenWindow"
+        Height="566" Width="800" CanResize="False"
+        SystemDecorations="None"
+        WindowStartupLocation="CenterScreen">
+    <Design.DataContext>
+        <viewModels:SplashScreenViewModel />
+    </Design.DataContext>
+
+    <RelativePanel Width="800">
+        <RelativePanel.Background>
+            <ImageBrush Source="/Assets/Art/SplashArt.png" />
+        </RelativePanel.Background>
+        <ProgressBar RelativePanel.AlignBottomWithPanel="True" Name="ProgressBar" Height="50" Foreground="#106afd"
+                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                     Background="#626262"
+                     Value="{Binding Progress}"
+                     ShowProgressText="True" FontSize="20" />
+        <TextBlock RelativePanel.Above="ProgressBar" Name="Status"
+                   Text="{x:Static t:Translation.DownloadWindow_Status}"
+                   Padding="5,0,0,5" FontSize="25" />
+        <TextBlock RelativePanel.RightOf="Status" RelativePanel.Above="ProgressBar" Name="StatusText"
+                   Text="{Binding DownloadInfo}"
+                   Padding="5,0,0,5" FontSize="25" />
+    </RelativePanel>
+</Window>

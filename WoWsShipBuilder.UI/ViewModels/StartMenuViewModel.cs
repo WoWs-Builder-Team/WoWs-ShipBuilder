@@ -54,8 +54,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             SettingsWindow win = new SettingsWindow();
             win.DataContext = new SettingsWindowViewModel(win);
-            win.Show();
-            self.Close();
+            win.ShowDialog(self);
         }
     }
 }
