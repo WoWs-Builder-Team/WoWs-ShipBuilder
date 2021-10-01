@@ -13,7 +13,7 @@
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
-        <vm:MainWindowViewModel />
+        <vm:MainWindowViewModel  />
     </Design.DataContext>
 
     <Grid RowDefinitions="30, *">
@@ -23,8 +23,10 @@
             <!--First row-->
             <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
                 <Grid ColumnDefinitions="*,2*,*">
-                    <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}" Grid.Column="0"
-                            VerticalAlignment="Center" />
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}" Command="{Binding BackToMenuCommand}" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,0,10" />
+                        <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}" Command="{Binding NewShipSelectionCommand}" Grid.Row="1" HorizontalAlignment="Stretch"/>
+                    </Grid>
                     <!-- The button inside will be Image when we have them-->
                     <RelativePanel Grid.Column="1" HorizontalAlignment="Center">
                         <Button x:Name="PreviousShip" Content="Previous ship"
@@ -34,10 +36,10 @@
                         <Button Content="Next Ship" RelativePanel.RightOf="CurrentShip"
                                 RelativePanel.AlignBottomWith="PreviousShip" />
                     </RelativePanel>
-                    <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="10" VerticalAlignment="Center">
-                        <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}" />
-                        <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" />
-                    </StackPanel>
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}" Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,0,10"/>
+                        <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" HorizontalAlignment="Stretch"/>
+                    </Grid>
                 </Grid>
             </Border>
 

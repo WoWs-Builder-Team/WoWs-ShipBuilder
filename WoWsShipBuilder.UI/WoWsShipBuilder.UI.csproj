@@ -49,9 +49,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Translation.resx</DependentUpon>
       </Compile>
-      <Compile Update="Views\TestWindow.axaml.cs">
-        <DependentUpon>TestWindow.axaml</DependentUpon>
-      </Compile>
       <Compile Update="Views\StartingMenuWindow.axaml.cs">
         <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
       </Compile>

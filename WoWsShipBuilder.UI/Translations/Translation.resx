@@ -189,4 +189,10 @@
   <data name="SignalSelector_Flags" xml:space="preserve">
     <value>Flags </value>
   </data>
+  <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
+    <value>Insert the build name:</value>
+  </data>
+  <data name="MainWindow_NewShipSelection" xml:space="preserve">
+    <value>Select new ship</value>
+  </data>
 </root>

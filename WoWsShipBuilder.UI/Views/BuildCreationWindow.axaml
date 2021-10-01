@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="150"
+        x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
+        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
+        CanResize="False" Width="300" Height="150" WindowStartupLocation="CenterOwner"
+        Title="BuildCreationWindow">
+    <Grid RowDefinitions="30,*">
+        <userControls:AppHeader Grid.Row="0"/>
+        <StackPanel Grid.Row="1" Margin="10" Spacing="10">
+            <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_InsertBuildName}"/>
+            <TextBox Text="{Binding BuildName}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
+                <Button Content="Save" Width="60" Command="{Binding SaveBuildCommand}"/>
+                <Button Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

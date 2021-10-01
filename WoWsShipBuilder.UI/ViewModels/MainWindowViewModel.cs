@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Windows.Input;
+using Avalonia;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -11,6 +13,26 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         #region Private internal fields
         #endregion
+        private MainWindow? self;
+
+        public MainWindowViewModel(MainWindow win)
+        {
+            self = win;
+
+            // Signal selector model
+            Action<string> action = x => AddSignalModifiers(x);
+            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);
+
+            // Ship stats model
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
+
+            // Captain Skill model
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel();
+
+            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
+            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
+            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
+        }
 
         public MainWindowViewModel()
         {
@@ -23,7 +45,17 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             // Captain Skill model
             CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel();
+
+            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
+            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
+            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
         }
+
+        public ICommand OpenSaveBuildCommand { get; }
+
+        public ICommand BackToMenuCommand { get; }
+
+        public ICommand NewShipSelectionCommand { get; }
 
         private SignalSelectorViewModel? signalSelectorViewModel;
 
@@ -127,6 +159,27 @@ namespace WoWsShipBuilder.UI.ViewModels
                 SignalSelectorViewModel.SelectedSignalIndex.Add(flagIndex);
                 SignalSelectorViewModel.SignalsNumber++;
             }
+        }
+
+        private void OpenSaveBuild()
+        {
+            var win = new BuildCreationWindow();
+            win.DataContext = new BuildCreationWindowViewModel(win, new Build());
+            win.ShowDialog(self);
+        }
+
+        private void BackToMenu()
+        {
+            StartingMenuWindow win = new StartingMenuWindow();
+            StartMenuViewModel model = new StartMenuViewModel(win);
+            win.DataContext = model;
+            win.Show();
+            self!.Close();
+        }
+
+        private void NewShipSelection()
+        {
+           // Insert opening window 
         }
     }
 }

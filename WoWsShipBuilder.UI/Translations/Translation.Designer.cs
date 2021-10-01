@@ -61,6 +61,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert the build name:.
+        /// </summary>
+        public static string BuildCreationWindow_InsertBuildName {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_InsertBuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {
@@ -93,6 +102,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_BackToMenu {
             get {
                 return ResourceManager.GetString("MainWindow_BackToMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select new ship.
+        /// </summary>
+        public static string MainWindow_NewShipSelection {
+            get {
+                return ResourceManager.GetString("MainWindow_NewShipSelection", resourceCulture);
             }
         }
         

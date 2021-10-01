@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -32,22 +33,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void NewBuild()
         {
-            MainWindow win = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            MainWindow win = new MainWindow();
+            win.DataContext = new MainWindowViewModel(win);
             win.Show();
             self.Close();
         }
 
         private void LoadBuild()
         {
-            TestWindow win = new TestWindow
-            {
-                DataContext = new TestWindowViewModel(),
-            };
-            win.Show();
-            self.Close();
+            // Insert build loading
         }
 
         private void Setting()
