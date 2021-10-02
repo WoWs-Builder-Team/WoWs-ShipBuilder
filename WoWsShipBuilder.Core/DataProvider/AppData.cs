@@ -6,7 +6,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 {
     public static class AppData
     {
-        public static AppSettings? Settings { get; set; }
+        public static AppSettings Settings { get; set; } = null!;
 
         public static Dictionary<string, string>? TranslationsData { get; set; }
 

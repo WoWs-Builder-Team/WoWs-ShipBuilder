@@ -9,26 +9,37 @@ namespace WoWsShipBuilder.Core.Settings
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public static class AppSettingsHelper
     {
-        private static string settingFile = Path.Combine(AppDataHelper.Instance.AppDataDirectory, "settings.json");
+        private static readonly string SettingFile = Path.Combine(AppDataHelper.Instance.AppDataDirectory, "settings.json");
 
         public static void SaveSettings()
         {
-            var settingString = JsonConvert.SerializeObject(AppData.Settings);
-            File.WriteAllText(settingFile, settingString); 
+            string settingString = JsonConvert.SerializeObject(AppData.Settings);
+            File.WriteAllText(SettingFile, settingString);
         }
 
         public static void LoadSettings()
         {
-            if (File.Exists(settingFile))
+            if (File.Exists(SettingFile))
             {
-                var jsonSettings = File.ReadAllText(settingFile);
+                Logging.Logger.Info("Trying to load settings from settings file...");
+                string jsonSettings = File.ReadAllText(SettingFile);
                 var settings = JsonConvert.DeserializeObject<AppSettings>(jsonSettings);
+                if (settings == null)
+                {
+                    Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");
+                    settings = new AppSettings();
+                }
+
                 AppData.Settings = settings;
             }
             else
             {
+                Logging.Logger.Info("No settings file found, creating new settings...");
                 AppData.Settings = new AppSettings();
             }
+
+            Logging.Logger.Info("Settings initialized. Updating game localizations.");
+            Localizer.Instance.UpdateLanguage(AppData.Settings.Locale);
         }
     }
 }
