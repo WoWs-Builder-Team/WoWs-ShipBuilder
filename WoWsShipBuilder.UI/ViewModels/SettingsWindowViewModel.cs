@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
@@ -69,14 +72,24 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.Settings = cleanSettings;
         }
 
+        [SuppressMessage("System.IO.Abstractions", "IO0007", Justification = "Method just delete a folder.")]
         private async void CleanAppData()
         {
-            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will restart the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
-            Debug.WriteLine(result);
-
-            // var appData = AppDataHelper.AppDataDirectory;
-            // var appDataDir = new DirectoryInfo(appData);
-            // appDataDir.Delete(true);
+            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will close the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
+            if (result == MessageBox.MessageBoxResult.Yes)
+            {
+                var appData = AppDataHelper.Instance.AppDataDirectory;
+                var appDataDir = new DirectoryInfo(appData);
+                if (appDataDir.Exists)
+                {
+                    appDataDir.Delete(true);
+                    (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+                }
+                else
+                {
+                    await MessageBox.Show(self, $"Error in deleting data. Data folder does not exit", "Warning", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void OpenPaypalPage()
