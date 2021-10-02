@@ -27,9 +27,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         // Add here all the currently supported languages
-        private Dictionary<string, string> languages = new Dictionary<string, string>()
+        private Dictionary<string, string> languages = new()
         {
-            { "English", "en_GB" },
+            { "English", "en-GB" },
         };
 
         private List<string>? languagesList;
@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref selectedLanguage, value);
                 SelectedLanguageChanged();
-            } 
+            }
         }
 
         private void SelectedLanguageChanged()

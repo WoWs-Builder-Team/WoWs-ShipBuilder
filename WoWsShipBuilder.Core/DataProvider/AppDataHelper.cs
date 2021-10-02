@@ -9,7 +9,11 @@ namespace WoWsShipBuilder.Core.DataProvider
 {
     public class AppDataHelper
     {
+        #region Static Fields and Constants
+
         private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new AppDataHelper());
+
+        #endregion
 
         private readonly IFileSystem fileSystem;
 
@@ -38,21 +42,19 @@ namespace WoWsShipBuilder.Core.DataProvider
             string categoryString = GetCategoryString<T>();
             string nationString = GetNationString(nation);
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
-            using Stream fs = fileSystem.File.OpenRead(fileName);
-            var streamReader = new StreamReader(fs);
-            var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<Dictionary<string, T>>(jsonReader);
+            return DeserializeFile<Dictionary<string, T>>(fileName);
         }
 
         public List<ShipSummary> GetShipSummaryList(ServerType serverType)
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
-            using Stream fs = fileSystem.File.OpenRead(fileName);
-            var streamReader = new StreamReader(fs);
-            var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<List<ShipSummary>>(jsonReader) ?? new List<ShipSummary>();
+            return DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
+        }
+
+        public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)
+        {
+            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Localization", $"{language}.json");
+            return fileSystem.File.Exists(fileName) ? DeserializeFile<Dictionary<string, string>>(fileName) : null;
         }
 
         private static string GetNationString(Nation? nation)
@@ -83,6 +85,15 @@ namespace WoWsShipBuilder.Core.DataProvider
                 var moduleType when moduleType == typeof(Module) => "Unit",
                 _ => throw new InvalidOperationException(),
             };
+        }
+
+        private T? DeserializeFile<T>(string filePath)
+        {
+            using Stream fs = fileSystem.File.OpenRead(filePath);
+            var streamReader = new StreamReader(fs);
+            var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer();
+            return serializer.Deserialize<T>(jsonReader);
         }
     }
 }

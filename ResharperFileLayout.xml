@@ -166,6 +166,14 @@
                 <Static/>
             </Entry.SortBy>
         </Entry>
+        <Entry Priority="150" DisplayName="Events">
+            <Entry.Match>
+                <Kind Is="Event"/>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Static/>
+            </Entry.SortBy>
+        </Entry>
         <Entry DisplayName="Properties, Indexers">
             <Entry.Match>
                 <Or>
