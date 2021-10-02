@@ -160,6 +160,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Art by:.
+        /// </summary>
+        public static string SettingsWindow_ArtBy {
+            get {
+                return ResourceManager.GetString("SettingsWindow_ArtBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable automatic updates.
         /// </summary>
         public static string SettingsWindow_AutoUpdate {
@@ -196,6 +205,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devs: .
+        /// </summary>
+        public static string SettingsWindow_Devs {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Devs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string SettingsWindow_Info {
@@ -210,6 +228,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_Language {
             get {
                 return ResourceManager.GetString("SettingsWindow_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lead Devs:.
+        /// </summary>
+        public static string SettingsWindow_LeadDevs {
+            get {
+                return ResourceManager.GetString("SettingsWindow_LeadDevs", resourceCulture);
             }
         }
         

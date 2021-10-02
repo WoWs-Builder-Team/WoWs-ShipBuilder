@@ -37,24 +37,41 @@
                         </Border>
                     </TabItem>
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Info}">
-                        <Border Classes="BorderPanel" Margin="10">
-                            <Grid RowDefinitions="*,*" Grid.Column="0">
+                        <Border Classes="BorderPanel" Margin="10" Padding="10">
+                            <StackPanel Spacing="10">
+                                <StackPanel.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Setter Property="FontSize" Value="13"/>
+                                    </Style>
+                                </StackPanel.Styles>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
+                                    <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
+                                </StackPanel>
+                                <Separator/>
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
+                                    <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1"/>
+                                    <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1"/>
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0"/>
+                                    <TextBlock Text="ephrs" Grid.Row="2" Grid.Column="1"/>
+                                    <TextBlock Text="iTTo" Grid.Row="3" Grid.Column="1"/>
+                                    <TextBlock Text="Shaticor" Grid.Row="4" Grid.Column="1"/>
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="5" Grid.Column="0" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1"/>
+                                </Grid>
+                                <Separator/>
+                                <Button Content="Donate" Command="{Binding DonateCommand}" Grid.Row="2"/>
                                 
-                            </Grid>
+                            </StackPanel>
                         </Border>
                     </TabItem>
                 </TabControl>
                 <!--Right panel-->
             </Border>
-            <Border Classes="BorderPanel" Grid.Column="1" Margin="10">
-                <Grid RowDefinitions="3*,1*">
-                    <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0"></Image>
-                    <Grid Grid.Row="1" RowDefinitions="*,*,*" Margin="10">
-                        <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}" Grid.Row="0" FontSize="13"/>
-                        <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}" Grid.Row="1" FontSize="13"/>
-                        <Button Content="Donate" Command="{Binding DonateCommand}" Grid.Row="2" FontSize="13"/><!--placeholder-->
-                    </Grid>
-                </Grid>
+            <Border Classes="BorderPanel" Grid.Column="1" Margin="10" Padding="10">
+                 <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0"></Image>
             </Border>
         </Grid>
     </Grid>

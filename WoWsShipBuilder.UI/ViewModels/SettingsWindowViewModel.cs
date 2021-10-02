@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -27,6 +28,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
             selectedLanguage = languages.Keys.First();
             LanguagesList = languages.Keys.ToList();
+            Version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
         }
 
         // Add here all the currently supported languages
@@ -34,6 +36,15 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             { "English", "en_GB" },
         };
+
+
+        private string version;
+
+        public string Version
+        {
+            get => version;
+            set => this.RaiseAndSetIfChanged(ref version, value);
+        }
 
         private List<string>? languagesList;
 
