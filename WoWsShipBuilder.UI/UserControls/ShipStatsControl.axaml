@@ -137,16 +137,46 @@
         <!--Airstrikes-->
         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Airstrike"
                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+            <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*">
+                <TextBlock Text="Airstrike Name" Grid.Column="0"
                            Grid.Row="0" />
-                <TextBlock Text="20.0 Km" Grid.Row="0" Classes="RightSide" />
-                <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                <TextBlock Text="Type" Grid.Row="0" Classes="RightSide" />
+                <TextBlock Text="Available flights" Grid.Column="0"
                            Grid.Row="1" />
-                <TextBlock Text="2.0 RPM" Grid.Row="1" Classes="RightSide" />
-                <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                <TextBlock Text="2" Grid.Row="1" Classes="RightSide" />
+                <TextBlock Text="Reload Time" Grid.Column="0"
                            Grid.Row="2" />
                 <TextBlock Text="45 s" Grid.Row="2" Classes="RightSide" />
+                <TextBlock Text="Aircraft HP" Grid.Column="0"
+                           Grid.Row="3" />
+                <TextBlock Text="2000" Grid.Row="3" Classes="RightSide" />
+                <TextBlock Text="Bombs in Payload" Grid.Column="0"
+                           Grid.Row="4" />
+                <TextBlock Text="6" Grid.Row="4" Classes="RightSide" />
+                <TextBlock Text="Bomb Type" Grid.Column="0"
+                           Grid.Row="5" />
+                <TextBlock Text="Bomb 160 Kg" Grid.Row="5" Classes="RightSide" />
+                <TextBlock Text="Maximum bomb damage" Grid.Column="0"
+                           Grid.Row="6" />
+                <TextBlock Text="6800" Grid.Row="6" Classes="RightSide" />
+                <TextBlock Text="Armor penetration capacity" Grid.Column="0"
+                           Grid.Row="7" />
+                <TextBlock Text="37.7 mm" Grid.Row="7" Classes="RightSide" />
+                <TextBlock Text="Depth explosion" Grid.Column="0"
+                           Grid.Row="8" />
+                <TextBlock Text="2 m" Grid.Row="8" Classes="RightSide" />
+                <TextBlock Text="Fire chance" Grid.Column="0"
+                           Grid.Row="9" />
+                <TextBlock Text="39%" Grid.Row="9" Classes="RightSide" />
+                <TextBlock Text="Range" Grid.Column="0"
+                           Grid.Row="10" />
+                <TextBlock Text="13 Km" Grid.Row="10" Classes="RightSide" />
+                <TextBlock Text="Reload Time" Grid.Column="0"
+                           Grid.Row="11" />
+                <TextBlock Text="100 s" Grid.Row="11" Classes="RightSide" />
+                <TextBlock Text="Delay" Grid.Column="0"
+                           Grid.Row="12" />
+                <TextBlock Text="15 s" Grid.Row="12" Classes="RightSide" />
             </Grid>
         </Expander>
         <!--Secondary-->
