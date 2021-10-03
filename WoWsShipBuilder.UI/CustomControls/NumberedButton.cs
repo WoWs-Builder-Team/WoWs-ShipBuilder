@@ -45,6 +45,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         static NumberedButton()
         {
             IsCheckedProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
+            NumberProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
             HeightProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
             WidthProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
             CornerRadiusProperty.OverrideDefaultValue(typeof(NumberedButton), new CornerRadius(15));
