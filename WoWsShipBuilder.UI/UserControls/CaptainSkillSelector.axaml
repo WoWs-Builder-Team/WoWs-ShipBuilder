@@ -5,43 +5,40 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-             x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector">
-    <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*,*">
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="0" Number="1"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="1" Number="2"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="2" Number="3"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="3" Number="4"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="4" Number="5"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="0" Grid.Column="5" Number="6"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="0" Number="1"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="1" Number="2"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="2" Number="3"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="3" Number="4"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="4" Number="5"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
-        <customControls:NumberedButton Grid.Row="1" Grid.Column="5" Number="6"
-                                       BackgroundImage="/Assets/Skills/aa_damage_bubbles_additional.png"
-                                       Margin="5" />
+             xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+             x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
+             x:Name="Control">
+
+    <UserControl.Resources>
+        <conv:CaptainSkillImageConverter x:Key="CaptainSkillImageConverter" />
+        <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
+    </UserControl.Resources>
+    
+    <Grid ColumnDefinitions="5*,*">
+        <ItemsControl Items="{Binding SkillList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>      
+                </ItemsPanelTemplate>
+             </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <customControls:NumberedButton  Number="{Binding #Control.DataContext.SkillOrderList, ConverterParameter={Binding Key}, Converter={StaticResource CaptainSkillOrderConverter}}"
+                                            BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
+                                            Command="{Binding #Control.DataContext.AddSkillCommand}" CommandParameter="{Binding Key}"
+                                            Margin="5">
+                    </customControls:NumberedButton>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Styles>
+                    <Style Selector="ContentPresenter">
+                        <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
+                        <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
+                    </Style>
+            </ItemsControl.Styles>
+        </ItemsControl>
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <TextBlock Text="Captain Talents"/>
+        </StackPanel>
     </Grid>
 </UserControl>

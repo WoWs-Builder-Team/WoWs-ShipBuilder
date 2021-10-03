@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using Avalonia;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -27,7 +30,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
 
             // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel();
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(ShipClass.Destroyer);
 
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
@@ -44,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
 
             // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel();
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(ShipClass.Destroyer);
 
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
@@ -181,5 +184,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
            // Insert opening window 
         }
+
     }
 }
