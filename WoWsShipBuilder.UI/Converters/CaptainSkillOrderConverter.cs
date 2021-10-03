@@ -1,21 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Collections;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
 
 namespace WoWsShipBuilder.UI.Converters
 {
-    public class CaptainSkillOrderConverter : IValueConverter
+    public class CaptainSkillOrderConverter : IMultiValueConverter
     {
-        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+
+        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not AvaloniaList<string> skillList || parameter is not string skillName || !targetType.IsAssignableFrom(typeof(int)))
+            var skillList = values[0] as AvaloniaList<string>;
+            var skillName = values[1] as string;
+            string index = "";
+            if (skillList != null)
             {
-                throw new NotSupportedException();
+                index = (skillList.IndexOf(skillName) + 1).ToString();
             }
 
-            var index = skillList.IndexOf(skillName) + 1;
-            
             return index;
         }
 

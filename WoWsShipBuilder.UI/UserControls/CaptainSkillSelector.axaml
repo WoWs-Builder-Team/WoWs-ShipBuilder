@@ -23,10 +23,16 @@
              </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <customControls:NumberedButton  Number="{Binding #Control.DataContext.SkillOrderList, ConverterParameter={Binding Key}, Converter={StaticResource CaptainSkillOrderConverter}}"
+                    <customControls:NumberedButton 
                                             BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
                                             Command="{Binding #Control.DataContext.AddSkillCommand}" CommandParameter="{Binding Key}"
                                             Margin="5">
+                        <customControls:NumberedButton.Number>
+                                        <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
+                                            <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                            <Binding Path="Key"/>
+                                        </MultiBinding>
+                         </customControls:NumberedButton.Number>
                     </customControls:NumberedButton>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

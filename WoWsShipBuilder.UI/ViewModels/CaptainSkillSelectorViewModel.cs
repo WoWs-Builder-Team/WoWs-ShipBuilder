@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Data;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
@@ -58,11 +60,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (SkillOrderList.Contains(skillName))
             {
                 SkillOrderList.Remove(skillName);
+                this.RaisePropertyChanged(nameof(SkillOrderList));
             }
             else
             {
                 SkillOrderList.Add(skillName);
+                this.RaisePropertyChanged(nameof(SkillOrderList));
             }
+            
         }
     }
 }
