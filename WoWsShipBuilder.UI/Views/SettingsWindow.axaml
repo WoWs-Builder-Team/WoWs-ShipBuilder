@@ -21,7 +21,7 @@
         </StackPanel>
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
             <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
-                <TabControl>
+                <TabControl SelectedIndex="1">
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <Grid ColumnDefinitions="2*,*" Grid.Column="0" RowDefinitions="35,35,35,35,*">
@@ -50,7 +50,7 @@
                                 </StackPanel>
                                 <Separator/>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
-                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
                                     <TextBlock Text="{x:Static t:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
                                     <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1"/>
                                     <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1"/>
@@ -58,7 +58,9 @@
                                     <TextBlock Text="ephrs" Grid.Row="2" Grid.Column="1"/>
                                     <TextBlock Text="iTTo" Grid.Row="3" Grid.Column="1"/>
                                     <TextBlock Text="Shaticor" Grid.Row="4" Grid.Column="1"/>
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="5" Grid.Column="0" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Data}" Grid.Row="5" Margin="0,0,10,0"/>
+                                    <TextBlock Text="notyourfather" Grid.Row="5" Grid.Column="1"/>
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="6" Grid.Column="0" Margin="0,0,10,0"/>
                                     <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1"/>
                                 </Grid>
                                 <Separator/>

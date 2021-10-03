@@ -196,6 +196,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Conversion:.
+        /// </summary>
+        public static string SettingsWindow_Data {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Developed by:.
         /// </summary>
         public static string SettingsWindow_DevelopedBy {

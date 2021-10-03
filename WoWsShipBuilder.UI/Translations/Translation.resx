@@ -204,4 +204,7 @@
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
     <value>Lead Devs:</value>
   </data>
+  <data name="SettingsWindow_Data" xml:space="preserve">
+    <value>Data Conversion:</value>
+  </data>
 </root>
