@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.Primitives;
@@ -35,13 +36,13 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Styled Property to indicate the Horizontal spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberXSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing), 45);
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing), 40);
 
         /// <summary>
         /// Style Property to indicate the Vertical spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberYSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 2.5);
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 0);
 
         static NumberedButton()
         {
@@ -131,7 +132,16 @@ namespace WoWsShipBuilder.UI.CustomControls
                 }
 
                 var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
-                var point = new Point(NumberXSpacing, NumberYSpacing);
+                int number = Convert.ToInt32(Number);
+                Point point;
+                if (number > 9)
+                {
+                    point = new Point(NumberXSpacing - (FontSize / 2), NumberYSpacing);
+                }
+                else
+                {
+                    point = new Point(NumberXSpacing, NumberYSpacing);
+                }
                 context.DrawText(Foreground, point, text);
             }
             else
