@@ -18,7 +18,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class SettingsWindowViewModel : ViewModelBase
     {
-        private SettingsWindow self;
+        private readonly SettingsWindow self;
 
         public SettingsWindowViewModel(SettingsWindow win)
         {
@@ -28,17 +28,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
             selectedLanguage = languages.Keys.First();
             LanguagesList = languages.Keys.ToList();
-            Version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
         }
 
         // Add here all the currently supported languages
-        private Dictionary<string, string> languages = new()
+        private readonly Dictionary<string, string> languages = new()
         {
             { "English", "en-GB" },
         };
 
-
-        private string version;
+        private string version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
 
         public string Version
         {

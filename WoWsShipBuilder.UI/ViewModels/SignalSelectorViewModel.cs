@@ -31,7 +31,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private Action<string>? signalCommand;
 
         [DependsOn(nameof(SignalsNumber))]
-        private bool CanSignalCommandExecute(object parameter)
+        public bool CanSignalCommandExecute(object parameter)
         {
             string? flagIndex = parameter.ToString();
             if (flagIndex != null && SelectedSignalIndex.Contains(flagIndex))
@@ -51,7 +51,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void SignalCommandExecute(string flagIndex)
+        public void SignalCommandExecute(string flagIndex)
         {
             signalCommand!.Invoke(flagIndex);
         }

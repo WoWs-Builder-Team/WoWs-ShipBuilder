@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         #region Private internal fields
         #endregion
-        private MainWindow? self;
+        private readonly MainWindow? self;
 
         public MainWindowViewModel(MainWindow win)
         {
@@ -173,8 +173,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void BackToMenu()
         {
-            StartingMenuWindow win = new StartingMenuWindow();
-            StartMenuViewModel model = new StartMenuViewModel(win);
+            StartingMenuWindow win = new();
+            StartMenuViewModel model = new(win);
             win.DataContext = model;
             win.Show();
             self!.Close();
@@ -184,6 +184,5 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
            // Insert opening window 
         }
-
     }
 }

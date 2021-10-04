@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -143,6 +144,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             }
         }
 
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Need to override")]
         private void UpdateVisual(AvaloniaPropertyChangedEventArgs e)
         {
             InvalidateVisual();
