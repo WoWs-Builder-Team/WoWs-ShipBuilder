@@ -207,4 +207,10 @@
   <data name="SettingsWindow_Data" xml:space="preserve">
     <value>Data Conversion:</value>
   </data>
+  <data name="CaptainSkillSelector_Points" xml:space="preserve">
+    <value>Captain points:</value>
+  </data>
+  <data name="CaptainSkillSelector_Talents" xml:space="preserve">
+    <value>Captain Talents</value>
+  </data>
 </root>

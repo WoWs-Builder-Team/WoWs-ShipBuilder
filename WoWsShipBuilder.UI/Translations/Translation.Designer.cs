@@ -70,6 +70,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Captain points:.
+        /// </summary>
+        public static string CaptainSkillSelector_Points {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Captain Talents.
+        /// </summary>
+        public static string CaptainSkillSelector_Talents {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_Talents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {
