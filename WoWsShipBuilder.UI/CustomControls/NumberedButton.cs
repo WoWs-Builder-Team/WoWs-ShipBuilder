@@ -148,6 +148,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             {
                 if (UnselectedBorderThickness > 0)
                 {
+                    rect = rect.Deflate(BorderThickness * 0.5);
                     var pen = new Pen(UnselectedBorder, UnselectedBorderThickness);
                     context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
                 }
