@@ -42,6 +42,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void LoadBuild()
         {
             // Insert build loading
+            ShipSelectionWindow win = new ShipSelectionWindow();
+            win.DataContext = new ShipSelectionWindowViewModel();
+            win.Show();
         }
 
         private void Setting()
