@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.Primitives;
@@ -131,18 +132,20 @@ namespace WoWsShipBuilder.UI.CustomControls
                     }
                 }
 
-                var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
-                int number = Convert.ToInt32(Number);
-                Point point;
-                if (number > 9)
+                if (!string.IsNullOrEmpty(Number))
                 {
-                    point = new Point(NumberXSpacing - (FontSize / 2), NumberYSpacing);
+                    var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, Bounds.Size);
+
+                    double maxAxis = Math.Max(text.Bounds.Height, text.Bounds.Width);
+
+                    Rect trect = new Rect(0, 0, maxAxis, maxAxis);
+                    var center = new Point(trect.Center.X - (text.Bounds.Width / 2), trect.Center.Y - (text.Bounds.Height / 2) - 2);
+                    RoundedRect rRect = new RoundedRect(trect, maxAxis / 3);
+
+                    context.PlatformImpl.DrawRectangle(BorderBrush, new Pen(), rRect);
+
+                    context.DrawText(Foreground, center, text);
                 }
-                else
-                {
-                    point = new Point(NumberXSpacing, NumberYSpacing);
-                }
-                context.DrawText(Foreground, point, text);
             }
             else
             {
@@ -153,6 +156,11 @@ namespace WoWsShipBuilder.UI.CustomControls
                     context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
                 }
             }
+        }
+
+        public void ToggleNew()
+        {
+            base.Toggle();
         }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Need to override")]

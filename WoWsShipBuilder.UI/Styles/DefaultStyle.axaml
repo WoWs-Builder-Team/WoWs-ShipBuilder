@@ -33,9 +33,9 @@
         <Setter Property="UnselectedBorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Red"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="Red"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="17"/>
     </Style>
     <!--Expander for ship stats-->
     <Style Selector="Expander /template/ ToggleButton#PART_toggle">
