@@ -30,17 +30,23 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <customControls:NumberedButton
-                                                BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
-                                                Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                                Margin="5">
-                            <customControls:NumberedButton.Number>
-                                <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
-                                    <Binding Path="#Control.DataContext.SkillOrderList"/>
-                                    <Binding Path="Value"/>
-                                </MultiBinding>
-                            </customControls:NumberedButton.Number>
-                        </customControls:NumberedButton>
+                        <Panel>
+                            <Border CornerRadius="15" Width="60" Height="60" Margin="5">
+                                <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip.Tip="Test2" />
+                            </Border>
+                            <customControls:NumberedButton
+                                ToolTip.Tip="Test1"
+                                BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
+                                Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
+                                Margin="5">
+                                <customControls:NumberedButton.Number>
+                                    <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
+                                        <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                        <Binding Path="Value"/>
+                                    </MultiBinding>
+                                </customControls:NumberedButton.Number>
+                            </customControls:NumberedButton>
+                        </Panel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Styles>

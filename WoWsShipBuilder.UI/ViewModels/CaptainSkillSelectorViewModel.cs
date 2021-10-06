@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Input;
-using Avalonia.Collections;
-using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Metadata;
-using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
@@ -16,11 +11,11 @@ namespace WoWsShipBuilder.UI.ViewModels
     class CaptainSkillSelectorViewModel : ViewModelBase
     {
         public CaptainSkillSelectorViewModel(ShipClass shipClass)
-        {         
+        {
             SkillList = GetSkillsForClass(shipClass);
         }
 
-        private int assignedPoints = 0;
+        private int assignedPoints;
 
         public int AssignedPoints
         {
@@ -35,7 +30,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => skillList;
             set => this.RaiseAndSetIfChanged(ref skillList, value);
         }
-            
+
         private List<Skill> skillOrderList = new();
 
         public List<Skill> SkillOrderList
@@ -76,7 +71,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints += pointCost;
                 this.RaisePropertyChanged(nameof(SkillOrderList));
-            }           
+            }
         }
 
         [DependsOn(nameof(SkillOrderList))]
@@ -84,11 +79,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             if (parameter is Skill skill)
             {
-                if (skill == null)
-                {
-                    return false;
-                }
-
                 // Get cost of the skill i'm trying to add
                 var currentSkillTier = skill.Tiers.First().Tier;
 
@@ -108,7 +98,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     }
 
                     // If it's not, i search the skill of the previous tier. If at least one exist, i can add it
-                    var previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
+                    List<int>? previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
 
                     if (previousTierSkills != null && previousTierSkills.Count > 0)
                     {
@@ -145,7 +135,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     {
                         return true;
                     }
-                } 
+                }
             }
 
             return false;
@@ -201,7 +191,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skill = tier1Skills.First();
                     SkillOrderList.Remove(skill);
                     SkillOrderList.Insert(firstTier2SkillIndex, skill);
-                } 
+                }
             }
 
             // Tier 2 skill reordering
