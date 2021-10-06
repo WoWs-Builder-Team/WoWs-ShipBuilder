@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Input;
-using Avalonia;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -14,17 +9,22 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
-        #region Private internal fields
-        #endregion
+        private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
         private MainWindow? self;
+
+        private ShipModuleViewModel shipModuleViewModel = null!;
+
+        private ShipStatsControlViewModel? shipStatsControlViewModel;
+
+        private SignalSelectorViewModel? signalSelectorViewModel;
 
         public MainWindowViewModel(MainWindow win)
         {
             self = win;
 
             // Signal selector model
-            Action<string> action = x => AddSignalModifiers(x);
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);
+            SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
 
             // Ship stats model
             ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
@@ -35,13 +35,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
+            ShipModuleViewModel = new ShipModuleViewModel(); // TODO: replace with actual data
         }
 
         public MainWindowViewModel()
         {
             // Signal selector model
-            Action<string> action = x => AddSignalModifiers(x);
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, action);
+            SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
 
             // Ship stats model
             ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
@@ -52,6 +52,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
+            ShipModuleViewModel = new ShipModuleViewModel(); // TODO: replace with actual data
         }
 
         public ICommand OpenSaveBuildCommand { get; }
@@ -60,7 +61,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ICommand NewShipSelectionCommand { get; }
 
-        private SignalSelectorViewModel? signalSelectorViewModel;
+        public ShipModuleViewModel ShipModuleViewModel
+        {
+            get => shipModuleViewModel;
+            set => this.RaiseAndSetIfChanged(ref shipModuleViewModel, value);
+        }
 
         public SignalSelectorViewModel? SignalSelectorViewModel
         {
@@ -68,15 +73,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
         }
 
-        private ShipStatsControlViewModel? shipStatsControlViewModel;
-
         public ShipStatsControlViewModel? ShipStatsControlViewModel
         {
             get => shipStatsControlViewModel;
             set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
         }
-
-        private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
 
         public CaptainSkillSelectorViewModel? CaptainSkillSelectorViewModel
         {
@@ -182,8 +183,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void NewShipSelection()
         {
-           // Insert opening window 
+            // Insert opening window
         }
 
+        #region Private internal fields
+
+        #endregion
     }
 }

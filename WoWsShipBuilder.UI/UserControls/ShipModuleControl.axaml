@@ -1,0 +1,103 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
+             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.ShipModuleControl"
+             Name="ShipModuleControl">
+    <Design.DataContext>
+        <viewModels:ShipModuleViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converters:IsModuleSelectedConverter x:Key="ModuleSelectedConverter" />
+        <converters:ModuleImageConverter x:Key="ModuleImageConverter" />
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="StackPanel.ModuleList">
+            <Setter Property="Orientation" Value="Vertical" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <ItemsControl Items="{Binding ShipUpgrades}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="10" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl Items="{Binding}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="data:ShipUpgrade">
+                                <StackPanel Orientation="Vertical">
+                                    <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M 0 2 L 9 11 L 0 20 Z"
+                                          IsVisible="{Binding Prev, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                        <Path.RenderTransform>
+                                            <RotateTransform Angle="90" />
+                                        </Path.RenderTransform>
+                                    </Path>
+                                    <RadioButton
+                                        GroupName="{Binding UcType}"
+                                        Command="{Binding ElementName=ShipModuleControl, Path=DataContext.SelectModuleExecute}">
+                                        <RadioButton.Styles>
+                                            <Style Selector="RadioButton">
+                                                <Setter Property="IsChecked">
+                                                    <MultiBinding Converter="{StaticResource ModuleSelectedConverter}">
+                                                        <Binding Path="#ShipModuleControl.DataContext.SelectedModules" />
+                                                        <Binding />
+                                                    </MultiBinding>
+                                                </Setter>
+                                                <Setter Property="CommandParameter" Value="{Binding}" />
+                                            </Style>
+                                            <Style Selector="RadioButton Image">
+                                                <Setter Property="Source">
+                                                    <MultiBinding Converter="{StaticResource ModuleImageConverter}">
+                                                        <Binding />
+                                                        <Binding Path="$parent[ToggleButton].IsChecked" />
+                                                    </MultiBinding>
+                                                </Setter>
+                                            </Style>
+                                            <Style
+                                                Selector="RadioButton[IsChecked=False]:pointerover Border#ButtonBorder">
+                                                <Setter Property="BorderBrush" Value="Gray" />
+                                                <Setter Property="Cursor" Value="Hand" />
+                                            </Style>
+                                            <Style Selector="RadioButton:checked Border#ButtonBorder">
+                                                <Setter Property="BorderBrush" Value="DarkGray" />
+                                            </Style>
+                                        </RadioButton.Styles>
+                                        <RadioButton.Template>
+                                            <ControlTemplate>
+                                                <Border Name="ButtonBorder" CornerRadius="5" BorderThickness="1">
+                                                    <ContentPresenter Name="PART_ContentPresenter"
+                                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                      Content="{TemplateBinding Content}"
+                                                                      Margin="3"
+                                                                      VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </RadioButton.Template>
+                                        <Image />
+                                    </RadioButton>
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
