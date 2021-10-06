@@ -4,17 +4,7 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <ComboBox Classes="Upgrades" VerticalAlignment="Center" HorizontalAlignment="Center" SelectedIndex="0" CornerRadius="5">
-                <ComboBoxItem BorderBrush="Gray" BorderThickness="0,1">
-                    <Image Stretch="None" Source="/Assets/modernization_icons/modernization_default.png"/>
-                </ComboBoxItem>
-                <ComboBoxItem BorderBrush="Gray" BorderThickness="0,1">
-                    <Image Stretch="None" Source="/Assets/modernization_icons/icon_modernization_PCM002_Torpedo_Mod_I.png"/>
-                </ComboBoxItem>
-                <ComboBoxItem BorderBrush="Gray" BorderThickness="0,1">
-                    <Image Stretch="None" Source="/Assets/modernization_icons/icon_modernization_PCM003_Airplanes_Mod_I.png"/>
-                </ComboBoxItem>
-            </ComboBox>
+            <customControls:NumberedButton Number="1" BackgroundImage="/Assets/Skills/torpedo_reload.png"/>
         </Border>
     </Design.PreviewWith>
 
@@ -43,9 +33,9 @@
         <Setter Property="UnselectedBorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Red"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="Red"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="17"/>
     </Style>
     <!--Expander for ship stats-->
     <Style Selector="Expander /template/ ToggleButton#PART_toggle">

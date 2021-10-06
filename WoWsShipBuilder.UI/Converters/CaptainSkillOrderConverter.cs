@@ -4,20 +4,18 @@ using System.Globalization;
 using Avalonia.Collections;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class CaptainSkillOrderConverter : IMultiValueConverter
     {
-
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
-            var skillList = values[0] as AvaloniaList<string>;
-            var skillName = values[1] as string;
             string index = "";
-            if (skillList != null)
+            if (values[0] is List<Skill> skillList && values[1] is Skill skill)
             {
-                index = (skillList.IndexOf(skillName) + 1).ToString();
+                index = (skillList.IndexOf(skill) + 1).ToString();
             }
 
             return index;

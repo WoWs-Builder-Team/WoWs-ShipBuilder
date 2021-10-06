@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -34,13 +37,13 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Styled Property to indicate the Horizontal spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberXSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing), 45);
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberXSpacing), 40);
 
         /// <summary>
         /// Style Property to indicate the Vertical spacing from the top for the Number.
         /// </summary>
         public static readonly StyledProperty<double> NumberYSpacingProperty =
-            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 2.5);
+            AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 0);
 
         static NumberedButton()
         {
@@ -129,20 +132,38 @@ namespace WoWsShipBuilder.UI.CustomControls
                     }
                 }
 
-                var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, new Size(Width, Height));
-                var point = new Point(NumberXSpacing, NumberYSpacing);
-                context.DrawText(Foreground, point, text);
+                if (!string.IsNullOrEmpty(Number))
+                {
+                    var text = new FormattedText(Number, new Typeface(FontFamily, FontStyle, FontWeight), FontSize, TextAlignment.Left, TextWrapping.NoWrap, Bounds.Size);
+
+                    double maxAxis = Math.Max(text.Bounds.Height, text.Bounds.Width);
+
+                    Rect trect = new Rect(0, 0, maxAxis, maxAxis);
+                    var center = new Point(trect.Center.X - (text.Bounds.Width / 2), trect.Center.Y - (text.Bounds.Height / 2) - 2);
+                    RoundedRect rRect = new RoundedRect(trect, maxAxis / 3);
+
+                    context.PlatformImpl.DrawRectangle(BorderBrush, new Pen(), rRect);
+
+                    context.DrawText(Foreground, center, text);
+                }
             }
             else
             {
                 if (UnselectedBorderThickness > 0)
                 {
+                    rect = rect.Deflate(BorderThickness * 0.5);
                     var pen = new Pen(UnselectedBorder, UnselectedBorderThickness);
                     context.DrawRectangle(pen, rect, (float)CornerRadius.TopLeft);
                 }
             }
         }
 
+        public void ToggleNew()
+        {
+            base.Toggle();
+        }
+
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Need to override")]
         private void UpdateVisual(AvaloniaPropertyChangedEventArgs e)
         {
             InvalidateVisual();

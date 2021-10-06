@@ -9,9 +9,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
-        private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+        private readonly MainWindow? self;
 
-        private MainWindow? self;
+        private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
 
         private ShipModuleViewModel shipModuleViewModel = null!;
 
@@ -174,8 +174,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void BackToMenu()
         {
-            StartingMenuWindow win = new StartingMenuWindow();
-            StartMenuViewModel model = new StartMenuViewModel(win);
+            StartingMenuWindow win = new();
+            StartMenuViewModel model = new(win);
             win.DataContext = model;
             win.Show();
             self!.Close();
@@ -185,9 +185,5 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             // Insert opening window
         }
-
-        #region Private internal fields
-
-        #endregion
     }
 }

@@ -48,10 +48,12 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 throw new ArgumentNullException(nameof(skillName));
             }
+
             if (skillName.Length < 2)
             {
                 return skillName;
             }
+
             var sb = new StringBuilder();
             sb.Append(char.ToLowerInvariant(skillName[0]));
             for (int i = 1; i < skillName.Length; ++i)
@@ -67,6 +69,7 @@ namespace WoWsShipBuilder.UI.Converters
                     sb.Append(c);
                 }
             }
+
             return sb.ToString();
         }
     }

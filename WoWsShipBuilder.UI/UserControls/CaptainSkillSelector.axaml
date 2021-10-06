@@ -15,34 +15,42 @@
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="5*,*">
-        <ItemsControl Items="{Binding SkillList}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>      
-                </ItemsPanelTemplate>
-             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <customControls:NumberedButton 
-                                            BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
-                                            Command="{Binding #Control.DataContext.AddSkillCommand}" CommandParameter="{Binding Key}"
-                                            Margin="5">
-                        <customControls:NumberedButton.Number>
-                                        <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
-                                            <Binding Path="#Control.DataContext.SkillOrderList"/>
-                                            <Binding Path="Key"/>
-                                        </MultiBinding>
-                         </customControls:NumberedButton.Number>
-                    </customControls:NumberedButton>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.Styles>
+
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}"/>
+                <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0"/>
+                <TextBlock Text="/21"/>
+            </StackPanel>
+            <ItemsControl Items="{Binding SkillList}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <customControls:NumberedButton
+                                                BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
+                                                Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
+                                                Margin="5">
+                            <customControls:NumberedButton.Number>
+                                <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
+                                    <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                    <Binding Path="Value"/>
+                                </MultiBinding>
+                            </customControls:NumberedButton.Number>
+                        </customControls:NumberedButton>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Styles>
                     <Style Selector="ContentPresenter">
                         <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
                         <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
                     </Style>
-            </ItemsControl.Styles>
-        </ItemsControl>
+                </ItemsControl.Styles>
+            </ItemsControl>
+        </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="Captain Talents"/>
         </StackPanel>
