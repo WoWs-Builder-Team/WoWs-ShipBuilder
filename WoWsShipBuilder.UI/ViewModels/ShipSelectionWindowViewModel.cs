@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -21,7 +23,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             PlaceholderTier = "I ~ X";
 
-            ShipNameList = AppData.ShipSummaryList.Select(ship => Localizer.Instance[ship.Index]).ToList();
+            var unsortedShipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"], ship => ship.Index);
+            ShipNameDictionary = new SortedDictionary<string, string>(unsortedShipNameDictionary);
         }
 
         private List<string> tierList = new();
@@ -48,12 +51,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedTier, value);
         }
 
-        private List<string> shipNameList = new();
+        private SortedDictionary<string, string> shipNameDictionary = new();
 
-        public List<string> ShipNameList
+        public SortedDictionary<string, string> ShipNameDictionary
         {
-            get => shipNameList;
-            set => this.RaiseAndSetIfChanged(ref shipNameList, value);
+            get => shipNameDictionary;
+            set => this.RaiseAndSetIfChanged(ref shipNameDictionary, value);
+        }
+
+        private KeyValuePair<string, string> selectedShip;
+
+        public KeyValuePair<string, string> SelectedShip
+        {
+            get => selectedShip;
+            set => this.RaiseAndSetIfChanged(ref selectedShip, value);
         }
     }
 }

@@ -11,7 +11,8 @@
     <Grid RowDefinitions="30, *" ShowGridLines="True">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid Grid.Row="1" ShowGridLines="True" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*">
-            <AutoCompleteBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Watermark="Search Ship" VerticalAlignment="Center" Items="{Binding ShipNameList}"/>
+            <AutoCompleteBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Watermark="Search Ship" VerticalAlignment="Center" Items="{Binding ShipNameDictionary}" 
+                             ValueMemberBinding="{Binding Key}" SelectedItem="{Binding SelectedShip}" FilterMode="Contains"/>
             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
                 <TextBlock Text="Tier"/>
                 <ComboBox Items="{Binding TierList}" PlaceholderText="{Binding PlaceholderTier}" SelectedItem="{Binding SelectedTier}"/>
