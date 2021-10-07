@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.UI
                 }
 
                 desktop.Exit += OnExit;
-                //AppSettingsHelper.LoadSettings();
+                AppSettingsHelper.LoadSettings();
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
             }

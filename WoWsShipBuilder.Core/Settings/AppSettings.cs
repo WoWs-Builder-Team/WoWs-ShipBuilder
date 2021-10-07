@@ -19,7 +19,15 @@ namespace WoWsShipBuilder.Core.Settings
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
                 locale = value;
-                Localizer.Instance.UpdateLanguage(value);
+
+                if (!AppData.IsInitialized)
+                {
+                    Logging.Logger.Debug("Initialization attempted before full app data setup. Ignoring language update.");
+                }
+                else
+                {
+                    Localizer.Instance.UpdateLanguage(value);
+                }
             }
         }
 

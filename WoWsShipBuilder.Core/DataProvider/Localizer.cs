@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NLog;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
+        private static readonly Lazy<Localizer> InstanceProducer = new(() => new Localizer());
+
         private readonly AppDataHelper dataHelper;
 
         private readonly Logger logger = Logging.GetLogger("Localization");
@@ -23,7 +26,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             UpdateLanguage(AppData.Settings.Locale);
         }
 
-        public static Localizer Instance { get; } = new();
+        public static Localizer Instance { get; } = InstanceProducer.Value;
 
         public string this[string key] => languageData.TryGetValue(key, out var localization) ? localization : key;
 
