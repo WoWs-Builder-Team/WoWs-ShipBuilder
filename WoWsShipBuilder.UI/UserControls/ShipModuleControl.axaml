@@ -93,7 +93,10 @@
                                     </RadioButton>
                                     <TextBlock MaxWidth="60" Height="32" HorizontalAlignment="Center"
                                                Text="{Binding Name, Converter={StaticResource Localizer}}"
-                                               TextWrapping="Wrap" />
+                                               TextAlignment="Center"
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               ToolTip.Tip="{Binding $self.Text}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
