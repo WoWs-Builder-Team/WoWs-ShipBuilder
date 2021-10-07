@@ -48,7 +48,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
                 var first = classSkill.First();
-                Debug.WriteLine(first.XPosition);
                 skill.Value.Tiers = classSkill;
             });
             var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => x.Value);

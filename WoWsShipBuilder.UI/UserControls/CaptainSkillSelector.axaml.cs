@@ -11,6 +11,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1005:Single line comments should begin with single space", Justification = "Future use")]
     public partial class CaptainSkillSelector : UserControl
     {
         public CaptainSkillSelector()
