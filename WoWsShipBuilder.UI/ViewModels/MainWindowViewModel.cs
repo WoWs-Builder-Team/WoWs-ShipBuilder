@@ -162,6 +162,31 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref freeXp, value);
         }
 
+        private string accountType = "Normal Account";
+
+        public string AccountType
+        {
+            get => accountType;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref accountType, value);
+                CalculateXPValues();
+            }
+        }
+
+
+        private bool? accountState = false;
+
+        public bool? AccountState
+        {
+            get => accountState;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref accountState, value);
+                ChangeAccountType(value);
+            }
+        }
+
         public List<Modernization> Slot1ModernizationList => new()
         {
             new Modernization
@@ -264,27 +289,52 @@ namespace WoWsShipBuilder.UI.ViewModels
             // Insert opening window
         }
 
-        [DependsOn(nameof(BaseXp))]
-        [DependsOn(nameof(XpBonus))]
-        [DependsOn(nameof(CommanderXpBonus))]
-        [DependsOn(nameof(FreeXpBonus))]
         private void CalculateXPValues()
         {
             if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
             {
                 var baseXp = Convert.ToInt32(BaseXp);
-                var xpBonus = Convert.ToInt32(XpBonus);
-                var commanderXpBonus = Convert.ToInt32(CommanderXpBonus);
-                var freeXpBonus = Convert.ToInt32(FreeXpBonus);
+                var xpBonus = Convert.ToDouble(XpBonus);
+                var commanderXpBonus = Convert.ToDouble(CommanderXpBonus);
+                var freeXpBonus = Convert.ToDouble(FreeXpBonus);
+
+                double accountMultiplier = 1;
+                if (AccountType.Equals("WG Premium Account"))
+                {
+                    accountMultiplier = 1.5;
+                }
+                else if (AccountType.Equals("WoWs Premium Account"))
+                {
+                    accountMultiplier = 1.65;
+                }
 
                 // The 1 represent the account type modifier. For now, the math is done only for non premium account
-                int finalXp = baseXp * 1 * (1 + (xpBonus / 100));
-                int commanderXp = finalXp + (baseXp * 1 * (commanderXpBonus / 100));
+                int finalXp = (int)(baseXp * accountMultiplier * (1 + (xpBonus / 100)));
+                int commanderXp = (int)(finalXp + (baseXp * accountMultiplier * (commanderXpBonus / 100)));
                 int freeXp = (int)(finalXp * 0.05 * (1 + (freeXpBonus / 100)));
 
                 Xp = Convert.ToString(finalXp);
                 CommanderXp = Convert.ToString(commanderXp);
                 FreeXp = Convert.ToString(freeXp); 
+            }
+        }
+
+        private void ChangeAccountType(bool? accountState)
+        {
+            if (accountState.HasValue)
+            {
+                if (accountState.Value)
+                {
+                    AccountType = "WoWs Premium Account";
+                }
+                else
+                {
+                    AccountType = "Normal Account";
+                }
+            }
+            else
+            {
+                AccountType = "WG Premium Account";
             }
         }
     }
