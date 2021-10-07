@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ShipModuleViewModel(UpgradeInfo upgradeInfo)
         {
-            ShipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgradeInfo.ShipUpgrades).Select(entry => entry.Value).ToList();
+            ShipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
             foreach (List<ShipUpgrade> upgrade in ShipUpgrades)
             {
                 SelectedModules.Add(upgrade.First());

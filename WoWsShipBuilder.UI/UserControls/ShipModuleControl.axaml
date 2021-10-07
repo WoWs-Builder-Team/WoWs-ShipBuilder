@@ -91,7 +91,9 @@
                                         </RadioButton.Template>
                                         <Image />
                                     </RadioButton>
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
+                                    <TextBlock MaxWidth="60" Height="32" HorizontalAlignment="Center"
+                                               Text="{Binding Name, Converter={StaticResource Localizer}}"
+                                               TextWrapping="Wrap" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

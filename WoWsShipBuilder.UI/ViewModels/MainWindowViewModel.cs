@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -27,15 +28,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
 
             // Ship stats model
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
+            var ships = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live);
+            var shipData = ships!["PGSD109"];
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(shipData);
 
             // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(ShipClass.Destroyer);
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(shipData.ShipClass);
 
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
-            ShipModuleViewModel = new ShipModuleViewModel(); // TODO: replace with actual data
+            ShipModuleViewModel = new ShipModuleViewModel(shipData.ShipUpgradeInfo);
         }
 
         public MainWindowViewModel()
