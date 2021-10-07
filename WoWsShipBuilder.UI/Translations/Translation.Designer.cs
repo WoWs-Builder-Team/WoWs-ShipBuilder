@@ -61,7 +61,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert the build name:.
+        ///   Looks up a localized string similar to Insert the build name :.
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
             get {
@@ -70,7 +70,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captain points:.
+        ///   Looks up a localized string similar to Captain points :.
         /// </summary>
         public static string CaptainSkillSelector_Points {
             get {
@@ -97,7 +97,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status: .
+        ///   Looks up a localized string similar to Status :.
         /// </summary>
         public static string DownloadWindow_Status {
             get {
@@ -120,6 +120,51 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_BackToMenu {
             get {
                 return ResourceManager.GetString("MainWindow_BackToMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base XP.
+        /// </summary>
+        public static string MainWindow_BaseXp {
+            get {
+                return ResourceManager.GetString("MainWindow_BaseXp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commander XP :.
+        /// </summary>
+        public static string MainWindow_CommanderXp {
+            get {
+                return ResourceManager.GetString("MainWindow_CommanderXp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commander XP bonus %.
+        /// </summary>
+        public static string MainWindow_CommanderXpBonus {
+            get {
+                return ResourceManager.GetString("MainWindow_CommanderXpBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free XP :.
+        /// </summary>
+        public static string MainWindow_FreeXp {
+            get {
+                return ResourceManager.GetString("MainWindow_FreeXp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free XP Bonus %.
+        /// </summary>
+        public static string MainWindow_FreeXpBonus {
+            get {
+                return ResourceManager.GetString("MainWindow_FreeXpBonus", resourceCulture);
             }
         }
         
@@ -178,7 +223,34 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Art by:.
+        ///   Looks up a localized string similar to Final XP :.
+        /// </summary>
+        public static string MainWindow_Xp {
+            get {
+                return ResourceManager.GetString("MainWindow_Xp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XP bonus %.
+        /// </summary>
+        public static string MainWindow_XpBonus {
+            get {
+                return ResourceManager.GetString("MainWindow_XpBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XP Calculator.
+        /// </summary>
+        public static string MainWindow_XpCalculator {
+            get {
+                return ResourceManager.GetString("MainWindow_XpCalculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Art by :.
         /// </summary>
         public static string SettingsWindow_ArtBy {
             get {
@@ -214,7 +286,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Conversion:.
+        ///   Looks up a localized string similar to Data Conversion :.
         /// </summary>
         public static string SettingsWindow_Data {
             get {
@@ -223,7 +295,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Developed by:.
+        ///   Looks up a localized string similar to Developed by :.
         /// </summary>
         public static string SettingsWindow_DevelopedBy {
             get {

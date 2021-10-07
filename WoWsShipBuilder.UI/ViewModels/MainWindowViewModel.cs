@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -88,6 +90,78 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
         }
 
+        private string baseXp = "0";
+
+        public string BaseXp
+        {
+            get => baseXp;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref baseXp, value);
+                CalculateXPValues();
+            }
+        }
+
+        private string xpBonus = "0";
+
+        public string XpBonus
+        {
+            get => xpBonus;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref xpBonus, value);
+                CalculateXPValues();
+            }
+        }
+
+        private string commanderXpBonus = "0";
+
+        public string CommanderXpBonus
+        {
+            get => commanderXpBonus;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref commanderXpBonus, value);
+                CalculateXPValues();
+            }
+        }
+
+        private string freeXpBonus = "0";
+
+        public string FreeXpBonus
+        {
+            get => freeXpBonus;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref freeXpBonus, value);
+                CalculateXPValues();
+            }
+        }
+
+        private string xp = "0";
+
+        public string Xp
+        {
+            get => xp;
+            set => this.RaiseAndSetIfChanged(ref xp, value);
+        }
+
+        private string commanderXp = "0";
+
+        public string CommanderXp
+        {
+            get => commanderXp;
+            set => this.RaiseAndSetIfChanged(ref commanderXp, value);
+        }
+
+        private string freeXp = "0";
+
+        public string FreeXp
+        {
+            get => freeXp;
+            set => this.RaiseAndSetIfChanged(ref freeXp, value);
+        }
+
         public List<Modernization> Slot1ModernizationList => new()
         {
             new Modernization
@@ -106,6 +180,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Index = "PCM004",
             },
         };
+
 
         public List<Modernization> Slot2ModernizationList => new()
         {
@@ -187,6 +262,30 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void NewShipSelection()
         {
             // Insert opening window
+        }
+
+        [DependsOn(nameof(BaseXp))]
+        [DependsOn(nameof(XpBonus))]
+        [DependsOn(nameof(CommanderXpBonus))]
+        [DependsOn(nameof(FreeXpBonus))]
+        private void CalculateXPValues()
+        {
+            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
+            {
+                var baseXp = Convert.ToInt32(BaseXp);
+                var xpBonus = Convert.ToInt32(XpBonus);
+                var commanderXpBonus = Convert.ToInt32(CommanderXpBonus);
+                var freeXpBonus = Convert.ToInt32(FreeXpBonus);
+
+                // The 1 represent the account type modifier. For now, the math is done only for non premium account
+                int finalXp = baseXp * 1 * (1 + (xpBonus / 100));
+                int commanderXp = finalXp + (baseXp * 1 * (commanderXpBonus / 100));
+                int freeXp = (int)(finalXp * 0.05 * (1 + (freeXpBonus / 100)));
+
+                Xp = Convert.ToString(finalXp);
+                CommanderXp = Convert.ToString(commanderXp);
+                FreeXp = Convert.ToString(freeXp); 
+            }
         }
     }
 }

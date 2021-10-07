@@ -145,7 +145,7 @@
     <value>Clean stored application data</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Developed by:</value>
+    <value>Developed by :</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
     <value>Info</value>
@@ -181,7 +181,7 @@
     <value>%</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Status: </value>
+    <value>Status :</value>
   </data>
   <data name="DownloadWindow_StatusText" xml:space="preserve">
     <value>...</value>
@@ -190,13 +190,13 @@
     <value>Flags </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insert the build name:</value>
+    <value>Insert the build name :</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
     <value>Select new ship</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art by:</value>
+    <value>Art by :</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
     <value>Devs: </value>
@@ -205,10 +205,10 @@
     <value>Lead Devs:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Data Conversion:</value>
+    <value>Data Conversion :</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Captain points:</value>
+    <value>Captain points :</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
     <value>Captain Talents</value>
@@ -218,5 +218,29 @@
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
     <value>Server</value>
+  </data>
+  <data name="MainWindow_BaseXp" xml:space="preserve">
+    <value>Base XP</value>
+  </data>
+  <data name="MainWindow_CommanderXp" xml:space="preserve">
+    <value>Commander XP :</value>
+  </data>
+  <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
+    <value>Commander XP bonus %</value>
+  </data>
+  <data name="MainWindow_FreeXp" xml:space="preserve">
+    <value>Free XP :</value>
+  </data>
+  <data name="MainWindow_FreeXpBonus" xml:space="preserve">
+    <value>Free XP Bonus %</value>
+  </data>
+  <data name="MainWindow_Xp" xml:space="preserve">
+    <value>Final XP :</value>
+  </data>
+  <data name="MainWindow_XpBonus" xml:space="preserve">
+    <value>XP bonus %</value>
+  </data>
+  <data name="MainWindow_XpCalculator" xml:space="preserve">
+    <value>XP Calculator</value>
   </data>
 </root>
