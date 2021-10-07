@@ -37,7 +37,8 @@ namespace WoWsShipBuilder.UI
                     return;
                 }
 
-                AppSettingsHelper.LoadSettings();
+                desktop.Exit += OnExit;
+                //AppSettingsHelper.LoadSettings();
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
             }
@@ -45,7 +46,12 @@ namespace WoWsShipBuilder.UI
             base.OnFrameworkInitializationCompleted();
         }
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            AppSettingsHelper.SaveSettings();
+        }
+
+        private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new(sourceDirName);

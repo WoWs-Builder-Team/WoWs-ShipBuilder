@@ -26,8 +26,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             ResetSettingsCommand = ReactiveCommand.Create(() => ResetSettings());
             CleanAppDataCommand = ReactiveCommand.Create(() => CleanAppData());
             DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
-            selectedLanguage = languages.Keys.First();
             LanguagesList = languages.Keys.ToList();
+            SelectedLanguage = languages.Keys.First();
+            Servers = Enum.GetNames<ServerType>().ToList();
+            SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
         }
 
         // Add here all the currently supported languages
@@ -62,6 +64,26 @@ namespace WoWsShipBuilder.UI.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedLanguage, value);
                 SelectedLanguageChanged();
             }
+        }
+
+        private string selectedServer;
+
+        public string SelectedServer
+        {
+            get => selectedServer;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedServer, value);
+                ServerChanged(value);
+            }
+        }
+
+        private List<string> servers;
+
+        public List<string> Servers
+        {
+            get => servers;
+            set => this.RaiseAndSetIfChanged(ref servers, value);
         }
 
         private void SelectedLanguageChanged()
@@ -141,6 +163,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void AutoUpdateChanged(bool autoUpdate)
         {
             AppData.Settings!.AutoUpdateEnabled = autoUpdate;
+        }
+
+        private void ServerChanged(string server)
+        {
+            AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(server);
         }
     }
 }

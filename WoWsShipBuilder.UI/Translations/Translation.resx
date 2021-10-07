@@ -213,4 +213,10 @@
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
     <value>Captain Talents</value>
   </data>
+  <data name="SettingsWindow_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SettingsWindow_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
 </root>
