@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.SkillToolTip"
+             xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations">
+
+    <UserControl.Resources>
+        <t:LocalizeConverter x:Key="LocalizeConverter" />
+        <conv:ModifierBonusConverter x:Key="ModifierBonusConverter" />
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Vertical" Spacing="5">
+        <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
+        <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" FontSize="13" FontWeight="Normal" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
+        <Separator/>
+        <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <!--<TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
+                        <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>-->
+                        <TextBlock Name="ModifierDesc">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                    <Binding Path="Value"/>
+                                    <Binding Path="Key"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #CondModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <!--<TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
+                        <TextBlock Name="CondModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>-->
+                        <TextBlock Name="CondModifierDesc">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                    <Binding Path="Value"/>
+                                    <Binding Path="Key"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

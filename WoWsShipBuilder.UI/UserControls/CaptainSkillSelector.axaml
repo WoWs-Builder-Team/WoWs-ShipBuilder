@@ -7,13 +7,12 @@
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              x:Name="Control">
 
     <UserControl.Resources>
         <conv:CaptainSkillImageConverter x:Key="CaptainSkillImageConverter" />
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
-        <t:LocalizeConverter x:Key="LocalizeConverter" />
-        <conv:ModifierBonusConverter x:Key="ModifierBonusConverter" />
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="5*,*">
@@ -35,33 +34,9 @@
                         <Panel>
                             <Border CornerRadius="15" Width="60" Height="60" Margin="5">
                                 <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ToolTip.Tip>
-                                        <StackPanel Orientation="Vertical" Spacing="5">
-                                            <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
-                                            <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" FontSize="13" FontWeight="Normal" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
-                                            <Separator/>
-                                            <ItemsControl  Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                            <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
-                                                            <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                            <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                            <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
-                                                            <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                    </ToolTip.Tip>
+                                    <!--<ToolTip.Tip>
+                                        <userControls:SkillToolTip DataContext="{Binding}"/>-->
+                                    <!--</ToolTip.Tip>-->
                                 </Image>
                             </Border>
                             <customControls:NumberedButton
@@ -69,31 +44,7 @@
                                 Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
                                 Margin="5">
                                 <ToolTip.Tip>
-                                    <StackPanel Orientation="Vertical" Spacing="5">
-                                        <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
-                                        <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" FontSize="13" FontWeight="Normal" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
-                                        <Separator/>
-                                        <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                        <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
-                                                        <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                                        <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
-                                                        <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
+                                    <userControls:SkillToolTip DataContext="{Binding}"/>
                                 </ToolTip.Tip>
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
