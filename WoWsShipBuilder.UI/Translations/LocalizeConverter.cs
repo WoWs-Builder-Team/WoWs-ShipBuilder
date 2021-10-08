@@ -35,7 +35,14 @@ namespace WoWsShipBuilder.UI.Translations
                         localizerKey = ToSnakeCase(localizerKey);
                     }
 
+                    // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
+                    if(localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF"))
+                    {
+                        localizerKey = $"{localizerKey}_DESTROYER";
+                    }
+
                     localizerKey = $"{prefix}_{localizerKey}";
+
                 }
 
                 var localizedString = Localizer.Instance[localizerKey.ToUpper()].Trim();
@@ -45,7 +52,7 @@ namespace WoWsShipBuilder.UI.Translations
                     return "";
                 }
 
-                if (localizedString.Equals("Reload time") || localizedString.Equals("Consumable reload time"))
+                if (localizedString.Equals("Reload time") || localizedString.Equals("Consumable reload time") || localizedString.Equals("Consumable action time") || localizedString.Equals("Number of Shell Explosions"))
                 {
                     localizedString = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"].Trim();
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -46,9 +47,18 @@ namespace WoWsShipBuilder.UI.ViewModels
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
             filteredSkills.ForEach(skill =>
             {
+                // Get only the tier for the relevant class
                 var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
                 var first = classSkill.First();
                 skill.Value.Tiers = classSkill;
+
+                // Get only the value for the relevant class
+                Dictionary<string, float> modifierClassSkill = skill.Value.Modifiers.Where(x => x.Key.Contains(shipClass.ToString())).ToDictionary(x => x.Key, x => x.Value);
+                // If Count is 0, the skill has universal value. If Count is > 0, the skill has values divided by class
+                if (modifierClassSkill.Count > 0)
+                {
+                    skill.Value.Modifiers = modifierClassSkill;
+                }
             });
             var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => x.Value);
             return filteredDictionary;

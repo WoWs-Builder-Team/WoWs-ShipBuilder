@@ -36,16 +36,26 @@
                             <Border CornerRadius="15" Width="60" Height="60" Margin="5">
                                 <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <ToolTip.Tip>
-                                        <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Vertical" Spacing="5">
                                             <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
                                             <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" FontSize="13" FontWeight="Normal" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
                                             <Separator/>
-                                            <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
+                                            <ItemsControl  Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                                                             <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
-                                                            <TextBlock Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
+                                                            <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                            <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
+                                                            <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -59,11 +69,21 @@
                                 Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
                                 Margin="5">
                                 <ToolTip.Tip>
-                                    <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Vertical" Spacing="5">
                                         <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
                                         <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" FontSize="13" FontWeight="Normal" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
                                         <Separator/>
                                         <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                        <TextBlock Text="{Binding Value, Converter={StaticResource ModifierBonusConverter}}"/>
+                                                        <TextBlock Name="ModifierDesc" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=PARAMS_MODIFIER}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">

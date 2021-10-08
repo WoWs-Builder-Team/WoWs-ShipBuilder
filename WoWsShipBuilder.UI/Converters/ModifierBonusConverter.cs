@@ -18,6 +18,11 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
                 {
+                    // This is Demolition Expert.
+                    if (modifier == 0.01f)
+                    {
+                        return "+1%";
+                    }
                     if (modifier > 1)
                     {
                         int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);
