@@ -17,6 +17,7 @@ namespace WoWsShipBuilder.UI.Converters
         {
             string value = "";
             string description = "";
+            bool found = false;
             var prefix = "PARAMS_MODIFIER";
 
             if (values[0] is string localizerKey && values[1] is float modifier)
@@ -27,11 +28,13 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     value = $"+{modifier * 100}%";
                 }
+
                 // This is Adrenaline Rush
                 else if (localizerKey.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value = $"-{modifier}%";
                 }
+
                 // Something in Last stand. Not sure what make of it tho.
                 else if (localizerKey.Contains("SGCritRudderTime"))
                 {
@@ -61,33 +64,40 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF"))
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase))
                 {
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }
 
                 localizerKey = $"{prefix}_{localizerKey}";
 
-                description = Localizer.Instance[localizerKey.ToUpper()].Localization.Trim();
-
-                if (parameter != null && parameter.Equals("PARAMS_MODIFIER") && description.Equals(localizerKey.ToUpper()))
-                {
-                    return "";
-                }
+                (found, description) = Localizer.Instance[localizerKey.ToUpper()];
 
                 if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") || description.Equals("Number of Shell Explosions"))
                 {
-                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"].Localization.Trim();
+                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
                 }
 
-                if (description.Equals($"{localizerKey.ToUpper()}_SKILL"))
+                if (!found)
                 {
-                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"].Localization.Trim();
+                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"];
+                }
+
+                if (!found)
+                {
+                    description = "";
                 }
                 #endregion
             }
 
-            return value + " " + description;
+            if (string.IsNullOrEmpty(description.Trim()))
+            {
+                return "";
+            }
+            else
+            {
+                return value + " " + description.Trim();
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
