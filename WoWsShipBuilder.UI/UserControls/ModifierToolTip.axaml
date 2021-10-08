@@ -1,0 +1,44 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.ModifierToolTip"
+             xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures">
+    <UserControl.Resources>
+        <conv:ModifierConverter x:Key="ModifierConverter" />
+    </UserControl.Resources>
+
+    <Design.DataContext>
+        <data:Modernization />
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical" Spacing="5">
+        <TextBlock Classes="ModifierTitle" Name="TitleText"
+                   Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
+        <TextBlock Classes="ModifierDescr"
+                   Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
+                   IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+        <Separator />
+        <ItemsControl Items="{Binding Effect}" FontSize="13" FontWeight="Normal">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <!-- Use style instead of setting property directly to avoid "Unset value" issues in converter. -->
+                        <TextBlock.Styles>
+                            <Style Selector="TextBlock">
+                                <Setter Property="Text">
+                                    <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                        <Binding Path="Key" />
+                                        <Binding Path="Value" />
+                                    </MultiBinding>
+                                </Setter>
+                            </Style>
+                        </TextBlock.Styles>
+                    </TextBlock>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

@@ -255,4 +255,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Downloading Ship Images</value>
   </data>
+  <data name="TITLE_PlaceholderMod" xml:space="preserve">
+      <value>Clear Slot</value>
+  </data>
 </root>

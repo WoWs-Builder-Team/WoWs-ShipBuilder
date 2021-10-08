@@ -473,5 +473,14 @@ namespace WoWsShipBuilder.UI.Translations {
                 return ResourceManager.GetString("StartMenu_Settings", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Slot.
+        /// </summary>
+        public static string TITLE_PlaceholderMod {
+            get {
+                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
+            }
+        }
     }
 }

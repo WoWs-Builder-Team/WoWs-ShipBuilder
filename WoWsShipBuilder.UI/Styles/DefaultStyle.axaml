@@ -93,4 +93,13 @@
         </Setter>
         <Setter Property="Height" Value="2"/>
     </Style>   
+    
+    <Style Selector="TextBlock.ModifierTitle">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.ModifierDescr">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
 </Styles>
