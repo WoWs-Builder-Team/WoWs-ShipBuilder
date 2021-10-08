@@ -30,7 +30,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}"
-                               ToolTip.Tip="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE_}" />
+                               ToolTip.Tip="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
