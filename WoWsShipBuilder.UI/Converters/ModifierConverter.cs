@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using Avalonia.Collections;
 using Avalonia.Data;
@@ -21,19 +22,26 @@ namespace WoWsShipBuilder.UI.Converters
             if (values[0] is string localizerKey && values[1] is float modifier)
             {
                 #region Value Parsing
-                // Value Parsing
-                if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
+                // This is Demolition Expert
+                if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // This is Demolition Expert.
-                    if (description.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = $"+{modifier * 100}";
-                    }
-                    else if (description.Contains("ArmamentReload", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        value = $"-{modifier}";
-                    }
-                    else if (modifier > 1)
+                    value = $"+{modifier * 100}%";
+                }
+                // This is Adrenaline Rush
+                else if (localizerKey.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = $"-{modifier}%";
+                }
+                // Something in Last stand. Not sure what make of it tho.
+                else if (localizerKey.Contains("SGCritRudderTime"))
+                {
+                    value = $"+{modifier}";
+                }
+                else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
+                {
+                    Debug.WriteLine(localizerKey);
+                    
+                    if (modifier > 1)
                     {
                         int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);
                         value = $"+{modifierValue}%";
