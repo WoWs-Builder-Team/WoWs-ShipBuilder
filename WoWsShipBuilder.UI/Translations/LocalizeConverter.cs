@@ -28,16 +28,30 @@ namespace WoWsShipBuilder.UI.Translations
             {
                 if (parameter is not string stringParam)
                 {
-                    return Localizer.Instance[localizerKey];
+                    return Localizer.Instance[localizerKey].Localization;
                 }
 
                 if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
                 {
-                    stringParam += "_";
                     localizerKey = ToSnakeCase(localizerKey);
                 }
 
-                return (stringParam.StartsWith('_') ? Localizer.Instance[localizerKey + stringParam] : Localizer.Instance[stringParam + localizerKey]).Trim();
+                (bool, string) result;
+                if (stringParam.StartsWith('_'))
+                {
+                    result = Localizer.Instance[localizerKey + stringParam];
+                }
+                else
+                {
+                    if (!stringParam.EndsWith("_"))
+                    {
+                        stringParam += "_";
+                    }
+
+                    result = Localizer.Instance[stringParam + localizerKey];
+                }
+
+                return result.Item2.Trim();
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);

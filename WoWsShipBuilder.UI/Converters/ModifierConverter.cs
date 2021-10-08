@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                 localizerKey = $"{prefix}_{localizerKey}";
 
-                description = Localizer.Instance[localizerKey.ToUpper()].Trim();
+                description = Localizer.Instance[localizerKey.ToUpper()].Localization.Trim();
 
                 if (parameter != null && parameter.Equals("PARAMS_MODIFIER") && description.Equals(localizerKey.ToUpper()))
                 {
@@ -77,12 +77,12 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") || description.Equals("Number of Shell Explosions"))
                 {
-                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"].Trim();
+                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"].Localization.Trim();
                 }
 
                 if (description.Equals($"{localizerKey.ToUpper()}_SKILL"))
                 {
-                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"].Trim();
+                    description = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"].Localization.Trim();
                 }
                 #endregion
             }
