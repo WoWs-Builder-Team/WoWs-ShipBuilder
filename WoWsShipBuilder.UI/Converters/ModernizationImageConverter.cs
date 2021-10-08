@@ -14,6 +14,8 @@ namespace WoWsShipBuilder.UI.Converters
     {
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
+            value ??= DataHelper.PlaceholderModernization;
+
             if (value is not Modernization modernization || !targetType.IsAssignableFrom(typeof(Bitmap)))
             {
                 throw new NotSupportedException();

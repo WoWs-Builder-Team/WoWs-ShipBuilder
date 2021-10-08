@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public static Localizer Instance { get; } = InstanceProducer.Value;
 
-        public string this[string key] => languageData.TryGetValue(key, out var localization) ? localization : key;
+        public string this[string key] => languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? localization : key;
 
         public bool UpdateLanguage(string newLocale)
         {

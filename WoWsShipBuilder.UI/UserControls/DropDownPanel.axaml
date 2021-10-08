@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.DropDownPanel"
+             Name="DropDownPanel">
+    <Design.DataContext>
+        <viewModels:UpgradePanelViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converters:ModernizationListToIndexConverter x:Key="ModernizationIndexConverter" />
+    </UserControl.Resources>
+    <ItemsControl Items="{Binding AvailableModernizationList}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="5" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <userControls:DropDownSelector AvailableModernizations="{Binding}"
+                                               SelectedModernizationChanged="{Binding ElementName=DropDownPanel, Path=DataContext.ModernizationChangedCallback}">
+                    <userControls:DropDownSelector.Styles>
+                        <Style Selector="userControls|DropDownSelector">
+                            <Setter Property="SelectedIndex">
+                                <MultiBinding Mode="OneWay" Converter="{StaticResource ModernizationIndexConverter}">
+                                    <Binding/>
+                                    <Binding ElementName="DropDownPanel" Path="DataContext.SelectedModernizationList" />
+                                </MultiBinding>
+                            </Setter>
+                        </Style>
+                    </userControls:DropDownSelector.Styles>
+                </userControls:DropDownSelector>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -187,6 +186,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
+        public UpgradePanelViewModel UpgradePanelViewModel { get; } = new();
+
         public List<Modernization> Slot1ModernizationList => new()
         {
             new Modernization
@@ -315,7 +316,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 Xp = Convert.ToString(finalXp);
                 CommanderXp = Convert.ToString(commanderXp);
-                FreeXp = Convert.ToString(freeXp); 
+                FreeXp = Convert.ToString(freeXp);
             }
         }
 

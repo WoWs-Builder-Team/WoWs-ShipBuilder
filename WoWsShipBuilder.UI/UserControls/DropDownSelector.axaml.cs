@@ -29,8 +29,8 @@ namespace WoWsShipBuilder.UI.UserControls
         public static readonly StyledProperty<List<Modernization>> AvailableModernizationsProperty =
             AvaloniaProperty.Register<DropDownSelector, List<Modernization>>(nameof(AvailableModernizations), notifying: ModernizationListChanged);
 
-        public static readonly StyledProperty<Action<Modernization>?> SelectedModernizationChangedProperty =
-            AvaloniaProperty.Register<DropDownSelector, Action<Modernization>?>(nameof(SelectedModernizationChanged));
+        public static readonly StyledProperty<Action<Modernization?, List<Modernization>>?> SelectedModernizationChangedProperty =
+            AvaloniaProperty.Register<DropDownSelector, Action<Modernization?, List<Modernization>>?>(nameof(SelectedModernizationChanged));
 
         private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<DropDownSelector, IImage>(
             nameof(SelectedImage),
@@ -47,15 +47,6 @@ namespace WoWsShipBuilder.UI.UserControls
         }
 
         /// <summary>
-        /// Gets or sets the currently selected index. Index 0 will always be the placeholder modification, indicating that the user did not select an upgrade for this slot.
-        /// </summary>
-        public int SelectedIndex
-        {
-            get => GetValue(SelectedIndexProperty);
-            set => SetValue(SelectedIndexProperty, value);
-        }
-
-        /// <summary>
         /// Gets or sets the list of available upgrades for this control. This list should not contain the placeholder upgrade object.
         /// </summary>
         public List<Modernization> AvailableModernizations
@@ -67,10 +58,19 @@ namespace WoWsShipBuilder.UI.UserControls
         /// <summary>
         /// Gets or sets a callback for a change of the currently selected upgrade.
         /// </summary>
-        public Action<Modernization>? SelectedModernizationChanged
+        public Action<Modernization?, List<Modernization>>? SelectedModernizationChanged
         {
             get => GetValue(SelectedModernizationChangedProperty);
             set => SetValue(SelectedModernizationChangedProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the currently selected index. Index 0 will always be the placeholder modification, indicating that the user did not select an upgrade for this slot.
+        /// </summary>
+        public int SelectedIndex
+        {
+            get => GetValue(SelectedIndexProperty);
+            set => SetValue(SelectedIndexProperty, value);
         }
 
         /// <summary>
@@ -106,10 +106,10 @@ namespace WoWsShipBuilder.UI.UserControls
             if (!beforeNotify)
             {
                 var dropDown = (DropDownSelector)sender;
-                Modernization newSelection = dropDown.EffectiveModernizationsList[dropDown.SelectedIndex];
+                Modernization? newSelection = dropDown.SelectedIndex > 0 ? dropDown.EffectiveModernizationsList[dropDown.SelectedIndex] : null;
                 dropDown.SelectedImage = (IImage)Converter.Convert(newSelection, typeof(IImage), null!, CultureInfo.InvariantCulture);
                 dropDown.UpgradePopup.IsOpen = false;
-                dropDown.SelectedModernizationChanged?.Invoke(newSelection);
+                dropDown.SelectedModernizationChanged?.Invoke(newSelection, dropDown.AvailableModernizations);
             }
         }
 

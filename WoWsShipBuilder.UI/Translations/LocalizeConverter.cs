@@ -25,7 +25,12 @@ namespace WoWsShipBuilder.UI.Translations
         {
             if (value is string localizerKey && targetType.IsAssignableFrom(typeof(string)))
             {
-                return Localizer.Instance[localizerKey];
+                if (parameter is not string stringParam)
+                {
+                    return Localizer.Instance[localizerKey];
+                }
+
+                return stringParam.StartsWith('_') ? Localizer.Instance[localizerKey + stringParam] : Localizer.Instance[stringParam + localizerKey];
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);

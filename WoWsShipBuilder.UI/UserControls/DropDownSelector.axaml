@@ -29,7 +29,8 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}" />
+                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}"
+                               ToolTip.Tip="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE_}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
