@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core.DataProvider;
@@ -30,6 +32,12 @@ namespace WoWsShipBuilder.UI.Translations
                     return Localizer.Instance[localizerKey];
                 }
 
+                if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
+                {
+                    localizerKey = ToSnakeCase(localizerKey);
+                    return Localizer.Instance[localizerKey];
+                }
+
                 return stringParam.StartsWith('_') ? Localizer.Instance[localizerKey + stringParam] : Localizer.Instance[stringParam + localizerKey];
             }
 
@@ -39,6 +47,37 @@ namespace WoWsShipBuilder.UI.Translations
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+        }
+
+        private static string ToSnakeCase(string camelCaseString)
+        {
+            if (camelCaseString == null)
+            {
+                throw new ArgumentNullException(nameof(camelCaseString));
+            }
+
+            if (camelCaseString.Length < 2)
+            {
+                return camelCaseString;
+            }
+
+            var sb = new StringBuilder();
+            sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+            for (int i = 1; i < camelCaseString.Length; ++i)
+            {
+                char c = camelCaseString[i];
+                if (char.IsUpper(c))
+                {
+                    sb.Append('_');
+                    sb.Append(char.ToLowerInvariant(c));
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
