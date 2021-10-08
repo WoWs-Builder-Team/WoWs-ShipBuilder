@@ -243,4 +243,16 @@
   <data name="MainWindow_XpCalculator" xml:space="preserve">
     <value>XP Calculator</value>
   </data>
+  <data name="SplashScreen_CamoImages" xml:space="preserve">
+    <value>Downloading Camo Images</value>
+  </data>
+  <data name="SplashScreen_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="SplashScreen_Json" xml:space="preserve">
+    <value>Downloading Data</value>
+  </data>
+  <data name="SplashScreen_ShipImages" xml:space="preserve">
+    <value>Downloading Ship Images</value>
+  </data>
 </root>

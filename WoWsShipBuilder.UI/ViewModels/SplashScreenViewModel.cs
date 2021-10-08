@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -55,12 +56,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             await JsonVersionCheck(progressTracker);
             await DownloadImages(progressTracker);
-            progressTracker.Report((TaskNumber, "done"));
+            progressTracker.Report((TaskNumber, Translation.SplashScreen_Done));
         }
 
         private async Task JsonVersionCheck(IProgress<(int, string)> progressTracker)
         {
-            progressTracker.Report((1, "jsonData"));
+            progressTracker.Report((1, Translation.SplashScreen_Json));
             await awsClient.CheckFileVersion(ServerType.Live);
         }
 
@@ -70,14 +71,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any())
             {
-                progressTracker.Report((2, "shipImages"));
+                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
                 await awsClient.DownloadAllImages(ImageType.Ship);
             }
 
             var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
             if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any())
             {
-                progressTracker.Report((3, "camoImages"));
+                progressTracker.Report((3, Translation.SplashScreen_CamoImages));
                 await awsClient.DownloadAllImages(ImageType.Camo);
             }
         }

@@ -403,6 +403,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading Camo Images.
+        /// </summary>
+        public static string SplashScreen_CamoImages {
+            get {
+                return ResourceManager.GetString("SplashScreen_CamoImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string SplashScreen_Done {
+            get {
+                return ResourceManager.GetString("SplashScreen_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Data.
+        /// </summary>
+        public static string SplashScreen_Json {
+            get {
+                return ResourceManager.GetString("SplashScreen_Json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Ship Images.
+        /// </summary>
+        public static string SplashScreen_ShipImages {
+            get {
+                return ResourceManager.GetString("SplashScreen_ShipImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load a build.
         /// </summary>
         public static string StartMenu_LoadBuild {

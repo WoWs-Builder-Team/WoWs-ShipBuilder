@@ -24,11 +24,9 @@
                      Background="#626262"
                      Value="{Binding Progress}"
                      ShowProgressText="True" FontSize="20" />
-        <TextBlock RelativePanel.Above="ProgressBar" Name="Status"
-                   Text="{x:Static t:Translation.DownloadWindow_Status}"
-                   Padding="5,0,0,5" FontSize="25" />
-        <TextBlock RelativePanel.RightOf="Status" RelativePanel.Above="ProgressBar" Name="StatusText"
-                   Text="{Binding DownloadInfo}"
-                   Padding="5,0,0,5" FontSize="25" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" RelativePanel.Above="ProgressBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <TextBlock Text="{x:Static t:Translation.DownloadWindow_Status}" Padding="5,0,0,5" FontSize="25" />
+            <TextBlock Text="{Binding DownloadInfo}" Padding="5,0,0,5" FontSize="25" />
+        </StackPanel>
     </RelativePanel>
 </Window>
