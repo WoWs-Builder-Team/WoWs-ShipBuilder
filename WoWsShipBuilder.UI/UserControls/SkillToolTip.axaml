@@ -9,7 +9,7 @@
 
     <UserControl.Resources>
         <t:LocalizeConverter x:Key="LocalizeConverter" />
-        <conv:ModifierBonusConverter x:Key="ModifierBonusConverter" />
+        <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
     
     <StackPanel Orientation="Vertical" Spacing="5">
@@ -43,7 +43,7 @@
                         <TextBlock Name="CondModifierDesc">
                             <TextBlock.Text>
                                 <MultiBinding Converter="{StaticResource ModifierConverter}">
-                                    <Binding Path="Value"/>
+                                    <Binding  Path="Value"/>
                                     <Binding Path="Key"/>
                                 </MultiBinding>
                             </TextBlock.Text>

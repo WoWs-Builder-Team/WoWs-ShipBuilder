@@ -34,6 +34,7 @@ namespace WoWsShipBuilder.UI.Translations
                     {
                         localizerKey = ToSnakeCase(localizerKey);
                     }
+                    localizerKey = $"{prefix}_{localizerKey}";
                 }
 
                 var localizedString = Localizer.Instance[localizerKey.ToUpper()].Trim();
