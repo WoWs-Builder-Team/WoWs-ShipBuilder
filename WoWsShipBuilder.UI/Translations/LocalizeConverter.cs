@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using Avalonia.Data;
@@ -34,11 +33,11 @@ namespace WoWsShipBuilder.UI.Translations
 
                 if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
                 {
+                    stringParam += "_";
                     localizerKey = ToSnakeCase(localizerKey);
-                    return Localizer.Instance[localizerKey];
                 }
 
-                return stringParam.StartsWith('_') ? Localizer.Instance[localizerKey + stringParam] : Localizer.Instance[stringParam + localizerKey];
+                return (stringParam.StartsWith('_') ? Localizer.Instance[localizerKey + stringParam] : Localizer.Instance[stringParam + localizerKey]).Trim();
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
