@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.UI.Translations
             {
                 if (parameter is not string stringParam)
                 {
-                    return Localizer.Instance[localizerKey];
+                    return Localizer.Instance[localizerKey].Localization;
                 }
 
                 if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.UI.Translations
                     localizerKey = ToSnakeCase(localizerKey);
                 }
 
-                string result;
+                (bool, string) result;
                 if (stringParam.StartsWith('_'))
                 {
                     result = Localizer.Instance[localizerKey + stringParam];
@@ -51,7 +51,7 @@ namespace WoWsShipBuilder.UI.Translations
                     result = Localizer.Instance[stringParam + localizerKey];
                 }
 
-                return result.Trim();
+                return result.Item2.Trim();
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);

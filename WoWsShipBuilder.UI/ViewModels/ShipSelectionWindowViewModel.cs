@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -23,7 +18,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             PlaceholderTier = "I ~ X";
 
-            var unsortedShipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"], ship => ship.Index);
+            var unsortedShipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship.Index);
             ShipNameDictionary = new SortedDictionary<string, string>(unsortedShipNameDictionary);
         }
 
