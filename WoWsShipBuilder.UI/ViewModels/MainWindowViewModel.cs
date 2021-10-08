@@ -174,7 +174,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-
         private bool? accountState = false;
 
         public bool? AccountState
@@ -205,7 +204,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Index = "PCM004",
             },
         };
-
 
         public List<Modernization> Slot2ModernizationList => new()
         {

@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core.DataProvider;
@@ -25,7 +27,35 @@ namespace WoWsShipBuilder.UI.Translations
         {
             if (value is string localizerKey && targetType.IsAssignableFrom(typeof(string)))
             {
-                return Localizer.Instance[localizerKey];
+                if (parameter is string prefix && !string.IsNullOrEmpty(prefix))
+                {
+                    Debug.WriteLine(localizerKey);
+                    if (prefix.Equals("SKILL") || prefix.Equals("SKILL_DESC"))
+                    {
+                        localizerKey = ToSnakeCase(localizerKey);
+                    }
+
+                    localizerKey = $"{prefix}_{localizerKey}";
+                }
+
+                var localizedString = Localizer.Instance[localizerKey.ToUpper()].Trim();
+
+                if (parameter != null && parameter.Equals("PARAMS_MODIFIER") && localizedString.Equals(localizerKey.ToUpper()))
+                {
+                    return "";
+                }
+
+                if (localizedString.Equals("Reload time") || localizedString.Equals("Consumable reload time"))
+                {
+                    localizedString = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"].Trim();
+                }
+
+                if (localizedString.Equals($"{localizerKey.ToUpper()}_SKILL"))
+                {
+                    localizedString = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"].Trim();
+                }
+
+                return localizedString;
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
@@ -34,6 +64,37 @@ namespace WoWsShipBuilder.UI.Translations
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+        }
+
+        private static string ToSnakeCase(string camelCaseString)
+        {
+            if (camelCaseString == null)
+            {
+                throw new ArgumentNullException(nameof(camelCaseString));
+            }
+
+            if (camelCaseString.Length < 2)
+            {
+                return camelCaseString;
+            }
+
+            var sb = new StringBuilder();
+            sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+            for (int i = 1; i < camelCaseString.Length; ++i)
+            {
+                char c = camelCaseString[i];
+                if (char.IsUpper(c))
+                {
+                    sb.Append('_');
+                    sb.Append(char.ToLowerInvariant(c));
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
