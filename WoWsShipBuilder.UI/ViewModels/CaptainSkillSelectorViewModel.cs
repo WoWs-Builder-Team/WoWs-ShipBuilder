@@ -54,6 +54,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 // Get only the value for the relevant class
                 Dictionary<string, float> modifierClassSkill = skill.Value.Modifiers.Where(x => x.Key.Contains(shipClass.ToString())).ToDictionary(x => x.Key, x => x.Value);
+
                 // If Count is 0, the skill has universal value. If Count is > 0, the skill has values divided by class
                 if (modifierClassSkill.Count > 0)
                 {
