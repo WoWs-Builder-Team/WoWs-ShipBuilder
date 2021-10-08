@@ -34,9 +34,9 @@
                         <Panel>
                             <Border CornerRadius="15" Width="60" Height="60" Margin="5">
                                 <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <!--<ToolTip.Tip>
-                                        <userControls:SkillToolTip DataContext="{Binding}"/>-->
-                                    <!--</ToolTip.Tip>-->
+                                    <ToolTip.Tip>
+                                        <userControls:SkillToolTip DataContext="{Binding}"/>
+                                    </ToolTip.Tip>
                                 </Image>
                             </Border>
                             <customControls:NumberedButton
