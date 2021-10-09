@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Resources;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -17,7 +19,6 @@ namespace WoWsShipBuilder.UI.Converters
         {
             string value = "";
             string description = "";
-            var found = false;
             var prefix = "PARAMS_MODIFIER";
 
             float modifier = 0;
@@ -62,6 +63,11 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     value = $"+{modifier}";
                 }
+                // Incoming fire alert. Range is in BigWorld Unit
+                else if(localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = $"{(modifier * 30) / 1000} Km";
+                }
                 else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
                 {
                     Debug.WriteLine(localizerKey);
@@ -95,6 +101,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                 localizerKey = $"{prefix}_{localizerKey}";
 
+                bool found;
                 (found, description) = Localizer.Instance[localizerKey.ToUpper()];
 
                 if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") ||
@@ -111,6 +118,11 @@ namespace WoWsShipBuilder.UI.Converters
                 if (!found)
                 {
                     description = "";
+                }
+
+                if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ResourceManager.GetString("IncomingFireAlertDesc", Translation.Culture)!;
                 }
 
                 #endregion

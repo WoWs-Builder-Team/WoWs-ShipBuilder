@@ -256,6 +256,9 @@
     <value>Downloading Ship Images</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-      <value>Clear Slot</value>
+    <value>Clear Slot</value>
+  </data>
+  <data name="IncomingFireAlertDesc" xml:space="preserve">
+    <value>Minimum range for the warning to appear</value>
   </data>
 </root>
