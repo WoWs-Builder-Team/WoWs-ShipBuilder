@@ -14,14 +14,21 @@
         <data:Modernization />
     </Design.DataContext>
 
+    <UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+    </UserControl.Styles>
+
     <StackPanel Orientation="Vertical" Spacing="5">
         <TextBlock Classes="ModifierTitle" Name="TitleText"
-                   Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
+                    Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
         <TextBlock Classes="ModifierDescr"
-                   Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
-                   IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-        <Separator />
-        <ItemsControl Items="{Binding Effect}" FontSize="13" FontWeight="Normal">
+                    Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
+                    IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+        <Separator IsVisible="{Binding !!Effect}"/>
+        <ItemsControl Items="{Binding Effect}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">

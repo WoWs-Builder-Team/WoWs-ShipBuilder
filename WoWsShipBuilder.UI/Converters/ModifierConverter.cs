@@ -63,6 +63,7 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     value = $"+{modifier}";
                 }
+
                 // Incoming fire alert. Range is in BigWorld Unit
                 else if(localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -85,7 +86,15 @@ namespace WoWsShipBuilder.UI.Converters
                 }
                 else
                 {
-                    value = $"+{(int)modifier}";
+                    // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
+                    if (modifier > 1000)
+                    {
+                        value = $"+{modifier / 1000} Km";
+                    }
+                    else
+                    {
+                        value = $"+{(int)modifier}";
+                    }
                 }
 
                 #endregion
@@ -93,8 +102,9 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
-                    localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase))
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || 
+                    localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase))
                 {
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }
