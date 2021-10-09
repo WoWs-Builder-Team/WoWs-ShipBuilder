@@ -29,7 +29,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}">
+                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}" ToolTip.Placement="Right">
                             <ToolTip.Tip>
                                 <userControls:ModifierToolTip DataContext="{Binding}" />
                             </ToolTip.Tip>
