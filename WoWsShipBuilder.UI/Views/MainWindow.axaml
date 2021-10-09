@@ -70,7 +70,7 @@
                     <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
                 </Expander>
                 <Expander Header="Signals" Grid.Column="1" Grid.Row="0" ExpandDirection="Down" IsExpanded="True"
-                          BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,10,0,10" Padding="10">
+                          BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,10,0,10">
                     <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
                 </Expander>
                 <Expander Header="{x:Static t:Translation.MainWindow_XpCalculator}" Grid.Column="2" Grid.Row="0"

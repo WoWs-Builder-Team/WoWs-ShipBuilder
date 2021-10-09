@@ -15,15 +15,15 @@
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="5*,*">
+    <Grid ColumnDefinitions="*">
 
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="15"/>
-                <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="15"/>
-                <TextBlock Text="/21" FontSize="15"/>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+                <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13"/>
+                <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13"/>
+                <TextBlock Text="/21" FontSize="13"/>
             </StackPanel>
-            <ItemsControl Items="{Binding SkillList}">
+            <ItemsControl Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>
@@ -63,9 +63,9 @@
                     </Style>
                 </ItemsControl.Styles>
             </ItemsControl>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1">
+        </DockPanel>
+        <!--<StackPanel Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="Captain Talents" FontSize="15"/>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>
