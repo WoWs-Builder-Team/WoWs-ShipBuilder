@@ -255,4 +255,70 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Downloading Ship Images</value>
   </data>
+  <data name="AirCarrier" xml:space="preserve">
+    <value>Aircraft Carrier</value>
+  </data>
+  <data name="Battleship" xml:space="preserve">
+    <value>Battleship</value>
+  </data>
+  <data name="Commonwealth" xml:space="preserve">
+    <value>Commonwealth</value>
+  </data>
+  <data name="Cruiser" xml:space="preserve">
+    <value>Cruiser</value>
+  </data>
+  <data name="Destroyer" xml:space="preserve">
+    <value>Destroyer</value>
+  </data>
+  <data name="Europe" xml:space="preserve">
+    <value>Europe</value>
+  </data>
+  <data name="France" xml:space="preserve">
+    <value>France</value>
+  </data>
+  <data name="Germany" xml:space="preserve">
+    <value>Germany</value>
+  </data>
+  <data name="Italy" xml:space="preserve">
+    <value>Italy</value>
+  </data>
+  <data name="Japan" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="Netherlands" xml:space="preserve">
+    <value>Netherlands</value>
+  </data>
+  <data name="PanAmerica" xml:space="preserve">
+    <value>Pan America</value>
+  </data>
+  <data name="PanAsia" xml:space="preserve">
+    <value>Pan Asia</value>
+  </data>
+  <data name="Premium" xml:space="preserve">
+    <value>Premium</value>
+  </data>
+  <data name="Russia" xml:space="preserve">
+    <value>Russia</value>
+  </data>
+  <data name="Spain" xml:space="preserve">
+    <value>Spain</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Special</value>
+  </data>
+  <data name="Submarine" xml:space="preserve">
+    <value>Submarine</value>
+  </data>
+  <data name="TechTree" xml:space="preserve">
+    <value>Tech Tree</value>
+  </data>
+  <data name="TestShip" xml:space="preserve">
+    <value>Test Ship</value>
+  </data>
+  <data name="UnitedKingdom" xml:space="preserve">
+    <value>U.K.</value>
+  </data>
+  <data name="Usa" xml:space="preserve">
+    <value>U.S.A.</value>
+  </data>
 </root>
