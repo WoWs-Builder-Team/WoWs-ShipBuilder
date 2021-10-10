@@ -2,29 +2,52 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using Avalonia.Collections;
-using Avalonia.Data;
+using System.Resources;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class ModifierConverter : IMultiValueConverter
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1123:Do not place regions within elements", Justification = "<The code is a fucking mess otherwise>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "StyleCop.CSharp.ReadabilityRules",
+            "SA1123:Do not place regions within elements",
+            Justification = "<The code is a fucking mess otherwise>")]
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
             string value = "";
             string description = "";
-            bool found = false;
             var prefix = "PARAMS_MODIFIER";
 
-            if (values[0] is string localizerKey && values[1] is float modifier)
+            float modifier = 0;
+            var modifierInitialized = false;
+
+            switch (values[1])
+            {
+                case float floatMod:
+                    modifier = floatMod;
+                    modifierInitialized = true;
+                    break;
+                case double doubleMod:
+                    modifier = (float)doubleMod;
+                    modifierInitialized = true;
+                    break;
+            }
+
+            if (values[0] is string localizerKey && modifierInitialized)
             {
                 #region Value Parsing
+
+                // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
+                if (localizerKey.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = $"+{(int)modifier}";
+                }
+
                 // This is Demolition Expert
-                if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase))
+                else if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value = $"+{modifier * 100}%";
                 }
@@ -40,10 +63,16 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     value = $"+{modifier}";
                 }
+
+                // Incoming fire alert. Range is in BigWorld Unit
+                else if(localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = $"{(modifier * 30) / 1000} Km";
+                }
                 else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
                 {
                     Debug.WriteLine(localizerKey);
-                    
+
                     if (modifier > 1)
                     {
                         int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);
@@ -57,24 +86,41 @@ namespace WoWsShipBuilder.UI.Converters
                 }
                 else
                 {
-                    value = $"+{(int)modifier}";
+                    // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
+                    if (modifier > 1000)
+                    {
+                        value = $"+{modifier / 1000} Km";
+                    }
+                    else
+                    {
+                        value = $"+{(int)modifier}";
+                    }
                 }
+
                 #endregion
 
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase))
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || 
+                    localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase))
                 {
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }
 
                 localizerKey = $"{prefix}_{localizerKey}";
 
+                bool found;
                 (found, description) = Localizer.Instance[localizerKey.ToUpper()];
 
-                if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") || description.Equals("Number of Shell Explosions"))
+                // We need this to deal with the consumable mod of slot 5
+                var moduleFallback = "";
+
+                if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") ||
+                    description.Equals("Number of Shell Explosions"))
                 {
+                    moduleFallback = description;
                     (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
                 }
 
@@ -85,8 +131,21 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (!found)
                 {
-                    description = "";
+                    if (!string.IsNullOrEmpty(moduleFallback))
+                    {
+                        description = moduleFallback;
+                    }
+                    else
+                    {
+                        description = "";
+                    }
                 }
+
+                if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ResourceManager.GetString("IncomingFireAlertDesc", Translation.Culture)!;
+                }
+
                 #endregion
             }
 

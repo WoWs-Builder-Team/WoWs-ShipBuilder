@@ -13,54 +13,55 @@
         <vm:SignalSelectorViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="30,*,*,*">
-        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-            <TextBlock Text="{x:Static t:Translation.SignalSelector_Flags}" FontSize="15" />
-            <TextBlock Text="{Binding SignalsNumber}" FontSize="15" />
-            <TextBlock Text="/8" FontSize="15" />
+    <DockPanel>  
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+            <TextBlock Text="{x:Static t:Translation.SignalSelector_Flags}" FontSize="13" />
+            <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
+            <TextBlock Text="/8" FontSize="13" />
         </StackPanel>
-        <customControls:NumberedButton Grid.Column="0" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF016_NE7_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF016" />
-        <customControls:NumberedButton Grid.Column="1" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF012_MY6_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF012" />
-        <customControls:NumberedButton Grid.Column="2" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF018_IX_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF018" />
-        <customControls:NumberedButton Grid.Column="3" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF019_JW1_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF019" />
-        <customControls:NumberedButton Grid.Column="4" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF017_VL_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF017" />
-        <customControls:NumberedButton Grid.Column="5" Grid.Row="1"
-                                       BackgroundImage="/Assets/signal_flags/PCEF006_HY_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF006" />
-        <customControls:NumberedButton Grid.Column="0" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF014_NF_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF014" />
-        <customControls:NumberedButton Grid.Column="1" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF005_SM_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF005" />
-        <customControls:NumberedButton Grid.Column="2" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF007_ID_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF007" />
-        <customControls:NumberedButton Grid.Column="3" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF009_JY2_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF009" />
-        <customControls:NumberedButton Grid.Column="4" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF008_IY_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF008" />
-        <customControls:NumberedButton Grid.Column="5" Grid.Row="2"
-                                       BackgroundImage="/Assets/signal_flags/PCEF010_JC_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF010" />
-        <customControls:NumberedButton Grid.Column="2" Grid.Row="3"
-                                       BackgroundImage="/Assets/signal_flags/PCEF028_Smoke_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF028" />
-        <customControls:NumberedButton Grid.Column="3" Grid.Row="3"
-                                       BackgroundImage="/Assets/signal_flags/PCEF029_Sonar_AirDef_SignalFlag.png"
-                                       Command="{Binding SignalCommandExecute}" CommandParameter="PCEF029" />
-    </Grid>
+        <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*" DockPanel.Dock="Bottom">
+            <customControls:NumberedButton Grid.Column="0" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF016_NE7_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF016" />
+            <customControls:NumberedButton Grid.Column="1" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF012_MY6_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF012" />
+            <customControls:NumberedButton Grid.Column="2" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF018_IX_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF018" />
+            <customControls:NumberedButton Grid.Column="3" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF019_JW1_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF019" />
+            <customControls:NumberedButton Grid.Column="4" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF017_VL_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF017" />
+            <customControls:NumberedButton Grid.Column="5" Grid.Row="0"
+                                           BackgroundImage="/Assets/signal_flags/PCEF006_HY_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF006" />
+            <customControls:NumberedButton Grid.Column="0" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF014_NF_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF014" />
+            <customControls:NumberedButton Grid.Column="1" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF005_SM_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF005" />
+            <customControls:NumberedButton Grid.Column="2" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF007_ID_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF007" />
+            <customControls:NumberedButton Grid.Column="3" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF009_JY2_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF009" />
+            <customControls:NumberedButton Grid.Column="4" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF008_IY_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF008" />
+            <customControls:NumberedButton Grid.Column="5" Grid.Row="1"
+                                           BackgroundImage="/Assets/signal_flags/PCEF010_JC_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF010" />
+            <customControls:NumberedButton Grid.Column="2" Grid.Row="2"
+                                           BackgroundImage="/Assets/signal_flags/PCEF028_Smoke_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF028" />
+            <customControls:NumberedButton Grid.Column="3" Grid.Row="2"
+                                           BackgroundImage="/Assets/signal_flags/PCEF029_Sonar_AirDef_SignalFlag.png"
+                                           Command="{Binding SignalCommandExecute}" CommandParameter="PCEF029" />
+        </Grid>
+    </DockPanel>
 </UserControl>

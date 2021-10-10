@@ -15,15 +15,15 @@
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="5*,*">
+    <Grid ColumnDefinitions="*">
 
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="15"/>
-                <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="15"/>
-                <TextBlock Text="/21" FontSize="15"/>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+                <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13"/>
+                <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13"/>
+                <TextBlock Text="/21" FontSize="13"/>
             </StackPanel>
-            <ItemsControl Items="{Binding SkillList}">
+            <ItemsControl Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>
@@ -33,7 +33,7 @@
                     <DataTemplate>
                         <Panel>
                             <Border CornerRadius="15" Width="60" Height="60" Margin="5">
-                                <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip.Placement="Right">
                                     <ToolTip.Tip>
                                         <userControls:SkillToolTip DataContext="{Binding}"/>
                                     </ToolTip.Tip>
@@ -42,7 +42,7 @@
                             <customControls:NumberedButton
                                 BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
                                 Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                Margin="5">
+                                Margin="5" ToolTip.Placement="Right">
                                 <ToolTip.Tip>
                                     <userControls:SkillToolTip DataContext="{Binding}"/>
                                 </ToolTip.Tip>
@@ -57,15 +57,21 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Styles>
-                    <Style Selector="ContentPresenter">
+                    <Style Selector="customControls|NumberedButton:disabled">
+                        <Setter Property="Opacity" Value="0.4" />
+                    </Style>
+                    <Style Selector="customControls|NumberedButton:checked">
+                        <Setter Property="Opacity" Value="1" />
+                    </Style>
+                    <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
                         <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
                         <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
                     </Style>
                 </ItemsControl.Styles>
             </ItemsControl>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1">
+        </DockPanel>
+        <!--<StackPanel Orientation="Vertical" Grid.Column="1">
             <TextBlock Text="Captain Talents" FontSize="15"/>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>

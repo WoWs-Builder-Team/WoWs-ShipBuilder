@@ -205,6 +205,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum range for the warning to appear.
+        /// </summary>
+        public static string IncomingFireAlertDesc {
+            get {
+                return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to menu.
         /// </summary>
         public static string MainWindow_BackToMenu {
@@ -669,6 +678,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Usa {
             get {
                 return ResourceManager.GetString("Usa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Slot.
+        /// </summary>
+        public static string TITLE_PlaceholderMod {
+            get {
+                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
             }
         }
     }

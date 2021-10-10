@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -13,7 +12,25 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly MainWindow? self;
 
+        private bool? accountState = false;
+
+        private string accountType = "Normal Account";
+
+        private string baseXp = "0";
+
         private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
+        private string commanderXp = "0";
+
+        private string commanderXpBonus = "0";
+
+        private Ship effectiveShipData = null!;
+
+        private string freeXp = "0";
+
+        private string freeXpBonus = "0";
+
+        private Ship rawShipData = null!;
 
         private ShipModuleViewModel shipModuleViewModel = null!;
 
@@ -21,25 +38,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private SignalSelectorViewModel? signalSelectorViewModel;
 
+        private string xp = "0";
+
+        private string xpBonus = "0";
+
         public MainWindowViewModel(MainWindow win)
+            : this()
         {
             self = win;
-
-            // Signal selector model
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
-
-            // Ship stats model
-            var ships = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live);
-            var shipData = ships!["PGSD109"];
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(shipData);
-
-            // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(shipData.ShipClass);
-
-            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
-            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
-            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
-            ShipModuleViewModel = new ShipModuleViewModel(shipData.ShipUpgradeInfo);
         }
 
         public MainWindowViewModel()
@@ -48,15 +54,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
 
             // Ship stats model
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(new Ship());
+            var ships = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live);
+            var shipData = ships!["PGSD109"];
+            RawShipData = shipData;
+            EffectiveShipData = RawShipData;
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData);
 
             // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(ShipClass.Destroyer);
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
 
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
-            ShipModuleViewModel = new ShipModuleViewModel(); // TODO: replace with actual data
+            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
         }
 
         public ICommand OpenSaveBuildCommand { get; }
@@ -89,8 +99,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
         }
 
-        private string baseXp = "0";
-
         public string BaseXp
         {
             get => baseXp;
@@ -100,8 +108,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CalculateXPValues();
             }
         }
-
-        private string xpBonus = "0";
 
         public string XpBonus
         {
@@ -113,8 +119,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string commanderXpBonus = "0";
-
         public string CommanderXpBonus
         {
             get => commanderXpBonus;
@@ -124,8 +128,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CalculateXPValues();
             }
         }
-
-        private string freeXpBonus = "0";
 
         public string FreeXpBonus
         {
@@ -137,15 +139,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string xp = "0";
-
         public string Xp
         {
             get => xp;
             set => this.RaiseAndSetIfChanged(ref xp, value);
         }
-
-        private string commanderXp = "0";
 
         public string CommanderXp
         {
@@ -153,15 +151,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref commanderXp, value);
         }
 
-        private string freeXp = "0";
-
         public string FreeXp
         {
             get => freeXp;
             set => this.RaiseAndSetIfChanged(ref freeXp, value);
         }
-
-        private string accountType = "Normal Account";
 
         public string AccountType
         {
@@ -172,8 +166,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CalculateXPValues();
             }
         }
-
-        private bool? accountState = false;
 
         public bool? AccountState
         {
@@ -187,71 +179,17 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public UpgradePanelViewModel UpgradePanelViewModel { get; } = new();
 
-        public List<Modernization> Slot1ModernizationList => new()
+        public Ship EffectiveShipData
         {
-            new Modernization
-            {
-                Name = "PCM001_MainGun_Mod_I",
-                Index = "PCM001",
-            },
-            new Modernization
-            {
-                Name = "PCM002_Torpedo_Mod_I",
-                Index = "PCM002",
-            },
-            new Modernization
-            {
-                Name = "PCM004_AirDefense_Mod_I",
-                Index = "PCM004",
-            },
-        };
+            get => effectiveShipData;
+            set => this.RaiseAndSetIfChanged(ref effectiveShipData, value);
+        }
 
-        public List<Modernization> Slot2ModernizationList => new()
+        private Ship RawShipData
         {
-            new Modernization
-            {
-                Name = "PCM002_Torpedo_Mod_I",
-                Index = "PCM002",
-            },
-            new Modernization
-            {
-                Name = "PCM004_AirDefense_Mod_I",
-                Index = "PCM004",
-            },
-        };
-
-        public List<Modernization> Slot3ModernizationList => new()
-        {
-            new Modernization
-            {
-                Name = "PCM001_MainGun_Mod_I",
-                Index = "PCM001",
-            },
-            new Modernization
-            {
-                Name = "PCM004_AirDefense_Mod_I",
-                Index = "PCM004",
-            },
-            new Modernization
-            {
-                Name = "PCM012_SecondaryGun_Mod_II",
-                Index = "PCM012",
-            },
-        };
-
-        public List<Modernization> Slot4ModernizationList => new()
-        {
-            new Modernization
-            {
-                Name = "PCM001_MainGun_Mod_I",
-                Index = "PCM001",
-            },
-            new Modernization
-            {
-                Name = "PCM002_Torpedo_Mod_I",
-                Index = "PCM002",
-            },
-        };
+            get => rawShipData;
+            set => this.RaiseAndSetIfChanged(ref rawShipData, value);
+        }
 
         private void AddSignalModifiers(string flagIndex)
         {
@@ -290,7 +228,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void CalculateXPValues()
         {
-            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
+            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) &&
+                !string.IsNullOrEmpty(FreeXpBonus))
             {
                 var baseXp = Convert.ToInt32(BaseXp);
                 var xpBonus = Convert.ToDouble(XpBonus);

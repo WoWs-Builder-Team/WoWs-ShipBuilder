@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using Avalonia.Data;
@@ -29,6 +30,11 @@ namespace WoWsShipBuilder.UI.Translations
                 if (parameter is not string stringParam)
                 {
                     return Localizer.Instance[localizerKey].Localization;
+                }
+
+                if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return Translation.ResourceManager.GetString($"{stringParam}_{localizerKey}") ?? string.Empty;
                 }
 
                 if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
