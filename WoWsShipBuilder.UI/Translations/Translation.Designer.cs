@@ -61,6 +61,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string AirCarrier {
+            get {
+                return ResourceManager.GetString("AirCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battleship.
+        /// </summary>
+        public static string Battleship {
+            get {
+                return ResourceManager.GetString("Battleship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert the build name :.
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
@@ -88,6 +106,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Commonwealth.
+        /// </summary>
+        public static string Commonwealth {
+            get {
+                return ResourceManager.GetString("Commonwealth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cruiser.
+        /// </summary>
+        public static string Cruiser {
+            get {
+                return ResourceManager.GetString("Cruiser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destroyer.
+        /// </summary>
+        public static string Destroyer {
+            get {
+                return ResourceManager.GetString("Destroyer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {
@@ -111,6 +156,51 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DownloadWindow_StatusText {
             get {
                 return ResourceManager.GetString("DownloadWindow_StatusText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Europe.
+        /// </summary>
+        public static string Europe {
+            get {
+                return ResourceManager.GetString("Europe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to France.
+        /// </summary>
+        public static string France {
+            get {
+                return ResourceManager.GetString("France", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Germany.
+        /// </summary>
+        public static string Germany {
+            get {
+                return ResourceManager.GetString("Germany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Italy.
+        /// </summary>
+        public static string Italy {
+            get {
+                return ResourceManager.GetString("Italy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Japan.
+        /// </summary>
+        public static string Japan {
+            get {
+                return ResourceManager.GetString("Japan", resourceCulture);
             }
         }
         
@@ -228,6 +318,51 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_XpCalculator {
             get {
                 return ResourceManager.GetString("MainWindow_XpCalculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Netherlands.
+        /// </summary>
+        public static string Netherlands {
+            get {
+                return ResourceManager.GetString("Netherlands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pan America.
+        /// </summary>
+        public static string PanAmerica {
+            get {
+                return ResourceManager.GetString("PanAmerica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pan Asia.
+        /// </summary>
+        public static string PanAsia {
+            get {
+                return ResourceManager.GetString("PanAsia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Premium.
+        /// </summary>
+        public static string Premium {
+            get {
+                return ResourceManager.GetString("Premium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Russia.
+        /// </summary>
+        public static string Russia {
+            get {
+                return ResourceManager.GetString("Russia", resourceCulture);
             }
         }
         
@@ -457,6 +592,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spain.
+        /// </summary>
+        public static string Spain {
+            get {
+                return ResourceManager.GetString("Spain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special.
+        /// </summary>
+        public static string Special {
+            get {
+                return ResourceManager.GetString("Special", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading Camo Images.
         /// </summary>
         public static string SplashScreen_CamoImages {
@@ -525,6 +678,51 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string StartMenu_Settings {
             get {
                 return ResourceManager.GetString("StartMenu_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submarine.
+        /// </summary>
+        public static string Submarine {
+            get {
+                return ResourceManager.GetString("Submarine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tech Tree.
+        /// </summary>
+        public static string TechTree {
+            get {
+                return ResourceManager.GetString("TechTree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Ship.
+        /// </summary>
+        public static string TestShip {
+            get {
+                return ResourceManager.GetString("TestShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to U.K..
+        /// </summary>
+        public static string UnitedKingdom {
+            get {
+                return ResourceManager.GetString("UnitedKingdom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to U.S.A..
+        /// </summary>
+        public static string Usa {
+            get {
+                return ResourceManager.GetString("Usa", resourceCulture);
             }
         }
         
