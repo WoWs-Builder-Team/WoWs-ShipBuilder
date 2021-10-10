@@ -187,6 +187,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum range for the warning to appear.
+        /// </summary>
+        public static string IncomingFireAlertDesc {
+            get {
+                return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Italy.
         /// </summary>
         public static string Italy {
@@ -201,15 +210,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Japan {
             get {
                 return ResourceManager.GetString("Japan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Minimum range for the warning to appear.
-        /// </summary>
-        public static string IncomingFireAlertDesc {
-            get {
-                return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
             }
         }
         
@@ -538,6 +538,51 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string ShipSelectionWindow_ClassFilter {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_ClassFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string ShipSelectionWindow_ConfirmButton {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_ConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nation.
+        /// </summary>
+        public static string ShipSelectionWindow_NationFilter {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_NationFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tier.
+        /// </summary>
+        public static string ShipSelectionWindow_TierFilter {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_TierFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string ShipSelectionWindow_TypeFilter {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_TypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flags .
         /// </summary>
         public static string SignalSelector_Flags {
@@ -664,6 +709,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Slot.
+        /// </summary>
+        public static string TITLE_PlaceholderMod {
+            get {
+                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to U.K..
         /// </summary>
         public static string UnitedKingdom {
@@ -678,15 +732,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Usa {
             get {
                 return ResourceManager.GetString("Usa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Slot.
-        /// </summary>
-        public static string TITLE_PlaceholderMod {
-            get {
-                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
             }
         }
     }

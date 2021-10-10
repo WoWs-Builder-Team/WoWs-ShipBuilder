@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -165,7 +168,16 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private Dictionary<string, ShipSummary> shipNameDictionary = new();
+
+        private bool searchResult;
+
+        public bool SearchResult
+        {
+            get => searchResult;
+            set => this.RaiseAndSetIfChanged(ref searchResult, value);
+        }
+
+        private readonly Dictionary<string, ShipSummary> shipNameDictionary = new();
         private SortedDictionary<string, ShipSummary> filteredShipNameDictionary = new();
 
         public SortedDictionary<string, ShipSummary> FilteredShipNameDictionary
@@ -174,12 +186,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref filteredShipNameDictionary, value);
         }
 
-        private KeyValuePair<string, string> selectedShip;
+        private KeyValuePair<string, ShipSummary> selectedShip;
 
-        public KeyValuePair<string, string> SelectedShip
+        public KeyValuePair<string, ShipSummary> SelectedShip
         {
             get => selectedShip;
             set => this.RaiseAndSetIfChanged(ref selectedShip, value);
+        }
+
+        private string inputText;
+
+        public string InputText
+        {
+            get => inputText;
+            set => this.RaiseAndSetIfChanged(ref inputText, value);
         }
 
         private static string? GetLocalizedString(string stringToLocalize)
@@ -212,6 +232,21 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(tmpDct);
+        }
+
+        public void UpdateResult()
+        {
+            bool tmp = true;
+            foreach (var key in FilteredShipNameDictionary.Keys)
+            {
+                if (key.Contains(InputText.Trim()))
+                {
+                    tmp = false;
+                    break;
+                }
+            }
+
+            SearchResult = tmp;
         }
     }
 }
