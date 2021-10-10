@@ -36,7 +36,7 @@
         </StackPanel>
         <StackPanel IsVisible="{Binding !!Value.ConditionalModifiers.Count}">
             <Separator/>
-            <TextBlock FontWeight="Normal" FontSize="13" Text="{Binding Value.ConditionalTriggerType, Converter={StaticResource LocalizeConverter} ConverterParameter=SKILL_TRIGGER}"/>
+            <TextBlock FontWeight="Normal" FontSize="13" Text="{Binding Value.ConditionalTriggerType, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_TRIGGER}"/>
             <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

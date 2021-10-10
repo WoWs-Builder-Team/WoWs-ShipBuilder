@@ -23,7 +23,7 @@
                 <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13"/>
                 <TextBlock Text="/21" FontSize="13"/>
             </StackPanel>
-            <ItemsControl Items="{Binding SkillList}" DockPanel.Dock="Bottom">
+            <ItemsControl Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>
@@ -57,7 +57,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Styles>
-                    <Style Selector="ItemsControl > ContentPresenter">
+                    <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
                         <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
                         <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
                     </Style>
