@@ -3,12 +3,17 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class ShipStatsControlViewModel : ViewModelBase
+    public class ShipStatsControlViewModel : ViewModelBase
     {
         public ShipStatsControlViewModel(Ship ship)
         {
             CurrentShipStats = ship;
             BaseShipStats = ship;
+        }
+
+        public ShipStatsControlViewModel()
+            : this(new Ship())
+        {
         }
 
         private Ship? currentShipStats;

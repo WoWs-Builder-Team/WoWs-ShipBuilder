@@ -4,8 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl">
-
+             x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
+             xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures">
+    <Design.DataContext>
+        <vm:ShipStatsControlViewModel/>
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.RightSide">
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Grid.Column" Value="2"/>
+        </Style>
+        <Style Selector="StackPanel.Values > TextBlock">
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+    </UserControl.Styles>
     <ScrollViewer>
         <StackPanel Orientation="Horizontal">
             <!-- Main Armaments -->
@@ -13,39 +26,45 @@
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Main Battery"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                    <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
-                        <TextBlock Text="Main battery setup" Grid.Column="0" 
-                                   Grid.Row="0" />
-                        <TextBlock Text="Range" Grid.Column="0"
-                                   Grid.Row="1" />
-                        <TextBlock Text="27 Km" Grid.Row="1" Classes="RightSide" />
-                        <TextBlock Text="Reload Time" Grid.Column="0"
-                                   Grid.Row="2" />
-                        <TextBlock Text="30 s" Grid.Row="2" Classes="RightSide" />
-                        <TextBlock Text="Rate of fire" Grid.Column="0"
-                                   Grid.Row="3" />
-                        <TextBlock Text="30 s" Grid.Row="3" Classes="RightSide" />
-                        <TextBlock Text="180° turn time" Grid.Column="0"
-                                   Grid.Row="4" />
-                        <TextBlock Text="25 s" Grid.Row="4" Classes="RightSide" />
-                        <TextBlock Text="Travers speed" Grid.Column="0"
-                                   Grid.Row="5" />
-                        <TextBlock Text="10 °/s" Grid.Row="5" Classes="RightSide" />
-                        <TextBlock Text="Sigma" Grid.Column="0"
-                                   Grid.Row="6" />
-                        <TextBlock Text="2.1" Grid.Row="6" Classes="RightSide" />
-                        <TextBlock Text="Horizontal Dispersion" Grid.Column="0"
-                                   Grid.Row="7" />
-                        <TextBlock Text="200 m" Grid.Row="7" Classes="RightSide" />
-                        <TextBlock Text="Vertical Dispersion" Grid.Column="0"
-                                   Grid.Row="8" />
-                        <TextBlock Text="200 m" Grid.Row="8" Classes="RightSide" />
-
-                        <Separator Grid.Row="9" Grid.ColumnSpan="3" Margin="0,5"/>
-
-                        <TextBlock Text="HE Shell name" Grid.Column="0"
+                    <!--replace grid with stackpanel direction vertical for each row add another stackpanel direction horizontal spacing 30 if stackpanel doesnt work use dockpanel-->
+                    <DockPanel>
+                        <TextBlock Text="Main battery setup binding" DockPanel.Dock="Top"/>
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_TraverseSpeed}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Sigma}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
+                            <TextBlock Text="{Binding Range}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding ReloadTime}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding RateOfFire}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding DegreesTurnTime}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding TraverseSpeed}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Sigma}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding ShipStats_HorizontalDisp}" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding ShipStats_VerticalDisp}" TextAlignment="Right"/>
+                        </StackPanel>
+                        <!--<Separator Margin="0,5"/>-->
+                    </DockPanel>
+                    <!--<Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
+                        <ItemsControl Items="{Binding MainBatteryModuleList}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="data:ArtilleryShell">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                        --><!--<TextBlock Text="HE Shell name" Grid.Column="0"
                                    Grid.Row="10" />
-                        <TextBlock Text="HE Shell" Grid.Row="10" Classes="RightSide" />
+                        <TextBlock Text="HE Shell" Grid.Row="10" Classes="RightSide" />--><!--
                         <TextBlock Text="Shell Damage" Grid.Column="0"
                                    Grid.Row="11" Margin="20,0,0,0"/>
                         <TextBlock Text="10000" Grid.Row="11" Classes="RightSide" />
@@ -100,7 +119,7 @@
                         <TextBlock Text="Depth Explosion" Grid.Column="0"
                                    Grid.Row="28" Margin="20,0,0,0"/>
                         <TextBlock Text="2 m" Grid.Row="28" Classes="RightSide" />
-                    </Grid>
+                    </Grid>-->
                 </Expander>
                 <!--Torpedoes-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Torpedo"
@@ -191,13 +210,13 @@
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Secondary Battery"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
                     <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_Range}" Grid.Column="0"
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_Range}" Grid.Column="0"
                                    Grid.Row="0" />
                         <TextBlock Text="20.0 Km" Grid.Row="0" Classes="RightSide" />
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_RateOfFire}" Grid.Column="0"
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}" Grid.Column="0"
                                    Grid.Row="1" />
                         <TextBlock Text="2.0 RPM" Grid.Row="1" Classes="RightSide" />
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_TurnTime}" Grid.Column="0"
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}" Grid.Column="0"
                                    Grid.Row="2" />
                         <TextBlock Text="45 s" Grid.Row="2" Classes="RightSide" />
                     </Grid>
@@ -400,10 +419,4 @@
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
-    <UserControl.Styles>
-        <Style Selector="TextBlock.RightSide">
-            <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="Grid.Column" Value="2"/>
-        </Style>
-    </UserControl.Styles>
 </UserControl>

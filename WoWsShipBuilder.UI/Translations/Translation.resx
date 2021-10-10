@@ -120,20 +120,11 @@
   <data name="MainWindow_BackToMenu" xml:space="preserve">
     <value>Back to menu</value>
   </data>
-  <data name="MainWindow_Range" xml:space="preserve">
-    <value>Range</value>
-  </data>
-  <data name="MainWindow_RateOfFire" xml:space="preserve">
-    <value>Rate of Fire</value>
-  </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
     <value>Reset Build</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
     <value>Share Build</value>
-  </data>
-  <data name="MainWindow_TurnTime" xml:space="preserve">
-    <value>180° Turn Time</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
     <value>Enable automatic updates</value>
@@ -260,5 +251,29 @@
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
     <value>Minimum range for the warning to appear</value>
+  </data>
+  <data name="ShipStats_DegreesTurn" xml:space="preserve">
+    <value>180° turn time</value>
+  </data>
+  <data name="ShipStats_HorizontalDisp" xml:space="preserve">
+    <value>Horizontal Dispersion</value>
+  </data>
+  <data name="ShipStats_Range" xml:space="preserve">
+    <value>Range</value>
+  </data>
+  <data name="ShipStats_RateOfFire" xml:space="preserve">
+    <value>Rate of fire</value>
+  </data>
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Reload Time</value>
+  </data>
+  <data name="ShipStats_Sigma" xml:space="preserve">
+    <value>Sigma</value>
+  </data>
+  <data name="ShipStats_TraverseSpeed" xml:space="preserve">
+    <value>Traverse speed</value>
+  </data>
+  <data name="ShipStats_VerticalDisp" xml:space="preserve">
+    <value>Vertical Dispersion</value>
   </data>
 </root>
