@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System.Diagnostics;
+using NLog;
 using NLog.Config;
 using NLog.Targets;
 
@@ -16,11 +17,13 @@ namespace WoWsShipBuilder.Core
             var target = new FileTarget
             {
                 FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}.log",
+                Layout = "${longdate}|${level}|${logger}|${message:withException=true}",
                 MaxArchiveFiles = 5,
-                ArchiveAboveSize = 10240,
+                ArchiveAboveSize = 1024000,
             };
             config.AddTarget("logfile", target);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
+            Trace.Listeners.Add(new NLogTraceListener());
 
             config.AddSentry(o =>
             {

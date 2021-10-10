@@ -24,7 +24,7 @@
     <StackPanel Orientation="Vertical" Spacing="5">
         <TextBlock Classes="ModifierTitle" Name="TitleText"
                     Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
-        <TextBlock Classes="ModifierDescr"
+        <TextBlock Classes="ModifierDesc"
                     Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
                     IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
         <Separator IsVisible="{Binding !!Effect}"/>

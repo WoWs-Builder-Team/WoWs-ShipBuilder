@@ -57,6 +57,12 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 <ItemsControl.Styles>
+                    <Style Selector="customControls|NumberedButton:disabled">
+                        <Setter Property="Opacity" Value="0.4" />
+                    </Style>
+                    <Style Selector="customControls|NumberedButton:checked">
+                        <Setter Property="Opacity" Value="1" />
+                    </Style>
                     <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
                         <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
                         <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>

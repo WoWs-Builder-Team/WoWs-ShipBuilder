@@ -4,38 +4,38 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <customControls:NumberedButton Number="1" BackgroundImage="/Assets/Skills/torpedo_reload.png"/>
+            <customControls:NumberedButton Number="1" BackgroundImage="/Assets/Skills/torpedo_reload.png" />
         </Border>
     </Design.PreviewWith>
 
     <Style Selector="Window">
-        <Setter Property="Icon" Value="/Assets/ShipBuilderIcon-white.ico"/>
+        <Setter Property="Icon" Value="/Assets/ShipBuilderIcon-white.ico" />
     </Style>
     <Style Selector="Button">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="15" />
     </Style>
     <Style Selector="ListBox">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="15" />
     </Style>
     <!--Default Panel Border-->
     <Style Selector="Border.BorderPanel">
-        <Setter Property="BorderBrush" Value="Gray"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
     </Style>
     <!--Numbered Button defaults-->
     <Style Selector="customControls|NumberedButton">
-        <Setter Property="UnselectedBorder"  Value="Gray"/>
-        <Setter Property="UnselectedBorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="Red"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="UnselectedBorder" Value="Gray" />
+        <Setter Property="UnselectedBorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Red" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="17" />
     </Style>
     <!--Expander for ship stats-->
     <Style Selector="Expander /template/ ToggleButton#PART_toggle">
@@ -43,14 +43,15 @@
             <ControlTemplate>
                 <Border BorderThickness="1" Background="Transparent">
                     <Grid ColumnDefinitions="*,Auto">
-                        <ContentPresenter Grid.Column="0" 
-                                          Background="Transparent" 
-                                          Content="{TemplateBinding Content}" 
-                                          VerticalAlignment="Center" 
+                        <ContentPresenter Grid.Column="0"
+                                          Background="Transparent"
+                                          Content="{TemplateBinding Content}"
+                                          VerticalAlignment="Center"
                                           HorizontalContentAlignment="Left"
                                           VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Padding="{TemplateBinding Padding}"/>
-                        <Border Grid.Column="1" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                          Padding="{TemplateBinding Padding}" />
+                        <Border Grid.Column="1" Width="20" Height="20" HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
                             <Path Fill="{DynamicResource ThemeForegroundBrush}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
@@ -66,10 +67,10 @@
     </Style>
     <!--ComboBox for ship upgrades-->
     <Style Selector="ComboBox.Upgrades /template/ ToggleButton">
-        <Setter Property="IsVisible" Value="False"/>
+        <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="ComboBox.Upgrades /template/ Border">
-        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="CornerRadius" Value="5" />
     </Style>
     <!--ShipUpgrade selector-->
     <Style Selector="userControls|DropDownSelector.Upgrades Button">
@@ -86,20 +87,26 @@
         <Setter Property="Background">
             <RadialGradientBrush GradientOrigin="50%,50%" Radius="0.7">
                 <RadialGradientBrush.GradientStops>
-                    <GradientStop Color="Gray" Offset="0"></GradientStop>
-                    <GradientStop Color="#00000000" Offset="1"></GradientStop>
+                    <GradientStop Color="Gray" Offset="0" />
+                    <GradientStop Color="#00000000" Offset="1" />
                 </RadialGradientBrush.GradientStops>
             </RadialGradientBrush>
         </Setter>
-        <Setter Property="Height" Value="2"/>
-    </Style>   
-    
+        <Setter Property="Height" Value="2" />
+    </Style>
+
+    <!-- Default styles for modifier tooltip popups -->
+    <Style Selector="TextBlock.ModifierBase">
+        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+    </Style>
     <Style Selector="TextBlock.ModifierTitle">
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
-    <Style Selector="TextBlock.ModifierDescr">
+    <Style Selector="TextBlock.ModifierDesc">
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
 </Styles>
