@@ -27,13 +27,13 @@
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TypeFilter}" IsChecked="{Binding TypeFilterChecked}"/>
                 <ComboBox Items="{Binding TypeList}" PlaceholderText="All" SelectedItem="{Binding SelectedType}" IsEnabled="{Binding TypeFilterChecked}"/>
             </StackPanel>
-            <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Watermark="Search Ship" 
+            <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}" 
                              VerticalAlignment="Center" Items="{Binding FilteredShipNameDictionary}"
                              ValueMemberBinding="{Binding Key}" SelectedItem="{Binding SelectedShip}" 
                              FilterMode="Contains" Margin="5,2" PointerReleased="RunResearch" 
                              Text="{Binding InputText}" DropDownClosing="ShowResult"/>
         </Grid>
         <Button Grid.Row="2" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Padding="2" Margin="5,3"/>
-        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Padding="2" Margin="5,3" Text="NO RESULTS FOUND" Foreground="Red" IsVisible="{Binding SearchResult}"/>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Padding="2" Margin="5,3" Text="{x:Static t:Translation.ShipSelectionWindow_NoResultsFound}" Foreground="Red" IsVisible="{Binding SearchResult}"/>
     </Grid>
 </Window>

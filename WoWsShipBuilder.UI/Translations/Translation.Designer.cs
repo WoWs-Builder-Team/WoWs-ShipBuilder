@@ -277,24 +277,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Range.
-        /// </summary>
-        public static string MainWindow_Range {
-            get {
-                return ResourceManager.GetString("MainWindow_Range", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rate of Fire.
-        /// </summary>
-        public static string MainWindow_RateOfFire {
-            get {
-                return ResourceManager.GetString("MainWindow_RateOfFire", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reset Build.
         /// </summary>
         public static string MainWindow_ResetBuild {
@@ -309,15 +291,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_ShareBuild {
             get {
                 return ResourceManager.GetString("MainWindow_ShareBuild", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 180° Turn Time.
-        /// </summary>
-        public static string MainWindow_TurnTime {
-            get {
-                return ResourceManager.GetString("MainWindow_TurnTime", resourceCulture);
             }
         }
         
@@ -565,6 +538,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NO RESULTS FOUND.
+        /// </summary>
+        public static string ShipSelectionWindow_NoResultsFound {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_NoResultsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Ship.
+        /// </summary>
+        public static string ShipSelectionWindow_SearchShip {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_SearchShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tier.
         /// </summary>
         public static string ShipSelectionWindow_TierFilter {
@@ -579,6 +570,78 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipSelectionWindow_TypeFilter {
             get {
                 return ResourceManager.GetString("ShipSelectionWindow_TypeFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 180° turn time.
+        /// </summary>
+        public static string ShipStats_DegreesTurn {
+            get {
+                return ResourceManager.GetString("ShipStats_DegreesTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Dispersion.
+        /// </summary>
+        public static string ShipStats_HorizontalDisp {
+            get {
+                return ResourceManager.GetString("ShipStats_HorizontalDisp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range.
+        /// </summary>
+        public static string ShipStats_Range {
+            get {
+                return ResourceManager.GetString("ShipStats_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rate of fire.
+        /// </summary>
+        public static string ShipStats_RateOfFire {
+            get {
+                return ResourceManager.GetString("ShipStats_RateOfFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload Time.
+        /// </summary>
+        public static string ShipStats_Reload {
+            get {
+                return ResourceManager.GetString("ShipStats_Reload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sigma.
+        /// </summary>
+        public static string ShipStats_Sigma {
+            get {
+                return ResourceManager.GetString("ShipStats_Sigma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traverse speed.
+        /// </summary>
+        public static string ShipStats_TraverseSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_TraverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Dispersion.
+        /// </summary>
+        public static string ShipStats_VerticalDisp {
+            get {
+                return ResourceManager.GetString("ShipStats_VerticalDisp", resourceCulture);
             }
         }
         
