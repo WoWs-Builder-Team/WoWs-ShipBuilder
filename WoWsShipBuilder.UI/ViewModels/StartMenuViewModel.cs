@@ -34,16 +34,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async void NewBuild()
         {
-            //var result = await ShipSelectionWindow.ShowShipSelection(self);
-            //if (result != null)
-            //{
-            //    AppDataHelper.Instance.GetShipFromSummary(result);
-            //}
-
-            MainWindow win = new MainWindow();
-            win.DataContext = new MainWindowViewModel(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], win); // TODO: add actual ship selection
-            win.Show();
-            self.Close();
+            var result = await ShipSelectionWindow.ShowShipSelection(self);
+            if (result != null)
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                MainWindow win = new MainWindow();
+                win.DataContext = new MainWindowViewModel(ship, win); // TODO: add actual ship selection
+                win.Show();
+                self.Close();
+            }
         }
 
         private void LoadBuild()
