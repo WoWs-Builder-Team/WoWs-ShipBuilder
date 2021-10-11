@@ -6,14 +6,14 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="DropDownControl"
-             x:Class="WoWsShipBuilder.UI.UserControls.DropDownSelector">
+             x:Class="WoWsShipBuilder.UI.UserControls.UpgradeSelector">
 
     <UserControl.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
     </UserControl.Resources>
 
     <Panel x:Name="BasePanel"
-           DataContext="{Binding RelativeSource={RelativeSource AncestorType=userControls:DropDownSelector}}">
+           DataContext="{Binding RelativeSource={RelativeSource AncestorType=userControls:UpgradeSelector}}">
         <!-- The button that opens the actual dropdown menu in the popup. -->
         <Button x:Name="DropDownButton" Width="{Binding Width}" Height="{Binding Height}" Click="Button_OnClick">
             <Image Source="{Binding SelectedImage}" />
