@@ -168,7 +168,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-
         private bool searchResult;
 
         public bool SearchResult
@@ -194,9 +193,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedShip, value);
         }
 
-        private string inputText;
+        private string? inputText;
 
-        public string InputText
+        public string? InputText
         {
             get => inputText;
             set => this.RaiseAndSetIfChanged(ref inputText, value);
@@ -232,21 +231,33 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(tmpDct);
+
+            if (FilteredShipNameDictionary.Count == 0)
+            {
+                SearchResult = true;
+            }
+            else
+            {
+                SearchResult = false;
+            }
         }
 
         public void UpdateResult()
         {
-            bool tmp = true;
-            foreach (var key in FilteredShipNameDictionary.Keys)
+            if (!string.IsNullOrEmpty(InputText))
             {
-                if (key.Contains(InputText.Trim()))
+                bool tmp = true;
+                foreach (var key in FilteredShipNameDictionary.Keys)
                 {
-                    tmp = false;
-                    break;
+                    if (key.Contains(InputText.Trim()))
+                    {
+                        tmp = false;
+                        break;
+                    }
                 }
-            }
 
-            SearchResult = tmp;
+                SearchResult = tmp;
+            }
         }
     }
 }

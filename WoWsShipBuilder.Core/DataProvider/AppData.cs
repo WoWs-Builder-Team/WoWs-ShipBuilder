@@ -12,7 +12,9 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public static Dictionary<string, string>? TranslationsData { get; set; }
 
-        public static Dictionary<string, Ship>? ShipList { get; set; }
+        public static Dictionary<string, Ship>? ShipDictionary { get; set; }
+
+        public static Nation? CurrentLoadedNation { get; set; }
 
         public static Dictionary<string, Projectile>? ProjectileList { get; set; }
 
