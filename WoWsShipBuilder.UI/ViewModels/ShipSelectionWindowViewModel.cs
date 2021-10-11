@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -20,9 +22,13 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 
+            Test = new AutoCompleteFilterPredicate<string>((textSearch, shipName) => CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1);
+
             shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
         }
+
+        public AutoCompleteFilterPredicate<string> Test { get; }
 
         private bool tierFilterChecked = false;
 
@@ -249,7 +255,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 bool tmp = true;
                 foreach (var key in FilteredShipNameDictionary.Keys)
                 {
-                    if (key.Contains(InputText.Trim()))
+                    if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(key, InputText.Trim(), CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1)
                     {
                         tmp = false;
                         break;

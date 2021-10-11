@@ -30,7 +30,7 @@
             <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}" 
                              VerticalAlignment="Center" Items="{Binding FilteredShipNameDictionary}"
                              ValueMemberBinding="{Binding Key}" SelectedItem="{Binding SelectedShip}" 
-                             FilterMode="Contains" Margin="10,0,10,0" PointerReleased="RunResearch" 
+                             TextFilter="{Binding Test}" Margin="10,0,10,0" PointerReleased="RunResearch" 
                              Text="{Binding InputText}" DropDownClosing="ShowResult"/>
         </Grid>
         <Button Grid.Row="2" Name="Confirm" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
