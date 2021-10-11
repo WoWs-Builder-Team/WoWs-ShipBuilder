@@ -25,7 +25,11 @@ namespace WoWsShipBuilder.UI.Converters
                 var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
                 Uri uri = null;
 
-                if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
+                if (imageName.Equals("blank"))
+                {
+                    uri = new Uri($"avares://{assemblyName}/Assets/blank.png");
+                }
+                else if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (imageName != null)
                     {

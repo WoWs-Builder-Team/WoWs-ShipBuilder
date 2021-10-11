@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -63,11 +64,51 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
+
+            CurrentShipIndex = ship.Index;
+            if (ship.ShipCategory.Equals(ShipCategory.TechTree))
+            {
+                var previous = AppData.ShipSummaryList!.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
+                if (previous.Count > 0)
+                {
+                    PreviousShipIndex = previous[0];
+                }
+
+                var next = AppData.ShipSummaryList!.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
+                if (next.Count > 0)
+                {
+                    NextShipIndex = next[0];
+                }
+            }
         }
 
         public MainWindowViewModel()
             : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null)
         {
+        }
+
+        private string? currrentShipIndex = "_default";
+
+        public string? CurrentShipIndex
+        {
+            get => currrentShipIndex;
+            set => this.RaiseAndSetIfChanged(ref currrentShipIndex, value);
+        }
+
+        private string? previousShipIndex = "_default";
+
+        public string? PreviousShipIndex
+        {
+            get => previousShipIndex;
+            set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
+        }
+
+        private string? nextShipIndex = "_default";
+
+        public string? NextShipIndex
+        {
+            get => nextShipIndex;
+            set => this.RaiseAndSetIfChanged(ref nextShipIndex, value);
         }
 
         public ICommand OpenSaveBuildCommand { get; }

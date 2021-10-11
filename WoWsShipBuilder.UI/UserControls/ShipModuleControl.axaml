@@ -22,7 +22,7 @@
     </UserControl.Styles>
 
     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5">
-        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Disabled">
             <ItemsControl Items="{Binding ShipUpgrades}" HorizontalAlignment="Center">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
