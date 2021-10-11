@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="175"
         x:Class="WoWsShipBuilder.UI.Views.ShipSelectionWindow" Height="175" Width="500"
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" CanResize="False">
     <Grid RowDefinitions="30, auto, auto">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
