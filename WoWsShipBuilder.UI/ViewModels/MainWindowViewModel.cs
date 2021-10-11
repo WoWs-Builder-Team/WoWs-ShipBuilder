@@ -42,21 +42,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string xpBonus = "0";
 
-        public MainWindowViewModel(MainWindow win)
-            : this()
+        public MainWindowViewModel(Ship ship, MainWindow? window)
         {
-            self = win;
-        }
+            self = window;
 
-        public MainWindowViewModel()
-        {
             // Signal selector model
             SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
 
             // Ship stats model
-            var ships = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live);
-            var shipData = ships!["PGSD109"];
-            RawShipData = shipData;
+            RawShipData = ship;
             EffectiveShipData = RawShipData;
             ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData);
 
@@ -67,6 +61,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+        }
+
+        public MainWindowViewModel()
+            : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null)
+        {
         }
 
         public ICommand OpenSaveBuildCommand { get; }

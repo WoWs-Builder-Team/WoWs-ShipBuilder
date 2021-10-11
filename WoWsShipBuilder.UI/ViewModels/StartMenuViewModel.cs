@@ -1,8 +1,8 @@
-using System.Diagnostics;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -41,7 +41,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             //}
 
             MainWindow win = new MainWindow();
-            win.DataContext = new MainWindowViewModel(win);
+            win.DataContext = new MainWindowViewModel(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], win); // TODO: add actual ship selection
             win.Show();
             self.Close();
         }
