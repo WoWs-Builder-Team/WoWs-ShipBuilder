@@ -31,6 +31,8 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string AppDataDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
 
+        public string AppDataImageDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder", "Images");
+
         public string GetDataPath(ServerType serverType)
         {
             string serverName = serverType == ServerType.Live ? "live" : "pts";

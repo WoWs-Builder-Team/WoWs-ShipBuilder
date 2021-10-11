@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.UserControls
     {
         #region Static Fields and Constants
 
-        private static readonly ModernizationImageConverter Converter = new();
+        private static readonly ImagePathConverter Converter = new();
 
         public static readonly StyledProperty<int> SelectedIndexProperty =
             AvaloniaProperty.Register<DropDownSelector, int>(nameof(SelectedIndex), 0, notifying: SelectedIndexChanged);
@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<DropDownSelector, IImage>(
             nameof(SelectedImage),
-            (IImage)Converter.Convert(DataHelper.PlaceholderModernization, typeof(IImage), null!, CultureInfo.InvariantCulture));
+            (IImage)Converter.Convert(DataHelper.PlaceholderModernization, typeof(IImage), "Modernization", CultureInfo.InvariantCulture));
 
         private static readonly StyledProperty<IReadOnlyList<Modernization>> EffectiveModernizationsListProperty =
             AvaloniaProperty.Register<DropDownSelector, IReadOnlyList<Modernization>>(nameof(EffectiveModernizationsList));

@@ -9,7 +9,7 @@
              x:Class="WoWsShipBuilder.UI.UserControls.DropDownSelector">
 
     <UserControl.Resources>
-        <conv:ModernizationImageConverter x:Key="ModernizationImageConverter" />
+        <conv:ImagePathConverter x:Key="ImagePathConverter" />
     </UserControl.Resources>
 
     <Panel x:Name="BasePanel"
@@ -29,7 +29,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Image Source="{Binding Converter={StaticResource ModernizationImageConverter}}" ToolTip.Placement="Right">
+                        <Image Source="{Binding Converter={StaticResource ImagePathConverter}, ConverterParameter=Modernization}" ToolTip.Placement="Right">
                             <ToolTip.Tip>
                                 <userControls:ModifierToolTip DataContext="{Binding}" />
                             </ToolTip.Tip>
