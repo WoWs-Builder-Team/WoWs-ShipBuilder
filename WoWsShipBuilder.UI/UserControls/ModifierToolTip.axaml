@@ -27,7 +27,7 @@
         <TextBlock Classes="ModifierDesc"
                     Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
                     IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-        <Separator IsVisible="{Binding !!Effect}"/>
+        <Separator IsVisible="{Binding !!Effect.Count}"/>
         <ItemsControl Items="{Binding Effect}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

@@ -6,8 +6,8 @@
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="WoWsShipBuilder.UI.UserControls.DropDownPanel"
-             Name="DropDownPanel">
+             x:Class="WoWsShipBuilder.UI.UserControls.UpgradeSelectorPanel"
+             Name="UpgradePanel">
     <Design.DataContext>
         <viewModels:UpgradePanelViewModel />
     </Design.DataContext>
@@ -22,19 +22,19 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <userControls:DropDownSelector AvailableModernizations="{Binding}"
-                                               SelectedModernizationChanged="{Binding ElementName=DropDownPanel, Path=DataContext.ModernizationChangedCallback}">
-                    <userControls:DropDownSelector.Styles>
-                        <Style Selector="userControls|DropDownSelector">
+                <userControls:UpgradeSelector AvailableModernizations="{Binding}"
+                                               SelectedModernizationChanged="{Binding ElementName=UpgradePanel, Path=DataContext.ModernizationChangedCallback}">
+                    <userControls:UpgradeSelector.Styles>
+                        <Style Selector="userControls|UpgradeSelector">
                             <Setter Property="SelectedIndex">
                                 <MultiBinding Mode="OneWay" Converter="{StaticResource ModernizationIndexConverter}">
                                     <Binding/>
-                                    <Binding ElementName="DropDownPanel" Path="DataContext.SelectedModernizationList" />
+                                    <Binding ElementName="UpgradePanel" Path="DataContext.SelectedModernizationList" />
                                 </MultiBinding>
                             </Setter>
                         </Style>
-                    </userControls:DropDownSelector.Styles>
-                </userControls:DropDownSelector>
+                    </userControls:UpgradeSelector.Styles>
+                </userControls:UpgradeSelector>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>

@@ -13,18 +13,18 @@ namespace WoWsShipBuilder.UI.ViewModels
         private List<List<Modernization>> availableModernizationList = null!;
 
         public UpgradePanelViewModel()
-            : this(
-                new Ship
+            : this(new Ship
                 {
                     Index = "PGSD109",
                     Name = "PGSD109_Z_46",
                     ShipClass = ShipClass.Destroyer,
                     Tier = 9,
-                }, Nation.Germany)
+                    ShipNation = Nation.Germany,
+                })
         {
         }
 
-        public UpgradePanelViewModel(Ship ship, Nation shipNation)
+        public UpgradePanelViewModel(Ship ship)
         {
             ModernizationChangedCallback = (modernization, modernizationList) =>
             {
@@ -47,13 +47,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             var filteredModernizations = upgradeData.Select(entry => entry.Value)
                 .Where(m => !m.BlacklistedShips.Contains(ship.Name))
                 .Where(m => m.ShipLevel.Contains(ship.Tier))
-                .Where(m => m.AllowedNations.Contains(shipNation))
+                .Where(m => m.AllowedNations.Contains(ship.ShipNation))
                 .Where(m => m.ShipClasses.Contains(ship.ShipClass))
                 .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
                 .ToList();
 
             List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)
-                .Select(group => (group.Key, group.OrderBy(m => m.Index).ToList()))
+                .Select(group => (group.Key, group.OrderBy(m => m.Type).ThenBy(m => m.Index).ToList()))
                 .OrderBy(item => item.Key)
                 .Select(item => item.Item2)
                 .ToList();

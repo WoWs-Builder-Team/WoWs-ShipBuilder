@@ -73,7 +73,7 @@
         <Setter Property="CornerRadius" Value="5" />
     </Style>
     <!--ShipUpgrade selector-->
-    <Style Selector="userControls|DropDownSelector.Upgrades Button">
+    <Style Selector="userControls|UpgradeSelector.Upgrades Button">
         <Setter Property="CornerRadius" Value="5" />
     </Style>
     <Style Selector="ListBox.ShipModules">

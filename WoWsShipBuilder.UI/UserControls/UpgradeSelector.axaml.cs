@@ -17,31 +17,31 @@ namespace WoWsShipBuilder.UI.UserControls
     /// A UserControl that allows to open a drop-down list of available upgrades. Clicking on one selects the upgrade.
     /// Similar functionality to a <see cref="ComboBox"/>. However, unlike the combobox, the images within the list do not get disposed unexpectedly.
     /// </summary>
-    public class DropDownSelector : UserControl
+    public class UpgradeSelector : UserControl
     {
         #region Static Fields and Constants
 
         private static readonly ModernizationImageConverter Converter = new();
 
         public static readonly StyledProperty<int> SelectedIndexProperty =
-            AvaloniaProperty.Register<DropDownSelector, int>(nameof(SelectedIndex), 0, notifying: SelectedIndexChanged);
+            AvaloniaProperty.Register<UpgradeSelector, int>(nameof(SelectedIndex), 0, notifying: SelectedIndexChanged);
 
         public static readonly StyledProperty<List<Modernization>> AvailableModernizationsProperty =
-            AvaloniaProperty.Register<DropDownSelector, List<Modernization>>(nameof(AvailableModernizations), notifying: ModernizationListChanged);
+            AvaloniaProperty.Register<UpgradeSelector, List<Modernization>>(nameof(AvailableModernizations), notifying: ModernizationListChanged);
 
         public static readonly StyledProperty<Action<Modernization?, List<Modernization>>?> SelectedModernizationChangedProperty =
-            AvaloniaProperty.Register<DropDownSelector, Action<Modernization?, List<Modernization>>?>(nameof(SelectedModernizationChanged));
+            AvaloniaProperty.Register<UpgradeSelector, Action<Modernization?, List<Modernization>>?>(nameof(SelectedModernizationChanged));
 
-        private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<DropDownSelector, IImage>(
+        private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<UpgradeSelector, IImage>(
             nameof(SelectedImage),
             (IImage)Converter.Convert(DataHelper.PlaceholderModernization, typeof(IImage), null!, CultureInfo.InvariantCulture));
 
         private static readonly StyledProperty<IReadOnlyList<Modernization>> EffectiveModernizationsListProperty =
-            AvaloniaProperty.Register<DropDownSelector, IReadOnlyList<Modernization>>(nameof(EffectiveModernizationsList));
+            AvaloniaProperty.Register<UpgradeSelector, IReadOnlyList<Modernization>>(nameof(EffectiveModernizationsList));
 
         #endregion
 
-        public DropDownSelector()
+        public UpgradeSelector()
         {
             InitializeComponent();
         }
@@ -105,7 +105,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             if (!beforeNotify)
             {
-                var dropDown = (DropDownSelector)sender;
+                var dropDown = (UpgradeSelector)sender;
                 Modernization? newSelection = dropDown.SelectedIndex > 0 ? dropDown.EffectiveModernizationsList[dropDown.SelectedIndex] : null;
                 dropDown.SelectedImage = (IImage)Converter.Convert(newSelection, typeof(IImage), null!, CultureInfo.InvariantCulture);
                 dropDown.UpgradePopup.IsOpen = false;
@@ -122,7 +122,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             if (!beforeNotify)
             {
-                var dropDown = (DropDownSelector)sender;
+                var dropDown = (UpgradeSelector)sender;
                 dropDown.EffectiveModernizationsList = DataHelper.PlaceholderBaseList
                     .Concat(dropDown.AvailableModernizations)
                     .ToList();

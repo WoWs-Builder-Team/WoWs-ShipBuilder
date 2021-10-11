@@ -61,6 +61,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+            ConsumableViewModel = new ConsumableViewModel(RawShipData);
         }
 
         public MainWindowViewModel()
@@ -176,7 +178,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public UpgradePanelViewModel UpgradePanelViewModel { get; } = new();
+        public ConsumableViewModel ConsumableViewModel { get; }
+
+        public UpgradePanelViewModel UpgradePanelViewModel { get; }
 
         public Ship EffectiveShipData
         {
