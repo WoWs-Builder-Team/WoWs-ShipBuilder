@@ -538,7 +538,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No ship matching the filtering criteria found.
+        ///   Looks up a localized string similar to No ships matching the filtering criteria found.
         /// </summary>
         public static string ShipSelectionWindow_NoResultsFound {
             get {

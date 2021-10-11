@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -238,32 +235,22 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(tmpDct);
 
-            if (FilteredShipNameDictionary.Count == 0)
-            {
-                SearchResult = true;
-            }
-            else
-            {
-                SearchResult = false;
-            }
+            SearchResult = FilteredShipNameDictionary.Count == 0;
         }
 
         public void UpdateResult()
         {
-            if (!string.IsNullOrEmpty(InputText))
+            bool tmp = true;
+            foreach (var key in FilteredShipNameDictionary.Keys)
             {
-                bool tmp = true;
-                foreach (var key in FilteredShipNameDictionary.Keys)
+                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(key, InputText!.Trim(), CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1)
                 {
-                    if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(key, InputText.Trim(), CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1)
-                    {
-                        tmp = false;
-                        break;
-                    }
+                    tmp = false;
+                    break;
                 }
-
-                SearchResult = tmp;
             }
+
+            SearchResult = tmp;
         }
     }
 }

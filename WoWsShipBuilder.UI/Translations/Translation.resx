@@ -358,7 +358,7 @@
     <value>Vertical Dispersion</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>No ship matching the filtering criteria found</value>
+    <value>No ships matching the filtering criteria found</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
     <value>Search Ship</value>
