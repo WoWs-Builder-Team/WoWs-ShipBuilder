@@ -393,6 +393,9 @@
   <data name="ShipStats_Ricochet" xml:space="preserve">
     <value>Ricochet Angles</value>
   </data>
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>AA Defense</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Aircraft HP</value>
   </data>
@@ -408,6 +411,9 @@
   <data name="ShipStats_BompPayload" xml:space="preserve">
     <value>Bombs in Payload</value>
   </data>
+  <data name="ShipStats_ConstantDamage" xml:space="preserve">
+    <value>Constant Damage</value>
+  </data>
   <data name="ShipStats_Damage" xml:space="preserve">
     <value>Damage</value>
   </data>
@@ -417,14 +423,32 @@
   <data name="ShipStats_Detectability" xml:space="preserve">
     <value>Detectability range</value>
   </data>
+  <data name="ShipStats_Flak" xml:space="preserve">
+    <value>Flak</value>
+  </data>
+  <data name="ShipStats_FlakDamage" xml:space="preserve">
+    <value>Flak Damage</value>
+  </data>
+  <data name="ShipStats_FlakHitchance" xml:space="preserve">
+    <value>Flak Hitchance</value>
+  </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
     <value>Flooding Chance</value>
+  </data>
+  <data name="ShipStats_LongRangeAA" xml:space="preserve">
+    <value>Long Range Aura</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Main Battery</value>
   </data>
+  <data name="ShipStats_MediumRangeAA" xml:space="preserve">
+    <value>Medium Range Aura</value>
+  </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
     <value>Reaction Time</value>
+  </data>
+  <data name="ShipStats_ShortRangeAA" xml:space="preserve">
+    <value>Short Range Aura</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Speed</value>

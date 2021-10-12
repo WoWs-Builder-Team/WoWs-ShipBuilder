@@ -185,7 +185,62 @@
                 <!--AA-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AA Defense"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                    <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}" DockPanel.Dock="Top"></TextBlock>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_LongRangeAA}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Separator Margin="0,5"/>
+                        <DockPanel>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}" DockPanel.Dock="Top"></TextBlock>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_MediumRangeAA}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Separator Margin="0,5"/>
+                        <DockPanel>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}" DockPanel.Dock="Top"></TextBlock>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_ShortRangeAA}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                    <!--<Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
                         <TextBlock Text="AA Range" Grid.Column="0"
                                    Grid.Row="0" />
                         <TextBlock Text="6.0 Km" Grid.Row="0" Classes="RightSide" />
@@ -243,7 +298,7 @@
                         <TextBlock Text="Flak Hitchance" Grid.Column="0"
                                    Grid.Row="18" Margin="20,0,0,0"/>
                         <TextBlock Text="50 %" Grid.Row="18" Classes="RightSide" />
-                    </Grid>
+                    </Grid>-->
                 </Expander>
             </StackPanel>
             <!--Misc-->

@@ -574,6 +574,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AA Defense.
+        /// </summary>
+        public static string ShipStats_AADefense {
+            get {
+                return ResourceManager.GetString("ShipStats_AADefense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircraft HP.
         /// </summary>
         public static string ShipStats_AircraftHP {
@@ -624,6 +633,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_BompPayload {
             get {
                 return ResourceManager.GetString("ShipStats_BompPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Constant Damage.
+        /// </summary>
+        public static string ShipStats_ConstantDamage {
+            get {
+                return ResourceManager.GetString("ShipStats_ConstantDamage", resourceCulture);
             }
         }
         
@@ -682,6 +700,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flak.
+        /// </summary>
+        public static string ShipStats_Flak {
+            get {
+                return ResourceManager.GetString("ShipStats_Flak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flak Damage.
+        /// </summary>
+        public static string ShipStats_FlakDamage {
+            get {
+                return ResourceManager.GetString("ShipStats_FlakDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flak Hitchance.
+        /// </summary>
+        public static string ShipStats_FlakHitchance {
+            get {
+                return ResourceManager.GetString("ShipStats_FlakHitchance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flooding Chance.
         /// </summary>
         public static string ShipStats_FloodingChance {
@@ -709,11 +754,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Long Range Aura.
+        /// </summary>
+        public static string ShipStats_LongRangeAA {
+            get {
+                return ResourceManager.GetString("ShipStats_LongRangeAA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main Battery.
         /// </summary>
         public static string ShipStats_MainBattery {
             get {
                 return ResourceManager.GetString("ShipStats_MainBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium Range Aura.
+        /// </summary>
+        public static string ShipStats_MediumRangeAA {
+            get {
+                return ResourceManager.GetString("ShipStats_MediumRangeAA", resourceCulture);
             }
         }
         
@@ -795,6 +858,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_ShellWeight {
             get {
                 return ResourceManager.GetString("ShipStats_ShellWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Aura.
+        /// </summary>
+        public static string ShipStats_ShortRangeAA {
+            get {
+                return ResourceManager.GetString("ShipStats_ShortRangeAA", resourceCulture);
             }
         }
         
