@@ -219,9 +219,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public ConsumableViewModel ConsumableViewModel { get; }
+        public ConsumableViewModel ConsumableViewModel { get; set; }
 
-        public UpgradePanelViewModel UpgradePanelViewModel { get; }
+        public UpgradePanelViewModel UpgradePanelViewModel { get; set; }
 
         public Ship EffectiveShipData
         {
@@ -265,9 +265,44 @@ namespace WoWsShipBuilder.UI.ViewModels
             self!.Close();
         }
 
-        private void NewShipSelection()
+        private async void NewShipSelection()
         {
-            // Insert opening window
+            var result = await ShipSelectionWindow.ShowShipSelection(self);
+            if (result != null)
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                RawShipData = ship;
+                // Captain Skill model
+                CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
+
+                ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+                UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+                ConsumableViewModel = new ConsumableViewModel(RawShipData);
+
+                CurrentShipIndex = ship.Index;
+                if (ship.ShipCategory.Equals(ShipCategory.TechTree) && AppData.ShipSummaryList != null)
+                {
+                    var previous = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
+                    if (previous.Count > 0)
+                    {
+                        PreviousShipIndex = previous[0];
+                    }
+                    else
+                    {
+                        PreviousShipIndex = "";
+                    }
+
+                    var next = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
+                    if (next.Count > 0)
+                    {
+                        NextShipIndex = next[0];
+                    }
+                    else
+                    {
+                        NextShipIndex = "";
+                    }
+                }
+            }
         }
 
         private void CalculateXPValues()
