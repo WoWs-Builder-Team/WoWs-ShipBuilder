@@ -27,99 +27,72 @@
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Main Battery"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
                     <!--replace grid with stackpanel direction vertical for each row add another stackpanel direction horizontal spacing 30 if stackpanel doesnt work use dockpanel-->
-                    <DockPanel>
-                        <TextBlock Text="Main battery setup binding" DockPanel.Dock="Top"/>
-                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_TraverseSpeed}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_Sigma}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
-                            <TextBlock Text="{Binding Range}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding ReloadTime}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding RateOfFire}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding DegreesTurnTime}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding TraverseSpeed}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding Sigma}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding ShipStats_HorizontalDisp}" TextAlignment="Right"/>
-                            <TextBlock Text="{Binding ShipStats_VerticalDisp}" TextAlignment="Right"/>
-                        </StackPanel>
-                        <!--<Separator Margin="0,5"/>-->
-                    </DockPanel>
-                    <!--<Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
-                        <ItemsControl Items="{Binding MainBatteryModuleList}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3">
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <TextBlock Text="Main battery setup binding" DockPanel.Dock="Top"/>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_TraverseSpeed}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Sigma}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
+                                <TextBlock Text="{Binding Range}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding ReloadTime}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding RateOfFire}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding DegreesTurnTime}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding TraverseSpeed}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding Sigma}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding ShipStats_HorizontalDisp}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding ShipStats_VerticalDisp}" TextAlignment="Right"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <Separator Margin="0,5"/>
+                        <ItemsControl Items="{Binding MainBatteryModuleList}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="data:ArtilleryShell">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </StackPanel>
+                                    <DockPanel>
+                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellDamage}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_TheoreticalDPM}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellVelocity}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellWeight}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Ricochet}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Overmatch}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ArmingThreshold}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_FuseTimer}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
+                                            <TextBlock Text="{Binding ShellType}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Damage}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding TheoreticalDPM}" TextAlignment="Right"/>
+                                            
+                                            <!--Not sure if this is the correct prop, should be initial shell speed-->
+                                            <TextBlock Text="{Binding AirDrag}" TextAlignment="Right"/>
+                                            
+                                            <TextBlock Text="{Binding Mass}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Penetration}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding FireChance}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding RicochetAngle}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Overmatch}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding ArmingThreshold}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding FuseTimer}" TextAlignment="Right"/>
+                                            <!--No clue which prop this should be-->
+                                            <TextBlock Text="{Binding DepthExplosionRadius}" TextAlignment="Right"/>
+                                        </StackPanel>
+                                    </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        
-                        --><!--<TextBlock Text="HE Shell name" Grid.Column="0"
-                                   Grid.Row="10" />
-                        <TextBlock Text="HE Shell" Grid.Row="10" Classes="RightSide" />--><!--
-                        <TextBlock Text="Shell Damage" Grid.Column="0"
-                                   Grid.Row="11" Margin="20,0,0,0"/>
-                        <TextBlock Text="10000" Grid.Row="11" Classes="RightSide" />
-                        <TextBlock Text="Theoretical DPM" Grid.Column="0"
-                                   Grid.Row="12" Margin="20,0,0,0"/>
-                        <TextBlock Text="1234567" Grid.Row="12" Classes="RightSide" />
-                        <TextBlock Text="Initial shell velocity" Grid.Column="0"
-                                   Grid.Row="13" Margin="20,0,0,0"/>
-                        <TextBlock Text="850 m/s" Grid.Row="13" Classes="RightSide" />
-                        <TextBlock Text="Shell weight" Grid.Column="0"
-                                   Grid.Row="14" Margin="20,0,0,0"/>
-                        <TextBlock Text="1300 Kg" Grid.Row="14" Classes="RightSide" />
-                        <TextBlock Text="HE Penetration" Grid.Column="0"
-                                   Grid.Row="15" Margin="20,0,0,0"/>
-                        <TextBlock Text="77 mm" Grid.Row="15" Classes="RightSide" />
-                        <TextBlock Text="Fire chance" Grid.Column="0"
-                                   Grid.Row="16" Margin="20,0,0,0"/>
-                        <TextBlock Text="35 %" Grid.Row="16" Classes="RightSide" />
-                        <TextBlock Text="Depth Explosion" Grid.Column="0"
-                                   Grid.Row="17" Margin="20,0,0,0"/>
-                        <TextBlock Text="4 m" Grid.Row="17" Classes="RightSide" />
-
-                        <Separator Grid.Row="18" Grid.ColumnSpan="3" Margin="0,5"/>
-
-                        <TextBlock Text="AP Shell name" Grid.Column="0"
-                                   Grid.Row="19" />
-                        <TextBlock Text="AP Shell" Grid.Row="19" Classes="RightSide" />
-                        <TextBlock Text="Shell Damage" Grid.Column="0"
-                                   Grid.Row="20" Margin="20,0,0,0"/>
-                        <TextBlock Text="10000" Grid.Row="20" Classes="RightSide" />
-                        <TextBlock Text="Theoretical DPM" Grid.Column="0"
-                                   Grid.Row="21" Margin="20,0,0,0"/>
-                        <TextBlock Text="1234567" Grid.Row="21" Classes="RightSide" />
-                        <TextBlock Text="Initial shell velocity" Grid.Column="0"
-                                   Grid.Row="22" Margin="20,0,0,0"/>
-                        <TextBlock Text="850 m/s" Grid.Row="22" Classes="RightSide" />
-                        <TextBlock Text="Shell weight" Grid.Column="0"
-                                   Grid.Row="23" Margin="20,0,0,0"/>
-                        <TextBlock Text="1300 Kg" Grid.Row="23" Classes="RightSide" />
-                        <TextBlock Text="Richochet Angles" Grid.Column="0"
-                                   Grid.Row="24" Margin="20,0,0,0"/>
-                        <TextBlock Text="45.0 ~ 60.0" Grid.Row="24" Classes="RightSide" />
-                        <TextBlock Text="Overmatch" Grid.Column="0"
-                                   Grid.Row="25" Margin="20,0,0,0"/>
-                        <TextBlock Text="32 mm" Grid.Row="25" Classes="RightSide" />
-                        <TextBlock Text="Arming Threshold" Grid.Column="0"
-                                   Grid.Row="26" Margin="20,0,0,0"/>
-                        <TextBlock Text="77 mm" Grid.Row="26" Classes="RightSide" />
-                        <TextBlock Text="Fuse Time" Grid.Column="0"
-                                   Grid.Row="27" Margin="20,0,0,0"/>
-                        <TextBlock Text="0.033 s" Grid.Row="27" Classes="RightSide" />
-                        <TextBlock Text="Depth Explosion" Grid.Column="0"
-                                   Grid.Row="28" Margin="20,0,0,0"/>
-                        <TextBlock Text="2 m" Grid.Row="28" Classes="RightSide" />
-                    </Grid>-->
+                    </StackPanel>
                 </Expander>
                 <!--Torpedoes-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Torpedo"

@@ -187,6 +187,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum range for the warning to appear.
+        /// </summary>
+        public static string IncomingFireAlertDesc {
+            get {
+                return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Italy.
         /// </summary>
         public static string Italy {
@@ -201,15 +210,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Japan {
             get {
                 return ResourceManager.GetString("Japan", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Minimum range for the warning to appear.
-        /// </summary>
-        public static string IncomingFireAlertDesc {
-            get {
-                return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
             }
         }
         
@@ -511,6 +511,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arming Threshold.
+        /// </summary>
+        public static string ShipStats_ArmingThreshold {
+            get {
+                return ResourceManager.GetString("ShipStats_ArmingThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 180° turn time.
         /// </summary>
         public static string ShipStats_DegreesTurn {
@@ -520,11 +529,56 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depth Explosion Radius.
+        /// </summary>
+        public static string ShipStats_DepthExplosion {
+            get {
+                return ResourceManager.GetString("ShipStats_DepthExplosion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire Chance.
+        /// </summary>
+        public static string ShipStats_FireChance {
+            get {
+                return ResourceManager.GetString("ShipStats_FireChance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fuse Timer.
+        /// </summary>
+        public static string ShipStats_FuseTimer {
+            get {
+                return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal Dispersion.
         /// </summary>
         public static string ShipStats_HorizontalDisp {
             get {
                 return ResourceManager.GetString("ShipStats_HorizontalDisp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overmatch capability.
+        /// </summary>
+        public static string ShipStats_Overmatch {
+            get {
+                return ResourceManager.GetString("ShipStats_Overmatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penetration.
+        /// </summary>
+        public static string ShipStats_Penetration {
+            get {
+                return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
             }
         }
         
@@ -556,11 +610,56 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ricochet Angles.
+        /// </summary>
+        public static string ShipStats_Ricochet {
+            get {
+                return ResourceManager.GetString("ShipStats_Ricochet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shell Damage.
+        /// </summary>
+        public static string ShipStats_ShellDamage {
+            get {
+                return ResourceManager.GetString("ShipStats_ShellDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial Shell Velocity.
+        /// </summary>
+        public static string ShipStats_ShellVelocity {
+            get {
+                return ResourceManager.GetString("ShipStats_ShellVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shell Weight.
+        /// </summary>
+        public static string ShipStats_ShellWeight {
+            get {
+                return ResourceManager.GetString("ShipStats_ShellWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sigma.
         /// </summary>
         public static string ShipStats_Sigma {
             get {
                 return ResourceManager.GetString("ShipStats_Sigma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theoretical DPM.
+        /// </summary>
+        public static string ShipStats_TheoreticalDPM {
+            get {
+                return ResourceManager.GetString("ShipStats_TheoreticalDPM", resourceCulture);
             }
         }
         
@@ -709,6 +808,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Slot.
+        /// </summary>
+        public static string TITLE_PlaceholderMod {
+            get {
+                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to U.K..
         /// </summary>
         public static string UnitedKingdom {
@@ -723,15 +831,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Usa {
             get {
                 return ResourceManager.GetString("Usa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Clear Slot.
-        /// </summary>
-        public static string TITLE_PlaceholderMod {
-            get {
-                return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
             }
         }
     }
