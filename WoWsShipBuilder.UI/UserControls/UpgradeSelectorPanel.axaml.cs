@@ -1,11 +1,11 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
-    public class DropDownPanel : UserControl
+    public class UpgradeSelectorPanel : UserControl
     {
-        public DropDownPanel()
+        public UpgradeSelectorPanel()
         {
             InitializeComponent();
         }
@@ -16,4 +16,3 @@ namespace WoWsShipBuilder.UI.UserControls
         }
     }
 }
-

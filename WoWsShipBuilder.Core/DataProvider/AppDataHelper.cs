@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
@@ -31,6 +31,8 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string AppDataDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
 
+        public string AppDataImageDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder", "Images");
+
         public string GetDataPath(ServerType serverType)
         {
             string serverName = serverType == ServerType.Live ? "live" : "pts";
@@ -55,6 +57,28 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Localization", $"{language}.json");
             return fileSystem.File.Exists(fileName) ? DeserializeFile<Dictionary<string, string>>(fileName) : null;
+        }
+
+        public Ship? GetShipFromSummary(ShipSummary summary)
+        {
+            Ship? ship = null;
+
+            if (summary.Nation.Equals(AppData.CurrentLoadedNation))
+            {
+                ship = AppData.ShipDictionary![summary.Index];
+            }
+            else
+            {
+                var shipDict = ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+                if (shipDict != null)
+                {
+                    ship = shipDict[summary.Index];
+                    AppData.ShipDictionary = shipDict;
+                    AppData.CurrentLoadedNation = summary.Nation;
+                }
+            }
+
+            return ship;
         }
 
         private static string GetNationString(Nation? nation)

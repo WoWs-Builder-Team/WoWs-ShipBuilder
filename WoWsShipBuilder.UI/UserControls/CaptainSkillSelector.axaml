@@ -11,7 +11,7 @@
              x:Name="Control">
 
     <UserControl.Resources>
-        <conv:CaptainSkillImageConverter x:Key="CaptainSkillImageConverter" />
+        <conv:ImagePathConverter x:Key="ImagePathConverter" />
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
     </UserControl.Resources>
     
@@ -40,7 +40,7 @@
                                 </Image>
                             </Border>
                             <customControls:NumberedButton
-                                BackgroundImage="{Binding Key, Converter={StaticResource CaptainSkillImageConverter}}"
+                                BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
                                 Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
                                 Margin="5" ToolTip.Placement="Right">
                                 <ToolTip.Tip>

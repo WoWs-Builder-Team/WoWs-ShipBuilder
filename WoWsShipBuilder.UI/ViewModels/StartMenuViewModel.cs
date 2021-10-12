@@ -2,6 +2,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -31,20 +32,22 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ICommand SettingCommand { get; }
 
-        private void NewBuild()
+        private async void NewBuild()
         {
-            MainWindow win = new MainWindow();
-            win.DataContext = new MainWindowViewModel(win);
-            win.Show();
-            self.Close();
+            var result = await ShipSelectionWindow.ShowShipSelection(self);
+            if (result != null)
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                MainWindow win = new MainWindow();
+                win.DataContext = new MainWindowViewModel(ship, win); // TODO: add actual ship selection
+                win.Show();
+                self.Close();
+            }
         }
 
         private void LoadBuild()
         {
             // Insert build loading
-            ShipSelectionWindow win = new ShipSelectionWindow();
-            win.DataContext = new ShipSelectionWindowViewModel();
-            win.Show();
         }
 
         private void Setting()

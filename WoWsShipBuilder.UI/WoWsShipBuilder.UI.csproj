@@ -55,6 +55,9 @@
       <Compile Update="Views\SettingsWindow.axaml.cs">
         <DependentUpon>SettingsWindow.axaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\UpgradeSelector.axaml.cs">
+        <DependentUpon>UpgradeSelector.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Update="Translations\Translation.resx">

@@ -318,6 +318,27 @@
   <data name="IncomingFireAlertDesc" xml:space="preserve">
     <value>Minimum range for the warning to appear</value>
   </data>
+  <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
+    <value>Nation</value>
+  </data>
+  <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
+    <value>Tier</value>
+  </data>
+  <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
+    <value>No ships matching the filtering criteria found</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+    <value>Search Ship</value>
+  </data>
   <data name="ShipStats_DegreesTurn" xml:space="preserve">
     <value>180° turn time</value>
   </data>
@@ -345,34 +366,34 @@
   <data name="ShipStats_ShellDamage" xml:space="preserve">
     <value>Shell Damage</value>
   </data>
-  <data name="ShipStats_ShellVelocity" xml:space="preserve">
+	<data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Initial Shell Velocity</value>
   </data>
-  <data name="ShipStats_ShellWeight" xml:space="preserve">
+	<data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Shell Weight</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+	<data name="ShipStats_TheoreticalDPM" xml:space="preserve">
     <value>Theoretical DPM</value>
   </data>
-  <data name="ShipStats_ArmingThreshold" xml:space="preserve">
+	<data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Arming Threshold</value>
   </data>
-  <data name="ShipStats_DepthExplosion" xml:space="preserve">
+	<data name="ShipStats_DepthExplosion" xml:space="preserve">
     <value>Depth Explosion Radius</value>
   </data>
-  <data name="ShipStats_FireChance" xml:space="preserve">
+	<data name="ShipStats_FireChance" xml:space="preserve">
     <value>Fire Chance</value>
   </data>
-  <data name="ShipStats_FuseTimer" xml:space="preserve">
+	<data name="ShipStats_FuseTimer" xml:space="preserve">
     <value>Fuse Timer</value>
   </data>
-  <data name="ShipStats_Overmatch" xml:space="preserve">
+	<data name="ShipStats_Overmatch" xml:space="preserve">
     <value>Overmatch capability</value>
   </data>
-  <data name="ShipStats_Penetration" xml:space="preserve">
+	<data name="ShipStats_Penetration" xml:space="preserve">
     <value>Penetration</value>
   </data>
-  <data name="ShipStats_Ricochet" xml:space="preserve">
+	<data name="ShipStats_Ricochet" xml:space="preserve">
     <value>Ricochet Angles</value>
   </data>
 </root>

@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
+             Name="ConsumablePanel">
+    <Design.DataContext>
+        <viewModels:ConsumableViewModel />
+    </Design.DataContext>
+
+    <ItemsControl Items="{Binding ShipConsumables}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="5" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <userControls:ConsumableSelector
+                    SelectedIndexChanged="{Binding ElementName=ConsumablePanel, Path=DataContext.OnConsumableSelected}"
+                    ConsumableList="{Binding}" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>
