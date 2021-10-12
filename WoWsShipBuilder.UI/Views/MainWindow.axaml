@@ -38,15 +38,15 @@
                     <!-- The button inside will be Image when we have them-->
                     <RelativePanel Grid.Column="1">
                         <StackPanel x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50"/>
+                            <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipPrevious"/>
                             <TextBlock Text="{Binding PreviousShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
-                        <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
-                            <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="80"/>
+                        <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
+                            <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="75"/>
                             <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding NextShipIndex, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <Image Source="{Binding NextShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50" />
+                            <Image Source="{Binding NextShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipNext"/>
                             <TextBlock Text="{Binding NextShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>                    
                     </RelativePanel>
