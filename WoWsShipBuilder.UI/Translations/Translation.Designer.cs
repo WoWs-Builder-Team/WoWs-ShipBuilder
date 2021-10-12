@@ -610,6 +610,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At maximum depth.
+        /// </summary>
+        public static string ShipStats_AtMaximum {
+            get {
+                return ResourceManager.GetString("ShipStats_AtMaximum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At operating depth.
+        /// </summary>
+        public static string ShipStats_AtOperating {
+            get {
+                return ResourceManager.GetString("ShipStats_AtOperating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At periscope depth.
+        /// </summary>
+        public static string ShipStats_AtPeriscope {
+            get {
+                return ResourceManager.GetString("ShipStats_AtPeriscope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available Flights.
         /// </summary>
         public static string ShipStats_AvailableFlights {
@@ -633,6 +660,78 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_BompPayload {
             get {
                 return ResourceManager.GetString("ShipStats_BompPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detectability Range by Air.
+        /// </summary>
+        public static string ShipStats_ConcealAir {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealAir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When on fire.
+        /// </summary>
+        public static string ShipStats_ConcealFire {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After firing main battery.
+        /// </summary>
+        public static string ShipStats_ConcealFiring {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealFiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When firing AA guns.
+        /// </summary>
+        public static string ShipStats_ConcealFiringAA {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealFiringAA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After firing main battery in smoke.
+        /// </summary>
+        public static string ShipStats_ConcealFiringSmoke {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealFiringSmoke", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concealment.
+        /// </summary>
+        public static string ShipStats_Concealment {
+            get {
+                return ResourceManager.GetString("ShipStats_Concealment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detectability Range by Sea.
+        /// </summary>
+        public static string ShipStats_ConcealSea {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealSea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detectability from submarines.
+        /// </summary>
+        public static string ShipStats_ConcealSub {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealSub", resourceCulture);
             }
         }
         
@@ -700,6 +799,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total damage per fire.
+        /// </summary>
+        public static string ShipStats_FireDamageTotal {
+            get {
+                return ResourceManager.GetString("ShipStats_FireDamageTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPS per fire.
+        /// </summary>
+        public static string ShipStats_FireDPS {
+            get {
+                return ResourceManager.GetString("ShipStats_FireDPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire Duration.
+        /// </summary>
+        public static string ShipStats_FireDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_FireDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire probability reduction.
+        /// </summary>
+        public static string ShipStats_FireReduction {
+            get {
+                return ResourceManager.GetString("ShipStats_FireReduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flak.
         /// </summary>
         public static string ShipStats_Flak {
@@ -727,6 +862,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total damage per flood.
+        /// </summary>
+        public static string ShipStats_FloodDamageTotal {
+            get {
+                return ResourceManager.GetString("ShipStats_FloodDamageTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPS per flooding.
+        /// </summary>
+        public static string ShipStats_FloodDPS {
+            get {
+                return ResourceManager.GetString("ShipStats_FloodDPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flooding duration.
+        /// </summary>
+        public static string ShipStats_FloodDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_FloodDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flooding Chance.
         /// </summary>
         public static string ShipStats_FloodingChance {
@@ -736,11 +898,47 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flooding probability.
+        /// </summary>
+        public static string ShipStats_FloodProbability {
+            get {
+                return ResourceManager.GetString("ShipStats_FloodProbability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Power Backward.
+        /// </summary>
+        public static string ShipStats_FullPowerBackward {
+            get {
+                return ResourceManager.GetString("ShipStats_FullPowerBackward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Power Forward.
+        /// </summary>
+        public static string ShipStats_FullPowerForward {
+            get {
+                return ResourceManager.GetString("ShipStats_FullPowerForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fuse Timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
             get {
                 return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hit Points.
+        /// </summary>
+        public static string ShipStats_HitPoints {
+            get {
+                return ResourceManager.GetString("ShipStats_HitPoints", resourceCulture);
             }
         }
         
@@ -772,11 +970,47 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maneuvrability.
+        /// </summary>
+        public static string ShipStats_Maneuvrability {
+            get {
+                return ResourceManager.GetString("ShipStats_Maneuvrability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max number of fires.
+        /// </summary>
+        public static string ShipStats_MaxFireAmount {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxFireAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max number of floodings.
+        /// </summary>
+        public static string ShipStats_MaxFloodAmount {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxFloodAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medium Range Aura.
         /// </summary>
         public static string ShipStats_MediumRangeAA {
             get {
                 return ResourceManager.GetString("ShipStats_MediumRangeAA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On the surface.
+        /// </summary>
+        public static string ShipStats_OnSurface {
+            get {
+                return ResourceManager.GetString("ShipStats_OnSurface", resourceCulture);
             }
         }
         
@@ -795,6 +1029,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Penetration {
             get {
                 return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power To Weight Ratio.
+        /// </summary>
+        public static string ShipStats_PowerToWeight {
+            get {
+                return ResourceManager.GetString("ShipStats_PowerToWeight", resourceCulture);
             }
         }
         
@@ -844,6 +1087,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rudder Shift Time.
+        /// </summary>
+        public static string ShipStats_RudderShift {
+            get {
+                return ResourceManager.GetString("ShipStats_RudderShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial Shell Velocity.
         /// </summary>
         public static string ShipStats_ShellVelocity {
@@ -889,6 +1141,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Survivability.
+        /// </summary>
+        public static string ShipStats_Survivability {
+            get {
+                return ResourceManager.GetString("ShipStats_Survivability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theoretical DPM.
         /// </summary>
         public static string ShipStats_TheoreticalDPM {
@@ -907,11 +1168,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Torpedo protection.
+        /// </summary>
+        public static string ShipStats_TorpedoProtection {
+            get {
+                return ResourceManager.GetString("ShipStats_TorpedoProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Traverse speed.
         /// </summary>
         public static string ShipStats_TraverseSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_TraverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turning Circle.
+        /// </summary>
+        public static string ShipStats_TurningCircle {
+            get {
+                return ResourceManager.GetString("ShipStats_TurningCircle", resourceCulture);
             }
         }
         
