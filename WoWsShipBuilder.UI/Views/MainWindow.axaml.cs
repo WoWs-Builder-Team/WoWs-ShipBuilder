@@ -1,9 +1,12 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
@@ -39,6 +42,22 @@ namespace WoWsShipBuilder.UI.Views
             {
                 e.Handled = true;
             }
+        }
+
+        public void OnClickChangeShipNext(object sender, PointerReleasedEventArgs e)
+        {
+            var dc = DataContext as MainWindowViewModel;
+            Debug.WriteLine(dc.NextShipIndex);
+            var ship = AppData.ShipDictionary![dc.NextShipIndex!];
+            DataContext = new MainWindowViewModel(ship, this);
+        }
+
+        public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
+        {
+            var dc = DataContext as MainWindowViewModel;
+            Debug.WriteLine(dc.NextShipIndex);
+            var ship = AppData.ShipDictionary![dc.PreviousShipIndex!];
+            DataContext = new MainWindowViewModel(ship, this);
         }
     }
 }

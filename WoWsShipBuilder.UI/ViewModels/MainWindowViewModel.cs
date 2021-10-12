@@ -66,15 +66,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
             CurrentShipIndex = ship.Index;
-            if (ship.ShipCategory.Equals(ShipCategory.TechTree))
+            if (ship.ShipCategory.Equals(ShipCategory.TechTree) && AppData.ShipSummaryList != null)
             {
-                var previous = AppData.ShipSummaryList!.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
+                var previous = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
                 if (previous.Count > 0)
                 {
                     PreviousShipIndex = previous[0];
                 }
 
-                var next = AppData.ShipSummaryList!.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
+                var next = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
                 if (next.Count > 0)
                 {
                     NextShipIndex = next[0];
@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref currrentShipIndex, value);
         }
 
-        private string? previousShipIndex = "_default";
+        private string? previousShipIndex = "";
 
         public string? PreviousShipIndex
         {
@@ -103,7 +103,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
         }
 
-        private string? nextShipIndex = "_default";
+        private string? nextShipIndex = "";
 
         public string? NextShipIndex
         {
