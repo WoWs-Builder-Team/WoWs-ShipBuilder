@@ -574,11 +574,56 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircraft HP.
+        /// </summary>
+        public static string ShipStats_AircraftHP {
+            get {
+                return ResourceManager.GetString("ShipStats_AircraftHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Airstrike.
+        /// </summary>
+        public static string ShipStats_Airstrike {
+            get {
+                return ResourceManager.GetString("ShipStats_Airstrike", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arming Threshold.
         /// </summary>
         public static string ShipStats_ArmingThreshold {
             get {
                 return ResourceManager.GetString("ShipStats_ArmingThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Flights.
+        /// </summary>
+        public static string ShipStats_AvailableFlights {
+            get {
+                return ResourceManager.GetString("ShipStats_AvailableFlights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bomb Type.
+        /// </summary>
+        public static string ShipStats_BombType {
+            get {
+                return ResourceManager.GetString("ShipStats_BombType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bombs in Payload.
+        /// </summary>
+        public static string ShipStats_BompPayload {
+            get {
+                return ResourceManager.GetString("ShipStats_BompPayload", resourceCulture);
             }
         }
         
@@ -597,6 +642,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_DegreesTurn {
             get {
                 return ResourceManager.GetString("ShipStats_DegreesTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delay.
+        /// </summary>
+        public static string ShipStats_Delay {
+            get {
+                return ResourceManager.GetString("ShipStats_Delay", resourceCulture);
             }
         }
         

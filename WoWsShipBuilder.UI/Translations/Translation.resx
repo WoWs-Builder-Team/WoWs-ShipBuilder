@@ -393,8 +393,26 @@
   <data name="ShipStats_Ricochet" xml:space="preserve">
     <value>Ricochet Angles</value>
   </data>
+  <data name="ShipStats_AircraftHP" xml:space="preserve">
+    <value>Aircraft HP</value>
+  </data>
+  <data name="ShipStats_Airstrike" xml:space="preserve">
+    <value>Airstrike</value>
+  </data>
+  <data name="ShipStats_AvailableFlights" xml:space="preserve">
+    <value>Available Flights</value>
+  </data>
+  <data name="ShipStats_BombType" xml:space="preserve">
+    <value>Bomb Type</value>
+  </data>
+  <data name="ShipStats_BompPayload" xml:space="preserve">
+    <value>Bombs in Payload</value>
+  </data>
   <data name="ShipStats_Damage" xml:space="preserve">
     <value>Damage</value>
+  </data>
+  <data name="ShipStats_Delay" xml:space="preserve">
+    <value>Delay</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
     <value>Detectability range</value>
