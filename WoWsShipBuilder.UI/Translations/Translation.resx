@@ -462,4 +462,97 @@
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
     <value>Remove ship</value>
   </data>
+  <data name="ShipStats_AtMaximum" xml:space="preserve">
+    <value>At maximum depth</value>
+  </data>
+  <data name="ShipStats_AtOperating" xml:space="preserve">
+    <value>At operating depth</value>
+  </data>
+  <data name="ShipStats_AtPeriscope" xml:space="preserve">
+    <value>At periscope depth</value>
+  </data>
+  <data name="ShipStats_ConcealAir" xml:space="preserve">
+    <value>Detectability Range by Air</value>
+  </data>
+  <data name="ShipStats_ConcealFire" xml:space="preserve">
+    <value>When on fire</value>
+  </data>
+  <data name="ShipStats_ConcealFiring" xml:space="preserve">
+    <value>After firing main battery</value>
+  </data>
+  <data name="ShipStats_ConcealFiringAA" xml:space="preserve">
+    <value>When firing AA guns</value>
+  </data>
+  <data name="ShipStats_ConcealFiringSmoke" xml:space="preserve">
+    <value>After firing main battery in smoke</value>
+  </data>
+  <data name="ShipStats_Concealment" xml:space="preserve">
+    <value>Concealment</value>
+  </data>
+  <data name="ShipStats_ConcealSea" xml:space="preserve">
+    <value>Detectability Range by Sea</value>
+  </data>
+  <data name="ShipStats_ConcealSub" xml:space="preserve">
+    <value>Detectability from submarines</value>
+  </data>
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
+    <value>Full Power Backward</value>
+  </data>
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
+    <value>Full Power Forward</value>
+  </data>
+  <data name="ShipStats_Maneuvrability" xml:space="preserve">
+    <value>Maneuvrability</value>
+  </data>
+  <data name="ShipStats_OnSurface" xml:space="preserve">
+    <value>On the surface</value>
+  </data>
+  <data name="ShipStats_PowerToWeight" xml:space="preserve">
+    <value>Power To Weight Ratio</value>
+  </data>
+  <data name="ShipStats_RudderShift" xml:space="preserve">
+    <value>Rudder Shift Time</value>
+  </data>
+  <data name="ShipStats_TurningCircle" xml:space="preserve">
+    <value>Turning Circle</value>
+  </data>
+  <data name="ShipStats_FireDamageTotal" xml:space="preserve">
+    <value>Total damage per fire</value>
+  </data>
+  <data name="ShipStats_FireDPS" xml:space="preserve">
+    <value>DPS per fire</value>
+  </data>
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+    <value>Fire Duration</value>
+  </data>
+  <data name="ShipStats_FireReduction" xml:space="preserve">
+    <value>Fire probability reduction</value>
+  </data>
+  <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
+    <value>Total damage per flood</value>
+  </data>
+  <data name="ShipStats_FloodDPS" xml:space="preserve">
+    <value>DPS per flooding</value>
+  </data>
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+    <value>Flooding duration</value>
+  </data>
+  <data name="ShipStats_FloodProbability" xml:space="preserve">
+    <value>Flooding probability</value>
+  </data>
+  <data name="ShipStats_HitPoints" xml:space="preserve">
+    <value>Hit Points</value>
+  </data>
+  <data name="ShipStats_MaxFireAmount" xml:space="preserve">
+    <value>Max number of fires</value>
+  </data>
+  <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
+    <value>Max number of floodings</value>
+  </data>
+  <data name="ShipStats_Survivability" xml:space="preserve">
+    <value>Survivability</value>
+  </data>
+  <data name="ShipStats_TorpedoProtection" xml:space="preserve">
+    <value>Torpedo protection</value>
+  </data>
 </root>
