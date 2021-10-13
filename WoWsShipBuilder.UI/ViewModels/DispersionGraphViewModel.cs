@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Metadata;
+using DynamicData;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -21,8 +24,6 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private DispersionGraphsWindow self;
 
-        private List<string> shipNames = new();
-
         public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipName)
         {
             self = win;
@@ -30,6 +31,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             var hdisp = CreateHorizontalDispersionSeries(disp, maxRange, shipName);
             hModel.Series.Add(hdisp);
             HorizontalModel = hModel;
+        }
+
+        private AvaloniaList<string>? shipNames = new();
+
+        public AvaloniaList<string>? ShipNames
+        {
+            get => shipNames;
+            set => this.RaiseAndSetIfChanged(ref shipNames, value);
         }
 
         private PlotModel? horizontalModel;
@@ -63,7 +72,40 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void RemoveShip()
         {
+            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
+            if (result != null && result.Count > 0)
+            {
+                shipNames.RemoveAll(result);
+                var temp = new List<Series>();
+                foreach (var serie in HorizontalModel!.Series)
+                {
+                    if (!result.Contains(serie.Title))
+                    {
+                        temp.Add(serie);
+                    }
+                }
 
+                HorizontalModel.Series.Clear();
+                foreach(var serie in temp)
+                {
+                    HorizontalModel.Series.Add(serie);
+                }
+
+                HorizontalModel!.InvalidatePlot(true);
+            }
+        }
+
+        [DependsOn(nameof(ShipNames))]
+        public bool CanRemoveShip()
+        {
+            if (shipNames!.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // This are all default values to make the graph looks nice
