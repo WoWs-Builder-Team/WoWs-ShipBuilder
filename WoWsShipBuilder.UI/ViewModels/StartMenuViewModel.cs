@@ -1,8 +1,8 @@
+using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -45,9 +45,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void LoadBuild()
+        private async void LoadBuild()
         {
-            // Insert build loading
+            var result = await ShipSelectionWindow.ShowShipSelection(self);
+            if (result != null)
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                var win = new DispersionGraphsWindow();
+                var guns = ship.MainBatteryModuleList.Values.First();
+                win.DataContext = new DispersionGraphViewModel(win, guns.DispersionValues, (double)guns.MaxRange, ship.Index);
+                win.Show();
+            }
         }
 
         private void Setting()
