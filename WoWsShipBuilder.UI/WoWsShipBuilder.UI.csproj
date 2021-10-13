@@ -66,6 +66,6 @@
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Include="Settings\*.json" />
-      <None Remove="Settings\*.json" />
+      <None Remove="Settings\*.json"/>
     </ItemGroup>
 </Project>
