@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Metadata;
 using ReactiveUI;
@@ -55,18 +52,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             CurrentShipList.RemoveAll(curr);
         }
 
+        // TODO: Change into something that does listen to CollectionChanged events.
         [DependsOn(nameof(CurrentSelection))]
-        public bool CanRemoveShips()
-        {
-            if (CurrentSelection.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
 
         public void RestoreShips()
         {
@@ -76,16 +64,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         [DependsOn(nameof(RemoveSelection))]
-        public bool CanRestoreShips()
-        {
-            if (RemoveSelection.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
     }
 }
