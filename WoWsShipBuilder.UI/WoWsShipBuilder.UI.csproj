@@ -20,17 +20,17 @@
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.7" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+        <PackageReference Include="Avalonia" Version="0.10.8" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.8" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.8" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -66,6 +66,6 @@
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Include="Settings\*.json" />
-      <None Remove="Settings\*.json"/>
+      <None Remove="Settings\*.json" />
     </ItemGroup>
 </Project>

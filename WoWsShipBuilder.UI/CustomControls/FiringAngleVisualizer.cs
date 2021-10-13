@@ -330,7 +330,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             {
                 <= 0 when endAngle < 0 => Math.Abs(startAngle) + (endAngle + 360) > 180,
                 < 0 when endAngle > 0 => Math.Abs(startAngle) + endAngle > 180,
-                _ => endAngle - startAngle > 180
+                _ => endAngle - startAngle > 180,
             };
         }
 
@@ -635,7 +635,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             {
                 > 1 => center.X - text.Bounds.Width,
                 < 1 => center.X,
-                _ => center.X - (text.Bounds.Width / 2)
+                _ => center.X - (text.Bounds.Width / 2),
             };
 
             var textOrigin = new Point(textX, textY);
