@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.UI.Views
         public void OnClickChangeShipNext(object sender, PointerReleasedEventArgs e)
         {
             var dc = DataContext as MainWindowViewModel;
-            Debug.WriteLine(dc.NextShipIndex);
+            Debug.WriteLine(dc!.NextShipIndex);
             var ship = AppData.ShipDictionary![dc.NextShipIndex!];
             DataContext = new MainWindowViewModel(ship, this);
         }
@@ -55,7 +55,7 @@ namespace WoWsShipBuilder.UI.Views
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
         {
             var dc = DataContext as MainWindowViewModel;
-            Debug.WriteLine(dc.NextShipIndex);
+            Debug.WriteLine(dc!.NextShipIndex);
             var ship = AppData.ShipDictionary![dc.PreviousShipIndex!];
             DataContext = new MainWindowViewModel(ship, this);
         }

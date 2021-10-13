@@ -133,6 +133,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add ship.
+        /// </summary>
+        public static string DispersionGraphWindow_AddShip {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_AddShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove ship.
+        /// </summary>
+        public static string DispersionGraphWindow_RemoveShip {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {

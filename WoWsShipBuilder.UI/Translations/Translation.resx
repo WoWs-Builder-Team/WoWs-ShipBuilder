@@ -456,6 +456,12 @@
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
+  <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
+    <value>Add ship</value>
+  </data>
+  <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
+    <value>Remove ship</value>
+  </data>
   <data name="ShipStats_AtMaximum" xml:space="preserve">
     <value>At maximum depth</value>
   </data>

@@ -33,4 +33,3 @@ namespace WoWsShipBuilder.UI.UserControls
         }
     }
 }
-

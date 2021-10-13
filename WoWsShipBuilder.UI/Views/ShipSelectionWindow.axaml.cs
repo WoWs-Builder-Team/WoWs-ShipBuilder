@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.UI.Views
                 var box = sender as AutoCompleteBox;
                 box!.IsDropDownOpen = true;
                 e.Handled = true;
-            }  
+            }
         }
 
         public void ShowResult(object sender, CancelEventArgs e)

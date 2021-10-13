@@ -272,6 +272,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 RawShipData = ship;
+
                 // Captain Skill model
                 CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
 

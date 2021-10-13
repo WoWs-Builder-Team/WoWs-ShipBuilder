@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
+using System.IO.Abstractions;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
@@ -17,13 +15,25 @@ namespace WoWsShipBuilder.UI.Converters
 {
     class ImagePathConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        private IFileSystem fileSystem;
+
+        public ImagePathConverter()
+            : this(new FileSystem())
+        {
+        }
+
+        internal ImagePathConverter(IFileSystem fileSystem)
+        {
+            this.fileSystem = fileSystem;
+        }
+
+        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string imageName && parameter is string type)
             {
                 string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
                 var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                Uri uri = null;
+                Uri? uri = null;
 
                 if (imageName.Equals("blank"))
                 {
@@ -31,25 +41,18 @@ namespace WoWsShipBuilder.UI.Converters
                 }
                 else if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (imageName != null)
-                    {
-                        imageName = GetSkillimageId(imageName).ToLower();
-                        uri = new Uri($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
-                    }
-                    else
-                    {
-                        uri = new Uri($"avares://{assemblyName}/Assets/Skills/missing.png");
-                    }
+                    imageName = GetSkillimageId(imageName).ToLower();
+                    uri = new Uri($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
                 }
                 else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var imagePath = Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
-                    if (!File.Exists(imagePath))
+                    var imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
+                    if (!fileSystem.File.Exists(imagePath))
                     {
-                        imagePath = Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"_default.png");
+                        imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"_default.png");
                     }
 
-                    var stream = File.OpenRead(imagePath);
+                    var stream = fileSystem.File.OpenRead(imagePath);
                     return new Bitmap(stream);
                 }
 
