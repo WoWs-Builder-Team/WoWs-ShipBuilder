@@ -1,20 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
-using DynamicData;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -22,7 +17,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class DispersionGraphViewModel : ViewModelBase
     {
-        private DispersionGraphsWindow self;
+        private readonly DispersionGraphsWindow self;
 
         public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipName)
         {
@@ -33,9 +28,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             HorizontalModel = hModel;
         }
 
-        private AvaloniaList<string>? shipNames = new();
+        private AvaloniaList<string> shipNames = new();
 
-        public AvaloniaList<string>? ShipNames
+        public AvaloniaList<string> ShipNames
         {
             get => shipNames;
             set => this.RaiseAndSetIfChanged(ref shipNames, value);
@@ -59,21 +54,22 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void AddShip()
         {
-            var result = await ShipSelectionWindow.ShowShipSelection(self);
-            if (result != null)
+            ShipSummary result = await ShipSelectionWindow.ShowShipSelection(self);
+            Ship? ship = AppDataHelper.Instance.GetShipFromSummary(result);
+            if (ship != null)
             {
-                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 var guns = ship.MainBatteryModuleList.Values.First();
                 var series = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
                 HorizontalModel!.Series.Add(series);
                 HorizontalModel!.InvalidatePlot(true);
+                this.RaisePropertyChanged(nameof(ShipNames));
             }
         }
 
         public async void RemoveShip()
         {
             var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
-            if (result != null && result.Count > 0)
+            if (result.Count > 0)
             {
                 shipNames.RemoveAll(result);
                 var temp = new List<Series>();
@@ -86,34 +82,25 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
 
                 HorizontalModel.Series.Clear();
-                foreach(var serie in temp)
+                foreach (var serie in temp)
                 {
                     HorizontalModel.Series.Add(serie);
                 }
 
                 HorizontalModel!.InvalidatePlot(true);
+                this.RaisePropertyChanged(nameof(ShipNames));
             }
         }
 
         [DependsOn(nameof(ShipNames))]
-        public bool CanRemoveShip()
-        {
-            if (shipNames!.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool CanRemoveShip(object parameter) => shipNames.Count > 0;
 
         // This are all default values to make the graph looks nice
         private PlotModel InitializeBaseModel(string name)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
-            var background = ConvertColorFromResource("ThemeBackgroundColor"); 
+            var background = ConvertColorFromResource("ThemeBackgroundColor");
 
             PlotModel model = new PlotModel();
             model.Title = name;
@@ -162,7 +149,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            Func<double, double> dispFunc = (range) => 
+            Func<double, double> dispFunc = (range) =>
             {
                 double baseValue = range * 1000 * ((dispersion.IdealRadius * 30) - (dispersion.MinRadius * 30)) / (dispersion.IdealDistance * 30);
                 if (range * 1000 <= dispersion.TaperDist)
