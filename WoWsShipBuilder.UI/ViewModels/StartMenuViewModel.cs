@@ -39,7 +39,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 MainWindow win = new MainWindow();
-                win.DataContext = new MainWindowViewModel(ship!, win); 
+                win.DataContext = new MainWindowViewModel(ship!, win);
                 win.Show();
                 self.Close();
             }
@@ -52,7 +52,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void Setting()
         {
-            SettingsWindow win = new SettingsWindow();
+            SettingsWindow win = new()
+            {
+                ShowInTaskbar = false,
+            };
             win.DataContext = new SettingsWindowViewModel(win);
             win.ShowDialog(self);
         }

@@ -54,7 +54,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref languagesList, value);
         }
 
-        private string selectedLanguage;
+        private string selectedLanguage = null!;
 
         public string SelectedLanguage
         {
@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string selectedServer;
+        private string selectedServer = null!;
 
         public string SelectedServer
         {
@@ -78,7 +78,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private List<string> servers;
+        private List<string> servers = null!;
 
         public List<string> Servers
         {

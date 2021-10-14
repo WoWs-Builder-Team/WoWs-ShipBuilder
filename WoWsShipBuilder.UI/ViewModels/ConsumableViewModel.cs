@@ -26,6 +26,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 .ToList();
 
             SelectedConsumables = new AvaloniaList<(ShipConsumable, Consumable)>(ShipConsumables.Select(list => list.First()));
+            OnConsumableSelected = _ => { }; // TODO: add logic
         }
 
         public List<List<(ShipConsumable, Consumable)>> ShipConsumables { get; }

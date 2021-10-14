@@ -109,4 +109,9 @@
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
+    
+    <!-- Styles for the panels that contain the previous and next ships. -->
+    <Style Selector="StackPanel.Clickable">
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
 </Styles>

@@ -26,7 +26,17 @@ namespace WoWsShipBuilder.UI.Converters
             string uriSuffix = isSelected ? "_installed" : string.Empty;
 
             var uri = new Uri($"{baseUri}icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png");
-            Stream? asset = assets.Open(uri) ?? assets.Open(new Uri($"{baseUri}placeholder.png"));
+            Stream? asset;
+            try
+            {
+                asset = assets.Open(uri);
+            }
+            catch (FileNotFoundException)
+            {
+                asset = null;
+            }
+
+            asset ??= assets.Open(new Uri($"{baseUri}placeholder.png"));
             return new Bitmap(asset);
         }
     }

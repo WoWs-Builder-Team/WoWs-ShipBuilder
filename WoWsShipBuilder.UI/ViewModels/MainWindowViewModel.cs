@@ -253,6 +253,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, new Build());
+            win.ShowInTaskbar = false;
             win.ShowDialog(self);
         }
 

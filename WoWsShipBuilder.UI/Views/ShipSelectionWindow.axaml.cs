@@ -27,17 +27,15 @@ namespace WoWsShipBuilder.UI.Views
 
         public static Task<ShipSummary> ShowShipSelection(Window parent)
         {
-            var win = new ShipSelectionWindow()
+            var win = new ShipSelectionWindow
             {
                 DataContext = new ShipSelectionWindowViewModel(),
+                ShowInTaskbar = false,
             };
 
             var button = win.FindControl<Button>("Confirm");
 
-            button.Click += (_, __) =>
-            {
-                win.Close();
-            };
+            button.Click += (_, __) => { win.Close(); };
 
             var tcs = new TaskCompletionSource<ShipSummary>();
             win.Closed += (sender, e) =>

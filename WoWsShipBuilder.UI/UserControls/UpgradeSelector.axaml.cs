@@ -107,7 +107,8 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var dropDown = (UpgradeSelector)sender;
                 Modernization? newSelection = dropDown.SelectedIndex > 0 ? dropDown.EffectiveModernizationsList[dropDown.SelectedIndex] : null;
-                dropDown.SelectedImage = (IImage)Converter.Convert(newSelection, typeof(IImage), null!, CultureInfo.InvariantCulture);
+                var notifyData = newSelection ?? DataHelper.PlaceholderModernization;
+                dropDown.SelectedImage = (IImage)Converter.Convert(notifyData, typeof(IImage), null!, CultureInfo.InvariantCulture);
                 dropDown.UpgradePopup.IsOpen = false;
                 dropDown.SelectedModernizationChanged?.Invoke(newSelection, dropDown.AvailableModernizations);
             }

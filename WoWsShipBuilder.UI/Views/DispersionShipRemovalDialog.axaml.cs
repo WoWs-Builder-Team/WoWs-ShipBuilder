@@ -26,9 +26,10 @@ namespace WoWsShipBuilder.UI.Views
 
         public static Task<List<string>> ShowShipRemoval(Window parent, List<string> shipList)
         {
-            var win = new DispersionShipRemovalDialog()
+            var win = new DispersionShipRemovalDialog
             {
                 DataContext = new DispersionShipRemovalViewModel(shipList),
+                ShowInTaskbar = false,
             };
 
             var button = win.FindControl<Button>("Ok");
