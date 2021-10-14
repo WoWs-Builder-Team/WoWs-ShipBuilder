@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     record ShipUI
     {
+        public ShipUI(Ship ship)
+        {
+        }
+
         // Main battery
         public string? MainBatteryName { get; set; }
         public decimal? MainBatteryRange { get; set; }
@@ -54,6 +59,9 @@ namespace WoWsShipBuilder.Core.DataProvider
         public decimal? AirstrikeAircraftHP { get; set; }
         public decimal? AirstrikePayload { get; set; }
         public decimal? AirstrikeBombType { get; set; }
+        public decimal? AirstrikeTorpedoRange { get; set; }
+        public decimal? AirstrikeTorpedoArmDistance { get; set; }
+        public decimal? AirstrikeTorpedoFloodingChance { get; set; }
         public decimal? AirstrikeDamage { get; set; }
         public decimal? AirstrikePenetration { get; set; }
         public decimal? AirstrikeFireChance { get; set; }
@@ -61,6 +69,54 @@ namespace WoWsShipBuilder.Core.DataProvider
         public decimal? AirstrikeDelay { get; set; }
         public decimal? AirstrikeSpeed { get; set; }
         public decimal? AirstrikeDepthExplosion { get; set; }
-        
+
+        // Secondary not sure if needed since it should be itemscontrol
+        public string? SecondaryName { get; set; }
+        public decimal? SecondaryRange { get; set; }
+        public decimal? SecondaryReload { get; set; }
+        public decimal? SecondaryRoF { get; set; }
+        public decimal? SecondaryHorizontalDisp { get; set; }
+        public decimal? SecondaryVerticalDisp { get; set; }
+        public decimal? SecondaryDamage { get; set; }
+        public decimal? SecondaryPenetration { get; set; }
+        public decimal? SecondaryFireChance { get; set; }
+
+        // Maneuvrability
+        public decimal ManeuvrabilitySpeed { get; set; }
+        public decimal ManeuvrabilityFullPowerForward { get; set; }
+        public decimal ManeuvrabilityFullPowerBackward { get; set; }
+        public decimal ManeuvrabilityPowerToWeight { get; set; }
+        public decimal ManeuvrabilityTurningCircle { get; set; }
+        public decimal ManeuvrabilityRudderShiftTime { get; set; }
+
+        // Concealment
+        public decimal ConcealmentBySea { get; set; }
+        public decimal ConcealmentBySeaFiring { get; set; }
+        public decimal ConcealmentBySeaFiringSmoke { get; set; }
+        public decimal ConcealmentBySeaFiringAA { get; set; }
+        public decimal ConcealmentBySeaFire { get; set; }
+        public decimal ConcealmentByAir { get; set; }
+        public decimal ConcealmentByAirFiring { get; set; }
+        public decimal ConcealmentByAirFiringAA { get; set; }
+        public decimal ConcealmentByAirFire { get; set; }
+        public decimal ConcealmentBySub { get; set; }
+        public decimal ConcealmentBySubSurface { get; set; }
+        public decimal ConcealmentBySubPeriscope { get; set; }
+        public decimal ConcealmentBySubOperating { get; set; }
+        public decimal ConcealmentBySubMaximum { get; set; }
+
+        // Survivability
+        public decimal SurvivabilityHitPoints { get; set; }
+        public decimal SurvivabilityFireDuration { get; set; }
+        public decimal SurvivabilityFireAmount { get; set; }
+        public decimal SurvivabilityFireReduction { get; set; }
+        public decimal SurvivabilityFireDPS { get; set; }
+        public decimal SurvivabilityFireTotalDamage { get; set; }
+        public decimal SurvivabilityFloodDuration { get; set; }
+        public decimal SurvivabilityFloodAmount { get; set; }
+        public decimal SurvivabilityFloodProbability { get; set; }
+        public decimal SurvivabilityFloodTorpedoProtection { get; set; }
+        public decimal SurvivabilityFloodDPS { get; set; }
+        public decimal SurvivabilityFloodTotalDamage { get; set; }
     }
 }
