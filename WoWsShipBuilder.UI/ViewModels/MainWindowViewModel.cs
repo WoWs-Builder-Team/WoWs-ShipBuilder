@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
@@ -43,7 +44,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string xpBonus = "0";
 
-        public MainWindowViewModel(Ship ship, MainWindow? window)
+        public MainWindowViewModel(Ship ship, MainWindow? window, string previousShipIndex, List<string> nextShipsIndexes)
         {
             self = window;
 
@@ -66,24 +67,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
             CurrentShipIndex = ship.Index;
-            if (ship.ShipCategory.Equals(ShipCategory.TechTree) && AppData.ShipSummaryList != null)
-            {
-                var previous = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
-                if (previous.Count > 0)
-                {
-                    PreviousShipIndex = previous[0];
-                }
-
-                var next = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
-                if (next.Count > 0)
-                {
-                    NextShipIndex = next[0];
-                }
-            }
+            PreviousShipIndex = previousShipIndex;
+            NextShipIndex = nextShipsIndexes;
         }
 
         public MainWindowViewModel()
-            : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null)
+            : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
         {
         }
 
@@ -103,9 +92,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
         }
 
-        private string? nextShipIndex = "";
+        private List<string>? nextShipIndex = new();
 
-        public string? NextShipIndex
+        public List<string>? NextShipIndex
         {
             get => nextShipIndex;
             set => this.RaiseAndSetIfChanged(ref nextShipIndex, value);
@@ -281,28 +270,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
                 CurrentShipIndex = ship!.Index;
-                if (ship.ShipCategory.Equals(ShipCategory.TechTree) && AppData.ShipSummaryList != null)
-                {
-                    var previous = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();
-                    if (previous.Count > 0)
-                    {
-                        PreviousShipIndex = previous[0];
-                    }
-                    else
-                    {
-                        PreviousShipIndex = "";
-                    }
-
-                    var next = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier + 1).Select(x => x.Index).ToList();
-                    if (next.Count > 0)
-                    {
-                        NextShipIndex = next[0];
-                    }
-                    else
-                    {
-                        NextShipIndex = "";
-                    }
-                }
+                PreviousShipIndex = result.PrevShipIndex;
+                NextShipIndex = result.NextShipsIndex;
             }
         }
 
