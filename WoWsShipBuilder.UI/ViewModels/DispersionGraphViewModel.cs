@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -21,18 +22,21 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly DispersionGraphsWindow self;
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipName)
+        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex)
         {
             self = win;
+            var name = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
             var hModel = InitializeBaseModel("Horizontal Dispersion");
-            var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, shipName);
+            var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
             hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
 
             var vModel = InitializeBaseModel("Vertical Dispersion");
-            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, shipName);
+            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
             vModel.Series.Add(vDisp);
             VerticalModel = vModel;
+
+            shipNames.Add(name);
         }
 
         private AvaloniaList<string> shipNames = new();
@@ -65,22 +69,34 @@ namespace WoWsShipBuilder.UI.ViewModels
             Ship? ship = AppDataHelper.Instance.GetShipFromSummary(result);
             if (ship != null)
             {
-                if (ship.MainBatteryModuleList.Count > 0)
+                var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
+                if (!shipNames.Contains(shipName))
                 {
-                    var guns = ship.MainBatteryModuleList.Values.First();
-                    var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
-                    var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
-                    HorizontalModel!.Series.Add(hSeries);
-                    VerticalModel!.Series.Add(vSeries);
-                    HorizontalModel!.InvalidatePlot(true);
-                    verticalModel!.InvalidatePlot(true);
-                    this.RaisePropertyChanged(nameof(ShipNames));
+                    if (ship.MainBatteryModuleList.Count > 0)
+                    {
+                        var guns = ship.MainBatteryModuleList.Values.First();
+
+                        var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, shipName);
+                        var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, shipName);
+                        shipNames.Add(shipName);
+                        HorizontalModel!.Series.Add(hSeries);
+                        VerticalModel!.Series.Add(vSeries);
+                        HorizontalModel!.InvalidatePlot(true);
+                        verticalModel!.InvalidatePlot(true);
+                        this.RaisePropertyChanged(nameof(ShipNames));
+                    }
+                    else
+                    {
+                        var noGunMessage = Translation.ResourceManager.GetString("MessageBox_ShipNoGun", Translation.Culture);
+                        var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
+                        await MessageBox.Show(self, noGunMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    } 
                 }
                 else
                 {
-                    var noGunMessage = Translation.ResourceManager.GetString("MessageBox_ShipNoGun", Translation.Culture);
+                    var dupeMessage = Translation.ResourceManager.GetString("MessageBox_DuplicateShip", Translation.Culture);
                     var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
-                    await MessageBox.Show(self, noGunMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await MessageBox.Show(self, dupeMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                 }
             }
         }
@@ -90,38 +106,16 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
             if (result.Count > 0)
             {
-                shipNames.RemoveAll(result);
-                var hTemp = new List<Series>();
-                foreach (var serie in HorizontalModel!.Series)
+                foreach (var ship in result)
                 {
-                    if (!result.Contains(serie.Title))
-                    {
-                        hTemp.Add(serie);
-                    }
+                    var index = shipNames.IndexOf(ship);
+                    HorizontalModel!.Series.RemoveAt(index);
+                    VerticalModel!.Series.RemoveAt(index);
+                    shipNames.RemoveAt(index);
                 }
-
-                var vTemp = new List<Series>();
-                foreach (var serie in VerticalModel!.Series)
-                {
-                    if (!result.Contains(serie.Title))
-                    {
-                        vTemp.Add(serie);
-                    }
-                }
-
-                HorizontalModel.Series.Clear();
-                VerticalModel.Series.Clear();
-                foreach (var serie in hTemp)
-                {
-                    HorizontalModel.Series.Add(serie);
-                }
-
-                foreach (var serie in hTemp)
-                {
-                    VerticalModel.Series.Add(serie);
-                }
-
+                
                 HorizontalModel!.InvalidatePlot(true);
+                VerticalModel!.InvalidatePlot(true);
                 this.RaisePropertyChanged(nameof(ShipNames));
             }
         }
@@ -195,9 +189,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     return baseValue + (dispersion.MinRadius * 30);
                 }
             };
-            var shipName = Localizer.Instance[$"{name}_FULL"].Localization;
-            shipNames.Add(shipName);
-            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, shipName);
+            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;
@@ -232,9 +224,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                  return vCoeff * hDisp;
              };
 
-            var shipName = Localizer.Instance[$"{name}_FULL"].Localization;
-            shipNames.Add(shipName);
-            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, shipName);
+            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;

@@ -53,9 +53,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         // TODO: Change into something that does listen to CollectionChanged events.
-        [DependsOn(nameof(CurrentSelection))]
-        public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
-
+        // [DependsOn(nameof(CurrentSelection))]
+        // public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
         public void RestoreShips()
         {
             var rem = RemoveSelection.ToList();
@@ -63,7 +62,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipsToDeleteList.RemoveAll(rem);
         }
 
-        [DependsOn(nameof(RemoveSelection))]
-        public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
+        // [DependsOn(nameof(RemoveSelection))]
+        // public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
     }
 }

@@ -561,4 +561,7 @@
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
     <value>The selected ship has no main guns</value>
   </data>
+  <data name="MessageBox_DuplicateShip" xml:space="preserve">
+    <value>Selected ship has already been added</value>
+  </data>
 </root>

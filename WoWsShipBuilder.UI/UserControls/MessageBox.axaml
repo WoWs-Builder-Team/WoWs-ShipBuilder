@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterOwner" >
 
     <Grid RowDefinitions="30,*">
-        <userControls:AppHeader/>
+        <userControls:AppHeader Name="Header"/>
         <Grid HorizontalAlignment="Center" RowDefinitions="Auto,*" ColumnDefinitions="Auto,*" Grid.Row="1" Margin="10">
             <Image Name="Icon" Height="35" Width="35" Grid.Row="0" Grid.Column="0" Margin="0,0,20,0" />
             <TextBlock HorizontalAlignment="Center" Name="Text" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap"/>

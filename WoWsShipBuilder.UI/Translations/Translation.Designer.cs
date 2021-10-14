@@ -340,6 +340,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected ship has already been added.
+        /// </summary>
+        public static string MessageBox_DuplicateShip {
+            get {
+                return ResourceManager.GetString("MessageBox_DuplicateShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string MessageBox_Error {
