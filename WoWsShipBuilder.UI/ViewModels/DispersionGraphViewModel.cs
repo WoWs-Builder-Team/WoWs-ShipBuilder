@@ -115,6 +115,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 {
                     HorizontalModel.Series.Add(serie);
                 }
+
                 foreach (var serie in hTemp)
                 {
                     VerticalModel.Series.Add(serie);

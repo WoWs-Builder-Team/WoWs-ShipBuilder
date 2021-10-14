@@ -267,11 +267,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async void NewShipSelection()
         {
-            var result = await ShipSelectionWindow.ShowShipSelection(self);
+            var result = await ShipSelectionWindow.ShowShipSelection(self!);
             if (result != null)
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
-                RawShipData = ship;
+                RawShipData = ship!;
 
                 // Captain Skill model
                 CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
@@ -280,7 +280,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
                 ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
-                CurrentShipIndex = ship.Index;
+                CurrentShipIndex = ship!.Index;
                 if (ship.ShipCategory.Equals(ShipCategory.TechTree) && AppData.ShipSummaryList != null)
                 {
                     var previous = AppData.ShipSummaryList.Where(shipSearch => shipSearch.Category.Equals(ShipCategory.TechTree) && shipSearch.ShipClass.Equals(ship.ShipClass) && shipSearch.Nation.Equals(ship.ShipNation) && shipSearch.Tier == ship.Tier - 1).Select(x => x.Index).ToList();

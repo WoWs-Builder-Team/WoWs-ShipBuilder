@@ -39,23 +39,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 MainWindow win = new MainWindow();
-                win.DataContext = new MainWindowViewModel(ship, win); // TODO: add actual ship selection
+                win.DataContext = new MainWindowViewModel(ship!, win); 
                 win.Show();
                 self.Close();
             }
         }
 
-        private async void LoadBuild()
+        private void LoadBuild()
         {
-            var result = await ShipSelectionWindow.ShowShipSelection(self);
-            if (result != null)
-            {
-                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
-                var win = new DispersionGraphsWindow();
-                var guns = ship.MainBatteryModuleList.Values.First();
-                win.DataContext = new DispersionGraphViewModel(win, guns.DispersionValues, (double)guns.MaxRange, ship.Index);
-                win.Show();
-            }
+            // TODO
         }
 
         private void Setting()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI.Converters
         {
             if (value is not Consumable consumable)
             {
-                if (value is not (ShipConsumable, Consumable tmpConsumable))
+                if (value is not(ShipConsumable, Consumable tmpConsumable))
                 {
                     throw new NotSupportedException();
                 }
