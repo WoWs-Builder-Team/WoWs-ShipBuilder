@@ -555,4 +555,10 @@
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
     <value>Torpedo protection</value>
   </data>
+  <data name="MessageBox_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MessageBox_ShipNoGun" xml:space="preserve">
+    <value>The selected ship has no main guns</value>
+  </data>
 </root>

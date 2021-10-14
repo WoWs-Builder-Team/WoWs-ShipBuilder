@@ -10,6 +10,8 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -23,9 +25,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             self = win;
             var hModel = InitializeBaseModel("Horizontal Dispersion");
-            var hdisp = CreateHorizontalDispersionSeries(disp, maxRange, shipName);
-            hModel.Series.Add(hdisp);
+            var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, shipName);
+            hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
+
+            var vModel = InitializeBaseModel("Vertical Dispersion");
+            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, shipName);
+            vModel.Series.Add(vDisp);
+            VerticalModel = vModel;
         }
 
         private AvaloniaList<string> shipNames = new();
@@ -58,11 +65,23 @@ namespace WoWsShipBuilder.UI.ViewModels
             Ship? ship = AppDataHelper.Instance.GetShipFromSummary(result);
             if (ship != null)
             {
-                var guns = ship.MainBatteryModuleList.Values.First();
-                var series = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
-                HorizontalModel!.Series.Add(series);
-                HorizontalModel!.InvalidatePlot(true);
-                this.RaisePropertyChanged(nameof(ShipNames));
+                if (ship.MainBatteryModuleList.Count > 0)
+                {
+                    var guns = ship.MainBatteryModuleList.Values.First();
+                    var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
+                    var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, ship.Index);
+                    HorizontalModel!.Series.Add(hSeries);
+                    VerticalModel!.Series.Add(vSeries);
+                    HorizontalModel!.InvalidatePlot(true);
+                    verticalModel!.InvalidatePlot(true);
+                    this.RaisePropertyChanged(nameof(ShipNames));
+                }
+                else
+                {
+                    var noGunMessage = Translation.ResourceManager.GetString("MessageBox_ShipNoGun", Translation.Culture);
+                    var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
+                    await MessageBox.Show(self, noGunMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -72,19 +91,33 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (result.Count > 0)
             {
                 shipNames.RemoveAll(result);
-                var temp = new List<Series>();
+                var hTemp = new List<Series>();
                 foreach (var serie in HorizontalModel!.Series)
                 {
                     if (!result.Contains(serie.Title))
                     {
-                        temp.Add(serie);
+                        hTemp.Add(serie);
+                    }
+                }
+
+                var vTemp = new List<Series>();
+                foreach (var serie in VerticalModel!.Series)
+                {
+                    if (!result.Contains(serie.Title))
+                    {
+                        vTemp.Add(serie);
                     }
                 }
 
                 HorizontalModel.Series.Clear();
-                foreach (var serie in temp)
+                VerticalModel.Series.Clear();
+                foreach (var serie in hTemp)
                 {
                     HorizontalModel.Series.Add(serie);
+                }
+                foreach (var serie in hTemp)
+                {
+                    VerticalModel.Series.Add(serie);
                 }
 
                 HorizontalModel!.InvalidatePlot(true);
@@ -110,7 +143,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             model.LegendBorder = foreground;
             model.LegendBorderThickness = 1;
             model.LegendBackground = background;
-            model.LegendFontSize = 13;
+            model.LegendFontSize = 13;          
 
             var xAxis = new LinearAxis()
             {
@@ -163,7 +196,44 @@ namespace WoWsShipBuilder.UI.ViewModels
             };
             var shipName = Localizer.Instance[$"{name}_FULL"].Localization;
             shipNames.Add(shipName);
-            var dispSeries = new FunctionSeries(dispFunc, 0, maxRange / 1000, 0.01, shipName);
+            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, shipName);
+            dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
+            dispSeries.StrokeThickness = 4;
+            return dispSeries;
+        }
+
+        private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
+        {
+            Func<double, double> dispFunc = (range) =>
+             {
+                 double baseValue = range * 1000 * ((dispersion.IdealRadius * 30) - (dispersion.MinRadius * 30)) / (dispersion.IdealDistance * 30);
+                 double hDisp = 0;
+                 if (range * 1000 <= dispersion.TaperDist)
+                 {
+                     hDisp = baseValue + (dispersion.MinRadius * 30 * ((range * 1000) / dispersion.TaperDist));
+                 }
+                 else
+                 {
+                     hDisp = baseValue + (dispersion.MinRadius * 30);
+                 }
+
+                 double vCoeff = 0;
+                 double delimDist = dispersion.Delim * maxRange;
+                 if (range * 1000 < delimDist)
+                 {
+                     vCoeff = dispersion.RadiusOnZero + ((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) * (range * 1000 / delimDist));
+                 }
+                 else
+                 {
+                     vCoeff = dispersion.RadiusOnDelim + ((dispersion.RadiusOnMax - dispersion.RadiusOnDelim) * ((range * 1000) - delimDist) / (maxRange - delimDist));
+                 }
+
+                 return vCoeff * hDisp;
+             };
+
+            var shipName = Localizer.Instance[$"{name}_FULL"].Localization;
+            shipNames.Add(shipName);
+            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, shipName);
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;

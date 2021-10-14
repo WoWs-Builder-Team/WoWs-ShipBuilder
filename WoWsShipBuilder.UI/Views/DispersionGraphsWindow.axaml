@@ -9,7 +9,7 @@
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen" CanResize="False"
-        Width="1200" Height="900">
+        Width="1400" Height="900">
     <Window.Styles>
         <Style Selector="oxy|TrackerControl">
             <Setter Property="Background" Value="{StaticResource ThemeBackgroundBrush}" />
@@ -24,9 +24,10 @@
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" Margin="10,10,10,0">
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" Margin="10">
             <StackPanel Orientation="Vertical">
-                <oxy:PlotView Height="700" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

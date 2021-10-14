@@ -340,6 +340,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MessageBox_Error {
+            get {
+                return ResourceManager.GetString("MessageBox_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected ship has no main guns.
+        /// </summary>
+        public static string MessageBox_ShipNoGun {
+            get {
+                return ResourceManager.GetString("MessageBox_ShipNoGun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Netherlands.
         /// </summary>
         public static string Netherlands {
