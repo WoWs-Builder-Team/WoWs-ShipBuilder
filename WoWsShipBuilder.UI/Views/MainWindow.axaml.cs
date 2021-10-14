@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
@@ -47,17 +48,22 @@ namespace WoWsShipBuilder.UI.Views
         public void OnClickChangeShipNext(object sender, PointerReleasedEventArgs e)
         {
             var dc = DataContext as MainWindowViewModel;
-            Debug.WriteLine(dc.NextShipIndex);
-            var ship = AppData.ShipDictionary![dc.NextShipIndex!];
-            DataContext = new MainWindowViewModel(ship, this);
+            var image = sender as Image;
+            var shipIndex = image!.Name;
+            var ship = AppData.ShipDictionary![shipIndex!];
+            var prevShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == shipIndex).First().PrevShipIndex;
+            var nextShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == shipIndex).First().NextShipsIndex;
+            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
         }
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
         {
             var dc = DataContext as MainWindowViewModel;
-            Debug.WriteLine(dc.NextShipIndex);
-            var ship = AppData.ShipDictionary![dc.PreviousShipIndex!];
-            DataContext = new MainWindowViewModel(ship, this);
+            var image = sender as Image;
+            var ship = AppData.ShipDictionary![dc!.PreviousShipIndex!];
+            var prevShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == dc.PreviousShipIndex!).First().PrevShipIndex;
+            var nextShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == dc.PreviousShipIndex!).First().NextShipsIndex;
+            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
         }
     }
 }

@@ -6,6 +6,6 @@
              x:Class="WoWsShipBuilder.UI.UserControls.AppHeader">
     <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
         <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0" />
-        <TextBlock Text="WoWs Ship Builder" VerticalAlignment="Center" />
+        <TextBlock Name="HeaderTitle" Text="WoWs Ship Builder" VerticalAlignment="Center" />
     </StackPanel>
 </UserControl>

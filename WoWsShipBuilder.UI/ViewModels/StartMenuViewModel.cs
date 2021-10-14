@@ -1,8 +1,8 @@
+using System.Linq;
 using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -39,7 +39,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 MainWindow win = new MainWindow();
-                win.DataContext = new MainWindowViewModel(ship, win); // TODO: add actual ship selection
+                win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex); 
                 win.Show();
                 self.Close();
             }
@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void LoadBuild()
         {
-            // Insert build loading
+            // TODO
         }
 
         private void Setting()

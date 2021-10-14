@@ -42,10 +42,10 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public static Task<MessageBoxResult> Show(Window parent, string text, string title, MessageBoxButtons buttons, MessageBoxIcon icon = MessageBoxIcon.None, int width = 300, int height = 150)
         {
-            var msgbox = new MessageBox()
-            {
-                Title = title,
-            };
+            var msgbox = new MessageBox();
+
+            msgbox.FindControl<AppHeader>("Header").FindControl<TextBlock>("HeaderTitle").Text = title;
+
             msgbox.Width = width;
             msgbox.Height = height;
 

@@ -133,6 +133,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add ship.
+        /// </summary>
+        public static string DispersionGraphWindow_AddShip {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_AddShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove ship.
+        /// </summary>
+        public static string DispersionGraphWindow_RemoveShip {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {
@@ -318,6 +336,33 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_XpCalculator {
             get {
                 return ResourceManager.GetString("MainWindow_XpCalculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected ship has already been added.
+        /// </summary>
+        public static string MessageBox_DuplicateShip {
+            get {
+                return ResourceManager.GetString("MessageBox_DuplicateShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MessageBox_Error {
+            get {
+                return ResourceManager.GetString("MessageBox_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected ship has no main guns.
+        /// </summary>
+        public static string MessageBox_ShipNoGun {
+            get {
+                return ResourceManager.GetString("MessageBox_ShipNoGun", resourceCulture);
             }
         }
         
