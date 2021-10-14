@@ -84,7 +84,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref currrentShipIndex, value);
         }
 
-        private string? previousShipIndex = "";
+        private string? previousShipIndex;
 
         public string? PreviousShipIndex
         {
