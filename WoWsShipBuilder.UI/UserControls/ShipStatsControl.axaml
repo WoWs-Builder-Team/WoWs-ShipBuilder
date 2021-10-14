@@ -300,12 +300,10 @@
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConcealAir}"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConcealFiring}" Margin="20,0,0,0"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_ConcealFiringSmoke}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConcealFiringAA}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConcealFire}" Margin="20,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-                                <TextBlock Text=""/>
                                 <TextBlock Text=""/>
                                 <TextBlock Text=""/>
                                 <TextBlock Text=""/>

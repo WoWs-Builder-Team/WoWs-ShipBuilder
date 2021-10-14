@@ -39,7 +39,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 MainWindow win = new MainWindow();
-                win.DataContext = new MainWindowViewModel(ship!, win);
+                win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex);
                 win.Show();
                 self.Close();
             }

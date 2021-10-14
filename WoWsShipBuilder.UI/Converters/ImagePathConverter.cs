@@ -9,6 +9,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Updater;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -78,7 +79,11 @@ namespace WoWsShipBuilder.UI.Converters
             }
             else
             {
-                throw new NotSupportedException();
+                string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                Uri uri = new Uri($"avares://{assemblyName}/Assets/Icons/Error.png");
+                Stream? asset = assets.Open(uri);
+                return new Bitmap(asset);
             }
         }
 

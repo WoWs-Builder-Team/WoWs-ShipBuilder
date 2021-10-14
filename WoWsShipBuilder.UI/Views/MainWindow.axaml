@@ -26,7 +26,7 @@
         <Grid Grid.Row="1" ShowGridLines="False" RowDefinitions="*,4*,3*">
             <!--First row-->
             <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
-                <Grid ColumnDefinitions="*,2*,*">
+                <Grid ColumnDefinitions="*,3*,*">
                     <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
@@ -35,9 +35,8 @@
                         <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
                                 Command="{Binding NewShipSelectionCommand}" Grid.Row="1" HorizontalAlignment="Stretch" />
                     </Grid>
-                    <!-- The button inside will be Image when we have them-->
                     <RelativePanel Grid.Column="1">
-                        <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
                             <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipPrevious"/>
                             <TextBlock Text="{Binding PreviousShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
@@ -45,10 +44,21 @@
                             <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="75"/>
                             <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
-                        <StackPanel Classes="Clickable" Orientation="Vertical" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding NextShipIndex, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <Image Source="{Binding NextShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipNext"/>
-                            <TextBlock Text="{Binding NextShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
-                        </StackPanel>                    
+                        <ItemsControl Items="{Binding NextShipIndex}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding !!NextShipIndex.Count}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Classes="Clickable" Orientation="Vertical">
+                                        <Image Name="{Binding}" Source="{Binding Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipNext"/>
+                                        <TextBlock Text="{Binding Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>                
                     </RelativePanel>
                     <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
                           HorizontalAlignment="Center">
