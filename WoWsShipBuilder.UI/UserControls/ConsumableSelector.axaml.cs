@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI.UserControls
     {
         #region Static Fields and Constants
 
-        private static readonly ConsumableImageConverter Converter = new();
+        private static readonly ImagePathConverter Converter = new();
 
         public static readonly StyledProperty<List<(ShipConsumable, Consumable)>> ConsumableListProperty =
             AvaloniaProperty.Register<ConsumableSelector, List<(ShipConsumable, Consumable)>>(nameof(ConsumableList), notifying: ConsumableListChanged);

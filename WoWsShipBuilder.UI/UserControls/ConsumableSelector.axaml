@@ -9,7 +9,7 @@
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumableSelector"
              x:Name="ConsumableSelector">
     <UserControl.Resources>
-        <converters:ConsumableImageConverter x:Key="ImageConverter" />
+        <converters:ImagePathConverter x:Key="ImageConverter" />
     </UserControl.Resources>
     
     <UserControl.DataTemplates>
