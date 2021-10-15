@@ -170,17 +170,41 @@
                 <!--Secondary-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Secondary Battery"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
-                    <Grid ColumnDefinitions="*,30,*" RowDefinitions="*,*,*,*">
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Range}" Grid.Column="0"
-                                   Grid.Row="0" />
-                        <TextBlock Text="20.0 Km" Grid.Row="0" Classes="RightSide" />
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}" Grid.Column="0"
-                                   Grid.Row="1" />
-                        <TextBlock Text="2.0 RPM" Grid.Row="1" Classes="RightSide" />
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}" Grid.Column="0"
-                                   Grid.Row="2" />
-                        <TextBlock Text="45 s" Grid.Row="2" Classes="RightSide" />
-                    </Grid>
+                    <StackPanel Orientation="Vertical">
+                        <ItemsControl Items="{Binding SecondaryBatteryUI}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="data:SecondaryBatteryUI">
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding SecondaryName}" DockPanel.Dock="Top"/>
+                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Damage}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_RateOfFire}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Sigma}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}"/>
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellVelocity}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
+                                            <TextBlock Text="{Binding SecondaryRange}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryDamage}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryPenetration}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryFireChance}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryReload}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryRoF}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondarySigma}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryHorizontalDisp}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryVerticalDisp}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding SecondaryShellVelocity}" TextAlignment="Right"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Expander>
                 <!--AA-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="AA Defense"
@@ -241,7 +265,45 @@
                         </DockPanel>
                     </StackPanel>
                 </Expander>
+                <!--Airstrikes-->
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Airstrike}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                            <TextBlock Text="Airstrike name" DockPanel.Dock="Top"></TextBlock>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_AvailableFlights}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_AircraftHP}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_BompPayload}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_BombType}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Damage}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Delay}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_Speed}"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                                <TextBlock Text=""/>
+                            </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
+            
             <!--Misc-->
             <StackPanel Orientation="Vertical" Spacing="10">
                 <!--Maneuverability-->
