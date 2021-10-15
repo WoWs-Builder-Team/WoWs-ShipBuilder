@@ -132,7 +132,7 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 result = assetLoader.Open(uri);
             }
-            catch (FileNotFoundException)
+            catch (Exception e) when (e is NullReferenceException or FileNotFoundException)
             {
                 Logger.Warn("Unable to find file for uri {0}, falling back to error icon.", uri);
                 string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
