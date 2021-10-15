@@ -32,9 +32,9 @@ namespace WoWsShipBuilder.UI.Updater
             {
                 response.EnsureSuccessStatusCode();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                logger.Warn("An exception occurred during the version check. Error Code: {0}", response.StatusCode);
+                logger.Error(e, "An exception occurred during the version check. Error Code: {0}", response.StatusCode);
                 return null;
             }
 

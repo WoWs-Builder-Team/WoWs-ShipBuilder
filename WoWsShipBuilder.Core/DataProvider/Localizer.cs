@@ -7,10 +7,10 @@ namespace WoWsShipBuilder.Core.DataProvider
     public class Localizer
     {
         private static readonly Lazy<Localizer> InstanceProducer = new(() => new Localizer());
+        private static readonly Logger Logger = Logging.GetLogger("Localization");
 
         private readonly AppDataHelper dataHelper;
 
-        private readonly Logger logger = Logging.GetLogger("Localization");
         private Dictionary<string, string> languageData = new();
         private string locale;
 
@@ -28,13 +28,14 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public static Localizer Instance { get; } = InstanceProducer.Value;
 
-        public (bool IsLocalized, string Localization) this[string key] => languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
+        public (bool IsLocalized, string Localization) this[string key] =>
+            languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
 
         public bool UpdateLanguage(string newLocale)
         {
             if (locale == newLocale)
             {
-                logger.Info("Old and new locale are identical. Ignoring localization update.");
+                Logger.Info("Old and new locale are identical. Ignoring localization update.");
                 return true;
             }
 
@@ -44,11 +45,11 @@ namespace WoWsShipBuilder.Core.DataProvider
             if (localLanguageData != null)
             {
                 languageData = localLanguageData;
-                logger.Info("Updated localization data to locale {0}.", newLocale);
+                Logger.Info("Updated localization data to locale {0}.", newLocale);
                 return true;
             }
 
-            logger.Warn("Unable to load localization data for locale {0}. Keeping existing data and rejecting change.", newLocale);
+            Logger.Warn("Unable to load localization data for locale {0}. Keeping existing data and rejecting change.", newLocale);
             return false;
         }
     }

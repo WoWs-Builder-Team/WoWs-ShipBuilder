@@ -2,7 +2,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record MainBatteryUI
     {
-        public string MainBatteryName { get; set; }
+        public string MainBatteryName { get; set; } = default!;
 
         public decimal MainBatteryRange { get; set; }
 
