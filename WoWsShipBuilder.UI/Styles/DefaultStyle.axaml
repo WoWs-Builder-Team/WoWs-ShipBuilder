@@ -114,4 +114,8 @@
     <Style Selector="StackPanel.Clickable">
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
+
+    <Style Selector="TextBlock.Clickable">
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
 </Styles>

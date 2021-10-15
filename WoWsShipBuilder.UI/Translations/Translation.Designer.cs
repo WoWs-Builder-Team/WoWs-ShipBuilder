@@ -187,6 +187,51 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The reference angle used start at 0° on the front (top of the image) and goes in a clockwise direction.
+        /// </summary>
+        public static string FiringAngleWindow_AngleExplanation {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_AngleExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fold all angles.
+        /// </summary>
+        public static string FiringAngleWindow_HideAll {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_HideAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never show angles.
+        /// </summary>
+        public static string FiringAngleWindow_PermaTextOff {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_PermaTextOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Always show angles.
+        /// </summary>
+        public static string FiringAngleWindow_PermaTextOn {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_PermaTextOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expand all angles.
+        /// </summary>
+        public static string FiringAngleWindow_ShowAll {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_ShowAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to France.
         /// </summary>
         public static string France {
@@ -1344,6 +1389,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TurningCircle {
             get {
                 return ResourceManager.GetString("ShipStats_TurningCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show turret angles.
+        /// </summary>
+        public static string ShipStats_TurretAngles {
+            get {
+                return ResourceManager.GetString("ShipStats_TurretAngles", resourceCulture);
             }
         }
         

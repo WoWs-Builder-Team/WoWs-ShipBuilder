@@ -38,8 +38,9 @@
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_DegreesTurn}"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_TraverseSpeed}"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Sigma}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" />
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" />
+                                <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" />
+                                <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_VerticalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" />
+                                <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_TurretAngles}" PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
                                 <TextBlock Text="{Binding Range}" TextAlignment="Right"/>
