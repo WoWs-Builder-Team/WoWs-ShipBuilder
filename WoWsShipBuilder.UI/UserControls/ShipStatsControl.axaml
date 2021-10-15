@@ -130,37 +130,65 @@
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Airstrike}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
                     <StackPanel Orientation="Vertical">
-                        <DockPanel>
-                            <TextBlock Text="Airstrike name" DockPanel.Dock="Top"></TextBlock>
-                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_AvailableFlights}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_AircraftHP}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_BompPayload}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_BombType}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Damage}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Delay}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_Speed}"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                            </StackPanel>
-                        </DockPanel>
+                        <StackPanel Orientation="Vertical">
+                            <ItemsControl Items="{Binding v}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="data:CarrierPlaneUI">
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding CarrierPlaneName}" DockPanel.Dock="Top"/>
+                                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Type}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlanesDeck}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlanesFlight}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlanesAttackingFlight}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_AircraftHP}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Speed}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlaneRecoveryTime}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PayloadName}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PayloadType}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Damage}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PayloadPerPlane}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlaneStrikeTime}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlaneTorpedoRange}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlaneTorpedoArmDistance}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_FloodingChance}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Skips}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_ArmingThreshold}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_FuseTimer}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_PlaneRocketDelay}"/>
+                                                <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
+                                                <TextBlock Text="{Binding CarrierPlaneType}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneOnDeck}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneInFlight}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneInAttackingFlight}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneAircraftHP}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneSpeed}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneRecoveryTime}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlanePayloadName}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlanePayloadType}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlanePayloadDamage}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlanePayloadPerPlane}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneStrikeTime}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneTorpedoRange}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneTorpedoArmDistance}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneTorpedoFloodingChance}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneBombPenetration}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneBombSkips}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneFireChance}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneDepthExplosion}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneArmingThreshold}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneFuseTimer}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding CarrierPlaneRocketDelay}" TextAlignment="Right"/>
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </StackPanel>
                 </Expander>
             </StackPanel>
@@ -270,7 +298,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
                     <StackPanel Orientation="Vertical">
                         <DockPanel>
-                            <TextBlock Text="Airstrike name" DockPanel.Dock="Top"></TextBlock>
+                            <TextBlock Text="{Binding AirstrikeName}" DockPanel.Dock="Top"></TextBlock>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_AvailableFlights}"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
@@ -286,18 +314,18 @@
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
-                                <TextBlock Text=""/>
+                                <TextBlock Text="{Binding AirstrikeFlights}"/>
+                                <TextBlock Text="{Binding AirstrikeReload}"/>
+                                <TextBlock Text="{Binding AirstrikeAircraftHP}"/>
+                                <TextBlock Text="{Binding AirstrikePayload}"/>
+                                <TextBlock Text="{Binding AirstrikeBombType}"/>
+                                <TextBlock Text="{Binding AirstrikeDamage}"/>
+                                <TextBlock Text="{Binding AirstrikePenetration}"/>
+                                <TextBlock Text="{Binding AirstrikeFireChance}"/>
+                                <TextBlock Text="{Binding AirstrikeRange}"/>
+                                <TextBlock Text="{Binding AirstrikeDelay}"/>
+                                <TextBlock Text="{Binding AirstrikeSpeed}"/>
+                                <TextBlock Text="{Binding AirstrikeDepthExplosion}"/>
                             </StackPanel>
                         </DockPanel>
                     </StackPanel>

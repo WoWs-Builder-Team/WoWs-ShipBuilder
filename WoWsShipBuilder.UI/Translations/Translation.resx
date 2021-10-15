@@ -564,4 +564,43 @@
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
     <value>Selected ship has already been added</value>
   </data>
+  <data name="ShipStats_PayloadName" xml:space="preserve">
+    <value>Payload</value>
+  </data>
+  <data name="ShipStats_PayloadPerPlane" xml:space="preserve">
+    <value>Payload Per Plane</value>
+  </data>
+  <data name="ShipStats_PayloadType" xml:space="preserve">
+    <value>Payload Type</value>
+  </data>
+  <data name="ShipStats_PlaneRecoveryTime" xml:space="preserve">
+    <value>Plane Recovery Time</value>
+  </data>
+  <data name="ShipStats_PlaneRocketDelay" xml:space="preserve">
+    <value>Rocket Launch Delay</value>
+  </data>
+  <data name="ShipStats_PlanesAttackingFlight" xml:space="preserve">
+    <value>Planes in Attacking Flight</value>
+  </data>
+  <data name="ShipStats_PlanesDeck" xml:space="preserve">
+    <value>Planes on Deck</value>
+  </data>
+  <data name="ShipStats_PlanesFlight" xml:space="preserve">
+    <value>Planes in Flight</value>
+  </data>
+  <data name="ShipStats_PlaneStrikeTime" xml:space="preserve">
+    <value>Strike Time</value>
+  </data>
+  <data name="ShipStats_PlaneTorpedoArmDistance" xml:space="preserve">
+    <value>Aerial Torpedo Arm Distance</value>
+  </data>
+  <data name="ShipStats_PlaneTorpedoRange" xml:space="preserve">
+    <value>Aerial Torpedo Range</value>
+  </data>
+  <data name="ShipStats_Skips" xml:space="preserve">
+    <value>Skips</value>
+  </data>
+  <data name="ShipStats_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

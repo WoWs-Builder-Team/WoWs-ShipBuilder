@@ -14,12 +14,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal? AirstrikeBombType { get; set; }
 
-        public decimal? AirstrikeTorpedoRange { get; set; }
-
-        public decimal? AirstrikeTorpedoArmDistance { get; set; }
-
-        public decimal? AirstrikeTorpedoFloodingChance { get; set; }
-
         public decimal? AirstrikeDamage { get; set; }
 
         public decimal? AirstrikePenetration { get; set; }

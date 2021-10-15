@@ -28,6 +28,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal? CarrierPlanePayloadDamage { get; set; }
 
+        public decimal? CarrierPlanePayloadPerPlane { get; set; }
+
         public decimal? CarrierPlaneStrikeTime { get; set; }
 
         // Torpedo Bombers

@@ -1069,11 +1069,110 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payload.
+        /// </summary>
+        public static string ShipStats_PayloadName {
+            get {
+                return ResourceManager.GetString("ShipStats_PayloadName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payload Per Plane.
+        /// </summary>
+        public static string ShipStats_PayloadPerPlane {
+            get {
+                return ResourceManager.GetString("ShipStats_PayloadPerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payload Type.
+        /// </summary>
+        public static string ShipStats_PayloadType {
+            get {
+                return ResourceManager.GetString("ShipStats_PayloadType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Penetration.
         /// </summary>
         public static string ShipStats_Penetration {
             get {
                 return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plane Recovery Time.
+        /// </summary>
+        public static string ShipStats_PlaneRecoveryTime {
+            get {
+                return ResourceManager.GetString("ShipStats_PlaneRecoveryTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rocket Launch Delay.
+        /// </summary>
+        public static string ShipStats_PlaneRocketDelay {
+            get {
+                return ResourceManager.GetString("ShipStats_PlaneRocketDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes in Attacking Flight.
+        /// </summary>
+        public static string ShipStats_PlanesAttackingFlight {
+            get {
+                return ResourceManager.GetString("ShipStats_PlanesAttackingFlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes on Deck.
+        /// </summary>
+        public static string ShipStats_PlanesDeck {
+            get {
+                return ResourceManager.GetString("ShipStats_PlanesDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes in Flight.
+        /// </summary>
+        public static string ShipStats_PlanesFlight {
+            get {
+                return ResourceManager.GetString("ShipStats_PlanesFlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strike Time.
+        /// </summary>
+        public static string ShipStats_PlaneStrikeTime {
+            get {
+                return ResourceManager.GetString("ShipStats_PlaneStrikeTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aerial Torpedo Arm Distance.
+        /// </summary>
+        public static string ShipStats_PlaneTorpedoArmDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_PlaneTorpedoArmDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aerial Torpedo Range.
+        /// </summary>
+        public static string ShipStats_PlaneTorpedoRange {
+            get {
+                return ResourceManager.GetString("ShipStats_PlaneTorpedoRange", resourceCulture);
             }
         }
         
@@ -1177,6 +1276,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skips.
+        /// </summary>
+        public static string ShipStats_Skips {
+            get {
+                return ResourceManager.GetString("ShipStats_Skips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speed.
         /// </summary>
         public static string ShipStats_Speed {
@@ -1236,6 +1344,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TurningCircle {
             get {
                 return ResourceManager.GetString("ShipStats_TurningCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string ShipStats_Type {
+            get {
+                return ResourceManager.GetString("ShipStats_Type", resourceCulture);
             }
         }
         
