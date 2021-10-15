@@ -37,7 +37,7 @@
                     </Grid>
                     <RelativePanel Grid.Column="1">
                         <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
-                            <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipPrevious"/>
+                            <Image Source="{Binding PreviousShipIndex, TargetNullValue=None, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipPrevious"/>
                             <TextBlock Text="{Binding PreviousShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
