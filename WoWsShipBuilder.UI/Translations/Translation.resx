@@ -603,4 +603,22 @@
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="ShipStats_TurretAngles" xml:space="preserve">
+    <value>Show turret angles</value>
+  </data>
+  <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
+    <value>The reference angle used start at 0° on the front (top of the image) and goes in a clockwise direction</value>
+  </data>
+  <data name="FiringAngleWindow_HideAll" xml:space="preserve">
+    <value>Fold all angles</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
+    <value>Never show angles</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
+    <value>Always show angles</value>
+  </data>
+  <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
+    <value>Expand all angles</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -7,8 +8,22 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         public ShipStatsControlViewModel(Ship ship)
         {
-            CurrentShipStats = ship;
+            // CurrentShipStats = ship;
             BaseShipStats = ship;
+            SecondaryBatteryUI secondaryBatteryUI = new SecondaryBatteryUI();
+            secondaryBatteryUI.SecondaryName = "test";
+            secondaryBatteryUI.SecondaryRange = 10;
+            secondaryBatteryUI.SecondaryDamage = 1000;
+            secondaryBatteryUI.SecondaryPenetration = 100;
+            secondaryBatteryUI.SecondaryFireChance = 10;
+            secondaryBatteryUI.SecondaryReload = 5;
+            secondaryBatteryUI.SecondaryRoF = 12;
+            secondaryBatteryUI.SecondarySigma = 1.0m;
+            secondaryBatteryUI.SecondaryHorizontalDisp = 100;
+            secondaryBatteryUI.SecondaryVerticalDisp = 100;
+            secondaryBatteryUI.SecondaryShellVelocity = 1000;
+
+            // CurrentShipStats.SecondaryBatteryUI.Add(secondaryBatteryUI);
         }
 
         public ShipStatsControlViewModel()
@@ -16,9 +31,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
         }
 
-        private Ship? currentShipStats;
+        private ShipUI? currentShipStats;
 
-        public Ship? CurrentShipStats
+        public ShipUI? CurrentShipStats
         {
             get => currentShipStats;
             set => this.RaiseAndSetIfChanged(ref currentShipStats, value);
