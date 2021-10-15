@@ -133,7 +133,7 @@
                         <StackPanel Orientation="Vertical">
                             <ItemsControl Items="{Binding v}">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="data:CarrierPlaneUI">
+                                    <DataTemplate DataType="data:ShellType">
                                         <DockPanel>
                                             <TextBlock Text="{Binding CarrierPlaneName}" DockPanel.Dock="Top"/>
                                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
@@ -201,7 +201,7 @@
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding SecondaryBatteryUI}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="data:SecondaryBatteryUI">
+                                <DataTemplate DataType="data:ShellType">
                                     <DockPanel>
                                         <TextBlock Text="{Binding SecondaryName}" DockPanel.Dock="Top"/>
                                         <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
