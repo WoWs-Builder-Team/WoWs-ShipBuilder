@@ -244,8 +244,8 @@
             </StackPanel>
             <!--Misc-->
             <StackPanel Orientation="Vertical" Spacing="10">
-                <!--Maneuvrability-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuvrability}"
+                <!--Maneuverability-->
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuverability}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
                     <StackPanel Orientation="Vertical">
                         <DockPanel>

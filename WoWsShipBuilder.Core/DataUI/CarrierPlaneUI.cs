@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -50,7 +46,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal? CarrierPlaneDepthExplosion { get; set; }
 
-
         // Maybe for AP Bombers, not sure these stats exist
         public decimal? CarrierPlaneArmingThreshold { get; set; }
 
@@ -58,6 +53,5 @@ namespace WoWsShipBuilder.Core.DataUI
 
         // Rockets
         public decimal? CarrierPlaneRocketDelay { get; set; }
-
     }
 }

@@ -1,19 +1,26 @@
 using System.Collections.Generic;
-using WoWsShipBuilder.Core.DataUI;
 
-namespace WoWsShipBuilder.Core.DataProvider
+// ReSharper disable InconsistentNaming
+namespace WoWsShipBuilder.Core.DataUI
 {
     public record ShipUI
     {
-        public List<AirstrikeUI> AirstrikeUI;
-        public List<CarrierPlaneUI> CarrierPlaneUI;
-        public List<SecondaryBatteryUI> SecondaryBatteryUI;
-        public List<ShellUI> ShellUI;
+        public List<AirstrikeUI>? AirstrikeUI { get; set; }
 
-        public ConcealmentUI ConcealmentUI;
-        public MainBatteryUI MainBatteryUI;
-        public ManeuvrabilityUI ManeuvrabilityUI;
-        public SurvivabilityUI SurvivabilityUI;
-        public TorpedoUI TorpedoUI;
+        public List<CarrierPlaneUI>? CarrierPlaneUI { get; set; }
+
+        public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
+
+        public List<ShellUI>? ShellUI { get; set; }
+
+        public MainBatteryUI? MainBatteryUI { get; set; }
+
+        public TorpedoUI? TorpedoUI { get; set; }
+
+        public ConcealmentUI ConcealmentUI { get; set; } = default!;
+
+        public ManeuverabilityUI ManeuverabilityUI { get; set; } = default!;
+
+        public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
     }
 }

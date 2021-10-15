@@ -501,8 +501,8 @@
   <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Full Power Forward</value>
   </data>
-  <data name="ShipStats_Maneuvrability" xml:space="preserve">
-    <value>Maneuvrability</value>
+  <data name="ShipStats_Maneuverability" xml:space="preserve">
+    <value>Maneuverability</value>
   </data>
   <data name="ShipStats_OnSurface" xml:space="preserve">
     <value>On the surface</value>

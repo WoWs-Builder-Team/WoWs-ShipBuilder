@@ -1015,11 +1015,11 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maneuvrability.
+        ///   Looks up a localized string similar to Maneuverability.
         /// </summary>
-        public static string ShipStats_Maneuvrability {
+        public static string ShipStats_Maneuverability {
             get {
-                return ResourceManager.GetString("ShipStats_Maneuvrability", resourceCulture);
+                return ResourceManager.GetString("ShipStats_Maneuverability", resourceCulture);
             }
         }
         
