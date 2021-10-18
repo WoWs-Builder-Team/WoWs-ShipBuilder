@@ -2,7 +2,9 @@ using System;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
+using NLog;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
@@ -54,8 +56,15 @@ namespace WoWsShipBuilder.UI.ViewModels
                 DownloadInfo = value.title;
             });
 
-            await JsonVersionCheck(progressTracker);
-            await DownloadImages(progressTracker);
+            var today = DateTime.Today;
+            Logging.GetLogger("VersionCheck").Info($"Last data version Check was at: {AppData.Settings.LastDataUpdateCheck}");
+            if ((AppData.Settings.LastDataUpdateCheck - today).TotalDays > 1 || AppData.IsDebug)
+            {
+                AppData.Settings.LastDataUpdateCheck = DateTime.Today;
+                await JsonVersionCheck(progressTracker);
+                await DownloadImages(progressTracker);
+            }
+
             progressTracker.Report((TaskNumber, Translation.SplashScreen_Done));
         }
 

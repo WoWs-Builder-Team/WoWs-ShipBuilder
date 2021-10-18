@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.UI
         }
 
         public override void OnFrameworkInitializationCompleted()
-        {
+        {   
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -37,8 +37,8 @@ namespace WoWsShipBuilder.UI
                     return;
                 }
 
-                desktop.Exit += OnExit;
                 AppSettingsHelper.LoadSettings();
+                desktop.Exit += OnExit;
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
             }

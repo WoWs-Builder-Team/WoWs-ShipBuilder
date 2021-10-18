@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Updater;
 using WoWsShipBuilder.UI.ViewModels;
@@ -51,12 +52,13 @@ namespace WoWsShipBuilder.UI.Views
             Task.Run(async () =>
             {
                 Task minimumRuntime = Task.Delay(1500);
+
                 bool isUpdating = await ApplicationVersionCheck();
                 if (!isUpdating)
                 {
                     await dataContext.VersionCheck();
                 }
-
+ 
                 await minimumRuntime;
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
@@ -76,56 +78,62 @@ namespace WoWsShipBuilder.UI.Views
 
         private async Task<bool> ApplicationVersionCheck()
         {
-            dataContext.DownloadInfo = "appVersionCheck";
             var logger = Logging.GetLogger("UpdateCheck");
-            logger.Info($"Current application version: {currentVersion}");
-            logger.Info("Checking for updates...");
-            GithubApiResponse? latestVersion = await ApplicationUpdater.GetLatestVersionNumber();
-            bool versionParseSuccessful = Version.TryParse(Regex.Replace(latestVersion?.TagName ?? "0.0.0", "[^0-9.]", ""), out Version? newVersion);
-            if (!versionParseSuccessful)
+            logger.Info($"Last version check was at: {AppData.Settings.LastVersionUpdateCheck}");
+            var now = DateTime.Now;
+            if ((now - AppData.Settings.LastVersionUpdateCheck).TotalHours > 4 || AppData.IsDebug)
             {
-                logger.Warn("Unable to parse the version of the new release.");
-            }
-
-            if (newVersion != null && newVersion > currentVersion)
-            {
-                if (AppData.Settings!.AutoUpdateEnabled)
+                dataContext.DownloadInfo = "appVersionCheck";
+                AppData.Settings.LastVersionUpdateCheck = DateTime.Now;
+                logger.Info($"Current application version: {currentVersion}");
+                logger.Info("Checking for updates...");
+                GithubApiResponse? latestVersion = await ApplicationUpdater.GetLatestVersionNumber();
+                bool versionParseSuccessful = Version.TryParse(Regex.Replace(latestVersion?.TagName ?? "0.0.0", "[^0-9.]", ""), out Version? newVersion);
+                if (!versionParseSuccessful)
                 {
-                    logger.Info("New version avaialble");
+                    logger.Warn("Unable to parse the version of the new release.");
+                }
 
-                    // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
-                    //     "Do you want to update now?", true);
-                    // updateWin.Owner = this;
-                    // var result = (bool)updateWin.ShowDialog();
-                    //
-                    // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to update now?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    // if (result)
-                    // {
-                    //     string fileUrl = latestVersion.Assets[0].BrowserDownloadUrl;
-                    //     DownloadingWindow win = new DownloadingWindow(fileUrl);
-                    //     win.Owner = this;
-                    //     win.ShowDialog();
-                    // }
+                if (newVersion != null && newVersion > currentVersion)
+                {
+                    if (AppData.Settings!.AutoUpdateEnabled)
+                    {
+                        logger.Info("New version avaialble");
+
+                        // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
+                        //     "Do you want to update now?", true);
+                        // updateWin.Owner = this;
+                        // var result = (bool)updateWin.ShowDialog();
+                        //
+                        // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to update now?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        // if (result)
+                        // {
+                        //     string fileUrl = latestVersion.Assets[0].BrowserDownloadUrl;
+                        //     DownloadingWindow win = new DownloadingWindow(fileUrl);
+                        //     win.Owner = this;
+                        //     win.ShowDialog();
+                        // }
+                    }
+                    else
+                    {
+                        logger.Info("New version available but auto-update is disabled.");
+
+                        // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
+                        //     "Do you want to open the page for the download?", true);
+                        // updateWin.Owner = this;
+                        // var result = (bool)updateWin.ShowDialog();
+                        //
+                        // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to open the page for the download?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        // if (result)
+                        // {
+                        //     Process.Start(latestVersion.HtmlUrl);
+                        // }
+                    }
                 }
                 else
                 {
-                    logger.Info("New version available but auto-update is disabled.");
-
-                    // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
-                    //     "Do you want to open the page for the download?", true);
-                    // updateWin.Owner = this;
-                    // var result = (bool)updateWin.ShowDialog();
-                    //
-                    // //var result = MessageBox.Show(latestVersion.Body + "\nDo you want to open the page for the download?", "New Update found: " + latestVersion.TagName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    // if (result)
-                    // {
-                    //     Process.Start(latestVersion.HtmlUrl);
-                    // }
-                }
-            }
-            else
-            {
-                logger.Info("No updates found.");
+                    logger.Info("No updates found.");
+                } 
             }
 
             return false;

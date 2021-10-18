@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Threading;
 using WoWsShipBuilder.Core.DataProvider;
@@ -32,5 +33,9 @@ namespace WoWsShipBuilder.Core.Settings
         }
 
         public ServerType SelectedServerType { get; set; } = ServerType.Live;
+
+        public DateTime LastDataUpdateCheck { get; set; } = DateTime.Today;
+
+        public DateTime LastVersionUpdateCheck { get; set; } = DateTime.Now;
     }
 }

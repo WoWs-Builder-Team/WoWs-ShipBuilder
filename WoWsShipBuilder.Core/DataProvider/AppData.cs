@@ -21,5 +21,11 @@ namespace WoWsShipBuilder.Core.DataProvider
         public static Dictionary<string, Aircraft>? AircraftList { get; set; }
 
         public static List<ShipSummary>? ShipSummaryList { get; set; }
+
+#if DEBUG
+        public static bool IsDebug => true;
+#else
+        public static bool IsDebug => false;
+#endif
     }
 }
