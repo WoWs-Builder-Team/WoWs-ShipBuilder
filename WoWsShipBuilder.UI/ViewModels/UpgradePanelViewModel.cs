@@ -14,13 +14,13 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public UpgradePanelViewModel()
             : this(new Ship
-                {
-                    Index = "PGSD109",
-                    Name = "PGSD109_Z_46",
-                    ShipClass = ShipClass.Destroyer,
-                    Tier = 9,
-                    ShipNation = Nation.Germany,
-                })
+            {
+                Index = "PGSD109",
+                Name = "PGSD109_Z_46",
+                ShipClass = ShipClass.Destroyer,
+                Tier = 9,
+                ShipNation = Nation.Germany,
+            })
         {
         }
 
@@ -44,12 +44,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             Dictionary<string, Modernization> upgradeData = AppDataHelper.Instance.ReadLocalJsonData<Modernization>(Nation.Common, ServerType.Live) ??
                                                             new Dictionary<string, Modernization>();
 
-            var filteredModernizations = upgradeData.Select(entry => entry.Value)
-                .Where(m => !m.BlacklistedShips.Contains(ship.Name))
-                .Where(m => m.ShipLevel.Contains(ship.Tier))
-                .Where(m => m.AllowedNations.Contains(ship.ShipNation))
-                .Where(m => m.ShipClasses.Contains(ship.ShipClass))
-                .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
+            List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
+                .Where(m => !m.BlacklistedShips?.Contains(ship.Name) ?? false)
+                .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
+                .Where(m => m.AllowedNations?.Contains(ship.ShipNation) ?? false)
+                .Where(m => m.ShipClasses?.Contains(ship.ShipClass) ?? false)
+                .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips?.Contains(ship.Name) ?? false))
                 .ToList();
 
             List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)

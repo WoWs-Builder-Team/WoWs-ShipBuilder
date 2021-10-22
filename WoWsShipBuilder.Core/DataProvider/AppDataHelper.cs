@@ -104,7 +104,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 var exteriorType when exteriorType == typeof(Exterior) => "Exterior",
                 var gunType when gunType == typeof(Gun) => "Gun",
                 var modernizationType when modernizationType == typeof(Modernization) => "Modernization",
-                var projectileType when projectileType == typeof(Projectile) => "Projectile",
+                var projectileType when typeof(Projectile).IsAssignableFrom(projectileType) => "Projectile",
                 var shipType when shipType == typeof(Ship) => "Ship",
                 var moduleType when moduleType == typeof(Module) => "Unit",
                 _ => throw new InvalidOperationException(),
