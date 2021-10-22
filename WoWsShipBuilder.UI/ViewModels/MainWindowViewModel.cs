@@ -223,16 +223,16 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
         }
 
-        private void AddSignalModifiers(string flagIndex)
+        private void AddSignalModifiers(Exterior flag)
         {
-            if (SignalSelectorViewModel!.SelectedSignalIndex.Contains(flagIndex))
+            if (SignalSelectorViewModel!.SelectedSignals.Contains(flag))
             {
-                SignalSelectorViewModel.SelectedSignalIndex.Remove(flagIndex);
+                SignalSelectorViewModel.SelectedSignals.Remove(flag);
                 SignalSelectorViewModel.SignalsNumber--;
             }
             else
             {
-                SignalSelectorViewModel.SelectedSignalIndex.Add(flagIndex);
+                SignalSelectorViewModel.SelectedSignals.Add(flag);
                 SignalSelectorViewModel.SignalsNumber++;
             }
         }
