@@ -39,8 +39,7 @@ namespace WoWsShipBuilder.Core.Settings
             }
 
             AppData.IsInitialized = true;
-            Logging.Logger.Info("Settings initialized. Updating game localizations.");
-            Localizer.Instance.UpdateLanguage(AppData.Settings.Locale);
+            Logging.Logger.Info("Settings initialized.");
         }
     }
 }

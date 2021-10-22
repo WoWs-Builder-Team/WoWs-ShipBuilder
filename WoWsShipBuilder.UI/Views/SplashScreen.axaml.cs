@@ -6,10 +6,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using NLog;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Updater;
 using WoWsShipBuilder.UI.ViewModels;
 
@@ -17,6 +16,8 @@ namespace WoWsShipBuilder.UI.Views
 {
     public class SplashScreen : Window
     {
+        private static readonly Logger Logger = Logging.GetLogger("SplashScreen");
+
         private readonly SplashScreenViewModel dataContext;
 
         private readonly Version currentVersion;
@@ -52,13 +53,18 @@ namespace WoWsShipBuilder.UI.Views
             Task.Run(async () =>
             {
                 Task minimumRuntime = Task.Delay(1500);
-
+                Logger.Debug("Checking application version...");
                 bool isUpdating = await ApplicationVersionCheck();
                 if (!isUpdating)
                 {
+                    Logger.Debug("Checking gamedata versions...");
                     await dataContext.VersionCheck();
                 }
- 
+
+                Logger.Debug("Updating localization settings...");
+                Localizer.Instance.UpdateLanguage(AppData.Settings.Locale);
+                Logger.Debug("Startup tasks completed. Launching main window.");
+
                 await minimumRuntime;
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
@@ -78,27 +84,26 @@ namespace WoWsShipBuilder.UI.Views
 
         private async Task<bool> ApplicationVersionCheck()
         {
-            var logger = Logging.GetLogger("UpdateCheck");
-            logger.Info($"Last version check was at: {AppData.Settings.LastVersionUpdateCheck}");
+            Logger.Info($"Last version check was at: {AppData.Settings.LastVersionUpdateCheck}");
             var now = DateTime.Now;
             if ((now - AppData.Settings.LastVersionUpdateCheck).TotalHours > 4 || AppData.IsDebug)
             {
                 dataContext.DownloadInfo = "appVersionCheck";
                 AppData.Settings.LastVersionUpdateCheck = DateTime.Now;
-                logger.Info($"Current application version: {currentVersion}");
-                logger.Info("Checking for updates...");
+                Logger.Info($"Current application version: {currentVersion}");
+                Logger.Info("Checking for updates...");
                 GithubApiResponse? latestVersion = await ApplicationUpdater.GetLatestVersionNumber();
                 bool versionParseSuccessful = Version.TryParse(Regex.Replace(latestVersion?.TagName ?? "0.0.0", "[^0-9.]", ""), out Version? newVersion);
                 if (!versionParseSuccessful)
                 {
-                    logger.Warn("Unable to parse the version of the new release.");
+                    Logger.Warn("Unable to parse the version of the new release.");
                 }
 
                 if (newVersion != null && newVersion > currentVersion)
                 {
                     if (AppData.Settings!.AutoUpdateEnabled)
                     {
-                        logger.Info("New version avaialble");
+                        Logger.Info("New version available");
 
                         // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
                         //     "Do you want to update now?", true);
@@ -116,7 +121,7 @@ namespace WoWsShipBuilder.UI.Views
                     }
                     else
                     {
-                        logger.Info("New version available but auto-update is disabled.");
+                        Logger.Info("New version available but auto-update is disabled.");
 
                         // UpdateWindow updateWin = new UpdateWindow("New Update found: " + latestVersion.TagName, latestVersion.Body,
                         //     "Do you want to open the page for the download?", true);
@@ -132,8 +137,8 @@ namespace WoWsShipBuilder.UI.Views
                 }
                 else
                 {
-                    logger.Info("No updates found.");
-                } 
+                    Logger.Info("No updates found.");
+                }
             }
 
             return false;
