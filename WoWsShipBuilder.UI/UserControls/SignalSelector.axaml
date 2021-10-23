@@ -20,7 +20,7 @@
     </UserControl.Resources>
 
     <DockPanel>  
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
             <TextBlock Text="{x:Static t:Translation.SignalSelector_Flags}" FontSize="13" />
             <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
             <TextBlock Text="/8" FontSize="13" />

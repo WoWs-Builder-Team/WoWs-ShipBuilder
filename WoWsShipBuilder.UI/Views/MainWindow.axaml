@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="1000"
+        mc:Ignorable="d" d:DesignWidth="1700" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         Title="WoWs Ship Builder"
-        Height="1000" Width="1200" CanResize="False"
+        Height="800" Width="1700" CanResize="False"
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
@@ -23,7 +23,7 @@
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader />
 
-        <Grid Grid.Row="1" ShowGridLines="False" RowDefinitions="*,4*,3*">
+        <Grid Grid.Row="1" RowDefinitions="2*,9*">
             <!--First row-->
             <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
                 <Grid ColumnDefinitions="*,3*,*">
@@ -36,14 +36,17 @@
                                 Command="{Binding NewShipSelectionCommand}" Grid.Row="1" HorizontalAlignment="Stretch" />
                     </Grid>
                     <RelativePanel Grid.Column="1">
+                        <!--PreviousShip-->
                         <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
-                            <Image Source="{Binding PreviousShipIndex, TargetNullValue=None, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipPrevious"/>
+                            <Image Source="{Binding PreviousShipIndex, TargetNullValue=None, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50" PointerReleased="OnClickChangeShipPrevious"/>
                             <TextBlock Text="{Binding PreviousShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
+                        <!--Current Ship-->
                         <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
-                            <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="75"/>
+                            <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90"/>
                             <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                         </StackPanel>
+                        <!--Next Ships-->
                         <ItemsControl Items="{Binding NextShipIndex}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding !!NextShipIndex.Count}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -53,7 +56,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Classes="Clickable" Orientation="Vertical">
-                                        <Image Name="{Binding}" Source="{Binding Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="45" PointerReleased="OnClickChangeShipNext"/>
+                                        <Image Name="{Binding}" Source="{Binding Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50" PointerReleased="OnClickChangeShipNext"/>
                                         <TextBlock Text="{Binding Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -72,35 +75,41 @@
             </Border>
 
             <!--SecondRow-->
-            <Grid Grid.Row="1" ColumnDefinitions="Auto,4*">
-                <Grid Grid.Column="0" Margin="10,0,10,0" RowDefinitions="*,Auto, Auto">
+            <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,4*,*" Margin="0,0,0,10" >
+                <!--Captain and flag selector-->
+                <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
+                    <Border Classes="BorderPanel" Grid.Row="0">
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                            <TextBlock Text="Captain Skills" Margin="10,5,0,0"/>
+                            <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  Text="Signals" Margin="10,5,0,0"/>
+                            <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <!--Modules and consumables-->
+                <Grid Grid.Column="1" Margin="10,0,10,0" RowDefinitions="*,Auto, Auto">
                     <userControls:ShipModuleControl HorizontalAlignment="Stretch"
                                                     DataContext="{Binding ShipModuleViewModel}" />
-                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Height="65" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
                         <userControls:UpgradeSelectorPanel DataContext="{Binding UpgradePanelViewModel}" HorizontalAlignment="Center"/>
                     </Border>
-                    <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" Height="65" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                    <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
                         <userControls:ConsumablePanel DataContext="{Binding ConsumableViewModel}" HorizontalAlignment="Center" />
                     </Border>
                 </Grid>
-                <Border Classes="BorderPanel" Grid.Column="1" Padding="5" Margin="0,0,10,0" CornerRadius="5">
+                <!--Ship Stats-->
+                <Border Classes="BorderPanel" Grid.Column="2" Padding="5" Margin="0,0,10,0" CornerRadius="5">
                     <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
                 </Border>
-            </Grid>
-            <!--Third Row-->
-            <Grid ColumnDefinitions="3*,2*,*" Grid.Row="2">
-                <Expander Header="Captain Skills" Grid.Column="0" Grid.Row="0" ExpandDirection="Down" IsExpanded="True"
-                          BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="10,10,5,10">
-                    <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
-                </Expander>
-                <Expander Header="Signals" Grid.Column="1" Grid.Row="0" ExpandDirection="Down" IsExpanded="True"
-                          BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0,10,0,10">
-                    <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
-                </Expander>
-                <Expander Header="{x:Static t:Translation.MainWindow_XpCalculator}" Grid.Column="2" Grid.Row="0"
-                          ExpandDirection="Down" IsExpanded="True"
-                          BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,10,10,10">
+                <!--XP calculator-->
+                <Border Classes="BorderPanel" Grid.Column="3" Margin="0,0,10,0">
                     <StackPanel Orientation="Vertical" Margin="5">
+                        <TextBlock Text="XP Calculator" Margin="0,0,0,10"/>
                         <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
                         <TextBox Text="{Binding BaseXp}" Name="BaseXpInput" Margin="0,0,0,10" />
                         <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
@@ -125,7 +134,7 @@
                             <TextBlock Text="{Binding FreeXp}" Margin="5,0,0,0" />
                         </StackPanel>
                     </StackPanel>
-                </Expander>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

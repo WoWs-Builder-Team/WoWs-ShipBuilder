@@ -18,7 +18,7 @@
     <Grid ColumnDefinitions="*">
 
         <DockPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
                 <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13"/>
                 <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13"/>
                 <TextBlock Text="/21" FontSize="13"/>
