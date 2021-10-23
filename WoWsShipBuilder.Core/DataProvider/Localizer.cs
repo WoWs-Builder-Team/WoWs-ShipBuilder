@@ -23,10 +23,13 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             this.dataHelper = dataHelper;
             locale = string.Empty;
-            UpdateLanguage(AppData.Settings.Locale);
+
+            // Prevent exception when using Avalonia previewer due to uninitialized settings.
+            string updateLanguage = AppData.IsInitialized ? AppData.Settings.Locale : "en-GB";
+            UpdateLanguage(updateLanguage);
         }
 
-        public static Localizer Instance { get; } = InstanceProducer.Value;
+        public static Localizer Instance => InstanceProducer.Value;
 
         public (bool IsLocalized, string Localization) this[string key] =>
             languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
@@ -41,7 +44,8 @@ namespace WoWsShipBuilder.Core.DataProvider
 
             locale = newLocale;
 
-            Dictionary<string, string>? localLanguageData = dataHelper.ReadLocalizationData(AppData.Settings.SelectedServerType, locale);
+            ServerType serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
+            Dictionary<string, string>? localLanguageData = dataHelper.ReadLocalizationData(serverType, locale);
             if (localLanguageData != null)
             {
                 languageData = localLanguageData;
