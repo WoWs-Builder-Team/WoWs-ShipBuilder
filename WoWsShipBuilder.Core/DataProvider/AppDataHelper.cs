@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             return fileSystem.File.Exists(fileName) ? DeserializeFile<Dictionary<string, string>>(fileName) : null;
         }
 
-        public Ship? GetShipFromSummary(ShipSummary summary)
+        public Ship? GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
         {
             Ship? ship = null;
 
@@ -73,8 +73,11 @@ namespace WoWsShipBuilder.Core.DataProvider
                 if (shipDict != null)
                 {
                     ship = shipDict[summary.Index];
-                    AppData.ShipDictionary = shipDict;
-                    AppData.CurrentLoadedNation = summary.Nation;
+                    if (changeDictionary)
+                    {
+                        AppData.ShipDictionary = shipDict;
+                        AppData.CurrentLoadedNation = summary.Nation;
+                    }
                 }
             }
 

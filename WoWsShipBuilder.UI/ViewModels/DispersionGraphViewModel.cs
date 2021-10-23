@@ -63,7 +63,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void AddShip()
         {
             ShipSummary result = await ShipSelectionWindow.ShowShipSelection(self);
-            Ship? ship = AppDataHelper.Instance.GetShipFromSummary(result);
+            Ship? ship = AppDataHelper.Instance.GetShipFromSummary(result, false);
             if (ship != null)
             {
                 var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
