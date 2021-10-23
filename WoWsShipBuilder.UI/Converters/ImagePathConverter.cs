@@ -105,6 +105,28 @@ namespace WoWsShipBuilder.UI.Converters
                     return new Bitmap(asset);
                 }
 
+                case Exterior exterior:
+                {
+                    Logger.Debug("Processing Exterior.");
+                    if (!string.IsNullOrEmpty(exterior.Name) && parameter != null && parameter.ToString()!.Equals("Flags", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Uri uri = new($"avares://{assemblyName}/Assets/signal_flags/{exterior.Name}.png");
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
+                    }
+                    else if (string.IsNullOrEmpty(exterior.Name))
+                    {
+                        Uri uri = new($"avares://{assemblyName}/Assets/blank.png");
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
+                     }
+                    else
+                    {
+                        Stream asset = LoadEmbeddedAsset(assets, null);
+                        return new Bitmap(asset);
+                    }
+                }
+
                 default:
                 {
                     Logger.Warn($"Unable to find handler for type {value?.GetType()}. Falling back to default implementation.");

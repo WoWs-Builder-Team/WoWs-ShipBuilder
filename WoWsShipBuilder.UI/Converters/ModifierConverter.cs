@@ -46,8 +46,22 @@ namespace WoWsShipBuilder.UI.Converters
                     value = $"+{(int)modifier}";
                 }
 
-                // This is Demolition Expert
-                else if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase))
+                // This is the anti detonation stuff
+                else if(localizerKey.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
+                    if (numericValue > 0)
+                    {
+                        value = $"+{numericValue}%";
+                    }
+                    else
+                    {
+                        value = $"{numericValue}%";
+                    }
+                }
+
+                // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
+                else if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value = $"+{modifier * 100}%";
                 }
@@ -104,7 +118,8 @@ namespace WoWsShipBuilder.UI.Converters
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
                 if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || 
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
-                    localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase))
+                    localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.ToUpper().Equals("ConsumableReloadTime", StringComparison.InvariantCultureIgnoreCase))
                 {
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }

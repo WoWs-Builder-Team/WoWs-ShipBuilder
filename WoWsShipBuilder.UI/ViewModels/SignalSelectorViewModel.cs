@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Metadata;
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -12,10 +15,19 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
         }
 
-        public SignalSelectorViewModel(int signalsNumber, Action<string> addSignalFlagModifiersCommand)
+        public SignalSelectorViewModel(int signalsNumber, Action<Exterior> addSignalFlagModifiersCommand)
         {
             SignalsNumber = signalsNumber;
             signalCommand = addSignalFlagModifiersCommand;
+            SignalList = LoadSignalList();
+        }
+
+        private List<KeyValuePair<string, Exterior>> signalList = new();
+
+        public List<KeyValuePair<string, Exterior>> SignalList
+        {
+            get => signalList;
+            set => this.RaiseAndSetIfChanged(ref signalList, value);
         }
 
         private int signalsNumber;
@@ -26,15 +38,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
         }
 
-        public List<string> SelectedSignalIndex { get; set; } = new List<string>();
+        public List<Exterior> SelectedSignals { get; set; } = new List<Exterior>();
 
-        private Action<string>? signalCommand;
+        private Action<Exterior>? signalCommand;
 
         [DependsOn(nameof(SignalsNumber))]
         public bool CanSignalCommandExecute(object parameter)
         {
-            string? flagIndex = parameter.ToString();
-            if (flagIndex != null && SelectedSignalIndex.Contains(flagIndex))
+            if (parameter == null)
+            {
+                return false;
+            }
+
+            Exterior? flag = parameter as Exterior;
+            if (flag != null && SelectedSignals.Contains(flag))
             {
                 return true;
             }
@@ -51,9 +68,21 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public void SignalCommandExecute(string flagIndex)
+        public void SignalCommandExecute(Exterior flag)
         {
-            signalCommand!.Invoke(flagIndex);
+            signalCommand!.Invoke(flag);
+        }
+
+        private List<KeyValuePair<string, Exterior>> LoadSignalList()
+        {
+            var dict = AppDataHelper.Instance.ReadLocalJsonData<Exterior>(Nation.Common, ServerType.Live);
+            var list = dict!.Where(x => x.Value.Type.Equals(ExteriorType.Flags) && x.Value.SortOrder < 14).OrderBy(x => x.Value.SortOrder).ToList();
+            KeyValuePair<string, Exterior> nullPair = new("", new Exterior());
+
+            // this is so the two in the bottom row are centered
+            list.Insert(12, nullPair);
+            list.Insert(13, nullPair);
+            return list;
         }
     }
 }

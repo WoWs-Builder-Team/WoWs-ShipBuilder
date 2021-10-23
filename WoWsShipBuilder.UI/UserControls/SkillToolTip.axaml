@@ -12,7 +12,7 @@
         <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
     
-    <StackPanel Orientation="Vertical" Spacing="5">
+    <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
         <TextBlock Classes="ModifierTitle" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
         <TextBlock Classes="ModifierDesc" IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
         <StackPanel IsVisible="{Binding !!Value.Modifiers.Count}">

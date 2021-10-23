@@ -5,13 +5,19 @@
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="SignalSelector"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
     
     <Design.DataContext>
         <vm:SignalSelectorViewModel />
     </Design.DataContext>
+
+    <UserControl.Resources>
+        <conv:ImagePathConverter x:Key="ImagePathConverter" />
+    </UserControl.Resources>
 
     <DockPanel>  
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
@@ -19,7 +25,35 @@
             <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
             <TextBlock Text="/8" FontSize="13" />
         </StackPanel>
-        <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*" DockPanel.Dock="Bottom">
+        <ItemsControl DockPanel.Dock="Bottom" Items="{Binding SignalList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <customControls:AutoGrid ColumnCount="6" RowCount="3" ColumnWidth="*" RowHeight="*"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Panel IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <Border CornerRadius="15" Width="60" Height="60" Margin="5">
+                            <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip.Placement="Right">
+                                <ToolTip.Tip>
+                                    <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                                </ToolTip.Tip>
+                            </Image>
+                        </Border>
+                        <customControls:NumberedButton
+                            BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
+                            Command="{Binding #SignalSelector.DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}"
+                            Margin="5" ToolTip.Placement="Right">
+                            <ToolTip.Tip>
+                                <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                            </ToolTip.Tip>
+                        </customControls:NumberedButton>
+                    </Panel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--<Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="*,*,*" DockPanel.Dock="Bottom">
             <customControls:NumberedButton Grid.Column="0" Grid.Row="0"
                                            BackgroundImage="/Assets/signal_flags/PCEF016_NE7_SignalFlag.png"
                                            Command="{Binding SignalCommandExecute}" CommandParameter="PCEF016" />
@@ -62,6 +96,6 @@
             <customControls:NumberedButton Grid.Column="3" Grid.Row="2"
                                            BackgroundImage="/Assets/signal_flags/PCEF029_Sonar_AirDef_SignalFlag.png"
                                            Command="{Binding SignalCommandExecute}" CommandParameter="PCEF029" />
-        </Grid>
+        </Grid>-->
     </DockPanel>
 </UserControl>

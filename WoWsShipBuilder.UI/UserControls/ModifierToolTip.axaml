@@ -21,7 +21,7 @@
         </Style>
     </UserControl.Styles>
 
-    <StackPanel Orientation="Vertical" Spacing="5">
+    <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
         <TextBlock Classes="ModifierTitle" Name="TitleText"
                     Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
         <TextBlock Classes="ModifierDesc"
