@@ -9,7 +9,7 @@
         xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         Title="WoWs Ship Builder"
-        Height="800" Width="1700" CanResize="False"
+        Height="800" Width="1750" CanResize="False"
         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
@@ -107,34 +107,39 @@
                     <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
                 </Border>
                 <!--XP calculator-->
-                <Border Classes="BorderPanel" Grid.Column="3" Margin="0,0,10,0">
-                    <StackPanel Orientation="Vertical" Margin="5">
-                        <TextBlock Text="XP Calculator" Margin="0,0,0,10"/>
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
-                        <TextBox Text="{Binding BaseXp}" Name="BaseXpInput" Margin="0,0,0,10" />
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
-                        <TextBox Text="{Binding XpBonus}" Name="XpInput" Margin="0,0,0,10" />
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
-                        <TextBox Text="{Binding CommanderXpBonus}" Name="CommanderXpInput" Margin="0,0,0,10" />
-                        <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
-                        <TextBox Text="{Binding FreeXpBonus}" Name="FreeXpInput" Margin="0,0,0,10" />
-                        <CheckBox IsThreeState="True" IsChecked="{Binding AccountState}"
-                                  Content="{Binding AccountType}" Margin="0,0,0,5" />
-                        <Separator Margin="0,0,0,5" />
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
-                            <TextBlock Text="{Binding Xp}" Margin="5,0,0,0" />
+                <Grid Grid.Column="3" RowDefinitions="*, Auto" Margin="0,0,10,0">
+                    <Border Classes="BorderPanel" Grid.Row="0" >
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Text="XP Calculator" Margin="0,0,0,10"/>
+                            <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
+                            <TextBox Text="{Binding BaseXp}" Name="BaseXpInput" Margin="0,0,0,10" />
+                            <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
+                            <TextBox Text="{Binding XpBonus}" Name="XpInput" Margin="0,0,0,10" />
+                            <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
+                            <TextBox Text="{Binding CommanderXpBonus}" Name="CommanderXpInput" Margin="0,0,0,10" />
+                            <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
+                            <TextBox Text="{Binding FreeXpBonus}" Name="FreeXpInput" Margin="0,0,0,10" />
+                            <CheckBox IsThreeState="True" IsChecked="{Binding AccountState}"
+                                      Content="{Binding AccountType}" Margin="0,0,0,5" />
+                            <Separator Margin="0,0,0,5" />
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
+                                <TextBlock Text="{Binding Xp}" Margin="5,0,0,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
+                                <TextBlock Text="{Binding CommanderXp}" Margin="5,0,0,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
+                                <TextBlock Text="{Binding FreeXp}" Margin="5,0,0,0" />
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
-                            <TextBlock Text="{Binding CommanderXp}" Margin="5,0,0,0" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
-                            <TextBlock Text="{Binding FreeXp}" Margin="5,0,0,0" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                    </Border>
+                    <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0" Padding="10">
+                        <Image Source="/Assets/Art/logo_white_text.png"/>
+                    </Border>
+                </Grid>            
             </Grid>
         </Grid>
     </Grid>
