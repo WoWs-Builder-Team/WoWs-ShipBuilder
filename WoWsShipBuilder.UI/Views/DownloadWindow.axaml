@@ -8,7 +8,6 @@
         Title="DownloadWindow"
         Name="DownloadWindow"
         Height="400" Width="250" CanResize="False"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
 
     <Grid RowDefinitions="30,*">

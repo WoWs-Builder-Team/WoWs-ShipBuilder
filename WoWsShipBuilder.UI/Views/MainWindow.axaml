@@ -10,7 +10,6 @@
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         Title="WoWs Ship Builder"
         Height="800" Width="1750" CanResize="False"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaChromeHints="NoChrome" 
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
         <vm:MainWindowViewModel />

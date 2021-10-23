@@ -6,8 +6,6 @@
         x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        ExtendClientAreaChromeHints="NoChrome"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         CanResize="False" Width="300" Height="150" WindowStartupLocation="CenterOwner"
         Title="BuildCreationWindow">
     <Grid RowDefinitions="30,*">

@@ -7,7 +7,6 @@
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen" CanResize="False"
         Width="1400" Height="900">
     <Window.Styles>

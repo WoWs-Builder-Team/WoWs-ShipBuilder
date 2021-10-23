@@ -118,4 +118,10 @@
     <Style Selector="TextBlock.Clickable">
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
+
+    <!--Style for windows-->
+    <Style Selector="Window">
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
+        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome"/>
+    </Style>
 </Styles>

@@ -15,7 +15,7 @@ namespace WoWsShipBuilder.UI.UserControls
         private Path maximizeIcon;
         private Button closeButton;
 
-        public static readonly StyledProperty<bool> ShowTitleButtonProperty =
+        public static readonly StyledProperty<bool> ShowTitleProperty =
             AvaloniaProperty.Register<AppHeader, bool>(nameof(ShowTitle), true);
 
         public static readonly StyledProperty<string> TitleProperty =
@@ -48,8 +48,8 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public bool ShowTitle
         {
-            get => GetValue(ShowTitleButtonProperty);
-            set => SetValue(ShowTitleButtonProperty, value);
+            get => GetValue(ShowTitleProperty);
+            set => SetValue(ShowTitleProperty, value);
         }
 
         public string Title

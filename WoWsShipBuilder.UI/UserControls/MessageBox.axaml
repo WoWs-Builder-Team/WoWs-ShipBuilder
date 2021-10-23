@@ -5,8 +5,6 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="150"
         x:Class="WoWsShipBuilder.UI.UserControls.MessageBox"
-        ExtendClientAreaChromeHints="NoChrome"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterOwner" >
 
     <Grid RowDefinitions="30,*">

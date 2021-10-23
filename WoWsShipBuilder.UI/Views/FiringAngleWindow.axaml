@@ -7,7 +7,6 @@
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.FiringAngleWindow"
-         ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         CanResize="False" WindowStartupLocation="CenterScreen"
         Height="640" Width="580">
     <Grid RowDefinitions="30,*" ColumnDefinitions="2*,*">

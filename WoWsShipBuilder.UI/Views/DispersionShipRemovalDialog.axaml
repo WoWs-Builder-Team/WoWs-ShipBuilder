@@ -5,7 +5,6 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
         x:Class="WoWsShipBuilder.UI.Views.DispersionShipRemovalDialog"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterOwner" CanResize="False" Width="400" Height="300">
     <Grid RowDefinitions="30,*, Auto">
         <userControls:AppHeader Grid.Row="0"/>

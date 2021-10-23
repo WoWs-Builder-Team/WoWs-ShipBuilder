@@ -5,9 +5,8 @@
         mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-        Title="SettingsWindow"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         Height="450" Width="650" CanResize="False"
-        ExtendClientAreaToDecorationsHint="True" ExtendClientAreaTitleBarHeightHint="30"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -15,10 +14,7 @@
     </Window.Resources>
 
     <Grid RowDefinitions="30, *">
-        <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
-            <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0"/>
-            <TextBlock Text="WoWs Ship Builder"  VerticalAlignment="Center"/>
-        </StackPanel>
+        <userControls:AppHeader Grid.Row="0"/>
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
             <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
                 <TabControl>
