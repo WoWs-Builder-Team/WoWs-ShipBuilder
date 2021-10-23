@@ -44,7 +44,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             var msgbox = new MessageBox();
 
-            msgbox.FindControl<AppHeader>("Header").FindControl<TextBlock>("HeaderTitle").Text = title;
+            msgbox.FindControl<AppHeader>("Header").Title = title;
 
             msgbox.Width = width;
             msgbox.Height = height;

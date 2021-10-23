@@ -621,4 +621,10 @@
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
     <value>Expand all angles</value>
   </data>
+  <data name="MainWindow_CaptainSkills" xml:space="preserve">
+    <value>Captain Skills</value>
+  </data>
+  <data name="MainWindow_Signals" xml:space="preserve">
+    <value>Signals</value>
+  </data>
 </root>

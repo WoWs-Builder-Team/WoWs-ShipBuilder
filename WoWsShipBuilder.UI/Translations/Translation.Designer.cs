@@ -295,6 +295,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Captain Skills.
+        /// </summary>
+        public static string MainWindow_CaptainSkills {
+            get {
+                return ResourceManager.GetString("MainWindow_CaptainSkills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commander XP :.
         /// </summary>
         public static string MainWindow_CommanderXp {
@@ -354,6 +363,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_ShareBuild {
             get {
                 return ResourceManager.GetString("MainWindow_ShareBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signals.
+        /// </summary>
+        public static string MainWindow_Signals {
+            get {
+                return ResourceManager.GetString("MainWindow_Signals", resourceCulture);
             }
         }
         
