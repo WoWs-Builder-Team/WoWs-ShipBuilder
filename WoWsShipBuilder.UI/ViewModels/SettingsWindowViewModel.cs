@@ -25,7 +25,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             self = win;
             ResetSettingsCommand = ReactiveCommand.Create(() => ResetSettings());
             CleanAppDataCommand = ReactiveCommand.Create(() => CleanAppData());
-            DonateCommand = ReactiveCommand.Create(() => OpenPaypalPage());
+            DonateCommand = ReactiveCommand.Create(() => OpenDonationPage());
             LanguagesList = languages.Keys.ToList();
             SelectedLanguage = languages.Keys.First();
             Servers = Enum.GetNames<ServerType>().ToList();
@@ -123,23 +123,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void OpenPaypalPage()
+        private void OpenDonationPage()
         {
-            Debug.WriteLine("Paypal");
-            string url = "";
-
-            string business = "my@paypalemail.com";  // your paypal email
-            string description = "Donation";            // '%20' represents a space. remember HTML!
-            string country = "AU";                  // AU, US, etc.
-            string currency = "AUD";                 // AUD, USD, etc.
-
-            url += "https://www.paypal.com/cgi-bin/webscr" +
-                "?cmd=" + "_donations" +
-                "&business=" + business +
-                "&lc=" + country +
-                "&item_name=" + description +
-                "&currency_code=" + currency +
-                "&bn=" + "PP%2dDonationsBF";
+            string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
 
             Process.Start(new ProcessStartInfo
             {
