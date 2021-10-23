@@ -5,13 +5,14 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.StartingMenuWindow"
         xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         Title="WoWs Ship Builder"
         Name="StartWindow"
         Height="800" Width="400" CanResize="False" 
         WindowStartupLocation="CenterScreen">
 
     <Window.Styles>
-        <Style Selector="Button">
+        <Style Selector="Button.NotTitle">
             <Setter Property="Width" Value="150"/>
             <Setter Property="Height" Value="50"/>
             <Setter Property="Margin" Value="20"/>
@@ -22,11 +23,12 @@
         </Style>
     </Window.Styles>
     
-    <Grid RowDefinitions="30,2*,Auto,*,Auto" ShowGridLines="False">
+    <Grid RowDefinitions="30,2*,Auto,*,Auto" >
+        <userControls:AppHeader Grid.Row="0" ShowTitle="False"/>
         <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="1"/>
-        <Button Command="{Binding NewBuildCommand}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"/>
+        <Button Classes="NotTitle" Command="{Binding NewBuildCommand}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"/>
         <StackPanel Orientation="Vertical" Grid.Row="3" >
-            <Button Command="{Binding LoadBuildCommand}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
+            <Button Classes="NotTitle" Command="{Binding LoadBuildCommand}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
             <ListBox SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None">
                 <ListBoxItem Content="Test1"/>
                 <ListBoxItem Content="Test2"/>
@@ -39,6 +41,6 @@
                 <ListBoxItem Content="Test9"/>
             </ListBox>
         </StackPanel>
-        <Button Command="{Binding SettingCommand}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4"/>
+        <Button Classes="NotTitle" Command="{Binding SettingCommand}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4"/>
     </Grid>
 </Window>

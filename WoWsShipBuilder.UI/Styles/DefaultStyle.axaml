@@ -123,5 +123,6 @@
     <Style Selector="Window">
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
         <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome"/>
+        <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="30"/>
     </Style>
 </Styles>
