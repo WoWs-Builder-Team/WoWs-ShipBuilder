@@ -75,7 +75,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
-            //ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
             CurrentShipIndex = ship.Index;
             PreviousShipIndex = previousShipIndex;
