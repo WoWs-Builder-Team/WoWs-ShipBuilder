@@ -14,7 +14,6 @@ namespace WoWsShipBuilder.UI.UserControls
         private Button maximizeButton;
         private Path maximizeIcon;
         private Button closeButton;
-        private Image windowIcon;
 
         public static readonly StyledProperty<bool> ShowTitleButtonProperty =
             AvaloniaProperty.Register<AppHeader, bool>(nameof(ShowTitle), true);
@@ -39,12 +38,10 @@ namespace WoWsShipBuilder.UI.UserControls
             maximizeButton = this.FindControl<Button>("MaximizeButton");
             maximizeIcon = this.FindControl<Path>("MaximizeIcon");
             closeButton = this.FindControl<Button>("CloseButton");
-            windowIcon = this.FindControl<Image>("WindowIcon");
 
             minimizeButton.Click += MinimizeWindow;
             maximizeButton.Click += MaximizeWindow;
             closeButton.Click += CloseWindow;
-            windowIcon.DoubleTapped += CloseWindow;
 
             SubscribeToWindowState();
         }
