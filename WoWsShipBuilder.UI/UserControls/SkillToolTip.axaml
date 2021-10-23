@@ -15,7 +15,7 @@
     <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
         <TextBlock Classes="ModifierTitle" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
         <TextBlock Classes="ModifierDesc" IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
-        <StackPanel IsVisible="{Binding !!Value.Modifiers.Count}">
+        <StackPanel IsVisible="{Binding Value.Modifiers, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Separator/>
             <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
                 <ItemsControl.ItemTemplate>
@@ -34,7 +34,7 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <StackPanel IsVisible="{Binding !!Value.ConditionalModifiers.Count, FallbackValue=False}">
+        <StackPanel IsVisible="{Binding Value.ConditionalModifiers, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
             <Separator/>
             <TextBlock Classes="ModifierDesc" Text="{Binding Value.ConditionalTriggerType, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_TRIGGER}"/>
             <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
