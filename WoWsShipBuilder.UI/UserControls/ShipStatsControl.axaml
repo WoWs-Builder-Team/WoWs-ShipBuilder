@@ -26,10 +26,10 @@
             <StackPanel Orientation="Vertical" Spacing="10">
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0" DataContext="{Binding CurrentShipStats}">
                     <!--replace grid with stackpanel direction vertical for each row add another stackpanel direction horizontal spacing 30 if stackpanel doesnt work use dockpanel-->
                     <StackPanel Orientation="Vertical">
-                        <DockPanel>
+                        <DockPanel DataContext="{Binding MainBatteryUI}">
                             <TextBlock Text="Main battery setup binding" DockPanel.Dock="Top"/>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
@@ -44,19 +44,19 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
                                 <TextBlock Text="{Binding Range}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding ReloadTime}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding RateOfFire}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding DegreesTurnTime}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding Reload}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding RoF}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding TurnTime}" TextAlignment="Right"/>
                                 <TextBlock Text="{Binding TraverseSpeed}" TextAlignment="Right"/>
                                 <TextBlock Text="{Binding Sigma}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding ShipStats_HorizontalDisp}" TextAlignment="Right"/>
-                                <TextBlock Text="{Binding ShipStats_VerticalDisp}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding HorizontalDisp}" TextAlignment="Right"/>
+                                <TextBlock Text="{Binding VerticalDisp}" TextAlignment="Right"/>
                             </StackPanel>
                         </DockPanel>
                         <Separator Margin="0,5"/>
-                        <ItemsControl Items="{Binding CurrentShipStats.MainBatteryUI}">
+                        <ItemsControl Items="{Binding ShellUI}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="dataUi:MainBatteryUI">
+                                <DataTemplate DataType="dataUi:ShellUI">
                                     <DockPanel>
                                         <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                             <TextBlock Text="{Binding Name}"/>
@@ -73,17 +73,17 @@
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
-                                            <TextBlock Text="{Binding ShellType}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Type}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding Damage}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding TheoreticalDPM}" TextAlignment="Right"/>
                                             
                                             <!--Not sure if this is the correct prop, should be initial shell speed-->
-                                            <TextBlock Text="{Binding AirDrag}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Velocity}" TextAlignment="Right"/>
                                             
-                                            <TextBlock Text="{Binding Mass}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding Weight}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding Penetration}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding FireChance}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding RicochetAngle}" TextAlignment="Right"/>
+                                            <TextBlock Text="{Binding RicochetAngles}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding Overmatch}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding ArmingThreshold}" TextAlignment="Right"/>
                                             <TextBlock Text="{Binding FuseTimer}" TextAlignment="Right"/>

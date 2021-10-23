@@ -10,7 +10,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
-    public partial class ShipStatsControl : UserControl
+    public class ShipStatsControl : UserControl
     {
         public ShipStatsControl()
         {
@@ -24,12 +24,12 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public void OpenDispersionGraphWindow(object sender, PointerReleasedEventArgs e)
         {
-            // var dc = DataContext as ShipStatsControlViewModel;
-            // var mainBattery = dc!.CurrentShipStats!.MainBatteryModuleList.Values.First();
-            // var win = new DispersionGraphsWindow();
-            // win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionValues, (double)mainBattery.MaxRange, dc.CurrentShipStats.Index);
-            // win.Show();
-            // e.Handled = true;
+            var dc = DataContext as ShipStatsControlViewModel;
+            var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
+            var win = new DispersionGraphsWindow();
+            win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index);
+            win.Show();
+            e.Handled = true;
         }
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)

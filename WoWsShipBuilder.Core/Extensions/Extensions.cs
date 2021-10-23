@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WoWsShipBuilder.Core.Extensions
 {
@@ -11,5 +13,16 @@ namespace WoWsShipBuilder.Core.Extensions
                 thisDict.Add(key, value);
             }
         }
+
+        public static int FindModifierIndex(this List<(string Key, float Value)> dataSource, string filter)
+        {
+            return dataSource.FindIndex(modifier => modifier.Key.Equals(filter, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static IEnumerable<float> FindModifiers(this IEnumerable<(string Key, float Value)> dataSource, string filter) => dataSource
+            .Where(modifier => modifier.Key.Equals(filter, StringComparison.InvariantCultureIgnoreCase))
+            .Select(modifier => modifier.Value);
+
+        public static bool IsValidIndex(this int index) => index > -1;
     }
 }

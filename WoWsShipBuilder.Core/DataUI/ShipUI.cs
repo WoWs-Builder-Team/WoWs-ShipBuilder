@@ -4,7 +4,7 @@ using WoWsShipBuilderDataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShipUI
+    public record ShipUI(string Index)
     {
         public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
 
@@ -14,7 +14,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
 
-        public TorpedoUI? TorpedoUI { get; set; }
+        public TorpedoArmamentUi? TorpedoArmamentUI { get; set; }
+
+        public List<TorpedoUI>? TorpedoUI { get; set; }
 
         public List<AirstrikeUI>? AirstrikeUI { get; set; }
 
@@ -26,10 +28,12 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
-            var shipUI = new ShipUI
+            var shipUI = new ShipUI(ship.Index)
             {
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
+                ShellUI = DataUI.ShellUI.FromShip(ship, shipConfiguration, modifiers),
+                SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
             };
             return shipUI;
         }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -90,7 +87,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                         var noGunMessage = Translation.ResourceManager.GetString("MessageBox_ShipNoGun", Translation.Culture);
                         var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
                         await MessageBox.Show(self, noGunMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                    } 
+                    }
                 }
                 else
                 {
@@ -113,7 +110,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     VerticalModel!.Series.RemoveAt(index);
                     shipNames.RemoveAt(index);
                 }
-                
+
                 HorizontalModel!.InvalidatePlot(true);
                 VerticalModel!.InvalidatePlot(true);
                 this.RaisePropertyChanged(nameof(ShipNames));
@@ -138,7 +135,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             model.LegendBorder = foreground;
             model.LegendBorderThickness = 1;
             model.LegendBackground = background;
-            model.LegendFontSize = 13;          
+            model.LegendFontSize = 13;
 
             var xAxis = new LinearAxis()
             {
@@ -177,19 +174,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            Func<double, double> dispFunc = (range) =>
-            {
-                double baseValue = range * 1000 * ((dispersion.IdealRadius * 30) - (dispersion.MinRadius * 30)) / (dispersion.IdealDistance * 30);
-                if (range * 1000 <= dispersion.TaperDist)
-                {
-                    return baseValue + (dispersion.MinRadius * 30 * ((range * 1000) / dispersion.TaperDist));
-                }
-                else
-                {
-                    return baseValue + (dispersion.MinRadius * 30);
-                }
-            };
-            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, name);
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;
@@ -197,34 +182,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            Func<double, double> dispFunc = (range) =>
-             {
-                 double baseValue = range * 1000 * ((dispersion.IdealRadius * 30) - (dispersion.MinRadius * 30)) / (dispersion.IdealDistance * 30);
-                 double hDisp = 0;
-                 if (range * 1000 <= dispersion.TaperDist)
-                 {
-                     hDisp = baseValue + (dispersion.MinRadius * 30 * ((range * 1000) / dispersion.TaperDist));
-                 }
-                 else
-                 {
-                     hDisp = baseValue + (dispersion.MinRadius * 30);
-                 }
-
-                 double vCoeff = 0;
-                 double delimDist = dispersion.Delim * maxRange;
-                 if (range * 1000 < delimDist)
-                 {
-                     vCoeff = dispersion.RadiusOnZero + ((dispersion.RadiusOnDelim - dispersion.RadiusOnZero) * (range * 1000 / delimDist));
-                 }
-                 else
-                 {
-                     vCoeff = dispersion.RadiusOnDelim + ((dispersion.RadiusOnMax - dispersion.RadiusOnDelim) * ((range * 1000) - delimDist) / (maxRange - delimDist));
-                 }
-
-                 return vCoeff * hDisp;
-             };
-
-            var dispSeries = new FunctionSeries(dispFunc, 0, (maxRange * 1.5) / 1000, 0.01, name);
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;

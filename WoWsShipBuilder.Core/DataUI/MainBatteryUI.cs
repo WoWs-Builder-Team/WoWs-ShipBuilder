@@ -28,10 +28,15 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public Dispersion DispersionData { get; set; } = default!;
 
-        public static MainBatteryUI FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+        public static MainBatteryUI? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            TurretModule mainBattery =
-                ship.MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
+            ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+            if (artilleryConfiguration == null)
+            {
+                return null;
+            }
+
+            TurretModule? mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
 
             List<(int BarrelCount, int TurretCount)> arrangementList = mainBattery.Guns
                 .GroupBy(gun => gun.NumBarrels)
@@ -58,11 +63,11 @@ namespace WoWsShipBuilder.Core.DataUI
             var rangeModifiers = modifiers
                 .Where(modifier => modifier.name.Equals("GMMaxDist", StringComparison.InvariantCultureIgnoreCase))
                 .Select(modifier => modifier.value);
-            decimal range = Math.Round(rangeModifiers.Aggregate(mainBattery.MaxRange, (current, modifier) => current * (decimal)modifier), 2);
+            decimal range = Math.Round(rangeModifiers.Aggregate(mainBattery.MaxRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
             // Adjust dispersion for range modifiers
-            decimal hDispersion = Math.Round(mainBattery.DispersionValues.MaximumHorizontalDispersion * (range / mainBattery.MaxRange), 2);
-            decimal vDispersion = Math.Round(mainBattery.DispersionValues.MaximumVerticalDispersion * (range / mainBattery.MaxRange), 2);
+            decimal hDispersion = Math.Round((decimal)mainBattery.DispersionValues.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
+            decimal vDispersion = Math.Round((decimal)mainBattery.DispersionValues.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
 
             return new MainBatteryUI
             {

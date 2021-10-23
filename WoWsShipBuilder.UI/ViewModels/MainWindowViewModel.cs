@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Collections;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -12,6 +16,12 @@ namespace WoWsShipBuilder.UI.ViewModels
     class MainWindowViewModel : ViewModelBase
     {
         private readonly MainWindow? self;
+
+        private readonly List<IDisposable?> collectionChangeListeners = new();
+
+        private readonly SemaphoreSlim semaphore = new(1, 1);
+
+        private CancellationTokenSource tokenSource;
 
         private bool? accountState = false;
 
@@ -46,6 +56,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes)
         {
             self = window;
+            tokenSource = new CancellationTokenSource();
 
             // Signal selector model
             SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
@@ -53,7 +64,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             // Ship stats model
             RawShipData = ship;
             EffectiveShipData = RawShipData;
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData);
 
             // Captain Skill model
             CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
@@ -65,9 +75,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+
             CurrentShipIndex = ship.Index;
             PreviousShipIndex = previousShipIndex;
             NextShipIndex = nextShipsIndexes;
+
+            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
         }
 
         public MainWindowViewModel()
@@ -259,6 +274,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await ShipSelectionWindow.ShowShipSelection(self!);
             if (result != null)
             {
+                collectionChangeListeners.Clear();
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 RawShipData = ship!;
 
@@ -272,6 +288,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CurrentShipIndex = ship!.Index;
                 PreviousShipIndex = result.PrevShipIndex;
                 NextShipIndex = result.NextShipsIndex;
+
+                collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
+                collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
             }
         }
 
@@ -323,6 +342,33 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 AccountType = "WG Premium Account";
             }
+        }
+
+        private void UpdateStatsViewModel()
+        {
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+            tokenSource = new CancellationTokenSource();
+            CancellationToken token = tokenSource.Token;
+            Task.Run(
+                async () =>
+                {
+                    await Task.Delay(250, token);
+                    if (!token.IsCancellationRequested)
+                    {
+                        await semaphore.WaitAsync(token);
+                        ShipStatsControlViewModel?.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+                        semaphore.Release();
+                    }
+                },
+                token);
+        }
+
+        private List<(string, float)> GenerateModifierList()
+        {
+            return UpgradePanelViewModel.SelectedModernizationList
+                .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
+                .ToList();
         }
     }
 }

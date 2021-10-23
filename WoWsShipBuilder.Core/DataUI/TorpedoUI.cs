@@ -17,9 +17,5 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal TorpedoReactionTime { get; set; }
 
         public decimal TorpedoFloodingChance { get; set; }
-
-        public decimal TorpedoTurnTime { get; set; }
-
-        public decimal TorpedoTraverseSpeed { get; set; }
     }
 }
