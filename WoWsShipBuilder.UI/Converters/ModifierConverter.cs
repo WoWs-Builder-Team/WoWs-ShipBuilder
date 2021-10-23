@@ -85,8 +85,7 @@ namespace WoWsShipBuilder.UI.Converters
                 }
                 else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
                 {
-                    Debug.WriteLine(localizerKey);
-
+                    
                     if (modifier > 1)
                     {
                         int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);
