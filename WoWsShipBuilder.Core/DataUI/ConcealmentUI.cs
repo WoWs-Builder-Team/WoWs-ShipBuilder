@@ -10,14 +10,19 @@ namespace WoWsShipBuilder.Core.DataUI
     {
         public List<KeyValuePair<string, string>>? ConcealmentData { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentBySea { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentBySeaFiringSmoke { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentBySeaFire { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentByAir { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentByAirFire { get; set; }
 
         public decimal ConcealmentBySub { get; set; }
