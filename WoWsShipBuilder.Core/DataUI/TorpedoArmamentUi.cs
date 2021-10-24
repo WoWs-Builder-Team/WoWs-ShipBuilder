@@ -2,7 +2,7 @@
 {
     public record TorpedoArmamentUi
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         public decimal TurnTime { get; set; }
 

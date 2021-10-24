@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
@@ -20,26 +21,51 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal TheoreticalDPM { get; set; }
 
-        public decimal Velocity { get; set; }
+        [DataUiUnit("MPS")]
+        public decimal ShellVelocity { get; set; }
 
-        public decimal Weight { get; set; }
+        [DataUiUnit("KG")]
+        public decimal ShellWeight { get; set; }
 
+        [DataUiUnit("MM")]
         public decimal Penetration { get; set; }
 
+        [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public (decimal, decimal) RicochetAngles { get; set; }
+        [DataUiUnit("Degree")]
+        public string? RicochetAngles { get; set; }
 
+        [JsonIgnore]
+        public decimal MinRicochetAngle { get; set; }
+
+        [JsonIgnore]
+        public decimal MaxRicochetAngle { get; set; }
+
+        [DataUiUnit("MM")]
         public decimal Overmatch { get; set; }
 
+        [DataUiUnit("MM")]
         public decimal ArmingThreshold { get; set; }
 
+        [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
 
         public decimal DepthExplosion { get; set; }
 
-        public static List<ShellUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+        [JsonIgnore]
+        public bool IsLastEntry { get; private set; }
+
+        [JsonIgnore]
+        public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
+
+        public static List<ShellUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
+            if (shipConfiguration.All(config => config.UcType != ComponentType.Artillery))
+            {
+                return null;
+            }
+
             Gun gun = ship
                 .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
                 .Guns.First();
@@ -120,24 +146,53 @@ namespace WoWsShipBuilder.Core.DataUI
                     }
                 }
 
+                decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
+                decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
+
                 var uiShell = new ShellUI
                 {
                     Name = Localizer.Instance[shell.Name].Localization,
                     Type = shell.ShellType.ToString(),
                     Damage = Math.Round((decimal)shellDamage),
-                    Velocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
-                    Weight = Math.Round((decimal)shell.Mass),
+                    ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
+                    ShellWeight = Math.Round((decimal)shell.Mass),
                     Penetration = Math.Round((decimal)shellPenetration),
                     FireChance = Math.Round((decimal)shellFireChance),
-                    RicochetAngles = (Math.Round((decimal)shell.RicochetAngle, 1), Math.Round((decimal)shell.AlwaysRicochetAngle, 1)),
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = Math.Round((decimal)shell.ArmingThreshold),
                     FuseTimer = Math.Round((decimal)shell.FuseTimer, 2),
                 };
+
+                if (minRicochet > 0 || maxRicochet > 0)
+                {
+                    uiShell.MinRicochetAngle = minRicochet;
+                    uiShell.MaxRicochetAngle = maxRicochet;
+                    uiShell.RicochetAngles = $"{minRicochet} - {maxRicochet}";
+                }
+
+                uiShell.PropertyValueMapper = uiShell.GetType().GetProperties()
+                    .Where(property => !property.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any())
+                    .Select(property => (Key: "ShipStats_" + property.Name, Value: property.GetValue(uiShell),
+                        Unit: (DataUiUnitAttribute?)property.GetCustomAttributes(typeof(DataUiUnitAttribute), false).FirstOrDefault()))
+                    .Where(FilterValue)
+                    .Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value + pair.Unit?.Localization))
+                    .ToList();
                 shells.Add(uiShell);
             }
 
+            shells.Last().IsLastEntry = true;
             return shells;
+        }
+
+        private static bool FilterValue((string Key, object? Value, DataUiUnitAttribute? Unit) pair)
+        {
+            return pair.Value switch
+            {
+                string strValue => !string.IsNullOrEmpty(strValue),
+                decimal decValue => decValue != 0,
+                (decimal min, decimal max) => min > 0 || max > 0,
+                _ => false,
+            };
         }
     }
 }

@@ -6,7 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
-             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core">
     <Design.DataContext>
         <vm:ShipStatsControlViewModel/>
@@ -21,16 +20,17 @@
         </Style>
     </UserControl.Styles>
     <ScrollViewer>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <!-- Main Armaments -->
-            <StackPanel Orientation="Vertical" Spacing="10">
+            <StackPanel Orientation="Vertical" Spacing="10" Width="190">
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0" DataContext="{Binding CurrentShipStats}">
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0" DataContext="{Binding CurrentShipStats}"
+                          IsVisible="{Binding !!MainBatteryUI}">
                     <!--replace grid with stackpanel direction vertical for each row add another stackpanel direction horizontal spacing 30 if stackpanel doesnt work use dockpanel-->
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Spacing="5">
                         <DockPanel DataContext="{Binding MainBatteryUI}">
-                            <TextBlock Text="Main battery setup binding" DockPanel.Dock="Top"/>
+                            <TextBlock Text="{Binding Name}" DockPanel.Dock="Top" TextWrapping="Wrap"/>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Range}"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Reload}"/>
@@ -54,43 +54,28 @@
                             </StackPanel>
                         </DockPanel>
                         <Separator Margin="0,5"/>
+                        <TextBlock Text="Shells"></TextBlock>
                         <ItemsControl Items="{Binding ShellUI}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="dataUi:ShellUI">
-                                    <DockPanel>
-                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                                            <TextBlock Text="{Binding Name}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Damage}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_TheoreticalDPM}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellVelocity}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ShellWeight}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Penetration}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_FireChance}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Ricochet}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Overmatch}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_ArmingThreshold}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_FuseTimer}"/>
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_DepthExplosion}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Values">
-                                            <TextBlock Text="{Binding Type}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding Damage}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding TheoreticalDPM}" TextAlignment="Right"/>
-                                            
-                                            <!--Not sure if this is the correct prop, should be initial shell speed-->
-                                            <TextBlock Text="{Binding Velocity}" TextAlignment="Right"/>
-                                            
-                                            <TextBlock Text="{Binding Weight}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding Penetration}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding FireChance}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding RicochetAngles}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding Overmatch}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding ArmingThreshold}" TextAlignment="Right"/>
-                                            <TextBlock Text="{Binding FuseTimer}" TextAlignment="Right"/>
-                                            <!--No clue which prop this should be-->
-                                            <TextBlock Text="{Binding DepthExplosionRadius}" TextAlignment="Right"/>
-                                        </StackPanel>
-                                    </DockPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <ItemsControl Items="{Binding PropertyValueMapper}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel HorizontalAlignment="Stretch">
+                                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                        <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Separator IsVisible="{Binding !IsLastEntry}" Margin="0 5" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -196,7 +181,7 @@
             </StackPanel>
 
             <!-- Secondary Armaments -->
-            <StackPanel Orientation="Vertical" Spacing="10">
+            <StackPanel Orientation="Vertical" Spacing="10" Width="190">
                 <!--Secondary-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="Secondary Battery"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">
@@ -335,7 +320,7 @@
             </StackPanel>
             
             <!--Misc-->
-            <StackPanel Orientation="Vertical" Spacing="10">
+            <StackPanel Orientation="Vertical" Spacing="10" Width="190">
                 <!--Maneuverability-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuverability}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">

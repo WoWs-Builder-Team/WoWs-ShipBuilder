@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 
 namespace WoWsShipBuilder.UI.Translations
@@ -29,6 +30,18 @@ namespace WoWsShipBuilder.UI.Translations
                 if (parameter is not string stringParam)
                 {
                     return Localizer.Instance[localizerKey].Localization;
+                }
+
+                if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    string? localization = Translation.ResourceManager.GetString(localizerKey);
+                    if (localization == null)
+                    {
+                        Logging.Logger.Warn($"Missing localization for key {localizerKey}.");
+                        localization = localizerKey;
+                    }
+
+                    return localization;
                 }
 
                 if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))

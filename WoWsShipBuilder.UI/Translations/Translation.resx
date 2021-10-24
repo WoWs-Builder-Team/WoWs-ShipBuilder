@@ -390,7 +390,7 @@
   <data name="ShipStats_Penetration" xml:space="preserve">
     <value>Penetration</value>
   </data>
-  <data name="ShipStats_Ricochet" xml:space="preserve">
+  <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ricochet Angles</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
@@ -626,6 +626,9 @@
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
     <value>Signals</value>
+  </data>
+  <data name="ShipStats_Name" xml:space="preserve">
+      <value>Name</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
     <value>Apply Camo Bonuses</value>
