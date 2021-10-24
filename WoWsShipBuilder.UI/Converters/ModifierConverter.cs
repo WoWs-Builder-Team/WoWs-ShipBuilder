@@ -39,11 +39,26 @@ namespace WoWsShipBuilder.UI.Converters
             if (values[0] is string localizerKey && modifierInitialized)
             {
                 #region Value Parsing
-
+                Debug.WriteLine("Key: " + localizerKey);
+                Debug.WriteLine("Modifier: " + modifier);
                 // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                 if (localizerKey.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase))
                 {
                     value = $"+{(int)modifier}";
+                }
+
+                // this is for HP module
+                else if (localizerKey.Contains("AAMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("GSMaxHP", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
+                    if (numericValue > 0)
+                    {
+                        value = $"+{numericValue}%";
+                    }
+                    else
+                    {
+                        value = $"{numericValue}%";
+                    }
                 }
 
                 // This is the anti detonation stuff
@@ -117,6 +132,7 @@ namespace WoWsShipBuilder.UI.Converters
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
                 if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || 
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("ConsumableReloadTime", StringComparison.InvariantCultureIgnoreCase))
                 {
