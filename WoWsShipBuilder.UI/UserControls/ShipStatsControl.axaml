@@ -232,7 +232,7 @@
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_HitChance}" Margin="20,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
                                 <TextBlock Text=""/>
@@ -250,7 +250,7 @@
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_HitChance}" Margin="20,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
                                 <TextBlock Text=""/>
@@ -268,7 +268,7 @@
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_ConstantDamage}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Flak}" Margin="20,0,0,0"/>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_FlakDamage}" Margin="20,0,0,0"/>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_FlakHitchance}" Margin="20,0,0,0"/>
+                                <TextBlock Text="{x:Static t:Translation.ShipStats_HitChance}" Margin="20,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Right">
                                 <TextBlock Text=""/>

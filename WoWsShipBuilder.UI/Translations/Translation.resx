@@ -429,8 +429,8 @@
   <data name="ShipStats_FlakDamage" xml:space="preserve">
     <value>Flak Damage</value>
   </data>
-  <data name="ShipStats_FlakHitchance" xml:space="preserve">
-    <value>Flak Hitchance</value>
+  <data name="ShipStats_HitChance" xml:space="preserve">
+    <value>Hit Chance</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
     <value>Flooding Chance</value>
@@ -628,7 +628,7 @@
     <value>Signals</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-      <value>Name</value>
+    <value>Name</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
     <value>Apply Camo Bonuses</value>

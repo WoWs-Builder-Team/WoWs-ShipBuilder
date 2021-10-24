@@ -970,15 +970,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flak Hitchance.
-        /// </summary>
-        public static string ShipStats_FlakHitchance {
-            get {
-                return ResourceManager.GetString("ShipStats_FlakHitchance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total damage per flood.
         /// </summary>
         public static string ShipStats_FloodDamageTotal {
@@ -1047,6 +1038,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_FuseTimer {
             get {
                 return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hit Chance.
+        /// </summary>
+        public static string ShipStats_HitChance {
+            get {
+                return ResourceManager.GetString("ShipStats_HitChance", resourceCulture);
             }
         }
         
