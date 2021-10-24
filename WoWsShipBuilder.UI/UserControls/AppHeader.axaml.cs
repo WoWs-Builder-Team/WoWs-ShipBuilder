@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 
-
 namespace WoWsShipBuilder.UI.UserControls
 {
     public partial class AppHeader : UserControl

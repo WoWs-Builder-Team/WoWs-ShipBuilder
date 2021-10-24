@@ -41,6 +41,7 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Value Parsing
                 Debug.WriteLine("Key: " + localizerKey);
                 Debug.WriteLine("Modifier: " + modifier);
+
                 // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                 if (localizerKey.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -99,8 +100,7 @@ namespace WoWsShipBuilder.UI.Converters
                     value = $"{(modifier * 30) / 1000} Km";
                 }
                 else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
-                {
-                    
+                {                   
                     if (modifier > 1)
                     {
                         int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);

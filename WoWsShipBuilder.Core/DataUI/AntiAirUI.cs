@@ -29,7 +29,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var aaList = new List<AntiAirUI>();
 
-            var flakBonus = 0;
+            // var flakBonus = 0;
             decimal flakDamageBonus = 1;
             decimal constantDamageBonus = 1;
 
