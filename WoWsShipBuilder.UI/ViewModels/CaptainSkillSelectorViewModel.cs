@@ -16,6 +16,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             SkillList = GetSkillsForClass(shipClass);
         }
 
+        private bool camoEnabled = true;
+
+        public bool CamoEnabled
+        {
+            get => camoEnabled;
+            set => this.RaiseAndSetIfChanged(ref camoEnabled, value);
+        }
+
         private int assignedPoints;
 
         public int AssignedPoints

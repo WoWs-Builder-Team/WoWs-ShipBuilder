@@ -622,9 +622,12 @@
     <value>Expand all angles</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Captain Skills</value>
+    <value>Captain Skills and Camo</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
     <value>Signals</value>
+  </data>
+  <data name="CaptainSkillSelector_Camo" xml:space="preserve">
+    <value>Apply Camo Bonuses</value>
   </data>
 </root>

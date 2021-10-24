@@ -88,6 +88,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply Camo Bonuses.
+        /// </summary>
+        public static string CaptainSkillSelector_Camo {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_Camo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain points :.
         /// </summary>
         public static string CaptainSkillSelector_Points {
@@ -295,7 +304,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captain Skills.
+        ///   Looks up a localized string similar to Captain Skills and Camo.
         /// </summary>
         public static string MainWindow_CaptainSkills {
             get {
