@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Threading;
 using Avalonia;
@@ -20,7 +21,15 @@ namespace WoWsShipBuilder.UI
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            try
+            {
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Error(e);
+                throw;
+            }
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

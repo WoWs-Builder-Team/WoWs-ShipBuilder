@@ -1114,6 +1114,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string ShipStats_Name {
+            get {
+                return ResourceManager.GetString("ShipStats_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to On the surface.
         /// </summary>
         public static string ShipStats_OnSurface {
@@ -1287,9 +1296,9 @@ namespace WoWsShipBuilder.UI.Translations {
         /// <summary>
         ///   Looks up a localized string similar to Ricochet Angles.
         /// </summary>
-        public static string ShipStats_Ricochet {
+        public static string ShipStats_RicochetAngles {
             get {
-                return ResourceManager.GetString("ShipStats_Ricochet", resourceCulture);
+                return ResourceManager.GetString("ShipStats_RicochetAngles", resourceCulture);
             }
         }
         
