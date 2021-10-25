@@ -14,7 +14,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
 
-        public TorpedoArmamentUi? TorpedoArmamentUI { get; set; }
+        public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
 
         public List<TorpedoUI>? TorpedoUI { get; set; }
 

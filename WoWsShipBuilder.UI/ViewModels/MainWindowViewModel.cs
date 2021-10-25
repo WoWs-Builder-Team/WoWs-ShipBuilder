@@ -276,6 +276,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 collectionChangeListeners.Clear();
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 RawShipData = ship!;
 
                 // Captain Skill model

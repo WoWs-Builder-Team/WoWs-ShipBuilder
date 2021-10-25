@@ -3,6 +3,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -38,6 +39,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (result != null)
             {
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 MainWindow win = new MainWindow();
                 win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex);
                 win.Show();

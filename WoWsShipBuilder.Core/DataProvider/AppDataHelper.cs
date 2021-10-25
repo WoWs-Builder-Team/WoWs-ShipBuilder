@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilderDataStructures;
 
@@ -51,6 +52,13 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
             return DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
+        }
+
+        public void LoadNationFiles(Nation nation)
+        {
+            var server = AppData.Settings.SelectedServerType;
+            AppData.ProjectileList = ReadLocalJsonData<Projectile>(nation, server);
+            AppData.AircraftList = ReadLocalJsonData<Aircraft>(nation, server);
         }
 
         public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)
