@@ -28,9 +28,17 @@ public record BombUI
         {
             var bomb = (Bomb)AppData.ProjectileList![name];
 
-            var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
-            bombDamageModifiers.AddRange(modifiers.FindModifiers("bombAlphaDamageMultiplier"));
-            decimal bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+            decimal bombDamage = 0;
+            if (bomb.BombType.Equals(BombType.AP))
+            {
+                var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
+                bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+            }
+            else
+            {
+                var bombDamageModifiers = modifiers.FindModifiers("bombAlphaDamageMultiplier").ToList();
+                bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+            }
 
             var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
             decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current * modifier), 2);
