@@ -21,6 +21,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal TorpedoDetectability { get; set; }
 
+        public decimal TorpedoArmingDistance { get; set; }
+
         public decimal TorpedoReactionTime { get; set; }
 
         public decimal TorpedoFloodingChance { get; set; }
@@ -38,14 +40,20 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
                 decimal torpedoDamage = Math.Round((decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier), 2);
 
-                var torpedoSpeedModifiers = modifiers.FindModifiers("torpedoSpeedMultiplier");
+                var torpedoSpeedModifiers = modifiers.FindModifiers("torpedoSpeedMultiplier").ToList();
+                torpedoSpeedModifiers.AddRange(modifiers.FindModifiers("planeTorpedoSpeedMultiplier"));
                 decimal torpedoSpeed = Math.Round((decimal)torpedoSpeedModifiers.Aggregate(torp.Speed, (current, modifier) => current * modifier), 2);
 
                 var torpedoDetectModifiers = modifiers.FindModifiers("torpedoVisibilityFactor");
                 decimal torpedoDetect = Math.Round((decimal)torpedoDetectModifiers.Aggregate(torp.SpottingRange, (current, modifier) => current * modifier), 2);
 
+                var torpedoArmingTimeModifiers = modifiers.FindModifiers("planeTorpedoArmingTimeCoeff");
+                decimal torpedoArmingTime = Math.Round((decimal)torpedoArmingTimeModifiers.Aggregate(torp.ArmingTime, (current, modifier) => current * modifier), 2);
+
                 var torpedoFloodingModifiers = modifiers.FindModifiers("floodChanceFactor");
                 decimal torpedoFlooding = Math.Round((decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier), 2);
+
+                // v = d/t --> d = v*t
 
                 var torpUI = new TorpedoUI
                 {
@@ -54,6 +62,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     TorpedoRange = (decimal)torp.MaxRange,
                     TorpedoSpeed = torpedoSpeed,
                     TorpedoDetectability = torpedoDetect,
+                    TorpedoArmingDistance = torpedoSpeed * 0.0026m * torpedoArmingTime,
                     TorpedoFloodingChance = torpedoFlooding,
                     TorpedoReactionTime = Math.Round(torpedoDetect / (torpedoSpeed * 0.0026m), 2),
                 };
