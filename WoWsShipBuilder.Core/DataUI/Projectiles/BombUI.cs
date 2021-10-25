@@ -29,10 +29,12 @@ public record BombUI
             var bomb = (Bomb)AppData.ProjectileList![name];
 
             decimal bombDamage = 0;
+            string ricochetAngle = "";
             if (bomb.BombType.Equals(BombType.AP))
             {
                 var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
                 bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+                ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
             }
             else
             {
@@ -49,7 +51,7 @@ public record BombUI
                 Penetration = (int)Math.Round(bomb.Penetration, 0),
                 FuseTimer = (decimal)bomb.FuseTimer,
                 ArmingTreshold = (int)bomb.ArmingThreshold,
-                RicochetAngles = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}",
+                RicochetAngles = ricochetAngle,
                 FireChance = (int)(fireChance * 100),
             };
         }
