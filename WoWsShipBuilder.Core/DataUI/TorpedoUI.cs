@@ -62,6 +62,5 @@ namespace WoWsShipBuilder.Core.DataUI
 
             return list;
         }
-
     }
 }
