@@ -62,6 +62,32 @@ namespace WoWsShipBuilder.UI.Converters
                     }
                 }
 
+                // this is for midway leg mod. more accurate numbers
+                else if (localizerKey.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (modifier > 1)
+                    {
+                        value = $"+{Math.Round((modifier - 1) * 100, 2)}%";
+                    }
+                    else
+                    {
+                        value = $"-{Math.Round((1 - modifier) * 100, 2)}%";
+                    }
+                }
+
+                // this is for aiming time of CV planes 
+                else if (localizerKey.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (modifier > 0)
+                    {
+                        value = $"+{modifier}s";
+                    }
+                    else
+                    {
+                        value = $"{modifier}s";
+                    }
+                }
+
                 // This is the anti detonation stuff
                 else if(localizerKey.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -185,6 +211,8 @@ namespace WoWsShipBuilder.UI.Converters
             }
             else
             {
+                // Remove [HIDDEN] text from some skills modifiers.
+                description = description.Replace("[HIDDEN]", "");
                 return value + " " + description.Trim();
             }
         }
