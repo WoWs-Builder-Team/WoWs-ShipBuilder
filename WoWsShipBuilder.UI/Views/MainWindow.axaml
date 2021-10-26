@@ -17,6 +17,7 @@
 
     <Window.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
+        <conv:ClassToPathConverter x:Key="PathConverter"/>
     </Window.Resources>
 
     <Grid RowDefinitions="30, *">
@@ -43,7 +44,10 @@
                         <!--Current Ship-->
                         <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
                             <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90"/>
-                            <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                <Path Data="{Binding RawShipData.ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"  Fill="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}" Stroke="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}" StrokeThickness="1" />
+                                <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" Margin="10,0,0,0"/>
+                            </StackPanel>
                         </StackPanel>
                         <!--Next Ships-->
                         <ItemsControl Items="{Binding NextShipIndex}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding !!NextShipIndex.Count}">
