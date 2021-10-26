@@ -129,12 +129,12 @@ namespace WoWsShipBuilder.UI.Converters
                 {                   
                     if (modifier > 1)
                     {
-                        int modifierValue = (int)(Math.Round(modifier - 1, 2) * 100);
+                        decimal modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
                         value = $"+{modifierValue}%";
                     }
                     else
                     {
-                        int modifierValue = (int)(Math.Round(1 - modifier, 2) * 100);
+                        decimal modifierValue = (decimal)Math.Round((1 - modifier) * 100, 2);
                         value = $"-{modifierValue}%";
                     }
                 }
