@@ -79,6 +79,15 @@ namespace WoWsShipBuilder.Core.DataUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dps.
+        /// </summary>
+        internal static string Unit_DPS {
+            get {
+                return ResourceManager.GetString("Unit_DPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to kg.
         /// </summary>
         internal static string Unit_KG {

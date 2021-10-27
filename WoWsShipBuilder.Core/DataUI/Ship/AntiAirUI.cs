@@ -89,26 +89,38 @@ namespace WoWsShipBuilder.Core.DataUI
             }
             else
             {
-                return new AuraDataUI
+                string flakNumber = "";
+                if (antiAirAura.FlakCloudsNumber > 0)
                 {
-                    Range = antiAirAura.MaxRange,
-                    ConstantDamage = antiAirAura.ConstantDps * ConstantDamageMultiplier * constantDamageBonus,
-                    Flak = antiAirAura.FlakCloudsNumber,
-                    FlakDamage = antiAirAura.FlakDamage * FlakDamageMultiplier * flakDamageBonus,
+                    var flakAverage = (int)(antiAirAura.FlakCloudsNumber * antiAirAura.HitChance);
+                    var flakDelta = antiAirAura.FlakCloudsNumber - flakAverage;
+                    flakNumber = $"{flakAverage} ± {flakDelta}";
+                }
+
+                var auraData = new AuraDataUI
+                {
+                    Range = Math.Round(antiAirAura.MaxRange / 1000, 2),
+                    ConstantDamage = Math.Round(antiAirAura.ConstantDps * ConstantDamageMultiplier * constantDamageBonus, 2),
+                    Flak = flakNumber,
+                    FlakDamage = Math.Round(antiAirAura.FlakDamage * FlakDamageMultiplier * flakDamageBonus, 2),
                     HitChance = (int)Math.Round(antiAirAura.HitChance * 100, 2),
                 };
+
+                auraData.AntiAirData = auraData.ToPropertyMapping();
+                return auraData;
             }
         }
     }
 
-    public record AuraDataUI
+    public record AuraDataUI : IDataUi
     {
         [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
+        [DataUiUnit("DPS")]
         public decimal ConstantDamage { get; set; }
 
-        public int Flak { get; set; }
+        public string Flak { get; set; }
 
         public decimal FlakDamage { get; set; }
 

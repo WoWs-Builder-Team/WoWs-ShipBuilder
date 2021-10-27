@@ -1080,6 +1080,15 @@ namespace WoWsShipBuilder.UI.Translations {
         /// <summary>
         ///   Looks up a localized string similar to Long Range Aura.
         /// </summary>
+        public static string ShipStats_LongAura {
+            get {
+                return ResourceManager.GetString("ShipStats_LongAura", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Long Range Aura.
+        /// </summary>
         public static string ShipStats_LongRangeAA {
             get {
                 return ResourceManager.GetString("ShipStats_LongRangeAA", resourceCulture);
@@ -1119,6 +1128,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_MaxFloodAmount {
             get {
                 return ResourceManager.GetString("ShipStats_MaxFloodAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Medium Range Aura.
+        /// </summary>
+        public static string ShipStats_MediumAura {
+            get {
+                return ResourceManager.GetString("ShipStats_MediumAura", resourceCulture);
             }
         }
         
@@ -1344,6 +1362,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_ShellWeight {
             get {
                 return ResourceManager.GetString("ShipStats_ShellWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Short Range Aura.
+        /// </summary>
+        public static string ShipStats_ShortAura {
+            get {
+                return ResourceManager.GetString("ShipStats_ShortAura", resourceCulture);
             }
         }
         

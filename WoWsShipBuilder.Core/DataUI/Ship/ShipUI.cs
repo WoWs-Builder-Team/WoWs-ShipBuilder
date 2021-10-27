@@ -24,6 +24,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public ConcealmentUI ConcealmentUI { get; set; } = default!;
 
+        public AntiAirUI AntiAirUI { get; set; } = default!;
+
         public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
             var shipUI = new ShipUI(ship.Index)
@@ -33,6 +35,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ShellUI = DataUI.ShellUI.FromShip(ship, shipConfiguration, modifiers),
                 SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers),
+                AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
             };
             return shipUI;
         }

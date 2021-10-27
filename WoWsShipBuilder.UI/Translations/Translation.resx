@@ -639,6 +639,15 @@
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
     <value>Can hit</value>
   </data>
+  <data name="ShipStats_LongAura" xml:space="preserve">
+    <value>Long Range Aura</value>
+  </data>
+  <data name="ShipStats_MediumAura" xml:space="preserve">
+    <value>Medium Range Aura</value>
+  </data>
+  <data name="ShipStats_ShortAura" xml:space="preserve">
+    <value>Short Range Aura</value>
+  </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Torpedo Area</value>
   </data>

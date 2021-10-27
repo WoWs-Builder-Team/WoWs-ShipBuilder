@@ -141,6 +141,9 @@
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
+  <data name="Unit_DPS" xml:space="preserve">
+    <value>dps</value>
+  </data>
   <data name="Unit_Knots" xml:space="preserve">
     <value>kts</value>
   </data>
