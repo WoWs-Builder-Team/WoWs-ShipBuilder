@@ -43,7 +43,6 @@
 
     <ItemGroup>
       <Folder Include="DataUI\Guns\" />
-      <Folder Include="DataUI\Aircrafts\" />
       <Folder Include="DataUI\Ships\" />
     </ItemGroup>
 
