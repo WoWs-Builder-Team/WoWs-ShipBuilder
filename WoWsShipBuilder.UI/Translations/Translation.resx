@@ -339,7 +339,7 @@
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
     <value>Search Ship</value>
   </data>
-  <data name="ShipStats_DegreesTurn" xml:space="preserve">
+  <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° turn time</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
@@ -634,9 +634,12 @@
     <value>Apply Camo Bonuses</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-      <value>Arming distance</value>
+    <value>Arming distance</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-      <value>Can hit</value>
+    <value>Can hit</value>
+  </data>
+  <data name="ShipStats_TorpedoArea" xml:space="preserve">
+    <value>Torpedo Area</value>
   </data>
 </root>

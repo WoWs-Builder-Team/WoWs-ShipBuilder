@@ -12,10 +12,13 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [DataUiUnit("S")]
         public decimal TurnTime { get; set; }
 
+        [DataUiUnit("DegreePerSecond")]
         public decimal TraverseSpeed { get; set; }
 
+        [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
         public string TorpedoArea { get; set; } = default!;

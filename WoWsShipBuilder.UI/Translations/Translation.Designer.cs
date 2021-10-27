@@ -889,15 +889,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 180° turn time.
-        /// </summary>
-        public static string ShipStats_DegreesTurn {
-            get {
-                return ResourceManager.GetString("ShipStats_DegreesTurn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delay.
         /// </summary>
         public static string ShipStats_Delay {
@@ -1420,6 +1411,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Torpedo Area.
+        /// </summary>
+        public static string ShipStats_TorpedoArea {
+            get {
+                return ResourceManager.GetString("ShipStats_TorpedoArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Torpedo protection.
         /// </summary>
         public static string ShipStats_TorpedoProtection {
@@ -1443,6 +1443,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TurningCircle {
             get {
                 return ResourceManager.GetString("ShipStats_TurningCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 180° turn time.
+        /// </summary>
+        public static string ShipStats_TurnTime {
+            get {
+                return ResourceManager.GetString("ShipStats_TurnTime", resourceCulture);
             }
         }
         

@@ -13,18 +13,24 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
         public decimal Damage { get; set; }
 
+        [DataUiUnit("Knots")]
         public decimal Speed { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal Detectability { get; set; }
 
-        public decimal ArmingDistance { get; set; }
+        [DataUiUnit("M")]
+        public int ArmingDistance { get; set; }
 
+        [DataUiUnit("S")]
         public decimal ReactionTime { get; set; }
 
+        [DataUiUnit("PerCent")]
         public decimal FloodingChance { get; set; }
 
         public List<ShipClass>? CanHitClasses { get; set; }
@@ -65,8 +71,8 @@ namespace WoWsShipBuilder.Core.DataUI
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 2),
                     Speed = torpedoSpeed,
                     Detectability = torpedoDetect,
-                    ArmingDistance = torpedoSpeed * 0.0026m * torpedoArmingTime,
-                    FloodingChance = torpedoFlooding,
+                    ArmingDistance = (int)(torpedoSpeed * 0.0026m * torpedoArmingTime * 1000),
+                    FloodingChance = torpedoFlooding * 100,
                     ReactionTime = Math.Round(torpedoDetect / (torpedoSpeed * 0.0026m), 2),
                 };
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())

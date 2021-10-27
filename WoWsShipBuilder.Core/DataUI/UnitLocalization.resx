@@ -138,4 +138,13 @@
   <data name="Unit_KM" xml:space="preserve">
     <value>Km</value>
   </data>
+  <data name="Unit_DegreePerSecond" xml:space="preserve">
+    <value>°/s</value>
+  </data>
+  <data name="Unit_Knots" xml:space="preserve">
+    <value>kts</value>
+  </data>
+  <data name="Unit_M" xml:space="preserve">
+    <value>m</value>
+  </data>
 </root>

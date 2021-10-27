@@ -70,6 +70,15 @@ namespace WoWsShipBuilder.Core.DataUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to °/s.
+        /// </summary>
+        internal static string Unit_DegreePerSecond {
+            get {
+                return ResourceManager.GetString("Unit_DegreePerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to kg.
         /// </summary>
         internal static string Unit_KG {
@@ -84,6 +93,24 @@ namespace WoWsShipBuilder.Core.DataUI {
         internal static string Unit_KM {
             get {
                 return ResourceManager.GetString("Unit_KM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kts.
+        /// </summary>
+        internal static string Unit_Knots {
+            get {
+                return ResourceManager.GetString("Unit_Knots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        internal static string Unit_M {
+            get {
+                return ResourceManager.GetString("Unit_M", resourceCulture);
             }
         }
         
