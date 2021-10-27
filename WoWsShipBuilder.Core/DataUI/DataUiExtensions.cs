@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -27,6 +27,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 string strValue => !string.IsNullOrEmpty(strValue),
                 decimal decValue => decValue != 0,
                 (decimal min, decimal max) => min > 0 || max > 0,
+                int intValue => intValue != 0,
                 _ => false,
             };
         }
