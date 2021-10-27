@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
-namespace WoWsShipBuilder.Core.DataUI.Aircrafts
+namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AircraftUI
+    public record CVAircraftUI : IDataUi
     {
+        [JsonIgnore]
         public string Name { get; set; } = default!;
 
         public int NumberInSquad { get; set; }
@@ -39,21 +40,47 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
 
         public decimal ArmamentReloadTime { get; set; }
 
-        public static AircraftUI? FromAircraftName(string name, int shipTier, PlaneCategory category, PlaneType type, List<(string name, float value)> modifiers)
+        public int InnerBombPercentage { get; set; }
+
+        public decimal AttackCd { get; set; }
+
+        public decimal JatoDuration { get; set; }
+
+        public decimal JatoSpeedMultiplier { get; set; }
+
+        [JsonIgnore]
+        public bool IsLast { get; set; } = false;
+
+        [JsonIgnore]
+        public ProjectileUI Weapon { get; set; } = default!;
+
+        [JsonIgnore]
+        public List<KeyValuePair<string, string>> CVAircraftData { get; set; } = default!;
+
+        public static List<CVAircraftUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            var plane = AppData.AircraftList![name];
-
-            AircraftUI aircraft = null!;
-
-            if (category.Equals(PlaneCategory.Cv))
+            if (ship.CvPlanes is null)
             {
-                aircraft = ProcessCVPlane(plane, type, shipTier,  modifiers);
+                return null;
             }
 
-            return aircraft;
+            var list = new List<CVAircraftUI>();
+
+            var planes = ship.CvPlanes;
+            foreach ((var key, var value) in planes)
+            {
+                var index = value.PlaneName.IndexOf("_");
+                var name = value.PlaneName.Substring(0, index);
+                var plane = AppData.AircraftList![name];
+                var planeUI = ProcessCVPlane(plane, value.PlaneType, ship.Tier, modifiers);
+                list.Add(planeUI);
+            }
+
+            list.Last().IsLast = true;
+            return list;
         }
 
-        public static AircraftUI ProcessCVPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers)
+        private static CVAircraftUI ProcessCVPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers)
         {
             var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
             int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
@@ -114,20 +141,55 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
             decimal finalCruisingSpeed = Math.Round((decimal)restorationTimeModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 2);
 
-            return new AircraftUI
+            var jatoDuration = (decimal)plane.JatoData.JatoDuration;
+            var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;
+            if (jatoDuration == 0)
+            {
+                jatoMultiplier = 0;
+            }
+
+            var weaponType = AppData.ProjectileList![plane.BombName].ProjectileType;
+            ProjectileUI weapon = null!;
+            switch (weaponType)
+            {
+                case ProjectileType.Bomb:
+                    weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                    break;
+                case ProjectileType.SkipBomb:
+                    break;
+                case ProjectileType.Torpedo:
+                    var torpList = new List<string>();
+                    torpList.Add(plane.BombName);
+                    weapon = TorpedoUI.FromTorpedoName(torpList, modifiers).First();
+                    break;
+                case ProjectileType.Rocket:
+                    weapon = RocketUI.FromRocketName(plane.BombName, modifiers);
+                    break;
+            }
+
+            var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
+                PlaneHP = finalplaneHP,
                 NumberInSquad = plane.NumPlanesInSquadron,
-                NumberDuringAttack = plane.AttackData.AttackerSize,
-                AmmoPerAttack = plane.AttackData.AttackCount,
                 StartingNumberOnDeck = plane.StartingPlanes,
                 MaxNumberOnDeck = maxOnDeck,
                 RestorationTime = restorationTime,
-                PlaneHP = finalplaneHP,
                 CruisingSpeed = finalCruisingSpeed,
                 MaxSpeed = finalCruisingSpeed * (decimal)maxSpeedMultiplier,
                 MinSpeed = finalCruisingSpeed * (decimal)minSpeedMultiplier,
+                InnerBombPercentage = (int)plane.InnerBombsPercentage,
+                NumberDuringAttack = plane.AttackData.AttackerSize,
+                AmmoPerAttack = plane.AttackData.AttackCount,
+                AttackCd = Math.Round((decimal)plane.AttackData.AttackCooldown, 1),
+                JatoDuration = jatoDuration,
+                JatoSpeedMultiplier = jatoMultiplier,
+                Weapon = weapon,
             };
+
+            cvAircraft.CVAircraftData = cvAircraft.ToPropertyMapping();
+
+            return cvAircraft;
         }
     }
 }

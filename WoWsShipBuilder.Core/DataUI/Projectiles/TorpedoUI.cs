@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoUI : IDataUi
+    public record TorpedoUI : ProjectileUI, IDataUi
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
@@ -35,10 +36,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<ShipClass>? CanHitClasses { get; set; }
 
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? TorpedoData { get; set; }
-
-        public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, Nation nation, List<(string name, float value)> modifiers)
+        public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers)
         {
             var list = new List<TorpedoUI>();
             foreach (var name in torpedoNames)
@@ -68,7 +66,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     Name = name,
                     Damage = Math.Round(torpedoDamage),
-                    Range = Math.Round((decimal)torp.MaxRange / 1000, 2),
+                    Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = torpedoSpeed,
                     Detectability = torpedoDetect,
                     ArmingDistance = (int)(torpedoSpeed * 0.0026m * torpedoArmingTime * 1000),
@@ -80,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     torpUI.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
                 }
 
-                torpUI.TorpedoData = torpUI.ToPropertyMapping();
+                torpUI.ProjectileData = torpUI.ToPropertyMapping();
                 list.Add(torpUI);
             }
 

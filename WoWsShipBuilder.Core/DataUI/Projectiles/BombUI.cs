@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-public record BombUI : IDataUi
+public record BombUI : ProjectileUI, IDataUi
 {
         public decimal Damage { get; set; }
 
@@ -45,7 +46,7 @@ public record BombUI : IDataUi
             var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
             decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current * modifier), 2);
 
-            return new BombUI
+            var bombUI = new BombUI
             {
                 Damage = bombDamage,
                 Penetration = (int)Math.Round(bomb.Penetration, 0),
@@ -54,6 +55,10 @@ public record BombUI : IDataUi
                 RicochetAngles = ricochetAngle,
                 FireChance = (int)(fireChance * 100),
             };
+
+            bombUI.ProjectileData = bombUI.ToPropertyMapping();
+
+            return bombUI;
         }
     }
 }

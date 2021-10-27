@@ -62,6 +62,20 @@ namespace WoWsShipBuilder.UI.Converters
                     }
                 }
 
+                // wg doesn't know how math works. -x% drain rate != +x% drain rate
+                else if (localizerKey.Contains("planeForsageDrainRate", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var numericValue = Math.Round(((1 / modifier) - 1) * 100, 2);
+                    if (numericValue > 0)
+                    {
+                        value = $"+{numericValue}%";
+                    }
+                    else
+                    {
+                        value = $"{numericValue}%";
+                    }
+                }
+
                 // this is for midway leg mod. more accurate numbers
                 else if (localizerKey.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase))
                 {

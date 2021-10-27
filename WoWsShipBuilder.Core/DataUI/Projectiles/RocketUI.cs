@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record RocketUI : IDataUi
+    public record RocketUI : ProjectileUI, IDataUi
     {
         public decimal Damage { get; set; }
 
@@ -21,7 +22,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public int FireChance { get; set; }
 
-        public static RocketUI FromRocketName(string name, Nation nation, List<(string name, float value)> modifiers)
+        public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers)
         {
             var rocket = (Rocket)AppData.ProjectileList![name];
 
@@ -37,7 +38,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
             decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current * modifier), 2);
 
-            return new RocketUI
+            var rocketUI = new RocketUI
             {
                 Damage = rocketDamage,
                 Penetration = (int)Math.Round(rocket.Penetration, 0),
@@ -46,6 +47,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 RicochetAngles = ricochetAngle,
                 FireChance = (int)(fireChance * 100),
             };
+
+            rocketUI.ProjectileData = rocketUI.ToPropertyMapping();
+
+            return rocketUI;
         }
     }
 }

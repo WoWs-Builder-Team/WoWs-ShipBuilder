@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<AirstrikeUI>? AirstrikeUI { get; set; }
 
-        public List<CarrierPlaneUI>? CarrierPlaneUI { get; set; }
+        public List<CVAircraftUI>? CVAircraftUI { get; set; }
 
         public ManeuverabilityUI ManeuverabilityUI { get; set; } = default!;
 
@@ -28,13 +28,19 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var shipUI = new ShipUI(ship.Index)
             {
-                SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
-                ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
-                ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                // Main weapons
                 MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
-                SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers),
+                CVAircraftUI = DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers),
+
+                // Secondary weapons
+                SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
+
+                // Misc
+                ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
+                SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
             };
             return shipUI;
         }

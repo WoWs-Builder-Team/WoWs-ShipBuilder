@@ -700,6 +700,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircrafts.
+        /// </summary>
+        public static string ShipStats_Aircraft {
+            get {
+                return ResourceManager.GetString("ShipStats_Aircraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircraft HP.
         /// </summary>
         public static string ShipStats_AircraftHP {
