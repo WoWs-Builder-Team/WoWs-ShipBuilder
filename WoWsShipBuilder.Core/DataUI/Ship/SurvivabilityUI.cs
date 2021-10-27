@@ -8,7 +8,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SurvivabilityUI
+    public record SurvivabilityUI : IDataUi
     {
         public decimal HitPoints { get; set; }
 

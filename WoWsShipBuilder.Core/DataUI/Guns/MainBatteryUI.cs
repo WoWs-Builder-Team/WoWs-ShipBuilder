@@ -6,7 +6,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record MainBatteryUI
+    public record MainBatteryUI : IDataUi
     {
         public string Name { get; set; } = default!;
 

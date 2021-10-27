@@ -10,7 +10,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-public record BombUI
+public record BombUI : IDataUi
 {
         public decimal Damage { get; set; }
 

@@ -6,7 +6,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ManeuverabilityUI
+    public record ManeuverabilityUI : IDataUi
     {
         public decimal ManeuverabilityMaxSpeed { get; set; }
 
