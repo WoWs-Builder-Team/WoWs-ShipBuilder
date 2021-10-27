@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record RocketUI
+    public record RocketUI : IDataUi
     {
         public decimal Damage { get; set; }
 
@@ -50,6 +47,5 @@ namespace WoWsShipBuilder.Core.DataUI
                 FireChance = (int)(fireChance * 100),
             };
         }
-
     }
 }

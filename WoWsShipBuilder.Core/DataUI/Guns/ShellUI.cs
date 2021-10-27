@@ -11,7 +11,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShellUI
+    public record ShellUI : IDataUi
     {
         public string Name { get; set; } = default!;
 
@@ -170,13 +170,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     uiShell.RicochetAngles = $"{minRicochet} - {maxRicochet}";
                 }
 
-                uiShell.PropertyValueMapper = uiShell.GetType().GetProperties()
-                    .Where(property => !property.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any())
-                    .Select(property => (Key: "ShipStats_" + property.Name, Value: property.GetValue(uiShell),
-                        Unit: (DataUiUnitAttribute?)property.GetCustomAttributes(typeof(DataUiUnitAttribute), false).FirstOrDefault()))
-                    .Where(FilterValue)
-                    .Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value + pair.Unit?.Localization))
-                    .ToList();
+                uiShell.PropertyValueMapper = uiShell.ToPropertyMapping();
                 shells.Add(uiShell);
             }
 

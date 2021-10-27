@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 
-            Test = new AutoCompleteFilterPredicate<string>((textSearch, shipName) => CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1);
+            Test = (textSearch, shipName) => CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
 
             shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
@@ -212,7 +212,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void ApplyFilter()
         {
             var tmpDct = shipNameDictionary;
-            
+
             if (SelectedTier != null)
             {
                 tmpDct = tmpDct.Where(ship => ship.Value.Tier == tierList.IndexOf(selectedTier!) + 1).ToDictionary(ship => ship.Key, ship => ship.Value);

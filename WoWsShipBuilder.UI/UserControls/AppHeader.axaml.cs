@@ -61,7 +61,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             get => GetValue(ShowMinimizeButtonProperty);
             set => SetValue(ShowMinimizeButtonProperty, value);
-        }     
+        }
 
         public bool ShowMaximizeButton
         {
@@ -82,12 +82,22 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private void CloseWindow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
             Window hostWindow = (Window)VisualRoot!;
             hostWindow.Close();
         }
 
         private void MaximizeWindow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
             Window hostWindow = (Window)VisualRoot!;
 
             if (hostWindow.WindowState == WindowState.Normal)
@@ -102,6 +112,11 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private void MinimizeWindow(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
             Window hostWindow = (Window)VisualRoot!;
             hostWindow.WindowState = WindowState.Minimized;
         }

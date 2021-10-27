@@ -1,8 +1,6 @@
-using WoWsShipBuilderDataStructures;
-
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record CarrierPlaneUI
+    public record CarrierPlaneUI : IDataUi
     {
         // Plane Stats
         public string? CarrierPlaneName { get; set; }

@@ -8,7 +8,7 @@ namespace WoWsShipBuilder.Core.DataProvider
     {
         public static bool IsInitialized { get; set; } = false;
 
-        public static AppSettings Settings { get; set; } = null!;
+        public static AppSettings Settings { get; set; } = new();
 
         public static Dictionary<string, string>? TranslationsData { get; set; }
 

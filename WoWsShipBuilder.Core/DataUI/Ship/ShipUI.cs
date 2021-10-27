@@ -4,7 +4,7 @@ using WoWsShipBuilderDataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShipUI(string Index)
+    public record ShipUI(string Index) : IDataUi
     {
         public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
 

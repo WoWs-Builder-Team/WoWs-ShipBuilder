@@ -6,7 +6,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ConcealmentUI
+    public record ConcealmentUI : IDataUi
     {
         public List<KeyValuePair<string, string>>? ConcealmentData { get; set; }
 
@@ -43,7 +43,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var concealmentBySea = hull.SurfaceDetection;
             var concealmentBySeaFiringSmoke = hull.SmokeFiringDetection;
 
-            // AA Detection 
+            // AA Detection
             var concealmentByAir = hull.AirDetection;
 
             int concealmentExpertIndex = modifiers.FindModifierIndex("visibilityDistCoeff");

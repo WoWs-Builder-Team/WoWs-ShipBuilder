@@ -1,6 +1,6 @@
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AirstrikeUI
+    public record AirstrikeUI : IDataUi
     {
         public string? AirstrikeName { get; set; }
 

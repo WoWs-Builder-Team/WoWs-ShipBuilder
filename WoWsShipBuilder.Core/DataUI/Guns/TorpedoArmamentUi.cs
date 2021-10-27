@@ -7,7 +7,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoArmamentUI
+    public record TorpedoArmamentUI : IDataUi
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
@@ -20,6 +20,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public string TorpedoArea { get; set; } = default!;
 
+        [JsonIgnore]
         public List<TorpedoUI> Torpedoes { get; set; } = new();
 
         [JsonIgnore]
@@ -46,7 +47,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var torpedoes = TorpedoUI.FromTorpedoName(launcher.AmmoList, ship.ShipNation, modifiers);
 
-            return new TorpedoArmamentUI
+            var torpedoUi = new TorpedoArmamentUI
             {
                 Name = launcher.Name,
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
@@ -55,6 +56,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 TorpedoArea = torpedoArea,
                 Torpedoes = torpedoes,
             };
+
+            torpedoUi.TorpedoArmamentData = torpedoUi.ToPropertyMapping();
+            return torpedoUi;
         }
     }
 }

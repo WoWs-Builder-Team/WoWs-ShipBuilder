@@ -9,7 +9,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AntiAirUI
+    public record AntiAirUI : IDataUi
     {
         // These two are for the conversion in damage per second
         private const decimal ConstantDamageMultiplier = 1 / AntiAirAura.DamageInterval;

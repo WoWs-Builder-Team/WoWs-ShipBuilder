@@ -4,9 +4,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="175"
         x:Class="WoWsShipBuilder.UI.Views.ShipSelectionWindow" Height="175" Width="500"
         WindowStartupLocation="CenterScreen" CanResize="False">
+    <Design.DataContext>
+        <viewModels:ShipSelectionWindowViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="30, auto, auto">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
@@ -26,13 +30,19 @@
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TypeFilter}" IsChecked="{Binding TypeFilterChecked}"/>
                 <ComboBox Items="{Binding TypeList}" PlaceholderText="All" SelectedItem="{Binding SelectedType}" IsEnabled="{Binding TypeFilterChecked}"/>
             </StackPanel>
-            <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
+            <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Name="AutoCompleteBox" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
                              VerticalAlignment="Center" Items="{Binding FilteredShipNameDictionary}" ValueMemberBinding="{Binding Key}" 
                              SelectedItem="{Binding SelectedShip}" TextFilter="{Binding Test}" Margin="10,0,10,0" 
-                             PointerReleased="RunResearch" Text="{Binding InputText}" DropDownClosing="ShowResult">
+                             PointerReleased="RunResearch" Text="{Binding InputText}" DropDownClosing="ShowResult" MaxDropDownHeight="400" MinimumPopulateDelay="0.2">
                 <AutoCompleteBox.Styles>
                     <Style Selector="TextBox">
                         <Setter Property="TextAlignment" Value="Center"/>
+                    </Style>
+                    <Style Selector="ListBox">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
                 </AutoCompleteBox.Styles>    
             </AutoCompleteBox>
