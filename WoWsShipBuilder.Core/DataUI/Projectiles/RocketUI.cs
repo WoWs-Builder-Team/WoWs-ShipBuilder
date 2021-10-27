@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
@@ -10,6 +11,9 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record RocketUI : ProjectileUI, IDataUi
     {
+        [JsonIgnore]
+        public string Name { get; set; } = default!;
+
         public decimal Damage { get; set; }
 
         public int Penetration { get; set; }
@@ -40,6 +44,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var rocketUI = new RocketUI
             {
+                Name = rocket.Name,
                 Damage = rocketDamage,
                 Penetration = (int)Math.Round(rocket.Penetration, 0),
                 FuseTimer = (decimal)rocket.FuseTimer,

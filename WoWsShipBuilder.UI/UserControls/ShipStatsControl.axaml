@@ -172,9 +172,23 @@
                                     <StackPanel Orientation="Vertical">
                                         <DockPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" DockPanel.Dock="Right"/>
+                                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                         </DockPanel>
                                         <ItemsControl Items="{Binding CVAircraftData}" >
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel>
+                                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                        <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <DockPanel HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding Weapon.Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                        </DockPanel>
+                                        <ItemsControl Items="{Binding Weapon.ProjectileData}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>

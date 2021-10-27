@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
@@ -13,6 +14,9 @@ namespace WoWsShipBuilder.Core.DataUI
 {
 public record BombUI : ProjectileUI, IDataUi
 {
+        [JsonIgnore]
+        public string Name { get; set; } = default!;
+
         public decimal Damage { get; set; }
 
         public int Penetration { get; set; }
@@ -48,6 +52,7 @@ public record BombUI : ProjectileUI, IDataUi
 
             var bombUI = new BombUI
             {
+                Name = bomb.Name,
                 Damage = bombDamage,
                 Penetration = (int)Math.Round(bomb.Penetration, 0),
                 FuseTimer = (decimal)bomb.FuseTimer,
