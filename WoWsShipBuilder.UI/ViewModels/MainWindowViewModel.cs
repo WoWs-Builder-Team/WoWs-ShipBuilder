@@ -15,13 +15,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
+        private readonly List<IDisposable?> collectionChangeListeners = new();
         private readonly MainWindow? self;
 
-        private readonly List<IDisposable?> collectionChangeListeners = new();
-
         private readonly SemaphoreSlim semaphore = new(1, 1);
-
-        private CancellationTokenSource tokenSource;
 
         private bool? accountState = false;
 
@@ -35,11 +32,19 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string commanderXpBonus = "0";
 
+        private ConsumableViewModel consumableViewModel = null!;
+
+        private string? currentShipIndex = "_default";
+
         private Ship effectiveShipData = null!;
 
         private string freeXp = "0";
 
         private string freeXpBonus = "0";
+
+        private List<string>? nextShipIndex = new();
+
+        private string? previousShipIndex;
 
         private Ship rawShipData = null!;
 
@@ -48,6 +53,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         private ShipStatsControlViewModel? shipStatsControlViewModel;
 
         private SignalSelectorViewModel? signalSelectorViewModel;
+
+        private CancellationTokenSource tokenSource;
+
+        private UpgradePanelViewModel upgradePanelViewModel = null!;
 
         private string xp = "0";
 
@@ -90,23 +99,17 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
         }
 
-        private string? currrentShipIndex = "_default";
-
         public string? CurrentShipIndex
         {
-            get => currrentShipIndex;
-            set => this.RaiseAndSetIfChanged(ref currrentShipIndex, value);
+            get => currentShipIndex;
+            set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
         }
-
-        private string? previousShipIndex;
 
         public string? PreviousShipIndex
         {
             get => previousShipIndex;
             set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
         }
-
-        private List<string>? nextShipIndex = new();
 
         public List<string>? NextShipIndex
         {
@@ -222,9 +225,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public ConsumableViewModel ConsumableViewModel { get; set; }
+        public ConsumableViewModel ConsumableViewModel
+        {
+            get => consumableViewModel;
+            set => this.RaiseAndSetIfChanged(ref consumableViewModel, value);
+        }
 
-        public UpgradePanelViewModel UpgradePanelViewModel { get; set; }
+        public UpgradePanelViewModel UpgradePanelViewModel
+        {
+            get => upgradePanelViewModel;
+            set => this.RaiseAndSetIfChanged(ref upgradePanelViewModel, value);
+        }
 
         public Ship EffectiveShipData
         {
@@ -278,6 +289,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 RawShipData = ship!;
+                EffectiveShipData = RawShipData;
 
                 // Captain Skill model
                 CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
@@ -289,9 +301,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CurrentShipIndex = ship!.Index;
                 PreviousShipIndex = result.PrevShipIndex;
                 NextShipIndex = result.NextShipsIndex;
+                ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
                 collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
                 collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+                UpdateStatsViewModel();
             }
         }
 
