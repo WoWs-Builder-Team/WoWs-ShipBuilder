@@ -120,7 +120,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("DPS")]
         public decimal ConstantDamage { get; set; }
 
-        public string Flak { get; set; }
+        public string Flak { get; set; } = default!;
 
         public decimal FlakDamage { get; set; }
 

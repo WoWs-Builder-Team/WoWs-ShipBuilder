@@ -450,9 +450,6 @@
   <data name="ShipStats_ShortRangeAA" xml:space="preserve">
     <value>Short Range Aura</value>
   </data>
-  <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Speed</value>
-  </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
@@ -462,59 +459,8 @@
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
     <value>Remove ship</value>
   </data>
-  <data name="ShipStats_AtMaximum" xml:space="preserve">
-    <value>At maximum depth</value>
-  </data>
-  <data name="ShipStats_AtOperating" xml:space="preserve">
-    <value>At operating depth</value>
-  </data>
-  <data name="ShipStats_AtPeriscope" xml:space="preserve">
-    <value>At periscope depth</value>
-  </data>
-  <data name="ShipStats_ConcealAir" xml:space="preserve">
-    <value>Detectability Range by Air</value>
-  </data>
-  <data name="ShipStats_ConcealFire" xml:space="preserve">
-    <value>When on fire</value>
-  </data>
-  <data name="ShipStats_ConcealFiring" xml:space="preserve">
-    <value>After firing main battery</value>
-  </data>
-  <data name="ShipStats_ConcealFiringAA" xml:space="preserve">
-    <value>When firing AA guns</value>
-  </data>
-  <data name="ShipStats_ConcealFiringSmoke" xml:space="preserve">
-    <value>After firing main battery in smoke</value>
-  </data>
-  <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Concealment</value>
-  </data>
-  <data name="ShipStats_ConcealSea" xml:space="preserve">
-    <value>Detectability Range by Sea</value>
-  </data>
-  <data name="ShipStats_ConcealSub" xml:space="preserve">
-    <value>Detectability from submarines</value>
-  </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Full Power Backward</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Full Power Forward</value>
-  </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
     <value>Maneuverability</value>
-  </data>
-  <data name="ShipStats_OnSurface" xml:space="preserve">
-    <value>On the surface</value>
-  </data>
-  <data name="ShipStats_PowerToWeight" xml:space="preserve">
-    <value>Power To Weight Ratio</value>
-  </data>
-  <data name="ShipStats_RudderShift" xml:space="preserve">
-    <value>Rudder Shift Time</value>
-  </data>
-  <data name="ShipStats_TurningCircle" xml:space="preserve">
-    <value>Turning Circle</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
     <value>Total damage per fire</value>
@@ -564,39 +510,6 @@
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
     <value>Selected ship has already been added</value>
   </data>
-  <data name="ShipStats_PayloadName" xml:space="preserve">
-    <value>Payload</value>
-  </data>
-  <data name="ShipStats_PayloadPerPlane" xml:space="preserve">
-    <value>Payload Per Plane</value>
-  </data>
-  <data name="ShipStats_PayloadType" xml:space="preserve">
-    <value>Payload Type</value>
-  </data>
-  <data name="ShipStats_PlaneRecoveryTime" xml:space="preserve">
-    <value>Plane Recovery Time</value>
-  </data>
-  <data name="ShipStats_PlaneRocketDelay" xml:space="preserve">
-    <value>Rocket Launch Delay</value>
-  </data>
-  <data name="ShipStats_PlanesAttackingFlight" xml:space="preserve">
-    <value>Planes in Attacking Flight</value>
-  </data>
-  <data name="ShipStats_PlanesDeck" xml:space="preserve">
-    <value>Planes on Deck</value>
-  </data>
-  <data name="ShipStats_PlanesFlight" xml:space="preserve">
-    <value>Planes in Flight</value>
-  </data>
-  <data name="ShipStats_PlaneStrikeTime" xml:space="preserve">
-    <value>Strike Time</value>
-  </data>
-  <data name="ShipStats_PlaneTorpedoArmDistance" xml:space="preserve">
-    <value>Aerial Torpedo Arm Distance</value>
-  </data>
-  <data name="ShipStats_PlaneTorpedoRange" xml:space="preserve">
-    <value>Aerial Torpedo Range</value>
-  </data>
   <data name="ShipStats_Skips" xml:space="preserve">
     <value>Skips</value>
   </data>
@@ -639,8 +552,56 @@
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
     <value>Can hit</value>
   </data>
+  <data name="ShipStats_Concealment" xml:space="preserve">
+    <value>Concealment</value>
+  </data>
+  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
+    <value>Concealment by air</value>
+  </data>
+  <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
+    <value>When on fire</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
+    <value>Concealment by sea</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
+    <value>When on fire</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
+    <value>After firing in smoke</value>
+  </data>
+  <data name="ShipStats_FireAmount" xml:space="preserve">
+    <value>Max fires</value>
+  </data>
+  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
+    <value>Total fire damage</value>
+  </data>
+  <data name="ShipStats_FloodAmount" xml:space="preserve">
+    <value>Max floods</value>
+  </data>
+  <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
+    <value>Torpedo protection</value>
+  </data>
+  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
+    <value>Total flood damage</value>
+  </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long Range Aura</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityFullPowerBackward" xml:space="preserve">
+    <value>Full power backward time</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityFullPowerForward" xml:space="preserve">
+    <value>Full power forward time</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
+    <value>Max speed</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
+    <value>Rudder shift time</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
+    <value>Turning circle</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
     <value>Medium Range Aura</value>

@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -8,6 +9,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record ConcealmentUI : IDataUi
     {
+        [JsonIgnore]
         public List<KeyValuePair<string, string>>? ConcealmentData { get; set; }
 
         [DataUiUnit("KM")]
@@ -67,7 +69,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var concealmentBySeaFire = concealmentBySea + 2.0m;
             var concealmentByAirFire = hull.AirDetection + 3.0m;
 
-            return new ConcealmentUI
+            var concealment = new ConcealmentUI
             {
                 ConcealmentBySea = concealmentBySea,
                 ConcealmentBySeaFiringSmoke = concealmentBySeaFiringSmoke,
@@ -75,6 +77,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 ConcealmentByAir = concealmentByAir,
                 ConcealmentByAirFire = concealmentByAirFire,
             };
+
+            concealment.ConcealmentData = concealment.ToPropertyMapping();
+
+            return concealment;
         }
     }
 }

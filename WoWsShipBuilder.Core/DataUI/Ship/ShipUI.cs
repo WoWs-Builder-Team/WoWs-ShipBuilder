@@ -31,6 +31,8 @@ namespace WoWsShipBuilder.Core.DataUI
             var shipUI = new ShipUI(ship.Index)
             {
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
+                ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 ShellUI = DataUI.ShellUI.FromShip(ship, shipConfiguration, modifiers),
                 SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),

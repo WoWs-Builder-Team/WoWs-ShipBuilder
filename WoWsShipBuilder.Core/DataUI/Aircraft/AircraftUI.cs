@@ -39,12 +39,11 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
 
         public decimal ArmamentReloadTime { get; set; }
 
-
         public static AircraftUI? FromAircraftName(string name, int shipTier, PlaneCategory category, PlaneType type, List<(string name, float value)> modifiers)
         {
             var plane = AppData.AircraftList![name];
 
-            AircraftUI aircraft = null;
+            AircraftUI aircraft = null!;
 
             if (category.Equals(PlaneCategory.Cv))
             {
@@ -56,7 +55,6 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
 
         public static AircraftUI ProcessCVPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers)
         {
-
             var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
             int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
 
@@ -87,7 +85,6 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
                     var maxSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMaxSpeedMultiplier");
                     maxSpeedMultiplier = (float)Math.Round(maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier), 0);
 
-
                     break;
                 case PlaneType.TorpedoBomber:
                     var torpPlaneHPModifiers = modifiers.FindModifiers("torpedoBomberHealth");
@@ -116,7 +113,6 @@ namespace WoWsShipBuilder.Core.DataUI.Aircrafts
 
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
             decimal finalCruisingSpeed = Math.Round((decimal)restorationTimeModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 2);
-
 
             return new AircraftUI
             {

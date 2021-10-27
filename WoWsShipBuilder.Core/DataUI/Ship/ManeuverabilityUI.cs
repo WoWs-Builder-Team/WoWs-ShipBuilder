@@ -8,18 +8,23 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record ManeuverabilityUI : IDataUi
     {
+        [DataUiUnit("Knots")]
         public decimal ManeuverabilityMaxSpeed { get; set; }
 
+        [DataUiUnit("S")]
         public decimal ManeuverabilityFullPowerForward { get; set; }
 
+        [DataUiUnit("S")]
         public decimal ManeuverabilityFullPowerBackward { get; set; }
 
+        [DataUiUnit("M")]
         public decimal ManeuverabilityTurningCircle { get; set; }
 
+        [DataUiUnit("S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
         [JsonIgnore]
-        public List<KeyValuePair<string, string>>? ManouvrabilityData { get; set; }
+        public List<KeyValuePair<string, string>>? ManeuverabilityData { get; set; }
 
         public static ManeuverabilityUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
@@ -70,7 +75,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
-            return new ManeuverabilityUI
+            var manouvrability = new ManeuverabilityUI
             {
                 ManeuverabilityFullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier,
                 ManeuverabilityFullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier,
@@ -78,6 +83,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 ManeuverabilityRudderShiftTime = hull.RudderTime * rudderShiftModifier,
                 ManeuverabilityTurningCircle = hull.TurningRadius,
             };
+
+            manouvrability.ManeuverabilityData = manouvrability.ToPropertyMapping();
+
+            return manouvrability;
         }
     }
 }

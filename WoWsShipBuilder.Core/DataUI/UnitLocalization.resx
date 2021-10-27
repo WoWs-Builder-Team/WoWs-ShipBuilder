@@ -144,6 +144,9 @@
   <data name="Unit_DPS" xml:space="preserve">
     <value>dps</value>
   </data>
+  <data name="Unit_HP" xml:space="preserve">
+    <value>HP</value>
+  </data>
   <data name="Unit_Knots" xml:space="preserve">
     <value>kts</value>
   </data>

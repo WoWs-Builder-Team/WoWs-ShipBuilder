@@ -88,6 +88,15 @@ namespace WoWsShipBuilder.Core.DataUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HP.
+        /// </summary>
+        internal static string Unit_HP {
+            get {
+                return ResourceManager.GetString("Unit_HP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to kg.
         /// </summary>
         internal static string Unit_KG {
