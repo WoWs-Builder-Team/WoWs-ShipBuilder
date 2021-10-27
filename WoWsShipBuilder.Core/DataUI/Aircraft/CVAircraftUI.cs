@@ -66,8 +66,36 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var list = new List<CVAircraftUI>();
 
-            var planes = ship.CvPlanes;
-            foreach ((var key, var value) in planes)
+            var planes = new List<PlaneData>();
+            ShipUpgrade? diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
+            if (diveConfiguration != null)
+            {
+                var diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
+                planes.Add(diveModule);
+            }
+
+            ShipUpgrade? skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
+            if (skipConfiguration != null)
+            {
+                var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
+                planes.Add(skipModule);
+            }
+
+            ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
+            if (torpConfiguration != null)
+            {
+                var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
+                planes.Add(skipModule);
+            }
+
+            ShipUpgrade? rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
+            if (rocketConfiguration != null)
+            {
+                var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
+                planes.Add(skipModule);
+            }
+
+            foreach (var value in planes)
             {
                 var index = value.PlaneName.IndexOf("_");
                 var name = value.PlaneName.Substring(0, index);
