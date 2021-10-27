@@ -153,4 +153,7 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
+  <data name="Unit_ShotsPerSecond" xml:space="preserve">
+      <value>shots/s</value>
+  </data>
 </root>

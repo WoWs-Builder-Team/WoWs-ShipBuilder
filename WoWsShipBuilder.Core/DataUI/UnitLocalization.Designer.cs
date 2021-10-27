@@ -167,5 +167,14 @@ namespace WoWsShipBuilder.Core.DataUI {
                 return ResourceManager.GetString("Unit_S", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shots/s.
+        /// </summary>
+        internal static string Unit_ShotsPerSecond {
+            get {
+                return ResourceManager.GetString("Unit_ShotsPerSecond", resourceCulture);
+            }
+        }
     }
 }

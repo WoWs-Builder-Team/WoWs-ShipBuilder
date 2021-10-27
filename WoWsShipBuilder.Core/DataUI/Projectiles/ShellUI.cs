@@ -59,24 +59,18 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+        public static List<ShellUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
-            if (shipConfiguration.All(config => config.UcType != ComponentType.Artillery))
-            {
-                return null;
-            }
-
             Gun gun = ship
                 .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
                 .Guns.First();
             var shells = new List<ShellUI>();
-            var shellData = AppDataHelper.Instance.ReadLocalJsonData<ArtilleryShell>(ship.ShipNation, ServerType.Live)!;
             foreach (string shellName in gun.AmmoList)
             {
-                var shell = shellData.First(shellEntry => shellEntry.Value.Name.Equals(shellName, StringComparison.InvariantCultureIgnoreCase)).Value;
+                var shell = (ArtilleryShell)AppData.ProjectileList![shellName];
 
                 float shellDamage = shell.Damage;
-                float shellFireChance = shell.FireChance;
+                float shellFireChance = shell.FireChance * 100;
                 float shellPenetration = shell.Penetration;
                 switch (shell.ShellType)
                 {
@@ -90,7 +84,7 @@ namespace WoWsShipBuilder.Core.DataUI
                             index = modifiers.FindModifierIndex("burnChanceFactorHighLevel");
                             if (index.IsValidIndex())
                             {
-                                shellFireChance /= 2;
+                                shellFireChance *= modifiers[index].Value;
                             }
                         }
                         else
@@ -157,10 +151,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
                     ShellWeight = Math.Round((decimal)shell.Mass),
                     Penetration = Math.Round((decimal)shellPenetration),
-                    FireChance = Math.Round((decimal)shellFireChance),
+                    FireChance = Math.Round((decimal)shellFireChance, 1),
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = Math.Round((decimal)shell.ArmingThreshold),
-                    FuseTimer = Math.Round((decimal)shell.FuseTimer, 2),
+                    FuseTimer = Math.Round((decimal)shell.FuseTimer, 3),
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)

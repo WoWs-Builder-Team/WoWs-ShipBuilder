@@ -1,34 +1,55 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Core.DataUI
 {
+    // ReSharper disable once InconsistentNaming
     public record MainBatteryUI : IDataUi
     {
+        [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
+        [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
+        [DataUiUnit("ShotsPerSecond")]
         public decimal RoF { get; set; }
 
+        [DataUiUnit("S")]
         public decimal TurnTime { get; set; }
 
+        [DataUiUnit("DegreePerSecond")]
         public decimal TraverseSpeed { get; set; }
 
         public decimal Sigma { get; set; }
 
-        public decimal HorizontalDisp { get; set; }
+        [JsonIgnore]
+        public string HorizontalDisp { get; set; } = default!;
 
-        public decimal VerticalDisp { get; set; }
+        [JsonIgnore]
+        public string VerticalDisp { get; set; } = default!;
 
+        [JsonIgnore]
+        public List<ShellUI> ShellData { get; set; } = default!;
+
+        [JsonIgnore]
         public Dispersion DispersionData { get; set; } = default!;
 
-        public static MainBatteryUI? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+        [JsonIgnore]
+        public TurretModule OriginalMainBatteryData { get; set; } = default!;
+
+        public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
+
+        public static MainBatteryUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
             ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
             if (artilleryConfiguration == null)
@@ -36,7 +57,19 @@ namespace WoWsShipBuilder.Core.DataUI
                 return null;
             }
 
-            TurretModule? mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+            string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            TurretModule? mainBattery;
+            if (artilleryOptions.Length == 1)
+            {
+                mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+            }
+            else
+            {
+                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
+            }
+
+            FireControl? suoConfiguration = ship.FireControlList[shipConfiguration.First(c => c.UcType == ComponentType.Suo).Components[ComponentType.Suo].First()];
 
             List<(int BarrelCount, int TurretCount)> arrangementList = mainBattery.Guns
                 .GroupBy(gun => gun.NumBarrels)
@@ -63,13 +96,30 @@ namespace WoWsShipBuilder.Core.DataUI
             var rangeModifiers = modifiers
                 .Where(modifier => modifier.name.Equals("GMMaxDist", StringComparison.InvariantCultureIgnoreCase))
                 .Select(modifier => modifier.value);
-            decimal range = Math.Round(rangeModifiers.Aggregate(mainBattery.MaxRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
+            decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
+            decimal range = Math.Round(rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
+
+            // Consider dispersion modifiers
+            var modifiedDispersion = new Dispersion
+            {
+                IdealRadius = mainBattery.DispersionValues.IdealRadius,
+                MinRadius = mainBattery.DispersionValues.MinRadius,
+                IdealDistance = mainBattery.DispersionValues.IdealDistance,
+                TaperDist = mainBattery.DispersionValues.TaperDist,
+                RadiusOnZero = mainBattery.DispersionValues.RadiusOnZero,
+                RadiusOnDelim = mainBattery.DispersionValues.RadiusOnDelim,
+                RadiusOnMax = mainBattery.DispersionValues.RadiusOnMax,
+                Delim = mainBattery.DispersionValues.Delim,
+            };
+
+            modifiedDispersion.IdealRadius = modifiers.FindModifiers("GMIdealRadius")
+                .Aggregate(modifiedDispersion.IdealRadius, (current, modifier) => current * modifier);
 
             // Adjust dispersion for range modifiers
-            decimal hDispersion = Math.Round((decimal)mainBattery.DispersionValues.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
-            decimal vDispersion = Math.Round((decimal)mainBattery.DispersionValues.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
+            decimal hDispersion = Math.Round((decimal)modifiedDispersion.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
+            decimal vDispersion = Math.Round((decimal)modifiedDispersion.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
 
-            return new MainBatteryUI
+            var mainBatteryUi = new MainBatteryUI
             {
                 Name = turretArrangement + " " + Localizer.Instance[mainBattery.Guns.First().Name].Localization,
                 Range = range,
@@ -78,10 +128,15 @@ namespace WoWsShipBuilder.Core.DataUI
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
-                HorizontalDisp = hDispersion,
-                VerticalDisp = vDispersion,
+                HorizontalDisp = hDispersion + " m",
+                VerticalDisp = vDispersion + " m",
                 DispersionData = mainBattery.DispersionValues,
+                ShellData = ShellUI.FromShip(ship, shipConfiguration, modifiers),
+                OriginalMainBatteryData = mainBattery,
             };
+
+            mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
+            return mainBatteryUi;
         }
     }
 }

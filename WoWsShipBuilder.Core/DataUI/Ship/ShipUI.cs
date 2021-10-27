@@ -10,8 +10,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public MainBatteryUI? MainBatteryUI { get; set; }
 
-        public List<ShellUI>? ShellUI { get; set; }
-
         public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
 
         public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
@@ -34,7 +32,6 @@ namespace WoWsShipBuilder.Core.DataUI
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
-                ShellUI = DataUI.ShellUI.FromShip(ship, shipConfiguration, modifiers),
                 SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),

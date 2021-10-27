@@ -1213,15 +1213,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rate of fire.
-        /// </summary>
-        public static string ShipStats_RateOfFire {
-            get {
-                return ResourceManager.GetString("ShipStats_RateOfFire", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reaction Time.
         /// </summary>
         public static string ShipStats_ReactionTime {
@@ -1245,6 +1236,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_RicochetAngles {
             get {
                 return ResourceManager.GetString("ShipStats_RicochetAngles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rate of fire.
+        /// </summary>
+        public static string ShipStats_RoF {
+            get {
+                return ResourceManager.GetString("ShipStats_RoF", resourceCulture);
             }
         }
         

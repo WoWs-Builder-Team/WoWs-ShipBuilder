@@ -34,9 +34,9 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
         {
-            var mainBattery = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"].MainBatteryModuleList.First().Value;
+            var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow();
-            win.DataContext = new FiringAngleViewModel(mainBattery);
+            win.DataContext = new FiringAngleViewModel(dc.CurrentShipStats!.MainBatteryUI!.OriginalMainBatteryData);
             win.Show();
             e.Handled = true;
         }

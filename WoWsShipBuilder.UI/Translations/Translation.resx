@@ -348,7 +348,7 @@
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Range</value>
   </data>
-  <data name="ShipStats_RateOfFire" xml:space="preserve">
+  <data name="ShipStats_RoF" xml:space="preserve">
     <value>Rate of fire</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
