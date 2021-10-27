@@ -54,7 +54,6 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal torpedoFlooding = Math.Round((decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier), 2);
 
                 // v = d/t --> d = v*t
-
                 var torpUI = new TorpedoUI
                 {
                     TorpedoName = name,

@@ -50,6 +50,5 @@ namespace WoWsShipBuilder.Core.DataUI
                 FireChance = (int)(fireChance * 100),
             };
         }
-
     }
 }
