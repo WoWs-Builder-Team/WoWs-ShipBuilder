@@ -79,6 +79,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bomb.
+        /// </summary>
+        public static string Bomb {
+            get {
+                return ResourceManager.GetString("Bomb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert the build name :.
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
@@ -475,6 +484,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rocket.
+        /// </summary>
+        public static string Rocket {
+            get {
+                return ResourceManager.GetString("Rocket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Russia.
         /// </summary>
         public static string Russia {
@@ -741,6 +759,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_ArmingThreshold {
             get {
                 return ResourceManager.GetString("ShipStats_ArmingThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arming Treshold.
+        /// </summary>
+        public static string ShipStats_ArmingTreshold {
+            get {
+                return ResourceManager.GetString("ShipStats_ArmingTreshold", resourceCulture);
             }
         }
         
@@ -1312,6 +1339,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Speed.
+        /// </summary>
+        public static string ShipStats_Speed {
+            get {
+                return ResourceManager.GetString("ShipStats_Speed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Survivability.
         /// </summary>
         public static string ShipStats_Survivability {
@@ -1402,11 +1438,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weapon Type.
+        /// </summary>
+        public static string ShipStats_WeaponType {
+            get {
+                return ResourceManager.GetString("ShipStats_WeaponType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flags .
         /// </summary>
         public static string SignalSelector_Flags {
             get {
                 return ResourceManager.GetString("SignalSelector_Flags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip Bomb.
+        /// </summary>
+        public static string SkipBomb {
+            get {
+                return ResourceManager.GetString("SkipBomb", resourceCulture);
             }
         }
         
@@ -1533,6 +1587,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string TITLE_PlaceholderMod {
             get {
                 return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedo.
+        /// </summary>
+        public static string Torpedo {
+            get {
+                return ResourceManager.GetString("Torpedo", resourceCulture);
             }
         }
         

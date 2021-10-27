@@ -24,29 +24,43 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public int MaxNumberOnDeck { get; set; }
 
+        [DataUiUnit("S")]
         public decimal RestorationTime { get; set; }
 
+        [DataUiUnit("HP")]
         public int PlaneHP { get; set; }
 
+        [DataUiUnit("Knots")]
         public decimal CruisingSpeed { get; set; }
 
+        [DataUiUnit("Knots")]
         public decimal MaxSpeed { get; set; }
 
+        [DataUiUnit("Knots")]
         public decimal MinSpeed { get; set; }
 
+        [DataUiUnit("S")]
         public decimal BoostDurationTime { get; set; }
 
+        [DataUiUnit("S")]
         public decimal BoostReloadTime { get; set; }
 
+        [DataUiUnit("S")]
         public decimal ArmamentReloadTime { get; set; }
 
+        [DataUiUnit("PerCent")]
         public int InnerBombPercentage { get; set; }
 
+        [DataUiUnit("S")]
         public decimal AttackCd { get; set; }
 
+        [DataUiUnit("S")]
         public decimal JatoDuration { get; set; }
 
         public decimal JatoSpeedMultiplier { get; set; }
+
+        [JsonIgnore]
+        public string WeaponType { get; set; } = default!;
 
         [JsonIgnore]
         public bool IsLast { get; set; } = false;
@@ -65,8 +79,22 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var list = new List<CVAircraftUI>();
-
             var planes = new List<PlaneData>();
+
+            ShipUpgrade? rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
+            if (rocketConfiguration != null)
+            {
+                var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
+                planes.Add(skipModule);
+            }
+
+            ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
+            if (torpConfiguration != null)
+            {
+                var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
+                planes.Add(skipModule);
+            }
+
             ShipUpgrade? diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
             if (diveConfiguration != null)
             {
@@ -78,20 +106,6 @@ namespace WoWsShipBuilder.Core.DataUI
             if (skipConfiguration != null)
             {
                 var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
-                planes.Add(skipModule);
-            }
-
-            ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
-            if (torpConfiguration != null)
-            {
-                var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
-                planes.Add(skipModule);
-            }
-
-            ShipUpgrade? rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
-            if (rocketConfiguration != null)
-            {
-                var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
                 planes.Add(skipModule);
             }
 
@@ -212,6 +226,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 AttackCd = Math.Round((decimal)plane.AttackData.AttackCooldown, 1),
                 JatoDuration = jatoDuration,
                 JatoSpeedMultiplier = jatoMultiplier,
+                WeaponType = weaponType.ToString(),
                 Weapon = weapon,
             };
 

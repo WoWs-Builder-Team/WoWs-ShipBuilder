@@ -615,4 +615,25 @@
   <data name="ShipStats_Aircraft" xml:space="preserve">
     <value>Aircrafts</value>
   </data>
+  <data name="Bomb" xml:space="preserve">
+    <value>Bomb</value>
+  </data>
+  <data name="Rocket" xml:space="preserve">
+    <value>Rocket</value>
+  </data>
+  <data name="ShipStats_ArmingTreshold" xml:space="preserve">
+    <value>Arming Treshold</value>
+  </data>
+  <data name="ShipStats_Speed" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="ShipStats_WeaponType" xml:space="preserve">
+    <value>Weapon Type</value>
+  </data>
+  <data name="SkipBomb" xml:space="preserve">
+    <value>Skip Bomb</value>
+  </data>
+  <data name="Torpedo" xml:space="preserve">
+    <value>Torpedo</value>
+  </data>
 </root>

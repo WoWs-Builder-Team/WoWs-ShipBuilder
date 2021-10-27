@@ -19,14 +19,19 @@ public record BombUI : ProjectileUI, IDataUi
 
         public decimal Damage { get; set; }
 
+        [DataUiUnit("MM")]
         public int Penetration { get; set; }
 
+        [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
 
+        [DataUiUnit("MM")]
         public int ArmingTreshold { get; set; }
 
+        [DataUiUnit("Degree")]
         public string RicochetAngles { get; set; } = default!;
 
+        [DataUiUnit("PerCent")]
         public int FireChance { get; set; }
 
         public static BombUI FromBombName(string name, List<(string name, float value)> modifiers)

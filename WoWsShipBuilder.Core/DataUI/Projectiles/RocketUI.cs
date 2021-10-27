@@ -16,14 +16,19 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal Damage { get; set; }
 
+        [DataUiUnit("MM")]
         public int Penetration { get; set; }
 
+        [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
 
+        [DataUiUnit("MM")]
         public int ArmingTreshold { get; set; }
 
+        [DataUiUnit("Degree")]
         public string RicochetAngles { get; set; } = default!;
 
+        [DataUiUnit("PerCent")]
         public int FireChance { get; set; }
 
         public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers)
@@ -31,24 +36,29 @@ namespace WoWsShipBuilder.Core.DataUI
             var rocket = (Rocket)AppData.ProjectileList![name];
 
             decimal rocketDamage = (decimal)rocket.Damage;
-            string ricochetAngle = "";
-            if (rocket.RocketType.Equals(RocketType.AP))
-            {
-                var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
-                rocketDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
-                ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
-            }
-
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
             decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current * modifier), 2);
+
+            string ricochetAngle = "";
+            decimal fuseTimer = 0;
+            int armingTreshold = 0;
+            if (rocket.RocketType.Equals(RocketType.AP))
+            {
+                var rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
+                rocketDamage = Math.Round((decimal)rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
+                ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
+                fuseTimer = (decimal)rocket.FuseTimer;
+                armingTreshold = (int)rocket.ArmingThreshold;
+                fireChance = 0;
+            }
 
             var rocketUI = new RocketUI
             {
                 Name = rocket.Name,
                 Damage = rocketDamage,
                 Penetration = (int)Math.Round(rocket.Penetration, 0),
-                FuseTimer = (decimal)rocket.FuseTimer,
-                ArmingTreshold = (int)rocket.ArmingThreshold,
+                FuseTimer = fuseTimer,
+                ArmingTreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = (int)(fireChance * 100),
             };
