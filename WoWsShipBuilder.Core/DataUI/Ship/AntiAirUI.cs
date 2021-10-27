@@ -25,7 +25,11 @@ namespace WoWsShipBuilder.Core.DataUI
         public static AntiAirUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
-            var guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
+            TurretModule? guns = null!;
+            if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+            {
+                guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
+            }
 
             var aaList = new List<AntiAirUI>();
 
@@ -62,7 +66,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 longRange = hull.AntiAir.LongRangeAura;
             }
 
-            if (guns.AntiAir != null)
+            if (guns != null && guns.AntiAir != null)
             {
                 if (longRange is null)
                 {

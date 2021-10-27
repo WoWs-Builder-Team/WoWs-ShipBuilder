@@ -612,4 +612,7 @@
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
     <value>Torpedo Area</value>
   </data>
+  <data name="ShipStats_Aircraft" xml:space="preserve">
+    <value>Aircrafts</value>
+  </data>
 </root>

@@ -113,7 +113,7 @@
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                                         </DockPanel>
-                                        <ItemsControl Items="{Binding TorpedoData}">
+                                        <ItemsControl Items="{Binding ProjectileData}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <DockPanel HorizontalAlignment="Stretch">
@@ -147,8 +147,34 @@
                 </Expander>
 
                 <!--Airstrikes-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Airstrike}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0">         
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Aircraft}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
+                          DataContext="{Binding CurrentShipStats}" IsVisible="{Binding CVAircraftUI, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <StackPanel Orientation="Vertical">
+                        <ItemsControl Items="{Binding CVAircraftUI}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <DockPanel HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" DockPanel.Dock="Right"/>
+                                        </DockPanel>
+                                        <ItemsControl Items="{Binding CVAircraftData}" >
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel>
+                                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                        <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Separator Margin="0,5" IsVisible="{Binding !IsLast}"/>
+                                    </StackPanel>                                  
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Expander>
             </StackPanel>
 
