@@ -17,7 +17,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.13.4" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.13.5" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,11 +39,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>UnitLocalization.resx</DependentUpon>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="DataUI\Guns\" />
-      <Folder Include="DataUI\Ships\" />
     </ItemGroup>
 
 </Project>

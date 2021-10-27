@@ -718,6 +718,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arming distance.
+        /// </summary>
+        public static string ShipStats_ArmingDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_ArmingDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arming Threshold.
         /// </summary>
         public static string ShipStats_ArmingThreshold {
@@ -777,6 +786,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_BompPayload {
             get {
                 return ResourceManager.GetString("ShipStats_BompPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can hit.
+        /// </summary>
+        public static string ShipStats_CanHitClasses {
+            get {
+                return ResourceManager.GetString("ShipStats_CanHitClasses", resourceCulture);
             }
         }
         

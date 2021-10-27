@@ -12,6 +12,7 @@ namespace WoWsShipBuilder.Core.DataUI
             filter ??= DefaultDataUiFilter;
             return dataUi.GetType().GetProperties()
                 .Where(property => !property.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any())
+                .Where(property => !property.GetCustomAttributes(typeof(System.Text.Json.Serialization.JsonIgnoreAttribute), false).Any())
                 .Select(property => (Key: "ShipStats_" + property.Name, Value: property.GetValue(dataUi),
                     Unit: (DataUiUnitAttribute?)property.GetCustomAttributes(typeof(DataUiUnitAttribute), false).FirstOrDefault()))
                 .Where(filter)

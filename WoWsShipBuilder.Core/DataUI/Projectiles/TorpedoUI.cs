@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
@@ -26,6 +26,8 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal ReactionTime { get; set; }
 
         public decimal FloodingChance { get; set; }
+
+        public List<ShipClass>? CanHitClasses { get; set; }
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? TorpedoData { get; set; }
@@ -53,18 +55,25 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpedoFloodingModifiers = modifiers.FindModifiers("floodChanceFactor");
                 decimal torpedoFlooding = Math.Round((decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier), 2);
 
+                var allClasses = new List<ShipClass> { ShipClass.Destroyer, ShipClass.Cruiser, ShipClass.Battleship, ShipClass.AirCarrier };
+
                 // v = d/t --> d = v*t
                 var torpUI = new TorpedoUI
                 {
                     Name = name,
-                    Damage = torpedoDamage,
-                    Range = (decimal)torp.MaxRange,
+                    Damage = Math.Round(torpedoDamage),
+                    Range = Math.Round((decimal)torp.MaxRange / 1000, 2),
                     Speed = torpedoSpeed,
                     Detectability = torpedoDetect,
                     ArmingDistance = torpedoSpeed * 0.0026m * torpedoArmingTime,
                     FloodingChance = torpedoFlooding,
                     ReactionTime = Math.Round(torpedoDetect / (torpedoSpeed * 0.0026m), 2),
                 };
+                if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
+                {
+                    torpUI.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
+                }
+
                 torpUI.TorpedoData = torpUI.ToPropertyMapping();
                 list.Add(torpUI);
             }

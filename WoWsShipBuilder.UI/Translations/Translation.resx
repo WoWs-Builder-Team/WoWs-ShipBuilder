@@ -633,4 +633,10 @@
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
     <value>Apply Camo Bonuses</value>
   </data>
+  <data name="ShipStats_ArmingDistance" xml:space="preserve">
+      <value>Arming distance</value>
+  </data>
+  <data name="ShipStats_CanHitClasses" xml:space="preserve">
+      <value>Can hit</value>
+  </data>
 </root>
