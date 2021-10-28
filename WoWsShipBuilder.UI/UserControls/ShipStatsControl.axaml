@@ -213,7 +213,7 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <Border Background="{DynamicResource ThemeControlMidBrush}" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                                                        <Image Source="{Binding, Converter={StaticResource ImageConverter}}"/>
+                                                        <Image Source="{Binding Converter={StaticResource ImageConverter}}"/>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

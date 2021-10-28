@@ -7,8 +7,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Converters;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -18,13 +18,13 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private static readonly ImagePathConverter Converter = new();
 
-        public static readonly StyledProperty<List<(ShipConsumable, Consumable)>> ConsumableListProperty =
-            AvaloniaProperty.Register<ConsumableSelector, List<(ShipConsumable, Consumable)>>(nameof(ConsumableList), notifying: ConsumableListChanged);
+        public static readonly StyledProperty<List<ConsumableUI>> ConsumableListProperty =
+            AvaloniaProperty.Register<ConsumableSelector, List<ConsumableUI>>(nameof(ConsumableList), notifying: ConsumableListChanged);
 
         public static readonly StyledProperty<int> SelectedIndexProperty = AvaloniaProperty.Register<ConsumableSelector, int>(nameof(SelectedIndex), notifying: OnSelectedIndexChanged);
 
-        public static readonly StyledProperty<Action<ShipConsumable>?> SelectedIndexChangedProperty =
-            AvaloniaProperty.Register<ConsumableSelector, Action<ShipConsumable>?>(nameof(SelectedIndexChanged));
+        public static readonly StyledProperty<Action<ConsumableUI>?> SelectedIndexChangedProperty =
+            AvaloniaProperty.Register<ConsumableSelector, Action<ConsumableUI>?>(nameof(SelectedIndexChanged));
 
         private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<UpgradeSelector, IImage>(
             nameof(SelectedImage));
@@ -44,13 +44,13 @@ namespace WoWsShipBuilder.UI.UserControls
             set => SetValue(SelectedIndexProperty, value);
         }
 
-        public List<(ShipConsumable, Consumable)> ConsumableList
+        public List<ConsumableUI> ConsumableList
         {
             get => GetValue(ConsumableListProperty);
             set => SetValue(ConsumableListProperty, value);
         }
 
-        public Action<ShipConsumable>? SelectedIndexChanged
+        public Action<ConsumableUI>? SelectedIndexChanged
         {
             get => GetValue(SelectedIndexChangedProperty);
             set => SetValue(SelectedIndexChangedProperty, value);
@@ -67,10 +67,10 @@ namespace WoWsShipBuilder.UI.UserControls
             if (!beforeNotify)
             {
                 var selector = (ConsumableSelector)sender;
-                var (shipConsumable, consumable) = selector.ConsumableList[selector.SelectedIndex];
+                var consumable = selector.ConsumableList[selector.SelectedIndex];
                 selector.SelectedImage = (IImage)Converter.Convert(consumable, typeof(IImage), null!, CultureInfo.InvariantCulture);
                 selector.ConsumablePopup.IsOpen = false;
-                selector.SelectedIndexChanged?.Invoke(shipConsumable);
+                selector.SelectedIndexChanged?.Invoke(consumable);
             }
         }
 
@@ -79,7 +79,7 @@ namespace WoWsShipBuilder.UI.UserControls
             if (!beforeNotify)
             {
                 var selector = (ConsumableSelector)sender;
-                selector.SelectedImage = (IImage)Converter.Convert(selector.ConsumableList[selector.SelectedIndex].Item2, typeof(IImage), null!, CultureInfo.InvariantCulture);
+                selector.SelectedImage = (IImage)Converter.Convert(selector.ConsumableList[selector.SelectedIndex], typeof(IImage), null!, CultureInfo.InvariantCulture);
             }
         }
 
