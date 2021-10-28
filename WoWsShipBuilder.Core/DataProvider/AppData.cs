@@ -25,7 +25,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         public static List<ShipSummary>? ShipSummaryList { get; set; }
 
 #if DEBUG
-        public static bool IsDebug => true;
+        public static bool IsDebug => false;
 #else
         public static bool IsDebug => false;
 #endif

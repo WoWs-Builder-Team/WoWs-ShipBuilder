@@ -103,14 +103,14 @@
                 
                 <!--Torpedoes-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Torpedo}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0" DataContext="{Binding CurrentShipStats}"
-                          IsVisible="{Binding TorpedoArmamentUI, Converter={x:Static ObjectConverters.IsNotNull}}">
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0" DataContext="{Binding CurrentShipStats.TorpedoArmamentUI}"
+                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <DockPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{Binding TorpedoArmamentUI.Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                         </DockPanel>
-                        <ItemsControl Items="{Binding TorpedoArmamentUI.TorpedoArmamentData}">
+                        <ItemsControl Items="{Binding TorpedoArmamentData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
@@ -121,7 +121,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <Separator Margin="0,5"/>
-                        <ItemsControl Items="{Binding TorpedoArmamentUI.Torpedoes}">
+                        <ItemsControl Items="{Binding Torpedoes}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">
@@ -165,9 +165,9 @@
                 <!--Airstrikes-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Aircraft}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
-                          DataContext="{Binding CurrentShipStats}" IsVisible="{Binding CVAircraftUI, Converter={x:Static ObjectConverters.IsNotNull}}">
+                          DataContext="{Binding CurrentShipStats.CVAircraftUI}"  IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
-                        <ItemsControl Items="{Binding CVAircraftUI}">
+                        <ItemsControl Items="{Binding}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">
@@ -203,7 +203,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock Text="Consumables" Margin="0,10,0,0" />
+                                        <TextBlock Text="Consumables" Margin="0,5,0,5" />
                                         <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -212,7 +212,9 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Image Source="{Binding, Converter={StaticResource ImageConverter}}"/>
+                                                    <Border Background="{DynamicResource ThemeControlMidBrush}" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+                                                        <Image Source="{Binding, Converter={StaticResource ImageConverter}}"/>
+                                                    </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
@@ -271,7 +273,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical" Spacing="5">
-                        <StackPanel IsVisible="{Binding AntiAirUI.LongRangeAura, ConverterParameter={x:Static ObjectConverters.IsNotNull}}">
+                        <StackPanel IsVisible="{Binding AntiAirUI.LongRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_LongAura}" Margin="0,0,0,5"/>
                             <ItemsControl Items="{Binding AntiAirUI.LongRangeAura.AntiAirData}">
                                 <ItemsControl.ItemTemplate>
@@ -285,7 +287,7 @@
                             </ItemsControl>
                         </StackPanel>
                         <Separator/>
-                        <StackPanel IsVisible="{Binding AntiAirUI.MediumRangeAura, ConverterParameter={x:Static ObjectConverters.IsNotNull}}">
+                        <StackPanel IsVisible="{Binding AntiAirUI.MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_MediumAura}" Margin="0,0,0,5"/>
                             <ItemsControl Items="{Binding AntiAirUI.MediumRangeAura.AntiAirData}">
                                 <ItemsControl.ItemTemplate>
@@ -299,7 +301,7 @@
                             </ItemsControl>
                         </StackPanel>
                         <Separator/>
-                        <StackPanel IsVisible="{Binding AntiAirUI.ShortRangeAura, ConverterParameter={x:Static ObjectConverters.IsNotNull}}">
+                        <StackPanel IsVisible="{Binding AntiAirUI.ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_ShortAura}" Margin="0,0,0,5"/>
                             <ItemsControl Items="{Binding AntiAirUI.ShortRangeAura.AntiAirData}">
                                 <ItemsControl.ItemTemplate>
