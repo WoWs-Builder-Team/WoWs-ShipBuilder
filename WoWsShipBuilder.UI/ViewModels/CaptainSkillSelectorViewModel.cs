@@ -9,11 +9,45 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class CaptainSkillSelectorViewModel : ViewModelBase
+    public class CaptainSkillSelectorViewModel : ViewModelBase
     {
-        public CaptainSkillSelectorViewModel(ShipClass shipClass)
+        private readonly ShipClass currentClass;
+
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
         {
-            SkillList = GetSkillsForClass(shipClass);
+            var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
+            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, ServerType.Live);
+            if (nationCaptain != null && nationCaptain.Count > 0)
+            {
+                captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            currentClass = shipClass;
+            CaptainList = captainList!.Select(x => x.Value).ToList();
+            SelectedCaptain = CaptainList.First();
+        }
+
+        private Captain? selectedCaptain;
+
+        public Captain? SelectedCaptain
+        {
+            get => selectedCaptain;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedCaptain, value);
+                var currentlySelectedList = SkillOrderList.Select(x => x.SkillNumber).ToList();
+                SkillList = GetSkillsForClass(currentClass);
+                SkillOrderList = new();
+                AssignedPoints = 0;
+            }         
+        }
+
+        private List<Captain>? captainList;
+
+        public List<Captain>? CaptainList
+        {
+            get => captainList;
+            set => this.RaiseAndSetIfChanged(ref captainList, value);
         }
 
         private bool camoEnabled = true;
@@ -48,10 +82,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
         }
 
-        private static Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, string captainId = "PCW001_CrewCommon")
+        private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass)
         {
-            var captain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(null, ServerType.Live);
-            var skills = captain![captainId].Skills;
+            var skills = SelectedCaptain!.Skills;
+
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
             filteredSkills.ForEach(skill =>
             {
