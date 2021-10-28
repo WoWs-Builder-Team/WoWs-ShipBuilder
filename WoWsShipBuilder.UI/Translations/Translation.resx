@@ -636,4 +636,40 @@
   <data name="Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
+  <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
+    <value>Weapons per plane</value>
+  </data>
+  <data name="ShipStats_AttackCd" xml:space="preserve">
+    <value>Attack cooldown</value>
+  </data>
+  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
+    <value>Cruising speed</value>
+  </data>
+  <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
+    <value>Bomb in inner ellipse</value>
+  </data>
+  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
+    <value>Max planes on deck</value>
+  </data>
+  <data name="ShipStats_MaxSpeed" xml:space="preserve">
+    <value>Max speed</value>
+  </data>
+  <data name="ShipStats_MinSpeed" xml:space="preserve">
+    <value>Min speed</value>
+  </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+    <value>Aircraft per attack</value>
+  </data>
+  <data name="ShipStats_NumberInSquad" xml:space="preserve">
+    <value>Aircraft in a squadron</value>
+  </data>
+  <data name="ShipStats_PlaneHP" xml:space="preserve">
+    <value>Hp per plane</value>
+  </data>
+  <data name="ShipStats_RestorationTime" xml:space="preserve">
+    <value>Restoration time</value>
+  </data>
+  <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
+    <value>Starting planes on deck</value>
+  </data>
 </root>

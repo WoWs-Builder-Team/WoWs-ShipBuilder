@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using Avalonia.Data;
@@ -38,6 +39,7 @@ namespace WoWsShipBuilder.UI.Translations
                     if (localization == null)
                     {
                         Logging.Logger.Warn($"Missing localization for key {localizerKey}.");
+                        Debug.WriteLine(localizerKey);
                         localization = localizerKey;
                     }
 

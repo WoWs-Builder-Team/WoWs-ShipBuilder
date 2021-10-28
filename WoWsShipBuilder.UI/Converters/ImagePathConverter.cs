@@ -12,6 +12,7 @@ using Avalonia.Platform;
 using NLog;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -99,6 +100,16 @@ namespace WoWsShipBuilder.UI.Converters
                     }
 
                     string iconName = string.IsNullOrEmpty(consumable.IconId) ? consumable.Name : consumable.IconId;
+                    Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
+
+                    Stream asset = LoadEmbeddedAsset(assets, uri);
+                    return new Bitmap(asset);
+                }
+
+                case ConsumableUI consumableUI:
+                {
+                    Logger.Debug("Processing consumableUI.");
+                    string iconName = consumableUI.IconName;
                     Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
 
                     Stream asset = LoadEmbeddedAsset(assets, uri);

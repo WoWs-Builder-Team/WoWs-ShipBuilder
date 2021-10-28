@@ -14,6 +14,7 @@
     </Design.DataContext>
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter"/>
+        <converters:ImagePathConverter x:Key="ImageConverter" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock">
@@ -199,6 +200,19 @@
                                                         <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                                         <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                                                     </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <TextBlock Text="Consumables" Margin="0,10,0,0" />
+                                        <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" Spacing="5"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Image Source="{Binding, Converter={StaticResource ImageConverter}}"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>

@@ -59,6 +59,10 @@ namespace WoWsShipBuilder.Core.DataProvider
             var server = AppData.Settings.SelectedServerType;
             AppData.ProjectileList = ReadLocalJsonData<Projectile>(nation, server);
             AppData.AircraftList = ReadLocalJsonData<Aircraft>(nation, server);
+            if (AppData.ConsumableList is null)
+            {
+                AppData.ConsumableList = ReadLocalJsonData<Consumable>(Nation.Common, server);
+            }
         }
 
         public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)

@@ -69,6 +69,9 @@ namespace WoWsShipBuilder.Core.DataUI
         public ProjectileUI Weapon { get; set; } = default!;
 
         [JsonIgnore]
+        public List<ConsumableUI> PlaneConsumables { get; set; } = default!;
+
+        [JsonIgnore]
         public List<KeyValuePair<string, string>> CVAircraftData { get; set; } = default!;
 
         public static List<CVAircraftUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
@@ -149,10 +152,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     cruisingSpeed = (float)Math.Round(divePlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 2);
 
                     var minSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMinSpeedMultiplier");
-                    minSpeedMultiplier = (float)Math.Round(minSpeedMultiplierModifiers.Aggregate(minSpeedMultiplier, (current, modifier) => current * modifier), 0);
+                    minSpeedMultiplier = minSpeedMultiplierModifiers.Aggregate(minSpeedMultiplier, (current, modifier) => current * modifier);
 
                     var maxSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMaxSpeedMultiplier");
-                    maxSpeedMultiplier = (float)Math.Round(maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier), 0);
+                    maxSpeedMultiplier = maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 
                     break;
                 case PlaneType.TorpedoBomber:
@@ -165,7 +168,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     planeHP = (float)Math.Round(skipPlaneHPModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier), 0);
 
                     var skipPlaneSpeedModifiers = modifiers.FindModifiers("skipBomberSpeedMultiplier");
-                    cruisingSpeed = (float)Math.Round(skipPlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 2);
+                    cruisingSpeed = skipPlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier);
 
                     break;
             }
@@ -181,7 +184,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
-            decimal finalCruisingSpeed = Math.Round((decimal)restorationTimeModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 2);
+            decimal finalCruisingSpeed = Math.Round((decimal)restorationTimeModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 0);
 
             var jatoDuration = (decimal)plane.JatoData.JatoDuration;
             var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;
@@ -191,13 +194,16 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var weaponType = AppData.ProjectileList![plane.BombName].ProjectileType;
+            int bombInnerEllipse = 0;
             ProjectileUI weapon = null!;
             switch (weaponType)
             {
                 case ProjectileType.Bomb:
                     weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                    bombInnerEllipse = (int)plane.InnerBombsPercentage;
                     break;
                 case ProjectileType.SkipBomb:
+                    weapon = BombUI.FromBombName(plane.BombName, modifiers);
                     break;
                 case ProjectileType.Torpedo:
                     var torpList = new List<string>();
@@ -209,6 +215,15 @@ namespace WoWsShipBuilder.Core.DataUI
                     break;
             }
 
+            List<ConsumableUI> consumables = new();
+            foreach (var consumable in plane.AircraftConsumable)
+            {
+                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true);
+                consumables.Add(consumableUI);
+            }
+
+            consumables = consumables.OrderBy(x => x.Slot).ToList();
+
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
@@ -218,9 +233,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 MaxNumberOnDeck = maxOnDeck,
                 RestorationTime = restorationTime,
                 CruisingSpeed = finalCruisingSpeed,
-                MaxSpeed = finalCruisingSpeed * (decimal)maxSpeedMultiplier,
-                MinSpeed = finalCruisingSpeed * (decimal)minSpeedMultiplier,
-                InnerBombPercentage = (int)plane.InnerBombsPercentage,
+                MaxSpeed = Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0),
+                MinSpeed = Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0),
+                InnerBombPercentage = bombInnerEllipse,
                 NumberDuringAttack = plane.AttackData.AttackerSize,
                 AmmoPerAttack = plane.AttackData.AttackCount,
                 AttackCd = Math.Round((decimal)plane.AttackData.AttackCooldown, 1),
@@ -228,6 +243,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 JatoSpeedMultiplier = jatoMultiplier,
                 WeaponType = weaponType.ToString(),
                 Weapon = weapon,
+                PlaneConsumables = consumables,
             };
 
             cvAircraft.CVAircraftData = cvAircraft.ToPropertyMapping();

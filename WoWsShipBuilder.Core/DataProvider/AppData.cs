@@ -20,6 +20,8 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public static Dictionary<string, Aircraft>? AircraftList { get; set; }
 
+        public static Dictionary<string, Consumable>? ConsumableList { get; set; }
+
         public static List<ShipSummary>? ShipSummaryList { get; set; }
 
 #if DEBUG
