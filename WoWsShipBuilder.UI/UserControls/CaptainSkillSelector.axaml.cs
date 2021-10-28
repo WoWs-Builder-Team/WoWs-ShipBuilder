@@ -24,12 +24,6 @@ namespace WoWsShipBuilder.UI.UserControls
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void UpdateVisual(object? sender, SelectionChangedEventArgs e)
-        {
-            var ic = this.FindControl<ItemsControl>("SkillContainer");
-            ic.InvalidateVisual();
-        }
-
         // For future feature: right click to set alternative skills
         //private void RightClickOnly(object sender, PointerReleasedEventArgs e)
         //{

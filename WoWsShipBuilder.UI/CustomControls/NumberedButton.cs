@@ -45,10 +45,17 @@ namespace WoWsShipBuilder.UI.CustomControls
         public static readonly StyledProperty<double> NumberYSpacingProperty =
             AvaloniaProperty.Register<NumberedButton, double>(nameof(NumberYSpacing), 0);
 
+        /// <summary>
+        /// Style Property to indicate the Vertical spacing from the top for the Number.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsSpecialProperty =
+            AvaloniaProperty.Register<NumberedButton, bool>(nameof(IsSpecial), false);
+
         static NumberedButton()
         {
             IsCheckedProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
             NumberProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
+            IsSpecialProperty.Changed.AddClassHandler<NumberedButton>((x, e) => x.UpdateVisual(e));
             HeightProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
             WidthProperty.OverrideDefaultValue(typeof(NumberedButton), 60);
             CornerRadiusProperty.OverrideDefaultValue(typeof(NumberedButton), new CornerRadius(15));
@@ -108,12 +115,30 @@ namespace WoWsShipBuilder.UI.CustomControls
             set => SetValue(UnselectedBorderThicknessProperty, value);
         }
 
+        public bool IsSpecial
+        {
+            get => GetValue(IsSpecialProperty);
+            set => SetValue(IsSpecialProperty, value);
+        }
+
         public override void Render(DrawingContext context)
         {
             // get control bounds size
             var rect = new Rect(Bounds.Size);
             var imageRect = rect.Deflate(BorderThickness * 2.5);
             context.DrawImage(BackgroundImage, new Rect(BackgroundImage.Size), imageRect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+
+            if (IsSpecial)
+            {
+                double size = 15;
+                Rect trect = new Rect(Bounds.Width - (size * 1.5), size / 3, size, size);
+                RoundedRect rRect = new RoundedRect(trect, size / 3);
+                context.PlatformImpl.DrawRectangle(Brushes.Green, new Pen(), rRect);
+
+                var plus = PathGeometry.Parse("m 6.3,3.1 h 2.4 v 3.2 h 3.2 V 8.7 H 8.7 v 3.2 H 6.3 V 8.7 H 3.1 V 6.3 h 3.2 z");
+                plus.Transform = new TranslateTransform(trect.Left, trect.Top);
+                context.DrawGeometry(Brushes.White, new Pen(), plus);
+            }
 
             // if it's true, draw the number. Draw the border if present)
             if (IsChecked.HasValue && IsChecked.Value)
