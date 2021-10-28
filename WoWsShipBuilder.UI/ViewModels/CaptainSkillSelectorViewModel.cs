@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia.Metadata;
 using ReactiveUI;
@@ -36,10 +34,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref selectedCaptain, value);
                 var currentlySelectedList = SkillOrderList.Select(x => x.SkillNumber).ToList();
-                SkillList = GetSkillsForClass(currentClass);
+                SkillList = GetSkillsForClass(currentClass, value);
                 SkillOrderList = new();
                 AssignedPoints = 0;
-            }         
+            }
         }
 
         private List<Captain>? captainList;
@@ -82,9 +80,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
         }
 
-        private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass)
+        private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
-            var skills = SelectedCaptain!.Skills;
+            var skills = captain!.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
             filteredSkills.ForEach(skill =>

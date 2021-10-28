@@ -15,7 +15,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class MainWindowViewModel : ViewModelBase
     {
+        // ReSharper disable once CollectionNeverQueried.Local
         private readonly List<IDisposable?> collectionChangeListeners = new();
+
         private readonly MainWindow? self;
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
@@ -92,6 +94,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            UpdateStatsViewModel();
         }
 
         public MainWindowViewModel()
@@ -301,7 +304,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CurrentShipIndex = ship!.Index;
                 PreviousShipIndex = result.PrevShipIndex;
                 NextShipIndex = result.NextShipsIndex;
-                ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+                ShipStatsControlViewModel =
+                    new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
                 collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
                 collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
@@ -372,7 +376,13 @@ namespace WoWsShipBuilder.UI.ViewModels
                     if (!token.IsCancellationRequested)
                     {
                         await semaphore.WaitAsync(token);
-                        ShipStatsControlViewModel?.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+                        var modifiers = GenerateModifierList();
+                        if (ShipStatsControlViewModel != null)
+                        {
+                            await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                        }
+
+                        ConsumableViewModel.UpdateShipConsumables(modifiers);
                         semaphore.Release();
                     }
                 },

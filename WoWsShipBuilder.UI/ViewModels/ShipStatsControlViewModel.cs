@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilderDataStructures;
@@ -29,9 +30,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         // this is the ship base stats. do not modify after creation
         private Ship BaseShipStats { get; set; }
 
-        public void UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
+        public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
         {
-            CurrentShipStats = ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers);
+            ShipUI shipStats = await Task.Run(() => ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers));
+            CurrentShipStats = shipStats;
         }
     }
 }

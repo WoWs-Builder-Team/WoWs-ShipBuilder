@@ -3,13 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
-             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
              Name="ConsumablePanel">
     <Design.DataContext>
         <viewModels:ConsumableViewModel />
     </Design.DataContext>
+    <UserControl.Resources>
+        <converters:ConsumableUiConverter x:Key="ConsumableUiConverter" />
+        <converters:ImagePathConverter x:Key="ImageConverter" />
+    </UserControl.Resources>
 
     <ItemsControl Items="{Binding ShipConsumables}">
         <ItemsControl.ItemsPanel>
@@ -19,9 +23,34 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <userControls:ConsumableSelector
-                    SelectedIndexChanged="{Binding ElementName=ConsumablePanel, Path=DataContext.OnConsumableSelected}"
-                    ConsumableList="{Binding}" />
+                <Panel>
+                    <Button Name="DropDownButton" Click="DropDownButton_OnClick">
+                        <Image>
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="image">
+                                    <Binding/>
+                                    <Binding Path="$parent[UserControl].DataContext.SelectedConsumables"/>
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
+                        <ListBox Name="ListBox" Width="{Binding ElementName=DropDownButton, Path=Bounds.Width}" SelectionMode="Single" Items="{Binding}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.SelectedIndex>
+                                <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="index" Mode="OneWay">
+                                    <Binding/>
+                                    <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" />
+                                </MultiBinding>
+                            </ListBox.SelectedIndex>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Converter={StaticResource ImageConverter}}" PointerReleased="InputElement_OnPointerReleased"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Popup>
+                </Panel>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>
