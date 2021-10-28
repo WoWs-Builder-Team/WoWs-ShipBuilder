@@ -75,7 +75,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             EffectiveShipData = RawShipData;
 
             // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
 
             OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
@@ -292,7 +292,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 EffectiveShipData = RawShipData;
 
                 // Captain Skill model
-                CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass);
+                CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, RawShipData.ShipNation);
 
                 ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
                 UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);

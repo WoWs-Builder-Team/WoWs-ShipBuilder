@@ -18,15 +18,25 @@
     <Grid ColumnDefinitions="*">
 
         <DockPanel>
-            <Grid ColumnDefinitions="*, Auto" DockPanel.Dock="Top" >
-                <StackPanel Name="CaptainPoints" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Margin="0,0,0,10">
-                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13"/>
-                    <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13"/>
-                    <TextBlock Text="/21" FontSize="13"/>
+            <Grid ColumnDefinitions="Auto,*,Auto" DockPanel.Dock="Top">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Margin="0,5,0,0">
+                    <TextBlock Text="Captain:" Padding="5,0" VerticalAlignment="Center" />
+                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" SelectionChanged="UpdateVisual" VerticalAlignment="Center" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox> 
                 </StackPanel>
-                <CheckBox IsChecked="{Binding CamoEnabled}" Grid.Column="1" Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" Margin="0,0,10,10"/>
+                <StackPanel Name="CaptainPoints" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="1" Margin="0,5,0,0">                
+                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
+                    <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
+                </StackPanel>
+                <CheckBox IsChecked="{Binding CamoEnabled}" Grid.Column="2" Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
             </Grid>
-            <ItemsControl Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
+            <ItemsControl Name="SkillContainer" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>

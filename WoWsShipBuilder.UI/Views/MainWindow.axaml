@@ -83,7 +83,7 @@
                 <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
                     <Border Classes="BorderPanel" Grid.Row="0">
                         <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,5,0,0"/>
+                            <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0"/>
                             <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
                         </StackPanel>
                     </Border>
