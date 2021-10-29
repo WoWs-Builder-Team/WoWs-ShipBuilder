@@ -510,9 +510,6 @@
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
     <value>Selected ship has already been added</value>
   </data>
-  <data name="ShipStats_Skips" xml:space="preserve">
-    <value>Skips</value>
-  </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
   </data>
@@ -671,5 +668,26 @@
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
     <value>Starting planes on deck</value>
+  </data>
+  <data name="ShipStats_BombsPerPlane" xml:space="preserve">
+    <value>Bombs per plane</value>
+  </data>
+  <data name="ShipStats_DropTime" xml:space="preserve">
+    <value>Drop time</value>
+  </data>
+  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
+    <value>Time to arrive</value>
+  </data>
+  <data name="ShipStats_MaximumDistance" xml:space="preserve">
+    <value>Maximum range</value>
+  </data>
+  <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
+    <value>Max drop lenght</value>
+  </data>
+  <data name="ShipStats_MinimumDistance" xml:space="preserve">
+    <value>Minimum range</value>
+  </data>
+  <data name="ShipStats_NumberOfUses" xml:space="preserve">
+    <value>Charges</value>
   </data>
 </root>

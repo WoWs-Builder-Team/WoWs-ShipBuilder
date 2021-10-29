@@ -47,6 +47,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public TurretModule OriginalMainBatteryData { get; set; } = default!;
 
+        [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
         public static MainBatteryUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)

@@ -34,7 +34,7 @@ public record BombUI : ProjectileUI, IDataUi
         [DataUiUnit("PerCent")]
         public int FireChance { get; set; }
 
-        public static BombUI FromBombName(string name, List<(string name, float value)> modifiers)
+        public static BombUI? FromBombName(string name, List<(string name, float value)> modifiers)
         {
             var bomb = (Bomb)AppData.ProjectileList![name];
 

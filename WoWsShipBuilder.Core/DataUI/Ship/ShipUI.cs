@@ -14,7 +14,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
 
-        public List<AirstrikeUI>? AirstrikeUI { get; set; }
+        public AirstrikeUI? AirstrikeUI { get; set; }
+
+        public AirstrikeUI? AswAirstrikeUI { get; set; }
 
         public List<CVAircraftUI>? CVAircraftUI { get; set; }
 
@@ -36,6 +38,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 // Secondary weapons
                 SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
+                AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false),
+                AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true),
 
                 // Misc
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),

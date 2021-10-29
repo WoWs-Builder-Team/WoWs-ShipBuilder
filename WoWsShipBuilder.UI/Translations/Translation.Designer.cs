@@ -799,6 +799,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bombs per plane.
+        /// </summary>
+        public static string ShipStats_BombsPerPlane {
+            get {
+                return ResourceManager.GetString("ShipStats_BombsPerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bomb Type.
         /// </summary>
         public static string ShipStats_BombType {
@@ -930,6 +939,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Detectability {
             get {
                 return ResourceManager.GetString("ShipStats_Detectability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drop time.
+        /// </summary>
+        public static string ShipStats_DropTime {
+            get {
+                return ResourceManager.GetString("ShipStats_DropTime", resourceCulture);
             }
         }
         
@@ -1087,6 +1105,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time to arrive.
+        /// </summary>
+        public static string ShipStats_FlyAwayTime {
+            get {
+                return ResourceManager.GetString("ShipStats_FlyAwayTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fuse Timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
@@ -1231,6 +1258,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum range.
+        /// </summary>
+        public static string ShipStats_MaximumDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_MaximumDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max drop lenght.
+        /// </summary>
+        public static string ShipStats_MaximumFlightDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_MaximumFlightDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max planes on deck.
         /// </summary>
         public static string ShipStats_MaxNumberOnDeck {
@@ -1267,6 +1312,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum range.
+        /// </summary>
+        public static string ShipStats_MinimumDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_MinimumDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Min speed.
         /// </summary>
         public static string ShipStats_MinSpeed {
@@ -1299,6 +1353,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_NumberInSquad {
             get {
                 return ResourceManager.GetString("ShipStats_NumberInSquad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Charges.
+        /// </summary>
+        public static string ShipStats_NumberOfUses {
+            get {
+                return ResourceManager.GetString("ShipStats_NumberOfUses", resourceCulture);
             }
         }
         
@@ -1425,15 +1488,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Sigma {
             get {
                 return ResourceManager.GetString("ShipStats_Sigma", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Skips.
-        /// </summary>
-        public static string ShipStats_Skips {
-            get {
-                return ResourceManager.GetString("ShipStats_Skips", resourceCulture);
             }
         }
         
