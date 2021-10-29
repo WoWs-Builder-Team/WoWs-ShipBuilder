@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -74,11 +71,11 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var allWorkModifiers = modifiers.FindModifiers("ConsumablesWorkTime");
                 workTime = allWorkModifiers.Aggregate(workTime, (current, modifier) => (current * modifier));
-                                    
+
                 if (name.Contains("PCY003", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cooldownModifiers = modifiers.FindModifiers("airDefenseDispReloadCoeff");
-                    cooldown = usesModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
                     var workTimeModifiers = modifiers.FindModifiers("airDefenseDispWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
@@ -86,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 else if (name.Contains("PCY005", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cooldownModifiers = modifiers.FindModifiers("scoutReloadCoeff");
-                    cooldown = usesModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
                     var workTimeModifiers = modifiers.FindModifiers("scoutWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
@@ -119,17 +116,17 @@ namespace WoWsShipBuilder.Core.DataUI
                 else if (name.Contains("PCY033", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cooldownModifiers = modifiers.FindModifiers("artilleryBoostersReloadCoeff");
-                    cooldown = usesModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
                 else if (name.Contains("PCY026", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
-                    cooldown = usesModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
                 else if (name.Contains("PCY031", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var cooldownModifiers = modifiers.FindModifiers("torpedoReloaderReloadCoeff");
-                    cooldown = usesModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
             }
 
@@ -141,9 +138,11 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var consumableUI = new ConsumableUI
             {
+                Name = name, // TODO: check and localize
                 NumberOfUses = numberOfUses,
                 IconName = iconName,
                 Slot = slot,
+                Desc = desc,
                 Cooldown = Math.Round((decimal)cooldown, 1),
                 WorkTime = Math.Round((decimal)workTime, 1),
             };

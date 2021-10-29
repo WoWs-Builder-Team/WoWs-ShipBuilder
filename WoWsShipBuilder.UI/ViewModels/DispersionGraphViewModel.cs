@@ -23,12 +23,12 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             self = win;
             var name = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
-            var hModel = InitializeBaseModel("Horizontal Dispersion");
+            var hModel = InitializeBaseModel(Translation.ShipStats_HorizontalDisp);
             var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
             hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
 
-            var vModel = InitializeBaseModel("Vertical Dispersion");
+            var vModel = InitializeBaseModel(Translation.ShipStats_VerticalDisp);
             var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
             vModel.Series.Add(vDisp);
             VerticalModel = vModel;
@@ -127,17 +127,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
 
-            PlotModel model = new PlotModel();
-            model.Title = name;
-            model.TextColor = foreground;
-            model.PlotAreaBorderColor = foreground;
-            model.LegendPosition = LegendPosition.TopLeft;
-            model.LegendBorder = foreground;
-            model.LegendBorderThickness = 1;
-            model.LegendBackground = background;
-            model.LegendFontSize = 13;
+            PlotModel model = new()
+            {
+                Title = name,
+                TextColor = foreground,
+                PlotAreaBorderColor = foreground,
+                LegendPosition = LegendPosition.TopLeft,
+                LegendBorder = foreground,
+                LegendBorderThickness = 1,
+                LegendBackground = background,
+                LegendFontSize = 13,
+            };
 
-            var xAxis = new LinearAxis()
+            var xAxis = new LinearAxis
             {
                 Position = AxisPosition.Bottom,
                 Title = "Range",
@@ -152,7 +154,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 MajorGridlineColor = foregroundLow,
             };
 
-            var yAxis = new LinearAxis()
+            var yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
                 Title = "Dispersion",

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
-using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilderDataStructures;
 
@@ -32,7 +31,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string AppDataDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
 
-        public string AppDataImageDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder", "Images");
+        public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
 
         public string GetDataPath(ServerType serverType)
         {
@@ -63,6 +62,40 @@ namespace WoWsShipBuilder.Core.DataProvider
             {
                 AppData.ConsumableList = ReadLocalJsonData<Consumable>(Nation.Common, server);
             }
+        }
+
+        public Aircraft FindAswAircraft(string planeIndex)
+        {
+            Nation nation = planeIndex.ToUpperInvariant()[1] switch
+            {
+                'A' => Nation.Usa,
+                'J' => Nation.Japan,
+                _ => throw new InvalidOperationException(),
+            };
+
+            if (nation == AppData.CurrentLoadedNation)
+            {
+                return AppData.AircraftList![planeIndex];
+            }
+
+            return ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType)![planeIndex];
+        }
+
+        public Projectile FindAswDepthCharge(string depthChargeName)
+        {
+            Nation nation = depthChargeName.ToUpperInvariant()[1] switch
+            {
+                'A' => Nation.Usa,
+                'J' => Nation.Japan,
+                _ => throw new InvalidOperationException(),
+            };
+
+            if (nation == AppData.CurrentLoadedNation)
+            {
+                return AppData.ProjectileList![depthChargeName];
+            }
+
+            return ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType)![depthChargeName];
         }
 
         public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)

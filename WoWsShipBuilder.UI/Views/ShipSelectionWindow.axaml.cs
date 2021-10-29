@@ -25,7 +25,7 @@ namespace WoWsShipBuilder.UI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static Task<ShipSummary> ShowShipSelection(Window parent)
+        public static Task<ShipSummary?> ShowShipSelection(Window parent)
         {
             var win = new ShipSelectionWindow
             {
@@ -37,7 +37,7 @@ namespace WoWsShipBuilder.UI.Views
 
             button.Click += (_, __) => { win.Close(); };
 
-            var tcs = new TaskCompletionSource<ShipSummary>();
+            var tcs = new TaskCompletionSource<ShipSummary?>();
             win.Closed += (sender, e) =>
             {
                 var model = win.DataContext as ShipSelectionWindowViewModel;

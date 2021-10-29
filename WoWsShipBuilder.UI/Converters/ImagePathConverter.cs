@@ -130,7 +130,7 @@ namespace WoWsShipBuilder.UI.Converters
                         Uri uri = new($"avares://{assemblyName}/Assets/blank.png");
                         Stream asset = LoadEmbeddedAsset(assets, uri);
                         return new Bitmap(asset);
-                     }
+                    }
                     else
                     {
                         Stream asset = LoadEmbeddedAsset(assets, null);

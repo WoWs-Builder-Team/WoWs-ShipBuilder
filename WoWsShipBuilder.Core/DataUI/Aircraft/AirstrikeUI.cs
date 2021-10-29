@@ -59,8 +59,8 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var airstrike = airstrikes.FirstOrDefault().Value;
-            var plane = AppData.AircraftList![airstrike.PlaneName.Substring(0, airstrike.PlaneName.IndexOf("_"))];
-            
+            var plane = AppDataHelper.Instance.FindAswAircraft(airstrike.PlaneName.Substring(0, airstrike.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase)));
+
             if (isAsw != plane.PlaneCategory.Equals(PlaneCategory.Asw))
             {
                 return null;

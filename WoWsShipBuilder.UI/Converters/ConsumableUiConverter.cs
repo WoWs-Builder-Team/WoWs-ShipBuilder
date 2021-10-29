@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataUI;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -36,7 +39,13 @@ namespace WoWsShipBuilder.UI.Converters
                 }
             }
 
-            return new NotSupportedException();
+            if (values[0] == AvaloniaProperty.UnsetValue || values[1] == AvaloniaProperty.UnsetValue)
+            {
+                Logging.Logger.Trace(new NotSupportedException());
+                return new BindingNotification(AvaloniaProperty.UnsetValue);
+            }
+
+            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
         }
     }
 }

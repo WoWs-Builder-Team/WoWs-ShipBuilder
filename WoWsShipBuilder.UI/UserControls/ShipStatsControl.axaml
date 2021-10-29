@@ -303,7 +303,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel HorizontalAlignment="Stretch">
+                        <DockPanel HorizontalAlignment="Stretch" Margin="0 5 0 0">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                             <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                         </DockPanel>
@@ -339,9 +339,9 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel HorizontalAlignment="Stretch">
+                        <DockPanel HorizontalAlignment="Stretch" Margin="0 5 0 0">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                         </DockPanel>
                         <ItemsControl Items="{Binding Weapon.ProjectileData}">
                             <ItemsControl.ItemTemplate>

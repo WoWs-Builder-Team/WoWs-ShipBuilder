@@ -178,6 +178,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispersion visualization.
+        /// </summary>
+        public static string DispersionWindow_Title {
+            get {
+                return ResourceManager.GetString("DispersionWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string DownloadWindow_Percentage {

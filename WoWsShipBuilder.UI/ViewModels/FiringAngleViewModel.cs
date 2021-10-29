@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -38,7 +34,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref showAllText, value);
         }
 
-        private string showAllTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_ShowAll", Translation.Culture)!;
+        private string showAllTextButton = Translation.FiringAngleWindow_ShowAll;
 
         public string ShowAllTextButton
         {
@@ -54,7 +50,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref permaText, value);
         }
 
-        private string permaTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_PermaTextOff", Translation.Culture)!;
+        private string permaTextButton = Translation.FiringAngleWindow_PermaTextOff;
 
         public string PermaTextButton
         {
@@ -67,12 +63,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (ShowAllText)
             {
                 ShowAllText = false;
-                ShowAllTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_ShowAll", Translation.Culture)!;
+                ShowAllTextButton = Translation.FiringAngleWindow_ShowAll;
             }
             else
             {
                 ShowAllText = true;
-                ShowAllTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_HideAll", Translation.Culture)!;
+                ShowAllTextButton = Translation.FiringAngleWindow_HideAll;
             }
         }
 
@@ -81,12 +77,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (PermaText)
             {
                 PermaText = false;
-                PermaTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_PermaTextOn", Translation.Culture)!;
+                PermaTextButton = Translation.FiringAngleWindow_PermaTextOn;
             }
             else
             {
                 PermaText = true;
-                PermaTextButton = Translation.ResourceManager.GetString("FiringAngleWindow_PermaTextOff", Translation.Culture)!;
+                PermaTextButton = Translation.FiringAngleWindow_PermaTextOff;
             }
         }
     }

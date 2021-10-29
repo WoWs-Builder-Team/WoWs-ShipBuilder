@@ -32,9 +32,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => selectedCaptain;
             set
             {
-                this.RaiseAndSetIfChanged(ref selectedCaptain, value);
+                var newCaptain = value ?? selectedCaptain;
+                this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 var currentlySelectedList = SkillOrderList.Select(x => x.SkillNumber).ToList();
-                SkillList = GetSkillsForClass(currentClass, value);
+                SkillList = GetSkillsForClass(currentClass, newCaptain);
                 SkillOrderList = new();
                 AssignedPoints = 0;
             }

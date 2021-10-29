@@ -48,7 +48,7 @@ namespace WoWsShipBuilder.UI.Converters
                     value = $"+{(int)modifier}";
                 }
 
-                // this is for HP module 
+                // this is for HP module
                 else if (localizerKey.Contains("AAMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("GSMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
@@ -89,7 +89,7 @@ namespace WoWsShipBuilder.UI.Converters
                     }
                 }
 
-                // this is for aiming time of CV planes 
+                // this is for aiming time of CV planes
                 else if (localizerKey.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (modifier > 0)
@@ -140,7 +140,7 @@ namespace WoWsShipBuilder.UI.Converters
                     value = $"{(modifier * 30) / 1000} Km";
                 }
                 else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
-                {                   
+                {
                     if (modifier > 1)
                     {
                         decimal modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
@@ -170,7 +170,7 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) || 
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
@@ -230,11 +230,6 @@ namespace WoWsShipBuilder.UI.Converters
                 description = description.Replace("[HIDDEN]", "");
                 return value + " " + description.Trim();
             }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }

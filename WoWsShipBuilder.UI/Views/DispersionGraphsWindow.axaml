@@ -7,8 +7,9 @@
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-        WindowStartupLocation="CenterScreen" CanResize="False"
-        Width="1400" Height="900">
+        WindowStartupLocation="CenterScreen" CanResize="True"
+        Width="1400" Height="900"
+        MinWidth="1000" MinHeight="800">
     <Window.Styles>
         <Style Selector="oxy|TrackerControl">
             <Setter Property="Background" Value="{StaticResource ThemeBackgroundBrush}" />
@@ -18,7 +19,7 @@
     </Window.Styles>
 
     <Grid RowDefinitions="30,Auto, *">
-        <userControls:AppHeader Grid.Row="0"/>
+        <userControls:AppHeader Grid.Row="0" ShowMaximizeButton="True" Title="{x:Static t:Translation.DispersionWindow_Title}"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Spacing="10" HorizontalAlignment="Center">
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>

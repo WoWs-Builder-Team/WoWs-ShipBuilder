@@ -696,4 +696,7 @@
   <data name="DepthCharge" xml:space="preserve">
     <value>Depth Charges</value>
   </data>
+  <data name="DispersionWindow_Title" xml:space="preserve">
+      <value>Dispersion visualization</value>
+  </data>
 </root>

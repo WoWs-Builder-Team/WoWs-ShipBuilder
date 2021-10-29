@@ -26,23 +26,32 @@
                 <Panel>
                     <Button Name="DropDownButton" Click="DropDownButton_OnClick">
                         <Image>
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="image">
-                                    <Binding/>
-                                    <Binding Path="$parent[UserControl].DataContext.SelectedConsumables"/>
-                                </MultiBinding>
-                            </Image.Source>
+                            <Image.Styles>
+                                <Style Selector="Image">
+                                    <Setter Property="Source">
+                                        <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="image">
+                                            <Binding/>
+                                            <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null"/>
+                                        </MultiBinding>
+                                    </Setter>
+                                </Style>
+                            </Image.Styles>
                         </Image>
                     </Button>
                     <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
                         <ListBox Name="ListBox" Width="{Binding ElementName=DropDownButton, Path=Bounds.Width}" SelectionMode="Single" Items="{Binding}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.SelectedIndex>
-                                <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="index" Mode="OneWay">
-                                    <Binding/>
-                                    <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" />
-                                </MultiBinding>
-                            </ListBox.SelectedIndex>
+                            <ListBox.Styles>
+                                <!-- Use style to avoid unset value error on property change. -->
+                                <Style Selector="ListBox">
+                                    <Setter Property="SelectedIndex">
+                                        <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="index" Mode="OneWay">
+                                            <Binding/>
+                                            <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
+                                        </MultiBinding>
+                                    </Setter>
+                                </Style>
+                            </ListBox.Styles>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Image Source="{Binding Converter={StaticResource ImageConverter}}" PointerReleased="InputElement_OnPointerReleased"/>
