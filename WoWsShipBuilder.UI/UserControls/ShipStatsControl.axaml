@@ -303,7 +303,47 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <ItemsControl Items="{Binding Bomb}">
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <ItemsControl Items="{Binding Weapon.ProjectileData}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" DockPanel.Dock="Left"/>
+                                        <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Expander>
+                <!--Depth Charges Airstrike-->
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_AswAirstrike}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
+                          DataContext="{Binding CurrentShipStats.AswAirstrikeUI}"
+                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                    <StackPanel Orientation="Vertical">
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <ItemsControl Items="{Binding AirstrikeData}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" DockPanel.Dock="Left"/>
+                                        <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <ItemsControl Items="{Binding Weapon.ProjectileData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>

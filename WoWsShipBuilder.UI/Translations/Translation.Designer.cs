@@ -142,6 +142,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Depth Charges.
+        /// </summary>
+        public static string DepthCharge {
+            get {
+                return ResourceManager.GetString("DepthCharge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destroyer.
         /// </summary>
         public static string Destroyer {
@@ -777,6 +786,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_ArmingTreshold {
             get {
                 return ResourceManager.GetString("ShipStats_ArmingTreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ASW Airstrike.
+        /// </summary>
+        public static string ShipStats_AswAirstrike {
+            get {
+                return ResourceManager.GetString("ShipStats_AswAirstrike", resourceCulture);
             }
         }
         

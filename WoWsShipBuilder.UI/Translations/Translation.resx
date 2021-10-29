@@ -690,4 +690,10 @@
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Charges</value>
   </data>
+  <data name="ShipStats_AswAirstrike" xml:space="preserve">
+    <value>ASW Airstrike</value>
+  </data>
+  <data name="DepthCharge" xml:space="preserve">
+    <value>Depth Charges</value>
+  </data>
 </root>

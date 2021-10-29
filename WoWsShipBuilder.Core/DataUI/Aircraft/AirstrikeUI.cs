@@ -42,6 +42,9 @@ namespace WoWsShipBuilder.Core.DataUI
         public int BombsPerPlane { get; set; }
 
         [JsonIgnore]
+        public string WeaponType { get; set; } = null!;
+
+        [JsonIgnore]
         public ProjectileUI? Weapon { get; set; } = default!;
 
         [JsonIgnore]
@@ -71,15 +74,18 @@ namespace WoWsShipBuilder.Core.DataUI
             var finalPlaneHp = (int)Math.Round(planeHpModifiers.Aggregate(planeHp, (current, modifier) => current * modifier), 0);
 
             ProjectileUI? weapon = null!;
+            string weaponType;
             if (isAsw)
             {
                 weapon = DepthChargeUI.FromChargesName(plane.BombName, modifiers);
+                weaponType = ProjectileType.DepthCharge.ToString();
             }
             else
             {
                 weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                weaponType = ProjectileType.Bomb.ToString();
             }
-            
+
             var airstrikeUI = new AirstrikeUI
             {
                 Name = airstrike.PlaneName,
@@ -93,6 +99,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 MinimumDistance = Math.Round((decimal)airstrike.MinimumDistance / 1000, 2),
                 BombsPerPlane = plane.AttackData.AttackCount,
                 NumberDuringAttack = plane.AttackData.AttackerSize,
+                WeaponType = weaponType,
                 Weapon = weapon,
             };
 

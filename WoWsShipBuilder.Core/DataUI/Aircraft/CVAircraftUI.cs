@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public bool IsLast { get; set; } = false;
 
         [JsonIgnore]
-        public ProjectileUI Weapon { get; set; } = default!;
+        public ProjectileUI? Weapon { get; set; } = default!;
 
         [JsonIgnore]
         public List<ConsumableUI> PlaneConsumables { get; set; } = default!;
@@ -195,7 +195,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var weaponType = AppData.ProjectileList![plane.BombName].ProjectileType;
             int bombInnerEllipse = 0;
-            ProjectileUI weapon = null!;
+            ProjectileUI? weapon = null!;
             switch (weaponType)
             {
                 case ProjectileType.Bomb:
