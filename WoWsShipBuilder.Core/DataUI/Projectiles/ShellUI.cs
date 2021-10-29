@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+        public static List<ShellUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers, decimal dpmFactor)
         {
             Gun gun = ship
                 .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
@@ -124,13 +124,18 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     case ShellType.AP:
                     {
-                        int index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
-                        if (index.IsValidIndex())
+                        // TODO: check and fix modifier names and application
+                        int index;
+                        if (gun.BarrelDiameter >= 0.190M)
                         {
-                            shellDamage *= modifiers[index].Value;
+                            index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
+                            if (index.IsValidIndex())
+                            {
+                                shellDamage *= modifiers[index].Value;
+                            }
                         }
 
-                        index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
+                        index = modifiers.FindModifierIndex("GMAPDamageCoeff");
                         if (index.IsValidIndex())
                         {
                             shellDamage *= modifiers[index].Value;
@@ -155,6 +160,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = Math.Round((decimal)shell.ArmingThreshold),
                     FuseTimer = Math.Round((decimal)shell.FuseTimer, 3),
+                    TheoreticalDPM = Math.Round((decimal)shellDamage * dpmFactor), // TODO: make into string with formatting
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)
@@ -170,17 +176,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
             shells.Last().IsLastEntry = true;
             return shells;
-        }
-
-        private static bool FilterValue((string Key, object? Value, DataUiUnitAttribute? Unit) pair)
-        {
-            return pair.Value switch
-            {
-                string strValue => !string.IsNullOrEmpty(strValue),
-                decimal decValue => decValue != 0,
-                (decimal min, decimal max) => min > 0 || max > 0,
-                _ => false,
-            };
         }
     }
 }

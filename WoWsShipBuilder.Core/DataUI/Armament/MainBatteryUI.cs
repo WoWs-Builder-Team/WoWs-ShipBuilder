@@ -78,6 +78,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 .OrderBy(item => item.TurretCount)
                 .ToList();
             string turretArrangement = string.Join(", ", arrangementList.Select(item => $"{item.TurretCount} x {item.BarrelCount}"));
+            int barrelCount = arrangementList.Select(item => item.TurretCount * item.BarrelCount).Sum();
             Gun gun = mainBattery.Guns.First();
 
             // Calculate main battery reload
@@ -132,10 +133,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 HorizontalDisp = hDispersion + " m",
                 VerticalDisp = vDispersion + " m",
                 DispersionData = mainBattery.DispersionValues,
-                ShellData = ShellUI.FromShip(ship, shipConfiguration, modifiers),
                 OriginalMainBatteryData = mainBattery,
             };
 
+            mainBatteryUi.ShellData = ShellUI.FromShip(ship, shipConfiguration, modifiers, mainBatteryUi.RoF * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }
