@@ -160,6 +160,11 @@ namespace WoWsShipBuilder.UI.Converters
         /// <returns>A stream of the asset or the error icon, if the asset did not exist.</returns>
         private static Stream LoadEmbeddedAsset(IAssetLoader assetLoader, Uri? uri)
         {
+            if (uri == null)
+            {
+                return LoadErrorIcon(assetLoader);
+            }
+
             Stream result;
             try
             {
@@ -168,11 +173,16 @@ namespace WoWsShipBuilder.UI.Converters
             catch (Exception e) when (e is NullReferenceException or FileNotFoundException)
             {
                 Logger.Warn("Unable to find file for uri {0}, falling back to error icon.", uri);
-                string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
-                result = assetLoader.Open(new Uri($"avares://{assemblyName}/Assets/Icons/Error.png"));
+                result = LoadErrorIcon(assetLoader);
             }
 
             return result;
+        }
+
+        private static Stream LoadErrorIcon(IAssetLoader assetLoader)
+        {
+            string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
+            return assetLoader.Open(new Uri($"avares://{assemblyName}/Assets/Icons/Error.png"));
         }
 
         private static string GetSkillimageId(string skillName)

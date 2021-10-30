@@ -51,14 +51,13 @@
                                         </Path>
                                         <RadioButton
                                             GroupName="{Binding UcType}"
-                                            Command="{Binding ElementName=ShipModuleControl, Path=DataContext.SelectModuleExecute}">
+                                            Command="{Binding #ShipModuleControl.DataContext.SelectModuleExecute}">
                                             <RadioButton.Styles>
                                                 <Style Selector="RadioButton">
                                                     <Setter Property="IsChecked">
                                                         <MultiBinding
                                                             Converter="{StaticResource ModuleSelectedConverter}">
-                                                            <Binding
-                                                                Path="#ShipModuleControl.DataContext.SelectedModules" />
+                                                            <Binding Path="#ShipModuleControl.DataContext.SelectedModules" />
                                                             <Binding />
                                                         </MultiBinding>
                                                     </Setter>

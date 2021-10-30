@@ -23,8 +23,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             this.ship = ship;
             SelectedConsumables = new AvaloniaList<ConsumableUI>();
-            UpdateShipConsumables(new List<(string, float)>());
-            SelectedConsumables.AddRange(ShipConsumables.Select(list => list.First()));
+            UpdateShipConsumables(new List<(string, float)>(), true);
             OnConsumableSelected = newConsumable =>
             {
                 var removeList = SelectedConsumables.Where(consumable => consumable.Slot == newConsumable.Slot).ToList();
@@ -34,7 +33,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             };
         }
 
-        public void UpdateShipConsumables(List<(string, float)> modifiers)
+        public void UpdateShipConsumables(List<(string, float)> modifiers, bool isFirstTry = false)
         {
             ShipConsumables = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
                 .OrderBy(group => group.Key)
@@ -44,12 +43,20 @@ namespace WoWsShipBuilder.UI.ViewModels
                 .ToList();
 
             List<ConsumableUI> newSelection = new();
-            foreach (ConsumableUI selectedConsumable in SelectedConsumables)
+            if (isFirstTry)
             {
-                newSelection.Add(ShipConsumables.SelectMany(list => list).First(consumable => consumable.IconName.Equals(selectedConsumable.IconName)));
+                newSelection = ShipConsumables.Select(list => list.First()).ToList();
+            }
+            else
+            {
+                foreach (ConsumableUI selectedConsumable in SelectedConsumables)
+                {
+                    newSelection.Add(ShipConsumables.SelectMany(list => list).First(consumable => consumable.IconName.Equals(selectedConsumable.IconName)));
+                }
+
+                SelectedConsumables.Clear();
             }
 
-            SelectedConsumables.Clear();
             SelectedConsumables.AddRange(newSelection);
         }
 
@@ -59,7 +66,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref shipConsumables, value);
         }
 
-        public AvaloniaList<ConsumableUI> SelectedConsumables { get; }
+        public AvaloniaList<ConsumableUI> SelectedConsumables { get; private set; }
 
         public Action<ConsumableUI> OnConsumableSelected { get; }
     }

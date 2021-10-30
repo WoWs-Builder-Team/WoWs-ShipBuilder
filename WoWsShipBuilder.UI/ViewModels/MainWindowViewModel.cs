@@ -404,6 +404,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var modifiers = new List<(string, float)>();
 
             var modernizationModifiers = UpgradePanelViewModel.SelectedModernizationList
+                .Where(m => m.Index != null)
                 .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
                 .ToList();
 

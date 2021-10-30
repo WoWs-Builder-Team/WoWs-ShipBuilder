@@ -14,8 +14,13 @@ namespace WoWsShipBuilder.Core.Extensions
             }
         }
 
-        public static int FindModifierIndex(this List<(string Key, float Value)> dataSource, string filter)
+        public static int FindModifierIndex(this List<(string Key, float Value)> dataSource, string filter, bool strict = false)
         {
+            if (strict)
+            {
+                return dataSource.FindIndex(modifier => modifier.Key.Equals(filter, StringComparison.InvariantCultureIgnoreCase));
+            }
+
             return dataSource.FindIndex(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase));
         }
 

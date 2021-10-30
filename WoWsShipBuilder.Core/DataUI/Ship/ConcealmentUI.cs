@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
-            int visibilityFactorIndex = modifiers.FindModifierIndex("visibilityFactor");
+            int visibilityFactorIndex = modifiers.FindModifierIndex("visibilityFactor", true);
             if (visibilityFactorIndex > -1)
             {
                 var visibilityFactorModifier = (decimal)modifiers[visibilityFactorIndex].Value;

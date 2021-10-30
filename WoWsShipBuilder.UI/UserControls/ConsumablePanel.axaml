@@ -31,7 +31,7 @@
                                     <Setter Property="Source">
                                         <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="image">
                                             <Binding/>
-                                            <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null"/>
+                                            <Binding Path="#ConsumablePanel.DataContext.SelectedConsumables" FallbackValue="null"/>
                                         </MultiBinding>
                                     </Setter>
                                 </Style>
@@ -39,7 +39,7 @@
                         </Image>
                     </Button>
                     <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
-                        <ListBox Name="ListBox" Width="{Binding ElementName=DropDownButton, Path=Bounds.Width}" SelectionMode="Single" Items="{Binding}"
+                        <ListBox Name="ListBox" Width="{Binding Path=#DropDownButton.Bounds.Width}" SelectionMode="Single" Items="{Binding}"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.Styles>
                                 <!-- Use style to avoid unset value error on property change. -->
@@ -47,7 +47,7 @@
                                     <Setter Property="SelectedIndex">
                                         <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="index" Mode="OneWay">
                                             <Binding/>
-                                            <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
+                                            <Binding Path="#ConsumablePanel.DataContext.SelectedConsumables" FallbackValue="null" />
                                         </MultiBinding>
                                     </Setter>
                                 </Style>

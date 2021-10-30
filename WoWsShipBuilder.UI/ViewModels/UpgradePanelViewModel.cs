@@ -35,10 +35,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                     SelectedModernizationList.Remove(oldSelection);
                 }
 
-                if (modernization != null)
+                if (modernization?.Index != null)
                 {
                     SelectedModernizationList.Add(modernization);
                 }
+
+                this.RaisePropertyChanged(nameof(SelectedModernizationList));
             };
 
             Dictionary<string, Modernization> upgradeData = AppDataHelper.Instance.ReadLocalJsonData<Modernization>(Nation.Common, ServerType.Live) ??
@@ -58,12 +60,18 @@ namespace WoWsShipBuilder.UI.ViewModels
                 .Select(item => item.Item2)
                 .ToList();
 
+            foreach (List<Modernization> subList in groupedList)
+            {
+                subList.Insert(0, DataHelper.PlaceholderModernization);
+            }
+
             AvailableModernizationList = groupedList;
+            SelectedModernizationList = new AvaloniaList<Modernization>(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
         }
 
         public Action<Modernization?, List<Modernization>> ModernizationChangedCallback { get; }
 
-        public AvaloniaList<Modernization> SelectedModernizationList { get; } = new();
+        public AvaloniaList<Modernization> SelectedModernizationList { get; }
 
         public List<List<Modernization>> AvailableModernizationList
         {
