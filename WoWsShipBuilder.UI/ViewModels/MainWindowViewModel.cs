@@ -291,6 +291,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await ShipSelectionWindow.ShowShipSelection(self!);
             if (result != null)
             {
+                foreach (var listener in collectionChangeListeners)
+                {
+                    listener!.Dispose();
+                }
+
                 collectionChangeListeners.Clear();
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
@@ -312,6 +317,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
                 collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+                collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
+                collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
                 UpdateStatsViewModel();
             }
         }
