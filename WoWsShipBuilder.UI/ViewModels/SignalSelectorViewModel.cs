@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Collections;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
@@ -38,7 +39,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
         }
 
-        public List<Exterior> SelectedSignals { get; set; } = new List<Exterior>();
+        public AvaloniaList<Exterior> SelectedSignals { get; set; } = new AvaloniaList<Exterior>();
 
         private Action<Exterior>? signalCommand;
 
@@ -83,6 +84,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             list.Insert(12, nullPair);
             list.Insert(13, nullPair);
             return list;
+        }
+
+        public List<(string, float)> GetModifierList()
+        {
+            return SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
         }
     }
 }

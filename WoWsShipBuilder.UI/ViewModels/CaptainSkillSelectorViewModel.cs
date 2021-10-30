@@ -75,9 +75,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillList, value);
         }
 
-        private List<Skill> skillOrderList = new();
+        private AvaloniaList<Skill> skillOrderList = new();
 
-        public List<Skill> SkillOrderList
+        public AvaloniaList<Skill> SkillOrderList
         {
             get => skillOrderList;
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
@@ -203,6 +203,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
+            // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
+            var supportList = SkillOrderList.ToList();
             var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First().Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First().Tier).ToList();
 
             // Tier 0 skill reordering
@@ -211,7 +213,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var tier0SkillsFirst = false;
             foreach (var tier0Skill in tier0Skills)
             {
-                if (skillOrderList.IndexOf(tier0Skill) == 0)
+                if (SkillOrderList.IndexOf(tier0Skill) == 0)
                 {
                     tier0SkillsFirst = true;
                 }
@@ -228,8 +230,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (groups.Count > 2)
             {
                 var tier1Skills = groups[1];
-                var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First().Tier == 0);
-                var firstTier2SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First().Tier == 2);
+                var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 0);
+                var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 2);
 
                 var tier1SkillFirst = false;
 
@@ -253,8 +255,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (groups.Count > 3)
             {
                 var tier1Skills = groups[2];
-                var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First().Tier == 1);
-                var firstTier3SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First().Tier == 3);
+                var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 1);
+                var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 3);
 
                 var tier1SkillFirst = false;
 

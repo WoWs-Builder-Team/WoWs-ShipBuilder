@@ -13,7 +13,7 @@ namespace WoWsShipBuilder.UI.Converters
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
             string index = "";
-            if (values[0] is List<Skill> skillList && values[1] is Skill skill)
+            if (values[0] is AvaloniaList<Skill> skillList && values[1] is Skill skill)
             {
                 index = (skillList.IndexOf(skill) + 1).ToString();
             }

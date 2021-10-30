@@ -95,6 +95,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(SignalSelectorViewModel.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
             UpdateStatsViewModel();
         }
 
@@ -399,8 +401,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 .ToList();
 
             modifiers.AddRange(modernizationModifiers);
-
-            // modifiers.AddRange(CaptainSkillSelectorViewModel!.GetModifiersList());
+            modifiers.AddRange(SignalSelectorViewModel!.GetModifierList());
+            modifiers.AddRange(CaptainSkillSelectorViewModel!.GetModifiersList());
             return modifiers;
         }
     }
