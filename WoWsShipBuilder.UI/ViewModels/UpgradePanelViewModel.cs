@@ -26,23 +26,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public UpgradePanelViewModel(Ship ship)
         {
-            ModernizationChangedCallback = (modernization, modernizationList) =>
-            {
-                int listIndex = AvailableModernizationList.IndexOf(modernizationList);
-                Modernization? oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
-                if (oldSelection != null)
-                {
-                    SelectedModernizationList.Remove(oldSelection);
-                }
-
-                if (modernization?.Index != null)
-                {
-                    SelectedModernizationList.Add(modernization);
-                }
-
-                this.RaisePropertyChanged(nameof(SelectedModernizationList));
-            };
-
             Dictionary<string, Modernization> upgradeData = AppDataHelper.Instance.ReadLocalJsonData<Modernization>(Nation.Common, ServerType.Live) ??
                                                             new Dictionary<string, Modernization>();
 
@@ -67,9 +50,26 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             AvailableModernizationList = groupedList;
             SelectedModernizationList = new AvaloniaList<Modernization>(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
+
+            OnModernizationSelected = (modernization, modernizationList) =>
+            {
+                int listIndex = AvailableModernizationList.IndexOf(modernizationList);
+                Modernization? oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
+                if (oldSelection != null)
+                {
+                    SelectedModernizationList.Remove(oldSelection);
+                }
+
+                if (modernization?.Index != null)
+                {
+                    SelectedModernizationList.Add(modernization);
+                }
+
+                this.RaisePropertyChanged(nameof(SelectedModernizationList));
+            };
         }
 
-        public Action<Modernization?, List<Modernization>> ModernizationChangedCallback { get; }
+        public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }
 
         public AvaloniaList<Modernization> SelectedModernizationList { get; }
 

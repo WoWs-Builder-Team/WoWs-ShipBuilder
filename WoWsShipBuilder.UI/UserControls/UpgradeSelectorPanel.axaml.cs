@@ -54,7 +54,7 @@ namespace WoWsShipBuilder.UI.UserControls
                     }
 
                     ((Popup)parent!).IsOpen = false;
-                    viewModel.ModernizationChangedCallback.Invoke(modernization, itemList!);
+                    viewModel.OnModernizationSelected.Invoke(modernization, itemList!);
                 }
             }
         }

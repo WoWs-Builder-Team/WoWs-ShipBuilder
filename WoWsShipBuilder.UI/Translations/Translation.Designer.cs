@@ -1780,7 +1780,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear Slot.
+        ///   Looks up a localized string similar to Empty Slot.
         /// </summary>
         public static string TITLE_PlaceholderMod {
             get {
