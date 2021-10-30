@@ -19,13 +19,11 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal Damage { get; set; }
 
+        [DataUiUnit("DPS")]
         public decimal TheoreticalDPM { get; set; }
 
         [DataUiUnit("MPS")]
         public decimal ShellVelocity { get; set; }
-
-        [DataUiUnit("KG")]
-        public decimal ShellWeight { get; set; }
 
         [DataUiUnit("MM")]
         public decimal Penetration { get; set; }
@@ -69,6 +67,10 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 var shell = (ArtilleryShell)AppData.ProjectileList![shellName];
 
+                // Values that may be ignored depending on shell type
+                var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);
+                var fuseTimer = Math.Round((decimal)shell.FuseTimer, 3);
+
                 float shellDamage = shell.Damage;
                 float shellFireChance = shell.FireChance * 100;
                 float shellPenetration = shell.Penetration;
@@ -77,6 +79,8 @@ namespace WoWsShipBuilder.Core.DataUI
                     case ShellType.HE:
                     {
                         int index;
+                        armingTreshold = 0;
+                        fuseTimer = 0;
 
                         // IFHE fire chance malus
                         if (gun.BarrelDiameter > 0.139M)
@@ -107,7 +111,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         }
 
                         // Demolition expert
-                        var burnChanceModifierName = $"artilleryBurnChanceBonus_{ship.ShipClass.ToString()}";
+                        var burnChanceModifierName = $"artilleryBurnChanceBonus";
                         shellFireChance += modifiers.FindModifiers(burnChanceModifierName).Select(m => m * 100).Sum();
 
                         // IFHE and possibly modifiers from supership abilities
@@ -118,6 +122,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     case ShellType.SAP:
                     {
+                        armingTreshold = 0;
+                        fuseTimer = 0;
                         shellDamage = modifiers.FindModifiers("GMHECSDamageCoeff").Aggregate(shellDamage, (current, modifier) => current * modifier);
                         break;
                     }
@@ -154,12 +160,11 @@ namespace WoWsShipBuilder.Core.DataUI
                     Type = shell.ShellType.ToString(),
                     Damage = Math.Round((decimal)shellDamage),
                     ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
-                    ShellWeight = Math.Round((decimal)shell.Mass),
                     Penetration = Math.Round((decimal)shellPenetration),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
-                    ArmingThreshold = Math.Round((decimal)shell.ArmingThreshold),
-                    FuseTimer = Math.Round((decimal)shell.FuseTimer, 3),
+                    ArmingThreshold = armingTreshold,
+                    FuseTimer = fuseTimer,
                     TheoreticalDPM = Math.Round((decimal)shellDamage * dpmFactor), // TODO: make into string with formatting
                 };
 

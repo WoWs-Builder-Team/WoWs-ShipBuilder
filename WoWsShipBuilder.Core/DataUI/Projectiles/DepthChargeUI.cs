@@ -15,7 +15,6 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
         [JsonIgnore]
         public string Name { get; set; } = null!;
 
-        [DataUiUnit("HP")]
         public int Damage { get; set; }
 
         [DataUiUnit("PerCent")]
