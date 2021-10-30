@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using Avalonia.Collections;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
@@ -271,6 +273,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                     SkillOrderList.Insert(firstTier3SkillIndex, skill);
                 }
             }
+        }
+
+        public List<(string, float)> GetModifiersList()
+        {
+           return SkillOrderList.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value)))
+                .ToList();
         }
     }
 }

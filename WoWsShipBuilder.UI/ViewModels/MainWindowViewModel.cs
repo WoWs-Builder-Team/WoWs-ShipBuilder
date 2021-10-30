@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Collections;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -391,9 +392,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private List<(string, float)> GenerateModifierList()
         {
-            return UpgradePanelViewModel.SelectedModernizationList
+            var modifiers = new List<(string, float)>();
+
+            var modernizationModifiers = UpgradePanelViewModel.SelectedModernizationList
                 .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
                 .ToList();
+
+            modifiers.AddRange(modernizationModifiers);
+
+            // modifiers.AddRange(CaptainSkillSelectorViewModel!.GetModifiersList());
+            return modifiers;
         }
     }
 }
