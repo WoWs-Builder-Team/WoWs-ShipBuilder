@@ -82,22 +82,16 @@ namespace WoWsShipBuilder.Core.DataUI
             Gun gun = mainBattery.Guns.First();
 
             // Calculate main battery reload
-            var reloadModifiers = modifiers
-                .Where(modifier => modifier.name.Equals("GMShotDelay", StringComparison.InvariantCultureIgnoreCase))
-                .Select(modifier => modifier.value);
+            var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
             decimal reload = Math.Round(reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
 
             // Rotation speed modifiers
-            var turnSpeedModifiers = modifiers
-                .Where(modifier => modifier.name.Equals("GMRotationSpeed", StringComparison.InvariantCultureIgnoreCase))
-                .Select(modifier => modifier.value);
+            var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");
             decimal traverseSpeed =
                 Math.Round(turnSpeedModifiers.Aggregate(gun.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier), 2);
 
             // Range modifiers
-            var rangeModifiers = modifiers
-                .Where(modifier => modifier.name.Equals("GMMaxDist", StringComparison.InvariantCultureIgnoreCase))
-                .Select(modifier => modifier.value);
+            var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
             decimal range = Math.Round(rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
