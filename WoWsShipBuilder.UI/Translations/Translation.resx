@@ -697,6 +697,9 @@
     <value>Depth Charges</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-      <value>Dispersion visualization</value>
+    <value>Dispersion visualization</value>
+  </data>
+  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
+    <value>ASW Depth Charges</value>
   </data>
 </root>

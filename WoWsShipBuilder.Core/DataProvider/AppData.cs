@@ -10,6 +10,8 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public static AppSettings Settings { get; set; } = new();
 
+        public static VersionInfo? VersionInfo { get; set; }
+
         public static Dictionary<string, string>? TranslationsData { get; set; }
 
         public static Dictionary<string, Ship>? ShipDictionary { get; set; }

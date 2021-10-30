@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
@@ -355,7 +355,35 @@
                         </ItemsControl>
                     </StackPanel>
                 </Expander>
-            </StackPanel>
+                <!--Depth Charges Launchers-->
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_DepthChargesLauncher}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
+                          DataContext="{Binding CurrentShipStats.DepthChargeLauncherUI}"
+                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                    <StackPanel Orientation="Vertical">
+                        <ItemsControl Items="{Binding DepthChargesLauncherData}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" DockPanel.Dock="Left"/>
+                                        <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <ItemsControl Items="{Binding DepthCharge.ProjectileData}" Margin="0,5,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" DockPanel.Dock="Left"/>
+                                        <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Expander>
+                </StackPanel>
             
             <!--Misc-->
             <StackPanel Orientation="Vertical" Spacing="10" Grid.Column="2" HorizontalAlignment="Stretch">

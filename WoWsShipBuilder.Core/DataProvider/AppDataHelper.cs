@@ -66,34 +66,36 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public Aircraft FindAswAircraft(string planeIndex)
         {
+            if (AppData.AircraftList!.ContainsKey(planeIndex))
+            {
+                return AppData.AircraftList![planeIndex];
+            }
+
             Nation nation = planeIndex.ToUpperInvariant()[1] switch
             {
                 'A' => Nation.Usa,
                 'J' => Nation.Japan,
+                'H' => Nation.Netherlands,
                 _ => throw new InvalidOperationException(),
             };
-
-            if (nation == AppData.CurrentLoadedNation)
-            {
-                return AppData.AircraftList![planeIndex];
-            }
 
             return ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType)![planeIndex];
         }
 
         public Projectile FindAswDepthCharge(string depthChargeName)
         {
+            if (AppData.ProjectileList!.ContainsKey(depthChargeName))
+            {
+                return AppData.ProjectileList![depthChargeName];
+            }
+
             Nation nation = depthChargeName.ToUpperInvariant()[1] switch
             {
                 'A' => Nation.Usa,
                 'J' => Nation.Japan,
+                'H' => Nation.Netherlands,
                 _ => throw new InvalidOperationException(),
             };
-
-            if (nation == AppData.CurrentLoadedNation)
-            {
-                return AppData.ProjectileList![depthChargeName];
-            }
 
             return ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType)![depthChargeName];
         }
@@ -161,6 +163,11 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         private T? DeserializeFile<T>(string filePath)
         {
+            if (!fileSystem.File.Exists(filePath))
+            {
+                return default(T);
+            }
+
             using Stream fs = fileSystem.File.OpenRead(filePath);
             var streamReader = new StreamReader(fs);
             var jsonReader = new JsonTextReader(streamReader);

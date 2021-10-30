@@ -952,6 +952,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ASW Depth Charges.
+        /// </summary>
+        public static string ShipStats_DepthChargesLauncher {
+            get {
+                return ResourceManager.GetString("ShipStats_DepthChargesLauncher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Depth Explosion Radius.
         /// </summary>
         public static string ShipStats_DepthExplosion {

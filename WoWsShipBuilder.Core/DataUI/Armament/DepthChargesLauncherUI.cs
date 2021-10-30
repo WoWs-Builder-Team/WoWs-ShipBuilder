@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using WoWsShipBuilder.Core.DataUI.Projectiles;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilderDataStructures;
+
+namespace WoWsShipBuilder.Core.DataUI.Armament
+{
+    public record DepthChargesLauncherUI : IDataUi
+    {
+        [DataUiUnit("S")]
+        public decimal Reload { get; set; }
+
+        public int NumberOfUses { get; set; }
+
+        public int AmmoPerAttack { get; set; }
+
+        [JsonIgnore]
+        public ProjectileUI? DepthCharge { get; set; }
+
+        [JsonIgnore]
+        public List<KeyValuePair<string, string>>? DepthChargesLauncherData { get; set; }
+
+        public static DepthChargesLauncherUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        {
+            Hull shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+
+            var depthChargesArray = shipHull.DepthChargeArray;
+
+            if (depthChargesArray is null)
+            {
+                return null;
+            }
+
+            var ammoPerAttack = depthChargesArray.DepthCharges.Sum(charge => charge.DepthChargesNumber);
+            var ammoName = depthChargesArray.DepthCharges.First(charge => charge.DepthChargesNumber > 0).AmmoList.First();
+
+            var numberOfUses = modifiers.FindModifiers("dcNumPacksBonus").Aggregate(depthChargesArray.MaxPacks, (current, modifier) => current + (int)modifier);
+
+            var ammo = DepthChargeUI.FromChargesName(ammoName, modifiers);
+
+            var depthChargesLauncherUI = new DepthChargesLauncherUI
+            {
+                Reload = depthChargesArray.Reload,
+                NumberOfUses = numberOfUses,
+                AmmoPerAttack = ammoPerAttack,
+                DepthCharge = ammo,
+            };
+
+            depthChargesLauncherUI.DepthChargesLauncherData = depthChargesLauncherUI.ToPropertyMapping();
+
+            return depthChargesLauncherUI;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WoWsShipBuilder.Core.DataUI.Armament;
 using WoWsShipBuilderDataStructures;
 
 // ReSharper disable InconsistentNaming
@@ -17,6 +18,8 @@ namespace WoWsShipBuilder.Core.DataUI
         public AirstrikeUI? AirstrikeUI { get; set; }
 
         public AirstrikeUI? AswAirstrikeUI { get; set; }
+
+        public DepthChargesLauncherUI? DepthChargeLauncherUI { get; set; }
 
         public List<CVAircraftUI>? CVAircraftUI { get; set; }
 
@@ -40,6 +43,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false),
                 AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true),
+                DepthChargeLauncherUI = DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Misc
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
