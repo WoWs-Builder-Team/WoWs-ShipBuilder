@@ -165,6 +165,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             if (!fileSystem.File.Exists(filePath))
             {
+                Logging.Logger.Warn($"Tried to load file {filePath} , but it was not found.");
                 return default(T);
             }
 
