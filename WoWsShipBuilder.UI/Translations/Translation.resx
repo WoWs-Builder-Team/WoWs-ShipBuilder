@@ -472,7 +472,7 @@
     <value>Fire Duration</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Fire probability reduction</value>
+    <value>Fire chance reduction</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
     <value>Total damage per flood</value>
@@ -719,5 +719,8 @@
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
     <value>Second Ping duration</value>
+  </data>
+  <data name="ShipStats_Shells" xml:space="preserve">
+    <value>Shells</value>
   </data>
 </root>

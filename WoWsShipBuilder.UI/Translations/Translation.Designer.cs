@@ -1033,7 +1033,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fire probability reduction.
+        ///   Looks up a localized string similar to Fire chance reduction.
         /// </summary>
         public static string ShipStats_FireReduction {
             get {
@@ -1533,6 +1533,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_SecondPingDuration {
             get {
                 return ResourceManager.GetString("ShipStats_SecondPingDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shells.
+        /// </summary>
+        public static string ShipStats_Shells {
+            get {
+                return ResourceManager.GetString("ShipStats_Shells", resourceCulture);
             }
         }
         

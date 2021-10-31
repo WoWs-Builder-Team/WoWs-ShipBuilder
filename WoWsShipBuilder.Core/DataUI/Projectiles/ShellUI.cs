@@ -57,7 +57,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShip(List<string> shellNames, List<(string Name, float Value)> modifiers, decimal dpmFactor)
+        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, decimal dpmFactor)
         {
             //Gun gun = ship
             //    .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]

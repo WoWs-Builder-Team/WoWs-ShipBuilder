@@ -53,6 +53,10 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     value = $"+{(int)modifier}";
                 }
+                else if(localizerKey.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    value = $"+{(int)modifier}%";
+                }
 
                 // this is for HP module
                 else if (localizerKey.Contains("AAMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("GSMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase))

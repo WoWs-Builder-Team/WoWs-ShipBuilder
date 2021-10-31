@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ShipStatsControlViewModel()
         {
-            var testData = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10);
+            var testData = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Germany);
             BaseShipStats = testData.Ship;
             currentShipStats = ShipUI.FromShip(BaseShipStats, testData.Configuration, new List<(string, float)>());
         }

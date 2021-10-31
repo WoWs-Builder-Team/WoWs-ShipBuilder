@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -12,11 +12,11 @@ namespace WoWsShipBuilder.UI
 
         public static readonly IReadOnlyList<Modernization> PlaceholderBaseList = new List<Modernization> { PlaceholderModernization };
 
-        public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier)
+        public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
         {
-            AppDataHelper.Instance.LoadNationFiles(Nation.Usa);
+            AppDataHelper.Instance.LoadNationFiles(nation);
 
-            var ship = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Usa, ServerType.Live)!
+            var ship = AppDataHelper.Instance.ReadLocalJsonData<Ship>(nation, ServerType.Live)!
                 .Select(entry => entry.Value)
                 .First(ship => ship.ShipClass == shipClass && ship.Tier == tier);
 

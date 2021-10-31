@@ -1,33 +1,35 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record SecondaryBatteryUI : IDataUi
     {
+        [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
-        public decimal Damage { get; set; }
-
-        public decimal Penetration { get; set; }
-
-        public decimal? FireChance { get; set; }
-
+        [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
+        [DataUiUnit("ShotsPerSecond")]
         public decimal RoF { get; set; }
 
-        public decimal Sigma { get; set; }
+        [JsonIgnore]
+        public ShellUI? Shell { get; set; }
 
-        public decimal HorizontalDisp { get; set; }
+        [JsonIgnore]
+        public bool IsLast { get; set; } = false;
 
-        public decimal VerticalDisp { get; set; }
-
-        public decimal ShellVelocity { get; set; }
+        [JsonIgnore]
+        public List<KeyValuePair<string, string>> SecondaryBatteryData { get; set; } = default!;
 
         public static List<SecondaryBatteryUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
@@ -48,14 +50,29 @@ namespace WoWsShipBuilder.Core.DataUI
             foreach (List<Gun> secondaryGroup in groupedSecondaries)
             {
                 var secondaryGun = secondaryGroup.First();
-                var ui = new SecondaryBatteryUI
+
+                var reloadModifiers = modifiers.FindModifiers("GSShotDelay");
+                var reload = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+
+                var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
+                var range = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+                
+                var secondaryUI = new SecondaryBatteryUI
                 {
-                    Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}" + Localizer.Instance[secondaryGun.Name].Localization,
-                    Range = secondary.MaxRange,
+                    Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
+                    Range = range,
+                    Reload = reload,
+                    RoF = Math.Round(60 / reload),
                 };
 
-                // result.Add(ui);
+                secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGun.NumBarrels).First();
+
+                secondaryUI.SecondaryBatteryData = secondaryUI.ToPropertyMapping();
+
+                result.Add(secondaryUI);
             }
+
+            result.Last().IsLast = true;
 
             return result;
         }

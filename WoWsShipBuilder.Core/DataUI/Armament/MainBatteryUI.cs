@@ -130,7 +130,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 OriginalMainBatteryData = mainBattery,
             };
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShip(shellNames, modifiers, mainBatteryUi.RoF * barrelCount);
+            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, mainBatteryUi.RoF * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }
