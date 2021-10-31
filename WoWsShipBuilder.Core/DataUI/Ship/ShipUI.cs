@@ -29,7 +29,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public ConcealmentUI ConcealmentUI { get; set; } = default!;
 
-        public AntiAirUI AntiAirUI { get; set; } = default!;
+        public AntiAirUI? AntiAirUI { get; set; } = default!;
 
         public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {

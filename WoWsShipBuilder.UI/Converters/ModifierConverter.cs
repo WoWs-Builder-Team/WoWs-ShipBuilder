@@ -42,7 +42,7 @@ namespace WoWsShipBuilder.UI.Converters
                 Debug.WriteLine("Key: " + localizerKey);
                 Debug.WriteLine("Modifier: " + modifier);
 
-                //Because removing unused things is too hard, right WG?
+                // Because removing unused things is too hard, right WG?
                 if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return "";
