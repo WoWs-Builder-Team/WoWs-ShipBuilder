@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.Core
                 FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}.log",
                 Layout = "${longdate}|${level}|${logger}|${message:withException=true}",
                 MaxArchiveFiles = 5,
-                ArchiveAboveSize = 1024000,
+                ArchiveAboveSize = 10240000,
             };
             config.AddTarget("logfile", target);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, target));
@@ -31,7 +31,7 @@ namespace WoWsShipBuilder.Core
                 FileName = "${specialfolder:folder=ApplicationData}/WoWsShipBuilder/logs/WoWsShipBuilder-${shortdate}-debug.log",
                 Layout = "${longdate}|${level}|${logger}|${message:withException=true}",
                 MaxArchiveFiles = 5,
-                ArchiveAboveSize = 1024000,
+                ArchiveAboveSize = 10240000,
             };
             config.AddTarget("logfile-debug", debugTarget);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, debugTarget));

@@ -26,7 +26,16 @@ namespace WoWsShipBuilder.UI.Updater
             request.Headers.Add("Accept", @"application/vnd.github.v3+json");
             request.Headers.Add("User-Agent", @"Unnamed-Stats-Viewer");
 
-            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.SendAsync(request).ConfigureAwait(false);
+            }
+            catch (HttpRequestException e)
+            {
+                Logging.Logger.Error(e, "GitHub connection failed.");
+                return null;
+            }
 
             try
             {

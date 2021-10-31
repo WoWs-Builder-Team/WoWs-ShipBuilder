@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NLog;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilderDataStructures;
@@ -109,9 +110,16 @@ namespace WoWsShipBuilder.Core.HttpClients
             }
 
             string zipPath = FileSystem.Path.Combine(directoryPath, zipName);
-            await DownloadFileAsync(new Uri(zipUrl), zipPath);
-            ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
-            FileSystem.File.Delete(zipPath);
+            try
+            {
+                await DownloadFileAsync(new Uri(zipUrl), zipPath);
+                ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
+                FileSystem.File.Delete(zipPath);
+            }
+            catch (HttpRequestException e)
+            {
+                Logging.Logger.Error(e, "Failed to download images.");
+            }
         }
 
         /// <summary>
@@ -129,10 +137,33 @@ namespace WoWsShipBuilder.Core.HttpClients
             string url = @$"{Host}/api/{server}/VersionInfo.json";
 
             progress?.Report((0, "versionInfo"));
-            VersionInfo versionInfo = await GetJsonAsync<VersionInfo>(url) ??
-                                      throw new HttpRequestException("Could not process response from AWS Server.");
+            VersionInfo? versionInfo = null;
+            var attempts = 0;
 
             progress?.Report((10, "versionProcessing"));
+            while (attempts < 5)
+            {
+                try
+                {
+                    versionInfo = await GetJsonAsync<VersionInfo>(url) ??
+                                  throw new HttpRequestException("Could not process response from AWS Server.");
+                    break;
+                }
+                catch (HttpRequestException e)
+                {
+                    attempts++;
+                    if (attempts < 5)
+                    {
+                        Logging.Logger.Warn(e);
+                    }
+                    else
+                    {
+                        Logging.Logger.Error(e, "Error during app update. Maximum retries reached.");
+                        return;
+                    }
+                }
+            }
+
             string dataPath = AppDataHelper.Instance.GetDataPath(serverType);
             if (!FileSystem.Directory.Exists(dataPath))
             {
@@ -145,7 +176,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                 VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await FileSystem.File.ReadAllTextAsync(localVersionInfoPath)) ??
                                                throw new InvalidOperationException();
 
-                if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
+                if (localVersionInfo.CurrentVersionCode < versionInfo!.CurrentVersionCode)
                 {
                     List<Task> downloads = new();
                     foreach ((string key, var value) in versionInfo.Categories)
@@ -179,7 +210,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             else
             {
                 List<Task> downloads = new();
-                foreach ((string key, var value) in versionInfo.Categories)
+                foreach ((string key, var value) in versionInfo!.Categories)
                 {
                     foreach (var item in value)
                     {
