@@ -129,8 +129,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 DispersionData = mainBattery.DispersionValues,
                 OriginalMainBatteryData = mainBattery,
             };
-
-            mainBatteryUi.ShellData = ShellUI.FromShip(ship, shipConfiguration, modifiers, mainBatteryUi.RoF * barrelCount);
+            var shellNames = mainBattery.Guns.First().AmmoList;
+            mainBatteryUi.ShellData = ShellUI.FromShip(shellNames, modifiers, mainBatteryUi.RoF * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

@@ -57,13 +57,13 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers, decimal dpmFactor)
+        public static List<ShellUI> FromShip(List<string> shellNames, List<(string Name, float Value)> modifiers, decimal dpmFactor)
         {
-            Gun gun = ship
-                .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
-                .Guns.First();
+            //Gun gun = ship
+            //    .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
+            //    .Guns.First();
             var shells = new List<ShellUI>();
-            foreach (string shellName in gun.AmmoList)
+            foreach (string shellName in shellNames)
             {
                 var shell = (ArtilleryShell)AppData.ProjectileList![shellName];
 
@@ -83,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         fuseTimer = 0;
 
                         // IFHE fire chance malus
-                        if (gun.BarrelDiameter > 0.139M)
+                        if (shell.Caliber > 0.139f)
                         {
                             index = modifiers.FindModifierIndex("burnChanceFactorHighLevel");
                             if (index.IsValidIndex())
@@ -101,7 +101,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         }
 
                         // Victor Lima and India X-Ray signals
-                        if (gun.BarrelDiameter > 0.160M)
+                        if (shell.Caliber > 0.160f)
                         {
                             shellFireChance += modifiers.FindModifiers("burnChanceFactorBig").Select(m => m * 100).Sum();
                         }
@@ -132,7 +132,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         // TODO: check and fix modifier names and application
                         int index;
-                        if (gun.BarrelDiameter >= 0.190M)
+                        if (shell.Caliber >= 0.190f)
                         {
                             index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
                             if (index.IsValidIndex())
