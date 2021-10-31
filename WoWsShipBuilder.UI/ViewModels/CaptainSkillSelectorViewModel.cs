@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 var currentlySelectedList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
-                SkillOrderList = new();
+                SkillOrderList.Clear();
                 AssignedPoints = 0;
             }
         }
@@ -279,8 +279,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public List<(string, float)> GetModifiersList()
         {
-           return SkillOrderList.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value)))
-                .ToList();
+           return SkillOrderList.Where(skill => skill.Modifiers != null)
+               .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
+               .ToList();
         }
     }
 }

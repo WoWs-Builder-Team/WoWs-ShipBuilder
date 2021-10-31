@@ -7,10 +7,11 @@
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.FiringAngleWindow"
-        CanResize="False" WindowStartupLocation="CenterScreen"
+        CanResize="True" WindowStartupLocation="CenterScreen"
+        MinHeight="640" MinWidth="580"
         Height="640" Width="580">
     <Grid RowDefinitions="30,*" ColumnDefinitions="2*,*">
-        <userControls:AppHeader Grid.Row="0" Grid.ColumnSpan="2"/>
+        <userControls:AppHeader Grid.Row="0" Grid.ColumnSpan="2" ShowMaximizeButton="True"/>
         <customControls:FiringAngleVisualizer Margin="10" Grid.Column="0" Grid.Row="1" Turrets="{Binding Turrets}"
                 ShowAllAngles="{Binding ShowAllText}" PermanentAngleText="{Binding PermaText}"
                 Foreground="{StaticResource ThemeBackgroundBrush}"/>

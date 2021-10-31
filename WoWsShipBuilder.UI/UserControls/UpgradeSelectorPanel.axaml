@@ -36,17 +36,17 @@
                                     </Setter>
                                 </Style>
                             </Image.Styles>
-                            <ToolTip.Tip>
-                                <userControls:ModifierToolTip>
-                                    <userControls:ModifierToolTip.DataContext>
-                                        <MultiBinding Converter="{StaticResource ModernizationConverter}" ConverterParameter="data">
-                                            <Binding Path="$parent[Image].DataContext" />
-                                            <Binding Path="$parent[UserControl].DataContext.SelectedModernizationList" FallbackValue="null" />
-                                        </MultiBinding>
-                                    </userControls:ModifierToolTip.DataContext>
-                                </userControls:ModifierToolTip>
-                            </ToolTip.Tip>
                         </Image>
+                        <ToolTip.Tip>
+                            <userControls:ModifierToolTip>
+                                <userControls:ModifierToolTip.DataContext>
+                                    <MultiBinding Converter="{StaticResource ModernizationConverter}" ConverterParameter="data">
+                                        <Binding Path="$parent[Button].DataContext" />
+                                        <Binding Path="$parent[UserControl].DataContext.SelectedModernizationList" FallbackValue="null" />
+                                    </MultiBinding>
+                                </userControls:ModifierToolTip.DataContext>
+                            </userControls:ModifierToolTip>
+                        </ToolTip.Tip>
                     </Button>
                     <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup"
                            IsLightDismissEnabled="True">

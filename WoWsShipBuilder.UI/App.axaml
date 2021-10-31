@@ -10,6 +10,7 @@
     <Application.Styles>
         <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
         <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"/>
+        <StyleInclude Source="/Styles/ThemeOverride.axaml"/>
         <StyleInclude Source="/Styles/FiringAngleVisualizerStyles.axaml"/>
         <StyleInclude Source="/Styles/DefaultStyle.axaml"/>
         <StyleInclude Source="resm:OxyPlot.Avalonia.Themes.Default.xaml?assembly=OxyPlot.Avalonia"/>

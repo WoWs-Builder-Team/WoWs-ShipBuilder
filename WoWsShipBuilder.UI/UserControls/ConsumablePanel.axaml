@@ -37,6 +37,16 @@
                                 </Style>
                             </Image.Styles>
                         </Image>
+                        <!-- <ToolTip.Tip> -->
+                        <!--     <userControls:ModifierToolTip> -->
+                        <!--         <userControls:ModifierToolTip.DataContext> -->
+                        <!--             <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data"> -->
+                        <!--                 <Binding Path="$parent[Button].DataContext" /> -->
+                        <!--                 <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" /> -->
+                        <!--             </MultiBinding> -->
+                        <!--         </userControls:ModifierToolTip.DataContext> -->
+                        <!--     </userControls:ModifierToolTip> -->
+                        <!-- </ToolTip.Tip> -->
                     </Button>
                     <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
                         <ListBox Name="ListBox" Width="{Binding Path=#DropDownButton.Bounds.Width}" SelectionMode="Single" Items="{Binding}"

@@ -36,6 +36,13 @@ namespace WoWsShipBuilder.UI.Converters
                     {
                         return consumables.FindIndex(consumable => selectedConsumables.Any(selected => selected.IconName.Equals(consumable.IconName)));
                     }
+
+                    case "data":
+                    {
+                        ConsumableUI? selectedConsumable = consumables
+                            .FirstOrDefault(consumable => selectedConsumables.Any(selected => selected.IconName.Equals(consumable.IconName)));
+                        return selectedConsumable != null ? selectedConsumable : "";
+                    }
                 }
             }
 

@@ -93,7 +93,7 @@
                                             </RadioButton.Template>
                                             <Image />
                                         </RadioButton>
-                                        <TextBlock MaxWidth="60" Height="32" HorizontalAlignment="Center"
+                                        <TextBlock MaxWidth="65" Height="36" HorizontalAlignment="Stretch"
                                                    Text="{Binding Name, Converter={StaticResource Localizer}}"
                                                    TextAlignment="Center"
                                                    TextWrapping="Wrap"

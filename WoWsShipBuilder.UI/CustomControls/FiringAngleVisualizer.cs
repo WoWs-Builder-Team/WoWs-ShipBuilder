@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// StyledProperty for the color of ship turrets.
         /// </summary>
         public static readonly StyledProperty<SolidColorBrush> TurretColorProperty =
-            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(TurretColor), new SolidColorBrush(Colors.Gray, 0.9));
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(TurretColor), new SolidColorBrush(Colors.Gray));
 
         /// <summary>
         /// Styled property for the color of the turret angle visualization.
@@ -501,28 +501,40 @@ namespace WoWsShipBuilder.UI.CustomControls
                 endAngle += 180;
             }
 
-            var angleList = new List<double> { startAngle };
-            if (shipTurret.HorizontalDeadZones != null)
+            var drawingGroup = new DrawingGroup();
+            PathGeometry turretGeometry = PathGeometry.Parse(
+                "M 10.451042,11.377083 9.525,12.170833 H 3.4395833 l -0.79375,-0.79375 h -1.5875 v -1.322916 h 0.79375 V 8.4666667 c 0,-0.5291667 " +
+                "0.3002661,-1.3683176 0.9634748,-1.6052961 0.449291,-0.1888714 0.8886086,-0.2467873 1.4177752,-0.2467873 v -5.55625 h 1.5875 v 5.55625 h " +
+                "1.5875 v -5.55625 h 1.5875 v 5.55625 c 0.5291667,0 1.2930047,0.095838 1.8008907,0.4810755 0.402385,0.3919374 0.580359,1.1064245 " +
+                "0.580359,1.5319045 v 1.4266037 h 0.79375 v 1.322916 z");
+
+            PathGeometry turretOutlines = PathGeometry.Parse("m 7.4083332,6.6145832 v 1.0583334 h 1.5875 V 6.6145832 m -4.7624999,0 v 1.0583334 h 1.5875 V 6.6145832");
+            turretGeometry.FillRule = FillRule.NonZero;
+            var turretScale = radius * 2 / turretGeometry.Bounds.Width;
+            double xOffset = turretGeometry.Bounds.Left * turretScale;
+            double yOffset = turretGeometry.Bounds.Top * turretScale;
+            var matrix = Matrix.CreateScale(turretScale, turretScale);
+            if (angleOffset > 100)
             {
-                foreach (var deadZone in shipTurret.HorizontalDeadZones)
-                {
-                    double zoneStart = deadZone[0] + angleOffset;
-                    double zoneEnd = deadZone[1] + angleOffset;
-                    angleList.Add(zoneStart);
-                    angleList.Add(zoneEnd);
-                }
+                matrix *= Matrix.CreateRotation(Math.PI);
+                matrix *= Matrix.CreateTranslation(center.X + ((turretGeometry.Bounds.Width * turretScale) / 2) + xOffset, center.Y + (turretGeometry.Bounds.Width * turretScale * 0.75) + yOffset);
+            }
+            else
+            {
+                matrix *= Matrix.CreateTranslation(center.X - ((turretGeometry.Bounds.Width * turretScale) / 2) - xOffset, center.Y - (turretGeometry.Bounds.Width * turretScale * 0.75) - yOffset);
             }
 
-            angleList.Add(endAngle);
+            turretGeometry.Transform = new MatrixTransform(matrix);
+            turretOutlines.Transform = new MatrixTransform(matrix);
 
-            var drawingGroup = new DrawingGroup();
-            Geometry mainTurretGeometry = CreateArcs(startAngle, endAngle, radius, center);
-            drawingGroup.AddChild(mainTurretGeometry, TurretColor);
-            Geometry arcGeometry = CreateArcs(angleList, radius, center, true);
-            drawingGroup.AddChild(arcGeometry, TurretDeadZoneColor);
+            drawingGroup.AddChild(turretGeometry, TurretColor, Brushes.Black);
+            drawingGroup.AddChild(turretOutlines, Brushes.Transparent, Brushes.Black);
+
+            // Geometry arcGeometry = CreateArcs(angleList, radius, center, true);
+            // drawingGroup.AddChild(arcGeometry, TurretDeadZoneColor);
             drawingGroup.Draw(context);
 
-            turretGeometries.Add((shipTurret, mainTurretGeometry, center));
+            turretGeometries.Add((shipTurret, turretGeometry, center));
 
             if (PermanentAngleText)
             {
@@ -628,7 +640,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             double textY = center.Y;
             if (!facingBackwards)
             {
-                textY -= text.Bounds.Height;
+                textY -= text.Bounds.Height * 0.2;
+            }
+            else
+            {
+                textY -= text.Bounds.Height * 0.5;
             }
 
             double textX = shipTurret.HorizontalPosition switch

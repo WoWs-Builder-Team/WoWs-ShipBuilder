@@ -41,7 +41,7 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid ColumnDefinitions="Auto,*,*" HorizontalAlignment="Stretch">
             <!-- Main Armaments -->
-            <StackPanel Orientation="Vertical" Grid.Column="0" Spacing="10" HorizontalAlignment="Stretch" MaxWidth="250">
+            <StackPanel Orientation="Vertical" Grid.Column="0" Spacing="10" HorizontalAlignment="Stretch" MaxWidth="275">
                 
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
@@ -261,7 +261,7 @@
                                     <DataTemplate>
                                         <DockPanel>
                                             <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding Value}" DockPanel.Dock="Right" HorizontalAlignment="Right" TextWrapping="NoWrap"/>
                                         </DockPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -395,9 +395,9 @@
                         <ItemsControl Items="{Binding ManeuverabilityUI.ManeuverabilityData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel>
-                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                        <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock Text="{Binding Value}" TextWrapping="NoWrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
