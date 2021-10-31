@@ -1051,6 +1051,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First Ping duration.
+        /// </summary>
+        public static string ShipStats_FirstPingDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_FirstPingDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flak.
         /// </summary>
         public static string ShipStats_Flak {
@@ -1420,6 +1429,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ping Duration.
+        /// </summary>
+        public static string ShipStats_PingDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_PingDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pinger gun.
+        /// </summary>
+        public static string ShipStats_PingerGun {
+            get {
+                return ResourceManager.GetString("ShipStats_PingerGun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping Speed.
+        /// </summary>
+        public static string ShipStats_PingSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_PingSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping width.
+        /// </summary>
+        public static string ShipStats_PingWidth {
+            get {
+                return ResourceManager.GetString("ShipStats_PingWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hp per plane.
         /// </summary>
         public static string ShipStats_PlaneHP {
@@ -1479,6 +1524,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_RoF {
             get {
                 return ResourceManager.GetString("ShipStats_RoF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second Ping duration.
+        /// </summary>
+        public static string ShipStats_SecondPingDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondPingDuration", resourceCulture);
             }
         }
         

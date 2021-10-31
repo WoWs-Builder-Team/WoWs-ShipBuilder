@@ -13,6 +13,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
 
+        public PingerGunUI? PingerGunUI { get; set; }
+
         public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
 
         public AirstrikeUI? AirstrikeUI { get; set; }
@@ -37,6 +39,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
                 TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers),
                 CVAircraftUI = DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers),
+                PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
                 SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),

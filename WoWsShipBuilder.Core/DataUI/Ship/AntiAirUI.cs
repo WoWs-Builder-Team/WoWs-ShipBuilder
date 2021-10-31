@@ -16,14 +16,19 @@ namespace WoWsShipBuilder.Core.DataUI
 
         private const decimal FlakDamageMultiplier = 1 / (AntiAirAura.DamageInterval / 2);
 
-        public AuraDataUI? LongRangeAura { get; set; }
+        public AuraDataUI? LongRangeAura { get; set; } = default!;
 
-        public AuraDataUI? MediumRangeAura { get; set; }
+        public AuraDataUI? MediumRangeAura { get; set; } = default!;
 
-        public AuraDataUI? ShortRangeAura { get; set; }
+        public AuraDataUI? ShortRangeAura { get; set; } = default!;
 
-        public static AntiAirUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+        public static AntiAirUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
+            if (ship.ShipClass.Equals(ShipClass.Submarine))
+            {
+                return null;
+            }
+
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
             TurretModule? guns = null!;
             if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
@@ -82,6 +87,7 @@ namespace WoWsShipBuilder.Core.DataUI
             aaUI.LongRangeAura = longRangeUI;
             aaUI.MediumRangeAura = FromAura(hull.AntiAir.MediumRangeAura, flakDamageBonus, constantDamageBonus);
             aaUI.ShortRangeAura = FromAura(hull.AntiAir.ShortRangeAura, flakDamageBonus, constantDamageBonus);
+
             return aaUI;
         }
 

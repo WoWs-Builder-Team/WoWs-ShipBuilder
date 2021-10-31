@@ -42,6 +42,12 @@ namespace WoWsShipBuilder.UI.Converters
                 Debug.WriteLine("Key: " + localizerKey);
                 Debug.WriteLine("Modifier: " + modifier);
 
+                //Because removing unused things is too hard, right WG?
+                if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return "";
+                }
+
                 // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                 if (localizerKey.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase))
                 {

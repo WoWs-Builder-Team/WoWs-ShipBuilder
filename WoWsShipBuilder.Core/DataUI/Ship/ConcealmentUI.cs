@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -71,11 +72,11 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var concealment = new ConcealmentUI
             {
-                ConcealmentBySea = concealmentBySea,
-                ConcealmentBySeaFiringSmoke = concealmentBySeaFiringSmoke,
-                ConcealmentBySeaFire = concealmentBySeaFire,
-                ConcealmentByAir = concealmentByAir,
-                ConcealmentByAirFire = concealmentByAirFire,
+                ConcealmentBySea = Math.Round(concealmentBySea, 2),
+                ConcealmentBySeaFiringSmoke = Math.Round(concealmentBySeaFiringSmoke, 2),
+                ConcealmentBySeaFire = Math.Round(concealmentBySeaFire, 2),
+                ConcealmentByAir = Math.Round(concealmentByAir, 2),
+                ConcealmentByAirFire = Math.Round(concealmentByAirFire, 2),
             };
 
             concealment.ConcealmentData = concealment.ToPropertyMapping();

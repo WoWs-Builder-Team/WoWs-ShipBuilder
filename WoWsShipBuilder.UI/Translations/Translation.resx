@@ -702,4 +702,22 @@
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
     <value>ASW Depth Charges</value>
   </data>
+  <data name="ShipStats_FirstPingDuration" xml:space="preserve">
+    <value>First Ping duration</value>
+  </data>
+  <data name="ShipStats_PingDuration" xml:space="preserve">
+    <value>Ping Duration</value>
+  </data>
+  <data name="ShipStats_PingerGun" xml:space="preserve">
+    <value>Pinger gun</value>
+  </data>
+  <data name="ShipStats_PingSpeed" xml:space="preserve">
+    <value>Ping Speed</value>
+  </data>
+  <data name="ShipStats_PingWidth" xml:space="preserve">
+    <value>Ping width</value>
+  </data>
+  <data name="ShipStats_SecondPingDuration" xml:space="preserve">
+    <value>Second Ping duration</value>
+  </data>
 </root>
