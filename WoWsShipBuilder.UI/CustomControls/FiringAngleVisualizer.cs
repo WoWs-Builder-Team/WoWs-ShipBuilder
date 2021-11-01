@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -245,6 +246,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 }
 
                 (Gun gun, Point center, Geometry geometry) thisPosition = (gun, center, geometry);
+                Debug.WriteLine(gun.WgGunIndex);
 
                 if (selectedPosition?.center != thisPosition.center)
                 {
@@ -494,7 +496,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 endAngle += 360;
             }
 
-            if (shipTurret.VerticalPosition >= 3)
+            if (shipTurret.TurretOrientation == TurretOrientation.Backward)
             {
                 angleOffset = 180;
                 startAngle += 180;
@@ -510,11 +512,11 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             PathGeometry turretOutlines = PathGeometry.Parse("m 7.4083332,6.6145832 v 1.0583334 h 1.5875 V 6.6145832 m -4.7624999,0 v 1.0583334 h 1.5875 V 6.6145832");
             turretGeometry.FillRule = FillRule.NonZero;
-            var turretScale = radius * 2 / turretGeometry.Bounds.Width;
+            double turretScale = radius * 2 / turretGeometry.Bounds.Width;
             double xOffset = turretGeometry.Bounds.Left * turretScale;
             double yOffset = turretGeometry.Bounds.Top * turretScale;
             var matrix = Matrix.CreateScale(turretScale, turretScale);
-            if (angleOffset > 100)
+            if (shipTurret.TurretOrientation == TurretOrientation.Backward)
             {
                 matrix *= Matrix.CreateRotation(Math.PI);
                 matrix *= Matrix.CreateTranslation(center.X + ((turretGeometry.Bounds.Width * turretScale) / 2) + xOffset, center.Y + (turretGeometry.Bounds.Width * turretScale * 0.75) + yOffset);
@@ -530,8 +532,6 @@ namespace WoWsShipBuilder.UI.CustomControls
             drawingGroup.AddChild(turretGeometry, TurretColor, Brushes.Black);
             drawingGroup.AddChild(turretOutlines, Brushes.Transparent, Brushes.Black);
 
-            // Geometry arcGeometry = CreateArcs(angleList, radius, center, true);
-            // drawingGroup.AddChild(arcGeometry, TurretDeadZoneColor);
             drawingGroup.Draw(context);
 
             turretGeometries.Add((shipTurret, turretGeometry, center));

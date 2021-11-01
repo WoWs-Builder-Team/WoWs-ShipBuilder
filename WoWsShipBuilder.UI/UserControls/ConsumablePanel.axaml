@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
              Name="ConsumablePanel">
@@ -24,7 +25,7 @@
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Panel>
-                    <Button Name="DropDownButton" Click="DropDownButton_OnClick">
+                    <Button Name="DropDownButton" Click="DropDownButton_OnClick" ToolTip.Placement="Right">
                         <Image>
                             <Image.Styles>
                                 <Style Selector="Image">
@@ -37,16 +38,16 @@
                                 </Style>
                             </Image.Styles>
                         </Image>
-                        <!-- <ToolTip.Tip> -->
-                        <!--     <userControls:ModifierToolTip> -->
-                        <!--         <userControls:ModifierToolTip.DataContext> -->
-                        <!--             <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data"> -->
-                        <!--                 <Binding Path="$parent[Button].DataContext" /> -->
-                        <!--                 <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" /> -->
-                        <!--             </MultiBinding> -->
-                        <!--         </userControls:ModifierToolTip.DataContext> -->
-                        <!--     </userControls:ModifierToolTip> -->
-                        <!-- </ToolTip.Tip> -->
+                        <ToolTip.Tip>
+                            <userControls:ModifierToolTip>
+                                <userControls:ModifierToolTip.DataContext>
+                                    <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data">
+                                        <Binding Path="$parent[Button].DataContext" />
+                                        <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
+                                    </MultiBinding>
+                                </userControls:ModifierToolTip.DataContext>
+                            </userControls:ModifierToolTip>
+                        </ToolTip.Tip>
                     </Button>
                     <Popup PlacementTarget="DropDownButton" PlacementAnchor="Bottom" Name="Popup" IsLightDismissEnabled="True">
                         <ListBox Name="ListBox" Width="{Binding Path=#DropDownButton.Bounds.Width}" SelectionMode="Single" Items="{Binding}"
@@ -64,7 +65,13 @@
                             </ListBox.Styles>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Image Source="{Binding Converter={StaticResource ImageConverter}}" PointerReleased="InputElement_OnPointerReleased"/>
+                                    <Image Source="{Binding Converter={StaticResource ImageConverter}}" 
+                                           PointerReleased="InputElement_OnPointerReleased" 
+                                           ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
+                                        <ToolTip.Tip>
+                                            <userControls:ModifierToolTip DataContext="{Binding}" />
+                                        </ToolTip.Tip>
+                                    </Image>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

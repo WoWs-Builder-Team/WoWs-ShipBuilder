@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Avalonia;
 using Avalonia.Collections;
-using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core;
@@ -46,13 +44,8 @@ namespace WoWsShipBuilder.UI.Converters
                 }
             }
 
-            if (values[0] == AvaloniaProperty.UnsetValue || values[1] == AvaloniaProperty.UnsetValue)
-            {
-                Logging.Logger.Trace(new NotSupportedException());
-                return new BindingNotification(AvaloniaProperty.UnsetValue);
-            }
-
-            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
+            Logging.Logger.Debug("No matching processing path for consumable data conversion found. Element 1: {0}, Element 2: {1}", values[0], values[1]);
+            return 0;
         }
     }
 }

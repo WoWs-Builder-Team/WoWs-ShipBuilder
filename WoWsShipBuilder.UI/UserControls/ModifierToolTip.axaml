@@ -5,7 +5,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ModifierToolTip"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures">
+             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures"
+             xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
+             MaxWidth="300">
     <UserControl.Resources>
         <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
@@ -20,32 +22,78 @@
             <Setter Property="FontWeight" Value="Normal"/>
         </Style>
     </UserControl.Styles>
-
-    <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
-        <TextBlock Classes="ModifierTitle" Name="TitleText"
-                    Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
-        <TextBlock Classes="ModifierDesc"
-                    Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
-                    IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-        <Separator IsVisible="{Binding !!Effect.Count}"/>
-        <ItemsControl Items="{Binding Effect}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                        <!-- Use style instead of setting property directly to avoid "Unset value" issues in converter. -->
-                        <TextBlock.Styles>
-                            <Style Selector="TextBlock">
-                                <Setter Property="Text">
-                                    <MultiBinding Converter="{StaticResource ModifierConverter}">
-                                        <Binding Path="Key" />
-                                        <Binding Path="Value" />
-                                    </MultiBinding>
-                                </Setter>
-                            </Style>
-                        </TextBlock.Styles>
-                    </TextBlock>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </StackPanel>
+    
+    <ContentControl Content="{Binding}">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="data:Modernization">
+                <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
+                    <TextBlock Classes="ModifierTitle" Name="TitleText"
+                               Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />
+                    <TextBlock Classes="ModifierDesc"
+                               Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DESC}"
+                               IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <Separator IsVisible="{Binding !!Effect.Count}"/>
+                    <ItemsControl Items="{Binding Effect}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                    <!-- Use style instead of setting property directly to avoid "Unset value" issues in converter. -->
+                                    <TextBlock.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="Text">
+                                                <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                                    <Binding Path="Key" />
+                                                    <Binding Path="Value" />
+                                                </MultiBinding>
+                                            </Setter>
+                                        </Style>
+                                    </TextBlock.Styles>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate DataType="dataUi:ConsumableUI">
+                <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
+                    <TextBlock Classes="ModifierTitle" Name="TitleText"
+                               Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DOCK_CONSUME_TITLE}" />
+                    <TextBlock Classes="ModifierDesc"
+                               Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DOCK_CONSUME_DESCRIPTION}"
+                               IsVisible="{Binding Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <Separator IsVisible="{Binding !!Modifiers.Count}"/>
+                    <ItemsControl Items="{Binding ConsumableData}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                                    <TextBlock Text="{Binding Value}" TextWrapping="NoWrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl Items="{Binding Modifiers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                    <!-- Use style instead of setting property directly to avoid "Unset value" issues in converter. -->
+                                    <TextBlock.Styles>
+                                        <Style Selector="TextBlock">
+                                            <Setter Property="Text">
+                                                <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                                    <Binding Path="Key" />
+                                                    <Binding Path="Value" />
+                                                </MultiBinding>
+                                            </Setter>
+                                        </Style>
+                                    </TextBlock.Styles>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
+    
 </UserControl>

@@ -18,18 +18,24 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public int Slot { get; set; }
 
+        [JsonIgnore]
         public string Desc { get; set; } = default!;
 
         public string NumberOfUses { get; set; } = default!;
 
+        [DataUiUnit("S")]
         public decimal Cooldown { get; set; }
 
+        [DataUiUnit("S")]
         public decimal WorkTime { get; set; }
+
+        [JsonIgnore]
+        public Dictionary<string, float> Modifiers { get; set; } = null!;
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>> ConsumableData { get; set; } = default!;
 
-        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCVPlanes)
+        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes)
         {
             var consumable = AppData.ConsumableList![$"{name} {variant}"];
 
@@ -39,16 +45,16 @@ namespace WoWsShipBuilder.Core.DataUI
                 iconName = name;
             }
 
-            var desc = consumable.DescId;
-            if (string.IsNullOrEmpty(iconName))
+            var localizationKey = consumable.DescId;
+            if (string.IsNullOrEmpty(localizationKey))
             {
-                desc = name;
+                localizationKey = consumable.Name;
             }
 
             int uses = consumable.NumConsumables;
             float cooldown = consumable.ReloadTime;
             float workTime = consumable.WorkTime;
-            if (isCVPlanes)
+            if (isCvPlanes)
             {
                 if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -86,6 +92,11 @@ namespace WoWsShipBuilder.Core.DataUI
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
                     var workTimeModifiers = modifiers.FindModifiers("scoutWorkTimeCoeff");
+                    workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+                }
+                else if (name.Contains("PCY010", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var workTimeModifiers = modifiers.FindModifiers("regenCrewWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
                 }
                 else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
@@ -138,13 +149,14 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var consumableUI = new ConsumableUI
             {
-                Name = name, // TODO: check and localize
+                Name = localizationKey,
                 NumberOfUses = numberOfUses,
                 IconName = iconName,
                 Slot = slot,
-                Desc = desc,
+                Desc = "",
                 Cooldown = Math.Round((decimal)cooldown, 1),
                 WorkTime = Math.Round((decimal)workTime, 1),
+                Modifiers = consumable.Modifiers ?? new Dictionary<string, float>(),
             };
 
             consumableUI.ConsumableData = consumableUI.ToPropertyMapping();

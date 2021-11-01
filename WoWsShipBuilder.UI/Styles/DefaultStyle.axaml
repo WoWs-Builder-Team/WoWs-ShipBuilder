@@ -102,11 +102,13 @@
     <Style Selector="TextBlock.ModifierTitle">
         <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
     <Style Selector="TextBlock.ModifierDesc">
         <Setter Property="FontSize" Value="13" />
         <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
     </Style>
     

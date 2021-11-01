@@ -925,6 +925,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cooldown.
+        /// </summary>
+        public static string ShipStats_Cooldown {
+            get {
+                return ResourceManager.GetString("ShipStats_Cooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cruising speed.
         /// </summary>
         public static string ShipStats_CruisingSpeed {
@@ -1704,6 +1713,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_WeaponType {
             get {
                 return ResourceManager.GetString("ShipStats_WeaponType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action time.
+        /// </summary>
+        public static string ShipStats_WorkTime {
+            get {
+                return ResourceManager.GetString("ShipStats_WorkTime", resourceCulture);
             }
         }
         

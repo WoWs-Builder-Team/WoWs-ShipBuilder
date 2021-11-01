@@ -59,9 +59,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, decimal dpmFactor)
         {
-            //Gun gun = ship
-            //    .MainBatteryModuleList[shipConfiguration.First(c => c.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()]
-            //    .Guns.First();
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
             {

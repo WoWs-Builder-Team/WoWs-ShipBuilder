@@ -723,4 +723,10 @@
   <data name="ShipStats_Shells" xml:space="preserve">
     <value>Shells</value>
   </data>
+  <data name="ShipStats_Cooldown" xml:space="preserve">
+      <value>Cooldown</value>
+  </data>
+  <data name="ShipStats_WorkTime" xml:space="preserve">
+      <value>Action time</value>
+  </data>
 </root>

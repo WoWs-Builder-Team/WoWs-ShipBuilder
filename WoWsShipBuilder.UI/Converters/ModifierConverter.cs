@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Resources;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -39,6 +38,7 @@ namespace WoWsShipBuilder.UI.Converters
             if (values[0] is string localizerKey && modifierInitialized)
             {
                 #region Value Parsing
+
                 Debug.WriteLine("Key: " + localizerKey);
                 Debug.WriteLine("Modifier: " + modifier);
 
@@ -48,131 +48,114 @@ namespace WoWsShipBuilder.UI.Converters
                     return "";
                 }
 
-                // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
-                if (localizerKey.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase))
+                switch (localizerKey)
                 {
-                    value = $"+{(int)modifier}";
-                }
-                else if(localizerKey.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    value = $"+{(int)modifier}%";
-                }
-
-                // this is for HP module
-                else if (localizerKey.Contains("AAMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("GSMaxHP", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                    if (numericValue > 0)
-                    {
-                        value = $"+{numericValue}%";
-                    }
-                    else
-                    {
-                        value = $"{numericValue}%";
-                    }
-                }
-
-                // wg doesn't know how math works. -x% drain rate != +x% drain rate
-                else if (localizerKey.Contains("planeForsageDrainRate", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var numericValue = Math.Round(((1 / modifier) - 1) * 100, 2);
-                    if (numericValue > 0)
-                    {
-                        value = $"+{numericValue}%";
-                    }
-                    else
-                    {
-                        value = $"{numericValue}%";
-                    }
-                }
-
-                // this is for midway leg mod. more accurate numbers
-                else if (localizerKey.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (modifier > 1)
-                    {
-                        value = $"+{Math.Round((modifier - 1) * 100, 2)}%";
-                    }
-                    else
-                    {
-                        value = $"-{Math.Round((1 - modifier) * 100, 2)}%";
-                    }
-                }
-
-                // this is for aiming time of CV planes
-                else if (localizerKey.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (modifier > 0)
-                    {
-                        value = $"+{modifier}s";
-                    }
-                    else
-                    {
-                        value = $"{modifier}s";
-                    }
-                }
-
-                // This is the anti detonation stuff
-                else if(localizerKey.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                    if (numericValue > 0)
-                    {
-                        value = $"+{numericValue}%";
-                    }
-                    else
-                    {
-                        value = $"{numericValue}%";
-                    }
-                }
-
-                // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
-                else if (localizerKey.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) || localizerKey.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    value = $"+{modifier * 100}%";
-                }
-
-                // This is Adrenaline Rush
-                else if (localizerKey.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    value = $"-{modifier}%";
-                }
-
-                // Something in Last stand. Not sure what make of it tho.
-                else if (localizerKey.Contains("SGCritRudderTime"))
-                {
-                    value = $"+{modifier}";
-                }
-
-                // Incoming fire alert. Range is in BigWorld Unit
-                else if(localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    value = $"{(modifier * 30) / 1000} Km";
-                }
-                else if (Math.Abs(modifier % 1) > (double.Epsilon * 100))
-                {
-                    if (modifier > 1)
-                    {
-                        decimal modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
-                        value = $"+{modifierValue}%";
-                    }
-                    else
-                    {
-                        decimal modifierValue = (decimal)Math.Round((1 - modifier) * 100, 2);
-                        value = $"-{modifierValue}%";
-                    }
-                }
-                else
-                {
-                    // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
-                    if (modifier > 1000)
-                    {
-                        value = $"+{modifier / 1000} Km";
-                    }
-                    else
-                    {
+                    // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
+                    case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";
+                        break;
+
+                    case { } str when str.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{(int)modifier}%";
+                        break;
+
+                    // this is for HP module
+                    case { } str when str.Contains("AAMaxHP", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("GSMaxHP", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase):
+                    {
+                        var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
+                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        break;
                     }
+
+                    // wg doesn't know how math works. -x% drain rate != +x% drain rate
+                    case { } str when str.Contains("planeForsageDrainRate", StringComparison.InvariantCultureIgnoreCase):
+                    {
+                        double numericValue = Math.Round(((1 / modifier) - 1) * 100, 2);
+                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        break;
+                    }
+
+                    // this is for midway leg mod. more accurate numbers
+                    case { } str when str.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase):
+                        value = modifier > 1 ? $"+{Math.Round((modifier - 1) * 100, 2)}%" : $"-{Math.Round((1 - modifier) * 100, 2)}%";
+                        break;
+
+                    // this is for aiming time of CV planes
+                    case { } str when str.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = modifier > 0 ? $"+{modifier}s" : $"{modifier}s";
+                        break;
+
+                    // This is the anti detonation stuff
+                    case { } str when str.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase):
+                    {
+                        var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
+                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        break;
+                    }
+
+                    // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
+                    // Also applies to repair party bonus.
+                    case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{modifier * 100}%";
+                        break;
+
+                    // This is Adrenaline Rush
+                    case { } str when str.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"-{modifier}%";
+                        break;
+
+                    // Something in Last stand. Not sure what make of it tho.
+                    case { } str when str.Contains("SGCritRudderTime"):
+                        value = $"+{modifier}";
+                        break;
+
+                    // Incoming fire alert. Range is in BigWorld Unit
+                    case { } str when str.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{(modifier * 30) / 1000} Km";
+                        break;
+
+                    case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
+                                      str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{Math.Round(modifier * 30) / 1000} Km";
+                        break;
+
+                    case { } when Math.Abs(modifier % 1) > double.Epsilon * 100:
+                    {
+                        if (modifier > 1)
+                        {
+                            var modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
+                            value = $"+{modifierValue}%";
+                        }
+                        else
+                        {
+                            var modifierValue = (decimal)Math.Round((1 - modifier) * 100, 2);
+                            value = $"-{modifierValue}%";
+                        }
+
+                        break;
+                    }
+
+                    case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier}";
+                        break;
+
+                    case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} s";
+                        break;
+
+                    case { } str when str.Contains("radius"):
+                        value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
+                        break;
+
+                    default:
+                        // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
+                        value = modifier > 1000 ? $"+{modifier / 1000} Km" : $"+{(int)modifier}";
+                        break;
                 }
 
                 #endregion
@@ -180,7 +163,7 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
+                if (localizerKey!.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
