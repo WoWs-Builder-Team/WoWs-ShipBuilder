@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WoWsShipBuilder.Core.DataUI.Armament;
+using System.Linq;
 using WoWsShipBuilderDataStructures;
 
 // ReSharper disable InconsistentNaming
@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public MainBatteryUI? MainBatteryUI { get; set; }
 
-        public List<SecondaryBatteryUI>? SecondaryBatteryUI { get; set; }
+        public SecondaryBatteryUiContainer SecondaryBatteryUI { get; set; } = default!;
 
         public PingerGunUI? PingerGunUI { get; set; }
 
@@ -29,7 +29,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public ConcealmentUI ConcealmentUI { get; set; } = default!;
 
-        public AntiAirUI? AntiAirUI { get; set; } = default!;
+        public AntiAirUI? AntiAirUI { get; set; }
+
+        public List<object> SecondColumnContent { get; set; } = default!;
 
         public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
@@ -42,7 +44,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUI = DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers),
+                SecondaryBatteryUI = new SecondaryBatteryUiContainer(DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers)),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false),
                 AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true),
@@ -53,6 +55,22 @@ namespace WoWsShipBuilder.Core.DataUI
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
             };
+
+            shipUI.SecondColumnContent = new List<object?>
+                {
+                    shipUI.AntiAirUI,
+                    shipUI.AirstrikeUI,
+                    shipUI.AswAirstrikeUI,
+                    shipUI.DepthChargeLauncherUI,
+                }.Where(item => item != null)
+                .Cast<object>()
+                .ToList();
+
+            if (shipUI.SecondaryBatteryUI.Secondaries != null)
+            {
+                shipUI.SecondColumnContent.Insert(0, shipUI.SecondaryBatteryUI);
+            }
+
             return shipUI;
         }
     }

@@ -14,6 +14,9 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [JsonIgnore]
+        public string Header { get; set; } = default!;
+
         [DataUiUnit("HP")]
         public int PlaneHP { get; set; }
 
@@ -52,6 +55,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static AirstrikeUI? FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw)
         {
+            var header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
             var airstrikes = ship.AirStrikes;
             if (ship.AirStrikes == null || ship.AirStrikes.Count == 0)
             {
@@ -88,6 +92,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var airstrikeUI = new AirstrikeUI
             {
+                Header = header,
                 Name = airstrike.PlaneName,
                 PlaneHP = finalPlaneHp,
                 Reload = reload,

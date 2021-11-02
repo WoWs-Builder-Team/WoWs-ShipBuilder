@@ -8,7 +8,7 @@ using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
-namespace WoWsShipBuilder.Core.DataUI.Armament
+namespace WoWsShipBuilder.Core.DataUI
 {
     public record PingerGunUI : IDataUi
     {
