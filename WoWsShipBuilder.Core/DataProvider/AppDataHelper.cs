@@ -25,11 +25,25 @@ namespace WoWsShipBuilder.Core.DataProvider
         internal AppDataHelper(IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
+            DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
         }
 
         public static AppDataHelper Instance => InstanceValue.Value;
 
-        public string AppDataDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+        public string DefaultAppDataDirectory { get; }
+
+        public string AppDataDirectory
+        {
+            get
+            {
+                if (AppData.IsInitialized)
+                {
+                    return AppData.Settings.CustomDataPath ?? DefaultAppDataDirectory;
+                }
+
+                return DefaultAppDataDirectory;
+            }
+        }
 
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
 

@@ -76,7 +76,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async Task DownloadImages(IProgress<(int, string)> progressTracker)
         {
-            string imageBasePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images");
+            string imageBasePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory);
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any())
             {

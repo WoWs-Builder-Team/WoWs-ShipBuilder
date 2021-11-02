@@ -30,7 +30,7 @@ namespace WoWsShipBuilder.UI
                 if (desktop.Args.Length > 0 && desktop.Args[0] == "-update")
                 {
                     string programPath = desktop.Args[1];
-                    string tempPath = Path.Combine(AppDataHelper.Instance.AppDataDirectory, "tempUpdate");
+                    string tempPath = Path.Combine(AppDataHelper.Instance.DefaultAppDataDirectory, "tempUpdate");
                     DirectoryCopy(tempPath, programPath, true);
                     string programExe = Path.Combine(programPath, "WoWsShipBuilder.exe");
                     Process.Start(programExe);

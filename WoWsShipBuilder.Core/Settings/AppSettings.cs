@@ -37,5 +37,7 @@ namespace WoWsShipBuilder.Core.Settings
         public DateTime LastDataUpdateCheck { get; set; } = DateTime.Today;
 
         public DateTime LastVersionUpdateCheck { get; set; } = DateTime.Now;
+
+        public string? CustomDataPath { get; set; }
     }
 }
