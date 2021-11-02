@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilderDataStructures;
 
@@ -15,7 +17,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public FiringAngleViewModel()
         {
-            Turrets = AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"].MainBatteryModuleList.First().Value;
+            var testData = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Germany);
+            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new List<(string, float)>());
+            Turrets = currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
         }
 
         private TurretModule turret = null!;

@@ -741,4 +741,7 @@
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Save &amp; Exit</value>
   </data>
+  <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
+    <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
+  </data>
 </root>

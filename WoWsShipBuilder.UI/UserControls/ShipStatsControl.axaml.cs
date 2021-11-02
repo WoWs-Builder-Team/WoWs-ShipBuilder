@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
@@ -28,7 +29,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
             var win = new DispersionGraphsWindow();
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index);
-            win.Show();
+            win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
 
@@ -37,7 +38,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow();
             win.DataContext = new FiringAngleViewModel(dc.CurrentShipStats!.MainBatteryUI!.OriginalMainBatteryData);
-            win.Show();
+            win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
     }

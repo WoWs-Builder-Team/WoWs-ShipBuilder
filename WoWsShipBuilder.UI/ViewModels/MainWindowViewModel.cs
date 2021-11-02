@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -104,6 +105,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
         {
         }
+
+        public List<Window> ChildrenWindows { get; set; } = new List<Window>();
 
         public string? CurrentShipIndex
         {
@@ -294,6 +297,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                 foreach (var listener in collectionChangeListeners)
                 {
                     listener!.Dispose();
+                }
+
+                var temp = ChildrenWindows.ToList();
+                foreach (var window in temp)
+                {
+                    window.Close();
                 }
 
                 collectionChangeListeners.Clear();

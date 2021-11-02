@@ -17,6 +17,7 @@
         <None Remove="Assets\Art\SplashArt.png" />
         <None Remove="Assets\discord.png" />
         <None Remove="Assets\Error_Full.png" />
+        <None Remove="Assets\Github.png" />
         <None Remove="Assets\Information_Full.png" />
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>

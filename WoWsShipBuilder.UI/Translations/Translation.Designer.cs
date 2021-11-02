@@ -232,6 +232,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some turret orientation is wrong. The data from WG doesn&apos;t include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below..
+        /// </summary>
+        public static string FiringAngleWindow_Disclaimer {
+            get {
+                return ResourceManager.GetString("FiringAngleWindow_Disclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fold all angles.
         /// </summary>
         public static string FiringAngleWindow_HideAll {
