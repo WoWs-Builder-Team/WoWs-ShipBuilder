@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
+using System.Security;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
@@ -23,13 +27,12 @@ namespace WoWsShipBuilder.UI.ViewModels
         public SettingsWindowViewModel(SettingsWindow win)
         {
             self = win;
-            ResetSettingsCommand = ReactiveCommand.Create(() => ResetSettings());
-            CleanAppDataCommand = ReactiveCommand.Create(() => CleanAppData());
-            DonateCommand = ReactiveCommand.Create(() => OpenDonationPage());
             LanguagesList = languages.Keys.ToList();
             SelectedLanguage = languages.Keys.First();
             Servers = Enum.GetNames<ServerType>().ToList();
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
+            CustomPath = AppData.Settings!.CustomDataPath;
+            IsCustomPathEnabled = !(CustomPath is null);
         }
 
         // Add here all the currently supported languages
@@ -37,6 +40,22 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             { "English", "en-GB" },
         };
+
+        private string? customPath;
+
+        public string? CustomPath
+        {
+            get => customPath;
+            set => this.RaiseAndSetIfChanged(ref customPath, value);
+        }
+
+        private bool isCustomPathEnabled = false;
+
+        public bool IsCustomPathEnabled
+        {
+            get => isCustomPathEnabled;
+            set => this.RaiseAndSetIfChanged(ref isCustomPathEnabled, value);
+        }
 
         private string version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
 
@@ -59,11 +78,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public string SelectedLanguage
         {
             get => selectedLanguage;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref selectedLanguage, value);
-                SelectedLanguageChanged();
-            }
+            set => this.RaiseAndSetIfChanged(ref selectedLanguage, value);
         }
 
         private string selectedServer = null!;
@@ -71,11 +86,15 @@ namespace WoWsShipBuilder.UI.ViewModels
         public string SelectedServer
         {
             get => selectedServer;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref selectedServer, value);
-                ServerChanged(value);
-            }
+            set => this.RaiseAndSetIfChanged(ref selectedServer, value);
+        }
+
+        private bool autoUpdate;
+
+        public bool AutoUpdate
+        {
+            get => autoUpdate;
+            set => this.RaiseAndSetIfChanged(ref autoUpdate, value);
         }
 
         private List<string> servers = null!;
@@ -86,18 +105,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref servers, value);
         }
 
-        private void SelectedLanguageChanged()
-        {
-            AppData.Settings!.Locale = languages[SelectedLanguage];
-        }
-
-        public ICommand ResetSettingsCommand { get; }
-
-        public ICommand CleanAppDataCommand { get; }
-
-        public ICommand DonateCommand { get; }
-
-        private void ResetSettings()
+        public void ResetSettings()
         {
             var cleanSettings = new AppSettings();
             AppData.Settings = cleanSettings;
@@ -123,7 +131,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void OpenDonationPage()
+        public void Donate()
         {
             string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
 
@@ -134,26 +142,74 @@ namespace WoWsShipBuilder.UI.ViewModels
             });
         }
 
-        private bool autoUpdate;
-
-        public bool AutoUpdate
+        public async void Save()
         {
-            get => autoUpdate;
-            set
+            if (IsCustomPathEnabled)
             {
-                this.RaiseAndSetIfChanged(ref autoUpdate, value);
-                AutoUpdateChanged(value);
+                if (!IsValidPath(CustomPath!))
+                {
+                    await MessageBox.Show(self, "The selected custom path is not valid.", "Error", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                }
+                else
+                {
+                    AppData.Settings!.CustomDataPath = CustomPath;
+                    AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+                    AppData.Settings!.AutoUpdateEnabled = AutoUpdate;
+                    AppData.Settings!.Locale = languages[SelectedLanguage];
+                    self.Close();
+                }
+            }
+            else
+            {
+                AppData.Settings!.CustomDataPath = null;
+                AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+                AppData.Settings!.AutoUpdateEnabled = AutoUpdate;
+                AppData.Settings!.Locale = languages[SelectedLanguage];
+                self.Close();
             }
         }
 
-        private void AutoUpdateChanged(bool autoUpdate)
+        public async void SelectFolder()
         {
-            AppData.Settings!.AutoUpdateEnabled = autoUpdate;
+            OpenFolderDialog dialog = new OpenFolderDialog();
+            dialog.Directory = AppDataHelper.Instance.AppDataDirectory;
+            var path = await dialog.ShowAsync(self);
+            if (!string.IsNullOrEmpty(path))
+            {
+                CustomPath = path;
+                IsCustomPathEnabled = true;
+            }
         }
 
-        private void ServerChanged(string server)
+        public void Cancel()
         {
-            AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(server);
+            self.Close();
+        }
+
+        [SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Checking Path Existence only")]
+        private bool IsValidPath(string path, bool exactPath = true)
+        {
+            bool isValid;
+            try
+            {
+                string fullPath = Path.GetFullPath(path);
+
+                if (exactPath)
+                {
+                    string root = Path.GetPathRoot(path)!;
+                    isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
+                }
+                else
+                {
+                    isValid = Path.IsPathRooted(path);
+                }
+            }
+            catch (Exception)
+            {
+                isValid = false;
+            }
+
+            return isValid;
         }
     }
 }

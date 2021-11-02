@@ -724,9 +724,21 @@
     <value>Shells</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-      <value>Cooldown</value>
+    <value>Cooldown</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-      <value>Action time</value>
+    <value>Action time</value>
+  </data>
+  <data name="SettingsWindow_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SettingsWindow_CustomPath" xml:space="preserve">
+    <value>Enable custom path</value>
+  </data>
+  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
+    <value>Insert custom path</value>
+  </data>
+  <data name="SettingsWindow_SaveExit" xml:space="preserve">
+    <value>Save &amp; Exit</value>
   </data>
 </root>

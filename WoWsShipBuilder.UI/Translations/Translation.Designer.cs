@@ -538,6 +538,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string SettingsWindow_Cancel {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clean.
         /// </summary>
         public static string SettingsWindow_Clean {
@@ -552,6 +561,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_CleanAppData {
             get {
                 return ResourceManager.GetString("SettingsWindow_CleanAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable custom path.
+        /// </summary>
+        public static string SettingsWindow_CustomPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_CustomPath", resourceCulture);
             }
         }
         
@@ -588,6 +606,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_Info {
             get {
                 return ResourceManager.GetString("SettingsWindow_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert custom path.
+        /// </summary>
+        public static string SettingsWindow_InsertCustomPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_InsertCustomPath", resourceCulture);
             }
         }
         
@@ -633,6 +660,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_Save {
             get {
                 return ResourceManager.GetString("SettingsWindow_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save &amp; Exit.
+        /// </summary>
+        public static string SettingsWindow_SaveExit {
+            get {
+                return ResourceManager.GetString("SettingsWindow_SaveExit", resourceCulture);
             }
         }
         
