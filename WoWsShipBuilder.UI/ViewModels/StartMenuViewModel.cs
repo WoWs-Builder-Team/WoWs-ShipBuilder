@@ -16,8 +16,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         public StartMenuViewModel(StartingMenuWindow window)
         {
             self = window;
-            var list = AppData.Builds.Select(build => $"{build.BuildName} - {build.ShipName}");
-            BuildList = new AvaloniaList<string>(list);
+            var list = AppData.Builds.Select(build => build.BuildName);
+            BuildList = new AvaloniaList<string>(list!);
             BuildList.CollectionChanged += BuildList_CollectionChanged;
         }
 

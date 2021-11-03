@@ -14,12 +14,21 @@ namespace WoWsShipBuilder.UI.ViewModels
         private BuildCreationWindow self;
         private Build build;
 
-        public BuildCreationWindowViewModel(BuildCreationWindow win, Build currentBuild)
+        public BuildCreationWindowViewModel(BuildCreationWindow win, Build currentBuild, string shipName)
         {
             self = win;
             build = currentBuild;
             SaveBuildCommand = ReactiveCommand.Create(() => SaveBuild());
             CloseBuildCommand = ReactiveCommand.Create(() => CloseBuild());
+            ShipName = shipName;
+        }
+
+        private string shipName = default!;
+
+        public string ShipName
+        {
+            get => shipName;
+            set => this.RaiseAndSetIfChanged(ref shipName, value);
         }
 
         private string? buildName;
@@ -36,7 +45,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async void SaveBuild()
         {
-            build.BuildName = BuildName;
+            build.BuildName = BuildName + " - " + ShipName;
             var buildString = build.CreateStringFromBuild();
             AppData.Builds.Add(build);
             await Application.Current.Clipboard.SetTextAsync(buildString);

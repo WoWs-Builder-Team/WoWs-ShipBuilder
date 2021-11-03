@@ -260,10 +260,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void OpenSaveBuild()
         {
-            var currentBuild = new Build(CurrentShipIndex, null, null, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
-
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, null, null, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
-            win.DataContext = new BuildCreationWindowViewModel(win, currentBuild);
+            win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
             win.ShowInTaskbar = false;
             win.ShowDialog(self);
         }

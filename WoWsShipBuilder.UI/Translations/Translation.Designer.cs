@@ -97,7 +97,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert the build name :.
+        ///   Looks up a localized string similar to Insert the build name. The ship name is automatically included..
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
             get {

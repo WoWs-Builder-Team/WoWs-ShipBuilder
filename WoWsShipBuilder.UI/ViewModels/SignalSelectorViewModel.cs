@@ -78,8 +78,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void SignalCommandExecute(Exterior flag)
         {
-            Debug.WriteLine(flag.Name);
-            // signalCommand!.Invoke(flag);
             if (SelectedSignals.Contains(flag))
             {
                 SelectedSignals.Remove(flag);

@@ -181,7 +181,7 @@
     <value>Flags </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insert the build name :</value>
+    <value>Insert the build name. The ship name is automatically included.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
     <value>Select new ship</value>

@@ -2,14 +2,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.BuildCreator
 {
     public class Build
     {
-        public Build(string? shipName, List<string>? modules, List<string>? consumables, List<int>? skills, List<string>? signals)
+        public Build(string shipIndex, Nation nation, List<string>? modules, List<string>? consumables, List<int>? skills, List<string>? signals)
         {
-            ShipName = shipName;
+            ShipIndex = shipIndex;
+            Nation = nation;
             Modules = modules;
             Skills = skills;
             Signals = signals;
@@ -18,7 +20,9 @@ namespace WoWsShipBuilder.Core.BuildCreator
 
         public string? BuildName { get; set; }
 
-        public string? ShipName { get; set; }
+        public string ShipIndex { get; set; }
+
+        public Nation Nation { get; set; }
 
         public List<string>? Modules { get; set; }
 
