@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             tokenSource = new CancellationTokenSource();
 
             // Signal selector model
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
+            SignalSelectorViewModel = new SignalSelectorViewModel();
 
             // Ship stats model
             RawShipData = ship;
@@ -256,20 +256,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => rawShipData;
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
-        }
-
-        private void AddSignalModifiers(Exterior flag)
-        {
-            if (SignalSelectorViewModel!.SelectedSignals.Contains(flag))
-            {
-                SignalSelectorViewModel.SelectedSignals.Remove(flag);
-                SignalSelectorViewModel.SignalsNumber--;
-            }
-            else
-            {
-                SignalSelectorViewModel.SelectedSignals.Add(flag);
-                SignalSelectorViewModel.SignalsNumber++;
-            }
         }
 
         private void OpenSaveBuild()

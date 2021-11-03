@@ -80,7 +80,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private bool camoEnabled = true;
 
         /// <summary>
-        /// Gets or sets if the camo bonuses should be applied.
+        /// Gets or sets a value indicating whether the camo bonuses should be applied.
         /// </summary>
         public bool CamoEnabled
         {
