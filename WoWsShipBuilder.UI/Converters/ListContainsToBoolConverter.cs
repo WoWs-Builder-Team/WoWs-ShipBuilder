@@ -15,9 +15,9 @@ namespace WoWsShipBuilder.UI.Converters
         public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
         {
             bool contains = false;
-            if (values[0] is AvaloniaList<Skill> skillList && values[1] is Skill skill)
+            if (values[0] is AvaloniaList<object> skillList && values[1] is object item)
             {
-                contains = skillList.Contains(skill);
+                contains = skillList.Contains(item);
             }
 
             return contains;
