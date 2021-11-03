@@ -8,14 +8,13 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         Title="WoWs Ship Builder"
         Name="StartWindow"
-        Height="800" Width="400" CanResize="False" 
+        Height="900" Width="400" CanResize="False" 
         WindowStartupLocation="CenterScreen">
 
     <Window.Styles>
-        <Style Selector="Button.NotTitle">
+        <Style Selector="Button">
             <Setter Property="Width" Value="150"/>
             <Setter Property="Height" Value="50"/>
-            <Setter Property="Margin" Value="20"/>
         </Style>
         <Style Selector="ListBox">
             <Setter Property="Width" Value="150"/>
@@ -26,21 +25,12 @@
     <Grid RowDefinitions="30,2*,Auto,*,Auto" >
         <userControls:AppHeader Grid.Row="0" ShowTitle="False"/>
         <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="1"/>
-        <Button Classes="NotTitle" Command="{Binding NewBuildCommand}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"/>
-        <StackPanel Orientation="Vertical" Grid.Row="3" >
-            <Button Classes="NotTitle" Command="{Binding LoadBuildCommand}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
-            <ListBox SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None">
-                <ListBoxItem Content="Test1"/>
-                <ListBoxItem Content="Test2"/>
-                <ListBoxItem Content="Test3"/>
-                <ListBoxItem Content="Test4"/>
-                <ListBoxItem Content="Test5"/>
-                <ListBoxItem Content="Test6"/>
-                <ListBoxItem Content="Test7"/>
-                <ListBoxItem Content="Test8"/>
-                <ListBoxItem Content="Test9"/>
-            </ListBox>
+        <Button Command="{Binding NewBuild}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2" Margin="10"/>
+        <StackPanel Orientation="Vertical" Grid.Row="3" Spacing="10" Margin="0,10,0,10">
+            <Button Command="{Binding LoadBuild}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
+            <Button Command="{Binding DeleteBuild}" Content="{x:Static p:Translation.StartMenu_DeleteBuild}"/>
+            <ListBox Items="{Binding Builds}" SelectedItem="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None"></ListBox>
         </StackPanel>
-        <Button Classes="NotTitle" Command="{Binding SettingCommand}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4"/>
+        <Button Command="{Binding Setting}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4" Margin="0,10,0,20"/>
     </Grid>
 </Window>

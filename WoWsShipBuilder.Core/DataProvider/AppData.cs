@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilderDataStructures;
 
@@ -25,6 +26,8 @@ namespace WoWsShipBuilder.Core.DataProvider
         public static Dictionary<string, Consumable>? ConsumableList { get; set; }
 
         public static List<ShipSummary>? ShipSummaryList { get; set; }
+
+        public static List<Build> Builds { get; set; } = new();
 
 #if DEBUG
         public static bool IsDebug => true;

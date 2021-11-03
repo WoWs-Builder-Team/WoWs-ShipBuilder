@@ -744,4 +744,13 @@
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
   </data>
+  <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
+    <value>Build saved</value>
+  </data>
+  <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
+    <value>Build string saved on clipboard</value>
+  </data>
+  <data name="StartMenu_DeleteBuild" xml:space="preserve">
+    <value>Delete build</value>
+  </data>
 </root>

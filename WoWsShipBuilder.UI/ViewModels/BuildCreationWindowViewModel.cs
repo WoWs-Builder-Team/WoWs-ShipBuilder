@@ -2,6 +2,9 @@ using System.Windows.Input;
 using Avalonia;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -31,10 +34,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ICommand CloseBuildCommand { get; }
 
-        private void SaveBuild()
+        private async void SaveBuild()
         {
-            var buildString = BuildCreator.CreateStringFromBuild(build);
-            Application.Current.Clipboard.SetTextAsync(buildString);
+            build.BuildName = BuildName;
+            var buildString = build.CreateStringFromBuild();
+            AppData.Builds.Add(build);
+            await Application.Current.Clipboard.SetTextAsync(buildString);
+            await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+            self.Close();
         }
 
         private void CloseBuild()

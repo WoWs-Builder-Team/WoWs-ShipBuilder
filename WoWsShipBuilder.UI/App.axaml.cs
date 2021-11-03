@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -48,6 +49,7 @@ namespace WoWsShipBuilder.UI
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
             AppSettingsHelper.SaveSettings();
+            AppDataHelper.Instance.SaveBuilds();
         }
 
         private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)

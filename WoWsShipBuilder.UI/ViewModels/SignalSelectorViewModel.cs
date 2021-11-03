@@ -90,5 +90,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             return SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
         }
+
+        public List<string> GetFlagList()
+        {
+            return SelectedSignals.Select(signal => signal.Name).ToList();
+        }
     }
 }

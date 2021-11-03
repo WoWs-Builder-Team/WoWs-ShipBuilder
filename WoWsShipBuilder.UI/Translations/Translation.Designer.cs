@@ -88,11 +88,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build saved.
+        /// </summary>
+        public static string BuildCreationWindow_BuildSaved {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_BuildSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert the build name :.
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
             get {
                 return ResourceManager.GetString("BuildCreationWindow_InsertBuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build string saved on clipboard.
+        /// </summary>
+        public static string BuildCreationWindow_SavedClipboard {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_SavedClipboard", resourceCulture);
             }
         }
         
@@ -1839,6 +1857,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SplashScreen_ShipImages {
             get {
                 return ResourceManager.GetString("SplashScreen_ShipImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete build.
+        /// </summary>
+        public static string StartMenu_DeleteBuild {
+            get {
+                return ResourceManager.GetString("StartMenu_DeleteBuild", resourceCulture);
             }
         }
         

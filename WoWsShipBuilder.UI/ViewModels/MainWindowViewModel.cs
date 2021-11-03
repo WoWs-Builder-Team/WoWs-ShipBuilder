@@ -274,8 +274,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void OpenSaveBuild()
         {
+            var currentBuild = new Build(CurrentShipIndex, null, null, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+
             var win = new BuildCreationWindow();
-            win.DataContext = new BuildCreationWindowViewModel(win, new Build());
+            win.DataContext = new BuildCreationWindowViewModel(win, currentBuild);
             win.ShowInTaskbar = false;
             win.ShowDialog(self);
         }
