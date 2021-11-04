@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Avalonia.Collections;
 using Avalonia.Metadata;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
@@ -65,8 +66,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 BuildImportWindow win = new();
                 win.DataContext = new BuildImportViewModel(win);
-                var build = await win.ShowDialog<string>(self);
-                Debug.WriteLine(build);
+                var build = await win.ShowDialog<Build>(self);
+                Debug.WriteLine(build.BuildName);
             }
             else
             {

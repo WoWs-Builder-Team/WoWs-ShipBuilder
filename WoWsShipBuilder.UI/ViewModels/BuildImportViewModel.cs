@@ -45,20 +45,23 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void Import(object parameter)
         {
-            if (!ImportOnly)
+            Build build;
+            try
             {
-                try
-                {
-                    AppData.Builds.Add(Build.CreateBuildFromString(BuildString!));
-                }
-                catch (Exception)
-                {
-                    await MessageBox.Show(self, "The Build string is not in the correct format.", "Invalid string.", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                    return;
-                }
+                build = Build.CreateBuildFromString(BuildString!);
+            }
+            catch (Exception)
+            {
+                await MessageBox.Show(self, "The Build string is not in the correct format.", "Invalid string.", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                return;
             }
 
-            self.Close(BuildString);
+            if (!ImportOnly)
+            {
+                AppData.Builds.Add(build);
+            }
+
+            self.Close(build);
         }
 
         [DependsOn(nameof(BuildString))]
