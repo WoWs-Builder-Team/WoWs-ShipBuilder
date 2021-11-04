@@ -162,8 +162,8 @@
   <data name="StartMenu_NewBuild" xml:space="preserve">
     <value>Create a new build</value>
   </data>
-  <data name="StartMenu_NoPreviousBuilds" xml:space="preserve">
-    <value>No previous builds found</value>
+  <data name="StartMenu_ImportBuild" xml:space="preserve">
+    <value>Import build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
     <value>Settings and Info</value>

@@ -1870,6 +1870,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import build....
+        /// </summary>
+        public static string StartMenu_ImportBuild {
+            get {
+                return ResourceManager.GetString("StartMenu_ImportBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load a build.
         /// </summary>
         public static string StartMenu_LoadBuild {
@@ -1884,15 +1893,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string StartMenu_NewBuild {
             get {
                 return ResourceManager.GetString("StartMenu_NewBuild", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No previous builds found.
-        /// </summary>
-        public static string StartMenu_NoPreviousBuilds {
-            get {
-                return ResourceManager.GetString("StartMenu_NoPreviousBuilds", resourceCulture);
             }
         }
         
