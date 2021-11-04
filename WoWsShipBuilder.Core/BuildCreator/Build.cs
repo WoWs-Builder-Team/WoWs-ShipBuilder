@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -32,22 +33,36 @@ namespace WoWsShipBuilder.Core.BuildCreator
 
         public List<string>? Signals { get; set; }
 
-        public static Build? CreateBuildFromString(string buildString)
+        /// <summary>
+        /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.
+        /// </summary>
+        /// <param name="buildString">The build string.</param>
+        /// <returns>The <see cref="Build"/> object rapresented by the string.</returns>
+        /// <exception cref="FormatException">If the string is not in the correct format.</exception>
+        public static Build CreateBuildFromString(string buildString)
         {
-            var decodedOutput = System.Convert.FromBase64String(buildString);
-            using (MemoryStream inputStream = new MemoryStream(decodedOutput))
+            try
             {
-                using (DeflateStream gzip =
-                  new DeflateStream(inputStream, CompressionMode.Decompress))
+                var decodedOutput = System.Convert.FromBase64String(buildString);
+                using (MemoryStream inputStream = new MemoryStream(decodedOutput))
                 {
-                    using (StreamReader reader =
-                      new StreamReader(gzip, System.Text.Encoding.UTF8))
+                    using (DeflateStream gzip =
+                      new DeflateStream(inputStream, CompressionMode.Decompress))
                     {
-                        var buildJson = reader.ReadToEnd();
-                        var build = JsonConvert.DeserializeObject<Build>(buildJson);
-                        return build;
+                        using (StreamReader reader =
+                          new StreamReader(gzip, System.Text.Encoding.UTF8))
+                        {
+                            var buildJson = reader.ReadToEnd();
+                            var build = JsonConvert.DeserializeObject<Build>(buildJson);
+                            return build!;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Warn(e, $"The string {buildString} is not in a valid format for a Build object");
+                throw new FormatException();
             }
         }
 
