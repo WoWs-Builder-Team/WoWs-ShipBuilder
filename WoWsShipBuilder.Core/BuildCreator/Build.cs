@@ -18,11 +18,12 @@ namespace WoWsShipBuilder.Core.BuildCreator
             BuildName = buildName;
         }
 
-        public Build(string shipIndex, Nation nation, List<string> modules, List<string> consumables, List<int> skills, List<string> signals)
+        public Build(string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, List<int> skills, List<string> signals)
         {
             ShipIndex = shipIndex;
             Nation = nation;
             Modules = modules;
+            Upgrades = upgrades;
             Skills = skills;
             Signals = signals;
             Consumables = consumables;
@@ -35,6 +36,8 @@ namespace WoWsShipBuilder.Core.BuildCreator
         public Nation Nation { get; set; }
 
         public List<string> Modules { get; set; } = new();
+
+        public List<string> Upgrades { get; set; } = new();
 
         public List<int> Skills { get; set; } = new();
 

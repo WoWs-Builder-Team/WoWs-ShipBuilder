@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 using Avalonia.Collections;
-using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    public class ShipModuleViewModel : ViewModelBase
+    public class ShipModuleViewModel : ViewModelBase, IBuildStorable
     {
         #region Static Fields and Constants
 
@@ -70,6 +68,24 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             SelectedModules.Add(parameter);
             this.RaisePropertyChanged(nameof(SelectedModules));
+        }
+
+        public void LoadBuild(IEnumerable<string> storedData)
+        {
+            var results = new List<ShipUpgrade>();
+            foreach (List<ShipUpgrade> upgradeList in ShipUpgrades)
+            {
+                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name)));
+            }
+
+            var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();
+            SelectedModules.RemoveAll(modulesToRemove);
+            SelectedModules.AddRange(results);
+        }
+
+        public List<string> SaveBuild()
+        {
+            return SelectedModules.Select(upgrade => upgrade.Name).ToList();
         }
     }
 }

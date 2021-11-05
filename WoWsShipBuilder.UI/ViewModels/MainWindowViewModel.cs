@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -120,8 +119,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
             NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+            ShipModuleViewModel.LoadBuild(build.Modules);
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+            UpgradePanelViewModel.LoadBuild(build.Upgrades);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
+            ConsumableViewModel.LoadBuild(build.Consumables);
 
             ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
@@ -295,7 +297,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void OpenSaveBuild()
         {
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, null!, null!, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
@@ -435,12 +437,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var modifiers = new List<(string, float)>();
 
-            var modernizationModifiers = UpgradePanelViewModel.SelectedModernizationList
-                .Where(m => m.Index != null)
-                .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
-                .ToList();
-
-            modifiers.AddRange(modernizationModifiers);
+            modifiers.AddRange(UpgradePanelViewModel.GetModifierList());
             modifiers.AddRange(SignalSelectorViewModel!.GetModifierList());
             modifiers.AddRange(CaptainSkillSelectorViewModel!.GetModifiersList());
             return modifiers;
