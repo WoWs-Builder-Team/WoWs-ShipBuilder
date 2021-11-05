@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -12,8 +13,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ShipSelectionWindowViewModel : ViewModelBase
     {
-        public ShipSelectionWindowViewModel()
+        private Window self;
+
+        public ShipSelectionWindowViewModel(Window win)
         {
+            self = win;
+
             if (AppData.ShipSummaryList == null)
             {
                 AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
@@ -251,6 +256,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             SearchResult = tmp;
+        }
+
+        public void Confirm(object parameter)
+        {
+            self.Close(SelectedShip.Value);
+        }
+
+        [DependsOn(nameof(SelectedShip))]
+        public bool CanConfirm(object parameter)
+        {
+            return SelectedShip.Value != null;
         }
     }
 }

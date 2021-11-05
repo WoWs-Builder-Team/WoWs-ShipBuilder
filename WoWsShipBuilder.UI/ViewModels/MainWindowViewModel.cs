@@ -314,7 +314,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async void NewShipSelection()
         {
-            var result = await ShipSelectionWindow.ShowShipSelection(self!);
+            var selectionWin = new ShipSelectionWindow();
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
+            var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
                 foreach (var listener in collectionChangeListeners)

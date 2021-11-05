@@ -25,30 +25,6 @@ namespace WoWsShipBuilder.UI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static Task<ShipSummary?> ShowShipSelection(Window parent)
-        {
-            var win = new ShipSelectionWindow
-            {
-                DataContext = new ShipSelectionWindowViewModel(),
-                ShowInTaskbar = false,
-            };
-
-            var button = win.FindControl<Button>("Confirm");
-
-            button.Click += (_, __) => { win.Close(); };
-
-            var tcs = new TaskCompletionSource<ShipSummary?>();
-            win.Closed += (sender, e) =>
-            {
-                var model = win.DataContext as ShipSelectionWindowViewModel;
-                tcs.TrySetResult(model!.SelectedShip.Value);
-            };
-
-            win.ShowDialog(parent);
-
-            return tcs.Task;
-        }
-
         public void RunResearch(object sender, PointerReleasedEventArgs e)
         {
             if (e.Source is not TextBlock && e.Source is not ContentPresenter)
