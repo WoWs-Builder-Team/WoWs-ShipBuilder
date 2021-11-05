@@ -1,7 +1,12 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
+using Avalonia.Collections;
+using Avalonia.Metadata;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -14,26 +19,34 @@ namespace WoWsShipBuilder.UI.ViewModels
         public StartMenuViewModel(StartingMenuWindow window)
         {
             self = window;
-            NewBuildCommand = ReactiveCommand.Create(() => NewBuild());
-            LoadBuildCommand = ReactiveCommand.Create(() => LoadBuild());
-            SettingCommand = ReactiveCommand.Create(() => Setting());
+            BuildList.CollectionChanged += BuildList_CollectionChanged;
+            var list = AppData.Builds.Select(build => build.BuildName);
+            BuildList.Add(Translation.StartMenu_ImportBuild);
+            BuildList.AddRange(list!);
         }
 
-        private int selectedBuild;
+        private void BuildList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(BuildList));
+        }
 
-        public int SelectedBuild
+        private int? selectedBuild;
+
+        public int? SelectedBuild
         {
             get => selectedBuild;
             set => this.RaiseAndSetIfChanged(ref selectedBuild, value);
         }
 
-        public ICommand NewBuildCommand { get; }
+        private AvaloniaList<string> buildList = new();
 
-        public ICommand LoadBuildCommand { get; }
+        public AvaloniaList<string> BuildList
+        {
+            get => buildList;
+            set => this.RaiseAndSetIfChanged(ref buildList, value);
+        }
 
-        public ICommand SettingCommand { get; }
-
-        private async void NewBuild()
+        public async void NewBuild()
         {
             var result = await ShipSelectionWindow.ShowShipSelection(self);
             if (result != null)
@@ -47,12 +60,47 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void LoadBuild()
+        public async void LoadBuild(object parameter)
         {
-            // TODO
+            if (SelectedBuild.Equals(0))
+            {
+                BuildImportWindow win = new();
+                win.DataContext = new BuildImportViewModel(win);
+                var build = await win.ShowDialog<Build>(self);
+                Debug.WriteLine(build.BuildName);
+            }
+            else
+            {
+                // TODO normal build loading
+            }
         }
 
-        private void Setting()
+        [DependsOn(nameof(SelectedBuild))]
+        public bool CanLoadBuild(object parameter)
+        {
+            return SelectedBuild != null;
+        }
+
+        public void DeleteBuild()
+        {
+            AppData.Builds.RemoveAt(SelectedBuild!.Value);
+            BuildList.RemoveAt(SelectedBuild!.Value);
+        }
+
+        [DependsOn(nameof(SelectedBuild))]
+        public bool CanDeleteBuild(object parameter)
+        {
+            if (SelectedBuild != null && SelectedBuild > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Setting()
         {
             SettingsWindow win = new()
             {

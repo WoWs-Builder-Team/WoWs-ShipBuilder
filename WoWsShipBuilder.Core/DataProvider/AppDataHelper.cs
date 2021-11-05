@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilderDataStructures;
 
@@ -143,6 +144,17 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
 
             return ship;
+        }
+
+        /// <summary>
+        /// Save string compressed <see cref="Build"/> to the disk.
+        /// </summary>
+        public void SaveBuilds()
+        {
+            var path = fileSystem.Path.Combine(Instance.DefaultAppDataDirectory, "builds.json");
+            var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
+            string buildsString = JsonConvert.SerializeObject(builds);
+            fileSystem.File.WriteAllText(path, buildsString);
         }
 
         private static string GetNationString(Nation? nation)

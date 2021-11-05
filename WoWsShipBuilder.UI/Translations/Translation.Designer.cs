@@ -88,11 +88,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert the build name :.
+        ///   Looks up a localized string similar to Build saved.
+        /// </summary>
+        public static string BuildCreationWindow_BuildSaved {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_BuildSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert the build name. The ship name is automatically included..
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {
             get {
                 return ResourceManager.GetString("BuildCreationWindow_InsertBuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build string saved on clipboard.
+        /// </summary>
+        public static string BuildCreationWindow_SavedClipboard {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_SavedClipboard", resourceCulture);
             }
         }
         
@@ -1843,6 +1861,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete build.
+        /// </summary>
+        public static string StartMenu_DeleteBuild {
+            get {
+                return ResourceManager.GetString("StartMenu_DeleteBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import build....
+        /// </summary>
+        public static string StartMenu_ImportBuild {
+            get {
+                return ResourceManager.GetString("StartMenu_ImportBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load a build.
         /// </summary>
         public static string StartMenu_LoadBuild {
@@ -1857,15 +1893,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string StartMenu_NewBuild {
             get {
                 return ResourceManager.GetString("StartMenu_NewBuild", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No previous builds found.
-        /// </summary>
-        public static string StartMenu_NoPreviousBuilds {
-            get {
-                return ResourceManager.GetString("StartMenu_NoPreviousBuilds", resourceCulture);
             }
         }
         

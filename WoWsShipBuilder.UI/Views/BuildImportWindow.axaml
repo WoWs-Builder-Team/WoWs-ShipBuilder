@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        SizeToContent="WidthAndHeight" CanResize="False" WindowStartupLocation="CenterOwner"
+        x:Class="WoWsShipBuilder.UI.Views.BuildImportWindow">
+    <Grid RowDefinitions="30,Auto, Auto, Auto">
+        <userControls:AppHeader Title="Import build"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="10">
+            <RadioButton GroupName="ImportType" Content="Import only" IsChecked="{Binding ImportOnly}"/>
+            <RadioButton GroupName="ImportType" Content="Import and save"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Spacing="10" Margin="10,0,10,10">
+            <TextBlock Text="Paste the build string"/>
+            <TextBox Text="{Binding BuildString}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10" Margin="10,0,10,10">
+            <Button Content="Import" Command="{Binding Import}"/>
+            <Button Content="Cancel" Command="{Binding Cancel}"/>
+        </StackPanel>
+    </Grid>
+</Window>

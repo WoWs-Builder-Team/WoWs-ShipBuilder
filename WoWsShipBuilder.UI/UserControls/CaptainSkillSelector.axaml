@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
+        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="*">
@@ -66,6 +67,12 @@
                                         <Binding Path="Value"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.Number>
+                                <customControls:NumberedButton.IsChecked>
+                                    <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
+                                        <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                        <Binding Path="Value"/>
+                                    </MultiBinding>
+                                </customControls:NumberedButton.IsChecked>
                             </customControls:NumberedButton>
                         </Panel>
                     </DataTemplate>

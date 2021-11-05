@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             tokenSource = new CancellationTokenSource();
 
             // Signal selector model
-            SignalSelectorViewModel = new SignalSelectorViewModel(0, AddSignalModifiers);
+            SignalSelectorViewModel = new SignalSelectorViewModel();
 
             // Ship stats model
             RawShipData = ship;
@@ -258,24 +258,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
         }
 
-        private void AddSignalModifiers(Exterior flag)
-        {
-            if (SignalSelectorViewModel!.SelectedSignals.Contains(flag))
-            {
-                SignalSelectorViewModel.SelectedSignals.Remove(flag);
-                SignalSelectorViewModel.SignalsNumber--;
-            }
-            else
-            {
-                SignalSelectorViewModel.SelectedSignals.Add(flag);
-                SignalSelectorViewModel.SignalsNumber++;
-            }
-        }
-
         private void OpenSaveBuild()
         {
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, null, null, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
-            win.DataContext = new BuildCreationWindowViewModel(win, new Build());
+            win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
             win.ShowInTaskbar = false;
             win.ShowDialog(self);
         }

@@ -27,8 +27,27 @@ namespace WoWsShipBuilder.UI.ViewModels
             SelectedCaptain = CaptainList.First();
         }
 
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, List<int> selectedSkills)
+        {
+            var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
+            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, ServerType.Live);
+            if (nationCaptain != null && nationCaptain.Count > 0)
+            {
+                captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            currentClass = shipClass;
+            CaptainList = captainList!.Select(x => x.Value).ToList();
+            SelectedCaptain = CaptainList.First();
+            var skills = SelectedCaptain.Skills.Select(x => x.Value).Where(skill => selectedSkills.Contains(skill.SkillNumber)).ToList();
+            SkillOrderList.AddRange(skills);
+        }
+
         private Captain? selectedCaptain;
 
+        /// <summary>
+        /// Gets or sets the currently selected captain and update the skills associated with it.
+        /// </summary>
         public Captain? SelectedCaptain
         {
             get => selectedCaptain;
@@ -36,15 +55,22 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
-                var currentlySelectedList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
+                var currentlySelectednumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
-                AssignedPoints = 0;
+                foreach (var skillNumber in currentlySelectednumbersList)
+                {
+                    var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
+                    SkillOrderList.Add(skill);
+                }
             }
         }
 
         private List<Captain>? captainList;
 
+        /// <summary>
+        /// Gets or sets the list of available captains.
+        /// </summary>
         public List<Captain>? CaptainList
         {
             get => captainList;
@@ -53,6 +79,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private bool camoEnabled = true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the camo bonuses should be applied.
+        /// </summary>
         public bool CamoEnabled
         {
             get => camoEnabled;
@@ -61,6 +90,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private int assignedPoints;
 
+        /// <summary>
+        /// Gets or sets the number of assigned skill points.
+        /// </summary>
         public int AssignedPoints
         {
             get => assignedPoints;
@@ -69,6 +101,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private Dictionary<string, Skill>? skillList;
 
+        /// <summary>
+        /// Gets or sets the dictionary of skillList.
+        /// </summary>
         public Dictionary<string, Skill>? SkillList
         {
             get => skillList;
@@ -77,12 +112,21 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private AvaloniaList<Skill> skillOrderList = new();
 
+        /// <summary>
+        /// Gets or sets the List containing the selected skill in the order they were selected.
+        /// </summary>
         public AvaloniaList<Skill> SkillOrderList
         {
             get => skillOrderList;
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
         }
 
+        /// <summary>
+        /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>. 
+        /// </summary>
+        /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
+        /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
+        /// <returns>A dictionary containg the skill for the class from the captain.</returns>
         private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
             var skills = captain!.Skills;
@@ -110,6 +154,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             return filteredDictionary;
         }
 
+        /// <summary>
+        /// Add a skill to <see cref="SkillOrderList"/>.
+        /// </summary>
+        /// <param name="skill"> the <see cref="Skill"/> to add.</param>
         public void AddSkill(Skill skill)
         {
             if (SkillOrderList.Contains(skill))
@@ -129,6 +177,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check if a certain <see cref="Skill"/> can be added to <see cref="SkillOrderList"/>.
+        /// </summary>
+        /// <param name="parameter"> The <see cref="Skill"/> object to add to <see cref="SkillOrderList"/>.</param>
+        /// <returns> If the <see cref="Skill"/> can be added.</returns>
         [DependsOn(nameof(SkillOrderList))]
         public bool CanAddSkill(object parameter)
         {
@@ -196,6 +249,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Reorder the skills in <see cref="SkillOrderList"/> to make the skill order possible.
+        /// It works with the assumption that if the first skill of a certain tier got removed, it should be replaced by the first skill of the same tier selected by the user.
+        /// </summary>
         private void ReorderSkillList()
         {
             if (SkillOrderList.Count == 0)
@@ -277,11 +334,25 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Create a list of modifiers in a tuple format (name, value) from the currently selected skill.
+        /// </summary>
+        /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
            return SkillOrderList.Where(skill => skill.Modifiers != null)
                .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
                .ToList();
+        }
+
+        /// <summary>
+        /// Create a list of skill numbers from the currently selected list.
+        /// </summary>
+        /// <returns>The list of currently selected skill numbers.</returns>
+        public List<int> GetSkillNumberList()
+        {
+            var list = SkillOrderList.Select(skill => skill.SkillNumber).ToList();
+            return list;
         }
     }
 }

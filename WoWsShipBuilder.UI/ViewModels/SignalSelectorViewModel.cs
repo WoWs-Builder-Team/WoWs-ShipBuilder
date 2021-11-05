@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
@@ -12,15 +13,17 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class SignalSelectorViewModel : ViewModelBase
     {
         public SignalSelectorViewModel()
-            : this(0, _ => { })
-        {
-        }
-
-        public SignalSelectorViewModel(int signalsNumber, Action<Exterior> addSignalFlagModifiersCommand)
         {
             SignalsNumber = signalsNumber;
-            signalCommand = addSignalFlagModifiersCommand;
             SignalList = LoadSignalList();
+        }
+
+        public SignalSelectorViewModel(List<string> initialSignalsNames)
+        {
+            SignalList = LoadSignalList();
+            var list = SignalList.Select(x => x.Value).Where(signal => initialSignalsNames.Contains(signal.Name));
+            SelectedSignals.AddRange(list);
+            SignalsNumber = SelectedSignals.Count();
         }
 
         private List<KeyValuePair<string, Exterior>> signalList = new();
@@ -31,7 +34,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalList, value);
         }
 
-        private int signalsNumber;
+        private int signalsNumber = 0;
 
         public int SignalsNumber
         {
@@ -39,9 +42,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
         }
 
-        public AvaloniaList<Exterior> SelectedSignals { get; set; } = new AvaloniaList<Exterior>();
+        private AvaloniaList<Exterior> selectedSignals = new AvaloniaList<Exterior>();
 
-        private Action<Exterior>? signalCommand;
+        public AvaloniaList<Exterior> SelectedSignals
+        {
+            get => selectedSignals;
+            set => this.RaiseAndSetIfChanged(ref selectedSignals, value);
+        }
 
         [DependsOn(nameof(SignalsNumber))]
         public bool CanSignalCommandExecute(object parameter)
@@ -71,7 +78,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void SignalCommandExecute(Exterior flag)
         {
-            signalCommand!.Invoke(flag);
+            if (SelectedSignals.Contains(flag))
+            {
+                SelectedSignals.Remove(flag);
+                SignalsNumber--;
+            }
+            else
+            {
+                SelectedSignals.Add(flag);
+                SignalsNumber++;
+            }
         }
 
         private List<KeyValuePair<string, Exterior>> LoadSignalList()
@@ -89,6 +105,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         public List<(string, float)> GetModifierList()
         {
             return SelectedSignals.SelectMany(m => m.Modifiers.Select(effect => (effect.Key, (float)effect.Value))).ToList();
+        }
+
+        public List<string> GetFlagList()
+        {
+            return SelectedSignals.Select(signal => signal.Name).ToList();
         }
     }
 }

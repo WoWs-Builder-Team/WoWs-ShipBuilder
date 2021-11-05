@@ -12,7 +12,13 @@
         <userControls:AppHeader Grid.Row="0"/>
         <StackPanel Grid.Row="1" Margin="10" Spacing="10">
             <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_InsertBuildName}"/>
-            <TextBox Text="{Binding BuildName}"/>
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBox Text="{Binding BuildName}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="1" Spacing="5" Margin="5,0,0,0">
+                    <TextBlock Text="-"/>
+                    <TextBlock Text="{Binding ShipName}"/>
+                </StackPanel>
+            </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
                 <Button Content="Save" Width="60" Command="{Binding SaveBuildCommand}"/>
                 <Button Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}"/>

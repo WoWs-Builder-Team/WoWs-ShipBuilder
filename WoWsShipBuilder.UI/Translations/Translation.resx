@@ -162,8 +162,8 @@
   <data name="StartMenu_NewBuild" xml:space="preserve">
     <value>Create a new build</value>
   </data>
-  <data name="StartMenu_NoPreviousBuilds" xml:space="preserve">
-    <value>No previous builds found</value>
+  <data name="StartMenu_ImportBuild" xml:space="preserve">
+    <value>Import build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
     <value>Settings and Info</value>
@@ -181,7 +181,7 @@
     <value>Flags </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insert the build name :</value>
+    <value>Insert the build name. The ship name is automatically included.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
     <value>Select new ship</value>
@@ -743,5 +743,14 @@
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
+  </data>
+  <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
+    <value>Build saved</value>
+  </data>
+  <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
+    <value>Build string saved on clipboard</value>
+  </data>
+  <data name="StartMenu_DeleteBuild" xml:space="preserve">
+    <value>Delete build</value>
   </data>
 </root>
