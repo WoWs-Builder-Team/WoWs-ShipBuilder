@@ -69,7 +69,7 @@
                                 </customControls:NumberedButton.Number>
                                 <customControls:NumberedButton.IsChecked>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
-                                        <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                        <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
                                         <Binding Path="Value"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.IsChecked>

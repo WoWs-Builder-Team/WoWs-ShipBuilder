@@ -51,7 +51,7 @@
                             </ToolTip.Tip>
                             <customControls:NumberedButton.IsChecked>
                                 <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
-                                    <Binding Path="#SignalSelector.DataContext.SelectedSignals"/>
+                                    <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
                                     <Binding Path="Value"/>
                                 </MultiBinding>
                             </customControls:NumberedButton.IsChecked>
