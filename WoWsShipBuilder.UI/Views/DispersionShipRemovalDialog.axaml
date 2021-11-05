@@ -22,6 +22,6 @@
                 <ListBox MinHeight="150" Items="{Binding ShipsToDeleteList}" SelectedItems="{Binding RemoveSelection}" SelectionMode="Multiple" HorizontalAlignment="Stretch"/>
             </StackPanel>
         </Grid>
-        <Button Name="Ok" Content="Confirm" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,10"/>
+        <Button Name="Ok" IsDefault="True" Content="Confirm" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,10"/>
     </Grid>
 </Window>

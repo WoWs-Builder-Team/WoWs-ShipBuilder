@@ -20,8 +20,8 @@
                 </StackPanel>
             </Grid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
-                <Button Content="Save" Width="60" Command="{Binding SaveBuildCommand}" IsDefault="True"/>
-                <Button Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}" IsCancel="True"/>
+                <Button IsDefault="True" Content="Save" Width="60" Command="{Binding SaveBuildCommand}"/>
+                <Button IsCancel="True" Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

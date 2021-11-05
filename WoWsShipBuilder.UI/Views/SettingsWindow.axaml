@@ -48,8 +48,8 @@
                                     </TextBox.Styles>
                                 </TextBox>
                                 <StackPanel Spacing="10" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                    <Button Content="{x:Static t:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}"/>
-                                    <Button Content="{x:Static t:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}"/>
+                                    <Button IsDefault="True" Content="{x:Static t:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}"/>
+                                    <Button IsCancel="True" Content="{x:Static t:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}"/>
                                 </StackPanel>
                             </customControls:AutoGrid>
                         </Border>
