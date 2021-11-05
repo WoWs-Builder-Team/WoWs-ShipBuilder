@@ -30,7 +30,7 @@
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TypeFilter}" IsChecked="{Binding TypeFilterChecked}"/>
                 <ComboBox Items="{Binding TypeList}" PlaceholderText="All" SelectedItem="{Binding SelectedType}" IsEnabled="{Binding TypeFilterChecked}"/>
             </StackPanel>
-            <AutoCompleteBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Name="AutoCompleteBox" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
+            <AutoCompleteBox IsTextCompletionEnabled="True" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Name="AutoCompleteBox" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
                              VerticalAlignment="Center" Items="{Binding FilteredShipNameDictionary}" ValueMemberBinding="{Binding Key}" 
                              SelectedItem="{Binding SelectedShip}" TextFilter="{Binding Test}" Margin="10,0,10,0" 
                              PointerReleased="RunResearch" Text="{Binding InputText}" DropDownClosing="ShowResult" MaxDropDownHeight="400" MinimumPopulateDelay="0.2">
@@ -47,7 +47,7 @@
                 </AutoCompleteBox.Styles>    
             </AutoCompleteBox>
         </Grid>
-        <Button Grid.Row="2" Name="Confirm" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
+        <Button Grid.Row="2" IsDefault="True" Name="Confirm" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
         <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="10,5,10,5" Text="{x:Static t:Translation.ShipSelectionWindow_NoResultsFound}" Foreground="Red" IsVisible="{Binding SearchResult}" VerticalAlignment="Center" FontSize="15"/>
     </Grid>
 </Window>
