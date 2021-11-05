@@ -55,14 +55,14 @@
                             </Border>
                             <customControls:NumberedButton
                                 BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
-                                Command="{Binding #Control.DataContext.AddSkill}" CommandParameter="{Binding Value}"
+                                Command="{Binding $parent[UserControl].DataContext.AddSkill}" CommandParameter="{Binding Value}"
                                 Margin="5" IsSpecial="{Binding Value.IsEpic}" ToolTip.Placement="Right">
                                 <ToolTip.Tip>
                                     <userControls:SkillToolTip DataContext="{Binding}"/>
                                 </ToolTip.Tip>
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
-                                        <Binding Path="#Control.DataContext.SkillOrderList"/>
+                                        <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
                                         <Binding Path="Value"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.Number>

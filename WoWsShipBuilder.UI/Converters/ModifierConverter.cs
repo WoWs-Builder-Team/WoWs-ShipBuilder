@@ -10,6 +10,13 @@ namespace WoWsShipBuilder.UI.Converters
 {
     public class ModifierConverter : IMultiValueConverter
     {
+        private enum ReturnFilter
+        {
+            All,
+            Description,
+            Value,
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.ReadabilityRules",
             "SA1123:Do not place regions within elements",
@@ -18,7 +25,20 @@ namespace WoWsShipBuilder.UI.Converters
         {
             string value = "";
             string description = "";
-            var prefix = "PARAMS_MODIFIER";
+            var prefix = "PARAMS_MODIFIER_";
+
+            var returnFilter = ReturnFilter.All;
+            if (parameter is string stringParam)
+            {
+                if (stringParam.Contains("desc", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    returnFilter = ReturnFilter.Description;
+                }
+                else if (stringParam.Contains("value", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    returnFilter = ReturnFilter.Value;
+                }
+            }
 
             float modifier = 0;
             var modifierInitialized = false;
@@ -39,8 +59,11 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 #region Value Parsing
 
-                Debug.WriteLine("Key: " + localizerKey);
-                Debug.WriteLine("Modifier: " + modifier);
+                if (returnFilter is ReturnFilter.All or ReturnFilter.Description)
+                {
+                    Debug.WriteLine("Key: " + localizerKey);
+                    Debug.WriteLine("Modifier: " + modifier);
+                }
 
                 // Because removing unused things is too hard, right WG?
                 if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
@@ -119,9 +142,15 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"{(modifier * 30) / 1000} Km";
                         break;
 
+                    // Radar and hydro spotting distances
                     case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{Math.Round(modifier * 30) / 1000} Km";
+                        break;
+
+                    // Speed boost modifier
+                    case { } str when str.Equals("boostCoeff", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{Math.Round(modifier * 100)}%";
                         break;
 
                     case { } when Math.Abs(modifier % 1) > double.Epsilon * 100:
@@ -146,6 +175,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{modifier} s";
+                        prefix += "CALLFIGHTERS";
                         break;
 
                     case { } str when str.Contains("radius"):
@@ -160,6 +190,11 @@ namespace WoWsShipBuilder.UI.Converters
 
                 #endregion
 
+                if (returnFilter == ReturnFilter.Value)
+                {
+                    return value;
+                }
+
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
@@ -173,7 +208,7 @@ namespace WoWsShipBuilder.UI.Converters
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }
 
-                localizerKey = $"{prefix}_{localizerKey}";
+                localizerKey = $"{prefix}{localizerKey}";
 
                 bool found;
                 (found, description) = Localizer.Instance[localizerKey.ToUpper()];
@@ -208,6 +243,11 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Translation.ResourceManager.GetString("IncomingFireAlertDesc", Translation.Culture)!;
+                }
+
+                if (returnFilter == ReturnFilter.Description)
+                {
+                    return description;
                 }
 
                 #endregion

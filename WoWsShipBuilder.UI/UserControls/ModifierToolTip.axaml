@@ -75,19 +75,33 @@
                     <ItemsControl Items="{Binding Modifiers}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                                    <!-- Use style instead of setting property directly to avoid "Unset value" issues in converter. -->
-                                    <TextBlock.Styles>
-                                        <Style Selector="TextBlock">
-                                            <Setter Property="Text">
-                                                <MultiBinding Converter="{StaticResource ModifierConverter}">
-                                                    <Binding Path="Key" />
-                                                    <Binding Path="Value" />
-                                                </MultiBinding>
-                                            </Setter>
-                                        </Style>
-                                    </TextBlock.Styles>
-                                </TextBlock>
+                                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" IsVisible="{Binding #DescriptionBlock.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                    <!-- Use styles for text property to avoid unset value errors. -->
+                                    <TextBlock TextWrapping="NoWrap" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                        <TextBlock.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="Text">
+                                                    <MultiBinding Converter="{StaticResource ModifierConverter}" ConverterParameter="value">
+                                                        <Binding Path="Key" />
+                                                        <Binding Path="Value" />
+                                                    </MultiBinding>
+                                                </Setter>
+                                            </Style>
+                                        </TextBlock.Styles>
+                                    </TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Name="DescriptionBlock">
+                                        <TextBlock.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="Text">
+                                                    <MultiBinding Converter="{StaticResource ModifierConverter}" ConverterParameter="desc">
+                                                        <Binding Path="Key" />
+                                                        <Binding Path="Value" />
+                                                    </MultiBinding>
+                                                </Setter>
+                                            </Style>
+                                        </TextBlock.Styles>
+                                    </TextBlock>
+                                </DockPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -95,5 +109,4 @@
             </DataTemplate>
         </ContentControl.DataTemplates>
     </ContentControl>
-    
 </UserControl>

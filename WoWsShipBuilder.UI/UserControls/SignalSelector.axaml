@@ -43,7 +43,7 @@
                         </Border>
                         <customControls:NumberedButton
                             BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
-                            Command="{Binding #SignalSelector.DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}"
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}"
                             Margin="5" ToolTip.Placement="Right">
                             <ToolTip.Tip>
                                 <userControls:FlagToolTip DataContext="{Binding Value}"/>

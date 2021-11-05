@@ -30,7 +30,8 @@ namespace WoWsShipBuilder.UI.Translations
             {
                 if (parameter is not string stringParam)
                 {
-                    return Localizer.Instance[localizerKey].Localization;
+                    string localization = Localizer.Instance[localizerKey].Localization.Trim();
+                    return !string.IsNullOrEmpty(localization) ? localization : "noName";
                 }
 
                 if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
