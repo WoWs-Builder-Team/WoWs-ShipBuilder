@@ -173,7 +173,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     break;
             }
 
-            var allPlaneHpModifiers = modifiers.FindModifiers("planeHealth");
+            var allPlaneHpModifiers = modifiers.FindModifiers("planeHealth", true);
             int finalplaneHP = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHP, (current, modifier) => current * modifier), 2);
 
             var planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");
@@ -184,7 +184,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
-            decimal finalCruisingSpeed = Math.Round((decimal)restorationTimeModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 0);
+            decimal finalCruisingSpeed = Math.Round((decimal)cruisingSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 0);
 
             var jatoDuration = (decimal)plane.JatoData.JatoDuration;
             var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;

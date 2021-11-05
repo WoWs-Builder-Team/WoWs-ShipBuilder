@@ -24,10 +24,18 @@ namespace WoWsShipBuilder.Core.Extensions
             return dataSource.FindIndex(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public static IEnumerable<float> FindModifiers(this IEnumerable<(string Key, float Value)> dataSource, string filter) => dataSource
-            .Where(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
-            .Select(modifier => modifier.Value);
+        public static IEnumerable<float> FindModifiers(this IEnumerable<(string Key, float Value)> dataSource, string filter, bool strict = false)
+        {
+            if (strict)
+            {
+                return dataSource.Where(modifier => modifier.Key.Equals(filter, StringComparison.InvariantCultureIgnoreCase))
+                            .Select(modifier => modifier.Value);
+            }
 
+            return dataSource.Where(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
+            .Select(modifier => modifier.Value);
+        }
+        
         public static bool IsValidIndex(this int index) => index > -1;
     }
 }

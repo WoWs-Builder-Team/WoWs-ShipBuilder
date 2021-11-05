@@ -29,7 +29,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public string RicochetAngles { get; set; } = default!;
 
         [DataUiUnit("PerCent")]
-        public int FireChance { get; set; }
+        public decimal FireChance { get; set; }
 
         public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers)
         {
@@ -37,7 +37,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             decimal rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current * modifier), 2);
+            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier), 3);
+            var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
+            fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
             string ricochetAngle = "";
             decimal fuseTimer = 0;
@@ -45,7 +47,7 @@ namespace WoWsShipBuilder.Core.DataUI
             if (rocket.RocketType.Equals(RocketType.AP))
             {
                 var rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
-                rocketDamage = Math.Round((decimal)rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
+                rocketDamage = Math.Round(rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
                 ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingTreshold = (int)rocket.ArmingThreshold;
@@ -60,7 +62,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 FuseTimer = fuseTimer,
                 ArmingTreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
-                FireChance = (int)(fireChance * 100),
+                FireChance = Math.Round(fireChance * 100, 1),
             };
 
             rocketUI.ProjectileData = rocketUI.ToPropertyMapping();

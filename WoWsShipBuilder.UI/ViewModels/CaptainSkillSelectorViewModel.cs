@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
@@ -340,9 +341,16 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-           return SkillOrderList.Where(skill => skill.Modifiers != null)
+           var modifiers = SkillOrderList.Where(skill => skill.Modifiers != null)
                .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
                .ToList();
+
+            if (CamoEnabled)
+            {
+                modifiers.Add(("visibilityDistCoeff", 0.97f));
+            }
+
+            return modifiers;
         }
 
         /// <summary>

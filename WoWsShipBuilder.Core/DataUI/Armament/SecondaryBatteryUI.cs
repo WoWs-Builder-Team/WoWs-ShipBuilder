@@ -55,12 +55,12 @@ namespace WoWsShipBuilder.Core.DataUI
                 var reload = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
 
                 var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
-                var range = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+                var range = Math.Round(rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier), 2);
 
                 var secondaryUI = new SecondaryBatteryUI
                 {
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
-                    Range = range,
+                    Range = Math.Round(range / 1000, 2),
                     Reload = reload,
                     RoF = Math.Round(60 / reload),
                 };

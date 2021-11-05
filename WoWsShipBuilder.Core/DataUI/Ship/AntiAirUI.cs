@@ -83,15 +83,21 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
-            var longRangeUI = FromAura(longRange, flakDamageBonus, constantDamageBonus);
-            aaUI.LongRangeAura = longRangeUI;
-            aaUI.MediumRangeAura = FromAura(hull.AntiAir.MediumRangeAura, flakDamageBonus, constantDamageBonus);
-            aaUI.ShortRangeAura = FromAura(hull.AntiAir.ShortRangeAura, flakDamageBonus, constantDamageBonus);
+            int flakAmount = 0;
+            if (longRange != null)
+            {
+                var extraFlak = modifiers.FindModifiers("AAExtraBubbles");
+                flakAmount = extraFlak.Aggregate(longRange.FlakCloudsNumber, (current, modifier) => current + (int)modifier);
+            }
+
+            aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);
+            aaUI.MediumRangeAura = FromAura(hull.AntiAir.MediumRangeAura, flakDamageBonus, constantDamageBonus, 0);
+            aaUI.ShortRangeAura = FromAura(hull.AntiAir.ShortRangeAura, flakDamageBonus, constantDamageBonus, 0);
 
             return aaUI;
         }
 
-        private static AuraDataUI? FromAura(AntiAirAura? antiAirAura, decimal flakDamageBonus, decimal constantDamageBonus)
+        private static AuraDataUI? FromAura(AntiAirAura? antiAirAura, decimal flakDamageBonus, decimal constantDamageBonus, int flakAmount)
         {
             if (antiAirAura == null)
             {
@@ -100,10 +106,10 @@ namespace WoWsShipBuilder.Core.DataUI
             else
             {
                 string flakNumber = "";
-                if (antiAirAura.FlakCloudsNumber > 0)
+                if (flakAmount > 0)
                 {
-                    var flakAverage = (int)(antiAirAura.FlakCloudsNumber * antiAirAura.HitChance);
-                    var flakDelta = antiAirAura.FlakCloudsNumber - flakAverage;
+                    var flakAverage = (int)(flakAmount * antiAirAura.HitChance);
+                    var flakDelta = flakAmount - flakAverage;
                     flakNumber = $"{flakAverage} ± {flakDelta}";
                 }
 

@@ -32,7 +32,7 @@ public record BombUI : ProjectileUI, IDataUi
         public string RicochetAngles { get; set; } = default!;
 
         [DataUiUnit("PerCent")]
-        public int FireChance { get; set; }
+        public decimal FireChance { get; set; }
 
         public static BombUI? FromBombName(string name, List<(string name, float value)> modifiers)
         {
@@ -53,7 +53,9 @@ public record BombUI : ProjectileUI, IDataUi
             }
 
             var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
-            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current * modifier), 2);
+            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier), 3);
+            var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
+            fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
             var bombUI = new BombUI
             {
@@ -63,7 +65,7 @@ public record BombUI : ProjectileUI, IDataUi
                 FuseTimer = (decimal)bomb.FuseTimer,
                 ArmingTreshold = (int)bomb.ArmingThreshold,
                 RicochetAngles = ricochetAngle,
-                FireChance = (int)(fireChance * 100),
+                FireChance = Math.Round(fireChance * 100, 1),
             };
 
             bombUI.ProjectileData = bombUI.ToPropertyMapping();

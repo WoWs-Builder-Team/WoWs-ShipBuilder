@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -79,7 +80,7 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 ManeuverabilityFullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier,
                 ManeuverabilityFullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier,
-                ManeuverabilityMaxSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier,
+                ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
                 ManeuverabilityRudderShiftTime = hull.RudderTime * rudderShiftModifier,
                 ManeuverabilityTurningCircle = hull.TurningRadius,
             };

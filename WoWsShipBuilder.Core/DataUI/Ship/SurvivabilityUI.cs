@@ -17,7 +17,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal FireAmount { get; set; }
 
         [DataUiUnit("PerCent")]
-        public int FireReduction { get; set; }
+        public decimal FireReduction { get; set; }
 
         [DataUiUnit("S")]
         public decimal FireDuration { get; set; }
@@ -73,7 +73,14 @@ namespace WoWsShipBuilder.Core.DataUI
 
             fireDuration = modifiers.FindModifiers("burnTime").Aggregate(fireDuration, (current, modifier) => current * (decimal)modifier);
 
-            decimal fireResistance = Math.Round(modifiers.FindModifiers("burnProb").Aggregate(shipHull.FireResistance, (current, modifier) => current * (decimal)modifier), 4);
+            floodDuration = modifiers.FindModifiers("floodTime").Aggregate(floodDuration, (current, modifier) => current * (decimal)modifier);
+
+            // fire chance reduction = base fire resistance +(100 - base fire resistance) *(1 - burnProb)
+            decimal baseFireResistance = 1 - shipHull.FireResistance;
+            var fireResistanceModifiers = modifiers.FindModifiers("burnProb").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
+            decimal fireResistance = baseFireResistance + ((1 - baseFireResistance) * (1 - fireResistanceModifiers));
+
+            // int torpedoProtection = (int)Math.Round(modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance, (current, modifier) => current + (decimal)modifier) * 100, 0);
 
             decimal fireDps = Math.Round(hitPoints * shipHull.FireTickDamage / 100);
             decimal fireTotalDamage = Math.Round(fireDuration * fireDps);
@@ -86,12 +93,12 @@ namespace WoWsShipBuilder.Core.DataUI
                 HitPoints = (int)hitPoints,
                 FireDuration = fireDuration,
                 FireAmount = fireSpots,
-                FireReduction = (int)Math.Round(fireResistance * 100, 0),
+                FireReduction = Math.Round(fireResistance * 100, 1),
                 FireDPS = fireDps,
                 FireTotalDamage = fireTotalDamage,
                 FloodDuration = floodDuration,
                 FloodAmount = shipHull.FloodingSpots,
-                FloodTorpedoProtection = (int)Math.Round(shipHull.FloodingResistance * 100, 0),
+                FloodTorpedoProtection = (int)Math.Round(shipHull.FloodingResistance),
                 FloodDPS = floodDps,
                 FloodTotalDamage = floodTotalDamage,
             };

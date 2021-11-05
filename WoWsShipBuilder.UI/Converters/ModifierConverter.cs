@@ -66,7 +66,8 @@ namespace WoWsShipBuilder.UI.Converters
                 }
 
                 // Because removing unused things is too hard, right WG?
-                if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase))
+                if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("torpedoDetectionCoefficientByPlane", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return "";
                 }
@@ -80,6 +81,18 @@ namespace WoWsShipBuilder.UI.Converters
 
                     case { } str when str.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}%";
+                        break;
+
+                    // this is for Vigilance for BBs
+                    case { } str when str.Contains("uwCoeffBonus", StringComparison.InvariantCultureIgnoreCase) ||
+                                             str.Contains("ignorePTZBonus", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{(int)modifier}%";
+                        break;
+
+                    // This is for IFHE. At the start because of DE sharing similar modifier name
+                    case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
+                                             str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"-{(int)Math.Round(modifier * 100)}%";
                         break;
 
                     // this is for HP module
