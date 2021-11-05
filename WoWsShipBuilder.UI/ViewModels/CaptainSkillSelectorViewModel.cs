@@ -347,7 +347,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (CamoEnabled)
             {
-                modifiers.Add(("visibilityDistCoeff", 0.97f));
+                modifiers.Add(("visibilityFactor", 0.97f));
             }
 
             return modifiers;

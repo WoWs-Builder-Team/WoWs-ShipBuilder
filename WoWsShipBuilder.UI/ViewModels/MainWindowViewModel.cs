@@ -97,6 +97,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(SignalSelectorViewModel.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
             UpdateStatsViewModel();
         }
 
