@@ -81,7 +81,6 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal fireResistance = baseFireResistance + ((1 - baseFireResistance) * (1 - fireResistanceModifiers));
 
             // int torpedoProtection = (int)Math.Round(modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance, (current, modifier) => current + (decimal)modifier) * 100, 0);
-
             decimal fireDps = Math.Round(hitPoints * shipHull.FireTickDamage / 100);
             decimal fireTotalDamage = Math.Round(fireDuration * fireDps);
 

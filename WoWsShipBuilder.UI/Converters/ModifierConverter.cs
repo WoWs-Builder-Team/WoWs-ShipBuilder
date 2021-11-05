@@ -166,7 +166,25 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"+{Math.Round(modifier * 100)}%";
                         break;
 
-                    case { } when Math.Abs(modifier % 1) > double.Epsilon * 100:
+                    case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier}";
+                        break;
+
+                    case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} s";
+                        prefix += "CALLFIGHTERS";
+                        break;
+
+                    case { } str when str.Contains("radius"):
+                        value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
+                        break;
+
+                    case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} s";
+                        break;
+
+                    case { } str when Math.Abs(modifier % 1) > (double.Epsilon * 100) ||
+                                             str.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase):
                     {
                         if (modifier > 1)
                         {
@@ -181,19 +199,6 @@ namespace WoWsShipBuilder.UI.Converters
 
                         break;
                     }
-
-                    case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{modifier}";
-                        break;
-
-                    case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{modifier} s";
-                        prefix += "CALLFIGHTERS";
-                        break;
-
-                    case { } str when str.Contains("radius"):
-                        value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
-                        break;
 
                     default:
                         // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes

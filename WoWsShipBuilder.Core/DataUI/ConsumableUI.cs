@@ -51,6 +51,12 @@ namespace WoWsShipBuilder.Core.DataUI
                 localizationKey = consumable.Name;
             }
 
+            Dictionary<string, float> consumableModifiers = new();
+            if (consumable.Modifiers is not null)
+            {
+                consumableModifiers = consumable.Modifiers.ToDictionary(x => x.Key, x => x.Value);
+            }
+
             int uses = consumable.NumConsumables;
             float cooldown = consumable.ReloadTime;
             float workTime = consumable.WorkTime;
@@ -124,6 +130,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     var workTimeModifiers = modifiers.FindModifiers("smokeGeneratorWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+
+                    var smokeLifeTimeModifiers = modifiers.FindModifiers("smokeGeneratorLifeTime");
+                    var lifeTime = smokeLifeTimeModifiers.Aggregate(consumableModifiers["lifeTime"], (current, modifier) => current * modifier);
+                    consumableModifiers["lifeTime"] = lifeTime;
                 }
                 else if (name.Contains("PCY015", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -162,7 +172,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 Desc = "",
                 Cooldown = Math.Round((decimal)cooldown, 1),
                 WorkTime = Math.Round((decimal)workTime, 1),
-                Modifiers = consumable.Modifiers ?? new Dictionary<string, float>(),
+                Modifiers = consumableModifiers,
             };
 
             consumableUI.ConsumableData = consumableUI.ToPropertyMapping();
