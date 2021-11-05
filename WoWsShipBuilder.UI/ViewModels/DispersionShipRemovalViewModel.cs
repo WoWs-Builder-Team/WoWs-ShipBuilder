@@ -11,6 +11,18 @@ namespace WoWsShipBuilder.UI.ViewModels
         public DispersionShipRemovalViewModel(List<string> currentShipList)
         {
             CurrentShipList = new AvaloniaList<string>(currentShipList);
+            CurrentSelection.CollectionChanged += CurrentSelection_CollectionChanged;
+            RemoveSelection.CollectionChanged += RemoveSelection_CollectionChanged;
+        }
+
+        private void RemoveSelection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(RemoveSelection));
+        }
+
+        private void CurrentSelection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(CurrentSelection));
         }
 
         private AvaloniaList<string> currentShipList = new();
@@ -29,17 +41,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref shipsToDeleteList, value);
         }
 
-        private List<string> currentSelection = new();
+        private AvaloniaList<string> currentSelection = new();
 
-        public List<string> CurrentSelection
+        public AvaloniaList<string> CurrentSelection
         {
             get => currentSelection;
             set => this.RaiseAndSetIfChanged(ref currentSelection, value);
         }
 
-        private List<string> removeSelection = new();
+        private AvaloniaList<string> removeSelection = new();
 
-        public List<string> RemoveSelection
+        public AvaloniaList<string> RemoveSelection
         {
             get => removeSelection;
             set => this.RaiseAndSetIfChanged(ref removeSelection, value);
@@ -53,8 +65,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         // TODO: Change into something that does listen to CollectionChanged events.
-        // [DependsOn(nameof(CurrentSelection))]
-        // public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
+        [DependsOn(nameof(CurrentSelection))]
+        public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
+
         public void RestoreShips()
         {
             var rem = RemoveSelection.ToList();
@@ -62,7 +75,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipsToDeleteList.RemoveAll(rem);
         }
 
-        // [DependsOn(nameof(RemoveSelection))]
-        // public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
+        [DependsOn(nameof(RemoveSelection))]
+        public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
     }
 }
