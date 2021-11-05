@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Collections;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    public class UpgradePanelViewModel : ViewModelBase
+    public class UpgradePanelViewModel : ViewModelBase, IBuildStorable
     {
         private List<List<Modernization>> availableModernizationList = null!;
 
@@ -77,6 +78,33 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => availableModernizationList;
             set => this.RaiseAndSetIfChanged(ref availableModernizationList, value);
+        }
+
+        public List<(string, float)> GetModifierList()
+        {
+            return SelectedModernizationList
+                .Where(m => m.Index != null)
+                .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
+                .ToList();
+        }
+
+        public void LoadBuild(IEnumerable<string> storedData)
+        {
+            var selection = new List<Modernization>();
+            foreach (List<Modernization> modernizations in AvailableModernizationList)
+            {
+                selection.AddRange(modernizations.Where(modernization => storedData.Contains(modernization.Index)));
+            }
+
+            var removeList = SelectedModernizationList.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
+            SelectedModernizationList.RemoveAll(removeList);
+            SelectedModernizationList.AddRange(selection);
+            this.RaisePropertyChanged(nameof(SelectedModernizationList));
+        }
+
+        public List<string> SaveBuild()
+        {
+            return SelectedModernizationList.Select(modernization => modernization.Index).ToList();
         }
     }
 }

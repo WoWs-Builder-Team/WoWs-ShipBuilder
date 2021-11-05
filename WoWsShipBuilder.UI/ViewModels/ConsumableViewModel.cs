@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Collections;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    public class ConsumableViewModel : ViewModelBase
+    public class ConsumableViewModel : ViewModelBase, IBuildStorable
     {
         private List<List<ConsumableUI>> shipConsumables = null!;
 
@@ -69,5 +70,24 @@ namespace WoWsShipBuilder.UI.ViewModels
         public AvaloniaList<ConsumableUI> SelectedConsumables { get; private set; }
 
         public Action<ConsumableUI> OnConsumableSelected { get; }
+
+        public void LoadBuild(IEnumerable<string> storedData)
+        {
+            var selection = new List<ConsumableUI>();
+            foreach (List<ConsumableUI> consumableList in ShipConsumables)
+            {
+                selection.AddRange(consumableList.Where(consumable => storedData.Contains(consumable.IconName)));
+            }
+
+            var removeList = SelectedConsumables.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
+            SelectedConsumables.RemoveAll(removeList);
+            SelectedConsumables.AddRange(selection);
+            this.RaisePropertyChanged(nameof(SelectedConsumables));
+        }
+
+        public List<string> SaveBuild()
+        {
+            return SelectedConsumables.Select(consumable => consumable.IconName).ToList();
+        }
     }
 }

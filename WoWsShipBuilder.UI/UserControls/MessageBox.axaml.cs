@@ -9,7 +9,7 @@ using Avalonia.Platform;
 namespace WoWsShipBuilder.UI.UserControls
 {
     public partial class MessageBox : Window
-    {      
+    {
         public MessageBox()
         {
             AvaloniaXamlLoader.Load(this);
@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.UI.UserControls
                         bitmap = new Bitmap(assets.Open(new Uri("avares://WoWsShipBuilder/Assets/Icons/Warning.png")));
                         break;
                 }
-                
+
                 iconControl.Source = bitmap;
             }
 
@@ -87,11 +87,17 @@ namespace WoWsShipBuilder.UI.UserControls
                     msgbox.Close();
                 };
                 btn.Width = 60;
+
+                if (r == MessageBoxResult.Cancel)
+                {
+                    btn.IsCancel = true;
+                }
+
                 buttonPanel.Children.Add(btn);
                 if (def)
                 {
                     res = r;
-                } 
+                }
             }
 
             if (buttons == MessageBoxButtons.Ok || buttons == MessageBoxButtons.OkCancel)
