@@ -29,7 +29,13 @@
         <StackPanel Orientation="Vertical" Grid.Row="3" Spacing="10" Margin="0,10,0,10">
             <Button Command="{Binding LoadBuild}" Content="{x:Static p:Translation.StartMenu_LoadBuild}"/>
             <Button Command="{Binding DeleteBuild}" Content="{x:Static p:Translation.StartMenu_DeleteBuild}"/>
-            <ListBox Items="{Binding BuildList}" SelectedIndex="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None"/>
+            <ListBox Items="{Binding BuildList}" SelectedIndex="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding BuildName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
         <Button Command="{Binding Setting}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="4" Margin="0,10,0,20"/>
     </Grid>

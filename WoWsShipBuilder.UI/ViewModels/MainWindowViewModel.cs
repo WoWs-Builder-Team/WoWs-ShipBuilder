@@ -101,6 +101,41 @@ namespace WoWsShipBuilder.UI.ViewModels
             UpdateStatsViewModel();
         }
 
+        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build build)
+        {
+            self = window;
+            tokenSource = new CancellationTokenSource();
+
+            // Signal selector model
+            SignalSelectorViewModel = new SignalSelectorViewModel(build.Signals);
+
+            // Ship stats model
+            RawShipData = ship;
+            EffectiveShipData = RawShipData;
+
+            // Captain Skill model
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, build.Skills);
+
+            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
+            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
+            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
+            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+            ConsumableViewModel = new ConsumableViewModel(RawShipData);
+
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+
+            CurrentShipIndex = ship.Index;
+            PreviousShipIndex = previousShipIndex;
+            NextShipIndex = nextShipsIndexes;
+
+            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(SignalSelectorViewModel.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            UpdateStatsViewModel();
+        }
+
         public MainWindowViewModel()
             : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
         {
@@ -260,7 +295,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void OpenSaveBuild()
         {
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, null, null, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, null!, null!, CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);

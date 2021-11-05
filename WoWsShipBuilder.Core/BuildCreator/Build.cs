@@ -9,7 +9,16 @@ namespace WoWsShipBuilder.Core.BuildCreator
 {
     public class Build
     {
-        public Build(string shipIndex, Nation nation, List<string>? modules, List<string>? consumables, List<int>? skills, List<string>? signals)
+        public Build()
+        {
+        }
+
+        public Build(string buildName)
+        {
+            BuildName = buildName;
+        }
+
+        public Build(string shipIndex, Nation nation, List<string> modules, List<string> consumables, List<int> skills, List<string> signals)
         {
             ShipIndex = shipIndex;
             Nation = nation;
@@ -19,19 +28,19 @@ namespace WoWsShipBuilder.Core.BuildCreator
             Consumables = consumables;
         }
 
-        public string? BuildName { get; set; }
+        public string BuildName { get; set; } = default!;
 
-        public string ShipIndex { get; set; }
+        public string ShipIndex { get; set; } = default!;
 
         public Nation Nation { get; set; }
 
-        public List<string>? Modules { get; set; }
+        public List<string> Modules { get; set; } = new();
 
-        public List<int>? Skills { get; set; }
+        public List<int> Skills { get; set; } = new();
 
-        public List<string>? Consumables { get; set; }
+        public List<string> Consumables { get; set; } = new();
 
-        public List<string>? Signals { get; set; }
+        public List<string> Signals { get; set; } = new();
 
         /// <summary>
         /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.

@@ -3,22 +3,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        SizeToContent="WidthAndHeight" CanResize="False" WindowStartupLocation="CenterOwner"
+        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="180"
+        CanResize="False" WindowStartupLocation="CenterOwner"
+        Width="500" Height="180"
         x:Class="WoWsShipBuilder.UI.Views.BuildImportWindow">
     <Grid RowDefinitions="30,Auto, Auto, Auto">
-        <userControls:AppHeader Title="Import build"/>
+        <userControls:AppHeader Title="{x:Static t:Translation.BuildImport_Title}"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="10">
-            <RadioButton GroupName="ImportType" Content="Import only" IsChecked="{Binding ImportOnly}"/>
-            <RadioButton GroupName="ImportType" Content="Import and save"/>
+            <RadioButton GroupName="ImportType" Content="{x:Static t:Translation.BuildImport_ImportOnly}" IsChecked="{Binding ImportOnly}"/>
+            <RadioButton GroupName="ImportType" Content="{x:Static t:Translation.BuildImport_ImportSave}"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Spacing="10" Margin="10,0,10,10">
-            <TextBlock Text="Paste the build string"/>
+            <TextBlock Text="{x:Static t:Translation.BuildImport_InsertBuild}"/>
             <TextBox Text="{Binding BuildString}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10" Margin="10,0,10,10">
-            <Button Content="Import" Command="{Binding Import}"/>
-            <Button Content="Cancel" Command="{Binding Cancel}"/>
+            <Button Content="{x:Static t:Translation.BuildImport_Import}" Command="{Binding Import}"/>
+            <Button Content="{x:Static t:Translation.Cancel}" Command="{Binding Cancel}"/>
         </StackPanel>
     </Grid>
 </Window>

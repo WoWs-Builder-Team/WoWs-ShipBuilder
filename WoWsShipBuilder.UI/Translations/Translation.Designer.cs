@@ -115,6 +115,60 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string BuildImport_Import {
+            get {
+                return ResourceManager.GetString("BuildImport_Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import only.
+        /// </summary>
+        public static string BuildImport_ImportOnly {
+            get {
+                return ResourceManager.GetString("BuildImport_ImportOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import and save.
+        /// </summary>
+        public static string BuildImport_ImportSave {
+            get {
+                return ResourceManager.GetString("BuildImport_ImportSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste the build string here.
+        /// </summary>
+        public static string BuildImport_InsertBuild {
+            get {
+                return ResourceManager.GetString("BuildImport_InsertBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Build.
+        /// </summary>
+        public static string BuildImport_Title {
+            get {
+                return ResourceManager.GetString("BuildImport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply Camo Bonuses.
         /// </summary>
         public static string CaptainSkillSelector_Camo {
@@ -498,6 +552,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Netherlands {
             get {
                 return ResourceManager.GetString("Netherlands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         
@@ -1857,6 +1920,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SplashScreen_ShipImages {
             get {
                 return ResourceManager.GetString("SplashScreen_ShipImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error suring the loading of the build.
+        /// </summary>
+        public static string StartMenu_BuildLoadingError {
+            get {
+                return ResourceManager.GetString("StartMenu_BuildLoadingError", resourceCulture);
             }
         }
         

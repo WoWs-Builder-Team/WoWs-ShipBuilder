@@ -753,4 +753,28 @@
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
     <value>Delete build</value>
   </data>
+  <data name="BuildImport_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="BuildImport_ImportOnly" xml:space="preserve">
+    <value>Import only</value>
+  </data>
+  <data name="BuildImport_ImportSave" xml:space="preserve">
+    <value>Import and save</value>
+  </data>
+  <data name="BuildImport_InsertBuild" xml:space="preserve">
+    <value>Paste the build string here</value>
+  </data>
+  <data name="BuildImport_Title" xml:space="preserve">
+    <value>Import Build</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="StartMenu_BuildLoadingError" xml:space="preserve">
+    <value>Error suring the loading of the build</value>
+  </data>
 </root>
