@@ -20,6 +20,7 @@
         <None Remove="Assets\Github.png" />
         <None Remove="Assets\Information_Full.png" />
         <None Remove="Assets\Question_Full.png" />
+        <None Remove="Assets\ShipBuilderIcon-white-countour.ico" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.10" />
