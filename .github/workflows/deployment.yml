@@ -33,7 +33,7 @@ jobs:
         run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish /p:version=1.0.0 -p:NuspecProperties=version="$env:CURRENT_TAG"
       - name: Create squirrel release
         working-directory: WoWsShipBuilder.UI
-        run: "%UserProfile%\\.nuget\\packages\\Clowd.Squirrel\\tools\\Squirrel.com" --releasify .\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases"
+        run: $env:USERPROFILE\.nuget\packages\Clowd.Squirrel\tools\Squirrel.com --releasify .\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases"
         
       - name: Release
         uses: softprops/action-gh-release@v1
