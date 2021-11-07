@@ -26,15 +26,17 @@ jobs:
         run: dotnet build --no-restore -c Release
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal
+        
       - name: Publish windows executable
         run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG"
-      - name: Publish linux executable
-        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishLinux -p:Version="$env:CURRENT_TAG"
+      - name: Package published binary
+        run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish /p:version=1.0.0 -p:NuspecProperties=version="$env:CURRENT_TAG"
+      - name: Create squirrel release
+        working-directory: WoWsShipBuilder.UI
+        run: %UserProfile%\.nuget\packages\Clowd.Squirrel\tools\Squirrel.com --releasify ".\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg" --selfContained --releaseDir=".\releases"
+        
       - name: Release
         uses: softprops/action-gh-release@v1
         with: 
-          files: |
-            WoWsShipBuilder.UI\bin\Release\net5.0\publish\WoWsShipBuilder
-            WoWsShipBuilder.UI\bin\Release\net5.0\publish\WoWsShipBuilder.exe
-            LICENSE
+          files: WoWsShipBuilder.UI\releases\*
           body_path: ReleaseNotes.md
