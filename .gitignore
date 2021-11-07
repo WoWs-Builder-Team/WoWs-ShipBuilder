@@ -5,6 +5,9 @@
 bin/
 obj/
 
+releases/
+Tools/*.log
+
 *.user
 
 WoWsShipBuilder.UI/Settings/*.json
