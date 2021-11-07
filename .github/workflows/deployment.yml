@@ -19,7 +19,7 @@ jobs:
       - name: Process tag version
         run: echo ("CURRENT_TAG=" + $env:GITHUB_REF.Replace('refs/tags/v', '')) >> $env:GITHUB_ENV
       - name: Create application config
-        run: echo "${{ secrets.SHIPBUILDER_APPCONFIG }}" >> WoWsShipBuilder.UI\Settings\ApplicationOptions.json
+        run: echo ${{ secrets.SHIPBUILDER_APPCONFIG }} >> WoWsShipBuilder.UI\Settings\ApplicationOptions.json
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application
