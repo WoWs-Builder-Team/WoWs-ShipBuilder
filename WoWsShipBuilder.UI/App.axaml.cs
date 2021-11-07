@@ -1,12 +1,12 @@
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Squirrel;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Views;
@@ -28,22 +28,25 @@ namespace WoWsShipBuilder.UI
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (desktop.Args.Length > 0 && desktop.Args[0] == "-update")
-                {
-                    string programPath = desktop.Args[1];
-                    string tempPath = Path.Combine(AppDataHelper.Instance.DefaultAppDataDirectory, "tempUpdate");
-                    DirectoryCopy(tempPath, programPath, true);
-                    string programExe = Path.Combine(programPath, "WoWsShipBuilder.exe");
-                    Process.Start(programExe);
-                    desktop.Shutdown();
-                    return;
-                }
-
                 AppSettingsHelper.LoadSettings();
                 desktop.Exit += OnExit;
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
+
+                Logging.Logger.Info("Before updatecheck");
+
+                // SquirrelAwareApp.HandleEvents(onAppUpdate: OnAppUpdate);
+                Task.Run(async () =>
+                {
+                    await UpdateCheck();
+                    Logging.Logger.Info("After updatecheck");
+                });
             }
+        }
+
+        private void OnAppUpdate(Version obj)
+        {
+            Logging.Logger.Info("On App update triggered.");
         }
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
@@ -52,40 +55,18 @@ namespace WoWsShipBuilder.UI
             AppDataHelper.Instance.SaveBuilds();
         }
 
-        private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        private async Task UpdateCheck()
         {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new(sourceDirName);
-
-            if (!dir.Exists)
+            Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+            try
             {
-                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
+                await updateManager.UpdateApp();
             }
-
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            // If the destination directory doesn't exist, create it.
-            if (!Directory.Exists(destDirName))
+            catch (Exception e)
             {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-            }
-
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subDirectory in dirs)
-                {
-                    string tempPath = Path.Combine(destDirName, subDirectory.Name);
-                    DirectoryCopy(subDirectory.FullName, tempPath, copySubDirs);
-                }
+                Logging.Logger.Error(e);
+                throw;
             }
         }
     }

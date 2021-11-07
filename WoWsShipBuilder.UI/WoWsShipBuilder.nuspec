@@ -5,12 +5,12 @@
         <version>0.0.0.0</version>
         <title>WoWs ShipBuilder</title>
         <authors>WoWs-Builder-Team</authors>
-        <description>description</description>
+        <description>A tool to create and share ship builds in World of Warships</description>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>Copyright 2021</copyright>
         <dependencies />
     </metadata>
     <files>
-        <file src="*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+        <file src="**\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
     </files>
 </package>
