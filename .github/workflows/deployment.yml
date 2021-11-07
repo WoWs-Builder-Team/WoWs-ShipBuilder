@@ -31,9 +31,11 @@ jobs:
         run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG"
       - name: Package published binary
         run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish /p:version=1.0.0 -p:NuspecProperties=version="$env:CURRENT_TAG"
+      - name: Create command string
+        run: echo ("SQUIRREL_CMD=" + $env:USERPROFILE + '\.nuget\packages\Clowd.Squirrel\tools\Squirrel.com --releasify .\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases"') >> $env:GITHUB_ENV
       - name: Create squirrel release
         working-directory: WoWsShipBuilder.UI
-        run: $env:USERPROFILE\.nuget\packages\Clowd.Squirrel\tools\Squirrel.com --releasify .\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases"
+        run: Invoke-Expression -Command $env:SQUIRREL_CMD
         
       - name: Release
         uses: softprops/action-gh-release@v1
