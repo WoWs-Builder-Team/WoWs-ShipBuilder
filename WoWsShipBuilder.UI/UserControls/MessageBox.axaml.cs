@@ -81,12 +81,23 @@ namespace WoWsShipBuilder.UI.UserControls
             void AddButton(string caption, MessageBoxResult r, bool def = false)
             {
                 var btn = new Button { Content = caption };
-                btn.Click += (_, __) =>
+                btn.Click += (_, _) =>
                 {
                     res = r;
                     msgbox.Close();
                 };
                 btn.Width = 60;
+
+                switch (r)
+                {
+                    case MessageBoxResult.Ok:
+                    case MessageBoxResult.Yes:
+                        btn.IsDefault = true;
+                        break;
+                    case MessageBoxResult.Cancel:
+                        btn.IsCancel = true;
+                        break;
+                }
 
                 if (r == MessageBoxResult.Cancel)
                 {

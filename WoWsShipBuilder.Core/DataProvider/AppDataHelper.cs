@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
@@ -155,6 +156,16 @@ namespace WoWsShipBuilder.Core.DataProvider
             var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
             string buildsString = JsonConvert.SerializeObject(builds);
             fileSystem.File.WriteAllText(path, buildsString);
+        }
+
+        public void LoadBuilds()
+        {
+            string path = fileSystem.Path.Combine(Instance.DefaultAppDataDirectory, "builds.json");
+            if (fileSystem.File.Exists(path))
+            {
+                var rawBuildList = JsonConvert.DeserializeObject<List<string>>(fileSystem.File.ReadAllText(path));
+                AppData.Builds = rawBuildList?.Select(Build.CreateBuildFromString).ToList() ?? new List<Build>();
+            }
         }
 
         private static string GetNationString(Nation? nation)

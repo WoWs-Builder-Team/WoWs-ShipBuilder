@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using ReactiveUI;
@@ -65,78 +64,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string xpBonus = "0";
 
-        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes)
+        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
             self = window;
             tokenSource = new CancellationTokenSource();
 
-            // Signal selector model
-            SignalSelectorViewModel = new SignalSelectorViewModel();
-
-            // Ship stats model
-            RawShipData = ship;
-            EffectiveShipData = RawShipData;
-
-            // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
-
-            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
-            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
-            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
-            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
-            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
-            ConsumableViewModel = new ConsumableViewModel(RawShipData);
-
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
-
-            CurrentShipIndex = ship.Index;
-            PreviousShipIndex = previousShipIndex;
-            NextShipIndex = nextShipsIndexes;
-
-            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(SignalSelectorViewModel.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
-            UpdateStatsViewModel();
-        }
-
-        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build build)
-        {
-            self = window;
-            tokenSource = new CancellationTokenSource();
-
-            // Signal selector model
-            SignalSelectorViewModel = new SignalSelectorViewModel(build.Signals);
-
-            // Ship stats model
-            RawShipData = ship;
-            EffectiveShipData = RawShipData;
-
-            // Captain Skill model
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, build.Skills);
-
-            OpenSaveBuildCommand = ReactiveCommand.Create(() => OpenSaveBuild());
-            BackToMenuCommand = ReactiveCommand.Create(() => BackToMenu());
-            NewShipSelectionCommand = ReactiveCommand.Create(() => NewShipSelection());
-            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
-            ShipModuleViewModel.LoadBuild(build.Modules);
-            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
-            UpgradePanelViewModel.LoadBuild(build.Upgrades);
-            ConsumableViewModel = new ConsumableViewModel(RawShipData);
-            ConsumableViewModel.LoadBuild(build.Consumables);
-
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
-
-            CurrentShipIndex = ship.Index;
-            PreviousShipIndex = previousShipIndex;
-            NextShipIndex = nextShipsIndexes;
-
-            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(SignalSelectorViewModel.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            UpdateStatsViewModel();
+            InitializeData(ship, previousShipIndex, nextShipsIndexes, build);
         }
 
         public MainWindowViewModel()
@@ -144,7 +77,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
         }
 
-        public List<Window> ChildrenWindows { get; set; } = new List<Window>();
+        public List<Window> ChildrenWindows { get; set; } = new();
 
         public string? CurrentShipIndex
         {
@@ -163,12 +96,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => nextShipIndex;
             set => this.RaiseAndSetIfChanged(ref nextShipIndex, value);
         }
-
-        public ICommand OpenSaveBuildCommand { get; }
-
-        public ICommand BackToMenuCommand { get; }
-
-        public ICommand NewShipSelectionCommand { get; }
 
         public ShipModuleViewModel ShipModuleViewModel
         {
@@ -296,6 +223,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
         }
 
+        public void ResetBuild()
+        {
+            LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
+        }
+
         private void OpenSaveBuild()
         {
             var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
@@ -322,42 +254,69 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
-                foreach (var listener in collectionChangeListeners)
-                {
-                    listener!.Dispose();
-                }
-
-                var temp = ChildrenWindows.ToList();
-                foreach (var window in temp)
-                {
-                    window.Close();
-                }
-
-                collectionChangeListeners.Clear();
-                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
-                AppDataHelper.Instance.LoadNationFiles(result.Nation);
-                RawShipData = ship!;
-                EffectiveShipData = RawShipData;
-
-                // Captain Skill model
-                CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, RawShipData.ShipNation);
-
-                ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
-                UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
-                ConsumableViewModel = new ConsumableViewModel(RawShipData);
-
-                CurrentShipIndex = ship!.Index;
-                PreviousShipIndex = result.PrevShipIndex;
-                NextShipIndex = result.NextShipsIndex;
-                ShipStatsControlViewModel =
-                    new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
-
-                collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
-                collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
-                collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
-                collectionChangeListeners.Add(CaptainSkillSelectorViewModel.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
-                UpdateStatsViewModel();
+                LoadNewShip(result);
             }
+        }
+
+        private void LoadNewShip(ShipSummary summary)
+        {
+            foreach (var listener in collectionChangeListeners)
+            {
+                listener!.Dispose();
+            }
+
+            var temp = ChildrenWindows.ToList();
+            foreach (var window in temp)
+            {
+                window.Close();
+            }
+
+            collectionChangeListeners.Clear();
+            var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
+            AppDataHelper.Instance.LoadNationFiles(summary.Nation);
+
+            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex, null);
+        }
+
+        private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+        {
+            // Ship stats model
+            RawShipData = ship;
+            EffectiveShipData = RawShipData;
+
+            // Viewmodel inits
+            SignalSelectorViewModel = build != null ? new SignalSelectorViewModel(build.Signals) : new SignalSelectorViewModel();
+            CaptainSkillSelectorViewModel = build != null
+                ? new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, build.Skills)
+                : new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
+            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
+            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+            ConsumableViewModel = new ConsumableViewModel(RawShipData);
+
+            if (build != null)
+            {
+                ShipModuleViewModel.LoadBuild(build.Modules);
+                UpgradePanelViewModel.LoadBuild(build.Upgrades);
+                ConsumableViewModel.LoadBuild(build.Consumables);
+            }
+
+            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+
+            CurrentShipIndex = ship.Index;
+            PreviousShipIndex = previousIndex;
+            NextShipIndex = nextShipsIndexes;
+
+            AddChangeListeners();
+            UpdateStatsViewModel();
+        }
+
+        private void AddChangeListeners()
+        {
+            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
         }
 
         private void CalculateXPValues()
@@ -419,18 +378,25 @@ namespace WoWsShipBuilder.UI.ViewModels
             Task.Run(
                 async () =>
                 {
-                    await Task.Delay(250, token);
-                    if (!token.IsCancellationRequested)
+                    try
                     {
-                        await semaphore.WaitAsync(token);
-                        var modifiers = GenerateModifierList();
-                        if (ShipStatsControlViewModel != null)
+                        await Task.Delay(250, token);
+                        if (!token.IsCancellationRequested)
                         {
-                            await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
-                        }
+                            await semaphore.WaitAsync(token);
+                            var modifiers = GenerateModifierList();
+                            if (ShipStatsControlViewModel != null)
+                            {
+                                await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
+                            }
 
-                        ConsumableViewModel.UpdateShipConsumables(modifiers);
-                        semaphore.Release();
+                            ConsumableViewModel.UpdateShipConsumables(modifiers);
+                            semaphore.Release();
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // ignored
                     }
                 },
                 token);

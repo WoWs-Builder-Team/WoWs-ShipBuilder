@@ -30,10 +30,10 @@
                     <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
                           HorizontalAlignment="Center">
                         <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
-                                Command="{Binding BackToMenuCommand}" Grid.Row="0" HorizontalAlignment="Stretch"
+                                Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
                                 Margin="0,0,0,10" />
                         <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
-                                Command="{Binding NewShipSelectionCommand}" Grid.Row="1" HorizontalAlignment="Stretch" />
+                                Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
                     </Grid>
                     <RelativePanel Grid.Column="1">
                         <!--PreviousShip-->
@@ -71,7 +71,7 @@
                         <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"
                                 Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
                                 Margin="0,0,0,10" />
-                        <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1"
+                        <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
                                 HorizontalAlignment="Stretch" />
                     </Grid>
                 </Grid>

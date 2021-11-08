@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             build.BuildName = BuildName + " - " + ShipName;
             var buildString = build.CreateStringFromBuild();
-            AppData.Builds.Add(build);
+            AppData.Builds.Insert(0, build);
             await Application.Current.Clipboard.SetTextAsync(buildString);
             await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
             self.Close();

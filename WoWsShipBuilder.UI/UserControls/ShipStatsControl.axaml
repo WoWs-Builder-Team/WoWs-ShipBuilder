@@ -8,13 +8,15 @@
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
              xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures"
-             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters">
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.DataContext>
         <vm:ShipStatsControlViewModel/>
     </Design.DataContext>
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter"/>
         <converters:ImagePathConverter x:Key="ImageConverter" />
+        <converters:ConsumableUiConverter x:Key="ConsumableUiConverter" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock">
@@ -219,7 +221,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock Text="Consumables" Margin="0,5,0,5" />
+                                        <TextBlock Text="Consumables" Margin="0,5,0,5" IsVisible="{Binding !!PlaneConsumables.Count}" />
                                         <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -229,7 +231,11 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <Border Background="{DynamicResource ThemeControlMidBrush}" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                                                        <Image Source="{Binding Converter={StaticResource ImageConverter}}"/>
+                                                        <Image Source="{Binding Converter={StaticResource ImageConverter}}" ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
+                                                            <ToolTip.Tip>
+                                                                <userControls:ModifierToolTip/>
+                                                            </ToolTip.Tip>
+                                                        </Image>
                                                     </Border>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

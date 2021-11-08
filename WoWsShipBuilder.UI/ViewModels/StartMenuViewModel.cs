@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Input;
 using Avalonia.Collections;
 using Avalonia.Metadata;
 using ReactiveUI;
@@ -15,11 +14,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class StartMenuViewModel : ViewModelBase
     {
-        private StartingMenuWindow self;
+        private readonly StartingMenuWindow self;
 
         public StartMenuViewModel(StartingMenuWindow window)
         {
             self = window;
+            if (!AppData.Builds.Any())
+            {
+                AppDataHelper.Instance.LoadBuilds();
+            }
+
             BuildList.CollectionChanged += BuildList_CollectionChanged;
             BuildList.Add(new Build(Translation.StartMenu_ImportBuild));
             BuildList.AddRange(AppData.Builds);
@@ -79,7 +83,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
             else
             {
-                build = BuildList.ElementAt(SelectedBuild!.Value); 
+                build = BuildList.ElementAt(SelectedBuild!.Value);
             }
 
             if (AppData.ShipSummaryList == null)

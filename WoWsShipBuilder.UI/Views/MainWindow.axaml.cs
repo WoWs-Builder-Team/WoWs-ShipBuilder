@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
@@ -13,7 +12,7 @@ namespace WoWsShipBuilder.UI.Views
 {
     public partial class MainWindow : Window
     {
-        private static readonly Regex Regex = new Regex("[^0-9]+");
+        private static readonly Regex Regex = new("\\D+");
 
         public MainWindow()
         {
@@ -51,18 +50,17 @@ namespace WoWsShipBuilder.UI.Views
             var image = sender as Image;
             var shipIndex = image!.Name;
             var ship = AppData.ShipDictionary![shipIndex!];
-            var prevShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == shipIndex).First().PrevShipIndex;
-            var nextShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == shipIndex).First().NextShipsIndex;
+            var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).PrevShipIndex;
+            var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).NextShipsIndex;
             DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
         }
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
         {
             var dc = DataContext as MainWindowViewModel;
-            var image = sender as Image;
             var ship = AppData.ShipDictionary![dc!.PreviousShipIndex!];
-            var prevShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == dc.PreviousShipIndex!).First().PrevShipIndex;
-            var nextShipIndex = AppData.ShipSummaryList!.Where(x => x.Index == dc.PreviousShipIndex!).First().NextShipsIndex;
+            var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).PrevShipIndex;
+            var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).NextShipsIndex;
             DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
         }
     }

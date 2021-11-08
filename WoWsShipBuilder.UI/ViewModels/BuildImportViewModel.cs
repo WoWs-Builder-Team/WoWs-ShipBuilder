@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (!ImportOnly)
             {
-                AppData.Builds.Add(build);
+                AppData.Builds.Insert(0, build);
             }
 
             self.Close(build);

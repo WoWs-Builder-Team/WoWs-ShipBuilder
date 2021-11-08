@@ -40,8 +40,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             currentClass = shipClass;
             CaptainList = captainList!.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
-            var skills = SelectedCaptain.Skills.Select(x => x.Value).Where(skill => selectedSkills.Contains(skill.SkillNumber)).ToList();
+            var skills = selectedSkills.Select(skillId => SelectedCaptain.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
+            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
         }
 
         private Captain? selectedCaptain;
@@ -123,7 +124,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         /// <summary>
-        /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>. 
+        /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
         /// </summary>
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
