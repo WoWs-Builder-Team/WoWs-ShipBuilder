@@ -36,13 +36,16 @@ namespace WoWsShipBuilder.UI
                 SplashScreen splashScreen = new(versionDetails);
                 splashScreen.Show();
 
-                Logging.Logger.Info("Before updatecheck");
+                Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
 
-                Task.Run(async () =>
+                if (AppData.Settings.AutoUpdateEnabled)
                 {
-                    await UpdateCheck();
-                    Logging.Logger.Info("After updatecheck");
-                });
+                    Task.Run(async () =>
+                    {
+                        await UpdateCheck();
+                        Logging.Logger.Info("After updatecheck");
+                    });
+                }
             }
         }
 
@@ -55,7 +58,6 @@ namespace WoWsShipBuilder.UI
         private async Task UpdateCheck()
         {
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
-            var updateDotExe = Path.Combine(AssemblyRuntimeInfo.BaseDirectory, "..\\Update.exe");
             using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
             try
             {
@@ -64,6 +66,7 @@ namespace WoWsShipBuilder.UI
                 var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(null, "App was updated, do you want to restart to apply?", "App Updated", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Question));
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
+                    Logging.Logger.Info("User decided to restart after update.");
                     UpdateManager.RestartApp();
                 }
             }
