@@ -31,6 +31,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             SelectedLanguage = languages.Keys.First();
             Servers = Enum.GetNames<ServerType>().ToList();
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
+            AutoUpdate = AppData.Settings!.AutoUpdateEnabled;
             CustomPath = AppData.Settings!.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
         }
