@@ -1,14 +1,17 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
@@ -35,18 +38,12 @@ namespace WoWsShipBuilder.UI
 
                 Logging.Logger.Info("Before updatecheck");
 
-                // SquirrelAwareApp.HandleEvents(onAppUpdate: OnAppUpdate);
                 Task.Run(async () =>
                 {
                     await UpdateCheck();
                     Logging.Logger.Info("After updatecheck");
                 });
             }
-        }
-
-        private void OnAppUpdate(Version obj)
-        {
-            Logging.Logger.Info("On App update triggered.");
         }
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
@@ -58,10 +55,17 @@ namespace WoWsShipBuilder.UI
         private async Task UpdateCheck()
         {
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            var updateDotExe = Path.Combine(AssemblyRuntimeInfo.BaseDirectory, "..\\Update.exe");
             using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
             try
             {
-                await updateManager.UpdateApp();
+                var release = await updateManager.UpdateApp();
+                Logging.Logger.Info($"App updated to version {release.Version}");
+                var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(null, "App was updated, do you want to restart to apply?", "App Updated", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Question));
+                if (result.Equals(MessageBox.MessageBoxResult.Yes))
+                {
+                    UpdateManager.RestartApp();
+                }
             }
             catch (Exception e)
             {
