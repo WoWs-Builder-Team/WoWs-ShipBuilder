@@ -7,7 +7,7 @@
              Name="Header">
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" IsHitTestVisible="False" Spacing="5">
-            <Image IsVisible="{Binding #Header.ShowTitle}" Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0" />
+            <Image IsVisible="{Binding #Header.ShowTitle}" Source="/Assets/ShipBuilderIcon_bg.ico" VerticalAlignment="Center" Margin="5,5,0,0" />
             <TextBlock IsVisible="{Binding #Header.ShowTitle}" Text="{Binding #Header.Title}" VerticalAlignment="Center" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">

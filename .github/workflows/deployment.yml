@@ -26,16 +26,16 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application
-        run: dotnet build --no-restore -c Release -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:AssemblyFileVersion="$env:CURRENT_TAG"
+        run: dotnet build --no-restore -c Release -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal
         
       - name: Publish windows executable
-        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:AssemblyFileVersion="$env:CURRENT_TAG"
+        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
       - name: Package published binary
         run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish -p:NuspecProperties=version="$env:CURRENT_TAG"
       - name: Create squirrel release
-        run: Tools\Squirrel.com --releasify WoWsShipBuilder.UI\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases" --setupIcon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon-white-countour.ico" --icon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon-white-countour.ico" --no-delta --no-msi
+        run: Tools\Squirrel.com --releasify WoWsShipBuilder.UI\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases" --setupIcon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --icon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --no-delta --no-msi
         
       - name: Release
         uses: softprops/action-gh-release@v1

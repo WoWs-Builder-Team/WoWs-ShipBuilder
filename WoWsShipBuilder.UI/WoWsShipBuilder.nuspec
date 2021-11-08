@@ -8,6 +8,7 @@
         <description>A tool to create and share ship builds in World of Warships</description>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>Copyright 2021</copyright>
+        <iconUrl>https://raw.githubusercontent.com/WoWs-Builder-Team/WoWs-ShipBuilder/main/WoWsShipBuilder.UI/Assets/ShipBuilderIcon_bg.ico</iconUrl>
         <dependencies />
     </metadata>
     <files>

@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
@@ -63,7 +62,7 @@ namespace WoWsShipBuilder.UI
             {
                 var release = await updateManager.UpdateApp();
                 Logging.Logger.Info($"App updated to version {release.Version}");
-                var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(null, "App was updated, do you want to restart to apply?", "App Updated", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Question));
+                var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(null, $"App was updated to version {release.Version}, do you want to restart to apply?", "App Updated", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Question));
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
                     Logging.Logger.Info("User decided to restart after update.");

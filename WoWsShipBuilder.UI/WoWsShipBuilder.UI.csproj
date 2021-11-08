@@ -3,14 +3,15 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <ApplicationIcon>Assets\ShipBuilderIcon.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
-        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
         <AssemblyVersion>0.0.1</AssemblyVersion>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
+        <FileVersion>0.0.1</FileVersion>
+        <NeutralLanguage>en-GB</NeutralLanguage>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
@@ -22,7 +23,6 @@
         <None Remove="Assets\Github.png" />
         <None Remove="Assets\Information_Full.png" />
         <None Remove="Assets\Question_Full.png" />
-        <None Remove="Assets\ShipBuilderIcon-white-countour.ico" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.10" />
