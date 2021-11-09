@@ -64,13 +64,36 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var workTimeModifiers = modifiers.FindModifiers("regenerateHealthWorkTimeCoeff");
+                    workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+
                     var usesModifiers = modifiers.FindModifiers("regenerateHealthAdditionalConsumables");
                     uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
+                    var regenerationSpeedModifiers = modifiers.FindModifiers("planeRegenerationRate");
+                    var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationRate"], (current, modifier) => current * modifier);
+                    consumableModifiers["regenerationRate"] = regenerationSpeed;
                 }
                 else if (name.Contains("PCY035", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var workTimeModifiers = modifiers.FindModifiers("callFightersWorkTimeCoeff");
+                    workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+
                     var usesModifiers = modifiers.FindModifiers("callFightersAdditionalConsumables");
                     uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+                    
+                    var radiusModifiers = modifiers.FindModifiers("callFightersRadiusCoeff");
+                    var radius = radiusModifiers.Aggregate(consumableModifiers["radius"], (current, modifier) => current * modifier);
+                    consumableModifiers["radius"] = radius;
+
+                    var timeDelayAttackModifiers = modifiers.FindModifiers("callFightersTimeDelayAttack");
+                    var timeDelayAttack = timeDelayAttackModifiers.Aggregate(consumableModifiers["timeDelayAttack"], (current, modifier) => current * modifier);
+                    consumableModifiers["timeDelayAttack"] = timeDelayAttack;
+                }
+                else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var cooldownModifiers = modifiers.FindModifiers("healForsageReloadCoeff");
+                    cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
             }
             else
@@ -107,6 +130,10 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     var workTimeModifiers = modifiers.FindModifiers("regenCrewWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+
+                    var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed");
+                    var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
+                    consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
                 }
                 else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -145,8 +172,12 @@ namespace WoWsShipBuilder.Core.DataUI
                     var cooldownModifiers = modifiers.FindModifiers("artilleryBoostersReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
-                else if (name.Contains("PCY012", StringComparison.InvariantCultureIgnoreCase))
+                else if (name.Contains("PCY012", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY038", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var extraFighters = modifiers.FindModifiers("extraFighterCount");
+                    var totalFighters = extraFighters.Aggregate(consumableModifiers["fightersNum"], (current, modifier) => current + modifier);
+                    consumableModifiers["fightersNum"] = totalFighters;
+
                     var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }

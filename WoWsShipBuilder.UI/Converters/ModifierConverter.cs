@@ -136,10 +136,18 @@ namespace WoWsShipBuilder.UI.Converters
                     // Also applies to repair party bonus.
                     case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
-                                      str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{modifier * 100}%";
-                        break;
+                                      (str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)) ||
+                                      (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
+                    {
+                        value = $"+{Math.Round(modifier * 100, 1)}%";
+                        if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                                value += "/s";
+                        }
 
+                        break;
+                    }
+                        
                     // This is Adrenaline Rush
                     case { } str when str.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase):
                         value = $"-{modifier}%";
@@ -170,11 +178,16 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"{modifier}";
                         break;
 
+                    // this is the modifier
+                    case { } str when str.Contains("CALLFIGHTERStimeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"-{Math.Round((1 - modifier) * 100)}%";
+                        break;
+
+                    // this is the actual value
                     case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{modifier} s";
                         prefix += "CALLFIGHTERS";
                         break;
-
                     case { } str when str.Contains("radius"):
                         value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
                         break;
@@ -261,6 +274,11 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Translation.ResourceManager.GetString("IncomingFireAlertDesc", Translation.Culture)!;
+                }
+
+                if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description += "/s";
                 }
 
                 if (returnFilter == ReturnFilter.Description)
