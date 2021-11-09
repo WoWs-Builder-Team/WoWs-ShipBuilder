@@ -34,7 +34,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FloodingChance { get; set; }
 
+        [JsonIgnore]
         public List<ShipClass>? CanHitClasses { get; set; }
+
+        [JsonIgnore]
+        public bool IsLast { get; set; } = false;
 
         public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers)
         {

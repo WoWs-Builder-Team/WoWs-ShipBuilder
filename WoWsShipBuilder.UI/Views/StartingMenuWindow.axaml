@@ -32,7 +32,10 @@
             <ListBox Items="{Binding BuildList}" SelectedIndex="{Binding SelectedBuild}" SelectionMode="Single" VirtualizationMode="None">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding BuildName}"/>
+                        <!--Helper stack panel to catch the double tap event. Background set to transparent so we can get hit tested.-->
+                        <StackPanel Background="Transparent" DoubleTapped="LoadBuild">
+                            <TextBlock Text="{Binding BuildName}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

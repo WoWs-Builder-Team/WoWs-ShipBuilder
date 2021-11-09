@@ -1339,6 +1339,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initial boost duration.
+        /// </summary>
+        public static string ShipStats_JatoDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_JatoDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial boost speed multiplier.
+        /// </summary>
+        public static string ShipStats_JatoSpeedMultiplier {
+            get {
+                return ResourceManager.GetString("ShipStats_JatoSpeedMultiplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Long Range Aura.
         /// </summary>
         public static string ShipStats_LongAura {
@@ -1758,6 +1776,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TheoreticalDPM {
             get {
                 return ResourceManager.GetString("ShipStats_TheoreticalDPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time to switch ammo.
+        /// </summary>
+        public static string ShipStats_TimeToSwitch {
+            get {
+                return ResourceManager.GetString("ShipStats_TimeToSwitch", resourceCulture);
             }
         }
         

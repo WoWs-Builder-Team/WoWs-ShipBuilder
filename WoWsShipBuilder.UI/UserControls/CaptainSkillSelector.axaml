@@ -38,7 +38,7 @@
                 <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" 
                           Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
             </Grid>
-            <ItemsControl Name="SkillContainer" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
+            <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid RowDefinitions="*,*,*,*" ColumnDefinitions="*,*,*,*,*,*"/>
@@ -46,21 +46,14 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Panel>
-                            <Border CornerRadius="15" Width="60" Height="60" Margin="5">
-                                <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip.Placement="Right">
-                                    <ToolTip.Tip>
-                                        <userControls:SkillToolTip DataContext="{Binding}"/>
-                                    </ToolTip.Tip>
-                                </Image>
-                            </Border>
+                        <Panel Background="Transparent" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" Margin="10,5">
+                            <ToolTip.Tip>
+                                <userControls:SkillToolTip DataContext="{Binding}"/>
+                            </ToolTip.Tip>
                             <customControls:NumberedButton
                                 BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
                                 Command="{Binding $parent[UserControl].DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                Margin="5" IsSpecial="{Binding Value.IsEpic}" ToolTip.Placement="Right">
-                                <ToolTip.Tip>
-                                    <userControls:SkillToolTip DataContext="{Binding}"/>
-                                </ToolTip.Tip>
+                                 IsSpecial="{Binding Value.IsEpic}">
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>

@@ -23,6 +23,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public string TorpedoArea { get; set; } = default!;
 
+        [DataUiUnit("S")]
+        public decimal TimeToSwitch { get; set; }
+
         [JsonIgnore]
         public List<TorpedoUI> Torpedoes { get; set; } = new();
 
@@ -58,7 +61,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 Reload = reloadSpeed,
                 TorpedoArea = torpedoArea,
                 Torpedoes = torpedoes,
+                TimeToSwitch = Math.Round(torpedoModule.TimeToChangeAmmo,  1),
             };
+
+            torpedoUi.Torpedoes.Last().IsLast = true;
 
             torpedoUi.TorpedoArmamentData = torpedoUi.ToPropertyMapping();
             return torpedoUi;

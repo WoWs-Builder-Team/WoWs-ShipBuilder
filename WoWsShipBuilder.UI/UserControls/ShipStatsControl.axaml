@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
@@ -41,9 +42,9 @@
         </Style>
     </UserControl.Styles>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <Grid ColumnDefinitions="Auto,*,*" HorizontalAlignment="Stretch">
+        <customControls:AutoGrid ColumnDefinitions="Auto,*,*" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <!-- Main Armaments -->
-            <StackPanel Orientation="Vertical" Grid.Column="0" Spacing="10" HorizontalAlignment="Stretch" MaxWidth="275">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" MaxWidth="275">
                 
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
@@ -173,6 +174,7 @@
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
                                         </DockPanel>
+                                        <Separator IsVisible="{Binding !IsLast}" Margin="0,5"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -240,7 +242,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <Separator Margin="0,5" IsVisible="{Binding !IsLast}"/>
+                                        <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
                                     </StackPanel>                                  
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -249,7 +251,7 @@
                 </Expander>
             </StackPanel>
 
-            <ItemsControl Grid.Column="1" Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch">
+            <ItemsControl Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch" IsVisible="{Binding !!CurrentShipStats.SecondColumnContent.Count}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical" Spacing="10"></VirtualizingStackPanel>
@@ -410,7 +412,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <Separator Margin="0,10" IsVisible="{Binding !IsLast}"/>
+                                                <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -422,7 +424,7 @@
             </ItemsControl>
             
             <!--Misc-->
-            <StackPanel Orientation="Vertical" Spacing="10" Grid.Column="2" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch">
                 <!--Maneuverability-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuverability}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
@@ -475,6 +477,6 @@
                     </StackPanel>
                 </Expander>
             </StackPanel>
-        </Grid>
+        </customControls:AutoGrid>
     </ScrollViewer>
 </UserControl>
