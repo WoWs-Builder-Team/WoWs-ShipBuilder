@@ -1780,6 +1780,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time to switch ammo.
+        /// </summary>
+        public static string ShipStats_TimeToSwitch {
+            get {
+                return ResourceManager.GetString("ShipStats_TimeToSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Torpedo.
         /// </summary>
         public static string ShipStats_Torpedo {

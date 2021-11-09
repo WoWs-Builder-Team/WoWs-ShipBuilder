@@ -783,4 +783,7 @@
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
     <value>Initial boost speed multiplier</value>
   </data>
+  <data name="ShipStats_TimeToSwitch" xml:space="preserve">
+    <value>Time to switch ammo</value>
+  </data>
 </root>
