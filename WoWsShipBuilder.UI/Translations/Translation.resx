@@ -777,4 +777,10 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Error suring the loading of the build</value>
   </data>
+  <data name="ShipStats_JatoDuration" xml:space="preserve">
+    <value>Initial boost duration</value>
+  </data>
+  <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
+    <value>Initial boost speed multiplier</value>
+  </data>
 </root>

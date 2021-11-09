@@ -241,7 +241,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <Separator Margin="0,5" IsVisible="{Binding !IsLast}"/>
+                                        <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
                                     </StackPanel>                                  
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -411,7 +411,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <Separator Margin="0,10" IsVisible="{Binding !IsLast}"/>
+                                                <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
