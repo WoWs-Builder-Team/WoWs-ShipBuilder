@@ -7,6 +7,8 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record ShipUI(string Index) : IDataUi
     {
+        public static readonly Dictionary<string, bool> ExpanderStateMapper = new();
+
         public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
 
         public MainBatteryUI? MainBatteryUI { get; set; }
@@ -46,7 +48,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUI = new SecondaryBatteryUiContainer(DataUI.SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers)),
+                SecondaryBatteryUI = SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false),
                 AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true),

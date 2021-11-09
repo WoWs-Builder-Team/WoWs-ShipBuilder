@@ -254,6 +254,11 @@ namespace WoWsShipBuilder.UI.CustomControls
                     selectedPosition = thisPosition;
                     UpdatePseudoClasses(true);
                 }
+                else
+                {
+                    selectedPosition = null;
+                    UpdatePseudoClasses();
+                }
 
                 return;
             }
