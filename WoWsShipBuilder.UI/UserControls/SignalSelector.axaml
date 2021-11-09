@@ -34,21 +34,13 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Panel IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                        <Border CornerRadius="15" Width="60" Height="60" Margin="5">
-                            <Image Source="/Assets/blank.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ToolTip.Placement="Right">
-                                <ToolTip.Tip>
-                                    <userControls:FlagToolTip DataContext="{Binding Value}"/>
-                                </ToolTip.Tip>
-                            </Image>
-                        </Border>
+                    <Panel Background="Transparent" Margin="5" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <ToolTip.Tip>
+                            <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                        </ToolTip.Tip>
                         <customControls:NumberedButton
                             BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
-                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}"
-                            Margin="5" ToolTip.Placement="Right">
-                            <ToolTip.Tip>
-                                <userControls:FlagToolTip DataContext="{Binding Value}"/>
-                            </ToolTip.Tip>
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}">
                             <customControls:NumberedButton.IsChecked>
                                 <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
                                     <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
@@ -59,6 +51,14 @@
                     </Panel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
+            <ItemsControl.Styles>
+                <Style Selector="customControls|NumberedButton:disabled">
+                    <Setter Property="Opacity" Value="0.4" />
+                </Style>
+                <Style Selector="customControls|NumberedButton:checked">
+                    <Setter Property="Opacity" Value="1" />
+                </Style>
+            </ItemsControl.Styles>
         </ItemsControl>
     </DockPanel>
 </UserControl>
