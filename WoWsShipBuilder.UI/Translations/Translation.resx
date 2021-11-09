@@ -793,7 +793,7 @@
     <value>Duration</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Reload after Burst</value>
+    <value>Reload after burst</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
     <value>Reload during burst</value>

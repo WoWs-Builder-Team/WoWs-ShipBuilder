@@ -1672,7 +1672,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reload after Burst.
+        ///   Looks up a localized string similar to Reload after burst.
         /// </summary>
         public static string ShipStats_ReloadAfterBurst {
             get {
