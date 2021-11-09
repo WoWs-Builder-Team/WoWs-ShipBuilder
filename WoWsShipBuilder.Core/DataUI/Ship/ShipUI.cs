@@ -33,6 +33,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<object> SecondColumnContent { get; set; } = default!;
 
+        public SpecialAbilityUI? SpecialAbilityUI { get; set; }
+
         public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
             var shipUI = new ShipUI(ship.Index)
@@ -54,6 +56,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, modifiers),
             };
 
             shipUI.SecondColumnContent = new List<object?>

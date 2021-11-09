@@ -89,6 +89,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     var timeDelayAttackModifiers = modifiers.FindModifiers("callFightersTimeDelayAttack");
                     var timeDelayAttack = timeDelayAttackModifiers.Aggregate(consumableModifiers["timeDelayAttack"], (current, modifier) => current * modifier);
                     consumableModifiers["timeDelayAttack"] = timeDelayAttack;
+                    
+                    var timeFromHeavenkModifiers = modifiers.FindModifiers("callFightersAppearDelay");
+                    var timeFromHeaven = timeFromHeavenkModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
+                    consumableModifiers["timeFromHeaven"] = timeFromHeaven;
                 }
                 else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
                 {

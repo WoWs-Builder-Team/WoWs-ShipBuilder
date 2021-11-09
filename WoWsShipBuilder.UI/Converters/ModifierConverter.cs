@@ -192,7 +192,8 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
                         break;
 
-                    case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase):
+                    case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
+                                             str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{modifier} s";
                         break;
 
@@ -274,6 +275,11 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Translation.ResourceManager.GetString("IncomingFireAlertDesc", Translation.Culture)!;
+                }
+
+                if (localizerKey.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Localizer.Instance["PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY"].Localization;
                 }
 
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
