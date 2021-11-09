@@ -5,26 +5,21 @@
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
         x:Class="WoWsShipBuilder.UI.Views.DownloadWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         Title="DownloadWindow"
         Name="DownloadWindow"
         Height="400" Width="250" CanResize="False"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight">
 
     <Grid RowDefinitions="30,*">
-        <StackPanel Orientation="Horizontal" Grid.Row="0" IsHitTestVisible="False" Spacing="5">
-            <Image Source="/Assets/ShipBuilderIcon-white.ico" VerticalAlignment="Center" Margin="5,5,0,0" />
-            <TextBlock Text="WoWs Ship Builder" VerticalAlignment="Center" />
-        </StackPanel>
+        <userControls:AppHeader ShowCloseButton="False" ShowMinimizeButton="False" 
+                                Title="{x:Static t:Translation.DownloadWindow_Downloading}"/>
         <Border Classes="BorderPanel" Grid.Row="1" Margin="10">
-            <Grid RowDefinitions="*,*,*,*" Margin="10">
-                <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0" Grid.RowSpan="2" />
-                <ProgressBar Grid.Row="2" Height="30" Foreground="#106afd" Background="#626262" Value="50"
-                             DataContext="" ShowProgressText="True" />
-                <TextBlock x:Name="Status" Text="{x:Static t:Translation.DownloadWindow_Status}" Grid.Row="3"
-                           Padding="5,5,0,0" FontSize="15" />
-                <TextBlock x:Name="StatusText" Text="{x:Static t:Translation.DownloadWindow_StatusText}" Grid.Row="3"
-                           Padding="65,5,0,0" FontSize="15" />
-            </Grid>
+            <StackPanel Orientation="Vertical" Spacing="10" Margin="10">
+                <Image Source="/Assets/Art/logo_white_text.png" Height="150" />
+                <ProgressBar Height="30" Foreground="#106afd" Background="#626262" Value="50" 
+                             IsIndeterminate="True" ShowProgressText="False" Width="300" />
+            </StackPanel>
         </Border>
     </Grid>
 </Window>

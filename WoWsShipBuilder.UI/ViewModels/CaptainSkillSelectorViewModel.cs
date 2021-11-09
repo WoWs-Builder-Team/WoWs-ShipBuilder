@@ -14,10 +14,11 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly ShipClass currentClass;
 
+        // TODO: unify constructors
         public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
         {
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
-            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, ServerType.Live);
+            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
                 captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
@@ -31,7 +32,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, List<int> selectedSkills)
         {
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
-            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, ServerType.Live);
+            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
                 captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);

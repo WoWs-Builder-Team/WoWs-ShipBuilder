@@ -20,7 +20,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal Damage { get; set; }
 
-        public string TheoreticalDPM { get; set; }
+        public string TheoreticalDPM { get; set; } = default!;
 
         [DataUiUnit("MPS")]
         public decimal ShellVelocity { get; set; }

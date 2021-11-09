@@ -92,7 +92,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private List<KeyValuePair<string, Exterior>> LoadSignalList()
         {
-            var dict = AppDataHelper.Instance.ReadLocalJsonData<Exterior>(Nation.Common, ServerType.Live);
+            var dict = AppDataHelper.Instance.ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType);
             var list = dict!.Where(x => x.Value.Type.Equals(ExteriorType.Flags) && x.Value.Group == 0).OrderBy(x => x.Value.SortOrder).ToList();
             KeyValuePair<string, Exterior> nullPair = new("", new Exterior());
 

@@ -259,11 +259,11 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to %.
+        ///   Looks up a localized string similar to Downloading data....
         /// </summary>
-        public static string DownloadWindow_Percentage {
+        public static string DownloadWindow_Downloading {
             get {
-                return ResourceManager.GetString("DownloadWindow_Percentage", resourceCulture);
+                return ResourceManager.GetString("DownloadWindow_Downloading", resourceCulture);
             }
         }
         
@@ -273,15 +273,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DownloadWindow_Status {
             get {
                 return ResourceManager.GetString("DownloadWindow_Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ....
-        /// </summary>
-        public static string DownloadWindow_StatusText {
-            get {
-                return ResourceManager.GetString("DownloadWindow_StatusText", resourceCulture);
             }
         }
         

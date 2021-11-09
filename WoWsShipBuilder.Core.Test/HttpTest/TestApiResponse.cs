@@ -71,8 +71,8 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
 
             AwsClient client = clientMock.Object;
 
-            Func<Task> shipDownload = async () => await client.DownloadAllImages(ImageType.Ship);
-            Func<Task> camoDownload = async () => await client.DownloadAllImages(ImageType.Camo);
+            Func<Task> shipDownload = async () => await client.DownloadImages(ImageType.Ship);
+            Func<Task> camoDownload = async () => await client.DownloadImages(ImageType.Camo);
 
             await shipDownload.Should().ThrowAsync<FileNotFoundException>();
             await camoDownload.Should().ThrowAsync<FileNotFoundException>();
