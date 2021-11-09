@@ -16,11 +16,22 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Description { get; set; } = default!;
 
+        // These are for the special ability of ships like satsuma etc.
         [DataUiUnit("S")]
         public decimal Duration { get; set; }
 
         public int RequiredHits { get; set; }
 
+        // These are for Burst mode
+        [DataUiUnit("S")]
+        public decimal ReloadDuringBurst { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal ReloadAfterBurst { get; set; }
+
+        public int ShotInBurst { get; set; }
+
+        // This is in common
         [JsonIgnore]
         public Dictionary<string, float> Modifiers { get; set; } = null!;
 
@@ -29,23 +40,40 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static SpecialAbilityUI? FromShip(Ship ship, List<(string name, float value)> modifiers)
         {
-            if (ship.SpecialAbility is null)
+            if (ship.SpecialAbility is null && ship.BurstModeAbility is null)
             {
                 return null;
             }
 
-            var specialAbility = ship.SpecialAbility;
+            SpecialAbilityUI specialUI;
 
-            var specialUI = new SpecialAbilityUI
+            if (ship.SpecialAbility is not null)
             {
-                Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
-                Description = $"DOCK_RAGE_MODE_DESCRIPTION_{specialAbility.Name}",
-                Duration = Math.Round((decimal)specialAbility.Duration, 1),
-                RequiredHits = specialAbility.RequiredHits,
-                Modifiers = specialAbility.Modifiers,
-            };
+                var specialAbility = ship.SpecialAbility;
 
-            specialUI.SpecialData = specialUI.ToPropertyMapping();
+                specialUI = new SpecialAbilityUI
+                {
+                    Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
+                    Description = $"DOCK_RAGE_MODE_DESCRIPTION_{specialAbility.Name}",
+                    Duration = Math.Round((decimal)specialAbility.Duration, 1),
+                    RequiredHits = specialAbility.RequiredHits,
+                    Modifiers = specialAbility.Modifiers,
+                };
+
+                specialUI.SpecialData = specialUI.ToPropertyMapping();
+            }
+            else
+            {
+                var burstMode = ship.BurstModeAbility;
+
+                specialUI = new SpecialAbilityUI
+                {
+                    ReloadDuringBurst = burstMode.ReloadDuringBurst,
+                    ReloadAfterBurst = burstMode.ReloadAfterBurst,
+                    ShotInBurst = burstMode.ShotInBurst,
+                    Modifiers = burstMode.Modifiers,
+                };
+            }
 
             return specialUI;
         }
