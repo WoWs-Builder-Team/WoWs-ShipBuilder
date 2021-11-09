@@ -11,6 +11,15 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record AirstrikeUI : IDataUi
     {
+        private string expanderKey = default!;
+
+        [JsonIgnore]
+        public bool IsExpanderOpen
+        {
+            get => ShipUI.ExpanderStateMapper[expanderKey];
+            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+        }
+
         [JsonIgnore]
         public string Name { get; set; } = default!;
 
@@ -108,7 +117,13 @@ namespace WoWsShipBuilder.Core.DataUI
                 Weapon = weapon,
             };
 
+            airstrikeUI.expanderKey = isAsw ? $"{ship.Index}_ASW" : $"{ship.Index}_AS";
             airstrikeUI.AirstrikeData = airstrikeUI.ToPropertyMapping();
+
+            if (!ShipUI.ExpanderStateMapper.ContainsKey(airstrikeUI.expanderKey))
+            {
+                ShipUI.ExpanderStateMapper[airstrikeUI.expanderKey] = true;
+            }
 
             return airstrikeUI;
         }

@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -280,6 +281,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
+            ShipUI.ExpanderStateMapper.Clear();
+
             // Ship stats model
             RawShipData = ship;
             EffectiveShipData = RawShipData;

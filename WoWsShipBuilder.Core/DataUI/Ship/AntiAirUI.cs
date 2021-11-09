@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -15,6 +13,15 @@ namespace WoWsShipBuilder.Core.DataUI
         private const decimal ConstantDamageMultiplier = 1 / AntiAirAura.DamageInterval;
 
         private const decimal FlakDamageMultiplier = 1 / (AntiAirAura.DamageInterval / 2);
+
+        private string expanderKey = default!;
+
+        [JsonIgnore]
+        public bool IsExpanderOpen
+        {
+            get => ShipUI.ExpanderStateMapper[expanderKey];
+            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+        }
 
         public AuraDataUI? LongRangeAura { get; set; } = default!;
 
@@ -63,6 +70,11 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var aaUI = new AntiAirUI();
+            aaUI.expanderKey = $"{ship.Index}_AA";
+            if (!ShipUI.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))
+            {
+                ShipUI.ExpanderStateMapper[aaUI.expanderKey] = true;
+            }
 
             // Long Range Aura
             AntiAirAura? longRange = null;

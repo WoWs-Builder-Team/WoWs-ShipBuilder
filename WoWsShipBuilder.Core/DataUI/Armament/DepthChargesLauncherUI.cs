@@ -12,6 +12,15 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record DepthChargesLauncherUI : IDataUi
     {
+        private string expanderKey = default!;
+
+        [JsonIgnore]
+        public bool IsExpanderOpen
+        {
+            get => ShipUI.ExpanderStateMapper[expanderKey];
+            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+        }
+
         [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
@@ -52,6 +61,11 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             depthChargesLauncherUI.DepthChargesLauncherData = depthChargesLauncherUI.ToPropertyMapping();
+            depthChargesLauncherUI.expanderKey = $"{ship.Index}_DC";
+            if (!ShipUI.ExpanderStateMapper.ContainsKey(depthChargesLauncherUI.expanderKey))
+            {
+                ShipUI.ExpanderStateMapper[depthChargesLauncherUI.expanderKey] = true;
+            }
 
             return depthChargesLauncherUI;
         }
