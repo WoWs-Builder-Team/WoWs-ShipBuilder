@@ -786,4 +786,25 @@
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Time to switch ammo</value>
   </data>
+  <data name="ShipStats_BurstMode" xml:space="preserve">
+    <value>Artillery Burst mode</value>
+  </data>
+  <data name="ShipStats_Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
+    <value>Reload after Burst</value>
+  </data>
+  <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
+    <value>Reload during burst</value>
+  </data>
+  <data name="ShipStats_RequiredHits" xml:space="preserve">
+    <value>Hits required</value>
+  </data>
+  <data name="ShipStats_ShotInBurst" xml:space="preserve">
+    <value>Shots in one burst</value>
+  </data>
+  <data name="ShipStats_SpecialAbility" xml:space="preserve">
+    <value>Special abilities</value>
+  </data>
 </root>

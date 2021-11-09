@@ -979,6 +979,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Artillery Burst mode.
+        /// </summary>
+        public static string ShipStats_BurstMode {
+            get {
+                return ResourceManager.GetString("ShipStats_BurstMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can hit.
         /// </summary>
         public static string ShipStats_CanHitClasses {
@@ -1119,6 +1128,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_DropTime {
             get {
                 return ResourceManager.GetString("ShipStats_DropTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string ShipStats_Duration {
+            get {
+                return ResourceManager.GetString("ShipStats_Duration", resourceCulture);
             }
         }
         
@@ -1654,6 +1672,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reload after Burst.
+        /// </summary>
+        public static string ShipStats_ReloadAfterBurst {
+            get {
+                return ResourceManager.GetString("ShipStats_ReloadAfterBurst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload during burst.
+        /// </summary>
+        public static string ShipStats_ReloadDuringBurst {
+            get {
+                return ResourceManager.GetString("ShipStats_ReloadDuringBurst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hits required.
+        /// </summary>
+        public static string ShipStats_RequiredHits {
+            get {
+                return ResourceManager.GetString("ShipStats_RequiredHits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restoration time.
         /// </summary>
         public static string ShipStats_RestorationTime {
@@ -1735,11 +1780,29 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shots in one burst.
+        /// </summary>
+        public static string ShipStats_ShotInBurst {
+            get {
+                return ResourceManager.GetString("ShipStats_ShotInBurst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sigma.
         /// </summary>
         public static string ShipStats_Sigma {
             get {
                 return ResourceManager.GetString("ShipStats_Sigma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special abilities.
+        /// </summary>
+        public static string ShipStats_SpecialAbility {
+            get {
+                return ResourceManager.GetString("ShipStats_SpecialAbility", resourceCulture);
             }
         }
         

@@ -36,6 +36,9 @@ namespace WoWsShipBuilder.Core.DataUI
         public Dictionary<string, float> Modifiers { get; set; } = null!;
 
         [JsonIgnore]
+        public bool IsBurstMode { get; set; } = false;
+
+        [JsonIgnore]
         public List<KeyValuePair<string, string>> SpecialData { get; set; } = default!;
 
         public static SpecialAbilityUI? FromShip(Ship ship, List<(string name, float value)> modifiers)
@@ -68,11 +71,15 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 specialUI = new SpecialAbilityUI
                 {
+                    Name = "ShipStats_BurstMode",
                     ReloadDuringBurst = burstMode.ReloadDuringBurst,
                     ReloadAfterBurst = burstMode.ReloadAfterBurst,
                     ShotInBurst = burstMode.ShotInBurst,
                     Modifiers = burstMode.Modifiers,
+                    IsBurstMode = true,
                 };
+
+                specialUI.SpecialData = specialUI.ToPropertyMapping();
             }
 
             return specialUI;

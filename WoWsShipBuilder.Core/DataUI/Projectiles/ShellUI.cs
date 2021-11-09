@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
@@ -19,8 +20,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public decimal Damage { get; set; }
 
-        [DataUiUnit("DPS")]
-        public decimal TheoreticalDPM { get; set; }
+        public string TheoreticalDPM { get; set; }
 
         [DataUiUnit("MPS")]
         public decimal ShellVelocity { get; set; }
@@ -151,6 +151,11 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
                 decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
+                var dpmNumber = Math.Round((decimal)shellDamage * dpmFactor);
+
+                NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+                nfi.NumberGroupSeparator = "'";
+
                 var uiShell = new ShellUI
                 {
                     Name = Localizer.Instance[shell.Name].Localization,
@@ -162,7 +167,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,
-                    TheoreticalDPM = Math.Round((decimal)shellDamage * dpmFactor), // TODO: make into string with formatting
+                    TheoreticalDPM = dpmNumber.ToString("n0", nfi), // TODO: make into string with formatting
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)

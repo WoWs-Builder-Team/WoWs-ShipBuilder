@@ -18,6 +18,7 @@
         <converters:ClassToPathConverter x:Key="PathConverter"/>
         <converters:ImagePathConverter x:Key="ImageConverter" />
         <converters:ConsumableUiConverter x:Key="ConsumableUiConverter" />
+        <converters:ModifierConverter x:Key="ModifierConverter"/>
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock">
@@ -470,6 +471,74 @@
                                     <DockPanel>
                                         <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                         <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Expander>
+                <!--Special ability-->
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_SpecialAbility}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5,0,5,0"
+                          DataContext="{Binding CurrentShipStats.SpecialAbilityUI}"
+                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel IsVisible="{Binding !IsBurstMode}">
+                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" Margin="0,0,0,10"/>
+                            <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}"/>
+                            <Separator Margin="0,10"/>
+                            <ItemsControl Items="{Binding SpecialData}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        <StackPanel IsVisible="{Binding IsBurstMode}">
+                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=resx}" Margin="0,0,0,10"/>
+                            <ItemsControl Items="{Binding SpecialData}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding Value}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        <ItemsControl Items="{Binding Modifiers}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                            <TextBlock.Styles>
+                                                <Style Selector="TextBlock">
+                                                    <Setter Property="Text">
+                                                        <MultiBinding Converter="{StaticResource ModifierConverter}" ConverterParameter="value">
+                                                            <Binding Path="Key" />
+                                                            <Binding Path="Value" />
+                                                        </MultiBinding>
+                                                    </Setter>
+                                                </Style>
+                                            </TextBlock.Styles>
+                                        </TextBlock>
+                                        <TextBlock TextWrapping="Wrap" Name="DescriptionBlock">
+                                            <TextBlock.Styles>
+                                                <Style Selector="TextBlock">
+                                                    <Setter Property="Text">
+                                                        <MultiBinding Converter="{StaticResource ModifierConverter}" ConverterParameter="desc">
+                                                            <Binding Path="Key" />
+                                                            <Binding Path="Value" />
+                                                        </MultiBinding>
+                                                    </Setter>
+                                                </Style>
+                                            </TextBlock.Styles>
+                                        </TextBlock>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
