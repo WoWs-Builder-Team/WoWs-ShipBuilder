@@ -35,7 +35,7 @@ jobs:
       - name: Package published binary
         run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish -p:NuspecProperties=version="$env:CURRENT_TAG"
       - name: Create squirrel release
-        run: Tools\Squirrel.com --releasify WoWsShipBuilder.UI\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases" --setupIcon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --icon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --no-delta --no-msi --splashImage="SplashScreen_small.png"
+        run: Tools\Squirrel.com --releasify WoWsShipBuilder.UI\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases" --setupIcon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --icon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --no-delta --no-msi --loadingGif="LoadingIcon.gif"
         
       - name: Release
         uses: softprops/action-gh-release@v1
