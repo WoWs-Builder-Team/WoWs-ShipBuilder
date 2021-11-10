@@ -122,8 +122,9 @@
                             <TextBox Text="{Binding CommanderXpBonus}" Name="CommanderXpInput" Margin="0,0,0,10" />
                             <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
                             <TextBox Text="{Binding FreeXpBonus}" Name="FreeXpInput" Margin="0,0,0,10" />
-                            <CheckBox IsThreeState="True" IsChecked="{Binding AccountState}"
-                                      Content="{Binding AccountType}" Margin="0,0,0,5" />
+                            <CheckBox IsThreeState="True" IsChecked="{Binding AccountState}" Margin="0,0,0,5">
+                                <TextBlock Text="{Binding AccountType}" TextWrapping="Wrap"/> 
+                            </CheckBox>
                             <Separator Margin="0,0,0,5" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />

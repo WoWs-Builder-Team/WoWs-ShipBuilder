@@ -579,11 +579,11 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long Range Aura</value>
   </data>
-  <data name="ShipStats_ManeuverabilityFullPowerBackward" xml:space="preserve">
-    <value>Full power backward time</value>
+  <data name="ShipStats_Backward" xml:space="preserve">
+    <value>Backward</value>
   </data>
-  <data name="ShipStats_ManeuverabilityFullPowerForward" xml:space="preserve">
-    <value>Full power forward time</value>
+  <data name="ShipStats_Forward" xml:space="preserve">
+    <value>Forward</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -802,6 +802,36 @@
     <value>Special abilities</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-      <value>Downloading data...</value>
+    <value>Downloading data...</value>
+  </data>
+  <data name="ShipStats_AimingTime" xml:space="preserve">
+    <value>Aiming time</value>
+  </data>
+  <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
+    <value>Damage taken during attack</value>
+  </data>
+  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
+    <value>Post attack invulnerability time</value>
+  </data>
+  <data name="ShipStats_PreparationTime" xml:space="preserve">
+    <value>Preparation time</value>
+  </data>
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+    <value>Time to fully aimed</value>
+  </data>
+  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
+    <value>Torpedo Launchers</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+    <value>During aiming</value>
+  </data>
+  <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
+    <value>Drop area change rate while manoeuvring</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+    <value>During preparation</value>
+  </data>
+  <data name="ShipStats_FullPowerTime" xml:space="preserve">
+    <value>Full power time</value>
   </data>
 </root>

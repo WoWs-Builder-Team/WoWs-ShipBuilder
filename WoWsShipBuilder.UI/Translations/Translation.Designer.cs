@@ -853,6 +853,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to During aiming.
+        /// </summary>
+        public static string ShipStats_Aiming {
+            get {
+                return ResourceManager.GetString("ShipStats_Aiming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aiming time.
+        /// </summary>
+        public static string ShipStats_AimingTime {
+            get {
+                return ResourceManager.GetString("ShipStats_AimingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drop area change rate while manoeuvring.
+        /// </summary>
+        public static string ShipStats_AimPenaltyPlanes {
+            get {
+                return ResourceManager.GetString("ShipStats_AimPenaltyPlanes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircrafts.
         /// </summary>
         public static string ShipStats_Aircraft {
@@ -939,6 +966,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_AvailableFlights {
             get {
                 return ResourceManager.GetString("ShipStats_AvailableFlights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backward.
+        /// </summary>
+        public static string ShipStats_Backward {
+            get {
+                return ResourceManager.GetString("ShipStats_Backward", resourceCulture);
             }
         }
         
@@ -1074,6 +1110,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Damage {
             get {
                 return ResourceManager.GetString("ShipStats_Damage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage taken during attack.
+        /// </summary>
+        public static string ShipStats_DamageTakenDuringAttack {
+            get {
+                return ResourceManager.GetString("ShipStats_DamageTakenDuringAttack", resourceCulture);
             }
         }
         
@@ -1303,6 +1348,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forward.
+        /// </summary>
+        public static string ShipStats_Forward {
+            get {
+                return ResourceManager.GetString("ShipStats_Forward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full power time.
+        /// </summary>
+        public static string ShipStats_FullPowerTime {
+            get {
+                return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fuse Timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
@@ -1398,24 +1461,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Maneuverability {
             get {
                 return ResourceManager.GetString("ShipStats_Maneuverability", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full power backward time.
-        /// </summary>
-        public static string ShipStats_ManeuverabilityFullPowerBackward {
-            get {
-                return ResourceManager.GetString("ShipStats_ManeuverabilityFullPowerBackward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full power forward time.
-        /// </summary>
-        public static string ShipStats_ManeuverabilityFullPowerForward {
-            get {
-                return ResourceManager.GetString("ShipStats_ManeuverabilityFullPowerForward", resourceCulture);
             }
         }
         
@@ -1636,6 +1681,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Post attack invulnerability time.
+        /// </summary>
+        public static string ShipStats_PostAttackInvulnerabilityDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_PostAttackInvulnerabilityDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to During preparation.
+        /// </summary>
+        public static string ShipStats_Preparation {
+            get {
+                return ResourceManager.GetString("ShipStats_Preparation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation time.
+        /// </summary>
+        public static string ShipStats_PreparationTime {
+            get {
+                return ResourceManager.GetString("ShipStats_PreparationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Range.
         /// </summary>
         public static string ShipStats_Range {
@@ -1834,6 +1906,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time to fully aimed.
+        /// </summary>
+        public static string ShipStats_TimeToFullyAimed {
+            get {
+                return ResourceManager.GetString("ShipStats_TimeToFullyAimed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time to switch ammo.
         /// </summary>
         public static string ShipStats_TimeToSwitch {
@@ -1857,6 +1938,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TorpedoArea {
             get {
                 return ResourceManager.GetString("ShipStats_TorpedoArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedo Launchers.
+        /// </summary>
+        public static string ShipStats_TorpedoLaunchers {
+            get {
+                return ResourceManager.GetString("ShipStats_TorpedoLaunchers", resourceCulture);
             }
         }
         
