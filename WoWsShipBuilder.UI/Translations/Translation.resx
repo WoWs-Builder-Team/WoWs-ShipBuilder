@@ -807,4 +807,28 @@
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
     <value>Special abilities</value>
   </data>
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
+    <value>Aiming rate change while moving during preparation</value>
+  </data>
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
+    <value>Aiming rate change while moving during aiming</value>
+  </data>
+  <data name="ShipStats_AimingTime" xml:space="preserve">
+    <value>Aiming time</value>
+  </data>
+  <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
+    <value>Damage taken during attack</value>
+  </data>
+  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
+    <value>Post attack invulnerability time</value>
+  </data>
+  <data name="ShipStats_PreparationTime" xml:space="preserve">
+    <value>Preparation time</value>
+  </data>
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+    <value>Time to fully aimed</value>
+  </data>
+  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
+    <value>Torpedo Launchers</value>
+  </data>
 </root>

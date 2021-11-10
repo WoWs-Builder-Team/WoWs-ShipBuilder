@@ -45,6 +45,27 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal BoostReloadTime { get; set; }
 
+        [DataUiUnit("PerCent")]
+        public decimal AimingPreparationRateMoving { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal PreparationTime { get; set; }
+
+        [DataUiUnit("PerCent")]
+        public decimal AimingTime { get; set; }
+
+        [DataUiUnit("PerCent")]
+        public decimal AimingRateMoving { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal PostAttackInvulnerabilityDuration { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal TimeToFullyAimed { get; set; }
+
+        [DataUiUnit("PerCent")]
+        public int DamageTakenDuringAttack { get; set; }
+
         [DataUiUnit("S")]
         public decimal ArmamentReloadTime { get; set; }
 
@@ -137,11 +158,15 @@ namespace WoWsShipBuilder.Core.DataUI
             float cruisingSpeed = plane.Speed;
             float minSpeedMultiplier = plane.SpeedMinModifier;
             float maxSpeedMultiplier = plane.SpeedMaxModifier;
+            decimal aimRateModifier = 1;
             switch (type)
             {
                 case PlaneType.Fighter:
                     var rocketPlaneHPModifiers = modifiers.FindModifiers("fighterHealth");
                     planeHP = (float)Math.Round(rocketPlaneHPModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier), 0);
+
+                    var aimModifiersRocket = modifiers.FindModifiers("fighterAccuracyIncRateCoeff");
+                    aimRateModifier = Math.Round(aimModifiersRocket.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
 
                     break;
                 case PlaneType.DiveBomber:
@@ -157,10 +182,16 @@ namespace WoWsShipBuilder.Core.DataUI
                     var maxSpeedMultiplierModifiers = modifiers.FindModifiers("diveBomberMaxSpeedMultiplier");
                     maxSpeedMultiplier = maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 
+                    var aimModifiersBomber = modifiers.FindModifiers("diveBomberAccuracyIncRateCoeff");
+                    aimRateModifier = Math.Round(aimModifiersBomber.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
+
                     break;
                 case PlaneType.TorpedoBomber:
                     var torpPlaneHPModifiers = modifiers.FindModifiers("torpedoBomberHealth");
                     planeHP = (float)Math.Round(torpPlaneHPModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier), 0);
+
+                    var aimModifiersTorpedo = modifiers.FindModifiers("torpedoBomberAccuracyIncRateCoeff");
+                    aimRateModifier = Math.Round(aimModifiersTorpedo.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
 
                     break;
                 case PlaneType.SkipBomber:
@@ -169,6 +200,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     var skipPlaneSpeedModifiers = modifiers.FindModifiers("skipBomberSpeedMultiplier");
                     cruisingSpeed = skipPlaneSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier);
+
+                    var aimModifiersSkip = modifiers.FindModifiers("skipBomberAccuracyIncRateCoeff");
+                    aimRateModifier = Math.Round(aimModifiersSkip.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
 
                     break;
             }
@@ -224,6 +258,11 @@ namespace WoWsShipBuilder.Core.DataUI
 
             consumables = consumables.OrderBy(x => x.Slot).ToList();
 
+            var aimingRateMoving = plane.AimingAccuracyIncreaseRate + plane.AimingAccuracyDecreaseRate;
+            var preparationAimingRateMoving = plane.PreparationAccuracyIncreaseRate + plane.PreparationAccuracyDecreaseRate;
+
+            var aimingTime = plane.PreparationTime + ((1 - (plane.PreparationTime * plane.PreparationAccuracyIncreaseRate * aimRateModifier)) / (plane.AimingAccuracyIncreaseRate * aimRateModifier));
+
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
@@ -244,6 +283,13 @@ namespace WoWsShipBuilder.Core.DataUI
                 WeaponType = weaponType.ToString(),
                 Weapon = weapon,
                 PlaneConsumables = consumables,
+                AimingTime = plane.AimingTime,
+                PreparationTime = plane.PreparationTime,
+                PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,
+                DamageTakenDuringAttack = (int)Math.Round(plane.DamageTakenMultiplier, 0),
+                AimingRateMoving = Math.Round(aimingRateMoving * 100, 1),
+                AimingPreparationRateMoving = Math.Round(preparationAimingRateMoving * 100, 1),
+                TimeToFullyAimed = Math.Round(aimingTime, 1),
             };
 
             cvAircraft.CVAircraftData = cvAircraft.ToPropertyMapping();

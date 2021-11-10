@@ -862,6 +862,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aiming rate change while moving during preparation.
+        /// </summary>
+        public static string ShipStats_AimingPreparationRateMoving {
+            get {
+                return ResourceManager.GetString("ShipStats_AimingPreparationRateMoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aiming rate change while moving during aiming.
+        /// </summary>
+        public static string ShipStats_AimingRateMoving {
+            get {
+                return ResourceManager.GetString("ShipStats_AimingRateMoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aiming time.
+        /// </summary>
+        public static string ShipStats_AimingTime {
+            get {
+                return ResourceManager.GetString("ShipStats_AimingTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircrafts.
         /// </summary>
         public static string ShipStats_Aircraft {
@@ -1083,6 +1110,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Damage {
             get {
                 return ResourceManager.GetString("ShipStats_Damage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage taken during attack.
+        /// </summary>
+        public static string ShipStats_DamageTakenDuringAttack {
+            get {
+                return ResourceManager.GetString("ShipStats_DamageTakenDuringAttack", resourceCulture);
             }
         }
         
@@ -1645,6 +1681,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Post attack invulnerability time.
+        /// </summary>
+        public static string ShipStats_PostAttackInvulnerabilityDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_PostAttackInvulnerabilityDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation time.
+        /// </summary>
+        public static string ShipStats_PreparationTime {
+            get {
+                return ResourceManager.GetString("ShipStats_PreparationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Range.
         /// </summary>
         public static string ShipStats_Range {
@@ -1843,6 +1897,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time to fully aimed.
+        /// </summary>
+        public static string ShipStats_TimeToFullyAimed {
+            get {
+                return ResourceManager.GetString("ShipStats_TimeToFullyAimed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time to switch ammo.
         /// </summary>
         public static string ShipStats_TimeToSwitch {
@@ -1866,6 +1929,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TorpedoArea {
             get {
                 return ResourceManager.GetString("ShipStats_TorpedoArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedo Launchers.
+        /// </summary>
+        public static string ShipStats_TorpedoLaunchers {
+            get {
+                return ResourceManager.GetString("ShipStats_TorpedoLaunchers", resourceCulture);
             }
         }
         
