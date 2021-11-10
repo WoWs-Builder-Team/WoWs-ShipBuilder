@@ -25,7 +25,7 @@
             <DataTemplate>
                 <Panel>
                     <Button Name="DropDownButton" Click="DropDownButton_OnClick" ToolTip.Placement="Right">
-                        <Image>
+                        <Image MaxHeight="60" MaxWidth="60">
                             <Image.Styles>
                                 <Style Selector="Image">
                                     <Setter Property="Source">
@@ -70,6 +70,7 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Image Source="{Binding Converter={StaticResource ImagePathConverter}}"
+                                           MaxHeight="60" MaxWidth="60"
                                            PointerReleased="InputElement_OnPointerReleased" ToolTip.Placement="Right"
                                            ToolTip.HorizontalOffset="5">
                                         <ToolTip.Tip>

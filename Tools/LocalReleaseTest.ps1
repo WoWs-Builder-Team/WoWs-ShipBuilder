@@ -1,4 +1,4 @@
-﻿param([string]$releaseVersion = "0.0.9")
+﻿param([Parameter(Mandatory=$true)][string]$releaseVersion)
 
 Write-Output "Setting environment variable for release version"
 $env:CURRENT_TAG=$releaseVersion

@@ -8,6 +8,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -395,13 +396,24 @@ namespace WoWsShipBuilder.UI.CustomControls
         private static void DrawArcFigure(StreamGeometryContext geometryContext, double startAngle, double endAngle, double radius, Point center)
         {
             Point startPoint = PolarToCartesian(startAngle, radius, center);
-            Point endPoint = PolarToCartesian(endAngle, radius, center);
-
-            geometryContext.BeginFigureFluent(center, true)
-                .LineToFluent(startPoint)
-                .ArcToFluent(endPoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
-                .LineToFluent(center)
-                .EndFigure(true);
+            if (Math.Abs(startAngle - endAngle) < 0.01)
+            {
+                double middleAngle = startAngle < 179 ? 180 : 0;
+                Point middlePoint = PolarToCartesian(middleAngle, radius, center);
+                geometryContext.BeginFigureFluent(startPoint, true)
+                    .ArcToFluent(middlePoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, middleAngle), SweepDirection.Clockwise)
+                    .ArcToFluent(startPoint, new Size(radius, radius), 0.0, IsLargeArc(middleAngle, endAngle), SweepDirection.Clockwise)
+                    .EndFigure(true);
+            }
+            else
+            {
+                Point endPoint = PolarToCartesian(endAngle, radius, center);
+                geometryContext.BeginFigureFluent(center, true)
+                    .LineToFluent(startPoint)
+                    .ArcToFluent(endPoint, new Size(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
+                    .LineToFluent(center)
+                    .EndFigure(true);
+            }
         }
 
         /// <summary>
@@ -444,7 +456,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         private void DrawTurrets(DrawingContext context, Rect shipRect)
         {
             angleTexts.Clear();
-            foreach (var gun in Turrets.Guns)
+            foreach (var gun in Turrets.Guns.OrderBy(gun => gun, new TurretListComparer()))
             {
                 DrawTurret(context, gun, shipRect);
             }
