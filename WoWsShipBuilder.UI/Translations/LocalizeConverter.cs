@@ -75,6 +75,12 @@ namespace WoWsShipBuilder.UI.Translations
                 return result.Item2.Trim();
             }
 
+            if (value is Enum enumValue)
+            {
+                var enumString = enumValue.ToString();
+                return Translation.ResourceManager.GetString(enumString) ?? enumString;
+            }
+
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
         }
 
@@ -97,7 +103,7 @@ namespace WoWsShipBuilder.UI.Translations
 
             var sb = new StringBuilder();
             sb.Append(char.ToLowerInvariant(camelCaseString[0]));
-            for (int i = 1; i < camelCaseString.Length; ++i)
+            for (var i = 1; i < camelCaseString.Length; ++i)
             {
                 char c = camelCaseString[i];
                 if (char.IsUpper(c))

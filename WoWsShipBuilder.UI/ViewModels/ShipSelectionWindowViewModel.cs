@@ -2,37 +2,43 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ShipSelectionWindowViewModel : ViewModelBase
     {
-        private Window self;
+        private readonly Window? self;
 
-        public ShipSelectionWindowViewModel(Window win)
+        private CancellationTokenSource tokenSource;
+
+        public ShipSelectionWindowViewModel()
+            : this(null)
         {
-            self = win;
-
-            if (AppData.ShipSummaryList == null)
-            {
-                AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
-            }
-
-            Test = (textSearch, shipName) => CultureInfo.CurrentCulture.CompareInfo.IndexOf(shipName, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
-
-            shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
-            FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
         }
 
-        public AutoCompleteFilterPredicate<string> Test { get; }
+        public ShipSelectionWindowViewModel(Window? win)
+        {
+            self = win;
+            tokenSource = new CancellationTokenSource();
 
-        private bool tierFilterChecked = false;
+            AppData.ShipSummaryList ??= AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
+
+            Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
+            FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
+            SummaryList = new AvaloniaList<KeyValuePair<string, ShipSummary>>(FilteredShipNameDictionary.Select(entry => entry));
+        }
+
+        public AvaloniaList<KeyValuePair<string, ShipSummary>> SummaryList { get; }
+
+        private bool tierFilterChecked;
 
         public bool TierFilterChecked
         {
@@ -42,13 +48,13 @@ namespace WoWsShipBuilder.UI.ViewModels
                 this.RaiseAndSetIfChanged(ref tierFilterChecked, value);
                 if (!value)
                 {
-                    SelectedTier = null;
+                    SelectedTier = "";
                     ApplyFilter();
                 }
             }
         }
 
-        private bool classFilterChecked = false;
+        private bool classFilterChecked;
 
         public bool ClassFilterChecked
         {
@@ -64,7 +70,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private bool nationFilterChecked = false;
+        private bool nationFilterChecked;
 
         public bool NationFilterChecked
         {
@@ -80,7 +86,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private bool typeFilterChecked = false;
+        private bool typeFilterChecked;
 
         public bool TypeFilterChecked
         {
@@ -104,29 +110,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref tierList, value);
         }
 
-        private List<string> classList = Enum.GetNames(typeof(ShipClass)).Select(shipClass => GetLocalizedString(shipClass)!).ToList();
+        public List<ShipClass> ClassList { get; } = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToList();
 
-        public List<string> ClassList
-        {
-            get => classList;
-            set => this.RaiseAndSetIfChanged(ref classList, value);
-        }
+        public List<Nation> NationList { get; } = Enum.GetValues<Nation>().Except(new List<Nation> { Nation.Common }).ToList();
 
-        private List<string> nationList = Enum.GetNames(typeof(Nation)).Select(nation => GetLocalizedString(nation)!).ToList();
-
-        public List<string> NationList
-        {
-            get => nationList;
-            set => this.RaiseAndSetIfChanged(ref nationList, value);
-        }
-
-        private List<string> typeList = Enum.GetNames(typeof(ShipCategory)).Select(shipType => GetLocalizedString(shipType)!).ToList();
-
-        public List<string> TypeList
-        {
-            get => typeList;
-            set => this.RaiseAndSetIfChanged(ref typeList, value);
-        }
+        public List<ShipCategory> TypeList { get; } =
+            Enum.GetValues<ShipCategory>().Except(new List<ShipCategory> { ShipCategory.Disabled, ShipCategory.Clan }).ToList();
 
         private string? selectedTier;
 
@@ -140,9 +129,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string? selectedClass;
+        private ShipClass? selectedClass;
 
-        public string? SelectedClass
+        public ShipClass? SelectedClass
         {
             get => selectedClass;
             set
@@ -152,9 +141,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string? selectedNation;
+        private Nation? selectedNation;
 
-        public string? SelectedNation
+        public Nation? SelectedNation
         {
             get => selectedNation;
             set
@@ -164,9 +153,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private string? selectedType;
+        private ShipCategory? selectedType;
 
-        public string? SelectedType
+        public ShipCategory? SelectedType
         {
             get => selectedType;
             set
@@ -176,97 +165,106 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private bool searchResult;
+        private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
-        public bool SearchResult
-        {
-            get => searchResult;
-            set => this.RaiseAndSetIfChanged(ref searchResult, value);
-        }
+        private KeyValuePair<string, ShipSummary>? selectedShip;
 
-        private readonly Dictionary<string, ShipSummary> shipNameDictionary = new();
-        private SortedDictionary<string, ShipSummary> filteredShipNameDictionary = new();
-
-        public SortedDictionary<string, ShipSummary> FilteredShipNameDictionary
-        {
-            get => filteredShipNameDictionary;
-            set => this.RaiseAndSetIfChanged(ref filteredShipNameDictionary, value);
-        }
-
-        private KeyValuePair<string, ShipSummary> selectedShip;
-
-        public KeyValuePair<string, ShipSummary> SelectedShip
+        public KeyValuePair<string, ShipSummary>? SelectedShip
         {
             get => selectedShip;
             set => this.RaiseAndSetIfChanged(ref selectedShip, value);
         }
 
-        private string? inputText;
+        private string inputText = string.Empty;
 
-        public string? InputText
+        public string InputText
         {
             get => inputText;
-            set => this.RaiseAndSetIfChanged(ref inputText, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref inputText, value);
+                tokenSource.Cancel();
+                tokenSource.Dispose();
+                tokenSource = new CancellationTokenSource();
+                var token = tokenSource.Token;
+                Task.Run(
+                    async () =>
+                    {
+                        await Task.Delay(150);
+                        ApplyFilter(token);
+                    },
+                    token);
+            }
         }
 
-        private static string? GetLocalizedString(string stringToLocalize)
-        {
-            return Translation.ResourceManager.GetString(stringToLocalize, Translation.Culture);
-        }
+        private readonly SemaphoreSlim semaphore = new(1, 1);
 
         private void ApplyFilter()
         {
-            var tmpDct = shipNameDictionary;
-
-            if (SelectedTier != null)
-            {
-                tmpDct = tmpDct.Where(ship => ship.Value.Tier == tierList.IndexOf(selectedTier!) + 1).ToDictionary(ship => ship.Key, ship => ship.Value);
-            }
-
-            if (SelectedClass != null)
-            {
-                tmpDct = tmpDct.Where(ship => GetLocalizedString(ship.Value.ShipClass.ToString())!.Equals(selectedClass)).ToDictionary(ship => ship.Key, ship => ship.Value);
-            }
-
-            if (SelectedNation != null)
-            {
-                tmpDct = tmpDct.Where(ship => GetLocalizedString(ship.Value.Nation.ToString())!.Equals(selectedNation)).ToDictionary(ship => ship.Key, ship => ship.Value);
-            }
-
-            if (SelectedType != null)
-            {
-                tmpDct = tmpDct.Where(ship => GetLocalizedString(ship.Value.Category.ToString())!.Equals(selectedType)).ToDictionary(ship => ship.Key, ship => ship.Value);
-            }
-
-            FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(tmpDct);
-
-            SearchResult = FilteredShipNameDictionary.Count == 0;
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+            tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+            ApplyFilter(token);
         }
 
-        public void UpdateResult()
+        private void ApplyFilter(CancellationToken token)
         {
-            bool tmp = true;
-            foreach (var key in FilteredShipNameDictionary.Keys)
-            {
-                if (CultureInfo.CurrentCulture.CompareInfo.IndexOf(key, InputText!.Trim(), CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1)
+            string searchText = InputText;
+            Task.Run(
+                async () =>
                 {
-                    tmp = false;
-                    break;
-                }
+                    var items = FilteredShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
+                    await semaphore.WaitAsync(token);
+                    if (!token.IsCancellationRequested)
+                    {
+                        SummaryList.Clear();
+                        SummaryList.AddRange(items);
+                    }
+
+                    semaphore.Release();
+                },
+                token);
+        }
+
+        private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+        {
+            var shipSummary = valuePair.Value;
+            bool result = !(TierFilterChecked && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);
+
+            if (result && ClassFilterChecked && shipSummary.ShipClass != SelectedClass)
+            {
+                result = false;
             }
 
-            SearchResult = tmp;
+            if (result && NationFilterChecked && SelectedNation != null && shipSummary.Nation != SelectedNation)
+            {
+                result = false;
+            }
+
+            if (result && TypeFilterChecked && SelectedType != null && shipSummary.Category != SelectedType)
+            {
+                return false;
+            }
+
+            if (result && !string.IsNullOrWhiteSpace(textSearch))
+            {
+                result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) !=
+                         -1;
+            }
+
+            return result;
         }
 
         public void Confirm(object parameter)
         {
-            self.Close(SelectedShip.Value);
+            self?.Close(SelectedShip?.Value);
         }
 
         [DependsOn(nameof(SelectedShip))]
         public bool CanConfirm(object parameter)
         {
-            return SelectedShip.Value != null;
+            return SelectedShip?.Value != null;
         }
     }
 }

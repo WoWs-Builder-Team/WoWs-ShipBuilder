@@ -1,16 +1,16 @@
-using System.ComponentModel;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class ShipSelectionWindow : Window
+    public class ShipSelectionWindow : Window
     {
         public ShipSelectionWindow()
         {
@@ -35,10 +35,23 @@ namespace WoWsShipBuilder.UI.Views
             }
         }
 
-        public void ShowResult(object sender, CancelEventArgs e)
+        // Workaround to set initial focus
+        private void InputElement_OnGotFocus(object? sender, GotFocusEventArgs e)
         {
-            var viewModel = DataContext as ShipSelectionWindowViewModel;
-            viewModel!.UpdateResult();
+            this.FindControl<TextBox>("FilterBox").Focus();
+            GotFocus -= InputElement_OnGotFocus;
+        }
+
+        private void ListItem_OnDoubleTapped(object? sender, RoutedEventArgs e)
+        {
+            if (DataContext is ShipSelectionWindowViewModel viewModel && sender is Panel panel)
+            {
+                viewModel.SelectedShip = (KeyValuePair<string, ShipSummary>)panel.DataContext!;
+                if (viewModel.CanConfirm(null!))
+                {
+                    viewModel.Confirm(null!);
+                }
+            }
         }
     }
 }
