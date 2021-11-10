@@ -38,7 +38,7 @@
         <Style Selector="TextBlock.Value">
             <Setter Property="Text" Value="{Binding Value}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="DockPanel.Dock" Value="Right"/>
+            
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style Selector="ItemsControl.Stagger">
@@ -208,12 +208,21 @@
                                                     </DockPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
-                                        </ItemsControl>                                      
+                                        </ItemsControl>
+                                        <TextBlock Text="{x:Static t:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,5,0,0"/>
+                                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Preparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding AimingRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                        </DockPanel>
+                                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Aiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                            <TextBlock Text="{Binding AimingPreparationRateMoving}"  TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                        </DockPanel>
                                         <DockPanel HorizontalAlignment="Stretch" Margin="0,5,0,0">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                         </DockPanel>
-                                        <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
+                                        <DockPanel HorizontalAlignment="Stretch" Classes="Stagger">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding Weapon.Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                         </DockPanel>
@@ -434,6 +443,15 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_FullPowerTime}"/>
+                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Forward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerForward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                        </DockPanel>
+                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_Backward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerBackward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                        </DockPanel>
                         <ItemsControl Items="{Binding ManeuverabilityUI.ManeuverabilityData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>

@@ -20,8 +20,6 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public int AmmoPerAttack { get; set; }
 
-        public int StartingNumberOnDeck { get; set; }
-
         public int MaxNumberOnDeck { get; set; }
 
         [DataUiUnit("S")]
@@ -45,17 +43,17 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal BoostReloadTime { get; set; }
 
-        [DataUiUnit("PerCent")]
-        public decimal AimingPreparationRateMoving { get; set; }
+        [JsonIgnore]
+        public string AimingPreparationRateMoving { get; set; } = default!;
 
         [DataUiUnit("S")]
         public decimal PreparationTime { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataUiUnit("S")]
         public decimal AimingTime { get; set; }
 
-        [DataUiUnit("PerCent")]
-        public decimal AimingRateMoving { get; set; }
+        [JsonIgnore]
+        public string AimingRateMoving { get; set; } = default!;
 
         [DataUiUnit("S")]
         public decimal PostAttackInvulnerabilityDuration { get; set; }
@@ -263,12 +261,13 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var aimingTime = plane.PreparationTime + ((1 - (plane.PreparationTime * plane.PreparationAccuracyIncreaseRate * aimRateModifier)) / (plane.AimingAccuracyIncreaseRate * aimRateModifier));
 
+            var stringFormat = "+#0.0%;-#0.0%;-";
+
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
                 PlaneHP = finalplaneHP,
                 NumberInSquad = plane.NumPlanesInSquadron,
-                StartingNumberOnDeck = plane.StartingPlanes,
                 MaxNumberOnDeck = maxOnDeck,
                 RestorationTime = restorationTime,
                 CruisingSpeed = finalCruisingSpeed,
@@ -286,9 +285,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 AimingTime = plane.AimingTime,
                 PreparationTime = plane.PreparationTime,
                 PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,
-                DamageTakenDuringAttack = (int)Math.Round(plane.DamageTakenMultiplier, 0),
-                AimingRateMoving = Math.Round(aimingRateMoving * 100, 1),
-                AimingPreparationRateMoving = Math.Round(preparationAimingRateMoving * 100, 1),
+                DamageTakenDuringAttack = (int)Math.Round(plane.DamageTakenMultiplier * 100),
+                AimingRateMoving = aimingRateMoving.ToString(stringFormat),
+                AimingPreparationRateMoving = preparationAimingRateMoving.ToString(stringFormat),
                 TimeToFullyAimed = Math.Round(aimingTime, 1),
             };
 

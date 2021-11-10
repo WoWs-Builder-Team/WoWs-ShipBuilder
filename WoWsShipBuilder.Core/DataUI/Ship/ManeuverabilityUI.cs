@@ -12,11 +12,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("Knots")]
         public decimal ManeuverabilityMaxSpeed { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal ManeuverabilityFullPowerForward { get; set; }
+        [JsonIgnore]
+        public string ManeuverabilityFullPowerForward { get; set; } = default!;
 
-        [DataUiUnit("S")]
-        public decimal ManeuverabilityFullPowerBackward { get; set; }
+        [JsonIgnore]
+        public string ManeuverabilityFullPowerBackward { get; set; } = default!;
 
         [DataUiUnit("M")]
         public decimal ManeuverabilityTurningCircle { get; set; }
@@ -78,8 +78,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var manouvrability = new ManeuverabilityUI
             {
-                ManeuverabilityFullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier,
-                ManeuverabilityFullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier,
+                ManeuverabilityFullPowerBackward = $"{engine.BackwardEngineUpTime * fullPowerBackwardModifier}s",
+                ManeuverabilityFullPowerForward = $"{engine.ForwardEngineUpTime * fullPowerForwardModifier}s",
                 ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
                 ManeuverabilityRudderShiftTime = hull.RudderTime * rudderShiftModifier,
                 ManeuverabilityTurningCircle = hull.TurningRadius,

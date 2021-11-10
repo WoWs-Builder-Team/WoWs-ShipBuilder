@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal ShellVelocity { get; set; }
 
         [DataUiUnit("MM")]
-        public decimal Penetration { get; set; }
+        public int Penetration { get; set; }
 
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
@@ -162,7 +162,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     Type = shell.ShellType.ToString(),
                     Damage = Math.Round((decimal)shellDamage),
                     ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
-                    Penetration = Math.Round((decimal)shellPenetration),
+                    Penetration = (int)Math.Truncate(shellPenetration),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = armingTreshold,

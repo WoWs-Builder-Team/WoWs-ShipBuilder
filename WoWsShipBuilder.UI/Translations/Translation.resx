@@ -579,11 +579,11 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long Range Aura</value>
   </data>
-  <data name="ShipStats_ManeuverabilityFullPowerBackward" xml:space="preserve">
-    <value>Full power backward time</value>
+  <data name="ShipStats_Backward" xml:space="preserve">
+    <value>Backward</value>
   </data>
-  <data name="ShipStats_ManeuverabilityFullPowerForward" xml:space="preserve">
-    <value>Full power forward time</value>
+  <data name="ShipStats_Forward" xml:space="preserve">
+    <value>Forward</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -802,13 +802,7 @@
     <value>Special abilities</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-      <value>Downloading data...</value>
-  </data>
-  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
-    <value>Aiming rate change while moving during preparation</value>
-  </data>
-  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
-    <value>Aiming rate change while moving during aiming</value>
+    <value>Downloading data...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
     <value>Aiming time</value>
@@ -827,5 +821,17 @@
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedo Launchers</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+    <value>During aiming</value>
+  </data>
+  <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
+    <value>Drop area change rate while manoeuvring</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+    <value>During preparation</value>
+  </data>
+  <data name="ShipStats_FullPowerTime" xml:space="preserve">
+    <value>Full power time</value>
   </data>
 </root>

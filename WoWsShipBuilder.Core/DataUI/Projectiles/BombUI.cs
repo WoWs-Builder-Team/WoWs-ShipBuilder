@@ -61,7 +61,7 @@ public record BombUI : ProjectileUI, IDataUi
             {
                 Name = bomb.Name,
                 Damage = bombDamage,
-                Penetration = (int)Math.Round(bomb.Penetration, 0),
+                Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = (decimal)bomb.FuseTimer,
                 ArmingTreshold = (int)bomb.ArmingThreshold,
                 RicochetAngles = ricochetAngle,

@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 Name = rocket.Name,
                 Damage = rocketDamage,
-                Penetration = (int)Math.Round(rocket.Penetration, 0),
+                Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
                 ArmingTreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
