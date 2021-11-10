@@ -20,6 +20,8 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         private static readonly Lazy<AwsClient> InstanceValue = new(() => new AwsClient());
 
+        private static readonly Logger Logger = Logging.GetLogger("AwsClient");
+
         #endregion
 
         private AwsClient()
@@ -83,33 +85,34 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
-        public async Task DownloadAllImages(ImageType type)
+        public async Task DownloadImages(ImageType type, string? fileName = null)
         {
             Logging.Logger.Info("Test " + type);
             string zipUrl;
             string localFolder;
             string zipName;
+
             if (type == ImageType.Ship)
             {
-                zipName = "ship.zip";
-                zipUrl = @$"{Host}/images/ship/{zipName}";
+                zipName = fileName ?? "ship";
+                zipUrl = @$"{Host}/images/ship/{zipName}.zip";
                 localFolder = "Ships";
             }
             else
             {
-                zipName = "camo.zip";
-                zipUrl = @$"{Host}/images/camo/{zipName}";
+                zipName = fileName ?? "camo";
+                zipUrl = @$"{Host}/images/camo/{zipName}.zip";
                 localFolder = "Camos";
             }
 
-            string directoryPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", localFolder);
+            string directoryPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, localFolder);
 
             if (!FileSystem.Directory.Exists(directoryPath))
             {
                 FileSystem.Directory.CreateDirectory(directoryPath);
             }
 
-            string zipPath = FileSystem.Path.Combine(directoryPath, zipName);
+            string zipPath = FileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
             try
             {
                 await DownloadFileAsync(new Uri(zipUrl), zipPath);
@@ -130,7 +133,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task CheckFileVersion(ServerType serverType, IProgress<(int, string)>? progress = null)
+        public async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> CheckFileVersion(ServerType serverType, IProgress<(int, string)>? progress = null)
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 
@@ -139,6 +142,9 @@ namespace WoWsShipBuilder.Core.HttpClients
             progress?.Report((0, "versionInfo"));
             VersionInfo? versionInfo = null;
             var attempts = 0;
+
+            var shouldUpdate = false;
+            var canDeltaUpdate = false;
 
             progress?.Report((10, "versionProcessing"));
             while (attempts < 5)
@@ -159,11 +165,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                     else
                     {
                         Logging.Logger.Error(e, "Error during app update. Maximum retries reached.");
-                        return;
+                        return (shouldUpdate, canDeltaUpdate, string.Empty);
                     }
                 }
             }
 
+            string newVersion = versionInfo!.VersionName.Substring(0, versionInfo.VersionName.IndexOf('#'));
             string dataPath = AppDataHelper.Instance.GetDataPath(serverType);
             if (!FileSystem.Directory.Exists(dataPath))
             {
@@ -176,8 +183,9 @@ namespace WoWsShipBuilder.Core.HttpClients
                 VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await FileSystem.File.ReadAllTextAsync(localVersionInfoPath)) ??
                                                throw new InvalidOperationException();
 
-                if (localVersionInfo.CurrentVersionCode < versionInfo!.CurrentVersionCode)
+                if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
                 {
+                    shouldUpdate = true;
                     List<Task> downloads = new();
                     foreach ((string key, var value) in versionInfo.Categories)
                     {
@@ -205,10 +213,22 @@ namespace WoWsShipBuilder.Core.HttpClients
                     await Task.WhenAll(downloads).ConfigureAwait(false);
                     progress?.Report((60, "localizationData"));
                     await DownloadLanguage(serverType).ConfigureAwait(false);
+                    try
+                    {
+                        string oldVersionSubstring = localVersionInfo.VersionName.Substring(0, localVersionInfo.VersionName.IndexOf('#'));
+                        string expectedOldVersion = versionInfo.LastVersionName.Substring(0, versionInfo.LastVersionName.IndexOf('#'));
+                        canDeltaUpdate = oldVersionSubstring.Equals(expectedOldVersion, StringComparison.Ordinal);
+                    }
+                    catch (Exception)
+                    {
+                        Logger.Error("Unable to parse old version properly.");
+                        canDeltaUpdate = false;
+                    }
                 }
             }
             else
             {
+                shouldUpdate = true;
                 List<Task> downloads = new();
                 foreach ((string key, var value) in versionInfo!.Categories)
                 {
@@ -234,6 +254,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             }
 
             progress?.Report((100, "done"));
+            return (shouldUpdate, canDeltaUpdate, newVersion);
         }
 
         /// <summary>

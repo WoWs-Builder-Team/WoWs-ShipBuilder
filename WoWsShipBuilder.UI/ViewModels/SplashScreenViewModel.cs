@@ -61,34 +61,47 @@ namespace WoWsShipBuilder.UI.ViewModels
             if ((AppData.Settings.LastDataUpdateCheck - today).TotalDays > 1 || AppData.IsDebug)
             {
                 AppData.Settings.LastDataUpdateCheck = DateTime.Today;
-                await JsonVersionCheck(progressTracker);
-                await DownloadImages(progressTracker);
+                var (shouldUpdate, canDeltaUpdate, newVersion) = await JsonVersionCheck(progressTracker);
+                if (shouldUpdate)
+                {
+                    await DownloadImages(progressTracker, canDeltaUpdate, newVersion);
+                }
             }
 
             progressTracker.Report((TaskNumber, Translation.SplashScreen_Done));
         }
 
-        private async Task JsonVersionCheck(IProgress<(int, string)> progressTracker)
+        private async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> JsonVersionCheck(IProgress<(int, string)> progressTracker)
         {
             progressTracker.Report((1, Translation.SplashScreen_Json));
-            await awsClient.CheckFileVersion(ServerType.Live);
+            return await awsClient.CheckFileVersion(AppData.Settings.SelectedServerType);
         }
 
-        private async Task DownloadImages(IProgress<(int, string)> progressTracker)
+        private async Task DownloadImages(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string newVersion)
         {
             string imageBasePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory);
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
-            if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any())
+            if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
                 progressTracker.Report((2, Translation.SplashScreen_ShipImages));
-                await awsClient.DownloadAllImages(ImageType.Ship);
+                await awsClient.DownloadImages(ImageType.Ship);
+            }
+            else
+            {
+                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
+                await awsClient.DownloadImages(ImageType.Ship, newVersion);
             }
 
             var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
-            if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any())
+            if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
                 progressTracker.Report((3, Translation.SplashScreen_CamoImages));
-                await awsClient.DownloadAllImages(ImageType.Camo);
+                await awsClient.DownloadImages(ImageType.Camo);
+            }
+            else
+            {
+                progressTracker.Report((3, Translation.SplashScreen_CamoImages));
+                await awsClient.DownloadImages(ImageType.Camo, newVersion);
             }
         }
     }

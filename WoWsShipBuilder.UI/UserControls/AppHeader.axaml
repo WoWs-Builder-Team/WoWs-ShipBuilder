@@ -17,7 +17,7 @@
                   HorizontalContentAlignment="Center"
                   BorderThickness="0"
                   Name="MinimizeButton"
-                  IsVisible="{Binding #Header.ShowMinimizedButton}">
+                  IsVisible="{Binding #Header.ShowMinimizeButton}">
                 <Button.Styles>
                     <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                         <Setter Property="Background" Value="#44AAAAAA"/>

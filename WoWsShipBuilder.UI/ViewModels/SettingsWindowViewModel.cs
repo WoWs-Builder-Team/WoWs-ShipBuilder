@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
-using System.Security;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -145,29 +141,36 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void Save()
         {
+            bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
             if (IsCustomPathEnabled)
             {
                 if (!IsValidPath(CustomPath!))
                 {
                     await MessageBox.Show(self, "The selected custom path is not valid.", "Error", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    return;
                 }
                 else
                 {
-                    AppData.Settings!.CustomDataPath = CustomPath;
-                    AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                    AppData.Settings!.AutoUpdateEnabled = AutoUpdate;
-                    AppData.Settings!.Locale = languages[SelectedLanguage];
-                    self.Close();
+                    AppData.Settings.CustomDataPath = CustomPath;
+                    AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+                    AppData.Settings.AutoUpdateEnabled = AutoUpdate;
+                    AppData.Settings.Locale = languages[SelectedLanguage];
                 }
             }
             else
             {
-                AppData.Settings!.CustomDataPath = null;
-                AppData.Settings!.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                AppData.Settings!.AutoUpdateEnabled = AutoUpdate;
-                AppData.Settings!.Locale = languages[SelectedLanguage];
-                self.Close();
+                AppData.Settings.CustomDataPath = null;
+                AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+                AppData.Settings.AutoUpdateEnabled = AutoUpdate;
+                AppData.Settings.Locale = languages[SelectedLanguage];
             }
+
+            if (serverChanged)
+            {
+                await new DownloadWindow().ShowDialog(self);
+            }
+
+            self.Close();
         }
 
         public async void SelectFolder()
