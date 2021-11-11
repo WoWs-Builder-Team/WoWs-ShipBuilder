@@ -29,4 +29,4 @@ You can find the latest version download at: https://github.com/WoWs-Builder-Tea
 Hosting the server where we store the data used by the program has a monthly cost. If you like the program and would like to help us out, you can donate at https://www.buymeacoffee.com/WoWsShipBuilder. The app will always be free and with no ads. When you donate, you will also get a special role in our discord server.
 
 ## Discord
-We have a discord server that you can join by clicking [here](https://discord.gg/C8EaepZJDY). 
+We have a discord server that you can join by clicking [here](https://discord.gg/C8EaepZJDY) . 
