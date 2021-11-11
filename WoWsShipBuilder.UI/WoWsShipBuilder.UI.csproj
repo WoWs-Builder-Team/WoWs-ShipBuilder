@@ -12,6 +12,7 @@
         <RepositoryType>github</RepositoryType>
         <FileVersion>0.0.1</FileVersion>
         <NeutralLanguage>en-GB</NeutralLanguage>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
