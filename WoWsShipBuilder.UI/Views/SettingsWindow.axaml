@@ -17,7 +17,7 @@
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
-            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="5">
                 <TabControl>
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
