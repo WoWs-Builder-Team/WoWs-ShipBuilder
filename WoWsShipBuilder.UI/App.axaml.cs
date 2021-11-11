@@ -71,8 +71,11 @@ namespace WoWsShipBuilder.UI
             }
             catch (Exception e)
             {
+#if DEBUG
+                Logging.Logger.Warn(e);
+#else
                 Logging.Logger.Error(e);
-                throw;
+#endif
             }
         }
     }

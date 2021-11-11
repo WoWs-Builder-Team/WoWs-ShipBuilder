@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -11,7 +13,7 @@ namespace WoWsShipBuilder.Core
 
         public static Logger GetLogger(string name = "ShipBuilder") => LogManager.GetLogger(name);
 
-        public static void InitializeLogging(string? sentryDsn = null)
+        public static void InitializeLogging(string? sentryDsn)
         {
             var config = new LoggingConfiguration();
             var target = new FileTarget
@@ -37,8 +39,11 @@ namespace WoWsShipBuilder.Core
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, debugTarget));
 #endif
 
+            var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
+            var release = $"{version.Major}.{version.Minor}.{version.Build}";
             config.AddSentry(o =>
             {
+                o.Release = release;
                 o.Layout = "${message}";
                 o.BreadcrumbLayout = "${logger}: ${message}";
                 o.MinimumBreadcrumbLevel = LogLevel.Info;

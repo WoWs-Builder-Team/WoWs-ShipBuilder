@@ -22,6 +22,13 @@ Update checks only run on application startup so it won't mess up your system wi
 
 **WARNING**: You may get a Windows SmartScreen warning or a warning from your AV software when installing the tool. This is due to the distributed binary being unsigned. Unfortunately, code-signing certificates are rather expensive so we are not able to sign our binary at the moment.
 
+## Telemetry data and error reports
+
+We do not collect any personal data in our application because it's simply not necessary for the app to work. 
+However, we do automatically collect error reports.
+If the application encounters an error, it automatically sends a report to [Sentry](https://sentry.io/) containing the error data. This data does not contain IP addresses or other personal information.
+An error is not always visible for you as most errors should be caught internally and handled using fallback actions.
+
 ## Latest Release
 You can find the latest version download at: https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest. Download the setup.exe and you will be able to install the app.
 
