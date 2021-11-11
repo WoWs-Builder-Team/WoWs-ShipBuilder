@@ -664,6 +664,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Version:.
+        /// </summary>
+        public static string SettingsWindow_DataVersion {
+            get {
+                return ResourceManager.GetString("SettingsWindow_DataVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Developed by :.
         /// </summary>
         public static string SettingsWindow_DevelopedBy {

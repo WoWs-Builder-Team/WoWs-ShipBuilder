@@ -66,6 +66,10 @@
                                     <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
                                     <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}"/>
+                                    <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
+                                </StackPanel>
                                 <Separator/>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
                                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">

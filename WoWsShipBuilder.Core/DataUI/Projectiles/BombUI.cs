@@ -40,11 +40,15 @@ public record BombUI : ProjectileUI, IDataUi
 
             decimal bombDamage = 0;
             string ricochetAngle = "";
+            int armingTreshold = 0;
+            decimal fuseTimer = 0;
             if (bomb.BombType.Equals(BombType.AP))
             {
                 var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
                 bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
                 ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
+                armingTreshold = (int)bomb.ArmingThreshold;
+                fuseTimer = (decimal)bomb.FuseTimer;
             }
             else
             {
@@ -62,8 +66,8 @@ public record BombUI : ProjectileUI, IDataUi
                 Name = bomb.Name,
                 Damage = bombDamage,
                 Penetration = (int)Math.Truncate(bomb.Penetration),
-                FuseTimer = (decimal)bomb.FuseTimer,
-                ArmingTreshold = (int)bomb.ArmingThreshold,
+                FuseTimer = fuseTimer,
+                ArmingTreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
             };

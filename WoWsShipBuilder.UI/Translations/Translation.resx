@@ -834,4 +834,7 @@
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Full power time</value>
   </data>
+  <data name="SettingsWindow_DataVersion" xml:space="preserve">
+    <value>Data Version:</value>
+  </data>
 </root>
