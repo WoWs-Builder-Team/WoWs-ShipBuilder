@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NLog;
+using WoWsShipBuilder.Core.HttpClients;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
@@ -46,6 +47,12 @@ namespace WoWsShipBuilder.Core.DataProvider
 
             ServerType serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
             Dictionary<string, string>? localLanguageData = dataHelper.ReadLocalizationData(serverType, locale);
+            if (localLanguageData == null)
+            {
+                AwsClient.Instance.DownloadLanguage(serverType).Wait();
+                localLanguageData = dataHelper.ReadLocalizationData(serverType, locale);
+            }
+
             if (localLanguageData != null)
             {
                 languageData = localLanguageData;

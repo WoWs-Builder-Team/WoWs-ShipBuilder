@@ -212,7 +212,6 @@ namespace WoWsShipBuilder.Core.HttpClients
                     progress?.Report((20, "jsonData"));
                     await Task.WhenAll(downloads).ConfigureAwait(false);
                     progress?.Report((60, "localizationData"));
-                    await DownloadLanguage(serverType).ConfigureAwait(false);
                     try
                     {
                         string oldVersionSubstring = localVersionInfo.VersionName.Substring(0, localVersionInfo.VersionName.IndexOf('#'));
@@ -224,6 +223,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                         Logger.Error("Unable to parse old version properly.");
                         canDeltaUpdate = false;
                     }
+                }
+
+                string localePath = FileSystem.Path.Combine(AppDataHelper.Instance.GetDataPath(serverType), "Localization", AppData.Settings.Locale);
+                if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode || !FileSystem.File.Exists(localePath))
+                {
+                    await DownloadLanguage(serverType).ConfigureAwait(false);
                 }
             }
             else

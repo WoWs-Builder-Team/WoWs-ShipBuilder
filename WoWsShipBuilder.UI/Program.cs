@@ -37,6 +37,7 @@ namespace WoWsShipBuilder.UI
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
+                .UseSkia()
                 .UseReactiveUI();
     }
 }

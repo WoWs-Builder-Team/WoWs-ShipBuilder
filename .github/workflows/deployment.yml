@@ -31,7 +31,9 @@ jobs:
         run: dotnet test --no-build -c Release --verbosity normal
         
       - name: Publish windows executable
-        run: dotnet publish WoWsShipBuilder.UI -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
+        run: dotnet publish WoWsShipBuilder.UI -c Release -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
+      - name: Copy missing native dll to output
+        run: Copy-Item -Path WoWsShipBuilder.UI\bin\Release\net5.0\runtimes\win7-x64\native\av_libGLESv2.dll -Destination WoWsShipBuilder.UI\bin\Release\net5.0\publish\
       - name: Package published binary
         run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish -p:NuspecProperties=version="$env:CURRENT_TAG"
       - name: Create squirrel release
