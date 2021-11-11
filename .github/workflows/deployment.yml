@@ -19,7 +19,7 @@ jobs:
       - name: Process tag version
         run: echo ("CURRENT_TAG=" + $env:GITHUB_REF.Replace('refs/tags/v', '')) >> $env:GITHUB_ENV
       - name: Create application config
-        run: 'echo "$APPCONFIG" > WoWsShipBuilder.UI\Settings\ApplicationOptions.json'
+        run: 'echo "$APPCONFIG" > WoWsShipBuilder.UI/Settings/ApplicationOptions.json'
         shell: bash
         env:
           APPCONFIG: ${{secrets.SHIPBUILDER_APPCONFIG}}
