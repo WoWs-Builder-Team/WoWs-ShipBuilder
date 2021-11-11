@@ -115,12 +115,14 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal hDispersion = Math.Round((decimal)modifiedDispersion.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
             decimal vDispersion = Math.Round((decimal)modifiedDispersion.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
 
+            decimal rateOfFire = 60 / reload;
+
             var mainBatteryUi = new MainBatteryUI
             {
                 Name = turretArrangement + " " + Localizer.Instance[mainBattery.Guns.First().Name].Localization,
                 Range = range,
                 Reload = reload,
-                RoF = Math.Round(60 / reload),
+                RoF = Math.Round(rateOfFire, 1),
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
@@ -130,7 +132,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 OriginalMainBatteryData = mainBattery,
             };
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, mainBatteryUi.RoF * barrelCount);
+            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, rateOfFire * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }
