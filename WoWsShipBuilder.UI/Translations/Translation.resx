@@ -742,7 +742,7 @@
     <value>Build saved</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Build string saved on clipboard</value>
+    <value>Build string copied to clipboard</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
     <value>Delete build</value>

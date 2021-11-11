@@ -106,7 +106,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build string saved on clipboard.
+        ///   Looks up a localized string similar to Build string copied to clipboard.
         /// </summary>
         public static string BuildCreationWindow_SavedClipboard {
             get {
