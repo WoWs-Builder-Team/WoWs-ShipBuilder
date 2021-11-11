@@ -1942,7 +1942,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo Area.
+        ///   Looks up a localized string similar to Torpedo Spread.
         /// </summary>
         public static string ShipStats_TorpedoArea {
             get {
