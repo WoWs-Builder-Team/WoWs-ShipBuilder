@@ -1,3 +1,3 @@
 files:
   - source: /WoWsShipBuilder.UI/Translations/Translation.resx
-    translation: '%locale_with_underscore%.resx'
+    translation: '%original_path%%locale_with_underscore%.resx'
