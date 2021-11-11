@@ -32,6 +32,9 @@ An error is not always visible for you as most errors should be caught internall
 ## Latest Release
 You can find the latest version download at: https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/releases/latest. Download the setup.exe and you will be able to install the app.
 
+## Translation help
+If you want to see the program translate in your language, you can follow the guide you can find [here](https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder/blob/main/.github/Translation%20guide.md#how-to-help-with-the-translation).
+
 ## Donation
 Hosting the server where we store the data used by the program has a monthly cost. If you like the program and would like to help us out, you can donate at https://www.buymeacoffee.com/WoWsShipBuilder. The app will always be free and with no ads. When you donate, you will also get a special role in our discord server.
 
