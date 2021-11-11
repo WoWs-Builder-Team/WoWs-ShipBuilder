@@ -34,9 +34,7 @@ namespace WoWsShipBuilder.Core.Settings
 
         public ServerType SelectedServerType { get; set; } = ServerType.Live;
 
-        public DateTime LastDataUpdateCheck { get; set; } = DateTime.Today;
-
-        public DateTime LastVersionUpdateCheck { get; set; } = DateTime.Now;
+        public DateTime? LastDataUpdateCheck { get; set; } = null!;
 
         public string? CustomDataPath { get; set; }
     }

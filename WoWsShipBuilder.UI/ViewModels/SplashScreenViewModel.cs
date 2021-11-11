@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             var today = DateTime.Today;
             Logging.GetLogger("VersionCheck").Info($"Last data version Check was at: {AppData.Settings.LastDataUpdateCheck}");
-            if ((AppData.Settings.LastDataUpdateCheck - today).TotalDays > 1 || AppData.IsDebug)
+            if ((AppData.Settings.LastDataUpdateCheck == null || (AppData.Settings.LastDataUpdateCheck - today).Value.TotalDays > 1) || AppData.IsDebug)
             {
                 AppData.Settings.LastDataUpdateCheck = DateTime.Today;
                 var (shouldUpdate, canDeltaUpdate, newVersion) = await JsonVersionCheck(progressTracker);
