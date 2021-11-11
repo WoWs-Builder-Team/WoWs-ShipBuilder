@@ -106,7 +106,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build string saved on clipboard.
+        ///   Looks up a localized string similar to Build string copied to clipboard.
         /// </summary>
         public static string BuildCreationWindow_SavedClipboard {
             get {
@@ -660,6 +660,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_Data {
             get {
                 return ResourceManager.GetString("SettingsWindow_Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Version:.
+        /// </summary>
+        public static string SettingsWindow_DataVersion {
+            get {
+                return ResourceManager.GetString("SettingsWindow_DataVersion", resourceCulture);
             }
         }
         
@@ -1933,7 +1942,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo Area.
+        ///   Looks up a localized string similar to Torpedo Spread.
         /// </summary>
         public static string ShipStats_TorpedoArea {
             get {

@@ -8,11 +8,13 @@ using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -30,6 +32,16 @@ namespace WoWsShipBuilder.UI.ViewModels
             AutoUpdate = AppData.Settings!.AutoUpdateEnabled;
             CustomPath = AppData.Settings!.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
+
+            if (AppData.DataVersion is null)
+            {
+                string dataPath = AppDataHelper.Instance.GetDataPath(AppData.Settings.SelectedServerType);
+                string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath))!;
+                AppData.DataVersion = localVersionInfo.VersionName;
+            }
+
+            DataVersion = AppData.DataVersion;
         }
 
         // Add here all the currently supported languages
@@ -37,6 +49,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             { "English", "en-GB" },
         };
+
+        private string dataVersion;
+
+        public string DataVersion
+        {
+            get => dataVersion;
+            set => this.RaiseAndSetIfChanged(ref dataVersion, value);
+        }
 
         private string? customPath;
 

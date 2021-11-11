@@ -17,7 +17,7 @@
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
-            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="5">
                 <TabControl>
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
@@ -65,6 +65,10 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
                                     <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}"/>
+                                    <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
                                 </StackPanel>
                                 <Separator/>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
