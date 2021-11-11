@@ -72,7 +72,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Include="Settings\*.json" />
-      <None Remove="Settings\*.json" />
+      <EmbeddedResource Include="Settings\ApplicationOptions.json" />
     </ItemGroup>
 </Project>
