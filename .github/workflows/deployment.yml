@@ -44,6 +44,16 @@ jobs:
         with: 
           files: releases\*
           body_path: ReleaseNotes.md
+  
+  sentry-notify:
+    runs-on: ubuntu-latest
+    name: Create release on sentry
+    needs: build-and-release
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Process tag name
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -52,3 +62,4 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
+          version: "$RELEASE_VERSION"

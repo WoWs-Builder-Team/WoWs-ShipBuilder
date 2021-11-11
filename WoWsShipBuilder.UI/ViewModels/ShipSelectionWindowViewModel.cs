@@ -230,9 +230,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
         {
             var shipSummary = valuePair.Value;
-            bool result = !(TierFilterChecked && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);
+            bool result = !(TierFilterChecked && !string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);
 
-            if (result && ClassFilterChecked && shipSummary.ShipClass != SelectedClass)
+            if (result && ClassFilterChecked && SelectedClass != null && shipSummary.ShipClass != SelectedClass)
             {
                 result = false;
             }
