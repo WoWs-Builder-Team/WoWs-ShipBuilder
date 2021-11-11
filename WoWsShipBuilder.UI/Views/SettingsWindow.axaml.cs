@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.UI.Views
 
         private void OpenDiscord(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
         {
-            string url = "https://discord.gg/GpeUF6Xp9X";
+            string url = "https://discord.gg/C8EaepZJDY";
 
             Process.Start(new ProcessStartInfo
             {
