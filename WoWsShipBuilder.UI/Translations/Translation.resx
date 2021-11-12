@@ -121,10 +121,10 @@
     <value>Back to menu</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Reset Build</value>
+    <value>Reset build</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Share Build</value>
+    <value>Share build</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
     <value>Enable automatic updates</value>
@@ -136,7 +136,7 @@
     <value>Clean stored application data</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Developed by :</value>
+    <value>Developed by:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
     <value>Info</value>
@@ -166,10 +166,10 @@
     <value>Import build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Settings and Info</value>
+    <value>Settings and info</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Status :</value>
+    <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
     <value>Flags </value>
@@ -181,22 +181,22 @@
     <value>Select new ship</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art by :</value>
+    <value>Art by:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
     <value>Devs: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Lead Devs:</value>
+    <value>Lead devs:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Data Conversion :</value>
+    <value>Data conversion:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Captain points :</value>
+    <value>Captain points:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Captain Talents</value>
+    <value>Captain talents</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
     <value>Save</value>
@@ -208,37 +208,37 @@
     <value>Base XP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>Commander XP :</value>
+    <value>Commander XP:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
     <value>Commander XP bonus %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>Free XP :</value>
+    <value>Free XP:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Free XP Bonus %</value>
+    <value>Free XP bonus %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>Final XP :</value>
+    <value>Final XP:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
     <value>XP bonus %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>XP Calculator</value>
+    <value>XP calculator</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Downloading Camo Images</value>
+    <value>Downloading camo images</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Downloading Data</value>
+    <value>Downloading data</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Downloading Ship Images</value>
+    <value>Downloading ship images</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
     <value>Aircraft Carrier</value>
@@ -295,10 +295,10 @@
     <value>Submarine</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Tech Tree</value>
+    <value>Tech tree</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Test Ship</value>
+    <value>Test ship</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
     <value>U.K.</value>
@@ -307,7 +307,7 @@
     <value>U.S.A.</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Empty Slot</value>
+    <value>Empty slot</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
     <value>Minimum range for the warning to appear</value>
@@ -331,13 +331,13 @@
     <value>No ships matching the filtering criteria found</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Search Ship</value>
+    <value>Search ship</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° turn time</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal Dispersion</value>
+    <value>Horizontal dispersion</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Range</value>
@@ -346,7 +346,7 @@
     <value>Rate of fire</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Reload Time</value>
+    <value>Reload time</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -355,13 +355,13 @@
     <value>Traverse speed</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical Dispersion</value>
+    <value>Vertical dispersion</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Initial Shell Velocity</value>
+    <value>Initial shell velocity</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Shell Weight</value>
+    <value>Shell weight</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
     <value>Theoretical DPM</value>
@@ -370,13 +370,13 @@
     <value>Arming Threshold</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Depth Explosion Radius</value>
+    <value>Depth explosion radius</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Fire Chance</value>
+    <value>Fire chance</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Fuse Timer</value>
+    <value>Fuse timer</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
     <value>Overmatch capability</value>
@@ -385,10 +385,10 @@
     <value>Penetration</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ricochet Angles</value>
+    <value>Ricochet angles</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>AA Defense</value>
+    <value>AA defense</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Aircraft HP</value>
@@ -397,16 +397,16 @@
     <value>Airstrike</value>
   </data>
   <data name="ShipStats_AvailableFlights" xml:space="preserve">
-    <value>Available Flights</value>
+    <value>Available flights</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Bomb Type</value>
+    <value>Bomb type</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombs in Payload</value>
+    <value>Bombs in payload</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Constant Damage</value>
+    <value>Constant damage</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
     <value>Damage</value>
@@ -421,28 +421,19 @@
     <value>Flak</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Flak Damage</value>
+    <value>Flak damage</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Hit Chance</value>
+    <value>Hit chance</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Flooding Chance</value>
-  </data>
-  <data name="ShipStats_LongRangeAA" xml:space="preserve">
-    <value>Long Range Aura</value>
+    <value>Flooding chance</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Main Battery</value>
   </data>
-  <data name="ShipStats_MediumRangeAA" xml:space="preserve">
-    <value>Medium Range Aura</value>
-  </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaction Time</value>
-  </data>
-  <data name="ShipStats_ShortRangeAA" xml:space="preserve">
-    <value>Short Range Aura</value>
+    <value>Reaction time</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
@@ -463,7 +454,7 @@
     <value>DPS per fire</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Fire Duration</value>
+    <value>Fire duration</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Fire chance reduction</value>
@@ -481,7 +472,7 @@
     <value>Flooding probability</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Hit Points</value>
+    <value>Hit points</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
     <value>Max number of fires</value>
@@ -535,7 +526,7 @@
     <value>Name</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Apply Camo Bonuses</value>
+    <value>Apply camo bonuses</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
     <value>Arming distance</value>
@@ -577,7 +568,7 @@
     <value>Total flood damage</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Long Range Aura</value>
+    <value>Long range aura</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
     <value>Backward</value>
@@ -595,13 +586,13 @@
     <value>Turning circle</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Medium Range Aura</value>
+    <value>Medium range aura</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Short Range Aura</value>
+    <value>Short range aura</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Torpedo Spread</value>
+    <value>Torpedo spread</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
     <value>Aircrafts</value>
@@ -612,17 +603,14 @@
   <data name="Rocket" xml:space="preserve">
     <value>Rocket</value>
   </data>
-  <data name="ShipStats_ArmingTreshold" xml:space="preserve">
-    <value>Arming Treshold</value>
-  </data>
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Speed</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Weapon Type</value>
+    <value>Weapon type</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Skip Bomb</value>
+    <value>Skip bomb</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
     <value>Torpedo</value>
@@ -685,34 +673,34 @@
     <value>Charges</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW Airstrike</value>
+    <value>ASW airstrike</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Depth Charges</value>
+    <value>Depth charges</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>Dispersion visualization</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW Depth Charges</value>
+    <value>ASW depth Charges</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>First Ping duration</value>
+    <value>First ping duration</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Ping Duration</value>
+    <value>Ping duration</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
     <value>Pinger gun</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Ping Speed</value>
+    <value>Ping speed</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
     <value>Ping width</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Second Ping duration</value>
+    <value>Second ping duration</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
     <value>Shells</value>
@@ -733,7 +721,7 @@
     <value>Insert custom path</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Save &amp; Exit</value>
+    <value>Save &amp; exit</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
@@ -760,7 +748,7 @@
     <value>Paste the build string here</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Import Build</value>
+    <value>Import build</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -769,7 +757,7 @@
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Error suring the loading of the build</value>
+    <value>Error during the loading of the build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
     <value>Initial boost duration</value>
@@ -781,7 +769,7 @@
     <value>Time to switch ammo</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Artillery Burst mode</value>
+    <value>Artillery burst mode</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
     <value>Duration</value>
@@ -820,7 +808,7 @@
     <value>Time to fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpedo Launchers</value>
+    <value>Torpedo launchers</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>During aiming</value>
@@ -835,6 +823,6 @@
     <value>Full power time</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Data Version:</value>
+    <value>Data version:</value>
   </data>
 </root>
