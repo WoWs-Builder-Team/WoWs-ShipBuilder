@@ -42,12 +42,16 @@
                         </Image>
                         <ToolTip.Tip>
                             <userControls:ModifierToolTip>
-                                <userControls:ModifierToolTip.DataContext>
-                                    <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data">
-                                        <Binding Path="$parent[Button].DataContext" />
-                                        <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
-                                    </MultiBinding>
-                                </userControls:ModifierToolTip.DataContext>
+                                <userControls:ModifierToolTip.Styles>
+                                    <Style Selector="userControls|ModifierToolTip">
+                                        <Setter Property="DataContext">
+                                            <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data">
+                                                <Binding Path="$parent[Button].DataContext" FallbackValue="none" />
+                                                <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
+                                            </MultiBinding>
+                                        </Setter>
+                                    </Style>
+                                </userControls:ModifierToolTip.Styles>
                             </userControls:ModifierToolTip>
                         </ToolTip.Tip>
                     </Button>
@@ -68,7 +72,7 @@
                                 <userControls:ModifierToolTip.DataContext>
                                     <MultiBinding Converter="{StaticResource ConsumableUiConverter}" ConverterParameter="data">
                                         <Binding Path="$parent[Image].DataContext" />
-                                        <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="null" />
+                                        <Binding Path="$parent[UserControl].DataContext.SelectedConsumables" FallbackValue="notSet" />
                                     </MultiBinding>
                                 </userControls:ModifierToolTip.DataContext>
                             </userControls:ModifierToolTip>

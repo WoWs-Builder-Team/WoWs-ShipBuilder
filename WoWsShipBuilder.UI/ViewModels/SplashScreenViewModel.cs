@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
-using NLog;
+using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -74,7 +76,55 @@ namespace WoWsShipBuilder.UI.ViewModels
         private async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> JsonVersionCheck(IProgress<(int, string)> progressTracker)
         {
             progressTracker.Report((1, Translation.SplashScreen_Json));
-            return await awsClient.CheckFileVersion(AppData.Settings.SelectedServerType);
+            var selectedServerType = AppData.Settings.SelectedServerType;
+            (bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion) result = await awsClient.CheckFileVersion(selectedServerType);
+            string basePath = AppDataHelper.Instance.GetDataPath(selectedServerType);
+            if (!ValidateAppData(basePath))
+            {
+                Logging.Logger.Warn("Invalid application data detected. Trying to repair data...");
+                fileSystem.Directory.Delete(basePath, true);
+                await awsClient.CheckFileVersion(selectedServerType);
+                if (!ValidateAppData(basePath))
+                {
+                    Logging.Logger.Error("Invalid application data after full reload detected.");
+                }
+                else
+                {
+                    Logging.Logger.Info("AppData has been repaired and validated.");
+                }
+            }
+            else
+            {
+                Logging.Logger.Info("AppData validation successful.");
+            }
+
+            return result;
+        }
+
+        private bool ValidateAppData(string basePath)
+        {
+            string versionInfoPath = fileSystem.Path.Combine(basePath, "VersionInfo.json");
+            var versionInfo = JsonConvert.DeserializeObject<VersionInfo>(fileSystem.File.ReadAllText(versionInfoPath));
+            if (versionInfo == null)
+            {
+                Logging.Logger.Error("VersionInfo does not exist. AppData validation failed.");
+                return false;
+            }
+
+            var missingFiles = new List<string>();
+            foreach ((string category, var files) in versionInfo.Categories)
+            {
+                missingFiles.AddRange(files.Where(file => !fileSystem.File.Exists(fileSystem.Path.Combine(basePath, category, file.FileName)))
+                    .Select(file => $"{category}: {file.FileName}"));
+            }
+
+            if (!missingFiles.Any())
+            {
+                return true;
+            }
+
+            Logging.Logger.Warn("Missing files during data validation. Those files were missing: {0}", string.Join(", ", missingFiles));
+            return false;
         }
 
         private async Task DownloadImages(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string newVersion)
