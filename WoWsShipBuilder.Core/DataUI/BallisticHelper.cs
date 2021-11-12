@@ -13,16 +13,12 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double P0 = 101325;                // Pressure at Sea Level        | Pa
         private const double R = 8.31447;                // Ideal Gas Constant           | J/(mol K)
         private const double M = 0.0289644;              // Molarity of Air at Sea Level | kg/mol
-        private const double timeMultiplier = 2.61;      // In game time multiplier
-
-        private const double GMRL = (G * M) / (R * L);
+        private const double TimeMultiplier = 2.61;      // In game time multiplier
 
         // Calculation Parameters
         private static double maxAngle = 25;              // Max Angle                    | degrees
         private static double minAngle = 0;               // Min Angle                    | degrees
         private static double angleStep = 0.1;            // Angle Step                   | degrees
-        private static double x0 = 0;                     // Starting x0, y0              | m
-        private static double y0 = 0;                     // Starting x0, y0              | m
         private static double dt = 0.02;                  // Time step                    | s
         private static List<double> calculationAngles = new();
 
@@ -87,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     x += dt * v_x;
                     y += dt * v_y;
-                    var k = 0;
+                    var k = 0.00046905491615181766 * shell.Krupp / 2400;
 #pragma warning disable SA1312 // Variable names should begin with lower-case letter
                     var T = T0 - (L * y);
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter
@@ -105,7 +101,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var v_impact = Math.Sqrt((v_x * v_x) + (v_y * v_y));
                 var impactAngle = Math.Atan2(v_y, v_x);
                 var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
-                var ballistic = new Ballistic(pen, v_impact, t / timeMultiplier, impactAngle);
+                var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
 
                 dict.Add(x, ballistic);
             }
