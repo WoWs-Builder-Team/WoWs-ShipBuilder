@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Downloading ship images</value>
   </data>
-  <data name="AirCarrier" xml:space="preserve">
+  <data name="time" xml:space="preserve">
     <value>Aircraft Carrier</value>
   </data>
   <data name="Battleship" xml:space="preserve">
@@ -283,7 +283,7 @@
     <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>Russia</value>
+    <value>U.S.S.R</value>
   </data>
   <data name="Spain" xml:space="preserve">
     <value>Spain</value>
@@ -395,9 +395,6 @@
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
     <value>Airstrike</value>
-  </data>
-  <data name="ShipStats_AvailableFlights" xml:space="preserve">
-    <value>Available flights</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
     <value>Bomb type</value>

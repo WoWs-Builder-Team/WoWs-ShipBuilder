@@ -61,15 +61,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aircraft Carrier.
-        /// </summary>
-        public static string AirCarrier {
-            get {
-                return ResourceManager.GetString("AirCarrier", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
@@ -592,7 +583,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Russia.
+        ///   Looks up a localized string similar to U.S.S.R.
         /// </summary>
         public static string Russia {
             get {
@@ -957,15 +948,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_AttackCd {
             get {
                 return ResourceManager.GetString("ShipStats_AttackCd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Available flights.
-        /// </summary>
-        public static string ShipStats_AvailableFlights {
-            get {
-                return ResourceManager.GetString("ShipStats_AvailableFlights", resourceCulture);
             }
         }
         
@@ -2145,6 +2127,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string TestShip {
             get {
                 return ResourceManager.GetString("TestShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string time {
+            get {
+                return ResourceManager.GetString("time", resourceCulture);
             }
         }
         
