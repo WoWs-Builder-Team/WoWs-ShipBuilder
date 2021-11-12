@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -13,13 +14,13 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double P0 = 101325;                // Pressure at Sea Level        | Pa
         private const double R = 8.31447;                // Ideal Gas Constant           | J/(mol K)
         private const double M = 0.0289644;              // Molarity of Air at Sea Level | kg/mol
-        private const double TimeMultiplier = 2.61;      // In game time multiplier
+        private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
-        private static double maxAngle = 25;              // Max Angle                    | degrees
+        private static double maxAngles = 450;              // Max Angle                    | degrees
         private static double minAngle = 0;               // Min Angle                    | degrees
-        private static double angleStep = 0.1;            // Angle Step                   | degrees
-        private static double dt = 0.02;                  // Time step                    | s
+        private static double angleStep = 0.00174533;            // Angle Step                   | degrees
+        private static double dt = 0.1;                  // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>
@@ -44,12 +45,44 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var list = new List<double>();
 
-            for (double i = minAngle; i < maxAngle; i += angleStep )
+            //for (double i = minAngle; i < maxAngle; i += angleStep )
+            //{
+            //    list.Add(i);
+            //}
+
+            for (int i = 0; i < maxAngles; i++)
             {
-                list.Add(i);
+                list.Add(i * angleStep);
             }
 
             return list;
+        }
+
+        private static double GetNormalization(double caliber)
+        {
+            double norm = 0;
+            if (caliber <= 0.139)
+            {
+                norm = 10 * Math.PI / 180;
+            }
+            else if (caliber <= 0.152)
+            {
+                norm = 8.5 * Math.PI / 180;
+            }
+            else if (caliber <= 0.24)
+            {
+                norm = 7 * Math.PI / 180;
+              }
+            else if (caliber < 0.51)
+            {
+                norm = 6 * Math.PI / 180;
+            }
+            else
+            {
+                norm = 15 * Math.PI / 180;     
+            }
+
+            return norm;
         }
 
         /// <summary>
@@ -57,9 +90,12 @@ namespace WoWsShipBuilder.Core.DataUI
         /// </summary>
         /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
-        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell)
+        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange)
         {
             var dict = new Dictionary<double, Ballistic>();
+
+            // Increase max range toa ccount for modifiers
+            maxRange *= 1.5;
 
             // Initialize the angle list. This way we calculate it only once, if it's needed.
             //  No reason to calculate them if the user never try to see the ballistic data.
@@ -69,13 +105,16 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             // Various variable inizialization used in the calculations
-            var initialSpeed = shell.MuzzleVelocity;
-            var y = 0d;
-            var x = 0d;
-            var t = 0d;
+
+
+            var k = 0.5 * shell.AirDrag * Math.Pow((shell.Caliber / 2), 2) * Math.PI / shell.Mass;
 
             foreach (var angle in calculationAngles)
             {
+                var y = 0d;
+                var x = 0d;
+                var t = 0d;
+                var initialSpeed = shell.MuzzleVelocity;
                 var v_x = initialSpeed * Math.Cos(angle);
                 var v_y = initialSpeed * Math.Sin(angle);
 
@@ -83,7 +122,6 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     x += dt * v_x;
                     y += dt * v_y;
-                    var k = 0.00046905491615181766 * shell.Krupp / 2400;
 #pragma warning disable SA1312 // Variable names should begin with lower-case letter
                     var T = T0 - (L * y);
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter
@@ -93,7 +131,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     var speed = Math.Sqrt((v_x * v_x) + (v_y * v_y));
 
                     v_x = v_x - (dt * k * rho_g * v_x * speed);
-                    v_y = v_x - ((dt * G) - (dt * k * rho_g * v_y * speed));
+                    v_y = v_y - ((dt * G) - (dt * k * rho_g * v_y * speed));
 
                     t += dt;
                 }
@@ -102,8 +140,12 @@ namespace WoWsShipBuilder.Core.DataUI
                 var impactAngle = Math.Atan2(v_y, v_x);
                 var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
                 var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
-
+                Debug.WriteLine("Added range of" + Math.Round(x / 1000, 2));
                 dict.Add(x, ballistic);
+                if (x > maxRange)
+                {
+                    break;
+                }
             }
 
             return dict;

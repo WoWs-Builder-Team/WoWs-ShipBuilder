@@ -8,6 +8,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
@@ -19,19 +20,24 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly DispersionGraphsWindow self;
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex)
+        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex, ArtilleryShell shell)
         {
             self = win;
             var name = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
-            var hModel = InitializeBaseModel(Translation.ShipStats_HorizontalDisp);
+            var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
             var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
             hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
 
-            var vModel = InitializeBaseModel(Translation.ShipStats_VerticalDisp);
+            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
             var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
             vModel.Series.Add(vDisp);
             VerticalModel = vModel;
+
+            var penModel = InitializeBallisticBaseModel("Penetration Graph", "Range", "Km", "Pen", "mm");
+            var penSeries = CreatePenetrationSeries(shell, maxRange, name);
+            penModel.Series.Add(penSeries);
+            PenetrationModel = penModel;
 
             shipNames.Add(name);
         }
@@ -58,6 +64,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => verticalModel;
             set => this.RaiseAndSetIfChanged(ref verticalModel, value);
+        }
+
+        private PlotModel? penetrationModel;
+
+        public PlotModel? PenetrationModel
+        {
+            get => penetrationModel;
+            set => this.RaiseAndSetIfChanged(ref penetrationModel, value);
         }
 
         public async void AddShip()
@@ -123,7 +137,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public bool CanRemoveShip(object parameter) => shipNames.Count > 0;
 
         // This are all default values to make the graph looks nice
-        private PlotModel InitializeBaseModel(string name)
+        private PlotModel InitializeDispersionBaseModel(string name)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
@@ -176,6 +190,60 @@ namespace WoWsShipBuilder.UI.ViewModels
             return model;
         }
 
+        // This are all default values to make the graph looks nice
+        private PlotModel InitializeBallisticBaseModel(string name, string xTitle, string xUnit, string yTitle, string yUnit)
+        {
+            var foreground = ConvertColorFromResource("ThemeForegroundColor");
+            var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
+            var background = ConvertColorFromResource("ThemeBackgroundColor");
+
+            PlotModel model = new()
+            {
+                Title = name,
+                TextColor = foreground,
+                PlotAreaBorderColor = foreground,
+                LegendPosition = LegendPosition.TopLeft,
+                LegendBorder = foreground,
+                LegendBorderThickness = 1,
+                LegendBackground = background,
+                LegendFontSize = 13,
+            };
+
+            var xAxis = new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
+                Title = xTitle,
+                IsPanEnabled = false,
+                Unit = xUnit,
+                Minimum = 0,
+                AxislineColor = foreground,
+                TextColor = foreground,
+                TicklineColor = foreground,
+                MajorGridlineThickness = 1,
+                MajorGridlineStyle = LineStyle.Dash,
+                MajorGridlineColor = foregroundLow,
+            };
+
+            var yAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = yTitle,
+                IsPanEnabled = false,
+                Unit = yUnit,
+                Minimum = 0,
+                AxislineColor = foreground,
+                TextColor = foreground,
+                TicklineColor = foreground,
+                MajorGridlineThickness = 1,
+                MajorGridlineStyle = LineStyle.Dash,
+                MajorGridlineColor = foregroundLow,
+            };
+            model.Axes.Add(xAxis);
+            model.Axes.Add(yAxis);
+
+            return model;
+        }
+
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
@@ -190,6 +258,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             dispSeries.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
             return dispSeries;
+        }
+
+        private LineSeries CreatePenetrationSeries(ArtilleryShell shell, double maxRange, string name)
+        {
+            var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
+            var seriesData = ballistic.Select(x => new DataPoint(x.Key, x.Value.Penetration));
+            var series = new LineSeries()
+            {
+                Title = name,
+                ItemsSource = seriesData,
+            };
+            series.TrackerFormatString = "{0}\n{1}: {1}: {2:#.00} m\n{3}: {4:#.00} mm";
+            series.StrokeThickness = 4;
+            return series;
         }
 
         private OxyColor ConvertColorFromResource(string resourceKey)
