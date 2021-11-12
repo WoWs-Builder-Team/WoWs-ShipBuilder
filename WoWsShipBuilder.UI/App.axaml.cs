@@ -41,8 +41,8 @@ namespace WoWsShipBuilder.UI
                 {
                     Task.Run(async () =>
                     {
-                        await UpdateCheck();
-                        Logging.Logger.Info("After updatecheck");
+                        await UpdateCheck(desktop);
+                        Logging.Logger.Info("Finished updatecheck");
                     });
                 }
             }
@@ -54,20 +54,36 @@ namespace WoWsShipBuilder.UI
             AppDataHelper.Instance.SaveBuilds();
         }
 
-        private async Task UpdateCheck()
+        private async Task UpdateCheck(IClassicDesktopStyleApplicationLifetime desktop)
         {
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
             using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+            Logging.Logger.Info("Update manager initialized.");
             try
             {
+                // Can throw a null-reference-exception, no idea why.
                 var release = await updateManager.UpdateApp();
+                if (release == null)
+                {
+                    return;
+                }
+
                 Logging.Logger.Info($"App updated to version {release.Version}");
-                var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(null, $"App was updated to version {release.Version}, do you want to restart to apply?", "App Updated", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Question));
+                var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(
+                    desktop.MainWindow,
+                    $"App was updated to version {release.Version}, do you want to restart to apply?",
+                    "App Updated",
+                    MessageBox.MessageBoxButtons.YesNo,
+                    MessageBox.MessageBoxIcon.Question));
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
                     Logging.Logger.Info("User decided to restart after update.");
                     UpdateManager.RestartApp();
                 }
+            }
+            catch (NullReferenceException)
+            {
+                Logging.Logger.Debug("NullReferenceException during app update.");
             }
             catch (Exception e)
             {

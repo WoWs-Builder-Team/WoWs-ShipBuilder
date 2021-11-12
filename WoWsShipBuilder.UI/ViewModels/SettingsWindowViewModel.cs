@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
 using Avalonia;
@@ -22,9 +23,10 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly SettingsWindow self;
 
-        public SettingsWindowViewModel(SettingsWindow win)
+        public SettingsWindowViewModel(SettingsWindow win, IFileSystem? fileSystem = null)
         {
             self = win;
+            fileSystem ??= new FileSystem();
             LanguagesList = languages.Keys.ToList();
             SelectedLanguage = languages.Keys.First();
             Servers = Enum.GetNames<ServerType>().ToList();
@@ -36,8 +38,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (AppData.DataVersion is null)
             {
                 string dataPath = AppDataHelper.Instance.GetDataPath(AppData.Settings.SelectedServerType);
-                string localVersionInfoPath = Path.Combine(dataPath, "VersionInfo.json");
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(File.ReadAllText(localVersionInfoPath))!;
+                string localVersionInfoPath = fileSystem.Path.Combine(dataPath, "VersionInfo.json");
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(fileSystem.File.ReadAllText(localVersionInfoPath))!;
                 AppData.DataVersion = localVersionInfo.VersionName;
             }
 
@@ -50,7 +52,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             { "English", "en-GB" },
         };
 
-        private string dataVersion;
+        private string dataVersion = default!;
 
         public string DataVersion
         {

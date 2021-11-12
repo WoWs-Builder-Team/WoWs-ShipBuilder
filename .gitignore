@@ -10,4 +10,4 @@ Tools/*.log
 
 *.user
 
-WoWsShipBuilder.UI/Settings/*.json
+WoWsShipBuilder.UI/Settings/*_ApplicationOptions.json

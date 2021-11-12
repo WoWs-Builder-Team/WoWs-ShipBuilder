@@ -13,6 +13,8 @@
         <FileVersion>0.0.1</FileVersion>
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <WarningsAsErrors>True</WarningsAsErrors>
+        <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
@@ -72,7 +74,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Include="Settings\*.json" />
-      <None Remove="Settings\*.json" />
+      <EmbeddedResource Include="Settings\ApplicationOptions.json" />
     </ItemGroup>
 </Project>
