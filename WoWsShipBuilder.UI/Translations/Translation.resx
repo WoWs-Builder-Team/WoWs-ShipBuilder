@@ -661,7 +661,7 @@
     <value>Maximum range</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Max drop lenght</value>
+    <value>Max drop length</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
     <value>Minimum range</value>
@@ -688,7 +688,7 @@
     <value>Ping duration</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>Pinger gun</value>
+    <value>Sonar</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
     <value>Ping speed</value>

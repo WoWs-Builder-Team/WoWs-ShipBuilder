@@ -1492,7 +1492,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max drop lenght.
+        ///   Looks up a localized string similar to Max drop length.
         /// </summary>
         public static string ShipStats_MaximumFlightDistance {
             get {
@@ -1609,7 +1609,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pinger gun.
+        ///   Looks up a localized string similar to Sonar.
         /// </summary>
         public static string ShipStats_PingerGun {
             get {
