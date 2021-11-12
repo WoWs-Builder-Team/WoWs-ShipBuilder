@@ -13,6 +13,8 @@
         <FileVersion>0.0.1</FileVersion>
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <WarningsAsErrors>True</WarningsAsErrors>
+        <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Models\" />
