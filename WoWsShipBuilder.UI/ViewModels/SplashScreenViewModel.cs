@@ -123,7 +123,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return true;
             }
 
-            Logging.Logger.Warn("Missing files during data validation. Those files were missing: {0}", string.Join(", ", missingFiles));
+            Logging.Logger.Warn("Missing files during data validation. These files were missing: {0}", string.Join(", ", missingFiles));
             return false;
         }
 
