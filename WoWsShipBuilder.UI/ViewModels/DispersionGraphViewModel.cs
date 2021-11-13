@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
@@ -164,11 +165,16 @@ namespace WoWsShipBuilder.UI.ViewModels
                         // create and add the ballistic series
                         var shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                        // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
                         if (shell.ShellType == ShellType.AP)
                         {
                             PenetrationModel!.Series.Add(ballisticSeries.Penetration);
                         }
-                        // TODO pen for he should be a straight line
+                        else
+                        {
+                            PenetrationModel!.Series.Add(CreateSeriesForFixedPen(shell, (double)guns.MaxRange, name));
+                        }
 
                         FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
                         ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
@@ -186,7 +192,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                         ImpactAngleModel!.InvalidatePlot(true);
 
                         this.RaisePropertyChanged(nameof(ShipNames));
-
                     }
                     else
                     {
@@ -214,11 +219,19 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var index = shipNames.IndexOf(ship);
                     HorizontalModel!.Series.RemoveAt(index);
                     VerticalModel!.Series.RemoveAt(index);
+                    PenetrationModel!.Series.RemoveAt(index);
+                    FlightTimeModel!.Series.RemoveAt(index);
+                    ImpactAngleModel!.Series.RemoveAt(index);
+                    ImpactVelocityModel!.Series.RemoveAt(index);
                     shipNames.RemoveAt(index);
                 }
 
                 HorizontalModel!.InvalidatePlot(true);
                 VerticalModel!.InvalidatePlot(true);
+                PenetrationModel!.InvalidatePlot(true);
+                FlightTimeModel!.InvalidatePlot(true);
+                ImpactVelocityModel!.InvalidatePlot(true);
+                ImpactAngleModel!.InvalidatePlot(true);
                 this.RaisePropertyChanged(nameof(ShipNames));
             }
         }
@@ -393,6 +406,26 @@ namespace WoWsShipBuilder.UI.ViewModels
             impactAngleSeries.StrokeThickness = 4;
 
             return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries);
+        }
+
+        private LineSeries CreateSeriesForFixedPen(ArtilleryShell shell, double maxRange, string name)
+        {
+            var pen = shell.Penetration;
+            var initialDataPoint = new DataPoint(0, pen);
+            var finalDataPoint = new DataPoint(maxRange * 1.5, pen);
+            var list = new List<DataPoint>();
+            list.Add(initialDataPoint);
+            list.Add(finalDataPoint);
+
+            var penSeries = new LineSeries()
+            {
+                Title = name,
+                ItemsSource = list,
+            };
+            penSeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00} mm";
+            penSeries.StrokeThickness = 4;
+
+            return penSeries;
         }
 
         private OxyColor ConvertColorFromResource(string resourceKey)
