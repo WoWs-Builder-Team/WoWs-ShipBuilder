@@ -61,15 +61,6 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aircraft Carrier.
-        /// </summary>
-        public static string AirCarrier {
-            get {
-                return ResourceManager.GetString("AirCarrier", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
@@ -151,7 +142,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import Build.
+        ///   Looks up a localized string similar to Import build.
         /// </summary>
         public static string BuildImport_Title {
             get {
@@ -169,7 +160,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Apply Camo Bonuses.
+        ///   Looks up a localized string similar to Apply camo bonuses.
         /// </summary>
         public static string CaptainSkillSelector_Camo {
             get {
@@ -178,7 +169,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captain points :.
+        ///   Looks up a localized string similar to Captain points:.
         /// </summary>
         public static string CaptainSkillSelector_Points {
             get {
@@ -187,7 +178,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Captain Talents.
+        ///   Looks up a localized string similar to Captain talents.
         /// </summary>
         public static string CaptainSkillSelector_Talents {
             get {
@@ -214,7 +205,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depth Charges.
+        ///   Looks up a localized string similar to Depth charges.
         /// </summary>
         public static string DepthCharge {
             get {
@@ -268,7 +259,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status :.
+        ///   Looks up a localized string similar to Status:.
         /// </summary>
         public static string DownloadWindow_Status {
             get {
@@ -412,7 +403,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commander XP :.
+        ///   Looks up a localized string similar to Commander XP:.
         /// </summary>
         public static string MainWindow_CommanderXp {
             get {
@@ -430,7 +421,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Free XP :.
+        ///   Looks up a localized string similar to Free XP:.
         /// </summary>
         public static string MainWindow_FreeXp {
             get {
@@ -439,7 +430,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Free XP Bonus %.
+        ///   Looks up a localized string similar to Free XP bonus %.
         /// </summary>
         public static string MainWindow_FreeXpBonus {
             get {
@@ -457,7 +448,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset Build.
+        ///   Looks up a localized string similar to Reset build.
         /// </summary>
         public static string MainWindow_ResetBuild {
             get {
@@ -466,7 +457,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Share Build.
+        ///   Looks up a localized string similar to Share build.
         /// </summary>
         public static string MainWindow_ShareBuild {
             get {
@@ -484,7 +475,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Final XP :.
+        ///   Looks up a localized string similar to Final XP:.
         /// </summary>
         public static string MainWindow_Xp {
             get {
@@ -502,7 +493,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to XP Calculator.
+        ///   Looks up a localized string similar to XP calculator.
         /// </summary>
         public static string MainWindow_XpCalculator {
             get {
@@ -592,7 +583,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Russia.
+        ///   Looks up a localized string similar to U.S.S.R.
         /// </summary>
         public static string Russia {
             get {
@@ -601,7 +592,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Art by :.
+        ///   Looks up a localized string similar to Art by:.
         /// </summary>
         public static string SettingsWindow_ArtBy {
             get {
@@ -655,7 +646,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Conversion :.
+        ///   Looks up a localized string similar to Data conversion:.
         /// </summary>
         public static string SettingsWindow_Data {
             get {
@@ -664,7 +655,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Version:.
+        ///   Looks up a localized string similar to Data version:.
         /// </summary>
         public static string SettingsWindow_DataVersion {
             get {
@@ -673,7 +664,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Developed by :.
+        ///   Looks up a localized string similar to Developed by:.
         /// </summary>
         public static string SettingsWindow_DevelopedBy {
             get {
@@ -718,7 +709,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lead Devs:.
+        ///   Looks up a localized string similar to Lead devs:.
         /// </summary>
         public static string SettingsWindow_LeadDevs {
             get {
@@ -754,7 +745,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save &amp; Exit.
+        ///   Looks up a localized string similar to Save &amp; exit.
         /// </summary>
         public static string SettingsWindow_SaveExit {
             get {
@@ -826,7 +817,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search Ship.
+        ///   Looks up a localized string similar to Search ship.
         /// </summary>
         public static string ShipSelectionWindow_SearchShip {
             get {
@@ -853,7 +844,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AA Defense.
+        ///   Looks up a localized string similar to AA defense.
         /// </summary>
         public static string ShipStats_AADefense {
             get {
@@ -943,16 +934,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arming Treshold.
-        /// </summary>
-        public static string ShipStats_ArmingTreshold {
-            get {
-                return ResourceManager.GetString("ShipStats_ArmingTreshold", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ASW Airstrike.
+        ///   Looks up a localized string similar to ASW airstrike.
         /// </summary>
         public static string ShipStats_AswAirstrike {
             get {
@@ -966,15 +948,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_AttackCd {
             get {
                 return ResourceManager.GetString("ShipStats_AttackCd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Available Flights.
-        /// </summary>
-        public static string ShipStats_AvailableFlights {
-            get {
-                return ResourceManager.GetString("ShipStats_AvailableFlights", resourceCulture);
             }
         }
         
@@ -997,7 +970,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bomb Type.
+        ///   Looks up a localized string similar to Bomb type.
         /// </summary>
         public static string ShipStats_BombType {
             get {
@@ -1006,7 +979,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bombs in Payload.
+        ///   Looks up a localized string similar to Bombs in payload.
         /// </summary>
         public static string ShipStats_BompPayload {
             get {
@@ -1015,7 +988,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Artillery Burst mode.
+        ///   Looks up a localized string similar to Artillery burst mode.
         /// </summary>
         public static string ShipStats_BurstMode {
             get {
@@ -1087,7 +1060,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constant Damage.
+        ///   Looks up a localized string similar to Constant damage.
         /// </summary>
         public static string ShipStats_ConstantDamage {
             get {
@@ -1141,7 +1114,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ASW Depth Charges.
+        ///   Looks up a localized string similar to ASW depth Charges.
         /// </summary>
         public static string ShipStats_DepthChargesLauncher {
             get {
@@ -1150,7 +1123,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depth Explosion Radius.
+        ///   Looks up a localized string similar to Depth explosion radius.
         /// </summary>
         public static string ShipStats_DepthExplosion {
             get {
@@ -1195,7 +1168,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fire Chance.
+        ///   Looks up a localized string similar to Fire chance.
         /// </summary>
         public static string ShipStats_FireChance {
             get {
@@ -1222,7 +1195,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fire Duration.
+        ///   Looks up a localized string similar to Fire duration.
         /// </summary>
         public static string ShipStats_FireDuration {
             get {
@@ -1249,7 +1222,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Ping duration.
+        ///   Looks up a localized string similar to First ping duration.
         /// </summary>
         public static string ShipStats_FirstPingDuration {
             get {
@@ -1267,7 +1240,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flak Damage.
+        ///   Looks up a localized string similar to Flak damage.
         /// </summary>
         public static string ShipStats_FlakDamage {
             get {
@@ -1312,7 +1285,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Flooding Chance.
+        ///   Looks up a localized string similar to Flooding chance.
         /// </summary>
         public static string ShipStats_FloodingChance {
             get {
@@ -1375,7 +1348,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fuse Timer.
+        ///   Looks up a localized string similar to Fuse timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
             get {
@@ -1384,7 +1357,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hit Chance.
+        ///   Looks up a localized string similar to Hit chance.
         /// </summary>
         public static string ShipStats_HitChance {
             get {
@@ -1393,7 +1366,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hit Points.
+        ///   Looks up a localized string similar to Hit points.
         /// </summary>
         public static string ShipStats_HitPoints {
             get {
@@ -1402,7 +1375,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal Dispersion.
+        ///   Looks up a localized string similar to Horizontal dispersion.
         /// </summary>
         public static string ShipStats_HorizontalDisp {
             get {
@@ -1438,20 +1411,11 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Long Range Aura.
+        ///   Looks up a localized string similar to Long range aura.
         /// </summary>
         public static string ShipStats_LongAura {
             get {
                 return ResourceManager.GetString("ShipStats_LongAura", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long Range Aura.
-        /// </summary>
-        public static string ShipStats_LongRangeAA {
-            get {
-                return ResourceManager.GetString("ShipStats_LongRangeAA", resourceCulture);
             }
         }
         
@@ -1528,7 +1492,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max drop lenght.
+        ///   Looks up a localized string similar to Max drop length.
         /// </summary>
         public static string ShipStats_MaximumFlightDistance {
             get {
@@ -1555,20 +1519,11 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medium Range Aura.
+        ///   Looks up a localized string similar to Medium range aura.
         /// </summary>
         public static string ShipStats_MediumAura {
             get {
                 return ResourceManager.GetString("ShipStats_MediumAura", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Medium Range Aura.
-        /// </summary>
-        public static string ShipStats_MediumRangeAA {
-            get {
-                return ResourceManager.GetString("ShipStats_MediumRangeAA", resourceCulture);
             }
         }
         
@@ -1645,7 +1600,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ping Duration.
+        ///   Looks up a localized string similar to Ping duration.
         /// </summary>
         public static string ShipStats_PingDuration {
             get {
@@ -1654,7 +1609,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pinger gun.
+        ///   Looks up a localized string similar to Sonar.
         /// </summary>
         public static string ShipStats_PingerGun {
             get {
@@ -1663,7 +1618,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ping Speed.
+        ///   Looks up a localized string similar to Ping speed.
         /// </summary>
         public static string ShipStats_PingSpeed {
             get {
@@ -1726,7 +1681,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reaction Time.
+        ///   Looks up a localized string similar to Reaction time.
         /// </summary>
         public static string ShipStats_ReactionTime {
             get {
@@ -1735,7 +1690,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reload Time.
+        ///   Looks up a localized string similar to Reload time.
         /// </summary>
         public static string ShipStats_Reload {
             get {
@@ -1780,7 +1735,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ricochet Angles.
+        ///   Looks up a localized string similar to Ricochet angles.
         /// </summary>
         public static string ShipStats_RicochetAngles {
             get {
@@ -1798,7 +1753,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Second Ping duration.
+        ///   Looks up a localized string similar to Second ping duration.
         /// </summary>
         public static string ShipStats_SecondPingDuration {
             get {
@@ -1816,7 +1771,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial Shell Velocity.
+        ///   Looks up a localized string similar to Initial shell velocity.
         /// </summary>
         public static string ShipStats_ShellVelocity {
             get {
@@ -1825,7 +1780,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shell Weight.
+        ///   Looks up a localized string similar to Shell weight.
         /// </summary>
         public static string ShipStats_ShellWeight {
             get {
@@ -1834,20 +1789,11 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Short Range Aura.
+        ///   Looks up a localized string similar to Short range aura.
         /// </summary>
         public static string ShipStats_ShortAura {
             get {
                 return ResourceManager.GetString("ShipStats_ShortAura", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short Range Aura.
-        /// </summary>
-        public static string ShipStats_ShortRangeAA {
-            get {
-                return ResourceManager.GetString("ShipStats_ShortRangeAA", resourceCulture);
             }
         }
         
@@ -1942,7 +1888,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo Spread.
+        ///   Looks up a localized string similar to Torpedo spread.
         /// </summary>
         public static string ShipStats_TorpedoArea {
             get {
@@ -1951,7 +1897,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo Launchers.
+        ///   Looks up a localized string similar to Torpedo launchers.
         /// </summary>
         public static string ShipStats_TorpedoLaunchers {
             get {
@@ -2005,7 +1951,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Dispersion.
+        ///   Looks up a localized string similar to Vertical dispersion.
         /// </summary>
         public static string ShipStats_VerticalDisp {
             get {
@@ -2014,7 +1960,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weapon Type.
+        ///   Looks up a localized string similar to Weapon type.
         /// </summary>
         public static string ShipStats_WeaponType {
             get {
@@ -2041,7 +1987,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skip Bomb.
+        ///   Looks up a localized string similar to Skip bomb.
         /// </summary>
         public static string SkipBomb {
             get {
@@ -2068,7 +2014,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading Camo Images.
+        ///   Looks up a localized string similar to Downloading camo images.
         /// </summary>
         public static string SplashScreen_CamoImages {
             get {
@@ -2086,7 +2032,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading Data.
+        ///   Looks up a localized string similar to Downloading data.
         /// </summary>
         public static string SplashScreen_Json {
             get {
@@ -2095,7 +2041,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading Ship Images.
+        ///   Looks up a localized string similar to Downloading ship images.
         /// </summary>
         public static string SplashScreen_ShipImages {
             get {
@@ -2104,7 +2050,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error suring the loading of the build.
+        ///   Looks up a localized string similar to Error during the loading of the build.
         /// </summary>
         public static string StartMenu_BuildLoadingError {
             get {
@@ -2149,7 +2095,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings and Info.
+        ///   Looks up a localized string similar to Settings and info.
         /// </summary>
         public static string StartMenu_Settings {
             get {
@@ -2167,7 +2113,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tech Tree.
+        ///   Looks up a localized string similar to Tech tree.
         /// </summary>
         public static string TechTree {
             get {
@@ -2176,7 +2122,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Ship.
+        ///   Looks up a localized string similar to Test ship.
         /// </summary>
         public static string TestShip {
             get {
@@ -2185,7 +2131,16 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Empty Slot.
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string time {
+            get {
+                return ResourceManager.GetString("time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty slot.
         /// </summary>
         public static string TITLE_PlaceholderMod {
             get {

@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,70 +118,70 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Back to menu</value>
+    <value>Terug naar het menu</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
     <value>Reset build</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Share build</value>
+    <value>Deel build</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Enable automatic updates</value>
+    <value>Automatische updates inschakelen</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Clean</value>
+    <value>Opschonen</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Clean stored application data</value>
+    <value>Applicatie data opschonen</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Developed by:</value>
+    <value>Ontwikkeld door:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
     <value>Info</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Language</value>
+    <value>Taal</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Reset settings to default</value>
+    <value>Standaardinstellingen herstellen</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Instellingen</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Version:</value>
+    <value>Versie:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Load a build</value>
+    <value>Laad een build</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Create a new build</value>
+    <value>Nieuwe build</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Import build...</value>
+    <value>Importeer build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Settings and info</value>
+    <value>Instellingen en info</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
     <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Flags </value>
+    <value>Vlaggen </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insert the build name. The ship name is automatically included.</value>
+    <value>Voer een build naam in. De van het schip wordt automatisch toegevoegd.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Select new ship</value>
+    <value>Ander schip selecteren</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art by:</value>
+    <value>Kunst door:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
     <value>Devs: </value>
@@ -190,37 +190,37 @@
     <value>Lead devs:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Data conversion:</value>
+    <value>Data conversie:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Captain points:</value>
+    <value>Kapiteins punten:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Captain talents</value>
+    <value>Kapitein talenten</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Opslaan</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
     <value>Server</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>Base XP</value>
+    <value>Basis XP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>Commander XP:</value>
+    <value>Commandant XP:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>Commander XP bonus %</value>
+    <value>Commandant XP bonus %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>Free XP:</value>
+    <value>Vrije XP:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Free XP bonus %</value>
+    <value>Vrije XP bonus %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>Final XP:</value>
+    <value>Totaal XP:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
     <value>XP bonus %</value>
@@ -229,597 +229,597 @@
     <value>XP calculator</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Downloading camo images</value>
+    <value>Camouflage afbeeldingen downloaden</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Done</value>
+    <value>Gereed</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Downloading data</value>
+    <value>Data downloaden</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Downloading ship images</value>
+    <value>Schip afbeeldingen downloaden</value>
   </data>
   <data name="time" xml:space="preserve">
-    <value>Aircraft Carrier</value>
+    <value>Vliegdekschip</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Battleship</value>
+    <value>Slagschip</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Commonwealth</value>
+    <value>Gemenebest</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Cruiser</value>
+    <value>Kruiser</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Destroyer</value>
+    <value>Torpedobootjager</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Europe</value>
+    <value>Europa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>France</value>
+    <value>Frankrijk</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Germany</value>
+    <value>Duitsland</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Italy</value>
+    <value>Italië</value>
   </data>
   <data name="Japan" xml:space="preserve">
     <value>Japan</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Netherlands</value>
+    <value>Nederland</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan America</value>
+    <value>Pan-Amerika</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan Asia</value>
+    <value>Pan-Azië</value>
   </data>
   <data name="Premium" xml:space="preserve">
     <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>U.S.S.R</value>
+    <value>Sovjet-Unie</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Spain</value>
+    <value>Spanje</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Special</value>
+    <value>Speciaal</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Submarine</value>
+    <value>Duikboot</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Tech tree</value>
+    <value>Technologie boom</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Test ship</value>
+    <value>Test schip</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>U.K.</value>
+    <value>V.K.</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>U.S.A.</value>
+    <value>V.S.</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Empty slot</value>
+    <value>Leeg slot</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Minimum range for the warning to appear</value>
+    <value>Minimum bereik voordat de waarschuwing wordt weergeven</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Class</value>
+    <value>Klasse</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Bevestigen</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Nation</value>
+    <value>Natie</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Tier</value>
+    <value>Niveau</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>No ships matching the filtering criteria found</value>
+    <value>Geen schepen die aan de filtercriteria voldoen</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Search ship</value>
+    <value>Zoeken naar schip</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>180° turn time</value>
+    <value>180° draaitijd</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal dispersion</value>
+    <value>Horizontale verspreiding</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Range</value>
+    <value>Bereik</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Rate of fire</value>
+    <value>Schiet ratio</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Reload time</value>
+    <value>Herlaad Tijd</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Traverse speed</value>
+    <value>Draai snelheid</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical dispersion</value>
+    <value>Verticale verspreiding</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Initial shell velocity</value>
+    <value>Initiële granaat snelheid</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Shell weight</value>
+    <value>Granaat gewicht</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Theoretical DPM</value>
+    <value>Theoretische DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Arming Threshold</value>
+    <value>Bewapening overgangsdrempel</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Depth explosion radius</value>
+    <value>Diepte explosie radius</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Fire chance</value>
+    <value>Kans op brand</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Fuse timer</value>
+    <value>Fuseer timer</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Overmatch capability</value>
+    <value>Overtref waarde</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Penetration</value>
+    <value>Penetratie</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ricochet angles</value>
+    <value>Ricochet hoeken</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>AA defense</value>
+    <value>Luchtafweer</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>Aircraft HP</value>
+    <value>Vliegtuig levenspunten</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Airstrike</value>
+    <value>Luchtaanval</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Bomb type</value>
+    <value>Bom type</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombs in payload</value>
+    <value>Bommen in lading</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Constant damage</value>
+    <value>Constante schade</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Damage</value>
+    <value>Schade</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Delay</value>
+    <value>Vertraging</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Detectability range</value>
+    <value>Detecteerbaarheid</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Flak</value>
+    <value>Granaatexplosies</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Flak damage</value>
+    <value>Granaatexplosie schade</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Hit chance</value>
+    <value>Kans op treffer</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Flooding chance</value>
+    <value>Overstromingskans</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Main Battery</value>
+    <value>Hoofd Geschut</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaction time</value>
+    <value>Reactie tijd</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Add ship</value>
+    <value>Schip toevoegen</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Remove ship</value>
+    <value>Schip verwijderen</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Maneuverability</value>
+    <value>Manoeuvreerbaarheid</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Total damage per fire</value>
+    <value>Totale schade per brand</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>DPS per fire</value>
+    <value>Schade per seconde per brand</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Fire duration</value>
+    <value>Duur van brand</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Fire chance reduction</value>
+    <value>Vuurkans vermindering</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Total damage per flood</value>
+    <value>Totale schade per overstroming</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>DPS per flooding</value>
+    <value>Schade per seconde per overstroming</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Flooding duration</value>
+    <value>Overstromingsduur</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Flooding probability</value>
+    <value>Overstromingskans</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Hit points</value>
+    <value>Levenspunten</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Max number of fires</value>
+    <value>Maximaal aantal branden</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Max number of floodings</value>
+    <value>Maximum aantal overstromingen</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Survivability</value>
+    <value>Overlevingsvermogen</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Torpedo protection</value>
+    <value>Torpedo bescherming</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>The selected ship has no main guns</value>
+    <value>Het geselecteerde schip heeft geen hoofdgeschut</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Selected ship has already been added</value>
+    <value>Geselecteerde schip is reeds toegevoegd</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Show turret angles</value>
+    <value>Toon geschutskoepel hoeken</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>The reference angle used start at 0° on the front (top of the image) and goes in a clockwise direction</value>
+    <value>De referentiehoek die wordt gebruikt begint bij 0° vooraan (bovenkant van de afbeelding) en gaat met de klok mee</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Fold all angles</value>
+    <value>Alle hoeken verbergen</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Never show angles</value>
+    <value>Hoeken niet tonen</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Always show angles</value>
+    <value>Hoeken altijd tonen</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Expand all angles</value>
+    <value>Alle hoeken tonen</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Captain Skills and Camo</value>
+    <value>Kapitein Vaardigheden en Camouflage</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Signals</value>
+    <value>Signalen</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Naam</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Apply camo bonuses</value>
+    <value>Camouflage bonussen toepassen</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Arming distance</value>
+    <value>Bewapening afstand</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Can hit</value>
+    <value>Kan raken</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Concealment</value>
+    <value>Detecteerbaarheid</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Concealment by air</value>
+    <value>Detecteerbaarheid vanuit de lucht</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>When on fire</value>
+    <value>Als het schip in brand staat</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Concealment by sea</value>
+    <value>Detecteerbaarheid vanaf zee</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>When on fire</value>
+    <value>Als het schip in brand staat</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>After firing in smoke</value>
+    <value>Na het schieten vanuit rookgordijn</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Max fires</value>
+    <value>Max branden</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Total fire damage</value>
+    <value>Totale vuurschade</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Max floods</value>
+    <value>Max overstromingen</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Torpedo protection</value>
+    <value>Torpedo bescherming</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Total flood damage</value>
+    <value>Totale overstromingsschade</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Long range aura</value>
+    <value>Lange bereik aura</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Backward</value>
+    <value>Achteruit</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Forward</value>
+    <value>Vooruit</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Max speed</value>
+    <value>Maximumsnelheid</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Rudder shift time</value>
+    <value>Roer verschuivingstijd</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Turning circle</value>
+    <value>Draaicirkel</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Medium range aura</value>
+    <value>Middellange bereik aura</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Short range aura</value>
+    <value>Korte bereik aura</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Torpedo spread</value>
+    <value>Torpedo spreiding</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Aircrafts</value>
+    <value>Vliegtuigen</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Bomb</value>
+    <value>Bom</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Rocket</value>
+    <value>Raket</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Speed</value>
+    <value>Snelheid</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Weapon type</value>
+    <value>Wapen type</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Skip bomb</value>
+    <value>Kets bom</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Weapons per plane</value>
+    <value>Wapens per vliegtuig</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Attack cooldown</value>
+    <value>Aanval Afkoeltijd</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Cruising speed</value>
+    <value>Kruissnelheid</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bomb in inner ellipse</value>
+    <value>Bom in binnenste ellips</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max planes on deck</value>
+    <value>Max aantal vliegtuigen op het dek</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Max speed</value>
+    <value>Maximumsnelheid</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Min speed</value>
+    <value>Minimum snelheid</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aircraft per attack</value>
+    <value>Vliegtuigen per aanval</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aircraft in a squadron</value>
+    <value>Vliegtuigen per squadron</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>Hp per plane</value>
+    <value>Levenspunten per vliegtuig</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Restoration time</value>
+    <value>Hersteltijd</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Starting planes on deck</value>
+    <value>Vliegtuigen op vliegdek bij start</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Bombs per plane</value>
+    <value>Bommen per vliegtuig</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Drop time</value>
+    <value>Val tijd</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Time to arrive</value>
+    <value>Tijd tot arriveren</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximum range</value>
+    <value>Maximum bereik</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Max drop length</value>
+    <value>Maximaal bereik</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimum range</value>
+    <value>Minimum bereik</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Charges</value>
+    <value>Aantal</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW airstrike</value>
+    <value>Dieptebommen luchtaanval</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Depth charges</value>
+    <value>Dieptebommen</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Dispersion visualization</value>
+    <value>Verspreiding visualisatie</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW depth Charges</value>
+    <value>Dieptebommen</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>First ping duration</value>
+    <value>Eerste ping duur</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Ping duration</value>
+    <value>Ping duur</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
     <value>Sonar</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Ping speed</value>
+    <value>Ping snelheid</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Ping width</value>
+    <value>Ping breedte</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Second ping duration</value>
+    <value>Tweede ping duur</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Shells</value>
+    <value>Granaten</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Cooldown</value>
+    <value>Afkoeltijd</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Action time</value>
+    <value>Werkingsduur</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuleren</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Enable custom path</value>
+    <value>Aangepast bestandspad</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insert custom path</value>
+    <value>Aangepast bestandspad invullen</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Save &amp; exit</value>
+    <value>Opslaan &amp; sluiten</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
+    <value>Sommige geschutskoepel oriëntatie data is verkeerd. Dit komt omdat WG deze data niet ingevoegd heeft. Daarom hebben wij een omweg gebruikt waardoor de data voor de meeste gevallen correct is. Als je een geval vind waar deze data verkeerd is, rapporteer dit dan op onze Github of Discord server. Links naar deze vind je hieronder.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Build saved</value>
+    <value>Build opgeslagen</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Build string copied to clipboard</value>
+    <value>Build string naar klembord gekopieerd</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Delete build</value>
+    <value>Build verwijderen</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Import</value>
+    <value>Importeren</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Import only</value>
+    <value>Alleen importeren</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Import and save</value>
+    <value>Importeren en opslaan</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Paste the build string here</value>
+    <value>Plak de build string hier</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Import build</value>
+    <value>Importeer build</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuleren</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Error during the loading of the build</value>
+    <value>Fout tijdens het laden van de build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Initial boost duration</value>
+    <value>Initiële boost duur</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Initial boost speed multiplier</value>
+    <value>Initiële snelheid vermenigvuldiger</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Time to switch ammo</value>
+    <value>Tijd om van munitie te wisselen</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Artillery burst mode</value>
+    <value>Hoofdgeschut burstvuur</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Duration</value>
+    <value>Duur</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Reload after burst</value>
+    <value>Herlaadtijd na burst</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Reload during burst</value>
+    <value>Herlaadtijd tijdens burstvuur</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Hits required</value>
+    <value>Treffers benodigd</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Shots in one burst</value>
+    <value>Schoten in één burst</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Special abilities</value>
+    <value>Speciale vaardigheden</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Downloading data...</value>
+    <value>Data downloaden...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Aiming time</value>
+    <value>Richttijd</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Damage taken during attack</value>
+    <value>Schade ontvangen tijdens de aanval</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Post attack invulnerability time</value>
+    <value>Onschendbaarheid tijd na aanval</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Preparation time</value>
+    <value>Voorbereidingstijd</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Time to fully aimed</value>
+    <value>Tijd tot volledig gericht</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpedo launchers</value>
+    <value>Torpedolanceerbuizen</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>During aiming</value>
+    <value>Tijdens het richten</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Drop area change rate while manoeuvring</value>
+    <value>Verandering van richtgebied tijdens het manoeuvreren</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>During preparation</value>
+    <value>Tijdens de richt voorbereiding</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Full power time</value>
+    <value>Motorboostduur</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Data version:</value>
+    <value>Data versie:</value>
   </data>
 </root>

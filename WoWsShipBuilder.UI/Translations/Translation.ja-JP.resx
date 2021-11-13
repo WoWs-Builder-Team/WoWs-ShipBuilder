@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -118,708 +118,708 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Back to menu</value>
+    <value>メニューに戻る</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Reset build</value>
+    <value>ビルドをリセット</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Share build</value>
+    <value>ビルドを共有</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Enable automatic updates</value>
+    <value>自動更新を有効化</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Clean</value>
+    <value>消去</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Clean stored application data</value>
+    <value>保存されたアプリケーションデータを消去</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Developed by:</value>
+    <value>開発者:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Info</value>
+    <value>情報</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Language</value>
+    <value>言語</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>リセット</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Reset settings to default</value>
+    <value>設定を既定にリセット</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Version:</value>
+    <value>バージョン:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Load a build</value>
+    <value>ビルドを読み込む</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Create a new build</value>
+    <value>新しいビルドを作成</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Import build...</value>
+    <value>ビルドをインポート...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Settings and info</value>
+    <value>設定と情報</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Status:</value>
+    <value>状態:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Flags </value>
+    <value>旗 </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insert the build name. The ship name is automatically included.</value>
+    <value>ビルドに名前をつけてください。艦艇名は自動的に挿入されます。</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Select new ship</value>
+    <value>新しい艦艇を選択</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art by:</value>
+    <value>アート:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Devs: </value>
+    <value>開発者: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Lead devs:</value>
+    <value>リード開発者:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Data conversion:</value>
+    <value>データ変換:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Captain points:</value>
+    <value>艦長ポイント</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Captain talents</value>
+    <value>艦長の固有スキル</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Save</value>
+    <value>保存</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Server</value>
+    <value>サーバー</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>Base XP</value>
+    <value>基本EXP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>Commander XP:</value>
+    <value>艦長EXP</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>Commander XP bonus %</value>
+    <value>艦長EXPボーナス%</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>Free XP:</value>
+    <value>フリーEXP</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Free XP bonus %</value>
+    <value>フリーEXPボーナス%</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>Final XP:</value>
+    <value>総合EXP</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>XP bonus %</value>
+    <value>EXPボーナス%</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>XP calculator</value>
+    <value>EXP計算機</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Downloading camo images</value>
+    <value>迷彩の画像をダウンロード中</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Done</value>
+    <value>完了</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Downloading data</value>
+    <value>データをダウンロード中</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Downloading ship images</value>
+    <value>艦艇の画像をダウンロード中</value>
   </data>
   <data name="time" xml:space="preserve">
-    <value>Aircraft Carrier</value>
+    <value>航空母船</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Battleship</value>
+    <value>戦艦</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Commonwealth</value>
+    <value>イギリス連邦</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Cruiser</value>
+    <value>巡洋艦</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Destroyer</value>
+    <value>駆逐艦</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Europe</value>
+    <value>ヨーロッパ</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>France</value>
+    <value>フランス</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Germany</value>
+    <value>ドイツ</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Italy</value>
+    <value>イタリア</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Japan</value>
+    <value>日本</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Netherlands</value>
+    <value>オランダ</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan America</value>
+    <value>パンアメリカ</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan Asia</value>
+    <value>パンアジア</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Premium</value>
+    <value>プレミアム</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>U.S.S.R</value>
+    <value>ソ連</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Spain</value>
+    <value>スペイン</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Special</value>
+    <value>特別</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Submarine</value>
+    <value>潜水艦</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Tech tree</value>
+    <value>技術ツリー</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Test ship</value>
+    <value>テスト艦艇</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>U.K.</value>
+    <value>イギリス</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>U.S.A.</value>
+    <value>アメリカ</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Empty slot</value>
+    <value>空のスロット</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Minimum range for the warning to appear</value>
+    <value>警告表示の最小距離</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Class</value>
+    <value>艦種</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Confirm</value>
+    <value>確定</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Nation</value>
+    <value>国籍</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
     <value>Tier</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>Type</value>
+    <value>種類</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>No ships matching the filtering criteria found</value>
+    <value>フィルタ条件に一致する艦艇が見つかりませんでした</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Search ship</value>
+    <value>艦艇名で検索</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>180° turn time</value>
+    <value>180°旋回時間</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal dispersion</value>
+    <value>水平散布界</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Range</value>
+    <value>射程</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Rate of fire</value>
+    <value>発射速度</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Reload time</value>
+    <value>装填時間</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
-    <value>Sigma</value>
+    <value>シグマ値</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Traverse speed</value>
+    <value>旋回速度</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical dispersion</value>
+    <value>垂直散布界</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Initial shell velocity</value>
+    <value>初速</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Shell weight</value>
+    <value>砲弾質量</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Theoretical DPM</value>
+    <value>理論値DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Arming Threshold</value>
+    <value>信管作動厚</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Depth explosion radius</value>
+    <value>深度爆風半径</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Fire chance</value>
+    <value>火災発生率</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Fuse timer</value>
+    <value>信管時間</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Overmatch capability</value>
+    <value>強制貫通能力</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Penetration</value>
+    <value>貫通力</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ricochet angles</value>
+    <value>跳弾角度</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>AA defense</value>
+    <value>対空火力</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>Aircraft HP</value>
+    <value>航空機のHP</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Airstrike</value>
+    <value>空襲</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Bomb type</value>
+    <value>爆弾の種類</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombs in payload</value>
+    <value>爆弾の積載数</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Constant damage</value>
+    <value>継続ダメージ</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Damage</value>
+    <value>ダメージ</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Delay</value>
+    <value>遅延</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Detectability range</value>
+    <value>被発見距離</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Flak</value>
+    <value>対空砲弾の爆発</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Flak damage</value>
+    <value>爆発ダメージ</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Hit chance</value>
+    <value>命中率</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Flooding chance</value>
+    <value>浸水発生率</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Main Battery</value>
+    <value>主砲</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaction time</value>
+    <value>反応時間</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Torpedo</value>
+    <value>魚雷</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Add ship</value>
+    <value>艦艇を追加</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Remove ship</value>
+    <value>艦艇を削除</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Maneuverability</value>
+    <value>機動性</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Total damage per fire</value>
+    <value>1火災あたりの総ダメージ</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>DPS per fire</value>
+    <value>1火災あたりのDPS</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Fire duration</value>
+    <value>火災時間</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Fire chance reduction</value>
+    <value>火災発生率低減</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Total damage per flood</value>
+    <value>1浸水あたりの総ダメージ</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>DPS per flooding</value>
+    <value>1浸水あたりのDPS</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Flooding duration</value>
+    <value>浸水時間</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Flooding probability</value>
+    <value>浸水率</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Hit points</value>
+    <value>HP</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Max number of fires</value>
+    <value>最大火災数</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Max number of floodings</value>
+    <value>最大浸水数</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Survivability</value>
+    <value>抗堪性</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Torpedo protection</value>
+    <value>耐水雷防御</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Error</value>
+    <value>エラー</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>The selected ship has no main guns</value>
+    <value>選択した艦艇には主砲がありません</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Selected ship has already been added</value>
+    <value>選択した艦艇は既に追加されています</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>Type</value>
+    <value>種類</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Show turret angles</value>
+    <value>砲塔の射角を表示</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>The reference angle used start at 0° on the front (top of the image) and goes in a clockwise direction</value>
+    <value>基準角度は、艦艇正面(画像の上部)の0°から始まり、時計回りに進みます。</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Fold all angles</value>
+    <value>すべての角度を折りたたむ</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Never show angles</value>
+    <value>角度を非表示にする</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Always show angles</value>
+    <value>常に角度を表示する</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Expand all angles</value>
+    <value>全ての角度を展開する</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Captain Skills and Camo</value>
+    <value>艦長スキルと迷彩</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Signals</value>
+    <value>信号旗</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Name</value>
+    <value>名前</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Apply camo bonuses</value>
+    <value>迷彩のボーナスを適用</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Arming distance</value>
+    <value>安全距離</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Can hit</value>
+    <value>攻撃可能艦艇</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Concealment</value>
+    <value>隠蔽性</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Concealment by air</value>
+    <value>航空被発見距離</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>When on fire</value>
+    <value>火災時</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Concealment by sea</value>
+    <value>海面被発見距離</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>When on fire</value>
+    <value>火災時</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>After firing in smoke</value>
+    <value>煙幕内での発砲後</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Max fires</value>
+    <value>最大火災数</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Total fire damage</value>
+    <value>最大火災ダメージ</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Max floods</value>
+    <value>最大浸水数</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Torpedo protection</value>
+    <value>耐水雷防御</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Total flood damage</value>
+    <value>最大浸水ダメージ</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Long range aura</value>
+    <value>長射程対空</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Backward</value>
+    <value>後進</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Forward</value>
+    <value>前進</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Max speed</value>
+    <value>最高速度</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Rudder shift time</value>
+    <value>転舵所要時間</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Turning circle</value>
+    <value>旋回半径</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Medium range aura</value>
+    <value>中射程対空</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Short range aura</value>
+    <value>短距離対空</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Torpedo spread</value>
+    <value>魚雷散布</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Aircrafts</value>
+    <value>航空機</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Bomb</value>
+    <value>爆弾</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Rocket</value>
+    <value>ロケット</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Speed</value>
+    <value>速度</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Weapon type</value>
+    <value>兵装の種類</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Skip bomb</value>
+    <value>反跳爆弾</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpedo</value>
+    <value>魚雷</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Weapons per plane</value>
+    <value>1機あたりの兵装数</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Attack cooldown</value>
+    <value>攻撃後クールダウン</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Cruising speed</value>
+    <value>巡航速度</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bomb in inner ellipse</value>
+    <value>内部楕円への着弾率</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max planes on deck</value>
+    <value>甲板上の航空機数</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Max speed</value>
+    <value>最高速度</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Min speed</value>
+    <value>最低速度</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aircraft per attack</value>
+    <value>攻撃中隊のサイズ</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aircraft in a squadron</value>
+    <value>中隊の機数</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>Hp per plane</value>
+    <value>1機あたりのHP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Restoration time</value>
+    <value>復旧時間</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Starting planes on deck</value>
+    <value>開始時の甲板上の機数</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Bombs per plane</value>
+    <value>1機あたりの爆弾数</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Drop time</value>
+    <value>落下時間</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Time to arrive</value>
+    <value>到着までの時間</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximum range</value>
+    <value>最大射程</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Max drop length</value>
+    <value>最大投下距離</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimum range</value>
+    <value>最小射程</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Charges</value>
+    <value>数</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW airstrike</value>
+    <value>爆雷空襲</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Depth charges</value>
+    <value>爆雷</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Dispersion visualization</value>
+    <value>散布界の可視化</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW depth Charges</value>
+    <value>爆雷</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>First ping duration</value>
+    <value>1回目のピンガー効果時間</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Ping duration</value>
+    <value>ピンガー効果時間</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>Sonar</value>
+    <value>ソナー</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Ping speed</value>
+    <value>ピンガー速度</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Ping width</value>
+    <value>ピンガー幅</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Second ping duration</value>
+    <value>2回目のピンガー効果時間</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Shells</value>
+    <value>砲弾</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Cooldown</value>
+    <value>クールダウン</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Action time</value>
+    <value>作動時間</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>キャンセル</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Enable custom path</value>
+    <value>カスタムパスの有効化</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insert custom path</value>
+    <value>カスタムパスを挿入</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Save &amp; exit</value>
+    <value>保存して終了</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>Some turret orientation is wrong. The data from WG doesn't include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below.</value>
+    <value>砲塔の向きが間違っている場合があります。WGからのデータにこれは含まれていないため、ほとんどの場合で代替策を使用しています。砲塔の向きや角度が間違っている場合は、Githubまたは以下の Discord サーバーに参加して報告してください。</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Build saved</value>
+    <value>ビルドを保存しました</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Build string copied to clipboard</value>
+    <value>ビルドの文字列がクリップボードにコピーされました</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Delete build</value>
+    <value>ビルドを削除</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Import</value>
+    <value>インポート</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Import only</value>
+    <value>インポートのみ</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Import and save</value>
+    <value>インポートして保存</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Paste the build string here</value>
+    <value>ビルド文字列をここに貼り付けてください</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Import build</value>
+    <value>ビルドをインポート</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>キャンセル</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Error during the loading of the build</value>
+    <value>ビルドの読み込み中のエラー</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Initial boost duration</value>
+    <value>発艦時ブースト時間</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Initial boost speed multiplier</value>
+    <value>発艦時ブースト速度倍率</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Time to switch ammo</value>
+    <value>弾薬変更時間</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Artillery burst mode</value>
+    <value>主砲バーストモード</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Duration</value>
+    <value>時間</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Reload after burst</value>
+    <value>バースト後のリロード</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Reload during burst</value>
+    <value>バースト中のリロード</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Hits required</value>
+    <value>必要命中数</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Shots in one burst</value>
+    <value>1バーストあたりの射撃数</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Special abilities</value>
+    <value>特殊能力</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Downloading data...</value>
+    <value>データをダウンロード中...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Aiming time</value>
+    <value>攻撃態勢時間</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Damage taken during attack</value>
+    <value>攻撃態勢中の被ダメージ</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Post attack invulnerability time</value>
+    <value>攻撃後の無敵時間</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Preparation time</value>
+    <value>攻撃準備時間</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Time to fully aimed</value>
+    <value>照準収縮までの時間</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpedo launchers</value>
+    <value>魚雷発射管</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>During aiming</value>
+    <value>攻撃態勢中</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Drop area change rate while manoeuvring</value>
+    <value>回避機動中の照準変化率</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>During preparation</value>
+    <value>攻撃準備中</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Full power time</value>
+    <value>最大出力到達時間</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Data version:</value>
+    <value>データバージョン:</value>
   </data>
 </root>

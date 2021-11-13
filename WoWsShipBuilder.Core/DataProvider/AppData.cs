@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilderDataStructures;
@@ -34,5 +35,14 @@ namespace WoWsShipBuilder.Core.DataProvider
 #else
         public static bool IsDebug => false;
 #endif
+
+        public static string GenerateLogDump()
+        {
+            var result = new StringBuilder();
+            result.Append("DataVersion: ").AppendLine(DataVersion)
+                .Append("CurrentNation: ").AppendLine(CurrentLoadedNation?.ToString())
+                .Append("ServerType: ").AppendLine(Settings.SelectedServerType.ToString());
+            return result.ToString();
+        }
     }
 }

@@ -65,7 +65,22 @@ namespace WoWsShipBuilder.Core.DataUI
                     RoF = Math.Round(60 / reload),
                 };
 
-                secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGun.NumBarrels).First();
+                try
+                {
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGun.NumBarrels).First();
+                }
+                catch (KeyNotFoundException e)
+                {
+                    // TODO: fix issue properly for next minor release
+                    Logging.Logger.Warn(e, "One or more keys of the secondary data were not found.");
+                    secondaryUI.Shell = new ShellUI
+                    {
+                        Name = "Error",
+                        Type = "Error",
+                        TheoreticalDPM = "-1",
+                    };
+                    secondaryUI.Shell.PropertyValueMapper = secondaryUI.Shell.ToPropertyMapping();
+                }
 
                 secondaryUI.SecondaryBatteryData = secondaryUI.ToPropertyMapping();
 

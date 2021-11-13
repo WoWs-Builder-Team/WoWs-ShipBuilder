@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
+using NLog;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
@@ -12,18 +12,24 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     internal class SignalSelectorViewModel : ViewModelBase
     {
+        private readonly Logger logger;
+
         public SignalSelectorViewModel()
+            : this(null)
         {
-            SignalsNumber = signalsNumber;
-            SignalList = LoadSignalList();
         }
 
-        public SignalSelectorViewModel(List<string> initialSignalsNames)
+        public SignalSelectorViewModel(List<string>? initialSignalsNames)
         {
+            logger = Logging.GetLogger("SignalSelectorVM");
             SignalList = LoadSignalList();
-            var list = SignalList.Select(x => x.Value).Where(signal => initialSignalsNames.Contains(signal.Name));
-            SelectedSignals.AddRange(list);
-            SignalsNumber = SelectedSignals.Count();
+            if (initialSignalsNames != null)
+            {
+                var list = SignalList.Select(x => x.Value).Where(signal => initialSignalsNames.Contains(signal.Name));
+                SelectedSignals.AddRange(list);
+            }
+
+            SignalsNumber = SelectedSignals.Count;
         }
 
         private List<KeyValuePair<string, Exterior>> signalList = new();
@@ -42,7 +48,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
         }
 
-        private AvaloniaList<Exterior> selectedSignals = new AvaloniaList<Exterior>();
+        private AvaloniaList<Exterior> selectedSignals = new();
 
         public AvaloniaList<Exterior> SelectedSignals
         {
@@ -93,6 +99,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         private List<KeyValuePair<string, Exterior>> LoadSignalList()
         {
             var dict = AppDataHelper.Instance.ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType);
+            if (dict == null)
+            {
+                logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump());
+            }
+
             var list = dict!.Where(x => x.Value.Type.Equals(ExteriorType.Flags) && x.Value.Group == 0).OrderBy(x => x.Value.SortOrder).ToList();
             KeyValuePair<string, Exterior> nullPair = new("", new Exterior());
 
