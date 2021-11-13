@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ public record BombUI : ProjectileUI, IDataUi
         public decimal FuseTimer { get; set; }
 
         [DataUiUnit("MM")]
-        public int ArmingTreshold { get; set; }
+        public int ArmingThreshold { get; set; }
 
         [DataUiUnit("Degree")]
         public string RicochetAngles { get; set; } = default!;
@@ -67,7 +68,7 @@ public record BombUI : ProjectileUI, IDataUi
                 Damage = bombDamage,
                 Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = fuseTimer,
-                ArmingTreshold = armingTreshold,
+                ArmingThreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
             };
