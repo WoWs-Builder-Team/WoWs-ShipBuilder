@@ -17,9 +17,8 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
-        private static double maxAngles = 450;              // Max Angle                    | degrees
-        private static double minAngle = 0;               // Min Angle                    | degrees
-        private static double angleStep = 0.00174533;            // Angle Step                   | degrees
+        private static double maxAngles = 450;           // Max Angle                    | degrees
+        private static double angleStep = 0.00174533;    // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
         private static double dt = 0.1;                  // Time step                    | s
         private static List<double> calculationAngles = new();
 
@@ -44,11 +43,6 @@ namespace WoWsShipBuilder.Core.DataUI
         private static List<double> CreateCalculationAngles()
         {
             var list = new List<double>();
-
-            //for (double i = minAngle; i < maxAngle; i += angleStep )
-            //{
-            //    list.Add(i);
-            //}
 
             for (int i = 0; i < maxAngles; i++)
             {
@@ -89,6 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
         /// Calculate all <see cref="Ballistic"/> values for a shell.
         /// </summary>
         /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
+        /// <param name="maxRange">The max range of the ship.</param>
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
         public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange)
         {
@@ -104,13 +99,18 @@ namespace WoWsShipBuilder.Core.DataUI
                 calculationAngles = CreateCalculationAngles();
             }
 
-            // Various variable inizialization used in the calculations
+            var k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
 
+            // Insert pen at 0 distance
+            var initialPen = CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
+            var initialBallistic = new Ballistic(initialPen, shell.MuzzleVelocity, 0, 0);
+            dict.Add(0, initialBallistic);
 
-            var k = 0.5 * shell.AirDrag * Math.Pow((shell.Caliber / 2), 2) * Math.PI / shell.Mass;
+            var previousPen = initialPen;
 
             foreach (var angle in calculationAngles)
             {
+                // Various variable inizialitazion
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
@@ -137,15 +137,17 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
 
                 var v_impact = Math.Sqrt((v_x * v_x) + (v_y * v_y));
-                var impactAngle = Math.Atan2(v_y, v_x);
+                var impactAngle = Math.Atan2(Math.Abs(v_y), Math.Abs(v_x)) * (180 / Math.PI);
                 var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
-                var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
-                Debug.WriteLine("Added range of" + Math.Round(x / 1000, 2));
-                dict.Add(x, ballistic);
-                if (x > maxRange)
+
+                if (x > maxRange )
                 {
                     break;
                 }
+
+                previousPen = pen;
+                var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
+                dict.Add(x, ballistic);
             }
 
             return dict;

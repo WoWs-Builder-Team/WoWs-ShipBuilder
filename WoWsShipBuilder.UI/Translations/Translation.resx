@@ -825,4 +825,13 @@
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data version:</value>
   </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>Flight time</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
+    <value>Impact Angle</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
+    <value>Impact velocity</value>
+  </data>
 </root>

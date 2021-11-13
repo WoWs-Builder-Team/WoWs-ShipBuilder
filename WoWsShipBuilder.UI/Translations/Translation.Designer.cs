@@ -241,6 +241,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flight time.
+        /// </summary>
+        public static string DispersionGraphWindow_FlightTime {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_FlightTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact Angle.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactAngle {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact velocity.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactVelocity {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
         public static string DispersionGraphWindow_RemoveShip {

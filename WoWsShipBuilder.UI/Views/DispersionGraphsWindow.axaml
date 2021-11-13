@@ -16,6 +16,18 @@
             <Setter Property="BorderBrush" Value="{StaticResource ThemeForegroundLowBrush}" />
             <Setter Property="LineStroke" Value="{StaticResource ThemeForegroundLowBrush}" />
         </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Background">
+                <SolidColorBrush Color="Gray" Opacity="0.7"/>
+            </Setter>
+            <Setter Property="Foreground">
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter> 
+        </Style>
     </Window.Styles>
 
     <Grid RowDefinitions="30,Auto, *">
@@ -24,24 +36,28 @@
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
         </StackPanel>
-        <TabControl Grid.Row="2" >
-            <TabItem Header="Dispersion Graphs">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="10">
-                    <StackPanel Orientation="Vertical">
-                        <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                        <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Ballistic Graphs">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="10">
-                    <StackPanel Orientation="Vertical">
-                        <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding PenetrationModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                        <!--<oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding FlightTimeModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>-->
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-        </TabControl>
-
+        <Border Classes="BorderPanel" Margin="5" Grid.Row="2">
+            <TabControl >
+                <TabItem Header="Dispersion Graphs" >
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel Orientation="Vertical">
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Ballistic Graphs">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel Orientation="Vertical">
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding PenetrationModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding FlightTimeModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactVelocityModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactAngleModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Border>
+       
     </Grid>
 </Window>
