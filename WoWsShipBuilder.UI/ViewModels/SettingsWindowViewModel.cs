@@ -23,23 +23,25 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly SettingsWindow self;
 
+        private readonly IFileSystem fileSystem;
+
         public SettingsWindowViewModel(SettingsWindow win, IFileSystem? fileSystem = null)
         {
             self = win;
-            fileSystem ??= new FileSystem();
+            this.fileSystem = fileSystem ?? new FileSystem();
             LanguagesList = languages.Keys.ToList();
             SelectedLanguage = languages.Keys.First();
             Servers = Enum.GetNames<ServerType>().ToList();
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
-            AutoUpdate = AppData.Settings!.AutoUpdateEnabled;
-            CustomPath = AppData.Settings!.CustomDataPath;
+            AutoUpdate = AppData.Settings.AutoUpdateEnabled;
+            CustomPath = AppData.Settings.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
 
             if (AppData.DataVersion is null)
             {
                 string dataPath = AppDataHelper.Instance.GetDataPath(AppData.Settings.SelectedServerType);
-                string localVersionInfoPath = fileSystem.Path.Combine(dataPath, "VersionInfo.json");
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(fileSystem.File.ReadAllText(localVersionInfoPath))!;
+                string localVersionInfoPath = this.fileSystem.Path.Combine(dataPath, "VersionInfo.json");
+                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(this.fileSystem.File.ReadAllText(localVersionInfoPath))!;
                 AppData.DataVersion = localVersionInfo.VersionName;
             }
 
@@ -164,6 +166,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void Save()
         {
             bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
+            bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
             if (IsCustomPathEnabled)
             {
                 if (!IsValidPath(CustomPath!))
@@ -173,6 +176,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
                 else
                 {
+                    pathChanged = !AppData.Settings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
                     AppData.Settings.CustomDataPath = CustomPath;
                     AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
                     AppData.Settings.AutoUpdateEnabled = AutoUpdate;
@@ -187,7 +191,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.Settings.Locale = languages[SelectedLanguage];
             }
 
-            if (serverChanged)
+            if (serverChanged || pathChanged)
             {
                 await new DownloadWindow().ShowDialog(self);
             }
