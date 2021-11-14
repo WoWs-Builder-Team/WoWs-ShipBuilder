@@ -389,7 +389,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,
+                LegendFontSize = 13,          
             };
 
             var xAxis = new LinearAxis
@@ -422,6 +422,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 MajorGridlineThickness = 1,
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
+                MaximumPadding = 2,
             };
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
