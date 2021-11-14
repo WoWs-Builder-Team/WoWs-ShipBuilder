@@ -19,11 +19,23 @@
         <Style Selector="TabItem:selected">
             <Setter Property="Background" Value="Gray"/>
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="BorderBrush">
+                <SolidColorBrush Color="Gray"/>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
         </Style>
         <Style Selector="TabItem:pointerover">
             <Setter Property="Background">
                 <SolidColorBrush Color="Gray" Opacity="0.7"/>
             </Setter>
+            <Setter Property="BorderBrush">
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
             <Setter Property="Foreground">
                 <SolidColorBrush Color="White" Opacity="0.7"/>
             </Setter> 
@@ -36,9 +48,9 @@
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
         </StackPanel>
-        <Border Classes="BorderPanel" Margin="5" Grid.Row="2">
+        <Border Classes="BorderPanel" Margin="10" Grid.Row="2">
             <TabControl SelectedIndex="{Binding InitialTab}">
-                <TabItem Header="Dispersion Graphs" >
+                <TabItem Header="Dispersion Graphs">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <StackPanel Orientation="Vertical">
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
