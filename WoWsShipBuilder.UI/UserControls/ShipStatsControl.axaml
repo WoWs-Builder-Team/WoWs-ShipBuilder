@@ -98,6 +98,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
+                                        <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 5" TextDecorations="Underline" Text="{x:Static t:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
                                         <Separator IsVisible="{Binding !IsLastEntry}" Margin="0 5" />
                                     </StackPanel>
                                 </DataTemplate>

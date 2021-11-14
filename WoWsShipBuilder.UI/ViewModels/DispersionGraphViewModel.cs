@@ -48,7 +48,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
 
             var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight);
-            penModel.Series.Add(ballisticSeries.Penetration);
+            if (shell.ShellType == ShellType.AP)
+            {
+                penModel.Series.Add(ballisticSeries.Penetration);
+            }
+            else
+            {
+                penModel.Series.Add(CreateSeriesForFixedPen(shell, maxRange, name));
+            }
             PenetrationModel = penModel;
 
             var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft);
@@ -210,8 +217,19 @@ namespace WoWsShipBuilder.UI.ViewModels
                         HorizontalModel!.Series.Add(hSeries);
                         VerticalModel!.Series.Add(vSeries);
 
+                        ArtilleryShell shell;
+
                         // create and add the ballistic series
-                        var shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
+                        if (AppData.CurrentLoadedNation == ship.ShipNation)
+                        {
+                            shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
+                        }
+                        else
+                        {
+                            var shellList = AppDataHelper.Instance.ReadLocalJsonData<Projectile>(ship.ShipNation, AppData.Settings.SelectedServerType);
+                            shell = (ArtilleryShell)shellList![shellIndex];
+                        }
+
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 
                         // If shell is he, make it a line. This way all graphs have the same color for the same shell too.

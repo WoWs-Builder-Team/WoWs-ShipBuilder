@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
@@ -31,6 +32,19 @@ namespace WoWsShipBuilder.UI.UserControls
             var apShellName = dc.CurrentShipStats.MainBatteryUI!.ShellData.First(x => x.Type.Equals("ap", System.StringComparison.InvariantCultureIgnoreCase)).Index;
             var apShell = (ArtilleryShell)AppData.ProjectileList![apShellName];
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, apShell, DispersionGraphViewModel.Tabs.Dispersion);
+            win.Show((Window)this.GetVisualRoot());
+            e.Handled = true;
+        }
+
+        public void OpenBallisticGraphWindow(object sender, PointerReleasedEventArgs e)
+        {
+            var dc = DataContext as ShipStatsControlViewModel;
+            var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
+            var win = new DispersionGraphsWindow();
+            var textBlock = (TextBlock)sender;
+            var shellIndex = ((ShellUI)textBlock.DataContext).Index;
+            var shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
+            win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, DispersionGraphViewModel.Tabs.Ballistic);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }

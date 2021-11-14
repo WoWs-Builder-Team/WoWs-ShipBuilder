@@ -846,4 +846,7 @@
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
     <value>Show impact velocity graph</value>
   </data>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>Open ballistic graphs</value>
+  </data>
 </root>

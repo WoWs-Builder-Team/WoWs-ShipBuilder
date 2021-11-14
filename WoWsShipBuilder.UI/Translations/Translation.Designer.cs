@@ -1663,6 +1663,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open ballistic graphs.
+        /// </summary>
+        public static string ShipStats_OpenBallistic {
+            get {
+                return ResourceManager.GetString("ShipStats_OpenBallistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overmatch capability.
         /// </summary>
         public static string ShipStats_Overmatch {
