@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
 
-            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight);
+            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
             if (shell.ShellType == ShellType.AP)
             {
                 penModel.Series.Add(ballisticSeries.Penetration);
@@ -59,15 +59,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             PenetrationModel = penModel;
 
-            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft);
+            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
             flightTimeModel.Series.Add(ballisticSeries.FlightTime);
             FlightTimeModel = flightTimeModel;
 
-            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight);
+            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
             impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
             ImpactVelocityModel = impactVelocityModel;
 
-            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft);
+            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
             impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
             ImpactAngleModel = impactAngleModel;
 
@@ -374,7 +374,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <param name="yUnit">Unit of the Y axis.</param>
         /// <param name="legendPosition">Position of the legend inside the graph.</param>
         /// <returns>The ballistic model.</returns>
-        private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition)
+        private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
@@ -422,7 +422,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 MajorGridlineThickness = 1,
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
-                MaximumPadding = 2,
+                MaximumPadding = yMaximumMargin,
             };
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
