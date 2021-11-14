@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
+using NLog.Fluent;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataUI;
 
@@ -44,7 +46,7 @@ namespace WoWsShipBuilder.UI.Converters
                 }
             }
 
-            Logging.Logger.Debug("No matching processing path for consumable data conversion found. Element 1: {0}, Element 2: {1}", values[0], values[1]);
+            Logging.Logger.Trace("No matching processing path for consumable data conversion found. Element 1: {0}, Element 2: {1}", values[0], values[1]);
             return 0;
         }
     }

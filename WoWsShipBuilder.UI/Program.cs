@@ -16,6 +16,7 @@ namespace WoWsShipBuilder.UI
         public static void Main(string[] args)
         {
             Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
+            Logging.Logger.Info("------------------------------");
             Logging.Logger.Info("Starting application...");
             var culture = new CultureInfo("en-GB");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -27,9 +28,12 @@ namespace WoWsShipBuilder.UI
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e);
+                Logging.Logger.Error(e, "Encountered a critical error that will end the application.");
                 throw;
             }
+
+            Logging.Logger.Info("Application is shutting down.");
+            Logging.Logger.Info("------------------------------\n");
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
