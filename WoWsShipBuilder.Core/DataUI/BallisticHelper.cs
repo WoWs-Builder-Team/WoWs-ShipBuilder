@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.Core.DataUI
         // Calculation Parameters
         private static double maxAngles = 450;           // Max Angle                    | degrees
         private static double angleStep = 0.00174533;    // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
-        private static double dt = 0.1;                  // Time step                    | s
+        private static double dt = 0.02;                  // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>
@@ -102,11 +102,10 @@ namespace WoWsShipBuilder.Core.DataUI
             var k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
 
             // Insert pen at 0 distance
-            var initialPen = CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
-            var initialBallistic = new Ballistic(initialPen, shell.MuzzleVelocity, 0, 0);
+            var initialSpeed = shell.MuzzleVelocity;
+            var initialPen = CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp);
+            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0);
             dict.Add(0, initialBallistic);
-
-            var previousPen = initialPen;
 
             foreach (var angle in calculationAngles)
             {
@@ -114,7 +113,6 @@ namespace WoWsShipBuilder.Core.DataUI
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
-                var initialSpeed = shell.MuzzleVelocity;
                 var v_x = initialSpeed * Math.Cos(angle);
                 var v_y = initialSpeed * Math.Sin(angle);
 
@@ -126,12 +124,14 @@ namespace WoWsShipBuilder.Core.DataUI
                     var T = T0 - (L * y);
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter
                     var p = P0 * Math.Pow(T / T0, G * M / R / L);
-                    var rho_g = p * M / R / T;
+
+                    var rho_g = (p * M) / R / T;
 
                     var speed = Math.Sqrt((v_x * v_x) + (v_y * v_y));
 
                     v_x = v_x - (dt * k * rho_g * v_x * speed);
-                    v_y = v_y - ((dt * G) - (dt * k * rho_g * v_y * speed));
+
+                    v_y = v_y - (dt * G) - (dt * k * rho_g * v_y * speed);
 
                     t += dt;
                 }
@@ -145,7 +145,6 @@ namespace WoWsShipBuilder.Core.DataUI
                     break;
                 }
 
-                previousPen = pen;
                 var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
                 dict.Add(x, ballistic);
             }

@@ -834,4 +834,16 @@
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
     <value>Impact velocity</value>
   </data>
+  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
+    <value>Show penetration graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
+    <value>Show flight time graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
+    <value>Show impact angle graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
+    <value>Show impact velocity graph</value>
+  </data>
 </root>

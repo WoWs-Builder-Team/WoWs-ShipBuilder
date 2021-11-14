@@ -277,6 +277,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show flight time graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowFlightTimeGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowFlightTimeGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact angle graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactAngleGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactAngleGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact velocity graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactVelocityGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactVelocityGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show penetration graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowPenetrationGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowPenetrationGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispersion visualization.
         /// </summary>
         public static string DispersionWindow_Title {

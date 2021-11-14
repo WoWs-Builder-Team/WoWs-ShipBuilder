@@ -23,7 +23,13 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly DispersionGraphsWindow self;
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex, ArtilleryShell shell)
+        public enum Tabs
+        {
+            Dispersion,
+            Ballistic,
+        }
+
+        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex, ArtilleryShell shell, Tabs initialTab)
         {
             self = win;
             var shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
@@ -57,7 +63,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
             ImpactAngleModel = impactAngleModel;
 
+            InitialTab = (int)initialTab;
+
             shipNames.Add(name);
+        }
+
+        private int initialTab;
+
+        public int InitialTab
+        {
+            get => initialTab;
+            set => this.RaiseAndSetIfChanged(ref initialTab, value);
         }
 
         private AvaloniaList<string> shipNames = new();
@@ -84,12 +100,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref verticalModel, value);
         }
 
+        private bool showPen = true;
+
+        public bool ShowPen
+        {
+            get => showPen;
+            set => this.RaiseAndSetIfChanged(ref showPen, value);
+        }
+
         private PlotModel? penetrationModel;
 
         public PlotModel? PenetrationModel
         {
             get => penetrationModel;
             set => this.RaiseAndSetIfChanged(ref penetrationModel, value);
+        }
+
+        private bool showFlightTime = true;
+
+        public bool ShowFlightTime
+        {
+            get => showFlightTime;
+            set => this.RaiseAndSetIfChanged(ref showFlightTime, value);
         }
 
         private PlotModel? flightTimeModel;
@@ -100,12 +132,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref flightTimeModel, value);
         }
 
+        private bool showImpactVelocity = true;
+
+        public bool ShowImpactVelocity
+        {
+            get => showImpactVelocity;
+            set => this.RaiseAndSetIfChanged(ref showImpactVelocity, value);
+        }
+
         private PlotModel? impactVelocityModel;
 
         public PlotModel? ImpactVelocityModel
         {
             get => impactVelocityModel;
             set => this.RaiseAndSetIfChanged(ref impactVelocityModel, value);
+        }
+
+        private bool showImpactAngle = true;
+
+        public bool ShowImpactAngle
+        {
+            get => showImpactAngle;
+            set => this.RaiseAndSetIfChanged(ref showImpactAngle, value);
         }
 
         private PlotModel? impactAngleModel;
@@ -209,6 +257,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Remove ships from the ones currently visualized.
+        /// </summary>
         public async void RemoveShip()
         {
             var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
@@ -239,7 +290,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         [DependsOn(nameof(ShipNames))]
         public bool CanRemoveShip(object parameter) => shipNames.Count > 0;
 
-        // This are all default values to make the graph looks nice
+        /// <summary>
+        /// Initialize the model for the disperions plot with common settings.
+        /// </summary>
+        /// <param name="name">Title of the plot and of the Y axis.</param>
+        /// <returns>The dispersion model.</returns>
         private PlotModel InitializeDispersionBaseModel(string name)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
@@ -276,7 +331,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Title = "Dispersion",
+                Title = name,
                 IsPanEnabled = false,
                 Unit = "m",
                 Minimum = 0,
@@ -293,7 +348,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             return model;
         }
 
-        // This are all default values to make the graph looks nice
+        /// <summary>
+        /// Initialize the model fo the ballistic plot with common settings.
+        /// </summary>
+        /// <param name="name">Title of the plot and of the Y axis.</param>
+        /// <param name="yUnit">Unit of the Y axis.</param>
+        /// <param name="legendPosition">Position of the legend inside the graph.</param>
+        /// <returns>The ballistic model.</returns>
         private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
@@ -349,6 +410,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             return model;
         }
 
+        /// <summary>
+        /// Create the series for the horizontal dispersion.
+        /// </summary>
+        /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
+        /// <param name="maxRange">Max range of the gun.</param>
+        /// <param name="name">Name for the series.</param>
+        /// <returns>The horizontal dispersion series for the given parameter.</returns>
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
@@ -357,6 +425,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             return dispSeries;
         }
 
+        /// <summary>
+        /// Create the series for the vertical dispersion.
+        /// </summary>
+        /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
+        /// <param name="maxRange">Max range of the gun.</param>
+        /// <param name="name">Name for the series.</param>
+        /// <returns>The vertical dispersion series for the given parameter.</returns>
         private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
@@ -365,6 +440,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             return dispSeries;
         }
 
+        /// <summary>
+        /// Create the ballistic series for the shell.
+        /// </summary>
+        /// <param name="shell">The <see cref="ArtilleryShell"/> to calculate the ballistic of.</param>
+        /// <param name="maxRange">Max range of the gun.</param>
+        /// <param name="name">Name for the series.</param>
+        /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
         private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle) CreateBallisticSeries(ArtilleryShell shell, double maxRange, string name)
         {
             var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
@@ -408,6 +490,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries);
         }
 
+        /// <summary>
+        /// Create the penetration series for shells with fixed pen.
+        /// </summary>
+        /// <param name="shell">The <see cref="ArtilleryShell"/> to calculate the ballistic of.</param>
+        /// <param name="maxRange">Max range of the gun.</param>
+        /// <param name="name">Name for the series.</param>
+        /// <returns>The penetration series.</returns>
         private LineSeries CreateSeriesForFixedPen(ArtilleryShell shell, double maxRange, string name)
         {
             var pen = shell.Penetration;
@@ -428,6 +517,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             return penSeries;
         }
 
+        /// <summary>
+        /// Get color from resourceKey and convert it into an <see cref="OxyColor"/>.
+        /// </summary>
+        /// <param name="resourceKey">Resource Key of the color to convert.</param>
+        /// <returns>The corresponding <see cref="OxyColor"/>.</returns>
         private OxyColor ConvertColorFromResource(string resourceKey)
         {
             var color = self.FindResource(resourceKey) as Color?;

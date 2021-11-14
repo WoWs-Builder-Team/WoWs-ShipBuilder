@@ -30,7 +30,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var win = new DispersionGraphsWindow();
             var apShellName = dc.CurrentShipStats.MainBatteryUI!.ShellData.First(x => x.Type.Equals("ap", System.StringComparison.InvariantCultureIgnoreCase)).Index;
             var apShell = (ArtilleryShell)AppData.ProjectileList![apShellName];
-            win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, apShell);
+            win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, apShell, DispersionGraphViewModel.Tabs.Dispersion);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
