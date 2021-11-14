@@ -232,11 +232,74 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flight time.
+        /// </summary>
+        public static string DispersionGraphWindow_FlightTime {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_FlightTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact Angle.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactAngle {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact velocity.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactVelocity {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
         public static string DispersionGraphWindow_RemoveShip {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show flight time graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowFlightTimeGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowFlightTimeGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact angle graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactAngleGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactAngleGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact velocity graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactVelocityGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactVelocityGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show penetration graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowPenetrationGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowPenetrationGraph", resourceCulture);
             }
         }
         
@@ -1578,6 +1641,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_NumberOfUses {
             get {
                 return ResourceManager.GetString("ShipStats_NumberOfUses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open ballistic graphs.
+        /// </summary>
+        public static string ShipStats_OpenBallistic {
+            get {
+                return ResourceManager.GetString("ShipStats_OpenBallistic", resourceCulture);
             }
         }
         
