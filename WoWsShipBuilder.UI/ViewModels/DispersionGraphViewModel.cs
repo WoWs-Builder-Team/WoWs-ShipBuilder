@@ -56,6 +56,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 penModel.Series.Add(CreateSeriesForFixedPen(shell, maxRange, name));
             }
+
             PenetrationModel = penModel;
 
             var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft);
