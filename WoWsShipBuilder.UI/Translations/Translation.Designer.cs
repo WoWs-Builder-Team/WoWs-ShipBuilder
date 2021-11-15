@@ -277,7 +277,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. The first of a group of the same caliber is the HE shell, the second the AP shell..
+        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
         /// </summary>
         public static string DispersionGraphWindow_SelectShellDesc {
             get {

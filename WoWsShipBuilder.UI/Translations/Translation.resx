@@ -853,6 +853,6 @@
     <value>Select a shell</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>The selected ship has more than one shell. Select the one you want the ballistic of. The first of a group of the same caliber is the HE shell, the second the AP shell.</value>
+    <value>The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
   </data>
 </root>
