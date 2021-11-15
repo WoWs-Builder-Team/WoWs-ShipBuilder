@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ManeuverabilityFullPowerBackward = $"{engine.BackwardEngineUpTime * fullPowerBackwardModifier}s",
                 ManeuverabilityFullPowerForward = $"{engine.ForwardEngineUpTime * fullPowerForwardModifier}s",
                 ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
-                ManeuverabilityRudderShiftTime = hull.RudderTime * rudderShiftModifier,
+                ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
                 ManeuverabilityTurningCircle = hull.TurningRadius,
             };
 

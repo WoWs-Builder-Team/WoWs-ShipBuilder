@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        mc:Ignorable="d" Width="400" SizeToContent="Height"
+        x:Class="WoWsShipBuilder.UI.Views.ValueSelectionWindow"
+        Title="ValueSelectionWindow" WindowStartupLocation="CenterOwner">
+    
+    <Grid RowDefinitions="30,*">
+        <userControls:AppHeader Grid.Row="0"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10" Spacing="10">
+            <TextBlock TextWrapping="Wrap" Text="{Binding Text}"/>
+            <ComboBox PlaceholderText="{Binding ItemPlaceholderText}" Items="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource Localizer}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                <Button Content="{x:Static t:Translation.Ok}" IsDefault="True" Command="{Binding Ok}"/>
+                <Button Content="{x:Static t:Translation.Cancel}" IsCancel="True" Command="{Binding Cancel}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
