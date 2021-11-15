@@ -92,6 +92,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 'A' => Nation.Usa,
                 'J' => Nation.Japan,
                 'H' => Nation.Netherlands,
+                'B' => Nation.UnitedKingdom,
                 _ => throw new InvalidOperationException(),
             };
 
@@ -110,6 +111,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 'A' => Nation.Usa,
                 'J' => Nation.Japan,
                 'H' => Nation.Netherlands,
+                'B' => Nation.UnitedKingdom,
                 _ => throw new InvalidOperationException(),
             };
 
