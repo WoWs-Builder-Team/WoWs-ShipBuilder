@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Downloading ship images</value>
   </data>
-  <data name="time" xml:space="preserve">
+  <data name="AirCarrier" xml:space="preserve">
     <value>Aircraft Carrier</value>
   </data>
   <data name="Battleship" xml:space="preserve">
