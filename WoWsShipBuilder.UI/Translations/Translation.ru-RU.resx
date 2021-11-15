@@ -822,4 +822,28 @@
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Версия данных:</value>
   </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>Время полета</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
+    <value>Угол при попадании</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
+    <value>Скорость при попадании</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
+    <value>Показать график бронепробития</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
+    <value>Показать график времени полета</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
+    <value>Показать график угла при попадании</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
+    <value>Показать график скорости при попадании</value>
+  </data>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>Показать графики баллистики</value>
+  </data>
 </root>
