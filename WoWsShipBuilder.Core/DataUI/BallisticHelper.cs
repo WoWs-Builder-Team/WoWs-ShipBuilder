@@ -7,6 +7,9 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public static class BallisticHelper
     {
+        // Max range at which to stop the ballistic calculations
+        private const double MaxAllowedRange = 30 * 1000;
+
         // Physical Constants                               Description                  | Units
         private const double G = 9.8;                    // Gravitational Constant       | m/(s^2)
         private const double T0 = 288.15;                // Temperature at Sea Level     | K
@@ -140,7 +143,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var impactAngle = Math.Atan2(Math.Abs(v_y), Math.Abs(v_x)) * (180 / Math.PI);
                 var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
 
-                if (x > maxRange )
+                if (x > maxRange || x > MaxAllowedRange)
                 {
                     break;
                 }

@@ -2,7 +2,9 @@ using System.Diagnostics;
 using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
+using Newtonsoft.Json;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
@@ -57,6 +59,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
+                Logging.Logger.Info($"Selected ship with index {result.Index}");
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 MainWindow win = new MainWindow();
@@ -78,16 +81,17 @@ namespace WoWsShipBuilder.UI.ViewModels
                 {
                     return;
                 }
-
-                Debug.WriteLine(build.BuildName);
             }
             else
             {
                 build = BuildList.ElementAt(SelectedBuild!.Value);
             }
 
+            Logging.Logger.Info("Loading build {0}", JsonConvert.SerializeObject(build));
+
             if (AppData.ShipSummaryList == null)
             {
+                Logging.Logger.Info("Ship summary is null, loading it.");
                 AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 

@@ -11,8 +11,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Newtonsoft.Json;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
@@ -27,6 +29,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public SettingsWindowViewModel(SettingsWindow win, IFileSystem? fileSystem = null)
         {
+            Logging.Logger.Info("Creating setting window view model");
             self = win;
             this.fileSystem = fileSystem ?? new FileSystem();
             LanguagesList = languages.Keys.ToList();
@@ -39,6 +42,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (AppData.DataVersion is null)
             {
+                Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
                 string dataPath = AppDataHelper.Instance.GetDataPath(AppData.Settings.SelectedServerType);
                 string localVersionInfoPath = this.fileSystem.Path.Combine(dataPath, "VersionInfo.json");
                 VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(this.fileSystem.File.ReadAllText(localVersionInfoPath))!;
@@ -133,7 +137,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         [SuppressMessage("System.IO.Abstractions", "IO0007", Justification = "Method just delete a folder.")]
-        private async void CleanAppData()
+        public async void CleanAppData()
         {
             var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will close the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
             if (result == MessageBox.MessageBoxResult.Yes)
@@ -165,13 +169,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void Save()
         {
+            Logging.Logger.Info("Saving settings");
             bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
             bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
             if (IsCustomPathEnabled)
             {
                 if (!IsValidPath(CustomPath!))
                 {
-                    await MessageBox.Show(self, "The selected custom path is not valid.", "Error", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await MessageBox.Show(self, Translation.SettingsWindow_InvalidCustomPath, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                     return;
                 }
                 else

@@ -15,21 +15,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly Logger logger;
 
         public SignalSelectorViewModel()
-            : this(null)
-        {
-        }
-
-        public SignalSelectorViewModel(List<string>? initialSignalsNames)
         {
             logger = Logging.GetLogger("SignalSelectorVM");
             SignalList = LoadSignalList();
-            if (initialSignalsNames != null)
-            {
-                var list = SignalList.Select(x => x.Value).Where(signal => initialSignalsNames.Contains(signal.Name));
-                SelectedSignals.AddRange(list);
-            }
-
-            SignalsNumber = SelectedSignals.Count;
         }
 
         private List<KeyValuePair<string, Exterior>> signalList = new();
@@ -121,6 +109,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         public List<string> GetFlagList()
         {
             return SelectedSignals.Select(signal => signal.Name).ToList();
+        }
+
+        public void LoadBuild(List<string> initialSignalsNames)
+        {
+            logger.Info("Initial signal configuration found {0}", string.Join(", ", initialSignalsNames));
+            var list = SignalList.Select(x => x.Value).Where(signal => initialSignalsNames.Contains(signal.Name));
+            SelectedSignals.AddRange(list);
+            SignalsNumber = SelectedSignals.Count;
         }
     }
 }

@@ -846,4 +846,13 @@
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
     <value>Open ballistic graphs</value>
   </data>
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>The selected custom path is not valid.</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>Select a shell</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>The selected ship has more than one shell. Select the one you want the ballistic of. The first of a group of the same caliber is the HE shell, the second the AP shell.</value>
+  </data>
 </root>

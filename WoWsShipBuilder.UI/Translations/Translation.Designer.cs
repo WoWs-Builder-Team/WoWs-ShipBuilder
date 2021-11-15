@@ -268,6 +268,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a shell.
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShell {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. The first of a group of the same caliber is the HE shell, the second the AP shell..
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShellDesc {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShellDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show flight time graph.
         /// </summary>
         public static string DispersionGraphWindow_ShowFlightTimeGraph {
@@ -759,6 +777,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_InsertCustomPath {
             get {
                 return ResourceManager.GetString("SettingsWindow_InsertCustomPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected custom path is not valid..
+        /// </summary>
+        public static string SettingsWindow_InvalidCustomPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_InvalidCustomPath", resourceCulture);
             }
         }
         
