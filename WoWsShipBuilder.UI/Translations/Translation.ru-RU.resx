@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Загрузка изображений кораблей</value>
   </data>
-  <data name="time" xml:space="preserve">
+  <data name="AirCarrier" xml:space="preserve">
     <value>Авианосец</value>
   </data>
   <data name="Battleship" xml:space="preserve">
@@ -845,5 +845,14 @@
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
     <value>Показать графики баллистики</value>
+  </data>
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>Выбранный пользовательский путь недопустим.</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>Выберите снаряд</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>Выбранный корабль имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
   </data>
 </root>
