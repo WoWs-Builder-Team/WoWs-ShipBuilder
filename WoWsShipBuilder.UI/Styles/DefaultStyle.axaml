@@ -119,6 +119,8 @@
 
     <Style Selector="TextBlock.Clickable">
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="#ffcc66"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <!--Style for windows-->
