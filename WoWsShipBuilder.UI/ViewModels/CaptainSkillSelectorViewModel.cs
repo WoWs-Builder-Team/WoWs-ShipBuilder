@@ -357,8 +357,23 @@ namespace WoWsShipBuilder.UI.ViewModels
             return list;
         }
 
-        public void LoadBuild(List<int> selectedSkills)
+        /// <summary>
+        /// Return the index of the selected captain.
+        /// </summary>
+        /// <returns>The index of the selected captain.</returns>
+        public string GetCaptainIndex()
         {
+            return SelectedCaptain!.Index;
+        }
+
+        public void LoadBuild(List<int> selectedSkills, string captainIndex)
+        {
+            // this check is purely for retrocompatibility
+            if (captainIndex != null)
+            {
+                var captain = CaptainList!.First(x => x.Index.Equals(captainIndex));
+                SelectedCaptain = captain;
+            }
             var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
             AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);

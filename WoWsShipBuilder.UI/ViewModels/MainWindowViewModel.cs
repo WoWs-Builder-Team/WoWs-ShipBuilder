@@ -234,7 +234,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void OpenSaveBuild()
         {
             Logging.Logger.Info("Saving build");
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
@@ -308,7 +308,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 Logging.Logger.Info("Loading build");
                 SignalSelectorViewModel.LoadBuild(build.Signals);
-                CaptainSkillSelectorViewModel.LoadBuild(build.Skills);
+                CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
                 ShipModuleViewModel.LoadBuild(build.Modules);
                 UpgradePanelViewModel.LoadBuild(build.Upgrades);
                 ConsumableViewModel.LoadBuild(build.Consumables);
