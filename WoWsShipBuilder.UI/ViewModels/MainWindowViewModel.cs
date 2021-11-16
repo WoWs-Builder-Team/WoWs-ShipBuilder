@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
@@ -226,12 +227,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void ResetBuild()
         {
+            Logging.Logger.Info("Resetting build");
             LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
         }
 
-        private void OpenSaveBuild()
+        public void OpenSaveBuild()
         {
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            Logging.Logger.Info("Saving build");
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
@@ -239,7 +242,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             win.ShowDialog(self);
         }
 
-        private void BackToMenu()
+        public void BackToMenu()
         {
             StartingMenuWindow win = new();
             StartMenuViewModel model = new(win);
@@ -248,13 +251,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             self!.Close();
         }
 
-        private async void NewShipSelection()
+        public async void NewShipSelection()
         {
+            Logging.Logger.Info("Selecting new ship");
             var selectionWin = new ShipSelectionWindow();
             selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
+                Logging.Logger.Info("New ship selected: {0}", result.Index);
                 LoadNewShip(result);
             }
         }
@@ -281,23 +286,29 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
+            Logging.Logger.Info("Loading data for ship {0}", ship.Index);
+            Logging.Logger.Info("Build is null: {0}", build is null);
+
             ShipUI.ExpanderStateMapper.Clear();
 
             // Ship stats model
             RawShipData = ship;
             EffectiveShipData = RawShipData;
 
+            Logging.Logger.Info("Initializing view models");
+
             // Viewmodel inits
-            SignalSelectorViewModel = build != null ? new SignalSelectorViewModel(build.Signals) : new SignalSelectorViewModel();
-            CaptainSkillSelectorViewModel = build != null
-                ? new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, build.Skills)
-                : new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
+            SignalSelectorViewModel = new SignalSelectorViewModel();
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
             if (build != null)
             {
+                Logging.Logger.Info("Loading build");
+                SignalSelectorViewModel.LoadBuild(build.Signals);
+                CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
                 ShipModuleViewModel.LoadBuild(build.Modules);
                 UpgradePanelViewModel.LoadBuild(build.Upgrades);
                 ConsumableViewModel.LoadBuild(build.Consumables);
@@ -390,6 +401,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                             var modifiers = GenerateModifierList();
                             if (ShipStatsControlViewModel != null)
                             {
+                                Logging.Logger.Info("Updating ship stats");
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
 

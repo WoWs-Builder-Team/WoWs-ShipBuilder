@@ -16,6 +16,30 @@
             <Setter Property="BorderBrush" Value="{StaticResource ThemeForegroundLowBrush}" />
             <Setter Property="LineStroke" Value="{StaticResource ThemeForegroundLowBrush}" />
         </Style>
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="BorderBrush">
+                <SolidColorBrush Color="Gray"/>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Background">
+                <SolidColorBrush Color="Gray" Opacity="0.7"/>
+            </Setter>
+            <Setter Property="BorderBrush">
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Foreground">
+                <SolidColorBrush Color="White" Opacity="0.7"/>
+            </Setter> 
+        </Style>
     </Window.Styles>
 
     <Grid RowDefinitions="30,Auto, *">
@@ -24,11 +48,36 @@
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
             <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" Margin="10">
-            <StackPanel Orientation="Vertical">
-                <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Border Classes="BorderPanel" Margin="10" Grid.Row="2">
+            <TabControl SelectedIndex="{Binding InitialTab}">
+                <TabItem Header="Dispersion Graphs">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel Orientation="Vertical">
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Ballistic Graphs">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel Orientation="Vertical">
+                            <Border BorderThickness="2" BorderBrush="Gray" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
+                                    <CheckBox IsChecked="{Binding ShowPen}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowPenetrationGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowFlightTime}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowFlightTimeGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowImpactVelocity}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowImpactVelocityGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowImpactAngle}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowImpactAngleGraph}"/>
+                                </StackPanel>
+                            </Border>
+                            <oxy:PlotView IsVisible="{Binding ShowPen}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding PenetrationModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView IsVisible="{Binding ShowFlightTime}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding FlightTimeModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView IsVisible="{Binding ShowImpactVelocity}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactVelocityModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <oxy:PlotView IsVisible="{Binding ShowImpactAngle}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactAngleModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+        </Border>
+       
     </Grid>
 </Window>

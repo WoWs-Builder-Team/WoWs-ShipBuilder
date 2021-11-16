@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.UserControls;
@@ -46,18 +47,22 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void Import(object parameter)
         {
             Build build;
+            Logging.Logger.Info("Trying to import build string: {0}", BuildString);
             try
             {
                 build = Build.CreateBuildFromString(BuildString!);
+                Logging.Logger.Info("Build correctly created");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logging.Logger.Warn(e, "Error in creating the build.");
                 await MessageBox.Show(self, "The Build string is not in the correct format.", "Invalid string.", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                 return;
             }
 
             if (!ImportOnly)
             {
+                Logging.Logger.Info("Adding build to saved ones.");
                 AppData.Builds.Insert(0, build);
             }
 

@@ -16,6 +16,9 @@ namespace WoWsShipBuilder.Core.DataUI
     {
         public string Name { get; set; } = default!;
 
+        [JsonIgnore]
+        public string Index { get; set; } = default!;
+
         public string Type { get; set; } = default!;
 
         public decimal Damage { get; set; }
@@ -167,7 +170,8 @@ namespace WoWsShipBuilder.Core.DataUI
                     Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,
-                    TheoreticalDPM = dpmNumber.ToString("n0", nfi), // TODO: make into string with formatting
+                    TheoreticalDPM = dpmNumber.ToString("n0", nfi),
+                    Index = shell.Name,
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)

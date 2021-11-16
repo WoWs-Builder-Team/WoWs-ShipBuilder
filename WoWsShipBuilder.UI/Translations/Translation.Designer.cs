@@ -61,6 +61,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string AirCarrier {
+            get {
+                return ResourceManager.GetString("AirCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
@@ -232,11 +241,92 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flight time.
+        /// </summary>
+        public static string DispersionGraphWindow_FlightTime {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_FlightTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact Angle.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactAngle {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impact velocity.
+        /// </summary>
+        public static string DispersionGraphWindow_ImpactVelocity {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ImpactVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
         public static string DispersionGraphWindow_RemoveShip {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a shell.
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShell {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShellDesc {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShellDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show flight time graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowFlightTimeGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowFlightTimeGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact angle graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactAngleGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactAngleGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show impact velocity graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowImpactVelocityGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowImpactVelocityGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show penetration graph.
+        /// </summary>
+        public static string DispersionGraphWindow_ShowPenetrationGraph {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShowPenetrationGraph", resourceCulture);
             }
         }
         
@@ -696,6 +786,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_InsertCustomPath {
             get {
                 return ResourceManager.GetString("SettingsWindow_InsertCustomPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected custom path is not valid..
+        /// </summary>
+        public static string SettingsWindow_InvalidCustomPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_InvalidCustomPath", resourceCulture);
             }
         }
         
@@ -1582,6 +1681,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open ballistic graphs.
+        /// </summary>
+        public static string ShipStats_OpenBallistic {
+            get {
+                return ResourceManager.GetString("ShipStats_OpenBallistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overmatch capability.
         /// </summary>
         public static string ShipStats_Overmatch {
@@ -2127,15 +2235,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string TestShip {
             get {
                 return ResourceManager.GetString("TestShip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Aircraft Carrier.
-        /// </summary>
-        public static string time {
-            get {
-                return ResourceManager.GetString("time", resourceCulture);
             }
         }
         

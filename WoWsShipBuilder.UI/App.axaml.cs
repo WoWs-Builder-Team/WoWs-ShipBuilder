@@ -50,8 +50,11 @@ namespace WoWsShipBuilder.UI
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
+            Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
             AppDataHelper.Instance.SaveBuilds();
+            Logging.Logger.Info("Exiting...");
+            Logging.Logger.Info(new string('-', 30));
         }
 
         private async Task UpdateCheck(IClassicDesktopStyleApplicationLifetime desktop)

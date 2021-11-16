@@ -118,741 +118,741 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Вернуться в меню</value>
+    <value>Zurück zum Hauptmenü</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Сброс билда</value>
+    <value>Build zurücksetzen</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Поделиться билдом</value>
+    <value>Build teilen</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Разрешить автоматические обновления</value>
+    <value>Automatische Aktualisierungen aktivieren</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Очистить</value>
+    <value>Löschen</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Очистить сохраненные данные приложения</value>
+    <value>Gespeicherte Anwendungsdaten löschen</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Разработано:</value>
+    <value>Entwickelt von:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Информация</value>
+    <value>Info</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Язык</value>
+    <value>Sprache</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Сброс</value>
+    <value>Zurücksetzen</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Сбросить настройки по умолчанию</value>
+    <value>Auf Standardeinstellungen zurücksetzen</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Настройки</value>
+    <value>Einstellungen</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Версия:</value>
+    <value>Version:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Загрузить билд</value>
+    <value>Build laden</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Создать новый билд</value>
+    <value>Neuen Build erstellen</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Импортировать билд...</value>
+    <value>Build importieren...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Настройки и информация</value>
+    <value>Einstellungen &amp; Info</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Статус:</value>
+    <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Флажки </value>
+    <value>Signale </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Вставьте название для билда. Название корабля будет добавлено автоматически.</value>
+    <value>Name für den Build eingeben. Der Name des Schiffs wird automatisch ergänzt.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Выбрать новый корабль</value>
+    <value>Schiff auswählen</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Художник:</value>
+    <value>Design von:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Разработчики: </value>
+    <value>Entwickler: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Ведущие Разработчики:</value>
+    <value>Leitende Entwickler:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Конвертация данных:</value>
+    <value>Datenkonvertierung:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Очки Командира:</value>
+    <value>Fertigkeitspunkte:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Таланты Командира</value>
+    <value>Kapitänstalente</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Speichern</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Сервер</value>
+    <value>Server</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>Чистый Опыт</value>
+    <value>Basis EP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>Опыт Командира:</value>
+    <value>Kapitäns-EP:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>Бонус к опыту командира в %</value>
+    <value>Kapitäns-EP Bonus %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>Свободный Опыт:</value>
+    <value>Freie EP:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Бонус к свободному опыту в %</value>
+    <value>Freie EP Bonus %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>Окончательный опыт:</value>
+    <value>Gesamte EP:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>Бонус к опыту в %</value>
+    <value>EP Bonus %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>Калькулятор Опыта</value>
+    <value>EP Rechner</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Загрузка изображений камуфляжей</value>
+    <value>Herunterladen der Tarnungsbilder</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Готово</value>
+    <value>Fertig</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Загрузка данных</value>
+    <value>Daten werden heruntergeladen</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Загрузка изображений кораблей</value>
+    <value>Herunterladen der Schiffsbilder</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>Авианосец</value>
+    <value>Flugzeugträger</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Линкор</value>
+    <value>Schlachtschiff</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Содружество</value>
+    <value>Staatenbund</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Крейсер</value>
+    <value>Kreuzer</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Эсминец</value>
+    <value>Zerstörer</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Европа</value>
+    <value>Europa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>Франция</value>
+    <value>Frankreich</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Германия</value>
+    <value>Deutschland</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Италия</value>
+    <value>Italien</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Япония</value>
+    <value>Japan</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Нидерланды</value>
+    <value>Niederlande</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Пан-Америка</value>
+    <value>Pan-Amerika</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Пан-Азия</value>
+    <value>Pan-Asien</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Премиум</value>
+    <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>СССР</value>
+    <value>UDSSR</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Испания</value>
+    <value>Spanien</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Акционные</value>
+    <value>Spezial</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Подводная Лодка</value>
+    <value>U-Boot</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Древо развития</value>
+    <value>Forschungsbaum</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Тестовый корабль</value>
+    <value>Testschiff</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>Великобритания</value>
+    <value>Großbritannien</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>США</value>
+    <value>USA</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Пустой слот</value>
+    <value>Leerer Platz</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Минимальная дальность для отображения предупреждения</value>
+    <value>Mindestdistanz für die Warnung</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Класс</value>
+    <value>Klasse</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Подтвердить</value>
+    <value>Bestätigen</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Нация</value>
+    <value>Nation</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Уровень</value>
+    <value>Stufe</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>Тип</value>
+    <value>Typ</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Не найдено кораблей, соответствующих критериям фильтра</value>
+    <value>Keine den Filterkriterien entsprechenden Schiffe gefunden</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Поиск корабля</value>
+    <value>Schiff suchen</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>Время поворота на 180°</value>
+    <value>Dauer für 180°-Drehung</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Горизонтальный разброс</value>
+    <value>Horizontale Streuung</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Дальность Стрельбы</value>
+    <value>Reichweite</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Скорострельность</value>
+    <value>Feuerrate</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Время перезарядки</value>
+    <value>Nachladezeit</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
-    <value>Сигма</value>
+    <value>Sigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Скорость Наведения</value>
+    <value>Drehgeschwindigkeit</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Вертикальный разброс</value>
+    <value>Vertikale Streuung</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Начальная скорость снаряда</value>
+    <value>Mündungsgeschwindigkeit</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Масса снаряда</value>
+    <value>Geschossgewicht</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Теоретический ДПМ</value>
+    <value>Theoretische DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Толщина брони для взведения взрывателя</value>
+    <value>Grenzwert für Scharfschaltung</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Радиус глубинного взрыва</value>
+    <value>Tiefenexplosionsradius</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Шанс пожара</value>
+    <value>Brandwahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Таймер взрывателя</value>
+    <value>Zündzeit</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Пробитие по правилу 14.3</value>
+    <value>Overmatch-Fähigkeit</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Бронепробитие</value>
+    <value>Durchschlagskraft</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Углы рикошета</value>
+    <value>Ricochet-Winkel</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>ПВО</value>
+    <value>Luftabwehr</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>ХП Самолетов</value>
+    <value>Flugzeug-Trefferpunkte</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Авиаудар</value>
+    <value>Luftschlag</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Тип бомб</value>
+    <value>Bombentyp</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Бомб в загрузке</value>
+    <value>Bombenzuladung</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Постоянный урон</value>
+    <value>Konstanter Schaden</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Урон</value>
+    <value>Schaden</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Задержка</value>
+    <value>Wartezeit</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Дальность обнаружения</value>
+    <value>Erkennbarkeitsreichweite</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Разрыв</value>
+    <value>Granatenexplosion</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Урон разрывов</value>
+    <value>Schaden durch Granatenexplosion</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Шанс попадания</value>
+    <value>Trefferwahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Шанс затопления</value>
+    <value>Wassereinbruchswahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Главная Калибр</value>
+    <value>Hauptbatterie</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Время для реакции</value>
+    <value>Reaktionszeit</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Торпеды</value>
+    <value>Torpedo</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Добавить корабль</value>
+    <value>Schiff hinzufügen</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Удалить корабль</value>
+    <value>Schiff entfernen</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Маневренность</value>
+    <value>Manövrierbarkeit</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Общий урон за пожар</value>
+    <value>Gesamter Schaden pro Brand</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>УВС за пожар</value>
+    <value>DPS je Brand</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Длительность пожара</value>
+    <value>Branddauer</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Снижение шанса пожара</value>
+    <value>Verminderung der Brandwahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Общий урон за затоп</value>
+    <value>Gesamter Schaden pro Wassereinbruch</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>УВС за затопление</value>
+    <value>DPS je Wassereinbruch</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Время затопления</value>
+    <value>Dauer eines Wassereinbruchs</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Вероятность затопления</value>
+    <value>Wassereinbruchswahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Боеспособность</value>
+    <value>Trefferpunkte</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Макс. количество пожаров</value>
+    <value>Maximale Anzahl von Bränden</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Макс. количество затопов</value>
+    <value>Maximale Anzahl an Wassereinbrüchen</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Живучесть</value>
+    <value>Überlebensfähigkeit</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>ПТЗ</value>
+    <value>Torpedoschutz</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Ошибка</value>
+    <value>Fehler</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>У выбранного корабля нет ГК</value>
+    <value>Das ausgewählte Schiff hat keine Hauptgeschütze</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Выбранный корабль уже был добавлен</value>
+    <value>Das ausgewählte Schiff wurde bereits hinzugefügt</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>Тип</value>
+    <value>Typ</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Показать углы башен</value>
+    <value>Winkel der Geschütztürme zeigen</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>Используемый угол отсчета начинается с 0° на передней панели (вверху изображения) и идет по часовой стрелке</value>
+    <value>Die Winkelanzeige beginnt bei 0° am Bug (oberer Teil des Bildes)</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Убрать все углы</value>
+    <value>Alle Winkel verstecken</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Никогда не показывать углы</value>
+    <value>Keine Winkel anzeigen</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Всегда показывать углы</value>
+    <value>Winkel immer zeigen</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Показать все углы</value>
+    <value>Alle Winkel anzeigen</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Перки командира и Камуфляж</value>
+    <value>Kapitänsfertigkeiten und Signale</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Сигналы</value>
+    <value>Signale</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Название</value>
+    <value>Name</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Применить бонусы камуфляжа</value>
+    <value>Tarnungsboni anwenden</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Дальность взведения</value>
+    <value>Scharfschaltungsdistanz</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Подходящие цели</value>
+    <value>Kann treffen</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Маскировка</value>
+    <value>Verborgenheit</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Дальность видимости с воздуха</value>
+    <value>Erkennbarkeit zu Luft</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>При пожаре</value>
+    <value>Bei brennendem Schiff</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Дальность видимости с кораблей</value>
+    <value>Erkennbarkeit zu Wasser</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>При пожаре</value>
+    <value>Bei brennendem Schiff</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>После выстрела в дымах</value>
+    <value>Nach Abfeuern der Hauptgeschütze im Nebel</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Макс. пожаров</value>
+    <value>Maximale Brände</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Общий урон от пожара</value>
+    <value>Gesamter Brandschaden</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Макс. затопов</value>
+    <value>Maximale Wassereinbrüche</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>ПТЗ</value>
+    <value>Reduzierung der Wassereinbruchswahrscheinlichkeit</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Общий урон от затопа</value>
+    <value>Gesamter Wassereinbruchsschaden</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Дальняя Аура</value>
+    <value>Langstreckenaura</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Назад</value>
+    <value>Rückwärts</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Вперед</value>
+    <value>Vorwärts</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Максимальная скорость</value>
+    <value>Maximalgeschwindigkeit</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Время перекладки руля</value>
+    <value>Ruderstellzeit</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Радиус циркуляции</value>
+    <value>Wendekreis</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Средняя Аура</value>
+    <value>Mittelstreckenaura</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Ближняя Аура</value>
+    <value>Kurzstreckenaura</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Разброс торпед</value>
+    <value>Torpedostreuung</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Самолеты</value>
+    <value>Flugzeuge</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Бомба</value>
+    <value>Bombe</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Ракета</value>
+    <value>Rakete</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Скорость</value>
+    <value>Geschwindigkeit</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Тип вооружения</value>
+    <value>Waffentyp</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Топ-мачтовые бомбы</value>
+    <value>Springbombe</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Торпеды</value>
+    <value>Torpedo</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Вооружения на каждом самолете</value>
+    <value>Waffenzuladung je Flugzeug</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Перезарядка атаки</value>
+    <value>Angriffsabklingzeit</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Крейсерская скорость</value>
+    <value>Reisegeschwindigkeit</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Бомб во внутреннем эллипсе</value>
+    <value>Bomben in innerer Ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Макс. самолетов на палубе</value>
+    <value>Maximale Flugzeuge an Deck</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Максимальная скорость</value>
+    <value>Maximalgeschwindigkeit</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Мин. Скорость</value>
+    <value>Minimalgeschwindigkeit</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Самолетов в сбросе</value>
+    <value>Flugzeuge pro Angriff</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Самолетов в эскадрилье</value>
+    <value>Flugzeuge pro Staffel</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>ХП каждого самолета</value>
+    <value>Flugzeug Hp</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Время восстановления</value>
+    <value>Wiederherstellungszeit</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Стартовое кол-во самолетов на палубе</value>
+    <value>Anzahl der Startflugzeuge an Deck</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Бомб на каждом самолете</value>
+    <value>Bomben je Flugzeug</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Время сброса</value>
+    <value>Abwurfzeit</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Время до сброса</value>
+    <value>Zeit bis zur Ankunft</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Максимальная дальность</value>
+    <value>Maximale reichweite</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Длина зоны авиаудара</value>
+    <value>Maximale drop distanz</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Минимальная дальность</value>
+    <value>Minimale reichweite</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Заряды</value>
+    <value>Ladungen</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>Авиаудар ПЛО</value>
+    <value>Anti Uboot Waffen - Luftschlag</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Глубинные бомбы</value>
+    <value>Wasserbomben</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Визуализация разброса</value>
+    <value>Streuungsanzeige</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Глубинные бомбы ПЛО</value>
+    <value>Anti Uboot Waffen - Wasserbomben</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>Время действия первого импульса</value>
+    <value>Erste ping Dauer</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Время действия импульса</value>
+    <value>Ping Dauer</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>Сонар</value>
+    <value>Sonar</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Скорость импульса</value>
+    <value>Pinggeschwindigkeit</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Ширина импульса</value>
+    <value>Pingbreite</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Время действия второго импульса</value>
+    <value>Zweite Ping Dauer</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Снаряды</value>
+    <value>Granaten</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Перезарядка</value>
+    <value>Abklingzeit</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Время действия</value>
+    <value>Wirkungsdauer</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Abbrechen</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Включить свой путь</value>
+    <value>Benutzerdefinierten Pfad verwenden</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Вставить свой путь</value>
+    <value>Benutzerdefinierten Pfad eingeben</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Сохранить и выйти</value>
+    <value>Speichern &amp; Verlassen</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>Ориентация некоторых башен неверна. Данные от WG не включают в себя их, поэтому мы используем обход, который работает в большинстве случаев. Если вы нашли случай неправильной ориентации башни и/или угла, сообщите об этом на Github или присоединившись к серверу Discord ниже.</value>
+    <value>Die Orientierung einiger Geschütztürme ist falsch. Die Daten von WG enthalten die Orientierung nicht, daher berechnen wir diese mithilfe eines Workarounds. Falls du einen fehlerhaften Turm oder falsche Winkel sehen solltest, melde diese bitte auf GitHub oder auf unserem Discord Server.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Билд сохранен</value>
+    <value>Build gespeichert</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Ссылка на билд скопирована в буфер обмена</value>
+    <value>Build-String in Zwischenablage kopiert</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Удалить билд</value>
+    <value>Build löschen</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Импорт</value>
+    <value>Importieren</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Только импорт</value>
+    <value>Nur Importieren</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Импортировать и сохранить</value>
+    <value>Importieren und speichern</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Вставьте ссылку на билд сюда</value>
+    <value>Build-String hier einfügen</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Импортировать билд</value>
+    <value>Build importieren</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Abbrechen</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ок</value>
+    <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Ошибка при загрузке билда</value>
+    <value>Fehler beim Laden des Builds</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Начальная длительность ракетного ускорения</value>
+    <value>Anfängliche Boostdauer</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Коэффициент длительности ракетного ускорения</value>
+    <value>Anfänglicher Geschwindigkeitsmultiplikator</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Время для переключения боеприпасов</value>
+    <value>Zeit zum Wechseln des Munitionstyps</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Альт. режим стрельбы</value>
+    <value>Schnellfeuermodus</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Длительность</value>
+    <value>Dauer</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Перезарядка после альт. залпа</value>
+    <value>Nachladezeit nach dem Schnellfeuermodus</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Перезарядка во время альт. залпа</value>
+    <value>Nachladezeit im Schnellfeuermodus</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Требуется попаданий</value>
+    <value>Erforderliche Treffer</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Выстрелов в альт. залпе</value>
+    <value>Schüsse pro Feuerstoß</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Особые способности</value>
+    <value>Besondere Fähigkeiten</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Загрузка данных...</value>
+    <value>Daten werden heruntergeladen...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Время наведения</value>
+    <value>Maximale Zeit für den Anflug</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Урон, полученный при сбросе</value>
+    <value>Schaden während des Angriffs</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Время неуязвимости после сброса</value>
+    <value>Unverwundbarkeit nach Angriff</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Время подготовки</value>
+    <value>Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Время для полного сведения</value>
+    <value>Zeit bis zur maximalen Genauigkeit</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Торпедные аппараты</value>
+    <value>Torpedowerfer</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>В фазе наведения</value>
+    <value>Während des Angriffs</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Изменение зоны сброса при маневрировании</value>
+    <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>В фазе подготовки</value>
+    <value>Während der Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Время до полной мощности</value>
+    <value>Zeit bis zur maximalen Leistung</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Версия данных:</value>
+    <value>Datenversion:</value>
   </data>
   <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>Время полета</value>
+    <value>Flugzeit</value>
   </data>
   <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>Угол при попадании</value>
+    <value>Einschlagwinkel</value>
   </data>
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>Скорость при попадании</value>
+    <value>Einschlaggeschwindigkeit</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Показать график бронепробития</value>
+    <value>Zeige Penetrationsgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>Показать график времени полета</value>
+    <value>Zeige Flugzeitgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Показать график угла при попадании</value>
+    <value>Zeige Einschlangwinkelgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>Показать график скорости при попадании</value>
+    <value>Zeige Einschlaggeschwindigkeitsgraph</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Показать графики баллистики</value>
+    <value>Öffne Ballistikgraphen</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>Выбранный пользовательский путь недопустим.</value>
+    <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Выберите снаряд</value>
+    <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Выбранный корабль имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
+    <value>Das ausgewählte Schiff hat mehr als eine Granate. Wähle die anzuzeigenden Granaten. Haben die Granaten das selbe Kaliber, ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
   </data>
 </root>

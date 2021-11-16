@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Downloading ship images</value>
   </data>
-  <data name="time" xml:space="preserve">
+  <data name="AirCarrier" xml:space="preserve">
     <value>Aircraft Carrier</value>
   </data>
   <data name="Battleship" xml:space="preserve">
@@ -821,5 +821,38 @@
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data version:</value>
+  </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>Flight time</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
+    <value>Impact Angle</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
+    <value>Impact velocity</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
+    <value>Show penetration graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
+    <value>Show flight time graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
+    <value>Show impact angle graph</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
+    <value>Show impact velocity graph</value>
+  </data>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>Open ballistic graphs</value>
+  </data>
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>The selected custom path is not valid.</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>Select a shell</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
   </data>
 </root>

@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>Schip afbeeldingen downloaden</value>
   </data>
-  <data name="time" xml:space="preserve">
+  <data name="AirCarrier" xml:space="preserve">
     <value>Vliegdekschip</value>
   </data>
   <data name="Battleship" xml:space="preserve">
@@ -821,5 +821,38 @@
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data versie:</value>
+  </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>Vlieg tijd</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
+    <value>Impact Hoek</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
+    <value>Impact snelheid</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
+    <value>Toon penetratie grafiek</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
+    <value>Vliegtijd grafiek weergeven</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
+    <value>Toon impact hoek grafiek</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
+    <value>Toon impact snelheid grafiek</value>
+  </data>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>Open ballistische grafieken</value>
+  </data>
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>Het gekozen pad is ongeldig.</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>Selecteer een granaattype</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>Het gekozen schip heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
   </data>
 </root>

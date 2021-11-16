@@ -67,8 +67,38 @@ namespace WoWsShipBuilder.Core.DataUI
                 concealmentBySea *= visibilityFactorModifier;
             }
 
+            // Checks for Heavy He
+            ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+            if (artilleryConfiguration != null)
+            {
+                string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+                TurretModule? mainBattery;
+                if (artilleryOptions.Length == 1)
+                {
+                    mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+                }
+                else
+                {
+                    string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                    mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
+                }
+
+                Gun gun = mainBattery.Guns.First();
+                // GMBigGunVisibilityCoeff
+                if (gun.BarrelDiameter >= 0.149M)
+                {
+                    int bigGunVisibilityFactorIndex = modifiers.FindModifierIndex("GMBigGunVisibilityCoeff", true);
+                    if (bigGunVisibilityFactorIndex > -1)
+                    {
+                        var bigGunVisibilityFactorModifier = (decimal)modifiers[bigGunVisibilityFactorIndex].Value;
+                        concealmentBySea *= bigGunVisibilityFactorModifier;
+                        concealmentByAir *= bigGunVisibilityFactorModifier;
+                    }
+                }
+            }
+
             var concealmentBySeaFire = concealmentBySea + 2.0m;
-            var concealmentByAirFire = hull.AirDetection + 3.0m;
+            var concealmentByAirFire = concealmentByAir + 3.0m;
 
             var concealment = new ConcealmentUI
             {
