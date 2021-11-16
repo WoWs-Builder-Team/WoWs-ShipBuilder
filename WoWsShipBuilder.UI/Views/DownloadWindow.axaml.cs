@@ -33,7 +33,7 @@ namespace WoWsShipBuilder.UI.Views
             Task.Run(async () =>
             {
                 var viewmodel = new SplashScreenViewModel();
-                await viewmodel.VersionCheck();
+                await viewmodel.VersionCheck(true);
                 await Dispatcher.UIThread.InvokeAsync(Close);
             });
         }

@@ -9,13 +9,11 @@ using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -39,10 +37,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (AppData.DataVersion is null)
             {
-                string dataPath = AppDataHelper.Instance.GetDataPath(AppData.Settings.SelectedServerType);
-                string localVersionInfoPath = this.fileSystem.Path.Combine(dataPath, "VersionInfo.json");
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(this.fileSystem.File.ReadAllText(localVersionInfoPath))!;
-                AppData.DataVersion = localVersionInfo.VersionName;
+                var localVersionInfo = AppDataHelper.Instance.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
+                AppData.DataVersion = localVersionInfo?.VersionName ?? "No VersionInfo found";
             }
 
             DataVersion = AppData.DataVersion;
