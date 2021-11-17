@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
