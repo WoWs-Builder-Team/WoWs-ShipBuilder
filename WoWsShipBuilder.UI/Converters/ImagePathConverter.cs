@@ -61,12 +61,17 @@ namespace WoWsShipBuilder.UI.Converters
                     else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
                     {
                         string? imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
-                        if (!fileSystem.File.Exists(imagePath))
+                        Stream stream;
+                        if (fileSystem.File.Exists(imagePath))
                         {
-                            imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", "_default.png");
+                            stream = fileSystem.File.OpenRead(imagePath);
+                        }
+                        else
+                        {
+                            Logger.Warn("Using fallback error icon because image '{}' was not found.", imagePath);
+                            stream = LoadErrorIcon(assets);
                         }
 
-                        var stream = fileSystem.File.OpenRead(imagePath);
                         return new Bitmap(stream);
                     }
 
