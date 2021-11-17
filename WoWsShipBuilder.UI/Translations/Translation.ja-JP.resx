@@ -240,7 +240,7 @@
   <data name="SplashScreen_ShipImages" xml:space="preserve">
     <value>艦艇の画像をダウンロード中</value>
   </data>
-  <data name="time" xml:space="preserve">
+  <data name="AirCarrier" xml:space="preserve">
     <value>航空母船</value>
   </data>
   <data name="Battleship" xml:space="preserve">
@@ -821,5 +821,38 @@
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>データバージョン:</value>
+  </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>飛翔時間</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
+    <value>着弾角度</value>
+  </data>
+  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
+    <value>着弾速度</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
+    <value>貫通力のグラフを表示</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
+    <value>飛翔時間のグラフを表示</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
+    <value>着弾角度のグラフを表示</value>
+  </data>
+  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
+    <value>着弾速度のグラフを表示</value>
+  </data>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>弾道のグラフを開く</value>
+  </data>
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>選択したパスは有効ではありません。</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>砲弾を選択</value>
+  </data>
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>選択した船には複数の砲弾があります。必要なものを選択してください。 同口径の砲弾の場合、弾種はHE-&gt;SAP-&gt;APの順に並んでいます。</value>
   </data>
 </root>
