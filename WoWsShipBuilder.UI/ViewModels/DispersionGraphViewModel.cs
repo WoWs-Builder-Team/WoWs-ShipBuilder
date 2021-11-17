@@ -42,19 +42,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             var shellName = Localizer.Instance[$"{shell.Name}"].Localization;
             var name = $"{shipName} - {shellName}";
             logger.Info("Creating series for {0}", name);
+
+            logger.Info("Creating base plot models");
             var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
+            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
+            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
+            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
+            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
+            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
+
+            logger.Info("Creating series");
             var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
+            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
+            var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
+
+            logger.Info("Adding series and setting models");
+
             hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
 
-            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
-            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
             vModel.Series.Add(vDisp);
             VerticalModel = vModel;
 
-            var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
-
-            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
             if (shell.ShellType == ShellType.AP)
             {
                 penModel.Series.Add(ballisticSeries.Penetration);
@@ -66,15 +75,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             PenetrationModel = penModel;
 
-            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
             flightTimeModel.Series.Add(ballisticSeries.FlightTime);
             FlightTimeModel = flightTimeModel;
 
-            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
             impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
             ImpactVelocityModel = impactVelocityModel;
 
-            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
             impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
             ImpactAngleModel = impactAngleModel;
 
@@ -339,7 +345,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The dispersion model.</returns>
         private PlotModel InitializeDispersionBaseModel(string name)
         {
-            logger.Info("Creating base dispersion model");
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
@@ -400,7 +405,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The ballistic model.</returns>
         private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin)
         {
-            logger.Info("Creating base ballistic model");
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
@@ -464,8 +468,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The horizontal dispersion series for the given parameter.</returns>
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            logger.Info("Calculating Horizontal dispersion series");
-
             var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
@@ -481,8 +483,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The vertical dispersion series for the given parameter.</returns>
         private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            logger.Info("Calculating Vertical dispersion series");
-
             var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
             dispSeries.TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m";
             dispSeries.StrokeThickness = 4;
@@ -498,8 +498,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
         private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle) CreateBallisticSeries(ArtilleryShell shell, double maxRange, string name)
         {
-            logger.Info("Calculating ballistics series");
-
             var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
 
             var penData = ballistic.Select(x => new DataPoint(x.Key, x.Value.Penetration));
@@ -550,8 +548,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The penetration series.</returns>
         private LineSeries CreateSeriesForFixedPen(ArtilleryShell shell, double maxRange, string name)
         {
-            logger.Info("Calculating fixed pen series");
-
             var pen = shell.Penetration;
             var initialDataPoint = new DataPoint(0, pen);
             var finalDataPoint = new DataPoint(maxRange * 1.5, pen);
