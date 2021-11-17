@@ -83,7 +83,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         {
             var provider = CreateDefaultDataHelper().Object;
             var dataHelper = new AppDataHelper(provider);
-            var client = new AwsClient(provider, dataHelper);
+            var client = new AwsClient(provider, dataHelper, null);
             List<string> indexesShip = new();
             indexesShip.Add("PASA518");
             indexesShip.Add("PASB018");
@@ -96,7 +96,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         {
             var provider = CreateDefaultDataHelper().Object;
             var dataHelper = new AppDataHelper(provider);
-            var client = new AwsClient(provider, dataHelper);
+            var client = new AwsClient(provider, dataHelper, null);
             List<string> indexesCamo = new();
             indexesCamo.Add("PCEC061_Camo_Gamescom_2018");
             indexesCamo.Add("PCEC021_Valentine_Tile");

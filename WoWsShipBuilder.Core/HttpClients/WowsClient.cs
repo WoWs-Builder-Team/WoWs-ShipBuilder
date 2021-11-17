@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -24,17 +25,20 @@ namespace WoWsShipBuilder.Core.HttpClients
         private readonly IFileSystem fileSystem;
 
         private WowsClient()
-            : this(new FileSystem(), AppDataHelper.Instance)
+            : this(new FileSystem(), AppDataHelper.Instance, new RetryHttpHandler(new HttpClientHandler()))
         {
         }
 
-        internal WowsClient(IFileSystem fileSystem, AppDataHelper appDataHelper)
+        internal WowsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler = null)
             : base(fileSystem, appDataHelper)
         {
             this.fileSystem = fileSystem;
+            Client = handler != null ? new HttpClient(handler) : new HttpClient();
         }
 
         public static WowsClient Instance => InstanceValue.Value;
+
+        protected override HttpClient Client { get; }
 
         /// <summary>
         /// Downloads the images of ships and camos.

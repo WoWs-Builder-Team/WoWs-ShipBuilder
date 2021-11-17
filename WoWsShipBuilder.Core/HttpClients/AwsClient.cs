@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
-    public class AwsClient : ClientBase
+    public class AwsClient : ClientBase, IAwsClient
     {
         #region Static Fields and Constants
 
@@ -25,16 +26,19 @@ namespace WoWsShipBuilder.Core.HttpClients
         #endregion
 
         private AwsClient()
-            : this(new FileSystem(), AppDataHelper.Instance)
+            : this(new FileSystem(), AppDataHelper.Instance, null)
         {
         }
 
-        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper)
+        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler)
             : base(fileSystem, appDataHelper)
         {
+            Client = new HttpClient(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
 
         public static AwsClient Instance => InstanceValue.Value;
+
+        protected override HttpClient Client { get; }
 
         /// <summary>
         /// Downloads images from the AWS server.
@@ -125,6 +129,38 @@ namespace WoWsShipBuilder.Core.HttpClients
             }
         }
 
+        public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
+        {
+            string url = @$"{Host}/api/{serverType.StringName()}/VersionInfo.json";
+            return await GetJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
+        }
+
+        public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
+        {
+            string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
+            var taskList = new List<Task>();
+            int totalFiles = relativeFilePaths.Count;
+            var finished = 0;
+            IProgress<int> progress = new Progress<int>(update =>
+            {
+                finished += update;
+                downloadProgress?.Report(finished / totalFiles);
+            });
+            foreach ((string category, string fileName) in relativeFilePaths)
+            {
+                string localFileName = FileSystem.Path.Combine(AppDataHelper.GetDataPath(serverType), category, fileName);
+                Uri uri = string.IsNullOrWhiteSpace(category) ? new Uri(baseUrl + fileName) : new Uri(baseUrl + $"{category}/{fileName}");
+                Task task = Task.Run(async () =>
+                {
+                    await DownloadFileAsync(uri, localFileName);
+                    progress.Report(1);
+                });
+                taskList.Add(task);
+            }
+
+            await Task.WhenAll(taskList);
+        }
+
         /// <summary>
         /// Checks if there are updates to the program data.
         /// </summary>
@@ -133,7 +169,9 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> CheckFileVersion(ServerType serverType, IProgress<(int, string)>? progress = null)
+        public async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> CheckFileVersion(
+            ServerType serverType,
+            IProgress<(int, string)>? progress = null)
         {
             string server = serverType == ServerType.Live ? "live" : "pts";
 

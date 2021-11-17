@@ -55,12 +55,48 @@ namespace WoWsShipBuilder.Core.DataProvider
             return fileSystem.Path.Combine(AppDataDirectory, "json", serverName);
         }
 
-        public Dictionary<string, T>? ReadLocalJsonData<T>(Nation? nation, ServerType serverType)
+        /// <summary>
+        /// Gets the localization directory for the selected server type.
+        /// </summary>
+        /// <param name="serverType">The selected server type.</param>
+        /// <returns>The directory path of the current localization directory.</returns>
+        public string GetLocalizationPath(ServerType serverType) => fileSystem.Path.Combine(GetDataPath(serverType), "Localization");
+
+        /// <summary>
+        /// Find the list of currently installed localizations.
+        /// </summary>
+        /// <param name="serverType">The selected server type.</param>
+        /// <returns>A possibly empty list of installed locales.</returns>
+        public List<string> GetInstalledLocales(ServerType serverType)
+        {
+            fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
+            return fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).ToList();
+        }
+
+        /// <summary>
+        /// Read a dictionary from the local app data directory.
+        /// </summary>
+        /// <param name="nation">The selected nation.</param>
+        /// <param name="serverType">The selected server type.</param>
+        /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
+        /// <returns>A dictionary containing the deserialized file content.</returns>
+        public Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType)
         {
             string categoryString = GetCategoryString<T>();
             string nationString = GetNationString(nation);
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
             return DeserializeFile<Dictionary<string, T>>(fileName);
+        }
+
+        /// <summary>
+        /// Read the current version info from the app data directory.
+        /// </summary>
+        /// <param name="serverType">The selected server type.</param>
+        /// <returns>The local VersionInfo or null if none was found.</returns>
+        public virtual VersionInfo? ReadLocalVersionInfo(ServerType serverType)
+        {
+            string filePath = fileSystem.Path.Combine(GetDataPath(serverType), "VersionInfo.json");
+            return DeserializeFile<VersionInfo>(filePath);
         }
 
         public List<ShipSummary> GetShipSummaryList(ServerType serverType)
@@ -84,7 +120,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             if (AppData.AircraftList!.ContainsKey(planeIndex))
             {
-                return AppData.AircraftList![planeIndex];
+                return AppData.AircraftList[planeIndex];
             }
 
             Nation nation = planeIndex.ToUpperInvariant()[1] switch
@@ -103,7 +139,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             if (AppData.ProjectileList!.ContainsKey(depthChargeName))
             {
-                return AppData.ProjectileList![depthChargeName];
+                return AppData.ProjectileList[depthChargeName];
             }
 
             Nation nation = depthChargeName.ToUpperInvariant()[1] switch
@@ -170,7 +206,27 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
         }
 
-        private static string GetNationString(Nation? nation)
+        internal T? DeserializeFile<T>(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException("The provided file path must not be empty.");
+            }
+
+            if (!fileSystem.File.Exists(filePath))
+            {
+                Logging.Logger.Warn($"Tried to load file {filePath}, but it was not found.");
+                return default;
+            }
+
+            using Stream fs = fileSystem.File.OpenRead(filePath);
+            var streamReader = new StreamReader(fs);
+            var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer();
+            return serializer.Deserialize<T>(jsonReader);
+        }
+
+        private static string GetNationString(Nation nation)
         {
             return nation switch
             {
@@ -178,7 +234,6 @@ namespace WoWsShipBuilder.Core.DataProvider
                 Nation.PanAsia => "Pan_Asia",
                 Nation.UnitedKingdom => "United_Kingdom",
                 Nation.Usa => "USA",
-                null => "Common",
                 _ => nation.ToString() ?? throw new InvalidOperationException("Unable to retrieve enum name."),
             };
         }
@@ -198,21 +253,6 @@ namespace WoWsShipBuilder.Core.DataProvider
                 var moduleType when moduleType == typeof(Module) => "Unit",
                 _ => throw new InvalidOperationException(),
             };
-        }
-
-        private T? DeserializeFile<T>(string filePath)
-        {
-            if (!fileSystem.File.Exists(filePath))
-            {
-                Logging.Logger.Warn($"Tried to load file {filePath} , but it was not found.");
-                return default;
-            }
-
-            using Stream fs = fileSystem.File.OpenRead(filePath);
-            var streamReader = new StreamReader(fs);
-            var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<T>(jsonReader);
         }
     }
 }
