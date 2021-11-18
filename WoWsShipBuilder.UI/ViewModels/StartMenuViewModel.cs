@@ -1,6 +1,7 @@
-using System.Diagnostics;
 using System.Linq;
+using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -62,8 +63,13 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
-                MainWindow win = new MainWindow();
+                MainWindow win = new();
                 win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex);
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    desktop.MainWindow = win;
+                }
+
                 win.Show();
                 self.Close();
             }

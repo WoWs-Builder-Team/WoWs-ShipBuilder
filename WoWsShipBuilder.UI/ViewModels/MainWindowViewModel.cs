@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -245,10 +247,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void BackToMenu()
         {
             StartingMenuWindow win = new();
-            StartMenuViewModel model = new(win);
-            win.DataContext = model;
+            win.DataContext = new StartMenuViewModel(win);
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = win;
+            }
+
             win.Show();
-            self!.Close();
+            self?.Close();
         }
 
         public async void NewShipSelection()

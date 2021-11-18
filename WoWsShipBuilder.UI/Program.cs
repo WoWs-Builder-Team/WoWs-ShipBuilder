@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.UI
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e, "Encountered a critical error that will end the application.");
+                Logging.Logger.Fatal(e, "Encountered a critical error that will end the application.");
                 throw;
             }
 
