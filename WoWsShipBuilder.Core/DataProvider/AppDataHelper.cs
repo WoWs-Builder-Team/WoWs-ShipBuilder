@@ -5,6 +5,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
@@ -48,6 +49,32 @@ namespace WoWsShipBuilder.Core.DataProvider
         }
 
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
+
+        public static Nation GetNationFromIndex(string index)
+        {
+            if (index.Length < 7)
+            {
+                Logging.Logger.Error("Invalid index, received value {}.", index);
+                return Nation.Common;
+            }
+
+            return index[1] switch
+            {
+                'A' => Nation.Usa,
+                'B' => Nation.UnitedKingdom,
+                'F' => Nation.France,
+                'G' => Nation.Germany,
+                'H' => Nation.Netherlands,
+                'I' => Nation.Italy,
+                'J' => Nation.Japan,
+                'R' => Nation.Russia,
+                'U' => Nation.Commonwealth,
+                'V' => Nation.PanAmerica,
+                'W' => Nation.Europe,
+                'Z' => Nation.PanAsia,
+                _ => Nation.Common,
+            };
+        }
 
         public string GetDataPath(ServerType serverType)
         {
@@ -108,50 +135,62 @@ namespace WoWsShipBuilder.Core.DataProvider
         public void LoadNationFiles(Nation nation)
         {
             var server = AppData.Settings.SelectedServerType;
-            AppData.ProjectileList = ReadLocalJsonData<Projectile>(nation, server);
-            AppData.AircraftList = ReadLocalJsonData<Aircraft>(nation, server);
-            if (AppData.ConsumableList is null)
-            {
-                AppData.ConsumableList = ReadLocalJsonData<Consumable>(Nation.Common, server);
-            }
+            AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, server));
+            AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, server));
+            AppData.ConsumableList ??= ReadLocalJsonData<Consumable>(Nation.Common, server);
         }
 
-        public Aircraft FindAswAircraft(string planeIndex)
+        /// <summary>
+        /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
+        /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
+        /// </summary>
+        /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
+        /// <returns>The projectile for the specified name.</returns>
+        /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
+        public Projectile GetProjectile(string projectileName)
         {
-            if (AppData.AircraftList!.ContainsKey(planeIndex))
+            var nation = GetNationFromIndex(projectileName);
+            if (!AppData.ProjectileCache.ContainsKey(nation))
             {
-                return AppData.AircraftList[planeIndex];
+                AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
             }
 
-            Nation nation = planeIndex.ToUpperInvariant()[1] switch
-            {
-                'A' => Nation.Usa,
-                'J' => Nation.Japan,
-                'H' => Nation.Netherlands,
-                'B' => Nation.UnitedKingdom,
-                _ => throw new InvalidOperationException(),
-            };
-
-            return ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType)![planeIndex];
+            return AppData.ProjectileCache[nation][projectileName];
         }
 
-        public Projectile FindAswDepthCharge(string depthChargeName)
+        /// <summary>
+        /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result, cast to the requested type.
+        /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
+        /// </summary>
+        /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
+        /// <typeparam name="T">
+        /// The requested return type. Must be a sub type of <see cref="Projectile"/>.
+        /// The caller is responsible for ensuring that the requested projectile is of the specified type.<br/>
+        /// <b>This method does not handle exceptions caused by an invalid cast!</b>
+        /// </typeparam>
+        /// <returns>The requested projectile, cast to the specified type.</returns>
+        /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
+        public T GetProjectile<T>(string projectileName) where T : Projectile
         {
-            if (AppData.ProjectileList!.ContainsKey(depthChargeName))
+            return (T)GetProjectile(projectileName);
+        }
+
+        /// <summary>
+        /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
+        /// Initializes the data for the nation of the provided aircraft name if it is not loaded already.
+        /// </summary>
+        /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
+        /// <returns>The requested aircraft.</returns>
+        /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
+        public Aircraft GetAircraft(string aircraftName)
+        {
+            var nation = GetNationFromIndex(aircraftName);
+            if (!AppData.AircraftCache.ContainsKey(nation))
             {
-                return AppData.ProjectileList[depthChargeName];
+                AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
             }
 
-            Nation nation = depthChargeName.ToUpperInvariant()[1] switch
-            {
-                'A' => Nation.Usa,
-                'J' => Nation.Japan,
-                'H' => Nation.Netherlands,
-                'B' => Nation.UnitedKingdom,
-                _ => throw new InvalidOperationException(),
-            };
-
-            return ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType)![depthChargeName];
+            return AppData.AircraftCache[nation][aircraftName];
         }
 
         public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)

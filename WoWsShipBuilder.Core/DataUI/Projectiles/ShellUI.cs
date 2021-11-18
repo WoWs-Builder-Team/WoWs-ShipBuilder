@@ -65,7 +65,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
             {
-                var shell = (ArtilleryShell)AppData.ProjectileList![shellName];
+                var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
 
                 // Values that may be ignored depending on shell type
                 var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);

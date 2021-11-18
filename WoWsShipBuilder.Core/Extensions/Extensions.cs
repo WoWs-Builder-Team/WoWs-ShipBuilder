@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.Extensions
 {
@@ -48,6 +49,25 @@ namespace WoWsShipBuilder.Core.Extensions
         public static string StringName(this ServerType serverType)
         {
             return serverType == ServerType.Live ? "live" : "pts";
+        }
+
+        /// <summary>
+        /// Sets the value of the dictionary for the specified nation key if the value is not null.
+        /// </summary>
+        /// <param name="thisDict">The dictionary extended by this method.</param>
+        /// <param name="nation">The <see cref="Nation"/> used as key.</param>
+        /// <param name="content">The content dictionary for the key.</param>
+        /// <typeparam name="T">The data type of the content dictionary.</typeparam>
+        /// <returns><see langword="true"/> if the content was added, <see langword="false"/> otherwise.</returns>
+        public static bool SetIfNotNull<T>(this Dictionary<Nation, Dictionary<string, T>> thisDict, Nation nation, Dictionary<string, T>? content)
+        {
+            if (content == null)
+            {
+                return false;
+            }
+
+            thisDict[nation] = content;
+            return true;
         }
     }
 }

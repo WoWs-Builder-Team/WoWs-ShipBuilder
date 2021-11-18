@@ -33,7 +33,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers)
         {
-            var rocket = (Rocket)AppData.ProjectileList![name];
+            var rocket = AppDataHelper.Instance.GetProjectile<Rocket>(name);
 
             decimal rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");

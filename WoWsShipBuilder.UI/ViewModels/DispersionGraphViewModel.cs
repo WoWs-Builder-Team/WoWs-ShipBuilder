@@ -241,18 +241,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                         HorizontalModel!.Series.Add(hSeries);
                         VerticalModel!.Series.Add(vSeries);
 
-                        ArtilleryShell shell;
-
                         // create and add the ballistic series
-                        if (AppData.CurrentLoadedNation == ship.ShipNation)
-                        {
-                            shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
-                        }
-                        else
-                        {
-                            var shellList = AppDataHelper.Instance.ReadLocalJsonData<Projectile>(ship.ShipNation, AppData.Settings.SelectedServerType);
-                            shell = (ArtilleryShell)shellList![shellIndex];
-                        }
+                        ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 
@@ -297,7 +287,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 {
                     logger.Warn("Ship has no guns!");
                     await MessageBox.Show(self, Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                }                           
+                }
             }
         }
 
@@ -418,7 +408,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,          
+                LegendFontSize = 13,
             };
 
             var xAxis = new LinearAxis
