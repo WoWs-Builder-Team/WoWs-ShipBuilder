@@ -538,6 +538,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Normal account.
+        /// </summary>
+        public static string MainWindow_NormalAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_NormalAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset build.
         /// </summary>
         public static string MainWindow_ResetBuild {
@@ -561,6 +570,24 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_Signals {
             get {
                 return ResourceManager.GetString("MainWindow_Signals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WG premium account.
+        /// </summary>
+        public static string MainWindow_WGPremiumAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_WGPremiumAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WoWs premium account.
+        /// </summary>
+        public static string MainWindow_WoWsPremiumAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_WoWsPremiumAccount", resourceCulture);
             }
         }
         

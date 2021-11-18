@@ -855,4 +855,13 @@
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
   </data>
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Normal account</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>WG premium account</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>WoWs premium account</value>
+  </data>
 </root>

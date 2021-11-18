@@ -12,11 +12,20 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
+    // needed for binding to be outside of the class
+    public enum Account
+    {
+        Normal,
+        WoWsPremium,
+        WGPremium,
+    }
+
     class MainWindowViewModel : ViewModelBase
     {
         // ReSharper disable once CollectionNeverQueried.Local
@@ -26,9 +35,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
 
-        private bool? accountState = false;
-
-        private string accountType = "Normal Account";
+        private Account accountType = Account.Normal;
 
         private string baseXp = "0";
 
@@ -183,23 +190,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref freeXp, value);
         }
 
-        public string AccountType
+        public Account AccountType
         {
             get => accountType;
             set
             {
                 this.RaiseAndSetIfChanged(ref accountType, value);
                 CalculateXPValues();
-            }
-        }
-
-        public bool? AccountState
-        {
-            get => accountState;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref accountState, value);
-                ChangeAccountType(value);
             }
         }
 
@@ -350,11 +347,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var freeXpBonus = Convert.ToDouble(FreeXpBonus);
 
                 double accountMultiplier = 1;
-                if (AccountType.Equals("WG Premium Account"))
+                if (AccountType == Account.WGPremium)
                 {
                     accountMultiplier = 1.5;
                 }
-                else if (AccountType.Equals("WoWs Premium Account"))
+                else if (AccountType == Account.WoWsPremium)
                 {
                     accountMultiplier = 1.65;
                 }
@@ -367,25 +364,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Xp = Convert.ToString(finalXp);
                 CommanderXp = Convert.ToString(commanderXp);
                 FreeXp = Convert.ToString(freeXp);
-            }
-        }
-
-        private void ChangeAccountType(bool? accountState)
-        {
-            if (accountState.HasValue)
-            {
-                if (accountState.Value)
-                {
-                    AccountType = "WoWs Premium Account";
-                }
-                else
-                {
-                    AccountType = "Normal Account";
-                }
-            }
-            else
-            {
-                AccountType = "WG Premium Account";
             }
         }
 
