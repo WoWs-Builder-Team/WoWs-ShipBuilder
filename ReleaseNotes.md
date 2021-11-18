@@ -1,9 +1,7 @@
-# Update 1.1.0
+# Update 1.2.0 - pre
 
-- Fixed wrong value for rudder shift time.
-- Fixed a crash happening when opening Commonwealth ships
-- Fixed Heavy HE shell skill not applying the concealment debuff for guns with a caliber equal or above 149mm
-- Added ballistic graphs: you can now see penetration, flight time, impact speed and angle of main battery guns shells
+- Reworked the game data update logic. This is a technical change that has no directly visible effects but should resolve some bugs in the old update logic.
+- Fixed issue #31 that resulted in data errors for ships that used shells or other components from another nation. Examples were Bajie or Friesland.
 ___
 To download the program from the first time, you need to download only the Setup.exe file. The other are used by the application automatically to update.
 
