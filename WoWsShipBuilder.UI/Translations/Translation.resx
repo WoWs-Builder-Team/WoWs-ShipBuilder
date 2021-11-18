@@ -864,4 +864,7 @@
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
     <value>WoWs premium account</value>
   </data>
+  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
+    <value>Copy versions</value>
+  </data>
 </root>

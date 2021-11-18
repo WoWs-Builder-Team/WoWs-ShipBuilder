@@ -218,6 +218,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             self.Close();
         }
 
+        public async void CopyVersion()
+        {
+            var appVersion = $"App Version: {Version}{Environment.NewLine}Data Version: {DataVersion}";
+            await Application.Current.Clipboard.SetTextAsync(appVersion);
+        }
+
         [SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Checking Path Existence only")]
         private bool IsValidPath(string path, bool exactPath = true)
         {

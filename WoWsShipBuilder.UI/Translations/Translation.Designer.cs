@@ -754,6 +754,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy versions.
+        /// </summary>
+        public static string SettingsWindow_CopyVersions {
+            get {
+                return ResourceManager.GetString("SettingsWindow_CopyVersions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable custom path.
         /// </summary>
         public static string SettingsWindow_CustomPath {

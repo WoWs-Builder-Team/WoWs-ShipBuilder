@@ -2,6 +2,7 @@
 
 #Addition
 - Added a color for clickable text, like the ones opening the dispersion graphs.
+- Added button in Info tab, to copy app and data version for bug reporting purposes
 
 ## Changes
 - Reworked the game data update logic. This is a technical change that has no directly visible effects but should resolve some bugs in the old update logic.
