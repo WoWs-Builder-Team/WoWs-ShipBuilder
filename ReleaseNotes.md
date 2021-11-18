@@ -6,6 +6,7 @@
 ## Changes
 - Reworked the game data update logic. This is a technical change that has no directly visible effects but should resolve some bugs in the old update logic.
 - Changed account selection in the xp calculator into radio buttons.
+- Changed ship color in the firing angle visualizer.
 
 ## Bugfixes
 - Fixed issue #34 that resulted in the captain not being saved when saving a build.
