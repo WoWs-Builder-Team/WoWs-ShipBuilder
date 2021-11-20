@@ -102,7 +102,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
             else
             {
-                var usesModifiers = modifiers.FindModifiers("additionalConsumables");
+                var usesModifiers = modifiers.FindModifiers("additionalConsumables", true);
                 uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
                 var allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime");
@@ -129,6 +129,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
                 else if (name.Contains("PCY010", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var regenUsesModifiers = modifiers.FindModifiers("regenCrewAdditionalConsumables", true);
+                    uses = regenUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
                     var cooldownModifiers = modifiers.FindModifiers("regenCrewReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
@@ -150,7 +153,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
                 }
                 else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase))
-                {
+               {
+                    var crashCrewUsesModifiers = modifiers.FindModifiers("crashCrewAdditionalConsumables", true);
+                    uses = crashCrewUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
                     var cooldownModifiers = modifiers.FindModifiers("crashCrewReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 

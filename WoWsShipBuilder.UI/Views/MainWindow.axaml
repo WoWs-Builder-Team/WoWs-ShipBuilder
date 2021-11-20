@@ -18,6 +18,7 @@
     <Window.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
         <conv:ClassToPathConverter x:Key="PathConverter"/>
+        <conv:EnumConverter x:Key="EnumConverter" />
     </Window.Resources>
 
     <Grid RowDefinitions="30, *">
@@ -115,28 +116,34 @@
                         <StackPanel Orientation="Vertical" Margin="5">
                             <TextBlock Text="{x:Static t:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10"/>
                             <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
-                            <TextBox Text="{Binding BaseXp}" Name="BaseXpInput" Margin="0,0,0,10" />
+                            <TextBox Text="{Binding BaseXp}" MaxLength="5" Name="BaseXpInput" Margin="0,0,0,10" />
                             <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
-                            <TextBox Text="{Binding XpBonus}" Name="XpInput" Margin="0,0,0,10" />
+                            <TextBox Text="{Binding XpBonus}" MaxLength="4" Name="XpInput" Margin="0,0,0,10" />
                             <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
-                            <TextBox Text="{Binding CommanderXpBonus}" Name="CommanderXpInput" Margin="0,0,0,10" />
+                            <TextBox Text="{Binding CommanderXpBonus}" MaxLength="4" Name="CommanderXpInput" Margin="0,0,0,10" />
                             <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
-                            <TextBox Text="{Binding FreeXpBonus}" Name="FreeXpInput" Margin="0,0,0,10" />
-                            <CheckBox IsThreeState="True" IsChecked="{Binding AccountState}" Margin="0,0,0,5">
-                                <TextBlock Text="{Binding AccountType}" TextWrapping="Wrap"/> 
-                            </CheckBox>
+                            <TextBox Text="{Binding FreeXpBonus}" MaxLength="4" Name="FreeXpInput" Margin="0,0,0,10" />
+                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}" Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap"/>
+                            </RadioButton>
+                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}" Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap"/>
+                            </RadioButton>
+                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}" Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap"/>
+                            </RadioButton>
                             <Separator Margin="0,0,0,5" />
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
-                                <TextBlock Text="{Binding Xp}" Margin="5,0,0,0" />
+                                <TextBlock Text="{Binding Xp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
-                                <TextBlock Text="{Binding CommanderXp}" Margin="5,0,0,0" />
+                                <TextBlock Text="{Binding CommanderXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
-                                <TextBlock Text="{Binding FreeXp}" Margin="5,0,0,0" />
+                                <TextBlock Text="{Binding FreeXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                             </StackPanel>
                         </StackPanel>
                     </Border>

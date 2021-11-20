@@ -3,8 +3,9 @@ using System.Linq;
 using System.Reactive.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
-using DynamicData;
+using NLog;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
@@ -14,9 +15,11 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly ShipClass currentClass;
 
-        // TODO: unify constructors
+        private readonly Logger logger;
+
         public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
         {
+            logger = Logging.GetLogger("CaptainSkillVM");
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
@@ -27,23 +30,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             currentClass = shipClass;
             CaptainList = captainList!.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
-        }
-
-        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, List<int> selectedSkills)
-        {
-            var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
-            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
-            if (nationCaptain != null && nationCaptain.Count > 0)
-            {
-                captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
-            }
-
-            currentClass = shipClass;
-            CaptainList = captainList!.Select(x => x.Value).ToList();
-            SelectedCaptain = CaptainList.First();
-            var skills = selectedSkills.Select(skillId => SelectedCaptain.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
-            SkillOrderList.AddRange(skills);
-            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
         }
 
         private Captain? selectedCaptain;
@@ -132,6 +118,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>A dictionary containg the skill for the class from the captain.</returns>
         private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
+            logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
             var skills = captain!.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
@@ -154,6 +141,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
             });
             var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => x.Value);
+            logger.Info("Found {0} skills", filteredDictionary.Count);
             return filteredDictionary;
         }
 
@@ -263,6 +251,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
+            logger.Info("Reordering skills");
+
             // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
             var supportList = SkillOrderList.ToList();
             var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First().Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First().Tier).ToList();
@@ -335,6 +325,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                     SkillOrderList.Insert(firstTier3SkillIndex, skill);
                 }
             }
+
+            logger.Info("Finished reordering skills");
         }
 
         /// <summary>
@@ -363,6 +355,29 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var list = SkillOrderList.Select(skill => skill.SkillNumber).ToList();
             return list;
+        }
+
+        /// <summary>
+        /// Return the index of the selected captain.
+        /// </summary>
+        /// <returns>The index of the selected captain.</returns>
+        public string GetCaptainIndex()
+        {
+            return SelectedCaptain!.Index;
+        }
+
+        public void LoadBuild(List<int> selectedSkills, string captainIndex)
+        {
+            // this check is purely for retrocompatibility
+            if (captainIndex != null)
+            {
+                var captain = CaptainList!.First(x => x.Index.Equals(captainIndex));
+                SelectedCaptain = captain;
+            }
+
+            var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
+            SkillOrderList.AddRange(skills);
+            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
         }
     }
 }

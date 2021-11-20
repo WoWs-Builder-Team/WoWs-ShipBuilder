@@ -23,10 +23,9 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
         [DataUiUnit("PerCent")]
         public decimal FloodingChance { get; set; }
 
-        public static DepthChargeUI? FromChargesName(string name, List<(string name, float value)> modifiers)
+        public static DepthChargeUI FromChargesName(string name, List<(string name, float value)> modifiers)
         {
-            var depthCharge = (DepthCharge)AppDataHelper.Instance.FindAswDepthCharge(name);
-
+            var depthCharge = AppDataHelper.Instance.GetProjectile<DepthCharge>(name);
             float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current *= modifier);
 
             var depthChargeUI = new DepthChargeUI

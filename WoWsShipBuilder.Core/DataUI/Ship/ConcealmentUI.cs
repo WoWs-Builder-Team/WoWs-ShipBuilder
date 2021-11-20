@@ -84,6 +84,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
 
                 Gun gun = mainBattery.Guns.First();
+
                 // GMBigGunVisibilityCoeff
                 if (gun.BarrelDiameter >= 0.149M)
                 {

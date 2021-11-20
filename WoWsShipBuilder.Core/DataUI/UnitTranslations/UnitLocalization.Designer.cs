@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WoWsShipBuilder.Core.DataUI {
+namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WoWsShipBuilder.Core.DataUI {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWsShipBuilder.Core.DataUI.UnitLocalization", typeof(UnitLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWsShipBuilder.Core.DataUI.UnitTranslations.UnitLocalization", typeof(UnitLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

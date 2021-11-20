@@ -45,7 +45,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var list = new List<TorpedoUI>();
             foreach (var name in torpedoNames)
             {
-                var torp = (Torpedo)AppData.ProjectileList![name];
+                var torp = AppDataHelper.Instance.GetProjectile<Torpedo>(name);
 
                 var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
                 decimal torpedoDamage = Math.Round((decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier), 2);

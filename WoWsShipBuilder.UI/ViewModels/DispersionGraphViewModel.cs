@@ -6,10 +6,12 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
+using NLog;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.Translations;
@@ -23,6 +25,8 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private readonly DispersionGraphsWindow self;
 
+        private readonly Logger logger;
+
         public enum Tabs
         {
             Dispersion,
@@ -31,23 +35,35 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex, ArtilleryShell shell, Tabs initialTab)
         {
+            logger = Logging.GetLogger("DispersiongGraphVM");
+            logger.Info("Opening with initial tab: {0}", initialTab.ToString());
             self = win;
             var shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
             var shellName = Localizer.Instance[$"{shell.Name}"].Localization;
             var name = $"{shipName} - {shellName}";
+            logger.Info("Creating series for {0}", name);
+
+            logger.Info("Creating base plot models");
             var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
+            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
+            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
+            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
+            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
+            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
+
+            logger.Info("Creating series");
             var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
+            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
+            var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
+
+            logger.Info("Adding series and setting models");
+
             hModel.Series.Add(hDisp);
             HorizontalModel = hModel;
 
-            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
-            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
             vModel.Series.Add(vDisp);
             VerticalModel = vModel;
 
-            var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
-
-            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
             if (shell.ShellType == ShellType.AP)
             {
                 penModel.Series.Add(ballisticSeries.Penetration);
@@ -59,15 +75,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             PenetrationModel = penModel;
 
-            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
             flightTimeModel.Series.Add(ballisticSeries.FlightTime);
             FlightTimeModel = flightTimeModel;
 
-            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
             impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
             ImpactVelocityModel = impactVelocityModel;
 
-            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
             impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
             ImpactAngleModel = impactAngleModel;
 
@@ -184,13 +197,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             Ship? ship = result != null ? AppDataHelper.Instance.GetShipFromSummary(result, false) : null;
             if (ship != null)
             {
+                logger.Info("Trying to add ship: {0}", ship.Index);
+
                 // Check if the ship actually has main guns
                 if (ship.MainBatteryModuleList.Count > 0)
                 {
+                    logger.Info("Found guns on ship, asking for shell.");
+
                     // Get all the shell of that ship, and propose the choice to the user.
                     var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(x => x.AmmoList)).Distinct().ToList();
                     var win = new ValueSelectionWindow();
-                    win.DataContext = new ValueSelectionViewModel(win, "Select a shell", "Select a shell", shellsName);
+                    win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
 
                     var shellIndex = await win.ShowDialog<string>(self);
 
@@ -199,6 +216,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                     {
                         return;
                     }
+
+                    logger.Info("Shell selected: {0}", shellIndex);
 
                     // Get the gun with the corresponding shell. This is needed for stuff like mogami, that change dispersion pattern based on the caliber
                     var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
@@ -209,37 +228,35 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                     var name = $"{shipName} - {shellName}";
 
+                    logger.Info("Trying to add series with name: {0}", name);
+
                     // check if we are adding a duplicate
                     if (!shipNames.Contains(name))
                     {
+                        logger.Info("Ship is not a duplicate, start creating series.");
+
                         // Create and add the dispersion series
                         var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
                         var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
                         HorizontalModel!.Series.Add(hSeries);
                         VerticalModel!.Series.Add(vSeries);
 
-                        ArtilleryShell shell;
-
                         // create and add the ballistic series
-                        if (AppData.CurrentLoadedNation == ship.ShipNation)
-                        {
-                            shell = (ArtilleryShell)AppData.ProjectileList![shellIndex];
-                        }
-                        else
-                        {
-                            var shellList = AppDataHelper.Instance.ReadLocalJsonData<Projectile>(ship.ShipNation, AppData.Settings.SelectedServerType);
-                            shell = (ArtilleryShell)shellList![shellIndex];
-                        }
+                        ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 
                         // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
                         if (shell.ShellType == ShellType.AP)
                         {
+                            logger.Info("Shell is AP, adding normal pen series");
+
                             PenetrationModel!.Series.Add(ballisticSeries.Penetration);
                         }
                         else
                         {
+                            logger.Info("Shell is HE or SAP, adding fixed pen series");
+
                             PenetrationModel!.Series.Add(CreateSeriesForFixedPen(shell, (double)guns.MaxRange, name));
                         }
 
@@ -262,17 +279,15 @@ namespace WoWsShipBuilder.UI.ViewModels
                     }
                     else
                     {
-                        var dupeMessage = Translation.ResourceManager.GetString("MessageBox_DuplicateShip", Translation.Culture);
-                        var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
-                        await MessageBox.Show(self, dupeMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                        logger.Warn("Ship has already been added!");
+                        await MessageBox.Show(self, Translation.MessageBox_DuplicateShip, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    var noGunMessage = Translation.ResourceManager.GetString("MessageBox_ShipNoGun", Translation.Culture);
-                    var errorTitle = Translation.ResourceManager.GetString("MessageBox_Error", Translation.Culture);
-                    await MessageBox.Show(self, noGunMessage!, errorTitle!, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                }                           
+                    logger.Warn("Ship has no guns!");
+                    await MessageBox.Show(self, Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -281,12 +296,16 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// </summary>
         public async void RemoveShip()
         {
+            logger.Info("Trying to remove ship from series");
+
             var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
             if (result.Count > 0)
             {
                 foreach (var ship in result)
                 {
                     var index = shipNames.IndexOf(ship);
+                    logger.Info("Found {0} at index {1}", ship, index);
+
                     HorizontalModel!.Series.RemoveAt(index);
                     VerticalModel!.Series.RemoveAt(index);
                     PenetrationModel!.Series.RemoveAt(index);
@@ -389,7 +408,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,          
+                LegendFontSize = 13,
             };
 
             var xAxis = new LinearAxis

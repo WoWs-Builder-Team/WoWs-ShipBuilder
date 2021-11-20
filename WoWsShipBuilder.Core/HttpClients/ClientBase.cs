@@ -13,7 +13,6 @@ namespace WoWsShipBuilder.Core.HttpClients
     {
         protected ClientBase(IFileSystem fileSystem, AppDataHelper appDataHelper)
         {
-            Client = new HttpClient();
             FileSystem = fileSystem;
             AppDataHelper = appDataHelper;
         }
@@ -22,12 +21,13 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         protected AppDataHelper AppDataHelper { get; }
 
-        protected HttpClient Client { get; }
+        protected abstract HttpClient Client { get; }
 
         internal virtual async Task DownloadFileAsync(Uri uri, string fileName)
         {
             await using Stream stream = await Client.GetStreamAsync(uri);
-            var fileInfo = FileSystem.FileInfo.FromFileName(fileName);
+            IFileInfo fileInfo = FileSystem.FileInfo.FromFileName(fileName);
+            FileSystem.Directory.CreateDirectory(fileInfo.DirectoryName);
             await using Stream fileStream = fileInfo.Open(FileMode.Create);
             await stream.CopyToAsync(fileStream);
         }

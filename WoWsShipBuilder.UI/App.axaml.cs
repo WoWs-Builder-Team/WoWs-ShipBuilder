@@ -26,15 +26,12 @@ namespace WoWsShipBuilder.UI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            base.OnFrameworkInitializationCompleted();
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 AppSettingsHelper.LoadSettings();
                 desktop.Exit += OnExit;
-                SplashScreen splashScreen = new(versionDetails);
-                splashScreen.Show();
-
+                desktop.MainWindow = new SplashScreen(versionDetails);
                 Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
 
                 if (AppData.Settings.AutoUpdateEnabled)
@@ -46,12 +43,17 @@ namespace WoWsShipBuilder.UI
                     });
                 }
             }
+
+            base.OnFrameworkInitializationCompleted();
         }
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
+            Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
             AppDataHelper.Instance.SaveBuilds();
+            Logging.Logger.Info("Exiting...");
+            Logging.Logger.Info(new string('-', 30));
         }
 
         private async Task UpdateCheck(IClassicDesktopStyleApplicationLifetime desktop)

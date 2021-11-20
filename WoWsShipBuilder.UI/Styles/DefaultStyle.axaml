@@ -4,7 +4,7 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.PreviewWith>
         <Border Padding="20">
-            <customControls:NumberedButton Number="1" BackgroundImage="/Assets/Skills/torpedo_reload.png" />
+            <TextBlock Classes="Clickable" Text="test test test"/>
         </Border>
     </Design.PreviewWith>
 
@@ -119,6 +119,8 @@
 
     <Style Selector="TextBlock.Clickable">
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="PaleTurquoise"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
     </Style>
 
     <!--Style for windows-->

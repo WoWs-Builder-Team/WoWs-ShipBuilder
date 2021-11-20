@@ -61,6 +61,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string AirCarrier {
+            get {
+                return ResourceManager.GetString("AirCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
@@ -264,6 +273,24 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DispersionGraphWindow_RemoveShip {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a shell.
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShell {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
+        /// </summary>
+        public static string DispersionGraphWindow_SelectShellDesc {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_SelectShellDesc", resourceCulture);
             }
         }
         
@@ -511,6 +538,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Normal account.
+        /// </summary>
+        public static string MainWindow_NormalAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_NormalAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset build.
         /// </summary>
         public static string MainWindow_ResetBuild {
@@ -534,6 +570,24 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MainWindow_Signals {
             get {
                 return ResourceManager.GetString("MainWindow_Signals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WG premium account.
+        /// </summary>
+        public static string MainWindow_WGPremiumAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_WGPremiumAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WoWs premium account.
+        /// </summary>
+        public static string MainWindow_WoWsPremiumAccount {
+            get {
+                return ResourceManager.GetString("MainWindow_WoWsPremiumAccount", resourceCulture);
             }
         }
         
@@ -700,6 +754,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy versions.
+        /// </summary>
+        public static string SettingsWindow_CopyVersions {
+            get {
+                return ResourceManager.GetString("SettingsWindow_CopyVersions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable custom path.
         /// </summary>
         public static string SettingsWindow_CustomPath {
@@ -759,6 +822,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_InsertCustomPath {
             get {
                 return ResourceManager.GetString("SettingsWindow_InsertCustomPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected custom path is not valid..
+        /// </summary>
+        public static string SettingsWindow_InvalidCustomPath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_InvalidCustomPath", resourceCulture);
             }
         }
         
@@ -2199,15 +2271,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string TestShip {
             get {
                 return ResourceManager.GetString("TestShip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Aircraft Carrier.
-        /// </summary>
-        public static string time {
-            get {
-                return ResourceManager.GetString("time", resourceCulture);
             }
         }
         
