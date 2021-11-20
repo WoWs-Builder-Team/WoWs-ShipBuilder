@@ -1195,6 +1195,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Concealment by sub at operating depth.
+        /// </summary>
+        public static string ShipStats_ConcealmentBySubOperating {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealmentBySubOperating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concealment by sub at periscope depth.
+        /// </summary>
+        public static string ShipStats_ConcealmentBySubPeriscope {
+            get {
+                return ResourceManager.GetString("ShipStats_ConcealmentBySubPeriscope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Constant damage.
         /// </summary>
         public static string ShipStats_ConstantDamage {
