@@ -1,6 +1,6 @@
-# Update 1.2.0 - pre
+# Update 1.2.0
 
-#Addition
+# Additions
 - Added a color for clickable text, like the ones opening the dispersion graphs.
 - Added button in Info tab, to copy app and data version for bug reporting purposes
 
@@ -14,5 +14,5 @@
 - Fixed issue #30 that resulted in incorrect number of consumables when certain modifier were applied.
 - Fixed issue #31 that resulted in data errors for ships that used shells or other components from another nation. Examples were Bajie or Friesland.
 ___
-To download the program from the first time, you need to download only the Setup.exe file. The other are used by the application automatically to update.
+To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
