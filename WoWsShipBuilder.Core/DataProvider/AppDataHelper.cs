@@ -68,6 +68,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 'I' => Nation.Italy,
                 'J' => Nation.Japan,
                 'R' => Nation.Russia,
+                'S' => Nation.Spain,
                 'U' => Nation.Commonwealth,
                 'V' => Nation.PanAmerica,
                 'W' => Nation.Europe,
