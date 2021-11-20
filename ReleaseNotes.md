@@ -1,6 +1,6 @@
 # Update 1.2.0
 
-# Additions
+## Additions
 - Added a color for clickable text, like the ones opening the dispersion graphs.
 - Added button in Info tab, to copy app and data version for bug reporting purposes
 
