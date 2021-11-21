@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
+    // needed for binding to be outside of the class
+    public enum Account
+    {
+        Normal,
+        WoWsPremium,
+        WGPremium,
+    }
+
     class MainWindowViewModel : ViewModelBase
     {
         // ReSharper disable once CollectionNeverQueried.Local
@@ -23,9 +35,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
 
-        private bool? accountState = false;
-
-        private string accountType = "Normal Account";
+        private Account accountType = Account.Normal;
 
         private string baseXp = "0";
 
@@ -180,23 +190,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref freeXp, value);
         }
 
-        public string AccountType
+        public Account AccountType
         {
             get => accountType;
             set
             {
                 this.RaiseAndSetIfChanged(ref accountType, value);
                 CalculateXPValues();
-            }
-        }
-
-        public bool? AccountState
-        {
-            get => accountState;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref accountState, value);
-                ChangeAccountType(value);
             }
         }
 
@@ -226,12 +226,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void ResetBuild()
         {
+            Logging.Logger.Info("Resetting build");
             LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
         }
 
-        private void OpenSaveBuild()
+        public void OpenSaveBuild()
         {
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            Logging.Logger.Info("Saving build");
+            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
@@ -239,22 +241,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             win.ShowDialog(self);
         }
 
-        private void BackToMenu()
+        public void BackToMenu()
         {
             StartingMenuWindow win = new();
-            StartMenuViewModel model = new(win);
-            win.DataContext = model;
+            win.DataContext = new StartMenuViewModel(win);
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = win;
+            }
+
             win.Show();
-            self!.Close();
+            self?.Close();
         }
 
-        private async void NewShipSelection()
+        public async void NewShipSelection()
         {
+            Logging.Logger.Info("Selecting new ship");
             var selectionWin = new ShipSelectionWindow();
             selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
+                Logging.Logger.Info("New ship selected: {0}", result.Index);
                 LoadNewShip(result);
             }
         }
@@ -281,23 +289,29 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
+            Logging.Logger.Info("Loading data for ship {0}", ship.Index);
+            Logging.Logger.Info("Build is null: {0}", build is null);
+
             ShipUI.ExpanderStateMapper.Clear();
 
             // Ship stats model
             RawShipData = ship;
             EffectiveShipData = RawShipData;
 
+            Logging.Logger.Info("Initializing view models");
+
             // Viewmodel inits
-            SignalSelectorViewModel = build != null ? new SignalSelectorViewModel(build.Signals) : new SignalSelectorViewModel();
-            CaptainSkillSelectorViewModel = build != null
-                ? new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, build.Skills)
-                : new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
+            SignalSelectorViewModel = new SignalSelectorViewModel();
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
             if (build != null)
             {
+                Logging.Logger.Info("Loading build");
+                SignalSelectorViewModel.LoadBuild(build.Signals);
+                CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
                 ShipModuleViewModel.LoadBuild(build.Modules);
                 UpgradePanelViewModel.LoadBuild(build.Upgrades);
                 ConsumableViewModel.LoadBuild(build.Consumables);
@@ -333,11 +347,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var freeXpBonus = Convert.ToDouble(FreeXpBonus);
 
                 double accountMultiplier = 1;
-                if (AccountType.Equals("WG Premium Account"))
+                if (AccountType == Account.WGPremium)
                 {
                     accountMultiplier = 1.5;
                 }
-                else if (AccountType.Equals("WoWs Premium Account"))
+                else if (AccountType == Account.WoWsPremium)
                 {
                     accountMultiplier = 1.65;
                 }
@@ -350,25 +364,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Xp = Convert.ToString(finalXp);
                 CommanderXp = Convert.ToString(commanderXp);
                 FreeXp = Convert.ToString(freeXp);
-            }
-        }
-
-        private void ChangeAccountType(bool? accountState)
-        {
-            if (accountState.HasValue)
-            {
-                if (accountState.Value)
-                {
-                    AccountType = "WoWs Premium Account";
-                }
-                else
-                {
-                    AccountType = "Normal Account";
-                }
-            }
-            else
-            {
-                AccountType = "WG Premium Account";
             }
         }
 
@@ -390,6 +385,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                             var modifiers = GenerateModifierList();
                             if (ShipStatsControlViewModel != null)
                             {
+                                Logging.Logger.Info("Updating ship stats");
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
 

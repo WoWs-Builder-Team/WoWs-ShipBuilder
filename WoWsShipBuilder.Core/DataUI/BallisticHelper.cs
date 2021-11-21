@@ -7,6 +7,9 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public static class BallisticHelper
     {
+        // Max range at which to stop the ballistic calculations
+        private const double MaxAllowedRange = 30 * 1000;
+
         // Physical Constants                               Description                  | Units
         private const double G = 9.8;                    // Gravitational Constant       | m/(s^2)
         private const double T0 = 288.15;                // Temperature at Sea Level     | K
@@ -17,7 +20,7 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
-        private static double maxAngles = 450;           // Max Angle                    | degrees
+        private static double maxAngles = 550;           // Max Angle                    | degrees
         private static double angleStep = 0.00174533;    // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
         private static double dt = 0.02;                  // Time step                    | s
         private static List<double> calculationAngles = new();
@@ -106,6 +109,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var initialPen = CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp);
             var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0);
             dict.Add(0, initialBallistic);
+            var lastRange = 0d;
 
             foreach (var angle in calculationAngles)
             {
@@ -140,13 +144,14 @@ namespace WoWsShipBuilder.Core.DataUI
                 var impactAngle = Math.Atan2(Math.Abs(v_y), Math.Abs(v_x)) * (180 / Math.PI);
                 var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
 
-                if (x > maxRange )
+                if (x > maxRange || x > MaxAllowedRange || x < lastRange)
                 {
                     break;
                 }
 
                 var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
                 dict.Add(x, ballistic);
+                lastRange = x;
             }
 
             return dict;

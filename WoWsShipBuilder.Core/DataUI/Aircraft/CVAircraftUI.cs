@@ -133,9 +133,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             foreach (var value in planes)
             {
-                var index = value.PlaneName.IndexOf("_");
+                var index = value.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
                 var name = value.PlaneName.Substring(0, index);
-                var plane = AppData.AircraftList![name];
+                var plane = AppDataHelper.Instance.GetAircraft(name);
                 var planeUI = ProcessCVPlane(plane, value.PlaneType, ship.Tier, modifiers);
                 list.Add(planeUI);
             }
@@ -235,7 +235,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 jatoMultiplier = 0;
             }
 
-            var weaponType = AppData.ProjectileList![plane.BombName].ProjectileType;
+            var weaponType = AppDataHelper.Instance.GetProjectile(plane.BombName).ProjectileType;
             int bombInnerEllipse = 0;
             ProjectileUI? weapon = null!;
             switch (weaponType)

@@ -26,7 +26,7 @@
                      ShowProgressText="True" FontSize="20" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" RelativePanel.Above="ProgressBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <TextBlock Text="{x:Static t:Translation.DownloadWindow_Status}" Padding="5,0,0,5" FontSize="25" />
-            <TextBlock Text="{Binding DownloadInfo}" Padding="5,0,0,5" FontSize="25" />
+            <TextBlock Text="{Binding DownloadInfo, Converter={StaticResource Localizer}, ConverterParameter=resx}" Padding="5,0,0,5" FontSize="25" />
         </StackPanel>
     </RelativePanel>
 </Window>

@@ -4,15 +4,15 @@ using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
-    public class AwsClient : ClientBase
+    public class AwsClient : ClientBase, IAwsClient
     {
         #region Static Fields and Constants
 
@@ -25,69 +25,31 @@ namespace WoWsShipBuilder.Core.HttpClients
         #endregion
 
         private AwsClient()
-            : this(new FileSystem(), AppDataHelper.Instance)
+            : this(new FileSystem(), AppDataHelper.Instance, null)
         {
         }
 
-        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper)
+        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler)
             : base(fileSystem, appDataHelper)
         {
+            Client = new HttpClient(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
 
         public static AwsClient Instance => InstanceValue.Value;
 
-        /// <summary>
-        /// Downloads images from the AWS server.
-        /// </summary>
-        /// <param name="fileList">List of indexes of the ships or names of the camos to download.</param>
-        /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
-        /// <returns>The task object representing the asynchronous operation.</returns>
-        /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
-        /// <exception cref = "ArgumentNullException" > Occurs if files are not available on the server.</exception>
-        public async Task DownloadImages(List<string> fileList, ImageType type)
-        {
-            List<Task> downloads = new();
-
-            foreach (var file in fileList)
-            {
-                string url;
-                string localFolder;
-                if (type == ImageType.Ship)
-                {
-                    url = @$"{Host}/images/ship/{file}.png";
-                    localFolder = "Ships";
-                }
-                else
-                {
-                    url = @$"{Host}/images/camo/{file}.png";
-                    localFolder = "Camos";
-                }
-
-                string folderPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", localFolder);
-
-                if (!FileSystem.Directory.Exists(folderPath))
-                {
-                    FileSystem.Directory.CreateDirectory(folderPath);
-                }
-
-                string fileName = FileSystem.Path.Combine(folderPath, $"{file}.png");
-
-                downloads.Add(DownloadFileAsync(new Uri(url), fileName));
-            }
-
-            await Task.WhenAll(downloads).ConfigureAwait(false);
-        }
+        protected override HttpClient Client { get; }
 
         /// <summary>
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
         /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
+        /// <param name="fileName">The name of the zip archive to download, without .zip extension.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
         public async Task DownloadImages(ImageType type, string? fileName = null)
         {
-            Logging.Logger.Info("Test " + type);
+            Logger.Debug("Downloading images for type {}.", type);
             string zipUrl;
             string localFolder;
             string zipName;
@@ -115,151 +77,53 @@ namespace WoWsShipBuilder.Core.HttpClients
             string zipPath = FileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
             try
             {
-                await DownloadFileAsync(new Uri(zipUrl), zipPath);
+                await DownloadFileAsync(new Uri(zipUrl), zipPath)
+                    .ContinueWith(
+                        t => Logger.Warn(t.Exception, "Exception while downloading images from uri: {}", zipUrl),
+                        TaskContinuationOptions.OnlyOnFaulted);
                 ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
                 FileSystem.File.Delete(zipPath);
             }
             catch (HttpRequestException e)
             {
-                Logging.Logger.Error(e, "Failed to download images.");
+                Logger.Error(e, "Failed to download images.");
             }
         }
 
-        /// <summary>
-        /// Checks if there are updates to the program data.
-        /// </summary>
-        /// <param name="serverType">The <see cref="ServerType"/> for the requested data.</param>
-        /// <param name="progress">A <see cref="IProgress{T}"/> to track the state of the operation.</param>
-        /// <returns>The task object representing the asynchronous operation.</returns>
-        /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
-        /// <exception cref = "InvalidOperationException" > Occurs if the file can't be deserialized.</exception>
-        public async Task<(bool ShouldUpdate, bool CanDeltaUpdate, string NewVersion)> CheckFileVersion(ServerType serverType, IProgress<(int, string)>? progress = null)
+        public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
         {
-            string server = serverType == ServerType.Live ? "live" : "pts";
+            string url = @$"{Host}/api/{serverType.StringName()}/VersionInfo.json";
+            return await GetJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
+        }
 
-            string url = @$"{Host}/api/{server}/VersionInfo.json";
-
-            progress?.Report((0, "versionInfo"));
-            VersionInfo? versionInfo = null;
-            var attempts = 0;
-
-            var shouldUpdate = false;
-            var canDeltaUpdate = false;
-
-            progress?.Report((10, "versionProcessing"));
-            while (attempts < 5)
+        public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
+        {
+            Logger.Debug("Downloading files for server type {}.", serverType);
+            string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
+            var taskList = new List<Task>();
+            int totalFiles = relativeFilePaths.Count;
+            var finished = 0;
+            IProgress<int> progress = new Progress<int>(update =>
             {
-                try
+                finished += update;
+                downloadProgress?.Report(finished / totalFiles);
+            });
+            foreach ((string category, string fileName) in relativeFilePaths)
+            {
+                string localFileName = FileSystem.Path.Combine(AppDataHelper.GetDataPath(serverType), category, fileName);
+                Uri uri = string.IsNullOrWhiteSpace(category) ? new Uri(baseUrl + fileName) : new Uri(baseUrl + $"{category}/{fileName}");
+                Task task = Task.Run(async () =>
                 {
-                    versionInfo = await GetJsonAsync<VersionInfo>(url) ??
-                                  throw new HttpRequestException("Could not process response from AWS Server.");
-                    break;
-                }
-                catch (HttpRequestException e)
-                {
-                    attempts++;
-                    if (attempts < 5)
-                    {
-                        Logging.Logger.Warn(e);
-                    }
-                    else
-                    {
-                        Logging.Logger.Error(e, "Error during app update. Maximum retries reached.");
-                        return (shouldUpdate, canDeltaUpdate, string.Empty);
-                    }
-                }
+                    await DownloadFileAsync(uri, localFileName)
+                        .ContinueWith(
+                            t => Logger.Warn(t.Exception, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName),
+                            TaskContinuationOptions.OnlyOnFaulted);
+                    progress.Report(1);
+                });
+                taskList.Add(task);
             }
 
-            string newVersion = versionInfo!.VersionName.Substring(0, versionInfo.VersionName.IndexOf('#'));
-            string dataPath = AppDataHelper.Instance.GetDataPath(serverType);
-            if (!FileSystem.Directory.Exists(dataPath))
-            {
-                FileSystem.Directory.CreateDirectory(dataPath);
-            }
-
-            string localVersionInfoPath = FileSystem.Path.Combine(dataPath, "VersionInfo.json");
-            if (FileSystem.File.Exists(localVersionInfoPath))
-            {
-                VersionInfo localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(await FileSystem.File.ReadAllTextAsync(localVersionInfoPath)) ??
-                                               throw new InvalidOperationException();
-
-                if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode)
-                {
-                    shouldUpdate = true;
-                    List<Task> downloads = new();
-                    foreach ((string key, var value) in versionInfo.Categories)
-                    {
-                        foreach (var item in value)
-                        {
-                            FileVersion? currentFile = localVersionInfo.Categories[key].Find(x => x.FileName.Equals(item.FileName));
-                            string fileName = $"{item.FileName}";
-
-                            if (currentFile == null || currentFile.Version < item.Version)
-                            {
-                                string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
-                                string filePath = FileSystem.Path.Combine(dataPath, key);
-                                if (!FileSystem.Directory.Exists(filePath))
-                                {
-                                    FileSystem.Directory.CreateDirectory(filePath);
-                                }
-
-                                downloads.Add(DownloadFileAsync(new Uri(fileUrl), FileSystem.Path.Combine(filePath, fileName)));
-                            }
-                        }
-                    }
-
-                    downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
-                    progress?.Report((20, "jsonData"));
-                    await Task.WhenAll(downloads).ConfigureAwait(false);
-                    progress?.Report((60, "localizationData"));
-                    try
-                    {
-                        string oldVersionSubstring = localVersionInfo.VersionName.Substring(0, localVersionInfo.VersionName.IndexOf('#'));
-                        string expectedOldVersion = versionInfo.LastVersionName.Substring(0, versionInfo.LastVersionName.IndexOf('#'));
-                        canDeltaUpdate = oldVersionSubstring.Equals(expectedOldVersion, StringComparison.Ordinal);
-                    }
-                    catch (Exception)
-                    {
-                        Logger.Error("Unable to parse old version properly.");
-                        canDeltaUpdate = false;
-                    }
-                }
-
-                string localePath = FileSystem.Path.Combine(AppDataHelper.Instance.GetDataPath(serverType), "Localization", AppData.Settings.Locale);
-                if (localVersionInfo.CurrentVersionCode < versionInfo.CurrentVersionCode || !FileSystem.File.Exists(localePath))
-                {
-                    await DownloadLanguage(serverType).ConfigureAwait(false);
-                }
-            }
-            else
-            {
-                shouldUpdate = true;
-                List<Task> downloads = new();
-                foreach ((string key, var value) in versionInfo!.Categories)
-                {
-                    foreach (var item in value)
-                    {
-                        string fileName = $"{item.FileName}";
-                        string fileUrl = $"{Host}/api/{server}/{key}/{fileName}";
-                        string filePath = FileSystem.Path.Combine(dataPath, key);
-                        if (!FileSystem.Directory.Exists(filePath))
-                        {
-                            FileSystem.Directory.CreateDirectory(filePath);
-                        }
-
-                        downloads.Add(DownloadFileAsync(new Uri(fileUrl), FileSystem.Path.Combine(filePath, fileName)));
-                    }
-                }
-
-                downloads.Add(DownloadFileAsync(new Uri(url), localVersionInfoPath));
-                progress?.Report((20, "jsonData"));
-                await Task.WhenAll(downloads).ConfigureAwait(false);
-                progress?.Report((60, "localizationData"));
-                await DownloadLanguage(serverType).ConfigureAwait(false);
-            }
-
-            progress?.Report((100, "done"));
-            return (shouldUpdate, canDeltaUpdate, newVersion);
+            await Task.WhenAll(taskList);
         }
 
         /// <summary>
@@ -269,6 +133,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// <returns>The task object representing the asynchronous operation.</returns>
         public async Task DownloadLanguage(ServerType serverType)
         {
+            Logger.Debug("Downloading language files for server type {}.", serverType);
             string server = serverType == ServerType.Live ? "live" : "pts";
 
             string localePath = FileSystem.Path.Combine(AppDataHelper.Instance.GetDataPath(serverType), "Localization");
@@ -280,7 +145,9 @@ namespace WoWsShipBuilder.Core.HttpClients
             string fileName = "en-GB.json";
             string url = $"{Host}/api/{server}/Localization/{fileName}";
             string localeName = FileSystem.Path.Combine(localePath, fileName);
-            await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
+            await DownloadFileAsync(new Uri(url), localeName)
+                .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
+                .ConfigureAwait(false);
         }
     }
 }

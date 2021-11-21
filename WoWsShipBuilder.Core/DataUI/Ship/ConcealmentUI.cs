@@ -28,15 +28,12 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("KM")]
         public decimal ConcealmentByAirFire { get; set; }
 
-        public decimal ConcealmentBySub { get; set; }
-
-        public decimal ConcealmentBySubSurface { get; set; }
-
+        [DataUiUnit("KM")]
         public decimal ConcealmentBySubPeriscope { get; set; }
 
+        [DataUiUnit("KM")]
         public decimal ConcealmentBySubOperating { get; set; }
 
-        public decimal ConcealmentBySubMaximum { get; set; }
 
         public static ConcealmentUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
@@ -49,6 +46,9 @@ namespace WoWsShipBuilder.Core.DataUI
             // AA Detection
             var concealmentByAir = hull.AirDetection;
 
+            var concealmentBySubPeriscope = hull.DetectionBySubPeriscope;
+            var concealmentBySubOperating = hull.DetectionBySubOperating;
+
             int concealmentExpertIndex = modifiers.FindModifierIndex("visibilityDistCoeff");
             if (concealmentExpertIndex > -1)
             {
@@ -57,6 +57,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     concealmentBySea *= value;
                     concealmentByAir *= value;
+                    concealmentBySubPeriscope *= value;
+                    concealmentBySubOperating *= value;
                 }
             }
 
@@ -84,6 +86,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
 
                 Gun gun = mainBattery.Guns.First();
+
                 // GMBigGunVisibilityCoeff
                 if (gun.BarrelDiameter >= 0.149M)
                 {
@@ -93,6 +96,8 @@ namespace WoWsShipBuilder.Core.DataUI
                         var bigGunVisibilityFactorModifier = (decimal)modifiers[bigGunVisibilityFactorIndex].Value;
                         concealmentBySea *= bigGunVisibilityFactorModifier;
                         concealmentByAir *= bigGunVisibilityFactorModifier;
+                        concealmentBySubOperating *= bigGunVisibilityFactorModifier;
+                        concealmentBySubPeriscope *= bigGunVisibilityFactorModifier;
                     }
                 }
             }
@@ -107,6 +112,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 ConcealmentBySeaFire = Math.Round(concealmentBySeaFire, 2),
                 ConcealmentByAir = Math.Round(concealmentByAir, 2),
                 ConcealmentByAirFire = Math.Round(concealmentByAirFire, 2),
+                ConcealmentBySubOperating = Math.Round(concealmentBySubOperating, 2),
+                ConcealmentBySubPeriscope = Math.Round(concealmentBySubPeriscope, 2),
             };
 
             concealment.ConcealmentData = concealment.ToPropertyMapping();

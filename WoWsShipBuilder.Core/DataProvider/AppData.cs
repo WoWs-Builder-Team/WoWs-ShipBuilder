@@ -6,28 +6,81 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
+    /// <summary>
+    /// The main storage for app data and settings at runtime.
+    /// </summary>
     public static class AppData
     {
-        public static bool IsInitialized { get; set; } = false;
+        private static Nation? currentLoadedNation;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether application settings have been initialized.
+        /// </summary>
+        public static bool IsInitialized { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current <see cref="AppSettings"/> for the application.
+        /// </summary>
         public static AppSettings Settings { get; set; } = new();
 
-        public static string? DataVersion { get; set; } = default!;
+        /// <summary>
+        /// Gets or sets the current data version name.
+        /// </summary>
+        public static string? DataVersion { get; set; }
 
-        public static Dictionary<string, string>? TranslationsData { get; set; }
-
+        /// <summary>
+        /// Gets or sets the ship dictionary for the currently selected nation.
+        /// </summary>
+        /// <seealso cref="CurrentLoadedNation"/>
         public static Dictionary<string, Ship>? ShipDictionary { get; set; }
 
-        public static Nation? CurrentLoadedNation { get; set; }
+        /// <summary>
+        /// Gets or sets the currently selected <see cref="Nation"/>.
+        /// When the nation is changed, the <see cref="ProjectileCache"/> and <see cref="AircraftCache"/> are automatically cleared.
+        /// </summary>
+        public static Nation? CurrentLoadedNation
+        {
+            get => currentLoadedNation;
+            set
+            {
+                if (value != currentLoadedNation)
+                {
+                    ProjectileCache.Clear();
+                    AircraftCache.Clear();
+                }
 
-        public static Dictionary<string, Projectile>? ProjectileList { get; set; }
+                currentLoadedNation = value;
+            }
+        }
 
-        public static Dictionary<string, Aircraft>? AircraftList { get; set; }
-
+        /// <summary>
+        /// Gets or sets the list of available consumables.
+        /// </summary>
         public static Dictionary<string, Consumable>? ConsumableList { get; set; }
 
+        /// <summary>
+        /// Gets the projectile cache, mapping a nation to the actual projectile dictionary for that nation.
+        /// This property should not be accessed directly, use <see cref="AppDataHelper.GetProjectile"/> instead.
+        /// </summary>
+        /// <seealso cref="AppDataHelper.GetProjectile"/>
+        /// <seealso cref="AppDataHelper.GetProjectile{T}"/>
+        public static Dictionary<Nation, Dictionary<string, Projectile>> ProjectileCache { get; } = new();
+
+        /// <summary>
+        /// Gets the aircraft cache, mapping a nation to the actual aircraft dictionary for that nation.
+        /// This property should not be accessed directly, use <see cref="AppDataHelper.GetAircraft"/> instead.
+        /// </summary>
+        /// <seealso cref="AppDataHelper.GetAircraft"/>
+        public static Dictionary<Nation, Dictionary<string, Aircraft>> AircraftCache { get; } = new();
+
+        /// <summary>
+        /// Gets or sets the list of <see cref="ShipSummary">ship summaries</see> that are currently available.
+        /// </summary>
         public static List<ShipSummary>? ShipSummaryList { get; set; }
 
+        /// <summary>
+        /// Gets or sets the list of the last used builds.
+        /// </summary>
         public static List<Build> Builds { get; set; } = new();
 
 #if DEBUG

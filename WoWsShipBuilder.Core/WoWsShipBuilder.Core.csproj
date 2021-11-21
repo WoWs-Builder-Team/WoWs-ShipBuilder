@@ -17,7 +17,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.17.0" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.17.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,14 +27,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="DataUI\UnitLocalization.resx">
+      <EmbeddedResource Update="DataUI\UnitTranslations\UnitLocalization.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>UnitLocalization.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="DataUI\UnitLocalization.Designer.cs">
+      <Compile Update="DataUI\UnitTranslations\UnitLocalization.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>UnitLocalization.resx</DependentUpon>

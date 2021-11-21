@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// StyledProperty for the color of the ship.
         /// </summary>
         public static readonly StyledProperty<SolidColorBrush> ShipColorProperty =
-            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipColor), new SolidColorBrush(Colors.Blue, 0.95));
+            AvaloniaProperty.Register<FiringAngleVisualizer, SolidColorBrush>(nameof(ShipColor), new SolidColorBrush(Colors.Navy, 0.95));
 
         /// <summary>
         /// StyledProperty for the color of ship turrets.

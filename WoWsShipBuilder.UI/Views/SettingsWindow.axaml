@@ -62,14 +62,19 @@
                                         <Setter Property="FontSize" Value="13"/>
                                     </Style>
                                 </StackPanel.Styles>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
-                                    <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}"/>
-                                    <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
-                                </StackPanel>
+                                <DockPanel HorizontalAlignment="Stretch">
+                                    <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                        <StackPanel Orientation="Horizontal" >
+                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
+                                            <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}"/>
+                                            <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
+                                        </StackPanel>
+                                     </StackPanel>
+                                    <Button Content="{x:Static t:Translation.SettingsWindow_CopyVersions}" Command="{Binding CopyVersion}" DockPanel.Dock="Right"/>
+                                </DockPanel>
                                 <Separator/>
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
                                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
