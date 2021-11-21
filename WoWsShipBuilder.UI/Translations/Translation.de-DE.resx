@@ -867,4 +867,10 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Versionsinformationen kopieren</value>
   </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Erkennbarkeit für U-Boote auf Periskoptiefe</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Erkennbarkeit für U-Boote auf Einsatztiefe</value>
+  </data>
 </root>
