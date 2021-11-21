@@ -855,4 +855,22 @@
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>Das ausgewählte Schiff hat mehr als eine Granate. Wähle die anzuzeigenden Granaten. Haben die Granaten das selbe Kaliber, ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
   </data>
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Normaler Account</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>Wargaming-Premiumkonto</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>Warships-Premiumkonto</value>
+  </data>
+  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
+    <value>Versionsinformationen kopieren</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Erkennbarkeit für U-Boote auf Periskoptiefe</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Erkennbarkeit für U-Boote auf Einsatztiefe</value>
+  </data>
 </root>
