@@ -102,7 +102,6 @@ If your IDE supports editorconfig files, make sure that feature is turned on. So
   - In unit test methods, name them TestedMethodName_Precondition_Postcondition
 - Do not expose public variables. Use properties instead.
 - Follow the element ordering rules of StyleCop.
-- Try not to exceed a line length of 160 characters. There are situations where it is necessary but it should be avoided if doing so does not impact readability.
 - Use an indentation of 4 spaces. One tab equals 4 spaces.
 - Document public methods and classes! Documentation for private members is not bad either but not always required.
 - `using` directives are placed outside of namespaces.
@@ -113,6 +112,8 @@ Other style rules:
 - ViewModels must expose a parameterless constructor in order for the Avalonia XAML previewer to work.
   - If you need custom constructor parameters, call that constructor from the parameterless one with default values that work with your code.
   - For the ShipBuilder UI project, you can access the DataHelper class to retrieve example data. Modify that class if you need complex example data that cannot be created with a single method or constructor call.
+- There is a "soft" line length limit of 160 characters. This limit is not enforced but it is preferred to add line breaks if it improves readability.
+  - For chained method calls, place each method call on a new line if you add a line break.
 
 **The project uses C# 9 with the Nullable Reference Types feature enabled. Do not ignore warnings regarding this feature as they will cause the production build to fail.**
 
