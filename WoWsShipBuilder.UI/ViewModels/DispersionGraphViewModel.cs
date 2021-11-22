@@ -200,7 +200,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 logger.Info("Trying to add ship: {0}", ship.Index);
 
                 // Check if the ship actually has main guns
-                if (ship.MainBatteryModuleList.Count > 0)
+                if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
                 {
                     logger.Info("Found guns on ship, asking for shell.");
 
@@ -339,6 +339,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
 
+
             PlotModel model = new()
             {
                 Title = name,
@@ -349,6 +350,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorderThickness = 1,
                 LegendBackground = background,
                 LegendFontSize = 13,
+
             };
 
             var xAxis = new LinearAxis
@@ -382,6 +384,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             };
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
+            model.DefaultColors = GenerateColors();
 
             return model;
         }
@@ -408,7 +411,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,
+                LegendFontSize = 13,               
             };
 
             var xAxis = new LinearAxis
@@ -445,6 +448,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             };
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
+            model.DefaultColors = GenerateColors();
 
             return model;
         }
@@ -565,6 +569,29 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var color = self.FindResource(resourceKey) as Color?;
             return OxyColor.FromUInt32(color!.Value.ToUint32());
+        }
+
+        private List<OxyColor> GenerateColors()
+        {
+            var colors = new OxyColor[]
+            {
+                OxyColor.Parse("#288753"),
+                OxyColor.Parse("#ef6fcc"),
+                OxyColor.Parse("#62ce75"),
+                OxyColor.Parse("#f53a4c"),
+                OxyColor.Parse("#11ccdc"),
+                OxyColor.Parse("#9166aa"),
+                OxyColor.Parse("#a4c28a"),
+                OxyColor.Parse("#c15734"),
+                OxyColor.Parse("#faa566"),
+                OxyColor.Parse("#6c7b66"),
+                OxyColor.Parse("#eda4ba"),
+                OxyColor.Parse("#2d6df9"),
+                OxyColor.Parse("#f62ef3"),
+                OxyColor.Parse("#957206"),
+                OxyColor.Parse("#a45dff"),
+            };
+            return colors.ToList();
         }
     }
 }
