@@ -149,6 +149,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             string localeName = FileSystem.Path.Combine(localePath, fileName);
             await DownloadFileAsync(new Uri(url), localeName)
                 .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
+                .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted)
                 .ConfigureAwait(false);
         }
     }
