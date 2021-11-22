@@ -40,51 +40,10 @@ namespace WoWsShipBuilder.Core.HttpClients
         protected override HttpClient Client { get; }
 
         /// <summary>
-        /// Downloads images from the AWS server.
-        /// </summary>
-        /// <param name="fileList">List of indexes of the ships or names of the camos to download.</param>
-        /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
-        /// <returns>The task object representing the asynchronous operation.</returns>
-        /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
-        /// <exception cref = "ArgumentNullException" > Occurs if files are not available on the server.</exception>
-        public async Task DownloadImages(List<string> fileList, ImageType type)
-        {
-            List<Task> downloads = new();
-
-            foreach (var file in fileList)
-            {
-                string url;
-                string localFolder;
-                if (type == ImageType.Ship)
-                {
-                    url = @$"{Host}/images/ship/{file}.png";
-                    localFolder = "Ships";
-                }
-                else
-                {
-                    url = @$"{Host}/images/camo/{file}.png";
-                    localFolder = "Camos";
-                }
-
-                string folderPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", localFolder);
-
-                if (!FileSystem.Directory.Exists(folderPath))
-                {
-                    FileSystem.Directory.CreateDirectory(folderPath);
-                }
-
-                string fileName = FileSystem.Path.Combine(folderPath, $"{file}.png");
-
-                downloads.Add(DownloadFileAsync(new Uri(url), fileName));
-            }
-
-            await Task.WhenAll(downloads).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
         /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
+        /// <param name="fileName">The name of the zip archive to download, without .zip extension.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
@@ -118,7 +77,11 @@ namespace WoWsShipBuilder.Core.HttpClients
             string zipPath = FileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
             try
             {
-                await DownloadFileAsync(new Uri(zipUrl), zipPath);
+                await DownloadFileAsync(new Uri(zipUrl), zipPath)
+                    .ContinueWith(
+                        t => Logger.Warn(t.Exception, "Exception while downloading images from uri: {}", zipUrl),
+                        TaskContinuationOptions.OnlyOnFaulted)
+                    .ContinueWith(_ => { }, TaskContinuationOptions.NotOnFaulted);
                 ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
                 FileSystem.File.Delete(zipPath);
             }
@@ -152,7 +115,11 @@ namespace WoWsShipBuilder.Core.HttpClients
                 Uri uri = string.IsNullOrWhiteSpace(category) ? new Uri(baseUrl + fileName) : new Uri(baseUrl + $"{category}/{fileName}");
                 Task task = Task.Run(async () =>
                 {
-                    await DownloadFileAsync(uri, localFileName);
+                    await DownloadFileAsync(uri, localFileName)
+                        .ContinueWith(
+                            t => Logger.Warn(t.Exception, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName),
+                            TaskContinuationOptions.OnlyOnFaulted)
+                        .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted);
                     progress.Report(1);
                 });
                 taskList.Add(task);
@@ -180,7 +147,9 @@ namespace WoWsShipBuilder.Core.HttpClients
             string fileName = "en-GB.json";
             string url = $"{Host}/api/{server}/Localization/{fileName}";
             string localeName = FileSystem.Path.Combine(localePath, fileName);
-            await DownloadFileAsync(new Uri(url), localeName).ConfigureAwait(false);
+            await DownloadFileAsync(new Uri(url), localeName)
+                .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
+                .ConfigureAwait(false);
         }
     }
 }

@@ -867,4 +867,10 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Copy versions</value>
   </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Concealment by sub at periscope depth</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Concealment by sub at operating depth</value>
+  </data>
 </root>

@@ -68,6 +68,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 'I' => Nation.Italy,
                 'J' => Nation.Japan,
                 'R' => Nation.Russia,
+                'S' => Nation.Spain,
                 'U' => Nation.Commonwealth,
                 'V' => Nation.PanAmerica,
                 'W' => Nation.Europe,
@@ -97,7 +98,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         public List<string> GetInstalledLocales(ServerType serverType)
         {
             fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
-            return fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).ToList();
+            return fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file).Name).ToList();
         }
 
         /// <summary>
