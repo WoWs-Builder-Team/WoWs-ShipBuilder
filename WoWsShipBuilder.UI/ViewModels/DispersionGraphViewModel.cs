@@ -339,7 +339,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
 
-
             PlotModel model = new()
             {
                 Title = name,
@@ -350,7 +349,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorderThickness = 1,
                 LegendBackground = background,
                 LegendFontSize = 13,
-
             };
 
             var xAxis = new LinearAxis
@@ -411,7 +409,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,               
+                LegendFontSize = 13,
             };
 
             var xAxis = new LinearAxis
