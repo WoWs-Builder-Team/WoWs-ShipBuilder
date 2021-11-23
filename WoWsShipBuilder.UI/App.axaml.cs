@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.UI
 
                 Logging.Logger.Info($"App updated to version {release.Version}");
                 var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(
-                    desktop.MainWindow,
+                    null,
                     $"App was updated to version {release.Version}, do you want to restart to apply?",
                     "App Updated",
                     MessageBox.MessageBoxButtons.YesNo,
