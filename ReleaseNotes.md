@@ -14,6 +14,7 @@
 - Hide AA expander when there is no anti air on a ship (#45)
 - Fix InvalidOperationException when showing the dialog after an application update (#46)
 - Clear list of ships for the ship selection window after the server type is changed in the settings window
+- Update embedded icons to show correct versions of the Airstrike upgrade
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
