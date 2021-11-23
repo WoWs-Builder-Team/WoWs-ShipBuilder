@@ -91,12 +91,12 @@ namespace WoWsShipBuilder.Core.DataUI
             var survivability = new SurvivabilityUI
             {
                 HitPoints = (int)hitPoints,
-                FireDuration = fireDuration,
+                FireDuration = Math.Round(fireDuration, 1),
                 FireAmount = fireSpots,
                 FireReduction = Math.Round(fireResistance * 100, 1),
                 FireDPS = fireDps,
                 FireTotalDamage = fireTotalDamage,
-                FloodDuration = floodDuration,
+                FloodDuration = Math.Round(floodDuration, 1),
                 FloodAmount = shipHull.FloodingSpots,
                 FloodTorpedoProtection = torpedoProtection,
                 FloodDPS = floodDps,
