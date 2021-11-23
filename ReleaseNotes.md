@@ -1,14 +1,16 @@
 # Update 1.2.2 - pre
 
 ## Additions
-
+- Add button to open dispersion and ballistics window directly from start menu
 
 ## Changes
 
 
 ## Bugfixes
-- #38 Show missing modules on aircraft carriers
+- Show missing modules on aircraft carriers (#38)
 - Fixed a crash when selecting ship with no main guns in the dispersion or ballistic graphs
+- Fixed a display bug of Montana's turret angles
+- Fixed invalid app manifest configurations regarding scaling
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 

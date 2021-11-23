@@ -2257,6 +2257,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show dispersion and ballistics graphs.
+        /// </summary>
+        public static string StartMenu_OpenDispersionWindow {
+            get {
+                return ResourceManager.GetString("StartMenu_OpenDispersionWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings and info.
         /// </summary>
         public static string StartMenu_Settings {
