@@ -1,6 +1,7 @@
 using System.Linq;
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
@@ -17,9 +18,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class StartMenuViewModel : ViewModelBase
     {
-        private readonly StartingMenuWindow self;
+        private readonly StartingMenuWindow? self;
 
-        public StartMenuViewModel(StartingMenuWindow window)
+        public StartMenuViewModel()
+            : this(null)
+        {
+        }
+
+        public StartMenuViewModel(StartingMenuWindow? window)
         {
             self = window;
             if (!AppData.Builds.Any())
@@ -55,6 +61,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void NewBuild()
         {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
             var selectionWin = new ShipSelectionWindow();
             selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
@@ -71,8 +82,28 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
 
                 win.Show();
-                self.Close();
+                self?.Close();
             }
+        }
+
+        public void OpenDispersionGraphWindow()
+        {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
+            var window = new DispersionGraphsWindow();
+            var viewModel = new DispersionGraphViewModel(window);
+            window.DataContext = viewModel;
+            window.Show();
+
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = window;
+            }
+
+            self?.Close();
         }
 
         public async void LoadBuild(object parameter)
@@ -101,7 +132,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 
-            var summary = AppData.ShipSummaryList!.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
+            var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
             if (summary is null)
             {
                 await MessageBox.Show(self, Translation.StartMenu_BuildLoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
@@ -110,10 +141,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
             AppDataHelper.Instance.LoadNationFiles(summary.Nation);
-            MainWindow win = new MainWindow();
+            MainWindow win = new();
             win.DataContext = new MainWindowViewModel(ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
             win.Show();
-            self.Close();
+            self?.Close();
         }
 
         [DependsOn(nameof(SelectedBuild))]
@@ -143,6 +174,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void Setting()
         {
+            if (Design.IsDesignMode)
+            {
+                return;
+            }
+
             SettingsWindow win = new()
             {
                 ShowInTaskbar = false,

@@ -43,8 +43,6 @@ namespace WoWsShipBuilder.Core.DataUI
                 guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
             }
 
-            var aaList = new List<AntiAirUI>();
-
             // var flakBonus = 0;
             decimal flakDamageBonus = 1;
             decimal constantDamageBonus = 1;
@@ -105,6 +103,11 @@ namespace WoWsShipBuilder.Core.DataUI
             aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);
             aaUI.MediumRangeAura = FromAura(hull.AntiAir.MediumRangeAura, flakDamageBonus, constantDamageBonus, 0);
             aaUI.ShortRangeAura = FromAura(hull.AntiAir.ShortRangeAura, flakDamageBonus, constantDamageBonus, 0);
+
+            if (aaUI.ShortRangeAura == null && aaUI.MediumRangeAura == null && aaUI.LongRangeAura == null)
+            {
+                return null;
+            }
 
             return aaUI;
         }

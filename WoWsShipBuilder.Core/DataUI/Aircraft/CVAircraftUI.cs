@@ -165,7 +165,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     planeHP = (float)Math.Round(rocketPlaneHPModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier), 0);
 
                     var rocketAimingTimeModifiers = modifiers.FindModifiers("fighterAimingTime");
-                    aimingTime = Math.Round(rocketAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current * (decimal)modifier), 1);
+                    aimingTime = Math.Round(rocketAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current + (decimal)modifier), 1);
 
                     var aimModifiersRocket = modifiers.FindModifiers("fighterAccuracyIncRateCoeff");
                     aimRateModifier = Math.Round(aimModifiersRocket.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
@@ -193,7 +193,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     planeHP = (float)Math.Round(torpPlaneHPModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier), 0);
 
                     var torpAimingTimeModifiers = modifiers.FindModifiers("torpedoBomberAimingTime");
-                    aimingTime = Math.Round(torpAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current * (decimal)modifier), 1);
+                    aimingTime = Math.Round(torpAimingTimeModifiers.Aggregate(plane.AimingTime, (current, modifier) => current + (decimal)modifier), 1);
 
                     var aimModifiersTorpedo = modifiers.FindModifiers("torpedoBomberAccuracyIncRateCoeff");
                     aimRateModifier = Math.Round(aimModifiersTorpedo.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier), 3);
@@ -227,6 +227,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
             decimal finalCruisingSpeed = Math.Round((decimal)cruisingSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 0);
+
+            var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
+            maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 
             var jatoDuration = (decimal)plane.JatoData.JatoDuration;
             var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;

@@ -14,14 +14,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private List<List<Modernization>> availableModernizationList = null!;
 
         public UpgradePanelViewModel()
-            : this(new Ship
-            {
-                Index = "PGSD109",
-                Name = "PGSD109_Z_46",
-                ShipClass = ShipClass.Destroyer,
-                Tier = 9,
-                ShipNation = Nation.Germany,
-            })
+            : this(DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship)
         {
         }
 
@@ -31,7 +24,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                                                             new Dictionary<string, Modernization>();
 
             List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
-                .Where(m => !m.BlacklistedShips?.Contains(ship.Name) ?? false)
+                .Where(m => !(m.BlacklistedShips?.Contains(ship.Name) ?? false))
                 .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
                 .Where(m => m.AllowedNations?.Contains(ship.ShipNation) ?? false)
                 .Where(m => m.ShipClasses?.Contains(ship.ShipClass) ?? false)
@@ -55,7 +48,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             OnModernizationSelected = (modernization, modernizationList) =>
             {
                 int listIndex = AvailableModernizationList.IndexOf(modernizationList);
-                Modernization? oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
+                var oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
                 if (oldSelection != null)
                 {
                     SelectedModernizationList.Remove(oldSelection);

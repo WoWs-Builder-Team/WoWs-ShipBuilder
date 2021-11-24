@@ -873,6 +873,9 @@
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
     <value>Concealment by sub at operating depth</value>
   </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+      <value>Show dispersion and ballistics graphs</value>
+  </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
     <value>Vertical:</value>
   </data>

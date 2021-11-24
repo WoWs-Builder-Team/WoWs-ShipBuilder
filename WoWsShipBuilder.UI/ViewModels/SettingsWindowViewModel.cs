@@ -196,6 +196,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (serverChanged || pathChanged)
             {
                 await new DownloadWindow().ShowDialog(self);
+                AppData.ShipSummaryList = null;
             }
 
             self.Close();

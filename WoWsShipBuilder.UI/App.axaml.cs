@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.UI
                 {
                     Task.Run(async () =>
                     {
-                        await UpdateCheck(desktop);
+                        await UpdateCheck();
                         Logging.Logger.Info("Finished updatecheck");
                     });
                 }
@@ -56,7 +56,7 @@ namespace WoWsShipBuilder.UI
             Logging.Logger.Info(new string('-', 30));
         }
 
-        private async Task UpdateCheck(IClassicDesktopStyleApplicationLifetime desktop)
+        private async Task UpdateCheck()
         {
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
             using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.UI
 
                 Logging.Logger.Info($"App updated to version {release.Version}");
                 var result = await Dispatcher.UIThread.InvokeAsync(async () => await MessageBox.Show(
-                    desktop.MainWindow,
+                    null,
                     $"App was updated to version {release.Version}, do you want to restart to apply?",
                     "App Updated",
                     MessageBox.MessageBoxButtons.YesNo,

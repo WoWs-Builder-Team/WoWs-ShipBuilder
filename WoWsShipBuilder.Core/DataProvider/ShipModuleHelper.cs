@@ -2,9 +2,9 @@
 using System.Linq;
 using WoWsShipBuilderDataStructures;
 
-namespace WoWsShipBuilder.Core.BuildCreator
+namespace WoWsShipBuilder.Core.DataProvider
 {
-    public class ShipModuleHelper
+    public static class ShipModuleHelper
     {
         public static Dictionary<ComponentType, List<ShipUpgrade>> GroupAndSortUpgrades(List<ShipUpgrade> unsortedUpgrades)
         {

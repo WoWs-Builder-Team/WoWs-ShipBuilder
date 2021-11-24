@@ -11,7 +11,7 @@ tab_width = 4
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
-resharper_wrap_lines = true
+resharper_wrap_lines = false
 
 dotnet_diagnostic.SA0001.severity = none # Ignore disabled xml documentation
 dotnet_diagnostic.SA1000.severity = none # Ignore missing space after "new"

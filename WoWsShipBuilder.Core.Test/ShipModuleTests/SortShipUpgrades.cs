@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.Test.ShipModuleTests
