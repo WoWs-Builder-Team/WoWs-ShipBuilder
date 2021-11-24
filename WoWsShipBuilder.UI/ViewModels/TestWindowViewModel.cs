@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -13,61 +14,44 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         public TestWindowViewModel()
         {
-            var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
-            DispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
-            Sigma = ship.MainBatteryModuleList.First().Value.Sigma;
-            MaxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
-            AimingRange = 15000;
+            var ship = DataHelper.LoadPreviewShip(ShipClass.Destroyer, 10, Nation.Japan).Ship;
             var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
-            Shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+            var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+            var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
+            var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
+            var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
+            var aimingRange = 15000;
+            Shots = 9;
+
+            DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
         }
 
-        private Dispersion dispersionData;
+        private DispersionEllipse dispersionPlotParameters = default!;
 
-        public Dispersion DispersionData
+        public DispersionEllipse DispersionPlotParameters
         {
-            get => dispersionData;
-            set => this.RaiseAndSetIfChanged(ref dispersionData, value);
+            get => dispersionPlotParameters;
+            set => this.RaiseAndSetIfChanged(ref dispersionPlotParameters, value);
         }
 
-        private decimal sigma;
+        private int shots;
 
-        public decimal Sigma
+        public int Shots
         {
-            get => sigma;
-            set => this.RaiseAndSetIfChanged(ref sigma, value);
+            get => shots;
+            set => this.RaiseAndSetIfChanged(ref shots, value);
         }
 
-        private decimal maxRange;
-
-        public decimal MaxRange
+        public void Apply()
         {
-            get => maxRange;
-            set => this.RaiseAndSetIfChanged(ref maxRange, value);
-        }
-
-        private decimal shotsNumber;
-
-        public decimal ShotsNumber
-        {
-            get => shotsNumber;
-            set => this.RaiseAndSetIfChanged(ref shotsNumber, value);
-        }
-
-        private decimal aimingRange;
-
-        public decimal AimingRange
-        {
-            get => aimingRange;
-            set => this.RaiseAndSetIfChanged(ref aimingRange, value);
-        }
-
-        private ArtilleryShell shell;
-
-        public ArtilleryShell Shell
-        {
-            get => shell;
-            set => this.RaiseAndSetIfChanged(ref shell, value);
+            var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
+            var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
+            var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+            var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
+            var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
+            var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
+            var aimingRange = 15000;
+            DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
         }
     }
 }

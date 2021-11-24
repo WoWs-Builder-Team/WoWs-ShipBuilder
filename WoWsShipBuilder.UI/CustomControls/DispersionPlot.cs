@@ -1,109 +1,34 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using Avalonia.Styling;
-using DynamicData;
 using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
+using WoWsShipBuilder.UI.Extensions;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {
     public class DispersionPlot : TemplatedControl
     {
         /// <summary>
-        /// Styled Property for the sigma.
+        /// Styled Property for the dispersion plot parameters.
         /// </summary>
-        public static readonly StyledProperty<decimal> SigmaProperty =
-            AvaloniaProperty.Register<DispersionPlot, decimal>(nameof(Sigma));
+        public static readonly StyledProperty<DispersionEllipse> DispersionPlotParametersProperty =
+            AvaloniaProperty.Register<DispersionPlot, DispersionEllipse>(nameof(DispersionPlotParameters));
 
-        /// <summary>
-        /// Styled Property for the dispersion data.
-        /// </summary>
-        public static readonly StyledProperty<Dispersion> DispersionDataProperty =
-            AvaloniaProperty.Register<DispersionPlot, Dispersion>(nameof(DispersionData));
-
-        /// <summary>
-        /// Styled Property for the aiming rage.
-        /// </summary>
-        public static readonly StyledProperty<decimal> AimingRangeProperty =
-            AvaloniaProperty.Register<DispersionPlot, decimal>(nameof(AimingRange));
-
-        /// <summary>
-        /// Styled Property for the number of shots.
-        /// </summary>
-        public static readonly StyledProperty<decimal> ShotsNumberProperty =
-            AvaloniaProperty.Register<DispersionPlot, decimal>(nameof(ShotsNumber), 180);
-
-        /// <summary>
-        /// Styled Property for the max range of the ship.
-        /// </summary>
-        public static readonly StyledProperty<decimal> MaxRangeProperty =
-            AvaloniaProperty.Register<DispersionPlot, decimal>(nameof(MaxRange));
-
-        /// <summary>
-        /// Styled Property for the shell.
-        /// </summary>
-        public static readonly StyledProperty<ArtilleryShell> ShellProperty =
-            AvaloniaProperty.Register<DispersionPlot, ArtilleryShell>(nameof(Shell));
-
-        /// <summary>
-        /// Gets or sets the sigma.
-        /// </summary>
-        public decimal Sigma
+        static DispersionPlot()
         {
-            get => GetValue(SigmaProperty);
-            set => SetValue(SigmaProperty, value);
+            DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
         }
 
         /// <summary>
-        /// Gets or sets the dispersion data.
+        /// Gets or sets the dispersion plot parameters.
         /// </summary>
-        public Dispersion DispersionData
+        public DispersionEllipse DispersionPlotParameters
         {
-            get => GetValue(DispersionDataProperty);
-            set => SetValue(DispersionDataProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the aiming range.
-        /// </summary>
-        public decimal AimingRange
-        {
-            get => GetValue(AimingRangeProperty);
-            set => SetValue(AimingRangeProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the number of shots to simulate.
-        /// </summary>
-        public decimal ShotsNumber
-        {
-            get => GetValue(ShotsNumberProperty);
-            set => SetValue(ShotsNumberProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the max range of the ship.
-        /// </summary>
-        public decimal MaxRange
-        {
-            get => GetValue(MaxRangeProperty);
-            set => SetValue(MaxRangeProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the shell.
-        /// </summary>
-        public ArtilleryShell Shell
-        {
-            get => GetValue(ShellProperty);
-            set => SetValue(ShellProperty, value);
+            get => GetValue(DispersionPlotParametersProperty);
+            set => SetValue(DispersionPlotParametersProperty, value);
         }
 
         /// <summary>
@@ -112,87 +37,103 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// </summary>
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
         public override void Render(DrawingContext context)
-        {
-            var compressionFactor = 1.5;
-
-            // vertical and horizontal radiuses have been inverted in order to rotate the final graph by 90°
-            var horizontalRadius = DispersionData.CalculateVerticalDispersion((double)MaxRange, (double)AimingRange) / compressionFactor;
-            var verticalRadius = DispersionData.CalculateHorizontalDispersion((double)AimingRange) / compressionFactor;
-            var impactAngle = BallisticHelper.CalculateBallistic(Shell, (double)MaxRange).First(x => x.Key >= (double)AimingRange).Value.ImpactAngle;
-            horizontalRadius /= Math.Sin(Math.PI / 180 * impactAngle);
-
-            DrawHitPointsArea(horizontalRadius, verticalRadius, context);
-            DrawHitPoints(context, horizontalRadius, verticalRadius);
-            DrawHalfHitPointsArea((double)Sigma, horizontalRadius, verticalRadius, context);
-            DrawAdditionalElements(context, horizontalRadius, verticalRadius);
+        { 
+            DrawHalfHitPointsArea(context);
+            DrawAdditionalElements(context);
+            DrawHitPointsArea(context);
+            DrawHitPoints(context);
         }
 
-        private void DrawHitPointsArea(double horizontalRadius, double verticalRadius, DrawingContext context)
+        private void DrawHitPointsArea(DrawingContext context)
         {
-            Point center = new(Bounds.Center.X - horizontalRadius, Bounds.Center.Y - verticalRadius);
-            Rect ellipseRectangle = new(center, new Size(horizontalRadius * 2, verticalRadius * 2));
-            EllipseGeometry dispersioEllipse = new(ellipseRectangle);
-            context.DrawGeometry(Brushes.Transparent, new Pen(Foreground, 4), dispersioEllipse);
+            var filling = new SolidColorBrush(Colors.Gray, 0.1);
+            Point center = new(Bounds.Center.X - DispersionPlotParameters.ProjectedVerticalRadius, Bounds.Center.Y - DispersionPlotParameters.HorizontalRadius);
+            Rect ellipseRectangle = new(center, new Size(DispersionPlotParameters.ProjectedVerticalRadius * 2, DispersionPlotParameters.HorizontalRadius * 2));
+            EllipseGeometry dispersionEllipse = new(ellipseRectangle);
+            context.DrawGeometry(filling, new Pen(Foreground, 4), dispersionEllipse);
         }
 
-        private void DrawHitPoints(DrawingContext context, double horizontalRadius, double verticalRadius)
+        private void DrawHitPoints(DrawingContext context)
         {
-            var pointRadius = 4;
-            var pointColor = Colors.Goldenrod;            
-            var pointStyle = new Pen(Brushes.DarkGoldenrod, 1);
-            var gradientEnd = new GradientStop(new Color(50, pointColor.R, pointColor.G, pointColor.B), 1);
-            var filling = new RadialGradientBrush();
-            filling.GradientStops.Add(gradientEnd);
-            filling.GradientOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative);
-            filling.Radius = pointRadius;
-            var random = new Random();
+            var pointRadius = 6;         
+            var pointStyle = new Pen(Brushes.Transparent);
+            var filling = new SolidColorBrush(Colors.Goldenrod, 0.33);
 
-            for (int i = 0; i < ShotsNumber; i++)
+            foreach ((var x, var y) in DispersionPlotParameters.HitPoints)
             {
-                Point hitPoint = GetHitPoint(random, horizontalRadius, verticalRadius);
-                Point center = new(Bounds.Center.X - hitPoint.X - pointRadius, Bounds.Center.Y - hitPoint.Y - pointRadius);
-                Rect ellipseRectangle = new(center, new Size(pointRadius * 2, pointRadius * 2));
-                EllipseGeometry dispersioEllipse = new(ellipseRectangle);
-                context.DrawGeometry(filling, pointStyle, dispersioEllipse);
+                Point center = new(Bounds.Center.X - y - pointRadius, Bounds.Center.Y - x - pointRadius);
+                Rect pointRectangle = new(center, new Size(pointRadius * 2, pointRadius * 2));
+                EllipseGeometry pointEllipse = new(pointRectangle);
+                context.DrawGeometry(filling, pointStyle, pointEllipse);
             }
         }
 
-        private void DrawHalfHitPointsArea(double sigma, double horizontalRadius, double verticalRadius, DrawingContext context)
+        private void DrawHalfHitPointsArea(DrawingContext context)
         {
-            double left = -sigma;
-            double right = sigma;
-            double z = MathHelper.Cdf(right) - MathHelper.Cdf(left);
-            double halfRatio = MathHelper.InvCdf((0.25 * z) + MathHelper.Cdf(left)) / left;
-
-            horizontalRadius *= halfRatio;
-            verticalRadius *= halfRatio;
-
-            var filling = new SolidColorBrush(Colors.OrangeRed, 0.1);
-            Point center = new(Bounds.Center.X - horizontalRadius, Bounds.Center.Y - verticalRadius);
-            Rect ellipseRectangle = new(center, new Size(horizontalRadius * 2, verticalRadius * 2));
+            var filling = new SolidColorBrush(Colors.Red, 0.1);
+            Point center = new(Bounds.Center.X - DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints, Bounds.Center.Y - DispersionPlotParameters.HorizontalRadiusHalfHitPoints);
+            Rect ellipseRectangle = new(center, new Size(DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * 2, DispersionPlotParameters.HorizontalRadiusHalfHitPoints * 2));
             EllipseGeometry dispersioEllipse = new(ellipseRectangle);
-            context.DrawGeometry(filling, new Pen(Brushes.OrangeRed, 2), dispersioEllipse);
+            context.DrawGeometry(filling, new Pen(Brushes.DarkRed, 2), dispersioEllipse);
         }
 
-        private Point GetHitPoint(Random random, double horizontalRadius, double verticalRadius)
+        private void DrawAdditionalElements(DrawingContext context)
         {
-            var randomRad = 2 * Math.PI * random.NextDouble();
-            var randomLen = MathHelper.AdjustedGaussian(random, 0.0, 1 / (double)Sigma, -1, 1);
-            var x = randomLen * (horizontalRadius * Math.Cos(randomRad));
-            var y = randomLen * (verticalRadius * Math.Sin(randomRad));
+            const int offsetFromEllipse = 25;
+            const int segmentEndHeight = 20;
+            const int textOffset = 5;
 
-            if (y > 0)
-            {
-                y = 300 * Math.Log((0.1 * y / 30) + 1.0);
-            }
+            string unit = UnitLocalization.Unit_M;
 
-            return new Point(x, y);
-        }
+            Point center = Bounds.Center;
+            var xOuterRadius = DispersionPlotParameters.ProjectedVerticalRadius;
+            var yOuterRadius = DispersionPlotParameters.HorizontalRadius;
+            var xInnerRadius = DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints;
+            var yInnerRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints;
 
-        private void DrawAdditionalElements(DrawingContext context, double horizontalRadius, double verticalRadius)
-        {
-            context.DrawLine(new Pen(Brushes.White, 1), new Point(Bounds.Center.X - horizontalRadius, Bounds.Center.Y), new Point(Bounds.Center.X + horizontalRadius, Bounds.Center.Y));
-            context.DrawLine(new Pen(Brushes.White, 1), new Point(Bounds.Center.X, Bounds.Center.Y - verticalRadius), new Point(Bounds.Center.X, Bounds.Center.Y + verticalRadius));
+            // text
+            var verticalDiameter = new FormattedText($"{Translation.DispersionPlot_Vertical} {Math.Round(DispersionPlotParameters.ProjectedVerticalRadius * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerVertical} {Math.Round(DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameter = new FormattedText($"{Translation.DispersionPlot_Horizontal} {Math.Round(DispersionPlotParameters.HorizontalRadius * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerHorizontal} {Math.Round(DispersionPlotParameters.HorizontalRadiusHalfHitPoints * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+
+            // X axis
+            context.DrawLine(new Pen(Brushes.Gray, 1), center.AddX(-xOuterRadius), center.AddX(xOuterRadius));
+
+            // Y axis
+            context.DrawLine(new Pen(Brushes.Gray, 1), center.AddY(-yOuterRadius), center.AddY(yOuterRadius));
+
+            // verticalDiameter
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius).AddY(yOuterRadius + offsetFromEllipse), center.AddX(-xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + segmentEndHeight));
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + segmentEndHeight));
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)));
+
+            context.DrawText(Foreground, center.AddX(-verticalDiameter.Bounds.Width / 2).AddY(yOuterRadius + offsetFromEllipse + textOffset + verticalDiameter.Bounds.Height), verticalDiameter);
+
+            // horizontalDiameter
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse).AddY(-yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - segmentEndHeight).AddY(-yOuterRadius));
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse).AddY(yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - segmentEndHeight).AddY(yOuterRadius));
+            context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)).AddY(yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)).AddY(-yOuterRadius));
+
+            var rotation1 = context.PushSetTransform(Matrix.CreateRotation(-Math.PI / 2));
+            context.DrawText(Foreground, center.SwapXY().MultiplyX(-1).AddX(-horizontalDiameter.Bounds.Width / 2).AddY(-xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameter.Bounds.Height)), horizontalDiameter);
+            rotation1.Dispose();
+
+            // verticalDiameterHalfHitPoints
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - segmentEndHeight));
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - segmentEndHeight));
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)));
+
+            context.DrawText(Foreground, center.AddX(-verticalDiameterHalfHitPoints.Bounds.Width / 2).AddY(-yOuterRadius - offsetFromEllipse - textOffset - (2 * verticalDiameterHalfHitPoints.Bounds.Height)), verticalDiameterHalfHitPoints);
+
+            // horizontalDiameterhalfHitPoints
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(-yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(-yInnerRadius));
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(yInnerRadius));
+            context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(-yInnerRadius));
+
+            var rotation2 = context.PushSetTransform(Matrix.CreateRotation(Math.PI / 2));
+            context.DrawText(Foreground, center.SwapXY().AddX(-horizontalDiameterHalfHitPoints.Bounds.Width / 2).MultiplyY(-1).AddY(-xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameterHalfHitPoints.Bounds.Height)), horizontalDiameterHalfHitPoints);
+            rotation2.Dispose();
         }
     }
 }

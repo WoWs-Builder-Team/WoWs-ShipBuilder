@@ -873,4 +873,16 @@
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
     <value>Concealment by sub at operating depth</value>
   </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Vertical:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontal:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Inner Vertical:</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Inner Horizontal:</value>
+  </data>
 </root>

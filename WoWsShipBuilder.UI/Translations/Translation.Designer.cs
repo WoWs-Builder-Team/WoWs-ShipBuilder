@@ -331,6 +331,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal:.
+        /// </summary>
+        public static string DispersionPlot_Horizontal {
+            get {
+                return ResourceManager.GetString("DispersionPlot_Horizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inner Horizontal:.
+        /// </summary>
+        public static string DispersionPlot_InnerHorizontal {
+            get {
+                return ResourceManager.GetString("DispersionPlot_InnerHorizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inner Vertical:.
+        /// </summary>
+        public static string DispersionPlot_InnerVertical {
+            get {
+                return ResourceManager.GetString("DispersionPlot_InnerVertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical:.
+        /// </summary>
+        public static string DispersionPlot_Vertical {
+            get {
+                return ResourceManager.GetString("DispersionPlot_Vertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispersion visualization.
         /// </summary>
         public static string DispersionWindow_Title {
