@@ -10,6 +10,7 @@ using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
@@ -30,6 +31,7 @@ namespace WoWsShipBuilder.UI
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 AppSettingsHelper.LoadSettings();
+                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
                 desktop.Exit += OnExit;
                 desktop.MainWindow = new SplashScreen(versionDetails);
                 Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");

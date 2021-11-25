@@ -876,4 +876,7 @@
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
       <value>Show dispersion and ballistics graphs</value>
   </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+      <value>Send basic telemetry data (current app version)</value>
+  </data>
 </root>

@@ -37,5 +37,7 @@ namespace WoWsShipBuilder.Core.Settings
         public DateTime? LastDataUpdateCheck { get; set; } = null!;
 
         public string? CustomDataPath { get; set; }
+
+        public bool SendTelemetryData { get; set; }
     }
 }
