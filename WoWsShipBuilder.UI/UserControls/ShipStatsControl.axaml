@@ -336,9 +336,9 @@
                                 <ItemsControl Items="{Binding AirstrikeData}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel>
-                                                <TextBlock Classes="Key"/>
-                                                <TextBlock Classes="Value"/>
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
+                                                <TextBlock Classes="Key" TextWrapping="Wrap"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -457,8 +457,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel LastChildFill="True">
-                                        <TextBlock Classes="Key"/>
-                                        <TextBlock Classes="Value"/>
+                                        <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
+                                        <TextBlock Classes="Key" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -473,9 +473,9 @@
                         <ItemsControl Items="{Binding ConcealmentUI.ConcealmentData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel>
-                                        <TextBlock Classes="Key"/>
-                                        <TextBlock Classes="Value"/>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
+                                        <TextBlock Classes="Key" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -490,9 +490,9 @@
                         <ItemsControl Items="{Binding SurvivabilityUI.SurvivabilityData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <DockPanel>
-                                        <TextBlock Classes="Key"/>
-                                        <TextBlock Classes="Value"/>
+                                    <DockPanel LastChildFill="True">
+                                        <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
+                                        <TextBlock Classes="Key" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

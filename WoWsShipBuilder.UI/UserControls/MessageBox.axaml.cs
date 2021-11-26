@@ -42,7 +42,12 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public static Task<MessageBoxResult> Show(Window? parent, string text, string title, MessageBoxButtons buttons, MessageBoxIcon icon = MessageBoxIcon.None, int width = 300, int height = 150)
         {
-            var msgbox = new MessageBox();
+            var msgbox = new MessageBox
+            {
+                ShowActivated = true,
+                ShowInTaskbar = true,
+                Title = title,
+            };
 
             msgbox.FindControl<AppHeader>("Header").Title = title;
 

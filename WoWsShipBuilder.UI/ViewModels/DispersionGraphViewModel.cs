@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Xml.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -33,15 +31,16 @@ namespace WoWsShipBuilder.UI.ViewModels
             Ballistic,
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion disp, double maxRange, string shipIndex, ArtilleryShell shell, Tabs initialTab)
+        public DispersionGraphViewModel(DispersionGraphsWindow window)
+            : this(window, null, 0, string.Empty, null, Tabs.Dispersion)
+        {
+        }
+
+        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab)
         {
             logger = Logging.GetLogger("DispersiongGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
             self = win;
-            var shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
-            var shellName = Localizer.Instance[$"{shell.Name}"].Localization;
-            var name = $"{shipName} - {shellName}";
-            logger.Info("Creating series for {0}", name);
 
             logger.Info("Creating base plot models");
             var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
@@ -51,42 +50,44 @@ namespace WoWsShipBuilder.UI.ViewModels
             var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
             var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
 
-            logger.Info("Creating series");
-            var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
-            var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
-            var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
-
-            logger.Info("Adding series and setting models");
-
-            hModel.Series.Add(hDisp);
-            HorizontalModel = hModel;
-
-            vModel.Series.Add(vDisp);
-            VerticalModel = vModel;
-
-            if (shell.ShellType == ShellType.AP)
+            if (maxRange > 0 && disp != null && shell != null)
             {
-                penModel.Series.Add(ballisticSeries.Penetration);
-            }
-            else
-            {
-                penModel.Series.Add(CreateSeriesForFixedPen(shell, maxRange, name));
+                var shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
+                var shellName = Localizer.Instance[$"{shell.Name}"].Localization;
+                var name = $"{shipName} - {shellName}";
+                logger.Info("Creating series for {0}", name);
+                logger.Info("Creating series");
+                var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
+                var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
+                var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
+
+                logger.Info("Adding series and setting models");
+
+                hModel.Series.Add(hDisp);
+                vModel.Series.Add(vDisp);
+
+                if (shell.ShellType == ShellType.AP)
+                {
+                    penModel.Series.Add(ballisticSeries.Penetration);
+                }
+                else
+                {
+                    penModel.Series.Add(CreateSeriesForFixedPen(shell, maxRange, name));
+                }
+
+                flightTimeModel.Series.Add(ballisticSeries.FlightTime);
+                impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
+                impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
+                shipNames.Add(name);
             }
 
-            PenetrationModel = penModel;
-
-            flightTimeModel.Series.Add(ballisticSeries.FlightTime);
             FlightTimeModel = flightTimeModel;
-
-            impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
             ImpactVelocityModel = impactVelocityModel;
-
-            impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
             ImpactAngleModel = impactAngleModel;
-
+            PenetrationModel = penModel;
+            HorizontalModel = hModel;
+            VerticalModel = vModel;
             InitialTab = (int)initialTab;
-
-            shipNames.Add(name);
         }
 
         private int initialTab;
@@ -205,7 +206,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     logger.Info("Found guns on ship, asking for shell.");
 
                     // Get all the shell of that ship, and propose the choice to the user.
-                    var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(x => x.AmmoList)).Distinct().ToList();
+                    var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
                     var win = new ValueSelectionWindow();
                     win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
 
@@ -339,7 +340,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
             var background = ConvertColorFromResource("ThemeBackgroundColor");
 
-
             PlotModel model = new()
             {
                 Title = name,
@@ -350,7 +350,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorderThickness = 1,
                 LegendBackground = background,
                 LegendFontSize = 13,
-
             };
 
             var xAxis = new LinearAxis
@@ -411,7 +410,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
-                LegendFontSize = 13,               
+                LegendFontSize = 13,
             };
 
             var xAxis = new LinearAxis
@@ -477,9 +476,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The vertical dispersion series for the given parameter.</returns>
         private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
-            dispSeries.TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m";
-            dispSeries.StrokeThickness = 4;
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
+            {
+                TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m",
+                StrokeThickness = 4,
+            };
             return dispSeries;
         }
 
@@ -490,7 +491,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <param name="maxRange">Max range of the gun.</param>
         /// <param name="name">Name for the series.</param>
         /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
-        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle) CreateBallisticSeries(ArtilleryShell shell, double maxRange, string name)
+        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle) CreateBallisticSeries(
+            ArtilleryShell shell,
+            double maxRange,
+            string name)
         {
             var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
 
@@ -573,7 +577,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private List<OxyColor> GenerateColors()
         {
-            var colors = new OxyColor[]
+            var colors = new[]
             {
                 OxyColor.Parse("#288753"),
                 OxyColor.Parse("#ef6fcc"),
