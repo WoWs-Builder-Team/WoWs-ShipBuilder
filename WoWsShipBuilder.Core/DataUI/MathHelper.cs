@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -15,7 +11,7 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <param name="mean">The mean of the gaussian function.</param>
         /// <param name="standardDeviation">The standard deviation of the gaussian function.</param>
         /// <returns>A sample from a gaussian distribution.</returns>
-        public static double SampleGaussian(Random random, double mean, double standardDeviation)
+        public static double GaussianSample(Random random, double mean, double standardDeviation)
         {
             var x = random.NextDouble();
             var y = random.NextDouble();
@@ -35,7 +31,7 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <returns>An adjusted sample from a gaussian distribution within a given interval.</returns>
         public static double AdjustedGaussian(Random random, double mean, double standardDeviation, double min, double max)
         {
-            var rng = SampleGaussian(random, mean, standardDeviation);
+            var rng = GaussianSample(random, mean, standardDeviation);
             if (rng < min || rng > max)
             {
                 rng = (random.NextDouble() * (max - min)) + min;

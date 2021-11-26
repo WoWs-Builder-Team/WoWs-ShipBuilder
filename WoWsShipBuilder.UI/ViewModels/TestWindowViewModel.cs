@@ -22,6 +22,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
             var aimingRange = 15000;
             Shots = 9;
+            PlotScaling = 2;
 
             DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
         }
@@ -42,6 +43,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref shots, value);
         }
 
+        private double plotScaling;
+
+        public double PlotScaling
+        {
+            get => plotScaling;
+            set => this.RaiseAndSetIfChanged(ref plotScaling, value);
+        }
+
         public void Apply()
         {
             var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
@@ -52,6 +61,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
             var aimingRange = 15000;
             DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
+            PlotScaling = 0.5;
         }
     }
 }

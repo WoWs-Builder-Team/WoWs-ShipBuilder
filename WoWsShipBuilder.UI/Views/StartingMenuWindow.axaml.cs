@@ -18,9 +18,11 @@ namespace WoWsShipBuilder.UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-#if DEBUG
             var control = this.FindControl<Image>("Image");
+#if DEBUG
             control.PointerReleased += Control_PointerReleased;
+#else
+            control.IsHitTestVisible = false;
 #endif
         }
 

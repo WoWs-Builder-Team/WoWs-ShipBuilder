@@ -13,6 +13,6 @@
             <TextBox Text="{Binding Shots}"/>
             <Button Content="Apply" Command="{Binding Apply}"/>
         </StackPanel>
-        <customControls:DispersionPlot Grid.Row="2" DispersionPlotParameters="{Binding DispersionPlotParameters}"/>
+        <customControls:DispersionPlot Grid.Row="2" DispersionPlotParameters="{Binding DispersionPlotParameters}" PlotScaling="{Binding PlotScaling}"/>
     </Grid>
 </Window>
