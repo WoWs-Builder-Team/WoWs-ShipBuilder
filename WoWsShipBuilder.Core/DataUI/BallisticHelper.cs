@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.Core.DataUI
         // Calculation Parameters
         private static double maxAngles = 550;           // Max Angle                    | degrees
         private static double angleStep = 0.00174533;    // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
-        private static double dt = 0.02;                  // Time step                    | s
+        private static double dt = 0.02;                 // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>

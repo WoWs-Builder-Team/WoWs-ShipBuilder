@@ -337,7 +337,7 @@
     <value>180° turn time</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal dispersion</value>
+    <value>Horizontal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Range</value>
@@ -355,7 +355,7 @@
     <value>Traverse speed</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical dispersion</value>
+    <value>Vertical</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Initial shell velocity</value>
@@ -844,7 +844,7 @@
     <value>Show impact velocity graph</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Open ballistic graphs</value>
+    <value>Show ballistic graphs</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>The selected custom path is not valid.</value>
@@ -874,7 +874,7 @@
     <value>Concealment by sub at operating depth</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-      <value>Show dispersion and ballistics graphs</value>
+    <value>Show dispersion and ballistics graphs</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
     <value>Vertical:</value>
@@ -887,5 +887,20 @@
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
     <value>Inner Horizontal:</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Dispersion</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Show dispersion graphs</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Show dispersion plot</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formula at range X</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>HorizontalDispersion[X]</value>
   </data>
 </root>

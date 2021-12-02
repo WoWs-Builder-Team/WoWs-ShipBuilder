@@ -1330,6 +1330,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispersion.
+        /// </summary>
+        public static string ShipStats_Dispersion {
+            get {
+                return ResourceManager.GetString("ShipStats_Dispersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Formula at range X.
+        /// </summary>
+        public static string ShipStats_DispFormulaTooltip {
+            get {
+                return ResourceManager.GetString("ShipStats_DispFormulaTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drop time.
         /// </summary>
         public static string ShipStats_DropTime {
@@ -1564,11 +1582,20 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal dispersion.
+        ///   Looks up a localized string similar to Horizontal.
         /// </summary>
         public static string ShipStats_HorizontalDisp {
             get {
                 return ResourceManager.GetString("ShipStats_HorizontalDisp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HorizontalDispersion[X].
+        /// </summary>
+        public static string ShipStats_HorizontalDispersionX {
+            get {
+                return ResourceManager.GetString("ShipStats_HorizontalDispersionX", resourceCulture);
             }
         }
         
@@ -1771,7 +1798,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open ballistic graphs.
+        ///   Looks up a localized string similar to Show ballistic graphs.
         /// </summary>
         public static string ShipStats_OpenBallistic {
             get {
@@ -2005,6 +2032,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show dispersion graphs.
+        /// </summary>
+        public static string ShipStats_ShowDispGraph {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowDispGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show dispersion plot.
+        /// </summary>
+        public static string ShipStats_ShowDispPlot {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowDispPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sigma.
         /// </summary>
         public static string ShipStats_Sigma {
@@ -2149,7 +2194,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical dispersion.
+        ///   Looks up a localized string similar to Vertical.
         /// </summary>
         public static string ShipStats_VerticalDisp {
             get {

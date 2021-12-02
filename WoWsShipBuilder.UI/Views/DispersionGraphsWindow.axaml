@@ -6,6 +6,7 @@
         x:Class="WoWsShipBuilder.UI.Views.DispersionGraphsWindow"
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         WindowStartupLocation="CenterScreen" CanResize="True"
         Width="1400" Height="900"
@@ -56,6 +57,13 @@
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
                         </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Dispersion Plot">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <customControls:DispersionPlot DispersionPlotParameters="{Binding DispersionPlotParameters}" PlotScaling="{Binding PlotScaling}"/>
+                        </StackPanel>                        
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Ballistic Graphs">

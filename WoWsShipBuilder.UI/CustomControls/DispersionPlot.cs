@@ -118,6 +118,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             double offsetFromEllipse = 25;
             double textOffset = 5;
             double segmentEndHeight = 20;
+            double plotMargin = 5;
 
             string unit = UnitLocalization.Unit_M;
 
@@ -170,6 +171,10 @@ namespace WoWsShipBuilder.UI.CustomControls
             var rotation2 = context.PushSetTransform(Matrix.CreateRotation(Math.PI / 2));
             context.DrawText(Foreground, center.SwapXY().AddX(-horizontalDiameterHalfHitPoints.Bounds.Width / 2).MultiplyY(-1).AddY(-xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameterHalfHitPoints.Bounds.Height)), horizontalDiameterHalfHitPoints);
             rotation2.Dispose();
+
+            // min plot size
+            MinHeight = plotMargin + (2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Bounds.Height + verticalDiameter.Bounds.Height));
+            MinWidth = plotMargin + (2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Bounds.Height + horizontalDiameterHalfHitPoints.Bounds.Height));
         }
 
         private void DrawFusoReference(DrawingContext context)

@@ -28,15 +28,16 @@ namespace WoWsShipBuilder.UI.ViewModels
         public enum Tabs
         {
             Dispersion,
+            Plot,
             Ballistic,
         }
 
         public DispersionGraphViewModel(DispersionGraphsWindow window)
-            : this(window, null, 0, string.Empty, null, Tabs.Dispersion)
+            : this(window, null, 0, string.Empty, null, Tabs.Dispersion, 0)
         {
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab)
+        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab, decimal sigma)
         {
             logger = Logging.GetLogger("DispersiongGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
@@ -79,6 +80,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                 impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
                 impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
                 shipNames.Add(name);
+
+                AimingRange = 15000;
+                Shots = 9;
+                PlotScaling = 1;
+
+                DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(disp, shell, (double)maxRange, AimingRange, (double)sigma, Shots);
             }
 
             FlightTimeModel = flightTimeModel;
@@ -184,6 +191,38 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => impactAngleModel;
             set => this.RaiseAndSetIfChanged(ref impactAngleModel, value);
+        }
+
+        private DispersionEllipse dispersionPlotParameters = default!;
+
+        public DispersionEllipse DispersionPlotParameters
+        {
+            get => dispersionPlotParameters;
+            set => this.RaiseAndSetIfChanged(ref dispersionPlotParameters, value);
+        }
+
+        private int shots;
+
+        public int Shots
+        {
+            get => shots;
+            set => this.RaiseAndSetIfChanged(ref shots, value);
+        }
+
+        private double aimingRange;
+
+        public double AimingRange
+        {
+            get => aimingRange;
+            set => this.RaiseAndSetIfChanged(ref aimingRange, value);
+        }
+
+        private double plotScaling;
+
+        public double PlotScaling
+        {
+            get => plotScaling;
+            set => this.RaiseAndSetIfChanged(ref plotScaling, value);
         }
 
         /// <summary>
