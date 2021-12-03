@@ -924,4 +924,7 @@
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
     <value>Refresh Plot</value>
   </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+      <value>Send basic telemetry data (current app version)</value>
+  </data>
 </root>

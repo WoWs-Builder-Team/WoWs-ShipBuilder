@@ -2,6 +2,7 @@
 
 ## Additions
 - Add button to open dispersion and ballistics window directly from start menu
+- Add optional telemetry data in settings. Telemetry data is disabled by default and needs to be enabled manually.
 
 ## Changes
 

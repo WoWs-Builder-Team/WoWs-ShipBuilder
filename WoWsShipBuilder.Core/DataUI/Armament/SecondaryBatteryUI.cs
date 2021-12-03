@@ -67,7 +67,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGun.NumBarrels).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGroup.Count * secondaryGun.NumBarrels).First();
                 }
                 catch (KeyNotFoundException e)
                 {
