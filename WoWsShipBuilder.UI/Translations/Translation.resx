@@ -903,4 +903,22 @@
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>HorizontalDispersion[X]</value>
   </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Aiming range (Km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Ballistic Graphs</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Dispersion Graphs</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Dispersion Plot</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Plot Scaling</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Shots number</value>
+  </data>
 </root>

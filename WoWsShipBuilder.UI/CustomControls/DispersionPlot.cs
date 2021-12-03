@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Styled Property for the dispersion plot scaling.
         /// </summary>
         public static readonly StyledProperty<double> PlotScalingProperty =
-            AvaloniaProperty.Register<DispersionPlot, double>(nameof(PlotScaling), 1);
+            AvaloniaProperty.Register<DispersionPlot, double>(nameof(PlotScaling), 0.75);
 
         static DispersionPlot()
         {

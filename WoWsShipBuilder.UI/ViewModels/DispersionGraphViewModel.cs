@@ -81,11 +81,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
                 shipNames.Add(name);
 
-                AimingRange = 15000;
-                Shots = 9;
-                PlotScaling = 1;
-
-                DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(disp, shell, (double)maxRange, AimingRange, (double)sigma, Shots);
+                DispersionPlotList.CollectionChanged += DispersionPlotList_CollectionChanged;
+                DispersionPlotList.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, (double)maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
             }
 
             FlightTimeModel = flightTimeModel;
@@ -95,6 +92,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             HorizontalModel = hModel;
             VerticalModel = vModel;
             InitialTab = (int)initialTab;
+        }
+
+        private void DispersionPlotList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(DispersionPlotList));
         }
 
         private int initialTab;
@@ -193,23 +195,23 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref impactAngleModel, value);
         }
 
-        private DispersionEllipse dispersionPlotParameters = default!;
+        private AvaloniaList<DispersionEllipse> dispersionPlotParameters = new();
 
-        public DispersionEllipse DispersionPlotParameters
+        public AvaloniaList<DispersionEllipse> DispersionPlotList
         {
             get => dispersionPlotParameters;
             set => this.RaiseAndSetIfChanged(ref dispersionPlotParameters, value);
         }
 
-        private int shots;
+        private int shotsNumber = 100;
 
-        public int Shots
+        public int ShotsNumber
         {
-            get => shots;
-            set => this.RaiseAndSetIfChanged(ref shots, value);
+            get => shotsNumber;
+            set => this.RaiseAndSetIfChanged(ref shotsNumber, value);
         }
 
-        private double aimingRange;
+        private double aimingRange = 10;
 
         public double AimingRange
         {
@@ -217,7 +219,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref aimingRange, value);
         }
 
-        private double plotScaling;
+        private double plotScaling = 0.75;
 
         public double PlotScaling
         {
@@ -246,10 +248,18 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                     // Get all the shell of that ship, and propose the choice to the user.
                     var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
-                    var win = new ValueSelectionWindow();
-                    win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
+                    string shellIndex;
+                    if (shellsName.Count == 1)
+                    {
+                        shellIndex = shellsName.First();
+                    }
+                    else
+                    {
+                        var win = new ValueSelectionWindow();
+                        win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
 
-                    var shellIndex = await win.ShowDialog<string>(self);
+                        shellIndex = await win.ShowDialog<string>(self);
+                    }
 
                     // If the user didn't select a shell, return and do nothing.
                     if (shellIndex is null)
@@ -285,6 +295,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                         ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                        // create and add the dispersion plot
+                        DispersionPlotList.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber));
 
                         // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
                         if (shell.ShellType == ShellType.AP)
@@ -352,6 +365,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     FlightTimeModel!.Series.RemoveAt(index);
                     ImpactAngleModel!.Series.RemoveAt(index);
                     ImpactVelocityModel!.Series.RemoveAt(index);
+                    DispersionPlotList.RemoveAt(index);
                     shipNames.RemoveAt(index);
                 }
 

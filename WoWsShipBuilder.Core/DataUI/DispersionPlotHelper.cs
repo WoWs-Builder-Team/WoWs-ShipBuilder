@@ -90,6 +90,7 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <summary>
         /// Calls all the necessary methods to get all the data for the dispersion plot.
         /// </summary>
+        /// <param name="name">The name of the represented entity.</param>
         /// <param name="dispersionData">Contains the parameters to calculate horizontal and vertial dispersions.</param>
         /// <param name="shell">Contains all the shell parameters.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
@@ -97,21 +98,22 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <param name="sigma">The sigma of the ship.</param>
         /// <param name="shotsNumber">The number of shots to simulate.</param>
         /// <returns>A DispersionEllipse object containing all the informations.</returns>
-        public static DispersionEllipse CalculateDispersionPlotParameters(Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
+        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
         {
             var ellipse = GetDispersionEllipse(dispersionData, maxRange, aimingRange);
             var projectedEllipse = GetProjectedEllipse(shell, maxRange, aimingRange, ellipse.verticalRadius);
             var halfRatio = GetHalfHitsRatio(sigma);
             var hitPointsList = GetHitPoints(sigma, ellipse.horizontalRadius, ellipse.verticalRadius, shotsNumber, projectedEllipse.waterLineProjection);
 
-            return new DispersionEllipse(ellipse.horizontalRadius, ellipse.verticalRadius, projectedEllipse.projectedVerticalRadius, hitPointsList, ellipse.horizontalRadius * halfRatio, ellipse.verticalRadius * halfRatio, projectedEllipse.projectedVerticalRadius * halfRatio);
+            return new DispersionEllipse(name, ellipse.horizontalRadius, ellipse.verticalRadius, projectedEllipse.projectedVerticalRadius, hitPointsList, ellipse.horizontalRadius * halfRatio, ellipse.verticalRadius * halfRatio, projectedEllipse.projectedVerticalRadius * halfRatio);
         }
     }
 
     public record DispersionEllipse
     {
-        public DispersionEllipse(double horizontalRadius, double verticalRadius, double projectedVerticalRadius, List<(double x, double y)> hitPoints, double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedVerticalRadiusHalfHitPoints)
+        public DispersionEllipse(string name, double horizontalRadius, double verticalRadius, double projectedVerticalRadius, List<(double x, double y)> hitPoints, double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedVerticalRadiusHalfHitPoints)
         {
+            Name = name;
             HorizontalRadius = horizontalRadius;
             VerticalRadius = verticalRadius;
             ProjectedVerticalRadius = projectedVerticalRadius;
@@ -120,6 +122,8 @@ namespace WoWsShipBuilder.Core.DataUI
             VerticalRadiusHalfHitPoints = verticalRadiusHalfHitPoints;
             ProjectedVerticalRadiusHalfHitPoints = projectedVerticalRadiusHalfHitPoints;
         }
+
+        public string Name { get; set; }
 
         public double HorizontalRadius { get; set; }
 

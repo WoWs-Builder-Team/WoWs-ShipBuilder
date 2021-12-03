@@ -241,6 +241,42 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aiming range (Km).
+        /// </summary>
+        public static string DispersionGraphWindow_AimingRange {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_AimingRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ballistic Graphs.
+        /// </summary>
+        public static string DispersionGraphWindow_BallisticGraphs {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_BallisticGraphs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion Graphs.
+        /// </summary>
+        public static string DispersionGraphWindow_DispersionGraphs {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_DispersionGraphs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion Plot.
+        /// </summary>
+        public static string DispersionGraphWindow_DispersionPlot {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_DispersionPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flight time.
         /// </summary>
         public static string DispersionGraphWindow_FlightTime {
@@ -268,6 +304,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plot Scaling.
+        /// </summary>
+        public static string DispersionGraphWindow_PlotScaling {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_PlotScaling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
         public static string DispersionGraphWindow_RemoveShip {
@@ -291,6 +336,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DispersionGraphWindow_SelectShellDesc {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_SelectShellDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shots number.
+        /// </summary>
+        public static string DispersionGraphWindow_ShotsNumber {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShotsNumber", resourceCulture);
             }
         }
         

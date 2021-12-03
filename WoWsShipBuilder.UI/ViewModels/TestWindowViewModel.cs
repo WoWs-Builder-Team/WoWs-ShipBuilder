@@ -14,17 +14,15 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         public TestWindowViewModel()
         {
-            var ship = DataHelper.LoadPreviewShip(ShipClass.Destroyer, 10, Nation.Japan).Ship;
-            var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
-            var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
-            var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
-            var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
-            var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
-            var aimingRange = 15000;
-            Shots = 9;
-            PlotScaling = 2;
-
-            DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
+            // var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
+            // var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
+            // var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+            // var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
+            // var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
+            // var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
+            // var aimingRange = 15000;
+            // DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
+            // PlotScaling = 0.5;
         }
 
         private DispersionEllipse dispersionPlotParameters = default!;
@@ -53,15 +51,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void Apply()
         {
-            var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
-            var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
-            var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
-            var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
-            var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
-            var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
-            var aimingRange = 15000;
-            DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
-            PlotScaling = 0.5;
+            // var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
+            // var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
+            // var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+            // var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
+            // var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
+            // var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
+            // var aimingRange = 15000;
+            // DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
+            // PlotScaling = 0.5;
         }
     }
 }
