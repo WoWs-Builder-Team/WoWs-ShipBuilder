@@ -32,7 +32,16 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <returns>The projection ratio and the length of the vertical radius projected on water.</returns>
         private static (double waterLineProjection, double projectedVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
         {
-            var impactAngle = BallisticHelper.CalculateBallistic(shell, maxRange).First(x => x.Key >= aimingRange).Value.ImpactAngle;
+            double impactAngle;
+            try
+            {
+                impactAngle = BallisticHelper.CalculateBallistic(shell, maxRange).First(x => x.Key >= aimingRange).Value.ImpactAngle;
+            }
+            catch (InvalidOperationException e)
+            {
+                return (0, 0);
+            }
+
             var waterLineProjection = Math.Sin(Math.PI / 180 * impactAngle);
             verticalRadius /= waterLineProjection;
 
@@ -124,6 +133,10 @@ namespace WoWsShipBuilder.Core.DataUI
         }
 
         public string Name { get; set; }
+
+        public bool IsValid { get; set; } = true;
+
+        public bool IsLast { get; set; } = true;
 
         public double HorizontalRadius { get; set; }
 
