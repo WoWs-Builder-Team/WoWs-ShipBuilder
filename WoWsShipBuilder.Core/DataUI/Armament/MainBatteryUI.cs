@@ -137,6 +137,7 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal rateOfFire = 60 / reload;
 
             var maxRangeBW = (double)(mainBattery.MaxRange / 30);
+            var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
 
             var mainBatteryUi = new MainBatteryUI
             {
@@ -152,12 +153,13 @@ namespace WoWsShipBuilder.Core.DataUI
                 HorizontalDisp = hDispersion + UnitLocalization.Unit_M,
                 VerticalDisp = vDispersion + UnitLocalization.Unit_M,
                 HorizontalDispFormula = $"X * {Math.Round((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance, 4)} + {30 * modifiedDispersion.MinRadius}",
-                VerticalCoeffFormula = $"(X * {Math.Round(((modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim))) / 30, 8)} + {((-maxRangeBW * modifiedDispersion.Delim) * (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim))) + modifiedDispersion.RadiusOnDelim})",
+                VerticalCoeffFormula = $"(X * {Math.Round(vRadiusCoeff / 30, 8)} + {((-maxRangeBW * modifiedDispersion.Delim) * vRadiusCoeff) + modifiedDispersion.RadiusOnDelim})",
                 HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance) + (modifiedDispersion.MinRadius / (modifiedDispersion.TaperDist / 30)), 4)}",
                 VerticalCoeffFormulaAtShortRange = $"(X * {Math.Round(((modifiedDispersion.RadiusOnDelim - modifiedDispersion.RadiusOnZero) / (maxRangeBW * modifiedDispersion.Delim)) / 30, 8)} + {modifiedDispersion.RadiusOnZero})",
                 DispersionData = mainBattery.DispersionValues,
                 OriginalMainBatteryData = mainBattery,
             };
+
             var shellNames = mainBattery.Guns.First().AmmoList;
             mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, rateOfFire * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
