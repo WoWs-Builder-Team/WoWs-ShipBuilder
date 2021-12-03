@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -377,6 +378,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ImpactAngleModel!.InvalidatePlot(true);
                 this.RaisePropertyChanged(nameof(ShipNames));
             }
+        }
+
+        public void RefreshPlot()
+        {
+            
         }
 
         [DependsOn(nameof(ShipNames))]

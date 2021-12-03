@@ -53,24 +53,28 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
         public override void Render(DrawingContext context)
         {
+            var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
+            Point center = rect.Center;
+
             // DrawFusoReference(context);
-            DrawHalfHitPointsArea(context);
-            DrawAdditionalElements(context);
-            DrawHitPointsArea(context);
-            DrawHitPoints(context);
+            DrawHalfHitPointsArea(context, center);
+            DrawAdditionalElements(context, center);
+            DrawHitPointsArea(context, center);
+            DrawHitPoints(context, center);
         }
 
         /// <summary>
         /// Draws the dispersion ellipse.
         /// </summary>
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
-        private void DrawHitPointsArea(DrawingContext context)
+        /// <param name="center">The center of the area.</param>
+        private void DrawHitPointsArea(DrawingContext context, Point center)
         {
             var xRadius = DispersionPlotParameters.ProjectedVerticalRadius * PlotScaling;
             var yRadius = DispersionPlotParameters.HorizontalRadius * PlotScaling;
             var filling = new SolidColorBrush(Colors.Gray, 0.1);
-            Point center = new(Bounds.Center.X - xRadius, Bounds.Center.Y - yRadius);
-            Rect ellipseRectangle = new(center, new Size(xRadius * 2, yRadius * 2));
+            Point ellipseCenter = new(center.X - xRadius, center.Y - yRadius);
+            Rect ellipseRectangle = new(ellipseCenter, new Size(xRadius * 2, yRadius * 2));
             EllipseGeometry dispersionEllipse = new(ellipseRectangle);
             context.DrawGeometry(filling, new Pen(Foreground, 4), dispersionEllipse);
         }
@@ -79,7 +83,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Draws shells hit points inside the dispersion ellipse.
         /// </summary>
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
-        private void DrawHitPoints(DrawingContext context)
+        /// <param name="center">The center of the area.</param>
+        private void DrawHitPoints(DrawingContext context, Point center)
         {
             var pointRadius = 6 * PlotScaling;
             var pointStyle = new Pen(Brushes.Transparent);
@@ -87,8 +92,8 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             foreach ((var x, var y) in DispersionPlotParameters.HitPoints)
             {
-                Point center = new(Bounds.Center.X - (y * PlotScaling) - pointRadius, Bounds.Center.Y - (x * PlotScaling) - pointRadius);
-                Rect pointRectangle = new(center, new Size(pointRadius * 2, pointRadius * 2));
+                Point pointCenter = new(center.X - (y * PlotScaling) - pointRadius, center.Y - (x * PlotScaling) - pointRadius);
+                Rect pointRectangle = new(pointCenter, new Size(pointRadius * 2, pointRadius * 2));
                 EllipseGeometry pointEllipse = new(pointRectangle);
                 context.DrawGeometry(filling, pointStyle, pointEllipse);
             }
@@ -98,13 +103,14 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Draws the area where 50% of the shots lends on average.
         /// </summary>
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
-        private void DrawHalfHitPointsArea(DrawingContext context)
+        /// <param name="center">The center of the area.</param>
+        private void DrawHalfHitPointsArea(DrawingContext context, Point center)
         {
             var xRadius = DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * PlotScaling;
             var yRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
             var filling = new SolidColorBrush(Colors.Red, 0.1);
-            Point center = new(Bounds.Center.X - xRadius, Bounds.Center.Y - yRadius);
-            Rect ellipseRectangle = new(center, new Size(xRadius * 2, yRadius * 2));
+            Point ellipseCenter = new(center.X - xRadius, center.Y - yRadius);
+            Rect ellipseRectangle = new(ellipseCenter, new Size(xRadius * 2, yRadius * 2));
             EllipseGeometry dispersioEllipse = new(ellipseRectangle);
             context.DrawGeometry(filling, new Pen(Brushes.DarkRed, 2), dispersioEllipse);
         }
@@ -113,7 +119,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// Draws plot rulers and texts.
         /// </summary>
         /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
-        private void DrawAdditionalElements(DrawingContext context)
+        /// <param name="center">The center of the plot.</param>
+        private void DrawAdditionalElements(DrawingContext context, Point center)
         {
             double offsetFromEllipse = 25;
             double textOffset = 5;
@@ -122,7 +129,6 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             string unit = UnitLocalization.Unit_M;
 
-            Point center = Bounds.Center;
             var xOuterRadius = DispersionPlotParameters.ProjectedVerticalRadius * PlotScaling;
             var yOuterRadius = DispersionPlotParameters.HorizontalRadius * PlotScaling;
             var xInnerRadius = DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * PlotScaling;

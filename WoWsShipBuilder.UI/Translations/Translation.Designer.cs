@@ -313,6 +313,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh Plot.
+        /// </summary>
+        public static string DispersionGraphWindow_RefreshDispPlot {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_RefreshDispPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
         public static string DispersionGraphWindow_RemoveShip {

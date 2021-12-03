@@ -921,4 +921,7 @@
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
     <value>Shots number</value>
   </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Refresh Plot</value>
+  </data>
 </root>

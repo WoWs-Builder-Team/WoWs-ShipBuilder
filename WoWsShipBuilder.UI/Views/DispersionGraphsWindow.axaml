@@ -61,7 +61,7 @@
                 </TabItem>
                 <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_DispersionPlot}">
                     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
-                        <Grid Grid.Row="0" ColumnDefinitions="*,*,*" RowDefinitions="*" Margin="50 10 50 5">
+                        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" RowDefinitions="*" Margin="50 10 50 5">
                             <StackPanel Orientation="Vertical" Grid.Column="0" Margin="50 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_AimingRange}" HorizontalAlignment="Center" Margin="0 0 10 0"/>
                                 <DockPanel Grid.Column="0" LastChildFill="True">
@@ -89,6 +89,7 @@
                                     <Slider Value="{Binding PlotScaling}" Minimum="0.5" Maximum="2" TickFrequency="0.25" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
+                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="3" />
                         </Grid>
                         <ScrollViewer Grid.Row="1" Margin="5" HorizontalScrollBarVisibility="Auto">
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5">
@@ -96,11 +97,12 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
-                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" HorizontalAlignment="Left">
-                                                    <TextBlock Text="{Binding Name}" TextAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="5" HorizontalAlignment="Center" CornerRadius="5">
+                                                    <TextBlock Text="{Binding Name}" FontSize="15" TextAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
                                                 </Border>
                                                 <customControls:DispersionPlot DispersionPlotParameters="{Binding}" PlotScaling="{Binding $parent[Window].DataContext.PlotScaling}"/>
-                                            </StackPanel>  
+                                                <Separator HorizontalAlignment="Stretch" Margin="0 5"/>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
