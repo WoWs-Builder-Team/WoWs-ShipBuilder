@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.UI.Extensions;
+using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views

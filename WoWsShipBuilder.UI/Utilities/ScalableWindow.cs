@@ -2,8 +2,9 @@
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.ReactiveUI;
+using WoWsShipBuilder.UI.Extensions;
 
-namespace WoWsShipBuilder.UI.Extensions
+namespace WoWsShipBuilder.UI.Utilities
 {
     public class ScalableWindow : Window, IScalableWindow
     {

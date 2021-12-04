@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
 
-namespace WoWsShipBuilder.UI.Extensions
+namespace WoWsShipBuilder.UI.Utilities
 {
     internal interface IScalableViewModel
     {

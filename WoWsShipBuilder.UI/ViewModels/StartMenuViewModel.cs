@@ -12,6 +12,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
