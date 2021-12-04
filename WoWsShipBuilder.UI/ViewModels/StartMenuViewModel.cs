@@ -9,6 +9,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
@@ -16,7 +17,7 @@ using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class StartMenuViewModel : ViewModelBase
+    class StartMenuViewModel : ViewModelBase, IScalableViewModel
     {
         private readonly StartingMenuWindow? self;
 
@@ -57,6 +58,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => buildList;
             set => this.RaiseAndSetIfChanged(ref buildList, value);
+        }
+
+        private double contentScaling = 1;
+
+        public double ContentScaling
+        {
+            get => contentScaling;
+            set => this.RaiseAndSetIfChanged(ref contentScaling, value);
         }
 
         public async void NewBuild()

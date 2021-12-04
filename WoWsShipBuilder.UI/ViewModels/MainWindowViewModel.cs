@@ -12,7 +12,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         WGPremium,
     }
 
-    class MainWindowViewModel : ViewModelBase
+    class MainWindowViewModel : ViewModelBase, IScalableViewModel
     {
         // ReSharper disable once CollectionNeverQueried.Local
         private readonly List<IDisposable?> collectionChangeListeners = new();
@@ -75,10 +75,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string xpBonus = "0";
 
-        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null)
+        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
         {
             self = window;
-            tokenSource = new CancellationTokenSource();
+            tokenSource = new();
+            ContentScaling = contentScaling;
 
             InitializeData(ship, previousShipIndex, nextShipsIndexes, build);
         }
@@ -222,6 +223,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => rawShipData;
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
+        }
+
+        private double contentScaling = 1;
+
+        public double ContentScaling
+        {
+            get => contentScaling;
+            set => this.RaiseAndSetIfChanged(ref contentScaling, value);
         }
 
         public void ResetBuild()

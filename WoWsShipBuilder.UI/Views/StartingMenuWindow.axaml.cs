@@ -1,11 +1,12 @@
+using System;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class StartingMenuWindow : Window
+    public partial class StartingMenuWindow : ScalableWindow
     {
         public StartingMenuWindow()
         {
@@ -18,6 +19,12 @@ namespace WoWsShipBuilder.UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+            this.HandleAndCheckScaling();
         }
 
         private void LoadBuild(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
