@@ -904,7 +904,7 @@
     <value>HorizontalDispersion[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Aiming range (Km)</value>
+    <value>Aiming Range (Km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistic Graphs</value>
@@ -919,12 +919,45 @@
     <value>Plot Scaling</value>
   </data>
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
-    <value>Shots number</value>
+    <value>Shots Number</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
     <value>Refresh Plot</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-      <value>Send basic telemetry data (current app version)</value>
+    <value>Send basic telemetry data (current app version)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>THIS SHIP CAN'T REACH THE SELECTED AIMING RANGE</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Plot Plane</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontal (Water)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Real</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Fuso Reference</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>In the plot, shells are coming from the right side.
+The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal one is shown vertically.
+
+The WHITE ellispe shows the maximum dispersion area at the selected aiming range.
+The RED ellipse shows the area where 50% of the shells lends on average.
+The BLACK ellipse shows the size of a Fuso pointing towards the incoming shells and seen from above (except for the vertical plane where she is seen from the front).
+
+Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
+The real dispersion ellipse is drawn on a plane perpendicular to the shell's impact angle.
+Only the vertical dispersion projected on water is affected by shell's speed. The real one is not.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>PLOT EXPLANATION</value>
   </data>
 </root>

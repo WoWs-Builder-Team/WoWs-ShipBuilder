@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -23,9 +24,28 @@ namespace WoWsShipBuilder.UI.CustomControls
         public static readonly StyledProperty<double> PlotScalingProperty =
             AvaloniaProperty.Register<DispersionPlot, double>(nameof(PlotScaling), 0.75);
 
+        /// <summary>
+        /// Styled Property for the dispersion ellipse plane.
+        /// </summary>
+        public static readonly StyledProperty<EllipsePlanes> EllipsePlaneProperty =
+            AvaloniaProperty.Register<DispersionPlot, EllipsePlanes>(nameof(EllipsePlane), EllipsePlanes.HorizontalPlane);
+
+        /// <summary>
+        /// Styled Property for the Fuso reference.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsFusoEnabledProperty =
+            AvaloniaProperty.Register<DispersionPlot, bool>(nameof(IsFusoEnabled), false);
+
         static DispersionPlot()
         {
             DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
+        }
+
+        public enum EllipsePlanes
+        {
+            RealPlane,
+            HorizontalPlane,
+            VerticalPlane,
         }
 
         /// <summary>
@@ -47,6 +67,24 @@ namespace WoWsShipBuilder.UI.CustomControls
         }
 
         /// <summary>
+        /// Gets or sets the ellipse plane.
+        /// </summary>
+        public EllipsePlanes EllipsePlane
+        {
+            get => GetValue(EllipsePlaneProperty);
+            set => SetValue(EllipsePlaneProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Fuso reference has to be drawn or not.
+        /// </summary>
+        public bool IsFusoEnabled
+        {
+            get => GetValue(IsFusoEnabledProperty);
+            set => SetValue(IsFusoEnabledProperty, value);
+        }
+
+        /// <summary>
         /// Renders the content of the control, drawing the ellipse as well as the shots fired.
         /// For more details, see <see cref="Visual.Render"/>.
         /// </summary>
@@ -56,7 +94,11 @@ namespace WoWsShipBuilder.UI.CustomControls
             var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
             Point center = rect.Center;
 
-            // DrawFusoReference(context);
+            if (IsFusoEnabled)
+            {
+                DrawFusoReference(context, center);
+            }
+
             DrawHalfHitPointsArea(context, center);
             DrawAdditionalElements(context, center);
             DrawHitPointsArea(context, center);
@@ -70,7 +112,21 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <param name="center">The center of the area.</param>
         private void DrawHitPointsArea(DrawingContext context, Point center)
         {
-            var xRadius = DispersionPlotParameters.ProjectedVerticalRadius * PlotScaling;
+            double xRadius;
+            if (EllipsePlane == EllipsePlanes.HorizontalPlane)
+            {
+                xRadius = DispersionPlotParameters.ProjectedOnWaterVerticalRadius;
+            }
+            else if (EllipsePlane == EllipsePlanes.RealPlane)
+            {
+                xRadius = DispersionPlotParameters.VerticalRadius;
+            }
+            else
+            {
+                xRadius = DispersionPlotParameters.ProjectedOnPerpendicularToWaterVerticalRadius;
+            }
+
+            xRadius *= PlotScaling;
             var yRadius = DispersionPlotParameters.HorizontalRadius * PlotScaling;
             var filling = new SolidColorBrush(Colors.Gray, 0.1);
             Point ellipseCenter = new(center.X - xRadius, center.Y - yRadius);
@@ -86,11 +142,32 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <param name="center">The center of the area.</param>
         private void DrawHitPoints(DrawingContext context, Point center)
         {
-            var pointRadius = 6 * PlotScaling;
+            var pointRadius = 6d;
+
+            if (EllipsePlane == EllipsePlanes.HorizontalPlane || PlotScaling < 1)
+            {
+                pointRadius *= PlotScaling;
+            }
+
             var pointStyle = new Pen(Brushes.Transparent);
             var filling = new SolidColorBrush(Colors.Goldenrod, 0.33);
 
-            foreach ((var x, var y) in DispersionPlotParameters.HitPoints)
+            List<(double x, double y)> hitPoints = new();
+
+            if (EllipsePlane == EllipsePlanes.HorizontalPlane)
+            {
+                hitPoints = DispersionPlotParameters.OnWaterHitPoints;
+            }
+            else if (EllipsePlane == EllipsePlanes.RealPlane)
+            {
+                hitPoints = DispersionPlotParameters.RealHitPoints;
+            }
+            else
+            {
+                hitPoints = DispersionPlotParameters.PerpendicularToWaterHitPoints;
+            }
+
+            foreach ((var x, var y) in hitPoints)
             {
                 Point pointCenter = new(center.X - (y * PlotScaling) - pointRadius, center.Y - (x * PlotScaling) - pointRadius);
                 Rect pointRectangle = new(pointCenter, new Size(pointRadius * 2, pointRadius * 2));
@@ -106,13 +183,58 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <param name="center">The center of the area.</param>
         private void DrawHalfHitPointsArea(DrawingContext context, Point center)
         {
-            var xRadius = DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * PlotScaling;
+            double xRadius;
+            if (EllipsePlane == EllipsePlanes.HorizontalPlane)
+            {
+                xRadius = DispersionPlotParameters.ProjectedOnWaterVerticalRadiusHalfHitPoints;
+            }
+            else if (EllipsePlane == EllipsePlanes.RealPlane)
+            {
+                xRadius = DispersionPlotParameters.VerticalRadiusHalfHitPoints;
+            }
+            else
+            {
+                xRadius = DispersionPlotParameters.ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints;
+            }
+
+            xRadius *= PlotScaling;
             var yRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
             var filling = new SolidColorBrush(Colors.Red, 0.1);
             Point ellipseCenter = new(center.X - xRadius, center.Y - yRadius);
             Rect ellipseRectangle = new(ellipseCenter, new Size(xRadius * 2, yRadius * 2));
             EllipseGeometry dispersioEllipse = new(ellipseRectangle);
             context.DrawGeometry(filling, new Pen(Brushes.DarkRed, 2), dispersioEllipse);
+        }
+
+        /// <summary>
+        /// Draws an ellipse with the same sizes of a Fuso to use as reference.
+        /// </summary>
+        /// <param name="context">The <see cref="DrawingContext"/> used to draw the visualization.</param>
+        /// <param name="center">The center of the plot.</param>
+        private void DrawFusoReference(DrawingContext context, Point center)
+        {
+            var yRadius = 32.2;
+            var xRadius = 212.7;
+            if (EllipsePlane == EllipsePlanes.VerticalPlane)
+            {
+                xRadius = 45;
+            }
+
+            xRadius *= PlotScaling;
+            yRadius *= PlotScaling;
+            var filling = new SolidColorBrush(Colors.Black, 0.25);
+            Point newCenter = new(center.X - xRadius, center.Y - yRadius);
+            Rect ellipseRectangle = new(newCenter, new Size(xRadius * 2, yRadius * 2));
+            EllipseGeometry dispersionEllipse = new(ellipseRectangle);
+            if (EllipsePlane != EllipsePlanes.VerticalPlane)
+            {
+                context.DrawGeometry(filling, new Pen(Brushes.Black, 1), dispersionEllipse);
+            }
+            else
+            {
+                context.FillRectangle(filling, ellipseRectangle, 50);
+                context.DrawRectangle(new Pen(Brushes.Black, 1), ellipseRectangle, 50);
+            }           
         }
 
         /// <summary>
@@ -129,16 +251,36 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             string unit = UnitLocalization.Unit_M;
 
-            var xOuterRadius = DispersionPlotParameters.ProjectedVerticalRadius * PlotScaling;
-            var yOuterRadius = DispersionPlotParameters.HorizontalRadius * PlotScaling;
-            var xInnerRadius = DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * PlotScaling;
-            var yInnerRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
+            double xOuterRadius;
+            double yOuterRadius;
+            double xInnerRadius;
+            double yInnerRadius;
+            if (EllipsePlane == EllipsePlanes.HorizontalPlane)
+            {
+                xOuterRadius = DispersionPlotParameters.ProjectedOnWaterVerticalRadius;
+                xInnerRadius = DispersionPlotParameters.ProjectedOnWaterVerticalRadiusHalfHitPoints;
+            }
+            else if (EllipsePlane == EllipsePlanes.RealPlane)
+            {
+                xOuterRadius = DispersionPlotParameters.VerticalRadius;
+                xInnerRadius = DispersionPlotParameters.VerticalRadiusHalfHitPoints;
+            }
+            else
+            {
+                xOuterRadius = DispersionPlotParameters.ProjectedOnPerpendicularToWaterVerticalRadius;
+                xInnerRadius = DispersionPlotParameters.ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints;
+            }
+
+            xOuterRadius *= PlotScaling;
+            xInnerRadius *= PlotScaling;
+            yOuterRadius = DispersionPlotParameters.HorizontalRadius * PlotScaling;
+            yInnerRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
 
             // text
-            var verticalDiameter = new FormattedText($"{Translation.DispersionPlot_Vertical} {Math.Round(DispersionPlotParameters.ProjectedVerticalRadius * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var verticalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerVertical} {Math.Round(DispersionPlotParameters.ProjectedVerticalRadiusHalfHitPoints * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameter = new FormattedText($"{Translation.DispersionPlot_Horizontal} {Math.Round(DispersionPlotParameters.HorizontalRadius * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerHorizontal} {Math.Round(DispersionPlotParameters.HorizontalRadiusHalfHitPoints * 2)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameter = new FormattedText($"{Translation.DispersionPlot_Vertical} {Math.Round(xOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerVertical} {Math.Round(xInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameter = new FormattedText($"{Translation.DispersionPlot_Horizontal} {Math.Round(yOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerHorizontal} {Math.Round(yInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
 
             // X axis
             context.DrawLine(new Pen(Brushes.Gray, 1), center.AddX(-xOuterRadius), center.AddX(xOuterRadius));
@@ -169,7 +311,7 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             context.DrawText(Foreground, center.AddX(-verticalDiameterHalfHitPoints.Bounds.Width / 2).AddY(-yOuterRadius - offsetFromEllipse - textOffset - (2 * verticalDiameterHalfHitPoints.Bounds.Height)), verticalDiameterHalfHitPoints);
 
-            // horizontalDiameterhalfHitPoints
+            // horizontalDiameterHalfHitPoints
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(-yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(-yInnerRadius));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(yInnerRadius));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(-yInnerRadius));
@@ -181,17 +323,6 @@ namespace WoWsShipBuilder.UI.CustomControls
             // min plot size
             MinHeight = plotMargin + (2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Bounds.Height + verticalDiameter.Bounds.Height));
             MinWidth = plotMargin + (2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Bounds.Height + horizontalDiameterHalfHitPoints.Bounds.Height));
-        }
-
-        private void DrawFusoReference(DrawingContext context)
-        {
-            var xRadius = 129.8 * PlotScaling;
-            var yRadius = 11.2 * PlotScaling;
-            var filling = new SolidColorBrush(Colors.Gray, 1);
-            Point center = new(Bounds.Center.X - xRadius, Bounds.Center.Y - yRadius);
-            Rect ellipseRectangle = new(center, new Size(xRadius * 2, yRadius * 2));
-            EllipseGeometry dispersionEllipse = new(ellipseRectangle);
-            context.DrawGeometry(filling, new Pen(Foreground, 4), dispersionEllipse);
         }
     }
 }

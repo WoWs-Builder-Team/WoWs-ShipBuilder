@@ -29,23 +29,26 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="verticalRadius">The length of the dispersion ellipse vertical radius.</param>
-        /// <returns>The projection ratio and the length of the vertical radius projected on water.</returns>
-        private static (double waterLineProjection, double projectedVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
+        /// <returns>The projection ratio on water and on the perpendicular plane to the water, the length of the vertical radius projected on water and on the perpendicular plane to the water.</returns>
+        private static (double waterLineProjection, double perpendicularToWaterProjection, double projectedOnWaterVerticalRadius, double perpendicularToWaterVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
         {
             double impactAngle;
-            try
+            var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange).Where(x => x.Key >= aimingRange);
+            if (ballistic.Any())
             {
-                impactAngle = BallisticHelper.CalculateBallistic(shell, maxRange).First(x => x.Key >= aimingRange).Value.ImpactAngle;
+                impactAngle = ballistic.First().Value.ImpactAngle;
             }
-            catch (InvalidOperationException e)
+            else
             {
-                return (0, 0);
+                return (0, 0, 0, 0);
             }
 
             var waterLineProjection = Math.Sin(Math.PI / 180 * impactAngle);
-            verticalRadius /= waterLineProjection;
+            var perpendicularToWaterProjection = Math.Cos(Math.PI / 180 * impactAngle);
+            var projectedOnWaterVerticalRadius = verticalRadius / waterLineProjection;
+            var perpendicularToWaterVerticalRadius = verticalRadius / perpendicularToWaterProjection;
 
-            return (waterLineProjection, verticalRadius);
+            return (waterLineProjection, perpendicularToWaterProjection, projectedOnWaterVerticalRadius, perpendicularToWaterVerticalRadius);
         }
 
         /// <summary>
@@ -64,18 +67,21 @@ namespace WoWsShipBuilder.Core.DataUI
         }
 
         /// <summary>
-        /// Calculates the coordinates of the shots hit points projected on water.
+        /// Calculates the coordinates of the shots hit points on the real plane, projected on water and projected on the perpendicular plane to the water.
         /// </summary>
         /// <param name="sigma">The sigma of the ship.</param>
         /// <param name="horizontalRadius">The horizontal radius of the dispersion ellipse.</param>
         /// <param name="verticalRadius">The vertical radius of the dispersion ellipse.</param>
         /// <param name="shotsNumber">The number of shots to simulate.</param>
         /// <param name="waterLineProjection">The projection ratio to project the hitpoints on the waterline.</param>
-        /// <returns>A list of hit points.</returns>
-        private static List<(double x, double y)> GetHitPoints(double sigma, double horizontalRadius, double verticalRadius, int shotsNumber, double waterLineProjection)
+        /// <param name="perpendicularToWaterLineProjection">The projection ratio to project the hitpoints on the perpendicular plane to the waterline.</param>
+        /// <returns>3 lists of hit points.</returns>
+        private static (List<(double x, double y)> RealPlane, List<(double x, double y)> OnWaterLine, List<(double x, double y)> PerpendicularToWaterLine) GetHitPoints(double sigma, double horizontalRadius, double verticalRadius, int shotsNumber, double waterLineProjection, double perpendicularToWaterLineProjection)
         {
             Random random = new();
-            List<(double x, double y)> hitPoints = new();
+            List<(double x, double y)> realHitPoints = new();
+            List<(double x, double y)> onWaterHitPoints = new();
+            List<(double x, double y)> onVerticalHitPoints = new();
             for (int i = 0; i < shotsNumber; i++)
             {
                 var randomRad = 2 * Math.PI * random.NextDouble();
@@ -88,12 +94,12 @@ namespace WoWsShipBuilder.Core.DataUI
                     y = 300 * Math.Log((0.1 * y / 30) + 1.0);
                 }
 
-                y /= waterLineProjection;
-
-                hitPoints.Add((x, y));
+                realHitPoints.Add((x, y));
+                onWaterHitPoints.Add((x, y / waterLineProjection));
+                onVerticalHitPoints.Add((x, y / perpendicularToWaterLineProjection));
             }
             
-            return hitPoints;
+            return (realHitPoints, onWaterHitPoints, onVerticalHitPoints);
         }
 
         /// <summary>
@@ -107,34 +113,67 @@ namespace WoWsShipBuilder.Core.DataUI
         /// <param name="sigma">The sigma of the ship.</param>
         /// <param name="shotsNumber">The number of shots to simulate.</param>
         /// <returns>A DispersionEllipse object containing all the informations.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
         public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
         {
             var ellipse = GetDispersionEllipse(dispersionData, maxRange, aimingRange);
             var projectedEllipse = GetProjectedEllipse(shell, maxRange, aimingRange, ellipse.verticalRadius);
-            var halfRatio = GetHalfHitsRatio(sigma);
-            var hitPointsList = GetHitPoints(sigma, ellipse.horizontalRadius, ellipse.verticalRadius, shotsNumber, projectedEllipse.waterLineProjection);
+            if (projectedEllipse == (0, 0, 0, 0))
+            {
+                return new DispersionEllipse(name, dispersionData, shell, sigma, maxRange);
+            }
 
-            return new DispersionEllipse(name, ellipse.horizontalRadius, ellipse.verticalRadius, projectedEllipse.projectedVerticalRadius, hitPointsList, ellipse.horizontalRadius * halfRatio, ellipse.verticalRadius * halfRatio, projectedEllipse.projectedVerticalRadius * halfRatio);
+            var halfRatio = GetHalfHitsRatio(sigma);
+            var hitPointsList = GetHitPoints(sigma, ellipse.horizontalRadius, ellipse.verticalRadius, shotsNumber, projectedEllipse.waterLineProjection, projectedEllipse.perpendicularToWaterProjection);
+
+            return new DispersionEllipse(name, dispersionData, shell, sigma, maxRange, ellipse.horizontalRadius, ellipse.verticalRadius,
+                                         projectedEllipse.projectedOnWaterVerticalRadius, projectedEllipse.perpendicularToWaterVerticalRadius,
+                                         hitPointsList.RealPlane, hitPointsList.OnWaterLine, hitPointsList.PerpendicularToWaterLine,
+                                         ellipse.horizontalRadius * halfRatio, ellipse.verticalRadius * halfRatio, projectedEllipse.projectedOnWaterVerticalRadius * halfRatio,
+                                         projectedEllipse.perpendicularToWaterVerticalRadius * halfRatio);
         }
     }
 
     public record DispersionEllipse
     {
-        public DispersionEllipse(string name, double horizontalRadius, double verticalRadius, double projectedVerticalRadius, List<(double x, double y)> hitPoints, double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedVerticalRadiusHalfHitPoints)
+        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange)
         {
             Name = name;
+            DispersionData = dispersionData;
+            Shell = shell;
+            Sigma = sigma;
+            MaxRange = maxRange;
+            IsValid = false;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
+        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange,
+                                 double horizontalRadius, double verticalRadius, double projectedOnWaterVerticalRadius, double projectedOnPerpendicularToWaterVerticalRadius,
+                                 List<(double x, double y)> realHitPoints, List<(double x, double y)> onWaterHitPoints, List<(double x, double y)> onPerpendicularToWaterHitPoints,
+                                 double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedOnWaterVerticalRadiusHalfHitPoints, double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
+        {
+            Name = name;
+            DispersionData = dispersionData;
+            Shell = shell;
+            Sigma = sigma;
+            MaxRange = maxRange;
             HorizontalRadius = horizontalRadius;
             VerticalRadius = verticalRadius;
-            ProjectedVerticalRadius = projectedVerticalRadius;
-            HitPoints = hitPoints;
+            ProjectedOnWaterVerticalRadius = projectedOnWaterVerticalRadius;
+            ProjectedOnPerpendicularToWaterVerticalRadius = projectedOnPerpendicularToWaterVerticalRadius;
+            RealHitPoints = realHitPoints;
+            OnWaterHitPoints = onWaterHitPoints;
+            PerpendicularToWaterHitPoints = onPerpendicularToWaterHitPoints;
             HorizontalRadiusHalfHitPoints = horizontalRadiusHalfHitPoints;
             VerticalRadiusHalfHitPoints = verticalRadiusHalfHitPoints;
-            ProjectedVerticalRadiusHalfHitPoints = projectedVerticalRadiusHalfHitPoints;
+            ProjectedOnWaterVerticalRadiusHalfHitPoints = projectedOnWaterVerticalRadiusHalfHitPoints;
+            ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints = projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints;
+            IsValid = true;
         }
 
         public string Name { get; set; }
 
-        public bool IsValid { get; set; } = true;
+        public bool IsValid { get; set; }
 
         public bool IsLast { get; set; } = true;
 
@@ -142,14 +181,30 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public double VerticalRadius { get; set; }
 
-        public double ProjectedVerticalRadius { get; set; }
+        public double ProjectedOnWaterVerticalRadius { get; set; }
 
-        public List<(double x, double y)> HitPoints { get; set; }
+        public double ProjectedOnPerpendicularToWaterVerticalRadius { get; set; }
+
+        public List<(double x, double y)> RealHitPoints { get; set; } = new();
+
+        public List<(double x, double y)> OnWaterHitPoints { get; set; } = new();
+
+        public List<(double x, double y)> PerpendicularToWaterHitPoints { get; set; } = new();
 
         public double HorizontalRadiusHalfHitPoints { get; set; }
 
         public double VerticalRadiusHalfHitPoints { get; set; }
 
-        public double ProjectedVerticalRadiusHalfHitPoints { get; set; }
+        public double ProjectedOnWaterVerticalRadiusHalfHitPoints { get; set; }
+
+        public double ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints { get; set; }
+
+        public Dispersion DispersionData { get; set; }
+
+        public ArtilleryShell Shell { get; set; }
+
+        public double Sigma { get; set; }
+
+        public double MaxRange { get; set; }
     }
 }
