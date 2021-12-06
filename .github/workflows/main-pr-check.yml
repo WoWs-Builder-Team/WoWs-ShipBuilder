@@ -1,19 +1,11 @@
-name: Build and run tests.
+﻿name: Requirement check for merges with main.
 
-on: 
-  push:
-    branches-ignore:
-      - main
-      - development
-    paths-ignore:
-      - '**/*.md'
+on:
   pull_request:
-    branches-ignore: 
+    branches:
       - main
-    paths-ignore:
-      - '**/*.md'
 
-jobs: 
+jobs:
   build-and-release:
     runs-on: windows-latest
     name: Build application
@@ -27,6 +19,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application
-        run: dotnet build --no-restore -c Release
+        run: dotnet build --no-restore -c ReleaseTest
       - name: Test application
-        run: dotnet test --no-build -c Release --verbosity normal
+        run: dotnet test --no-build -c ReleaseTest --verbosity normal

@@ -23,6 +23,9 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
+    <Target Name="PostBuildVersionDump" AfterTargets="Build">
+        <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
+    </Target>
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
