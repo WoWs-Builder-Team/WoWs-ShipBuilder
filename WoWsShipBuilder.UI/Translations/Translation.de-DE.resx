@@ -877,6 +877,6 @@
       <value>Streuungs- und Ballistikdiagramme zeigen</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-      <value>Grundlegende Telemetriedaten senden (aktuelle App-Version)</value>
+      <value>Grundlegende Telemetrie-Daten senden (aktuelle App-Version)</value>
   </data>
 </root>
