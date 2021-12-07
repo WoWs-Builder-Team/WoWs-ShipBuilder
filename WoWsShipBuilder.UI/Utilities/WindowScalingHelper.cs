@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.UI.Extensions;
 
 namespace WoWsShipBuilder.UI.Utilities
 {
