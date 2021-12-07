@@ -2,8 +2,8 @@ name: Build and create release
 
 on: 
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs: 
   build-and-release:
@@ -16,8 +16,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - name: Process tag version
-        run: echo ("CURRENT_TAG=" + $env:GITHUB_REF.Replace('refs/tags/v', '')) >> $env:GITHUB_ENV
       - name: Create application config
         run: 'echo "$APPCONFIG" > WoWsShipBuilder.UI/Settings/ApplicationOptions.json'
         shell: bash
@@ -26,24 +24,30 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application
-        run: dotnet build --no-restore -c Release -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
+        run: dotnet build --no-restore -c Release
+        
+      - name: Store current application version
+        uses: actions/upload-artifact@v2
+        with: 
+          name: buildInfo
+          path: WoWsShipBuilder.UI\buildInfo.txt
+      - name: Store current application version as environment variable
+        run: echo ("CURRENT_TAG=v" + (Get-Content -Path .\WoWsShipBuilder.UI\buildInfo.txt -First 1)) >> $env:GITHUB_ENV
+        
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal
-        
-      - name: Publish windows executable
-        run: dotnet publish WoWsShipBuilder.UI -c Release -p:PublishProfile=PublishWindows -p:Version="$env:CURRENT_TAG" -p:AssemblyVersion="$env:CURRENT_TAG" -p:FileVersion="$env:CURRENT_TAG"
-      - name: Copy missing native dll to output
-        run: Copy-Item -Path WoWsShipBuilder.UI\bin\Release\net5.0\runtimes\win7-x64\native\av_libGLESv2.dll -Destination WoWsShipBuilder.UI\bin\Release\net5.0\publish\
-      - name: Package published binary
-        run: dotnet pack WoWsShipBuilder.UI -c Release -p:NuspecFile=WoWsShipBuilder.nuspec -p:NuspecBasePath=bin/Release/net5.0/publish -p:NuspecProperties=version="$env:CURRENT_TAG"
-      - name: Create squirrel release
-        run: Tools\Squirrel.com --releasify WoWsShipBuilder.UI\bin\Release\WoWsShipBuilder.$env:CURRENT_TAG.nupkg --selfContained --releaseDir=".\releases" --setupIcon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --icon="WoWsShipBuilder.UI\Assets\ShipBuilderIcon_bg.ico" --no-delta --no-msi --loadingGif="LoadingIcon.gif"
+      - name: Squirrel build and release
+        run: Tools\SquirrelBuildAndRelease.ps1
+        shell: powershell
         
       - name: Release
-        uses: softprops/action-gh-release@v1
-        with: 
-          files: releases\*
-          body_path: ReleaseNotes.md
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: releases/*
+          bodyFile: ReleaseNotes.md
+          tag: ${{ env.CURRENT_TAG }}
+          commit: main
+          token: ${{ secrets.GITHUB_TOKEN }}
   
   sentry-notify:
     runs-on: ubuntu-latest
@@ -52,8 +56,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Process tag name
-        run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
+      - name: Download version info
+        uses: actions/download-artifact@v2
+        with:
+          name: buildInfo
+          path: buildInfo
+      - name: Process release version
+        run: echo "RELEASE_VERSION=$(head -n 1 buildInfo/buildInfo.txt)" >> $GITHUB_ENV
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:

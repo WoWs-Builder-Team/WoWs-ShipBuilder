@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task UpdateLocalization(ServerType serverType)
         {
             var installedLocales = appDataHelper.GetInstalledLocales(serverType);
-            if (!installedLocales.Contains(AppData.Settings.Locale))
+            if (!installedLocales.Contains(AppData.Settings.Locale + ".json"))
             {
                 installedLocales.Add(AppData.Settings.Locale + ".json");
             }
@@ -186,12 +186,23 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 filesToDownload.Add((string.Empty, "VersionInfo.json"));
             }
 
+            string versionName;
+            try
+            {
+                versionName = onlineVersionInfo.LastVersionName.Substring(0, onlineVersionInfo.LastVersionName.IndexOf('#'));
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
+                versionName = "0.10.10"; // Fallback value for now.
+            }
+
             return new UpdateCheckResult(
                 filesToDownload,
                 shouldImagesUpdate,
                 canImagesDeltaUpdate,
                 shouldLocalizationUpdate,
-                onlineVersionInfo.VersionName,
+                versionName,
                 serverType);
         }
 
@@ -236,7 +247,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public bool ShouldUpdaterRun(ServerType serverType)
         {
             var today = DateTime.Today;
-            return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalHours > 12 ||
+            return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
                    appDataHelper.ReadLocalVersionInfo(serverType) == null;
         }
 

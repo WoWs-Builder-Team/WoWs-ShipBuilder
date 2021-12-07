@@ -2,97 +2,114 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
         x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        Height="450" Width="650" CanResize="False"
+        Height="500" Width="700" CanResize="False"
         WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <SolidColorBrush x:Key="SelectedTabColor" Color="Purple"/>
-    </Window.Resources>
-
     <Grid RowDefinitions="30, *">
-        <userControls:AppHeader Grid.Row="0"/>
+        <userControls:AppHeader Grid.Row="0" />
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
             <Border Classes="BorderPanel" Grid.Row="0" Margin="5">
                 <TabControl>
+
+                    <!-- Settings Tab -->
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
-                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" Grid.Column="0" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0"/>
-                                <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}" SelectedItem="{Binding Path=SelectedLanguage}"/>
+                            <!-- ReSharper disable Xaml.MissingGridIndex -->
+                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
+                                <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
+                                          SelectedItem="{Binding Path=SelectedLanguage}" />
+
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Server}" VerticalAlignment="Center" />
-                                <ComboBox VerticalAlignment="Center" Items="{Binding Servers}" SelectedItem="{Binding SelectedServer}"/>
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_ResetSettings}" VerticalAlignment="Center" />
-                                <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding ResetSettings}" Content="{x:Static t:Translation.SettingsWindow_Reset}"></Button>
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_CleanAppData}"  VerticalAlignment="Center" />
-                                <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding CleanAppData}" Content="{x:Static t:Translation.SettingsWindow_Clean}"></Button>
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_AutoUpdate}"  VerticalAlignment="Center" />
-                                <CheckBox IsChecked="{Binding AutoUpdate}"></CheckBox>
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_CustomPath}"/>
-                                <CheckBox IsChecked="{Binding IsCustomPathEnabled}"/>
-                                <TextBox IsEnabled="{Binding IsCustomPathEnabled}" Grid.ColumnSpan="2" Watermark="{x:Static t:Translation.SettingsWindow_InsertCustomPath}" Text="{Binding CustomPath}" >
+                                <ComboBox VerticalAlignment="Center" Items="{Binding Servers}" SelectedItem="{Binding SelectedServer}" />
+
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_ResetSettings}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding ResetSettings}"
+                                        Content="{x:Static t:Translation.SettingsWindow_Reset}" />
+
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_CleanAppData}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding CleanAppData}"
+                                        Content="{x:Static t:Translation.SettingsWindow_Clean}" />
+
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_AutoUpdate}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <CheckBox IsChecked="{Binding AutoUpdate}" />
+
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <CheckBox IsChecked="{Binding TelemetryDataEnabled}" />
+
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_CustomPath}" TextWrapping="Wrap" />
+                                <CheckBox IsChecked="{Binding IsCustomPathEnabled}" />
+
+                                <TextBox IsEnabled="{Binding IsCustomPathEnabled}" Grid.ColumnSpan="2"
+                                         Watermark="{x:Static t:Translation.SettingsWindow_InsertCustomPath}" Text="{Binding CustomPath}">
                                     <TextBox.InnerRightContent>
-                                        <Button Content="..." Command="{Binding SelectFolder}" Margin="5,0,0,0"/>
+                                        <Button Content="..." Command="{Binding SelectFolder}" Margin="5,0,0,0" />
                                     </TextBox.InnerRightContent>
                                     <TextBox.Styles>
                                         <Style Selector="TextBox /template/ TextPresenter">
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center" />
                                         </Style>
                                         <Style Selector="TextBox /template/ TextBlock#watermark">
-                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center" />
                                         </Style>
                                     </TextBox.Styles>
                                 </TextBox>
+
                                 <StackPanel Spacing="10" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                    <Button IsDefault="True" Content="{x:Static t:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}"/>
-                                    <Button IsCancel="True" Content="{x:Static t:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}"/>
+                                    <Button IsDefault="True" Content="{x:Static t:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}" />
+                                    <Button IsCancel="True" Content="{x:Static t:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}" />
                                 </StackPanel>
                             </customControls:AutoGrid>
+                            <!-- ReSharper enable Xaml.MissingGridIndex -->
                         </Border>
                     </TabItem>
+
+                    <!-- Info Tab -->
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Info}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <StackPanel Spacing="10">
                                 <StackPanel.Styles>
                                     <Style Selector="TextBlock">
-                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="FontSize" Value="13" />
                                     </Style>
                                 </StackPanel.Styles>
                                 <DockPanel HorizontalAlignment="Stretch">
                                     <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                                        <StackPanel Orientation="Horizontal" >
-                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}" />
                                             <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}"/>
+                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}" />
                                             <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
                                         </StackPanel>
-                                     </StackPanel>
-                                    <Button Content="{x:Static t:Translation.SettingsWindow_CopyVersions}" Command="{Binding CopyVersion}" DockPanel.Dock="Right"/>
+                                    </StackPanel>
+                                    <Button Content="{x:Static t:Translation.SettingsWindow_CopyVersions}" Command="{Binding CopyVersion}"
+                                            DockPanel.Dock="Right" />
                                 </DockPanel>
-                                <Separator/>
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}"/>
+                                <Separator />
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}" />
                                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
-                                    <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1"/>
-                                    <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1"/>
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0"/>
-                                    <TextBlock Text="ephrs" Grid.Row="2" Grid.Column="1"/>
-                                    <TextBlock Text="iTTo" Grid.Row="3" Grid.Column="1"/>
-                                    <TextBlock Text="Shaticor" Grid.Row="4" Grid.Column="1"/>
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Data}" Grid.Row="5" Margin="0,0,10,0"/>
-                                    <TextBlock Text="notyourfather" Grid.Row="5" Grid.Column="1"/>
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="6" Grid.Column="0" Margin="0,0,10,0"/>
-                                    <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1"/>
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1" />
+                                    <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1" />
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="ephrs" Grid.Row="2" Grid.Column="1" />
+                                    <TextBlock Text="iTTo" Grid.Row="3" Grid.Column="1" />
+                                    <TextBlock Text="Shaticor" Grid.Row="4" Grid.Column="1" />
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Data}" Grid.Row="5" Margin="0,0,10,0" />
+                                    <TextBlock Text="notyourfather" Grid.Row="5" Grid.Column="1" />
+                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="6" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1" />
                                 </Grid>
-                                <Separator/>
-                                <Button Content="Donate" Command="{Binding Donate}" Grid.Row="2"/>
-                                <Image Source="/Assets/discord.png" Width="200" Cursor="Hand" PointerReleased="OpenDiscord"/>
+                                <Separator />
+                                <Button Content="Donate" Command="{Binding Donate}" Grid.Row="2" />
+                                <Image Source="/Assets/discord.png" Width="200" Cursor="Hand" PointerReleased="OpenDiscord" />
                             </StackPanel>
                         </Border>
                     </TabItem>
@@ -100,21 +117,21 @@
                 <!--Right panel-->
             </Border>
             <Border Classes="BorderPanel" Grid.Column="1" Margin="10" Padding="10">
-                 <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0"></Image>
+                <Image Source="/Assets/Art/logo_white_text.png" />
             </Border>
         </Grid>
     </Grid>
     <Window.Styles>
         <Style Selector="TabItem:selected">
-            <Setter Property="Background" Value="Gray"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Gray" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         <Style Selector="TabItem:pointerover">
             <Setter Property="Background">
-                <SolidColorBrush Color="Gray" Opacity="0.7"/>
+                <SolidColorBrush Color="Gray" Opacity="0.7" />
             </Setter>
             <Setter Property="Foreground">
-                <SolidColorBrush Color="White" Opacity="0.7"/>
+                <SolidColorBrush Color="White" Opacity="0.7" />
             </Setter>
         </Style>
     </Window.Styles>

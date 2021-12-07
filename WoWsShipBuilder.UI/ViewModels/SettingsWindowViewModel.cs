@@ -37,6 +37,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             AutoUpdate = AppData.Settings.AutoUpdateEnabled;
             CustomPath = AppData.Settings.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
+            TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
 
             if (AppData.DataVersion is null)
             {
@@ -79,7 +80,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref isCustomPathEnabled, value);
         }
 
-        private string version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
+        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 
         public string Version
         {
@@ -125,6 +126,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => servers;
             set => this.RaiseAndSetIfChanged(ref servers, value);
+        }
+
+        private bool telemetryDataEnabled;
+
+        public bool TelemetryDataEnabled
+        {
+            get => telemetryDataEnabled;
+            set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
         }
 
         public void ResetSettings()
@@ -180,22 +189,22 @@ namespace WoWsShipBuilder.UI.ViewModels
                 {
                     pathChanged = !AppData.Settings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
                     AppData.Settings.CustomDataPath = CustomPath;
-                    AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                    AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-                    AppData.Settings.Locale = languages[SelectedLanguage];
                 }
             }
             else
             {
                 AppData.Settings.CustomDataPath = null;
-                AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-                AppData.Settings.Locale = languages[SelectedLanguage];
             }
+
+            AppData.Settings.AutoUpdateEnabled = AutoUpdate;
+            AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+            AppData.Settings.Locale = languages[SelectedLanguage];
+            AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
 
             if (serverChanged || pathChanged)
             {
                 await new DownloadWindow().ShowDialog(self);
+                AppData.ShipSummaryList = null;
             }
 
             self.Close();

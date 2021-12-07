@@ -80,7 +80,8 @@ namespace WoWsShipBuilder.Core.HttpClients
                 await DownloadFileAsync(new Uri(zipUrl), zipPath)
                     .ContinueWith(
                         t => Logger.Warn(t.Exception, "Exception while downloading images from uri: {}", zipUrl),
-                        TaskContinuationOptions.OnlyOnFaulted);
+                        TaskContinuationOptions.OnlyOnFaulted)
+                    .ContinueWith(_ => { }, TaskContinuationOptions.NotOnFaulted);
                 ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
                 FileSystem.File.Delete(zipPath);
             }
@@ -117,7 +118,8 @@ namespace WoWsShipBuilder.Core.HttpClients
                     await DownloadFileAsync(uri, localFileName)
                         .ContinueWith(
                             t => Logger.Warn(t.Exception, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName),
-                            TaskContinuationOptions.OnlyOnFaulted);
+                            TaskContinuationOptions.OnlyOnFaulted)
+                        .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted);
                     progress.Report(1);
                 });
                 taskList.Add(task);
@@ -147,6 +149,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             string localeName = FileSystem.Path.Combine(localePath, fileName);
             await DownloadFileAsync(new Uri(url), localeName)
                 .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
+                .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted)
                 .ConfigureAwait(false);
         }
     }

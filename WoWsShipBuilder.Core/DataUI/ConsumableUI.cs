@@ -62,6 +62,8 @@ namespace WoWsShipBuilder.Core.DataUI
             float workTime = consumable.WorkTime;
             if (isCvPlanes)
             {
+                workTime = modifiers.FindModifiers("planeConsumablesWorkTime").Aggregate(workTime, (current, modifier) => current * modifier);
+
                 if (name.Contains("PCY036", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var workTimeModifiers = modifiers.FindModifiers("regenerateHealthWorkTimeCoeff");
@@ -81,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     var usesModifiers = modifiers.FindModifiers("callFightersAdditionalConsumables");
                     uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
-                    
+
                     var radiusModifiers = modifiers.FindModifiers("callFightersRadiusCoeff");
                     var radius = radiusModifiers.Aggregate(consumableModifiers["radius"], (current, modifier) => current * modifier);
                     consumableModifiers["radius"] = radius;
@@ -89,9 +91,9 @@ namespace WoWsShipBuilder.Core.DataUI
                     var timeDelayAttackModifiers = modifiers.FindModifiers("callFightersTimeDelayAttack");
                     var timeDelayAttack = timeDelayAttackModifiers.Aggregate(consumableModifiers["timeDelayAttack"], (current, modifier) => current * modifier);
                     consumableModifiers["timeDelayAttack"] = timeDelayAttack;
-                    
-                    var timeFromHeavenkModifiers = modifiers.FindModifiers("callFightersAppearDelay");
-                    var timeFromHeaven = timeFromHeavenkModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
+
+                    var timeFromHeavenModifiers = modifiers.FindModifiers("callFightersAppearDelay");
+                    var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
                     consumableModifiers["timeFromHeaven"] = timeFromHeaven;
                 }
                 else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))

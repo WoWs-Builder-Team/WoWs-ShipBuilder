@@ -1,19 +1,18 @@
-name: Build and run tests.
+﻿name: Build and run tests on development branch
 
-on: 
+on:
   push:
-    branches-ignore:
-      - main
+    branches:
       - development
     paths-ignore:
       - '**/*.md'
   pull_request:
-    branches-ignore: 
-      - main
+    branches:
+      - development
     paths-ignore:
       - '**/*.md'
 
-jobs: 
+jobs:
   build-and-release:
     runs-on: windows-latest
     name: Build application

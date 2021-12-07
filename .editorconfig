@@ -11,7 +11,7 @@ tab_width = 4
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
-resharper_wrap_lines = true
+resharper_wrap_lines = false
 
 dotnet_diagnostic.SA0001.severity = none # Ignore disabled xml documentation
 dotnet_diagnostic.SA1000.severity = none # Ignore missing space after "new"
@@ -46,3 +46,6 @@ dotnet_diagnostic.SA1641.severity = none # Company text does not have to match
 dotnet_diagnostic.SA1642.severity = none # Constructor summary can have any text
 dotnet_diagnostic.SA1643.severity = none # Destructor summary can have any text
 dotnet_diagnostic.SA1648.severity = none # Inherit doc can be used wherever you want
+
+[*.axaml]
+max_line_length = 160

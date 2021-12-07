@@ -907,6 +907,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send basic telemetry data (current app version).
+        /// </summary>
+        public static string SettingsWindow_TelemetryEnabled {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TelemetryEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version:.
         /// </summary>
         public static string SettingsWindow_Version {
@@ -2253,6 +2262,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string StartMenu_NewBuild {
             get {
                 return ResourceManager.GetString("StartMenu_NewBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show dispersion and ballistics graphs.
+        /// </summary>
+        public static string StartMenu_OpenDispersionWindow {
+            get {
+                return ResourceManager.GetString("StartMenu_OpenDispersionWindow", resourceCulture);
             }
         }
         
