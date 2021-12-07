@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>WoWsShipBuilder</id>
-        <version>0.0.0.0</version>
+        <version>$version$</version>
         <title>WoWs ShipBuilder</title>
         <authors>WoWs-Builder-Team</authors>
         <description>A tool to create and share ship builds in World of Warships</description>
