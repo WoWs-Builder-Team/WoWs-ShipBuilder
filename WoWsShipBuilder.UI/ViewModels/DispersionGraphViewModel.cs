@@ -422,7 +422,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             logger.Info("Trying to remove ship from series");
 
-            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
+            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self!, shipNames.ToList());
             if (result.Count > 0)
             {
                 foreach (var ship in result)
@@ -721,7 +721,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The corresponding <see cref="OxyColor"/>.</returns>
         private OxyColor ConvertColorFromResource(string resourceKey)
         {
-            var color = self.FindResource(resourceKey) as Color?;
+            var color = self!.FindResource(resourceKey) as Color?;
             return OxyColor.FromUInt32(color!.Value.ToUint32());
         }
 
