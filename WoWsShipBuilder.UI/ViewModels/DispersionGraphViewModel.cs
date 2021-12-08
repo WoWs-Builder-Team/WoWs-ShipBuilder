@@ -247,9 +247,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private bool isFusoEnabled = false;
+        private bool? isFusoEnabled = false;
 
-        public bool IsFusoEnabled
+        public bool? IsFusoEnabled
         {
             get => isFusoEnabled;
             set
@@ -435,7 +435,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                     DispersionPlotList.RemoveAt(index);
                     if (DispersionPlotList.Count > 0)
                     {
-                        // TODO: verify
                         DispersionPlotList.Last().UpdateIsLast(true);
                     }
 

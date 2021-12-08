@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.Core.DataUI
         }
 
         /// <summary>
-        /// Calculates the  cumulative density function (CDF) of a standard normal (Gaussian) random variable.
+        /// Calculates the cumulative density function (CDF) of a standard normal (Gaussian) random variable.
         /// </summary>
         /// <param name="x">The variable of the CDF function.</param>
         /// <returns>The CDF of the given variable.</returns>

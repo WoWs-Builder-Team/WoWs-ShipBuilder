@@ -33,19 +33,14 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <summary>
         /// Styled Property for the Fuso reference.
         /// </summary>
-        public static readonly StyledProperty<bool> IsFusoEnabledProperty =
-            AvaloniaProperty.Register<DispersionPlot, bool>(nameof(IsFusoEnabled), false);
+        public static readonly StyledProperty<bool?> IsFusoEnabledProperty =
+            AvaloniaProperty.Register<DispersionPlot, bool?>(nameof(IsFusoEnabled));
 
         static DispersionPlot()
         {
             DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
-            PlotScalingProperty.Changed.AddClassHandler<DispersionPlot>((plot, e) =>
-            {
-                if (e.NewValue is > 0d)
-                {
-                    plot.InvalidateVisual();
-                }
-            });
+            PlotScalingProperty.Changed.AddClassHandler<DispersionPlot>((plot, e) => plot.InvalidateVisual());
+            IsFusoEnabledProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
         }
 
         public enum EllipsePlanes
@@ -85,7 +80,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <summary>
         /// Gets or sets a value indicating whether the Fuso reference has to be drawn or not.
         /// </summary>
-        public bool IsFusoEnabled
+        public bool? IsFusoEnabled
         {
             get => GetValue(IsFusoEnabledProperty);
             set => SetValue(IsFusoEnabledProperty, value);
@@ -101,11 +96,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
             Point center = rect.Center;
 
-            if (IsFusoEnabled)
-            {
-                DrawFusoReference(context, center);
-            }
-
+            DrawFusoReference(context, center);
             DrawHalfHitPointsArea(context, center);
             DrawAdditionalElements(context, center);
             DrawHitPointsArea(context, center);
@@ -222,6 +213,17 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             var yRadius = 32.2;
             var xRadius = 212.7;
+
+            if (IsFusoEnabled == false)
+            {               
+                return;
+            }
+            else if (IsFusoEnabled == null)
+            {
+                xRadius = 32.2;
+                yRadius = 212.7;
+            }
+
             if (EllipsePlane == EllipsePlanes.VerticalPlane)
             {
                 xRadius = 45;
@@ -242,6 +244,9 @@ namespace WoWsShipBuilder.UI.CustomControls
                 context.FillRectangle(filling, ellipseRectangle, 50);
                 context.DrawRectangle(new Pen(Brushes.Black, 1), ellipseRectangle, 50);
             }
+
+            MinHeight = (2 * yRadius) + 5;
+            MinWidth = (2 * xRadius) + 5;
         }
 
         /// <summary>
@@ -328,8 +333,18 @@ namespace WoWsShipBuilder.UI.CustomControls
             rotation2.Dispose();
 
             // min plot size
-            MinHeight = plotMargin + (2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Bounds.Height + verticalDiameter.Bounds.Height));
-            MinWidth = plotMargin + (2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Bounds.Height + horizontalDiameterHalfHitPoints.Bounds.Height));
+            var height = 2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Bounds.Height + verticalDiameter.Bounds.Height);
+            var width = 2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Bounds.Height + horizontalDiameterHalfHitPoints.Bounds.Height);
+
+            if (height > MinHeight)
+            {
+                MinHeight = height + plotMargin;
+            }
+
+            if (width > MinWidth)
+            {
+                MinWidth = width + plotMargin;
+            }
         }
     }
 }

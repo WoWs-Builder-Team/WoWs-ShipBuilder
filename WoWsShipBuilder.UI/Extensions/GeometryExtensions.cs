@@ -64,17 +64,17 @@ namespace WoWsShipBuilder.UI.Extensions
 
         public static Point MultiplyX(this Point point, double x)
         {
-            return new Point(point.X * x, point.Y);
+            return new(point.X * x, point.Y);
         }
 
         public static Point MultiplyY(this Point point, double y)
         {
-            return new Point(point.X, point.Y * y);
+            return new(point.X, point.Y * y);
         }
 
         public static Point SwapXY(this Point point)
         {
-            return new Point(point.Y, point.X);
+            return new(point.Y, point.X);
         }
     }
 }
