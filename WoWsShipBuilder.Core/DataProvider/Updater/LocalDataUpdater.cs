@@ -159,8 +159,8 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 shouldLocalizationUpdate = true;
                 try
                 {
-                    string oldVersionSubstring = localVersionInfo.VersionName.Substring(0, localVersionInfo.VersionName.IndexOf('#'));
-                    string expectedOldVersion = onlineVersionInfo.LastVersionName.Substring(0, onlineVersionInfo.LastVersionName.IndexOf('#'));
+                    string oldVersionSubstring = localVersionInfo.VersionName[..localVersionInfo.VersionName.IndexOf('#')];
+                    string expectedOldVersion = onlineVersionInfo.LastVersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
                     canImagesDeltaUpdate = oldVersionSubstring.Equals(expectedOldVersion, StringComparison.Ordinal);
                 }
                 catch (Exception)
@@ -175,7 +175,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             else
             {
                 // Default case if there is no update available.
-                filesToDownload = new List<(string, string)>();
+                filesToDownload = new();
                 shouldImagesUpdate = false;
                 canImagesDeltaUpdate = false;
                 shouldLocalizationUpdate = false;
@@ -189,7 +189,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             string versionName;
             try
             {
-                versionName = onlineVersionInfo.LastVersionName.Substring(0, onlineVersionInfo.LastVersionName.IndexOf('#'));
+                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
             }
             catch (Exception e)
             {
@@ -197,13 +197,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 versionName = "0.10.10"; // Fallback value for now.
             }
 
-            return new UpdateCheckResult(
-                filesToDownload,
-                shouldImagesUpdate,
-                canImagesDeltaUpdate,
-                shouldLocalizationUpdate,
-                versionName,
-                serverType);
+            return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
         }
 
         /// <summary>

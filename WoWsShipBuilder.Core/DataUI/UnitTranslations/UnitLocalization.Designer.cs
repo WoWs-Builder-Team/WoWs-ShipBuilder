@@ -169,6 +169,15 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to salvos/min.
+        /// </summary>
+        internal static string Unit_SalovsPerMinute {
+            get {
+                return ResourceManager.GetString("Unit_SalovsPerMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to shots/s.
         /// </summary>
         internal static string Unit_ShotsPerSecond {
