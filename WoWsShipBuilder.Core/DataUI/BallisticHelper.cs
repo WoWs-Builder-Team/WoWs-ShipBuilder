@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -17,9 +16,9 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
-        private static double maxAngles = 600;           // Max Angle                    | degrees
-        private static double angleStep = 0.00174533;    // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
-        private static double dt = 0.02;                  // Time step                    | s
+        private const double MaxAngles = 600; // Max Angle                    | degrees
+        private const double AngleStep = 0.00174533; // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
+        private const double Dt = 0.02; // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>
@@ -44,9 +43,9 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var list = new List<double>();
 
-            for (int i = 0; i < maxAngles; i++)
+            for (int i = 0; i < MaxAngles; i++)
             {
-                list.Add(i * angleStep);
+                list.Add(i * AngleStep);
             }
 
             return list;
@@ -54,7 +53,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         private static double GetNormalization(double caliber)
         {
-            double norm = 0;
+            double norm;
             if (caliber <= 0.139)
             {
                 norm = 10 * Math.PI / 180;
@@ -66,14 +65,14 @@ namespace WoWsShipBuilder.Core.DataUI
             else if (caliber <= 0.24)
             {
                 norm = 7 * Math.PI / 180;
-              }
+            }
             else if (caliber < 0.51)
             {
                 norm = 6 * Math.PI / 180;
             }
             else
             {
-                norm = 15 * Math.PI / 180;     
+                norm = 15 * Math.PI / 180;
             }
 
             return norm;
@@ -114,39 +113,39 @@ namespace WoWsShipBuilder.Core.DataUI
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
-                var v_x = initialSpeed * Math.Cos(angle);
-                var v_y = initialSpeed * Math.Sin(angle);
+                var vX = initialSpeed * Math.Cos(angle);
+                var vY = initialSpeed * Math.Sin(angle);
 
                 while (y >= 0)
                 {
-                    x += dt * v_x;
-                    y += dt * v_y;
+                    x += Dt * vX;
+                    y += Dt * vY;
 #pragma warning disable SA1312 // Variable names should begin with lower-case letter
                     var T = T0 - (L * y);
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter
                     var p = P0 * Math.Pow(T / T0, G * M / R / L);
 
-                    var rho_g = (p * M) / R / T;
+                    var rhoG = (p * M) / R / T;
 
-                    var speed = Math.Sqrt((v_x * v_x) + (v_y * v_y));
+                    var speed = Math.Sqrt((vX * vX) + (vY * vY));
 
-                    v_x = v_x - (dt * k * rho_g * v_x * speed);
+                    vX -= Dt * k * rhoG * vX * speed;
 
-                    v_y = v_y - (dt * G) - (dt * k * rho_g * v_y * speed);
+                    vY = vY - (Dt * G) - (Dt * k * rhoG * vY * speed);
 
-                    t += dt;
+                    t += Dt;
                 }
 
-                var v_impact = Math.Sqrt((v_x * v_x) + (v_y * v_y));
-                var impactAngle = Math.Atan2(Math.Abs(v_y), Math.Abs(v_x)) * (180 / Math.PI);
-                var pen = CalculatePen(v_impact, shell.Caliber, shell.Mass, shell.Krupp);
+                var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
+                var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
+                var pen = CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
 
                 if (x > maxRange || x < lastRange)
                 {
                     break;
                 }
 
-                var ballistic = new Ballistic(pen, v_impact, t / TimeMultiplier, impactAngle);
+                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle);
                 dict.Add(x, ballistic);
                 lastRange = x;
             }
@@ -155,22 +154,5 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public record Ballistic
-    {
-        public Ballistic(double penetration, double velocity, double flightTime, double impactAngle)
-        {
-            Penetration = penetration;
-            Velocity = velocity;
-            FlightTime = flightTime;
-            ImpactAngle = impactAngle;
-        }
-
-        public double Penetration { get; set; }
-
-        public double Velocity { get; set; }
-
-        public double FlightTime { get; set; }
-
-        public double ImpactAngle { get; set; }
-    }
+    public sealed record Ballistic(double Penetration, double Velocity, double FlightTime, double ImpactAngle);
 }
