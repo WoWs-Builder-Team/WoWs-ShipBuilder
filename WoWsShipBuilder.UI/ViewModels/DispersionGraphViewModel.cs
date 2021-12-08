@@ -460,18 +460,16 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var newDispersionPlotList = new List<DispersionPlotItemViewModel>();
             foreach (var itemViewModel in DispersionPlotList)
             {
                 var dispersionPlot = itemViewModel.DispersionEllipse;
                 var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Name, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
-                newDispersionPlotList.Add(new(newPlot) { IsLast = false });
+                itemViewModel.DispersionEllipse = newPlot;
+                itemViewModel.IsLast = false;
             }
 
             EffectiveEllipsePlane = SelectedEllipsePlane;
-            newDispersionPlotList.Last().UpdateIsLast(true);
-            DispersionPlotList.Clear();
-            DispersionPlotList.AddRange(newDispersionPlotList);
+            DispersionPlotList.LastOrDefault()?.UpdateIsLast(true);
         }
 
         [DependsOn(nameof(ShipNames))]
