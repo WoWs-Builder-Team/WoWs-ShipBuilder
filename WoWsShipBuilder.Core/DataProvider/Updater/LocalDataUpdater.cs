@@ -294,17 +294,17 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 await awsClient.DownloadImages(ImageType.Ship, versionName);
             }
 
-            var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
-            if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
-            {
-                progressTracker.Report((3, "SplashScreen_CamoImages"));
-                await awsClient.DownloadImages(ImageType.Camo);
-            }
-            else
-            {
-                progressTracker.Report((3, "SplashScreen_CamoImages"));
-                await awsClient.DownloadImages(ImageType.Camo, versionName);
-            }
+            // var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
+            // if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
+            // {
+            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
+            //     await awsClient.DownloadImages(ImageType.Camo);
+            // }
+            // else
+            // {
+            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
+            //     await awsClient.DownloadImages(ImageType.Camo, versionName);
+            // }
         }
     }
 }
