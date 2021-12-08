@@ -17,6 +17,8 @@
 - Clear list of ships for the ship selection window after the server type is changed in the settings window
 - Update embedded icons to show correct versions of the Airstrike upgrade
 - Fixed modifier calculation for some CV upgrades
+- Fixed additional spotter planes provided by "Eye in the Sky" not being taken into account
+- Fixed engine upgrade modifier calculation
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
