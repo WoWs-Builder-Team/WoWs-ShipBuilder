@@ -98,7 +98,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 onWaterHitPoints.Add((x, y / waterLineProjection));
                 onVerticalHitPoints.Add((x, y / perpendicularToWaterLineProjection));
             }
-            
+
             return (realHitPoints, onWaterHitPoints, onVerticalHitPoints);
         }
 
@@ -134,29 +134,16 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public record DispersionEllipse
+    public record DispersionEllipse(string Name, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange)
     {
-        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange)
-        {
-            Name = name;
-            DispersionData = dispersionData;
-            Shell = shell;
-            Sigma = sigma;
-            MaxRange = maxRange;
-            IsValid = false;
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
         public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange,
                                  double horizontalRadius, double verticalRadius, double projectedOnWaterVerticalRadius, double projectedOnPerpendicularToWaterVerticalRadius,
                                  List<(double x, double y)> realHitPoints, List<(double x, double y)> onWaterHitPoints, List<(double x, double y)> onPerpendicularToWaterHitPoints,
-                                 double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedOnWaterVerticalRadiusHalfHitPoints, double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
+                                 double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedOnWaterVerticalRadiusHalfHitPoints,
+                                 double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
+        : this(name, dispersionData, shell, sigma, maxRange)
         {
-            Name = name;
-            DispersionData = dispersionData;
-            Shell = shell;
-            Sigma = sigma;
-            MaxRange = maxRange;
             HorizontalRadius = horizontalRadius;
             VerticalRadius = verticalRadius;
             ProjectedOnWaterVerticalRadius = projectedOnWaterVerticalRadius;
@@ -171,40 +158,28 @@ namespace WoWsShipBuilder.Core.DataUI
             IsValid = true;
         }
 
-        public string Name { get; set; }
+        public bool IsValid { get; }
 
-        public bool IsValid { get; set; }
+        public double HorizontalRadius { get; }
 
-        public bool IsLast { get; set; } = true;
+        public double VerticalRadius { get; }
 
-        public double HorizontalRadius { get; set; }
+        public double ProjectedOnWaterVerticalRadius { get; }
 
-        public double VerticalRadius { get; set; }
+        public double ProjectedOnPerpendicularToWaterVerticalRadius { get; }
 
-        public double ProjectedOnWaterVerticalRadius { get; set; }
+        public List<(double x, double y)> RealHitPoints { get; } = new();
 
-        public double ProjectedOnPerpendicularToWaterVerticalRadius { get; set; }
+        public List<(double x, double y)> OnWaterHitPoints { get; } = new();
 
-        public List<(double x, double y)> RealHitPoints { get; set; } = new();
+        public List<(double x, double y)> PerpendicularToWaterHitPoints { get; } = new();
 
-        public List<(double x, double y)> OnWaterHitPoints { get; set; } = new();
+        public double HorizontalRadiusHalfHitPoints { get; }
 
-        public List<(double x, double y)> PerpendicularToWaterHitPoints { get; set; } = new();
+        public double VerticalRadiusHalfHitPoints { get; }
 
-        public double HorizontalRadiusHalfHitPoints { get; set; }
+        public double ProjectedOnWaterVerticalRadiusHalfHitPoints { get; }
 
-        public double VerticalRadiusHalfHitPoints { get; set; }
-
-        public double ProjectedOnWaterVerticalRadiusHalfHitPoints { get; set; }
-
-        public double ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints { get; set; }
-
-        public Dispersion DispersionData { get; set; }
-
-        public ArtilleryShell Shell { get; set; }
-
-        public double Sigma { get; set; }
-
-        public double MaxRange { get; set; }
+        public double ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints { get; }
     }
 }

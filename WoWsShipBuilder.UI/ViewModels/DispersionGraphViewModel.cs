@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
-using Avalonia.Styling;
 using NLog;
 using OxyPlot;
 using OxyPlot.Axes;
@@ -29,7 +27,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly Logger logger;
 
-        private bool refreshNeeded = false;
+        private bool refreshNeeded;
 
         public enum Tabs
         {
@@ -96,8 +94,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
                 shipNames.Add(name);
 
-                DispersionPlotList.CollectionChanged += DispersionPlotList_CollectionChanged;
-                DispersionPlotList.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, (double)maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
+                var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
+                DispersionPlotList.Add(plotItemViewModel);
             }
 
             FlightTimeModel = flightTimeModel;
@@ -107,6 +105,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             HorizontalModel = hModel;
             VerticalModel = vModel;
             InitialTab = (int)initialTab;
+            effectiveEllipsePlane = selectedEllipsePlane;
         }
 
         private void DispersionPlotList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -210,13 +209,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref impactAngleModel, value);
         }
 
-        private AvaloniaList<DispersionEllipse> dispersionPlotParameters = new();
-
-        public AvaloniaList<DispersionEllipse> DispersionPlotList
-        {
-            get => dispersionPlotParameters;
-            set => this.RaiseAndSetIfChanged(ref dispersionPlotParameters, value);
-        }
+        public AvaloniaList<DispersionPlotItemViewModel> DispersionPlotList { get; } = new();
 
         private int shotsNumber = 100;
 
@@ -284,6 +277,14 @@ namespace WoWsShipBuilder.UI.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
                 refreshNeeded = true;
             }
+        }
+
+        private EllipsePlanes effectiveEllipsePlane;
+
+        public EllipsePlanes EffectiveEllipsePlane
+        {
+            get => effectiveEllipsePlane;
+            set => this.RaiseAndSetIfChanged(ref effectiveEllipsePlane, value);
         }
 
         /// <summary>
@@ -361,14 +362,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                             RefreshPlot();
                         }
 
-                        if (DispersionPlotList.Count > 0)
-                        {
-                            var tmp = new AvaloniaList<DispersionEllipse>(DispersionPlotList.ToList());
-                            tmp.Last().IsLast = false;
-                            DispersionPlotList = tmp;
-                        }
-
-                        DispersionPlotList.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber));
+                        DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
+                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
+                        DispersionPlotList.Add(new(newPlot));
 
                         // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
                         if (shell.ShellType == ShellType.AP)
@@ -439,9 +435,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                     DispersionPlotList.RemoveAt(index);
                     if (DispersionPlotList.Count > 0)
                     {
-                        var tmp = new AvaloniaList<DispersionEllipse>(DispersionPlotList.ToList());
-                        tmp.Last().IsLast = true;
-                        DispersionPlotList = tmp;
+                        // TODO: verify
+                        DispersionPlotList.Last().UpdateIsLast(true);
                     }
 
                     shipNames.RemoveAt(index);
@@ -465,15 +460,18 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var newDispersionPlotList = new AvaloniaList<DispersionEllipse>();
-            foreach (var dispersionPlot in DispersionPlotList)
+            var newDispersionPlotList = new List<DispersionPlotItemViewModel>();
+            foreach (var itemViewModel in DispersionPlotList)
             {
-                newDispersionPlotList.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Name, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber));
-                newDispersionPlotList.Last().IsLast = false;
+                var dispersionPlot = itemViewModel.DispersionEllipse;
+                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Name, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
+                newDispersionPlotList.Add(new(newPlot) { IsLast = false });
             }
 
-            newDispersionPlotList.Last().IsLast = true;
-            DispersionPlotList = newDispersionPlotList;
+            EffectiveEllipsePlane = SelectedEllipsePlane;
+            newDispersionPlotList.Last().UpdateIsLast(true);
+            DispersionPlotList.Clear();
+            DispersionPlotList.AddRange(newDispersionPlotList);
         }
 
         [DependsOn(nameof(ShipNames))]

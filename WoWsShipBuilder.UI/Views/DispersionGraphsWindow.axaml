@@ -121,11 +121,19 @@
                                         <DataTemplate>
                                             <StackPanel>
                                                 <Border BorderBrush="Gray" BorderThickness="1" Margin="5" HorizontalAlignment="Center" CornerRadius="5">
-                                                    <TextBlock Text="{Binding Name}" FontSize="15" TextAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+                                                    <TextBlock Text="{Binding DispersionEllipse.Name}" FontSize="15" 
+                                                               TextAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
                                                 </Border>
-                                                <customControls:DispersionPlot DispersionPlotParameters="{Binding}" PlotScaling="{Binding $parent[Window].DataContext.PlotScaling}" EllipsePlane="{Binding $parent[Window].DataContext.SelectedEllipsePlane}" IsFusoEnabled="{Binding $parent[Window].DataContext.IsFusoEnabled}" IsVisible="{Binding IsValid}"/>
-                                                <Border BorderBrush="Red" BorderThickness="3" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10 0" IsVisible="{Binding !IsValid}">
-                                                    <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_NoRange}" IsVisible="{Binding !IsValid}" Foreground="Red" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="15" Margin="25"/>
+                                                <customControls:DispersionPlot DispersionPlotParameters="{Binding DispersionEllipse}" 
+                                                                               PlotScaling="{Binding $parent[Window].DataContext.PlotScaling}" 
+                                                                               EllipsePlane="{Binding $parent[Window].DataContext.EffectiveEllipsePlane}" 
+                                                                               IsFusoEnabled="{Binding $parent[Window].DataContext.IsFusoEnabled}" 
+                                                                               IsVisible="{Binding DispersionEllipse.IsValid}"/>
+                                                <Border BorderBrush="Red" BorderThickness="3" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10 0" 
+                                                        IsVisible="{Binding !DispersionEllipse.IsValid}">
+                                                    <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_NoRange}" 
+                                                               IsVisible="{Binding !DispersionEllipse.IsValid}" Foreground="Red" HorizontalAlignment="Stretch" 
+                                                               TextAlignment="Center" FontSize="15" Margin="25"/>
                                                 </Border>
                                                 <Separator HorizontalAlignment="Stretch" Margin="0 5" IsVisible="{Binding !IsLast}" Height="3"/>
                                             </StackPanel>

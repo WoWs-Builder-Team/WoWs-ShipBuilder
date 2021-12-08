@@ -39,6 +39,13 @@ namespace WoWsShipBuilder.UI.CustomControls
         static DispersionPlot()
         {
             DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
+            PlotScalingProperty.Changed.AddClassHandler<DispersionPlot>((plot, e) =>
+            {
+                if (e.NewValue is > 0d)
+                {
+                    plot.InvalidateVisual();
+                }
+            });
         }
 
         public enum EllipsePlanes
