@@ -8,6 +8,7 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         WindowStartupLocation="CenterScreen" CanResize="True"
         Width="1400" Height="900"
         MinWidth="1000" MinHeight="800">
@@ -42,6 +43,10 @@
             </Setter> 
         </Style>
     </Window.Styles>
+    
+    <Design.DataContext>
+        <viewModels:DispersionGraphViewModel />
+    </Design.DataContext>
 
     <Grid RowDefinitions="30,Auto, *">
         <userControls:AppHeader Grid.Row="0" ShowMaximizeButton="True" Title="{x:Static t:Translation.DispersionWindow_Title}"/>
@@ -95,7 +100,7 @@
                                           BorderBrush="Gray" BorderThickness="1" Margin="25 0 25 5" HorizontalContentAlignment="Center">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                                            <TextBlock Text="{Binding Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>

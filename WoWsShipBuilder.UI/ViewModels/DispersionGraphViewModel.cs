@@ -25,7 +25,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class DispersionGraphViewModel : ViewModelBase
     {
-        private readonly DispersionGraphsWindow self;
+        private readonly DispersionGraphsWindow? self;
 
         private readonly Logger logger;
 
@@ -38,12 +38,21 @@ namespace WoWsShipBuilder.UI.ViewModels
             Ballistic,
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow window)
+        public DispersionGraphViewModel()
+            : this(null)
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public DispersionGraphViewModel(DispersionGraphsWindow? window)
             : this(window, null, 0, string.Empty, null, Tabs.Dispersion, 0)
         {
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab, decimal sigma)
+        public DispersionGraphViewModel(DispersionGraphsWindow? win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab, decimal sigma)
         {
             logger = Logging.GetLogger("DispersiongGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
@@ -273,7 +282,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
-                refreshNeeded = true;             
+                refreshNeeded = true;
             }
         }
 

@@ -234,7 +234,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             {
                 context.FillRectangle(filling, ellipseRectangle, 50);
                 context.DrawRectangle(new Pen(Brushes.Black, 1), ellipseRectangle, 50);
-            }           
+            }
         }
 
         /// <summary>
