@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Collections;
@@ -16,27 +17,40 @@ using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
+using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class DispersionGraphViewModel : ViewModelBase
     {
-        private readonly DispersionGraphsWindow self;
+        private readonly DispersionGraphsWindow? self;
 
         private readonly Logger logger;
+
+        private bool refreshNeeded;
 
         public enum Tabs
         {
             Dispersion,
+            Plot,
             Ballistic,
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow window)
-            : this(window, null, 0, string.Empty, null, Tabs.Dispersion)
+        public DispersionGraphViewModel()
+            : this(null)
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public DispersionGraphViewModel(DispersionGraphsWindow? window)
+            : this(window, null, 0, string.Empty, null, Tabs.Dispersion, 0)
         {
         }
 
-        public DispersionGraphViewModel(DispersionGraphsWindow win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab)
+        public DispersionGraphViewModel(DispersionGraphsWindow? win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab, decimal sigma)
         {
             logger = Logging.GetLogger("DispersiongGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
@@ -79,6 +93,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                 impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
                 impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
                 shipNames.Add(name);
+
+                var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
+                DispersionPlotList.Add(plotItemViewModel);
             }
 
             FlightTimeModel = flightTimeModel;
@@ -88,6 +105,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             HorizontalModel = hModel;
             VerticalModel = vModel;
             InitialTab = (int)initialTab;
+            effectiveEllipsePlane = selectedEllipsePlane;
+        }
+
+        private void DispersionPlotList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(DispersionPlotList));
         }
 
         private int initialTab;
@@ -186,6 +209,88 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref impactAngleModel, value);
         }
 
+        public AvaloniaList<DispersionPlotItemViewModel> DispersionPlotList { get; } = new();
+
+        private int shotsNumber = 100;
+
+        public int ShotsNumber
+        {
+            get => shotsNumber;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref shotsNumber, value);
+                refreshNeeded = true;
+            }
+        }
+
+        private double aimingRange = 10;
+
+        public double AimingRange
+        {
+            get => aimingRange;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref aimingRange, value);
+                refreshNeeded = true;
+            }
+        }
+
+        private double plotScaling = 0.75;
+
+        public double PlotScaling
+        {
+            get => plotScaling;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref plotScaling, value);
+                refreshNeeded = true;
+            }
+        }
+
+        private List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
+
+        public List<EllipsePlanes> EllipsePlanesList
+        {
+            get => ellipsePlanesList;
+            set => this.RaiseAndSetIfChanged(ref ellipsePlanesList, value);
+        }
+
+        private EllipsePlanes selectedEllipsePlane = EllipsePlanes.HorizontalPlane;
+
+        public EllipsePlanes SelectedEllipsePlane
+        {
+            get => selectedEllipsePlane;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
+                refreshNeeded = true;
+            }
+        }
+
+        private EllipsePlanes effectiveEllipsePlane;
+
+        public EllipsePlanes EffectiveEllipsePlane
+        {
+            get => effectiveEllipsePlane;
+            set => this.RaiseAndSetIfChanged(ref effectiveEllipsePlane, value);
+        }
+
+        private List<FusoPositions> fusoPositionsList = Enum.GetValues<FusoPositions>().ToList();
+
+        public List<FusoPositions> FusoPositionsList
+        {
+            get => fusoPositionsList;
+            set => this.RaiseAndSetIfChanged(ref fusoPositionsList, value);
+        }
+
+        private FusoPositions selectedFusoPosition = FusoPositions.DontShow;
+
+        public FusoPositions SelectedFusoPosition
+        {
+            get => selectedFusoPosition;
+            set => this.RaiseAndSetIfChanged(ref selectedFusoPosition, value);
+        }
+
         /// <summary>
         /// Add a ship to the ones currently visualized.
         /// </summary>
@@ -207,10 +312,18 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                     // Get all the shell of that ship, and propose the choice to the user.
                     var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
-                    var win = new ValueSelectionWindow();
-                    win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
+                    string shellIndex;
+                    if (shellsName.Count == 1)
+                    {
+                        shellIndex = shellsName.First();
+                    }
+                    else
+                    {
+                        var win = new ValueSelectionWindow();
+                        win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
 
-                    var shellIndex = await win.ShowDialog<string>(self);
+                        shellIndex = await win.ShowDialog<string>(self);
+                    }
 
                     // If the user didn't select a shell, return and do nothing.
                     if (shellIndex is null)
@@ -246,6 +359,16 @@ namespace WoWsShipBuilder.UI.ViewModels
                         ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                        // create and add the dispersion plot
+                        if (refreshNeeded)
+                        {
+                            RefreshPlot();
+                        }
+
+                        DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
+                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
+                        DispersionPlotList.Add(new(newPlot));
 
                         // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
                         if (shell.ShellType == ShellType.AP)
@@ -299,7 +422,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             logger.Info("Trying to remove ship from series");
 
-            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self, shipNames.ToList());
+            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self!, shipNames.ToList());
             if (result.Count > 0)
             {
                 foreach (var ship in result)
@@ -313,6 +436,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                     FlightTimeModel!.Series.RemoveAt(index);
                     ImpactAngleModel!.Series.RemoveAt(index);
                     ImpactVelocityModel!.Series.RemoveAt(index);
+                    DispersionPlotList.RemoveAt(index);
+                    if (DispersionPlotList.Count > 0)
+                    {
+                        DispersionPlotList.Last().UpdateIsLast(true);
+                    }
+
                     shipNames.RemoveAt(index);
                 }
 
@@ -324,6 +453,26 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ImpactAngleModel!.InvalidatePlot(true);
                 this.RaisePropertyChanged(nameof(ShipNames));
             }
+        }
+
+        public void RefreshPlot()
+        {
+            refreshNeeded = false;
+            if (DispersionPlotList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var itemViewModel in DispersionPlotList)
+            {
+                var dispersionPlot = itemViewModel.DispersionEllipse;
+                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Name, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
+                itemViewModel.DispersionEllipse = newPlot;
+                itemViewModel.IsLast = false;
+            }
+
+            EffectiveEllipsePlane = SelectedEllipsePlane;
+            DispersionPlotList.LastOrDefault()?.UpdateIsLast(true);
         }
 
         [DependsOn(nameof(ShipNames))]
@@ -571,7 +720,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The corresponding <see cref="OxyColor"/>.</returns>
         private OxyColor ConvertColorFromResource(string resourceKey)
         {
-            var color = self.FindResource(resourceKey) as Color?;
+            var color = self!.FindResource(resourceKey) as Color?;
             return OxyColor.FromUInt32(color!.Value.ToUint32());
         }
 

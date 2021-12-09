@@ -2,7 +2,9 @@
 
 ## Additions
 - Add button to open dispersion and ballistics window directly from start menu
-- Add optional telemetry data in settings. Telemetry data is disabled by default and needs to be enabled manually.
+- Add dispersion plot in the dispersion and ballistics window
+- Add optional telemetry data in settings. Telemetry data is disabled by default and needs to be enabled manually
+- Add a tooltip for dispersion formula in main battery column (#10)
 
 ## Changes
 

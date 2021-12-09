@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -37,6 +38,24 @@ namespace WoWsShipBuilder.Core.DataUI
 
         [JsonIgnore]
         public string VerticalDisp { get; set; } = default!;
+
+        [JsonIgnore]
+        public string HorizontalDispFormula { get; set; } = default!;
+
+        [JsonIgnore]
+        public string VerticalCoeffFormula { get; set; } = default!;
+
+        [JsonIgnore]
+        public string HorizontalDispFormulaAtShortRange { get; set; } = default!;
+
+        [JsonIgnore]
+        public string VerticalCoeffFormulaAtShortRange { get; set; } = default!;
+
+        [JsonIgnore]
+        public string DelimDist { get; set; } = default!;
+
+        [JsonIgnore]
+        public string TaperDist { get; set; } = default!;
 
         [JsonIgnore]
         public List<ShellUI> ShellData { get; set; } = default!;
@@ -117,6 +136,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             decimal rateOfFire = 60 / reload;
 
+            var maxRangeBW = (double)(mainBattery.MaxRange / 30);
+            var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
+
             var mainBatteryUi = new MainBatteryUI
             {
                 Name = turretArrangement + " " + Localizer.Instance[mainBattery.Guns.First().Name].Localization,
@@ -126,11 +148,18 @@ namespace WoWsShipBuilder.Core.DataUI
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
-                HorizontalDisp = hDispersion + " m",
-                VerticalDisp = vDispersion + " m",
+                DelimDist = $"{(double)mainBattery.MaxRange * modifiedDispersion.Delim / 1000} " + UnitLocalization.Unit_KM,
+                TaperDist = $"{modifiedDispersion.TaperDist / 1000} " + UnitLocalization.Unit_KM,
+                HorizontalDisp = hDispersion + " " + UnitLocalization.Unit_M,
+                VerticalDisp = vDispersion + " " + UnitLocalization.Unit_M,
+                HorizontalDispFormula = $"X * {Math.Round((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance, 4)} + {30 * modifiedDispersion.MinRadius}",
+                VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30, 8)} + {((-maxRangeBW * modifiedDispersion.Delim) * vRadiusCoeff) + modifiedDispersion.RadiusOnDelim})",
+                HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance) + (modifiedDispersion.MinRadius / (modifiedDispersion.TaperDist / 30)), 4)}",
+                VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((modifiedDispersion.RadiusOnDelim - modifiedDispersion.RadiusOnZero) / (maxRangeBW * modifiedDispersion.Delim)) / 30, 8)} + {modifiedDispersion.RadiusOnZero})",
                 DispersionData = mainBattery.DispersionValues,
                 OriginalMainBatteryData = mainBattery,
             };
+
             var shellNames = mainBattery.Guns.First().AmmoList;
             mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, rateOfFire * barrelCount);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();

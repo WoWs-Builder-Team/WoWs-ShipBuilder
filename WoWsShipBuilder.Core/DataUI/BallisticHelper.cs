@@ -16,9 +16,9 @@ namespace WoWsShipBuilder.Core.DataUI
         private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
-        private const double MaxAngles = 600; // Max Angle                    | degrees
-        private const double AngleStep = 0.00174533; // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
-        private const double Dt = 0.02; // Time step                    | s
+        private const double MaxAngles = 600;            // Max Angle                    | degrees
+        private const double AngleStep = 0.00174533;     // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
+        private const double Dt = 0.02;                  // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>

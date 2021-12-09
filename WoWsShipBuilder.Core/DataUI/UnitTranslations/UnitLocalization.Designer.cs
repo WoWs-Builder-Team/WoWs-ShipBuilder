@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class UnitLocalization {
+    public class UnitLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWsShipBuilder.Core.DataUI.UnitTranslations.UnitLocalization", typeof(UnitLocalization).Assembly);
@@ -51,7 +51,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to °.
         /// </summary>
-        internal static string Unit_Degree {
+        public static string Unit_Degree {
             get {
                 return ResourceManager.GetString("Unit_Degree", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to °/s.
         /// </summary>
-        internal static string Unit_DegreePerSecond {
+        public static string Unit_DegreePerSecond {
             get {
                 return ResourceManager.GetString("Unit_DegreePerSecond", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to dps.
         /// </summary>
-        internal static string Unit_DPS {
+        public static string Unit_DPS {
             get {
                 return ResourceManager.GetString("Unit_DPS", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to HP.
         /// </summary>
-        internal static string Unit_HP {
+        public static string Unit_HP {
             get {
                 return ResourceManager.GetString("Unit_HP", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to kg.
         /// </summary>
-        internal static string Unit_KG {
+        public static string Unit_KG {
             get {
                 return ResourceManager.GetString("Unit_KG", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to Km.
         /// </summary>
-        internal static string Unit_KM {
+        public static string Unit_KM {
             get {
                 return ResourceManager.GetString("Unit_KM", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to kts.
         /// </summary>
-        internal static string Unit_Knots {
+        public static string Unit_Knots {
             get {
                 return ResourceManager.GetString("Unit_Knots", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
-        internal static string Unit_M {
+        public static string Unit_M {
             get {
                 return ResourceManager.GetString("Unit_M", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to mm.
         /// </summary>
-        internal static string Unit_MM {
+        public static string Unit_MM {
             get {
                 return ResourceManager.GetString("Unit_MM", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to m/s.
         /// </summary>
-        internal static string Unit_MPS {
+        public static string Unit_MPS {
             get {
                 return ResourceManager.GetString("Unit_MPS", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
-        internal static string Unit_PerCent {
+        public static string Unit_PerCent {
             get {
                 return ResourceManager.GetString("Unit_PerCent", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to s.
         /// </summary>
-        internal static string Unit_S {
+        public static string Unit_S {
             get {
                 return ResourceManager.GetString("Unit_S", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         /// <summary>
         ///   Looks up a localized string similar to shots/s.
         /// </summary>
-        internal static string Unit_ShotsPerSecond {
+        public static string Unit_ShotsPerSecond {
             get {
                 return ResourceManager.GetString("Unit_ShotsPerSecond", resourceCulture);
             }
