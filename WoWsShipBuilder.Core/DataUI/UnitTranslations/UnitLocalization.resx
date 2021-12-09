@@ -153,10 +153,7 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
-  <data name="Unit_ShotsPerSecond" xml:space="preserve">
-      <value>shots/s</value>
-  </data>
-  <data name="Unit_SalovsPerMinute" xml:space="preserve">
-      <value>salvos/min</value>
+  <data name="Unit_ShotsPerMinute" xml:space="preserve">
+    <value>shots/min</value>
   </data>
 </root>

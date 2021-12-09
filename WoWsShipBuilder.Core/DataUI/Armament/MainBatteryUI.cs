@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
-        [DataUiUnit("SalvosPerMinute")]
+        [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
 
         [DataUiUnit("S")]
@@ -134,7 +134,7 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal hDispersion = Math.Round((decimal)modifiedDispersion.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
             decimal vDispersion = Math.Round((decimal)modifiedDispersion.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
 
-            decimal rateOfFire = 60 / reload;
+            decimal rateOfFire = (60 / reload) * barrelCount;
 
             var maxRangeBW = (double)(mainBattery.MaxRange / 30);
             var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
