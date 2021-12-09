@@ -247,18 +247,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private bool? isFusoEnabled = false;
-
-        public bool? IsFusoEnabled
-        {
-            get => isFusoEnabled;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref isFusoEnabled, value);
-                refreshNeeded = true;
-            }
-        }
-
         private List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
 
         public List<EllipsePlanes> EllipsePlanesList
@@ -285,6 +273,22 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => effectiveEllipsePlane;
             set => this.RaiseAndSetIfChanged(ref effectiveEllipsePlane, value);
+        }
+
+        private List<FusoPositions> fusoPositionsList = Enum.GetValues<FusoPositions>().ToList();
+
+        public List<FusoPositions> FusoPositionsList
+        {
+            get => fusoPositionsList;
+            set => this.RaiseAndSetIfChanged(ref fusoPositionsList, value);
+        }
+
+        private FusoPositions selectedFusoPosition = FusoPositions.DontShow;
+
+        public FusoPositions SelectedFusoPosition
+        {
+            get => selectedFusoPosition;
+            set => this.RaiseAndSetIfChanged(ref selectedFusoPosition, value);
         }
 
         /// <summary>

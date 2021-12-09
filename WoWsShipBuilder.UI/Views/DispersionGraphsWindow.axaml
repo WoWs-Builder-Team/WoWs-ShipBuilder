@@ -66,8 +66,8 @@
                 </TabItem>
                 <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_DispersionPlot}">
                     <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
-                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,Auto" RowDefinitions="*" Margin="50 10 50 0">
-                            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="25 0">
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,Auto" RowDefinitions="*" Margin="40 10 40 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="20 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_AimingRange}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="0" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -76,7 +76,7 @@
                                     <Slider Value="{Binding AimingRange}" Minimum="1" Maximum="40" TickFrequency="0.5" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="25 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_ShotsNumber}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="1" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -85,7 +85,7 @@
                                     <Slider Value="{Binding ShotsNumber}" Minimum="10" Maximum="300" TickFrequency="10" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="25 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="4" Margin="20 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotScaling}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -94,10 +94,10 @@
                                     <Slider Value="{Binding PlotScaling}" Minimum="0.25" Maximum="4" TickFrequency="0.25" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="3" Margin="25 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="20 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
-                                <ComboBox Items="{Binding EllipsePlanesList}" SelectedItem="{Binding SelectedEllipsePlane}"
-                                          BorderBrush="Gray" BorderThickness="1" Margin="25 0 25 5" HorizontalContentAlignment="Center">
+                                <ComboBox Items="{Binding EllipsePlanesList}" SelectedItem="{Binding SelectedEllipsePlane}" MinWidth="171"
+                                          BorderBrush="Gray" BorderThickness="1" Margin="20 0 20 5" HorizontalContentAlignment="Center">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
@@ -105,13 +105,18 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="25 0 0 5">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DrawFusoReference}" HorizontalAlignment="Center" Margin="0 0 10 0"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <ToggleSwitch ClickMode="Release" IsThreeState="True" IsChecked="{Binding IsFusoEnabled}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                                </StackPanel>
+                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="20 0">
+                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DrawFusoReference}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <ComboBox Items="{Binding FusoPositionsList}" SelectedItem="{Binding SelectedFusoPosition}" MinWidth="123"
+                                          BorderBrush="Gray" BorderThickness="1" Margin="20 0 20 5" HorizontalContentAlignment="Center">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
-                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="25 4 25 7"/>
+                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="25 4 25 7"/>
                         </Grid>
                         <Expander Grid.Row="0" Header="{x:Static t:Translation.DispersionGraphWindow_DispPlotExplanation}" ExpandDirection="Down" IsExpanded="False" Margin="10 10 10 0" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
                             <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DispPlotDescription}"/>
@@ -128,8 +133,8 @@
                                                 </Border>
                                                 <customControls:DispersionPlot DispersionPlotParameters="{Binding DispersionEllipse}" 
                                                                                PlotScaling="{Binding $parent[Window].DataContext.PlotScaling}" 
-                                                                               EllipsePlane="{Binding $parent[Window].DataContext.EffectiveEllipsePlane}" 
-                                                                               IsFusoEnabled="{Binding $parent[Window].DataContext.IsFusoEnabled}" 
+                                                                               EllipsePlane="{Binding $parent[Window].DataContext.EffectiveEllipsePlane}"
+                                                                               FusoPosition="{Binding $parent[Window].DataContext.SelectedFusoPosition}" 
                                                                                IsVisible="{Binding DispersionEllipse.IsValid}"/>
                                                 <Border BorderBrush="Red" BorderThickness="3" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10 0" 
                                                         IsVisible="{Binding !DispersionEllipse.IsValid}">

@@ -134,7 +134,7 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public record DispersionEllipse(string Name, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange)
+    public sealed record DispersionEllipse(string Name, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange)
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
         public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange,

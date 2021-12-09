@@ -947,11 +947,11 @@
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
     <value>In the plot, shells are coming from the right side.
-The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal one is shown vertically.
+The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
 
 The WHITE ellispe shows the maximum dispersion area at the selected aiming range.
 The RED ellipse shows the area where 50% of the shells lends on average.
-The BLACK ellipse shows the size of a Fuso pointing towards the incoming shells and seen from above (except for the vertical plane where she is seen from the front).
+The BLACK ellipse shows the size of a Fuso as reference.
 
 Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
 The real dispersion ellipse is drawn on a plane perpendicular to the shell's impact angle.
@@ -959,5 +959,14 @@ Only the vertical dispersion projected on water is affected by shell's speed. Th
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>PLOT EXPLANATION</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Bow in</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Broadside</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Hide</value>
   </data>
 </root>

@@ -89,7 +89,7 @@ namespace WoWsShipBuilder.Core.DataUI
             double w = -Math.Log((1.01 - x) * (1.01 + x));
             if (w < 5.0000001)
             {
-                w = w - 2.5000001;
+                w -= 2.5000001;
                 p = 2.81022636e-081;
                 p = 3.43273939e-071 + (p * w);
                 p = -3.5233877e-061 + (p * w);

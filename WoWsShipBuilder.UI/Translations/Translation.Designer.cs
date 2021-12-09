@@ -88,6 +88,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bow in.
+        /// </summary>
+        public static string BowIn {
+            get {
+                return ResourceManager.GetString("BowIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Broadside.
+        /// </summary>
+        public static string Broadside {
+            get {
+                return ResourceManager.GetString("Broadside", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build saved.
         /// </summary>
         public static string BuildCreationWindow_BuildSaved {
@@ -278,13 +296,14 @@ namespace WoWsShipBuilder.UI.Translations {
         
         /// <summary>
         ///   Looks up a localized string similar to In the plot, shells are coming from the right side.
-        ///The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal one is shown vertically.
+        ///The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
         ///
         ///The WHITE ellispe shows the maximum dispersion area at the selected aiming range.
         ///The RED ellipse shows the area where 50% of the shells lends on average.
-        ///The BLACK ellipse shows the size of a Fuso pointing towards the incoming shells and seen from above (except for the vertical plane where she is seen from the front).
+        ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
-        ///Ships in g [rest of string was truncated]&quot;;.
+        ///Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
+        ///The real dispers [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DispersionGraphWindow_DispPlotDescription {
             get {
@@ -487,6 +506,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DispersionWindow_Title {
             get {
                 return ResourceManager.GetString("DispersionWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide.
+        /// </summary>
+        public static string DontShow {
+            get {
+                return ResourceManager.GetString("DontShow", resourceCulture);
             }
         }
         
