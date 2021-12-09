@@ -298,7 +298,7 @@ namespace WoWsShipBuilder.UI.Translations {
         ///   Looks up a localized string similar to In the plot, shells are coming from the right side.
         ///The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
         ///
-        ///The WHITE ellispe shows the maximum dispersion area at the selected aiming range.
+        ///The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
         ///The RED ellipse shows the area where 50% of the shells lends on average.
         ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
@@ -312,7 +312,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PLOT EXPLANATION.
+        ///   Looks up a localized string similar to Plot explanation.
         /// </summary>
         public static string DispersionGraphWindow_DispPlotExplanation {
             get {
