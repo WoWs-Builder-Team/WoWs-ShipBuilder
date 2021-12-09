@@ -123,6 +123,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
                 else if (name.Contains("PCY013", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var extraScoutPlane = modifiers.FindModifiers("scoutAdditionalConsumables");
+                    uses = extraScoutPlane.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
                     var cooldownModifiers = modifiers.FindModifiers("scoutReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 

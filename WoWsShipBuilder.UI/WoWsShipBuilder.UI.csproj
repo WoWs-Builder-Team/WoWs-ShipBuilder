@@ -7,17 +7,25 @@
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <FileVersion>0.0.1</FileVersion>
+        <VersionPrefix>1.2.2</VersionPrefix>
+        <VersionSuffix>pre</VersionSuffix>
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
     </PropertyGroup>
+    <PropertyGroup>
+        <NuspecFile>WoWsShipBuilder.nuspec</NuspecFile>
+        <NuspecBasePath>bin/$(Configuration)/net5.0/publish</NuspecBasePath>
+        <NuspecProperties>$(NuspecProperties);version=$(VersionPrefix)</NuspecProperties>
+    </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
+    <Target Name="PostBuildVersionDump" AfterTargets="Build">
+        <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
+    </Target>
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />

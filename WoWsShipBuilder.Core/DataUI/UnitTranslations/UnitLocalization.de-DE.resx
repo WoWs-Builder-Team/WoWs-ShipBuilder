@@ -156,4 +156,7 @@
   <data name="Unit_ShotsPerSecond" xml:space="preserve">
       <value>Schüsse/s</value>
   </data>
+  <data name="Unit_SalovsPerMinute" xml:space="preserve">
+      <value>Salven/Minute</value>
+  </data>
 </root>

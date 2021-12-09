@@ -25,25 +25,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub 
 ProjectSection(SolutionItems) = preProject
 	.github\workflows\deployment.yml = .github\workflows\deployment.yml
 	.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
+	.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
+	.github\workflows\main-pr-check.yml = .github\workflows\main-pr-check.yml
 EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.ReleaseTest", "WoWsShipBuilder.ReleaseTest\WoWsShipBuilder.ReleaseTest.csproj", "{282ECA58-2A33-40FC-9CD8-773E093BF8FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		ReleaseTest|Any CPU = ReleaseTest|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF97171-B405-488E-A45D-DCDF8DCF0761}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
 		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
+		{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
 		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
+		{696D5003-8412-411E-B4C6-ADC85FB1C54B}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
+		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
+		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
