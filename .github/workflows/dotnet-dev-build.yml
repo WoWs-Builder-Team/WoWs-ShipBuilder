@@ -6,11 +6,17 @@ on:
       - development
     paths-ignore:
       - '**/*.md'
+      - '.github/*.png'
+      - 'docs/**/*.*'
+      - 'workflows/*.yml'
   pull_request:
     branches:
       - development
     paths-ignore:
       - '**/*.md'
+      - '.github/*.png'
+      - 'docs/**/*.*'
+      - 'workflows/*.yml'
 
 jobs:
   build-and-release:
