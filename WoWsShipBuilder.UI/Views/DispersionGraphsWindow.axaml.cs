@@ -1,12 +1,14 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public class DispersionGraphsWindow : Window
+    public class DispersionGraphsWindow : ScalableWindow
     {
         public DispersionGraphsWindow()
         {
@@ -23,7 +25,18 @@ namespace WoWsShipBuilder.UI.Views
             Closing += DispersionGraphsWindow_Closing;
         }
 
-        private void DispersionGraphsWindow_Closing(object? sender, System.EventArgs e)
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+
+            var currentScreen = Screens.ScreenFromVisual(this);
+            if (WindowScalingHelper.CheckScaling(currentScreen, this).Key)
+            {
+                WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void DispersionGraphsWindow_Closing(object? sender, EventArgs e)
         {
             if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
             {
@@ -42,7 +55,7 @@ namespace WoWsShipBuilder.UI.Views
             }
         }
 
-        private void DispersionGraphsWindow_Opened(object? sender, System.EventArgs e)
+        private void DispersionGraphsWindow_Opened(object? sender, EventArgs e)
         {
             if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
             {

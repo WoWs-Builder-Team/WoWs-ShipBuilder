@@ -7,7 +7,7 @@
 - Add a tooltip for dispersion formula in main battery column (#10)
 
 ## Changes
-
+- Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)
 
 ## Bugfixes
 - Show missing modules on aircraft carriers (#38)

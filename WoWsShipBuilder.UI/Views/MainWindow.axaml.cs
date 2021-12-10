@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
@@ -6,11 +7,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : ScalableWindow
     {
         private static readonly Regex Regex = new("\\D+");
 
@@ -35,6 +37,12 @@ namespace WoWsShipBuilder.UI.Views
             freeXpInput.AddHandler(TextInputEvent, AcceptOnlyNumber, RoutingStrategies.Tunnel);
         }
 
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+            this.HandleAndCheckScaling();
+        }
+
         public void AcceptOnlyNumber(object? sender, TextInputEventArgs e)
         {
             var text = e.Text!;
@@ -52,7 +60,7 @@ namespace WoWsShipBuilder.UI.Views
             var ship = AppData.ShipDictionary![shipIndex!];
             var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).PrevShipIndex;
             var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).NextShipsIndex;
-            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
+            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex, contentScaling: dc!.ContentScaling);
         }
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
@@ -61,7 +69,7 @@ namespace WoWsShipBuilder.UI.Views
             var ship = AppData.ShipDictionary![dc!.PreviousShipIndex!];
             var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).PrevShipIndex;
             var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).NextShipsIndex;
-            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex);
+            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex, contentScaling: dc.ContentScaling);
         }
     }
 }
