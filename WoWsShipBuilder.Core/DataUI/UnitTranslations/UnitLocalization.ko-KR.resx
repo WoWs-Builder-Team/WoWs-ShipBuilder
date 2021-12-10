@@ -133,7 +133,7 @@
     <value>°</value>
   </data>
   <data name="Unit_S" xml:space="preserve">
-    <value>s</value>
+    <value>초</value>
   </data>
   <data name="Unit_KM" xml:space="preserve">
     <value>km</value>
@@ -142,21 +142,18 @@
     <value>°/s</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>DPS</value>
+    <value>초당 데미지</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
-    <value>TP</value>
+    <value>체력</value>
   </data>
   <data name="Unit_Knots" xml:space="preserve">
-    <value>kn</value>
+    <value>노트</value>
   </data>
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
   <data name="Unit_ShotsPerSecond" xml:space="preserve">
-      <value>Schüsse/s</value>
-  </data>
-  <data name="Unit_SalovsPerMinute" xml:space="preserve">
-      <value>Salven/Minute</value>
+      <value>발사/초</value>
   </data>
 </root>

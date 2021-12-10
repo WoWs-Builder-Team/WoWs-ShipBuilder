@@ -53,7 +53,7 @@
                             <customControls:NumberedButton
                                 BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
                                 Command="{Binding $parent[UserControl].DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                 IsSpecial="{Binding Value.IsEpic}">
+                                IsSpecial="{Binding Value.IsEpic}">
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>

@@ -37,8 +37,7 @@
         </Style>
         <Style Selector="TextBlock.Value">
             <Setter Property="Text" Value="{Binding Value}"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            
+            <Setter Property="TextWrapping" Value="Wrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style Selector="ItemsControl.Stagger">
@@ -68,16 +67,61 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel>
-                            <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" DockPanel.Dock="Left"/>
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}"/>
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
                             <TextBlock Text="{Binding HorizontalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <ToolTip.Tip>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text=" &lt;= "/>
+                                        <TextBlock Text="{Binding TaperDist}"/>
+                                        <TextBlock Text=":"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding HorizontalDispFormulaAtShortRange}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text=" &gt; "/>
+                                        <TextBlock Text="{Binding TaperDist}"/>
+                                        <TextBlock Text=":"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding HorizontalDispFormula}"/>
+                                </StackPanel>
+                            </ToolTip.Tip>
                         </DockPanel>
                         <DockPanel HorizontalAlignment="Stretch">
-                            <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_VerticalDisp}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" DockPanel.Dock="Left"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
                             <TextBlock Text="{Binding VerticalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <ToolTip.Tip>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                    <TextBlock Text=" &lt; "/>
+                                    <TextBlock Text="{Binding DelimDist}"/>
+                                    <TextBlock Text=":"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding VerticalCoeffFormulaAtShortRange}"/>
+                                    <TextBlock Text=" * "/>
+                                    <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDispersionX}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                    <TextBlock Text=" &gt;= "/>
+                                    <TextBlock Text="{Binding DelimDist}"/>
+                                    <TextBlock Text=":"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding VerticalCoeffFormula}"/>
+                                    <TextBlock Text=" * "/>
+                                    <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDispersionX}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            </ToolTip.Tip>
                         </DockPanel>
                         <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_TurretAngles}" PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" Margin="0 5" />                        
-                        <Separator Margin="0,5"/>
+                        <Separator Margin="0,5" Height="5"/>
                         <TextBlock Text="{x:Static t:Translation.ShipStats_Shells}" Margin="0 0 0 5"/>
                         <ItemsControl Items="{Binding ShellData}" Classes="Stagger">
                             <ItemsControl.ItemsPanel>
@@ -98,7 +142,9 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 5" TextDecorations="Underline" Text="{x:Static t:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
+                                        <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_ShowDispGraph}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 5"/>
+                                        <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_ShowDispPlot}" PointerReleased="OpenDispersionPlotWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
+                                        <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 0 0 5" TextDecorations="Underline" Text="{x:Static t:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
                                         <Separator IsVisible="{Binding !IsLastEntry}" Margin="0 5" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -143,7 +189,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Separator Margin="0,5"/>
+                        <Separator Margin="0,5" Height="5"/>
                         <TextBlock Text="{x:Static t:Translation.ShipStats_Torpedo}" Margin="0 0 0 5"/>
                         <ItemsControl Items="{Binding Torpedoes}" Classes="Stagger">
                             <ItemsControl.ItemTemplate>

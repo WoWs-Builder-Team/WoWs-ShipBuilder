@@ -15,7 +15,7 @@ on:
 jobs:
   build-and-release:
     runs-on: windows-latest
-    name: Build application
+    name: Build application on dev branch
 
     steps:
       - uses: actions/checkout@v2
