@@ -1,4 +1,4 @@
-# Update 1.2.2 - pre
+# Update 1.3.0 - pre1
 
 ## Additions
 - Add button to open dispersion and ballistics window directly from start menu
