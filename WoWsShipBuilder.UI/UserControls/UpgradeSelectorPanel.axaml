@@ -31,7 +31,7 @@
                                     <Setter Property="Source">
                                         <MultiBinding Converter="{StaticResource ModernizationConverter}" ConverterParameter="image">
                                             <Binding />
-                                            <Binding Path="#UpgradePanel.DataContext.SelectedModernizationList" FallbackValue="null" />
+                                            <Binding Path="$parent[UserControl].DataContext.SelectedModernizationList" FallbackValue="null" />
                                         </MultiBinding>
                                     </Setter>
                                 </Style>
@@ -61,7 +61,7 @@
                                         <MultiBinding Converter="{StaticResource ModernizationConverter}"
                                                       ConverterParameter="index" Mode="OneWay">
                                             <Binding />
-                                            <Binding Path="#UpgradePanel.DataContext.SelectedModernizationList"
+                                            <Binding Path="$parent[UserControl].DataContext.SelectedModernizationList"
                                                      FallbackValue="null" />
                                         </MultiBinding>
                                     </Setter>
