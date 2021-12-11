@@ -337,7 +337,7 @@
     <value>Dauer für 180°-Drehung</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontale Streuung</value>
+    <value>Horizontal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Reichweite</value>
@@ -355,7 +355,7 @@
     <value>Drehgeschwindigkeit</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertikale Streuung</value>
+    <value>Vertikal</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Mündungsgeschwindigkeit</value>
@@ -844,7 +844,7 @@
     <value>Zeige Einschlaggeschwindigkeitsgraph</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Öffne Ballistikgraphen</value>
+    <value>Zeige Ballistikgraphen</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
@@ -874,9 +874,99 @@
     <value>Erkennbarkeit für U-Boote auf Einsatztiefe</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-      <value>Streuungs- und Ballistikdiagramme zeigen</value>
+    <value>Streuungs- und Ballistikdiagramme zeigen</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Vertikal:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontal:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Vertikal (innen):</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Horizontal (innen):</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Streuung</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Zeige Streuungsgraphen</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Zeige Streuungsdiagramm</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formel für Reichweite X</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>Horizontale Streuung [X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Zielreichweite (km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Ballistische Graphen</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Streuungsgraphen</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Streuungsdiagramm</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Skalierung</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Anzahl der Schüsse</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Diagramm aktualisieren</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-      <value>Grundlegende Telemetrie-Daten senden (aktuelle App-Version)</value>
+    <value>Grundlegende Telemetrie-Daten senden (aktuelle App-Version)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>Die Maximalreichweite dieses Schiffs ist geringer als die gewählte Zieldistanz</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Diagramm-Ebene</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontal (Wasser)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Echt</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Referenz-Fuso</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>In der Darstelklung kommen die Granaten von rechts.
+Das Diagramm ist um 90° rotiert, daher ist die vertikale Streuung horizontal und die horizontale Streuung vertikal dargestellt.
+
+Die weiße Ellipse zeigt die maximale Streuungsfläche für die gewählte Zieldistanz.
+Die rote Ellipse zeigt den Bereich, in dem durchschnittlich die Hälfte der Granaten landet.
+Die schwarze Ellipse zeigt die Größe der Fuso als Referenz.
+
+Im Spiel sind Schiffe zweimal so groß wie die Umgebung, somit ist ein 200m langes Schiff 400m lang.
+Die tatsächliche Streuungsellipse wird in einer Ebene gezeichnet, die senkrecht zum Auftreffwinkel der Granate steht.
+Nur die auf das Wasser projizierte vertikale Streuung wird von der Geschwindigkeit des Geschosses beeinflusst. Die reale Streuung ist nicht betroffen.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Diagramm-Erklärung</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Bug/spitz gewinkelt</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Breitseite</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Verbergen</value>
   </data>
 </root>
