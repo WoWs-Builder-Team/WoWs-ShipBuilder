@@ -337,7 +337,7 @@
     <value>180° draaitijd</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontale verspreiding</value>
+    <value>Horizontaal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Bereik</value>
@@ -355,7 +355,7 @@
     <value>Draai snelheid</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Verticale verspreiding</value>
+    <value>Verticaal</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Initiële granaat snelheid</value>
@@ -854,5 +854,119 @@
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>Het gekozen schip heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
+  </data>
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Standaard account</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>WG Premium account</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>WoWs Premium account</value>
+  </data>
+  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
+    <value>Versies kopiëren</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Detecteerbaarheid door duikboot op de periscoop diepte</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Detecteerbaarheid door duikboot op de operationele diepte</value>
+  </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+    <value>Toon verspreiding en ballistische grafieken</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Verticaal:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontaal:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Binnenste verticaal:</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Binnenste Horizontaal:</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Verspreiding</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Toon verspreidingsgrafieken</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Toon verspreidingsplot</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formule op afstand X</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>Horizontale verspreiding[X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Richt afstand (km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Ballistische grafieken</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Verspreidings Grafieken</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Verspredings Plot</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Plot Schalen</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Aantal Schoten</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Plot vernieuwen</value>
+  </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+    <value>Verzend basis telemetrie data (huidige app versie)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>DIT SCHIP KAN DE GESELECTEERDE AFSTAND NIET BEREIKEN</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Plot oppervlak</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontaal (water)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Werkelijk</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Verticaal</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Fuso Referentie</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>In de plot komen granaten vanaf de rechterkant.
+De plot is gedraaid met 90° zodat de verticale verspreiding horizontaal is weergeven en de horizontale verspreiding verticaal is weergegeven.
+
+De WITTE ellips weergeeft de maximale verspreiding op de gerichte afstand.
+De RODE ellips weergeeft het oppervlak waar gemiddeld 50% van de granaten land.
+De ZWARTE ellips weergeeft het formaat van een Fuso als referentie.
+
+Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200m lang schip neemt 400m ruimte in.
+De werkelijke verspreiding is getekend op een oppervlak loodrecht op de inslaghoek van de granaat.
+Alleen de verticale verspreiding geprojecteerd op water wordt beïnvloed door de granaatsnelheid, de werkelijke verspreiding wordt niet beïnvloed.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Plot uitleg</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Van voren</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Van zijkant</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Verbergen</value>
   </data>
 </root>
