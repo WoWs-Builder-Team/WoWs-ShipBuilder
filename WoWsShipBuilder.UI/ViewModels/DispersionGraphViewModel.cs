@@ -297,121 +297,128 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
-            var result = await selectionWin.ShowDialog<ShipSummary>(self);
-            Ship? ship = result != null ? AppDataHelper.Instance.GetShipFromSummary(result, false) : null;
-            if (ship != null)
+            var selectionWin = new ShipSelectionWindow(true);
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, true);
+            var resultList = await selectionWin.ShowDialog<List<ShipSummary>>(self);
+
+            if (resultList != null && resultList.Count > 0)
             {
-                logger.Info("Trying to add ship: {0}", ship.Index);
-
-                // Check if the ship actually has main guns
-                if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+                foreach (var result in resultList)
                 {
-                    logger.Info("Found guns on ship, asking for shell.");
-
-                    // Get all the shell of that ship, and propose the choice to the user.
-                    var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
-                    string shellIndex;
-                    if (shellsName.Count == 1)
+                    Ship? ship = result != null ? AppDataHelper.Instance.GetShipFromSummary(result, false) : null;
+                    if (ship != null)
                     {
-                        shellIndex = shellsName.First();
-                    }
-                    else
-                    {
-                        var win = new ValueSelectionWindow();
-                        win.DataContext = new ValueSelectionViewModel(win, Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
+                        var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
+                        logger.Info("Trying to add ship: {0} - {1}", ship.Index, shipName);
 
-                        shellIndex = await win.ShowDialog<string>(self);
-                    }
-
-                    // If the user didn't select a shell, return and do nothing.
-                    if (shellIndex is null)
-                    {
-                        return;
-                    }
-
-                    logger.Info("Shell selected: {0}", shellIndex);
-
-                    // Get the gun with the corresponding shell. This is needed for stuff like mogami, that change dispersion pattern based on the caliber
-                    var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
-
-                    // calculate the name that will be shown for this particular series
-                    var shellName = Localizer.Instance[$"{shellIndex}"].Localization;
-                    var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
-
-                    var name = $"{shipName} - {shellName}";
-
-                    logger.Info("Trying to add series with name: {0}", name);
-
-                    // check if we are adding a duplicate
-                    if (!shipNames.Contains(name))
-                    {
-                        logger.Info("Ship is not a duplicate, start creating series.");
-
-                        // Create and add the dispersion series
-                        var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                        var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                        HorizontalModel!.Series.Add(hSeries);
-                        VerticalModel!.Series.Add(vSeries);
-
-                        // create and add the ballistic series
-                        ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
-
-                        var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
-
-                        // create and add the dispersion plot
-                        if (refreshNeeded)
+                        // Check if the ship actually has main guns
+                        if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
                         {
-                            RefreshPlot();
-                        }
+                            logger.Info("Found guns on ship, asking for shell.");
 
-                        DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
-                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
-                        DispersionPlotList.Add(new(newPlot));
+                            // Get all the shell of that ship, and propose the choice to the user.
+                            var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
+                            string shellIndex;
+                            if (shellsName.Count == 1)
+                            {
+                                shellIndex = shellsName.First();
+                            }
+                            else
+                            {
+                                var win = new ValueSelectionWindow();
+                                win.DataContext = new ValueSelectionViewModel(win, shipName + " " + Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
 
-                        // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
-                        if (shell.ShellType == ShellType.AP)
-                        {
-                            logger.Info("Shell is AP, adding normal pen series");
+                                shellIndex = await win.ShowDialog<string>(self);
+                            }
 
-                            PenetrationModel!.Series.Add(ballisticSeries.Penetration);
+                            // If the user didn't select a shell, return and do nothing.
+                            if (shellIndex is null)
+                            {
+                                return;
+                            }
+
+                            logger.Info("Shell selected: {0}", shellIndex);
+
+                            // Get the gun with the corresponding shell. This is needed for stuff like mogami, that change dispersion pattern based on the caliber
+                            var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
+
+                            // calculate the name that will be shown for this particular series
+                            var shellName = Localizer.Instance[$"{shellIndex}"].Localization;                           
+
+                            var name = $"{shipName} - {shellName}";
+
+                            logger.Info("Trying to add series with name: {0}", name);
+
+                            // check if we are adding a duplicate
+                            if (!shipNames.Contains(name))
+                            {
+                                logger.Info("Ship is not a duplicate, start creating series.");
+
+                                // Create and add the dispersion series
+                                var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
+                                var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
+                                HorizontalModel!.Series.Add(hSeries);
+                                VerticalModel!.Series.Add(vSeries);
+
+                                // create and add the ballistic series
+                                ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+
+                                var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                                // create and add the dispersion plot
+                                if (refreshNeeded)
+                                {
+                                    RefreshPlot();
+                                }
+
+                                DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
+                                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
+                                DispersionPlotList.Add(new(newPlot));
+
+                                // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
+                                if (shell.ShellType == ShellType.AP)
+                                {
+                                    logger.Info("Shell is AP, adding normal pen series");
+
+                                    PenetrationModel!.Series.Add(ballisticSeries.Penetration);
+                                }
+                                else
+                                {
+                                    logger.Info("Shell is HE or SAP, adding fixed pen series");
+
+                                    PenetrationModel!.Series.Add(CreateSeriesForFixedPen(shell, (double)guns.MaxRange, name));
+                                }
+
+                                FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
+                                ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
+                                ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);
+
+                                // Add the new ship to the list
+                                shipNames.Add(name);
+
+                                // Invalidate all plots to update them
+                                HorizontalModel!.InvalidatePlot(true);
+                                VerticalModel!.InvalidatePlot(true);
+                                PenetrationModel!.InvalidatePlot(true);
+                                FlightTimeModel!.InvalidatePlot(true);
+                                ImpactVelocityModel!.InvalidatePlot(true);
+                                ImpactAngleModel!.InvalidatePlot(true);
+
+                                this.RaisePropertyChanged(nameof(ShipNames));
+                            }
+                            else
+                            {
+                                logger.Warn($"{shipName} has already been added!");
+                                await MessageBox.Show(self, shipName + " " + Translation.MessageBox_DuplicateShip, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
-                            logger.Info("Shell is HE or SAP, adding fixed pen series");
-
-                            PenetrationModel!.Series.Add(CreateSeriesForFixedPen(shell, (double)guns.MaxRange, name));
+                            logger.Warn($"{shipName} has no guns!");
+                            await MessageBox.Show(self, shipName + " " + Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                         }
-
-                        FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
-                        ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
-                        ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);
-
-                        // Add the new ship to the list
-                        shipNames.Add(name);
-
-                        // Invalidate all plots to update them
-                        HorizontalModel!.InvalidatePlot(true);
-                        VerticalModel!.InvalidatePlot(true);
-                        PenetrationModel!.InvalidatePlot(true);
-                        FlightTimeModel!.InvalidatePlot(true);
-                        ImpactVelocityModel!.InvalidatePlot(true);
-                        ImpactAngleModel!.InvalidatePlot(true);
-
-                        this.RaisePropertyChanged(nameof(ShipNames));
                     }
-                    else
-                    {
-                        logger.Warn("Ship has already been added!");
-                        await MessageBox.Show(self, Translation.MessageBox_DuplicateShip, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    logger.Warn("Ship has no guns!");
-                    await MessageBox.Show(self, Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                }
+                } 
             }
         }
 
