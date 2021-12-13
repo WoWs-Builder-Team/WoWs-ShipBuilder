@@ -181,7 +181,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         public AvaloniaList<KeyValuePair<string, ShipSummary>> SelectedShipList
         {
             get => selectedShipList;
-            set => this.RaiseAndSetIfChanged(ref selectedShipList, value);
         }
 
         private string inputText = string.Empty;
@@ -281,7 +280,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         [DependsOn(nameof(SelectedShipList))]
         public bool CanConfirm(object parameter)
         {
-            return SelectedShipList != null && SelectedShipList.Count > 0;        
+            return SelectedShipList.Count > 0;        
         }
     }
 }
