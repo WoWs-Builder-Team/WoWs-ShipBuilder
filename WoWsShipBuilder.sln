@@ -1,35 +1,38 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.UI", "WoWsShipBuilder.UI\WoWsShipBuilder.UI.csproj", "{EEF97171-B405-488E-A45D-DCDF8DCF0761}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.UI", "WoWsShipBuilder.UI\WoWsShipBuilder.UI.csproj", "{EEF97171-B405-488E-A45D-DCDF8DCF0761}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{0F126505-29E2-4212-ABA2-877D806875FA}"
-ProjectSection(SolutionItems) = preProject
-	.editorconfig = .editorconfig
-	.gitignore = .gitignore
-	stylecop.json = stylecop.json
-	ResharperFileLayout.xml = ResharperFileLayout.xml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		ResharperFileLayout.xml = ResharperFileLayout.xml
+		stylecop.json = stylecop.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{43EE144D-CA52-44D5-B761-A27C0A37E1C5}"
-ProjectSection(SolutionItems) = preProject
-	LICENSE = LICENSE
-	README.md = README.md
-	ReleaseNotes.md = ReleaseNotes.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		ReleaseNotes.md = ReleaseNotes.md
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Core", "WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj", "{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.Core", "WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj", "{40CA0E08-60F8-4C3F-B2D3-30BF3033A67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Core.Test", "WoWsShipBuilder.Core.Test\WoWsShipBuilder.Core.Test.csproj", "{696D5003-8412-411E-B4C6-ADC85FB1C54B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.Core.Test", "WoWsShipBuilder.Core.Test\WoWsShipBuilder.Core.Test.csproj", "{696D5003-8412-411E-B4C6-ADC85FB1C54B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub Workflows", "{C5D1C2CC-CDA1-47AC-8329-8CBFDB751341}"
-ProjectSection(SolutionItems) = preProject
-	.github\workflows\deployment.yml = .github\workflows\deployment.yml
-	.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
-	.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
-	.github\workflows\main-pr-check.yml = .github\workflows\main-pr-check.yml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\deployment.yml = .github\workflows\deployment.yml
+		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
+		.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
+		.github\workflows\main-pr-check.yml = .github\workflows\main-pr-check.yml
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.ReleaseTest", "WoWsShipBuilder.ReleaseTest\WoWsShipBuilder.ReleaseTest.csproj", "{282ECA58-2A33-40FC-9CD8-773E093BF8FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.ReleaseTest", "WoWsShipBuilder.ReleaseTest\WoWsShipBuilder.ReleaseTest.csproj", "{282ECA58-2A33-40FC-9CD8-773E093BF8FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,5 +63,14 @@ Global
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_TaskErrorCategory = Message
+		RESX_ShowErrorsInErrorList = True
+		RESX_CodeReferences = {"Items":[{"Expression":"\\W($File.$Key)\\W","Extensions":".cs,.xaml,.cshtml,.axaml","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($File.$Key)\\W","Extensions":".vbhtml","IsCaseSensitive":false,"SingleLineComment":null},{"Expression":"ResourceManager.GetString\\(\"($Key)\"\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"typeof\\((\\w+\\.)*($File)\\).+\"($Key)\"|\"($Key)\".+typeof\\((\\w+\\.)*($File)\\)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\W($Key)\\W","Extensions":".vb","IsCaseSensitive":false,"SingleLineComment":"'"},{"Expression":"\\W($File::$Key)\\W","Extensions":".cpp,.c,.hxx,.h","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"&lt;%\\$\\s+Resources:\\s*($File)\\s*,\\s*($Key)\\s*%&gt;","Extensions":".aspx,.ascx,.master","IsCaseSensitive":true,"SingleLineComment":null},{"Expression":"StringResourceKey\\.($Key)","Extensions":".cs","IsCaseSensitive":true,"SingleLineComment":"\/\/"},{"Expression":"\\.($Key)","Extensions":".ts,.html","IsCaseSensitive":true,"SingleLineComment":"\/\/"}]}
+		SolutionGuid = {07BE549F-A743-4B52-BF63-690C1D2A0E09}
 	EndGlobalSection
 EndGlobal
