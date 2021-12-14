@@ -411,7 +411,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
+        ///   Looks up a localized string similar to has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
         /// </summary>
         public static string DispersionGraphWindow_SelectShellDesc {
             get {
@@ -807,7 +807,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected ship has already been added.
+        ///   Looks up a localized string similar to has already been added with that shell.
         /// </summary>
         public static string MessageBox_DuplicateShip {
             get {
@@ -825,7 +825,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected ship has no main guns.
+        ///   Looks up a localized string similar to has no main guns.
         /// </summary>
         public static string MessageBox_ShipNoGun {
             get {

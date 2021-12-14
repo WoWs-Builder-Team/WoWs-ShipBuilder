@@ -487,10 +487,10 @@
     <value>Error</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>The selected ship has no main guns</value>
+    <value>has no main guns</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Selected ship has already been added</value>
+    <value>has already been added with that shell</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
@@ -853,7 +853,7 @@
     <value>Select a shell</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
+    <value>has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Normal account</value>

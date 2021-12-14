@@ -283,7 +283,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             Logging.Logger.Info("Selecting new ship");
             var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, false);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
