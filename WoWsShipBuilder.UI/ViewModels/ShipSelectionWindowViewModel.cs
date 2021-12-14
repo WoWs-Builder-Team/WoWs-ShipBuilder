@@ -19,12 +19,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private CancellationTokenSource tokenSource;
 
+        private bool multiSelectionEnabled = false;
+
         public ShipSelectionWindowViewModel()
-            : this(null)
+            : this(null, false)
         {
         }
 
-        public ShipSelectionWindowViewModel(Window? win)
+        public ShipSelectionWindowViewModel(Window? win, bool multiSelection)
         {
             self = win;
             tokenSource = new CancellationTokenSource();
@@ -34,6 +36,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
             SummaryList = new AvaloniaList<KeyValuePair<string, ShipSummary>>(FilteredShipNameDictionary.Select(entry => entry));
+            multiSelectionEnabled = multiSelection;
+            SelectedShipList.CollectionChanged += SelectedShipList_CollectionChanged;
+        }
+
+        private void SelectedShipList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(SelectedShipList));
         }
 
         public AvaloniaList<KeyValuePair<string, ShipSummary>> SummaryList { get; }
@@ -167,12 +176,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
-        private KeyValuePair<string, ShipSummary>? selectedShip;
+        private AvaloniaList<KeyValuePair<string, ShipSummary>> selectedShipList = new();
 
-        public KeyValuePair<string, ShipSummary>? SelectedShip
+        public AvaloniaList<KeyValuePair<string, ShipSummary>> SelectedShipList
         {
-            get => selectedShip;
-            set => this.RaiseAndSetIfChanged(ref selectedShip, value);
+            get => selectedShipList;
         }
 
         private string inputText = string.Empty;
@@ -258,13 +266,21 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void Confirm(object parameter)
         {
-            self?.Close(SelectedShip?.Value);
+            if (multiSelectionEnabled)
+            {
+                var list = SelectedShipList!.Select(x => x.Value).ToList();
+                self?.Close(list);
+            }
+            else
+            {
+                self?.Close(SelectedShipList!.First().Value);
+            }
         }
 
-        [DependsOn(nameof(SelectedShip))]
+        [DependsOn(nameof(SelectedShipList))]
         public bool CanConfirm(object parameter)
         {
-            return SelectedShip?.Value != null;
+            return SelectedShipList.Count > 0;        
         }
     }
 }

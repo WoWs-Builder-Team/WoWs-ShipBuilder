@@ -76,7 +76,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, false);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {

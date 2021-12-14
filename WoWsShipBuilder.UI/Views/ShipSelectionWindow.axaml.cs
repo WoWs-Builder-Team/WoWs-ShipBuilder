@@ -13,8 +13,18 @@ namespace WoWsShipBuilder.UI.Views
     public class ShipSelectionWindow : Window
     {
         public ShipSelectionWindow()
+            : this(false)
+        {
+        }
+
+        public ShipSelectionWindow(bool multiSelection)
         {
             InitializeComponent();
+            if (multiSelection)
+            {              
+                var list = this.FindControl<ListBox>("SelectionList");
+                list.SelectionMode = SelectionMode.Multiple;
+            }
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -46,7 +56,7 @@ namespace WoWsShipBuilder.UI.Views
         {
             if (DataContext is ShipSelectionWindowViewModel viewModel && sender is Panel panel)
             {
-                viewModel.SelectedShip = (KeyValuePair<string, ShipSummary>)panel.DataContext!;
+                // viewModel.SelectedShipList.Add((KeyValuePair<string, ShipSummary>)panel.DataContext!);
                 if (viewModel.CanConfirm(null!))
                 {
                     viewModel.Confirm(null!);
