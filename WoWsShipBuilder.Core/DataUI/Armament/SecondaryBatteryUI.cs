@@ -22,6 +22,8 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("ShotsPerSecond")]
         public decimal RoF { get; set; }
 
+        public decimal Sigma { get; set; }
+
         [JsonIgnore]
         public ShellUI? Shell { get; set; }
 
@@ -57,17 +59,20 @@ namespace WoWsShipBuilder.Core.DataUI
                 var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
                 var range = Math.Round(rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier), 2);
 
+                var rof = 60 / reload;
+
                 var secondaryUI = new SecondaryBatteryUI
                 {
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
                     Range = Math.Round(range / 1000, 2),
                     Reload = reload,
-                    RoF = Math.Round(60 / reload),
+                    RoF = Math.Round(rof),
+                    Sigma = secondary.Sigma,
                 };
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryUI.RoF * secondaryGroup.Count * secondaryGun.NumBarrels).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof).First();
                 }
                 catch (KeyNotFoundException e)
                 {

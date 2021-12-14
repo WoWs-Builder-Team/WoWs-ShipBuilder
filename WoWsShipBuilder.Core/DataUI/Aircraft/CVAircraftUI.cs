@@ -274,7 +274,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var fullAimTime = plane.PreparationTime + ((1 - (plane.PreparationTime * plane.PreparationAccuracyIncreaseRate * aimRateModifier)) / (plane.AimingAccuracyIncreaseRate * aimRateModifier));
 
-            var stringFormat = "+#0.0%;-#0.0%;-";
+            var stringFormat = "+#0.0%;-#0.0%;0%";
 
             var cvAircraft = new CVAircraftUI
             {

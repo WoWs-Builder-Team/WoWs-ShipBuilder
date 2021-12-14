@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -16,6 +17,9 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
         public string Name { get; set; } = null!;
 
         public int Damage { get; set; }
+
+        [DataUiUnit("M")]
+        public decimal ExplosionRadius { get; set; }
 
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
@@ -33,6 +37,7 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
                 Damage = (int)Math.Round(damage, 0),
                 FireChance = Math.Round((decimal)depthCharge.FireChance * 100, 2),
                 FloodingChance = Math.Round((decimal)depthCharge.FloodChance * 100, 2),
+                ExplosionRadius = (decimal)depthCharge.ExplosionRadius,
             };
 
             depthChargeUI.ProjectileData = depthChargeUI.ToPropertyMapping();

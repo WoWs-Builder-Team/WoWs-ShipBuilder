@@ -898,7 +898,7 @@
     <value>Show dispersion plot</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formula at range X</value>
+    <value>Formula at range X(Km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>HorizontalDispersion[X]</value>
@@ -968,5 +968,35 @@ Only the vertical dispersion projected on water is affected by shell's speed. Th
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Hide</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Air Drag</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Mass</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Theoretical FPM </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Fire chance per salvo</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Explosion radius</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Blast penetration</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Engine blast protection</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Rudder blast protection</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>If "module blast protection" + "armament blast penetration" &gt; 0 
+     The module can be incapacitated.
+If "module blast protection" + "armament blast penetration" &lt;= 0
+     The module can not be incapacitated.</value>
   </data>
 </root>

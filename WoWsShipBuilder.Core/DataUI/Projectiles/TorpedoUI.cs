@@ -26,6 +26,12 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal Detectability { get; set; }
 
         [DataUiUnit("M")]
+        public decimal ExplosionRadius { get; set; }
+
+        [JsonIgnore]
+        public decimal SplashCoeff { get; set; }
+
+        [DataUiUnit("M")]
         public int ArmingDistance { get; set; }
 
         [DataUiUnit("S")]
@@ -76,6 +82,8 @@ namespace WoWsShipBuilder.Core.DataUI
                     ArmingDistance = (int)(torpedoSpeed * 0.0026m * torpedoArmingTime * 1000),
                     FloodingChance = torpedoFlooding * 100,
                     ReactionTime = Math.Round(torpedoDetect / (torpedoSpeed * 0.0026m), 2),
+                    ExplosionRadius = (decimal)torp.ExplosionRadius,
+                    SplashCoeff = (decimal)torp.SplashCoeff,
                 };
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
                 {

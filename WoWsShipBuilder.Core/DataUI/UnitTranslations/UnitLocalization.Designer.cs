@@ -88,6 +88,15 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fires/min.
+        /// </summary>
+        public static string Unit_FPM {
+            get {
+                return ResourceManager.GetString("Unit_FPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HP.
         /// </summary>
         public static string Unit_HP {

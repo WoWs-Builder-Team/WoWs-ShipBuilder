@@ -24,6 +24,10 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
+        public decimal RudderBlastProtection { get; set; }
+
+        public decimal EngineBlastProtection { get; set; }
+
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? ManeuverabilityData { get; set; }
 
@@ -48,6 +52,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
                 ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
                 ManeuverabilityTurningCircle = hull.TurningRadius,
+                RudderBlastProtection = hull.SteeringGearArmorCoeff,
+                EngineBlastProtection = engine.ArmorCoeff,
             };
 
             manouvrability.ManeuverabilityData = manouvrability.ToPropertyMapping();
