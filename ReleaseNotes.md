@@ -5,6 +5,7 @@
 - Add dispersion plot in the dispersion and ballistics window
 - Add optional telemetry data in settings. Telemetry data is disabled by default and needs to be enabled manually
 - Add a tooltip for dispersion formula in main battery column (#10)
+- Add the option to change the application language. For now, only EN, FR, DE, JA, KO, PL, RU and TR are supported. More languages may be added in the future.
 
 ## Changes
 - Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)
