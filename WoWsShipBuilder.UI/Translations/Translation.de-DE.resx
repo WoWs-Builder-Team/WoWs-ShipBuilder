@@ -879,4 +879,13 @@
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
       <value>Grundlegende Telemetrie-Daten senden (aktuelle App-Version)</value>
   </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Neustart erforderlich</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Ein Neustart der Anwendung ist notwendig, um die Sprach-Änderung vollständig zu übernehmen. Nicht neuzustarten kann zu unerwartetem Verhalten der Anwendung führen.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialisiere...</value>
+  </data>
 </root>

@@ -4,6 +4,7 @@ using System.Threading;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI
@@ -18,7 +19,7 @@ namespace WoWsShipBuilder.UI
             Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
             Logging.Logger.Info("------------------------------");
             Logging.Logger.Info("Starting application...");
-            var culture = new CultureInfo("en-GB");
+            var culture = AppDataHelper.Instance.DefaultCultureDetails.CultureInfo;
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
