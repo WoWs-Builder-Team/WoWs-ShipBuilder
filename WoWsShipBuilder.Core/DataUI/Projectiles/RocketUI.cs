@@ -19,6 +19,12 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("MM")]
         public int Penetration { get; set; }
 
+        [DataUiUnit("M")]
+        public decimal ExplosionRadius { get; set; }
+
+        [JsonIgnore]
+        public decimal SplashCoeff { get; set; }
+
         [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
 
@@ -63,6 +69,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 ArmingTreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
+                ExplosionRadius = (decimal)rocket.ExplosionRadius,
+                SplashCoeff = (decimal)rocket.SplashCoeff,
             };
 
             rocketUI.ProjectileData = rocketUI.ToPropertyMapping();

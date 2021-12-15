@@ -411,7 +411,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
+        ///   Looks up a localized string similar to has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
         /// </summary>
         public static string DispersionGraphWindow_SelectShellDesc {
             get {
@@ -807,7 +807,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected ship has already been added.
+        ///   Looks up a localized string similar to has already been added with that shell.
         /// </summary>
         public static string MessageBox_DuplicateShip {
             get {
@@ -825,7 +825,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected ship has no main guns.
+        ///   Looks up a localized string similar to has no main guns.
         /// </summary>
         public static string MessageBox_ShipNoGun {
             get {
@@ -1257,6 +1257,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Air Drag.
+        /// </summary>
+        public static string ShipStats_AirDrag {
+            get {
+                return ResourceManager.GetString("ShipStats_AirDrag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Airstrike.
         /// </summary>
         public static string ShipStats_Airstrike {
@@ -1316,6 +1325,18 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_Backward {
             get {
                 return ResourceManager.GetString("ShipStats_Backward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
+        ///     The module can be incapacitated.
+        ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
+        ///     The module can not be incapacitated..
+        /// </summary>
+        public static string ShipStats_BlastExplanation {
+            get {
+                return ResourceManager.GetString("ShipStats_BlastExplanation", resourceCulture);
             }
         }
         
@@ -1527,7 +1548,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Formula at range X.
+        ///   Looks up a localized string similar to Formula at range X(Km).
         /// </summary>
         public static string ShipStats_DispFormulaTooltip {
             get {
@@ -1554,6 +1575,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine blast protection.
+        /// </summary>
+        public static string ShipStats_EngineBlastProtection {
+            get {
+                return ResourceManager.GetString("ShipStats_EngineBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explosion radius.
+        /// </summary>
+        public static string ShipStats_ExplosionRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_ExplosionRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max fires.
         /// </summary>
         public static string ShipStats_FireAmount {
@@ -1568,6 +1607,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_FireChance {
             get {
                 return ResourceManager.GetString("ShipStats_FireChance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire chance per salvo.
+        /// </summary>
+        public static string ShipStats_FireChancePerSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_FireChancePerSalvo", resourceCulture);
             }
         }
         
@@ -1869,6 +1917,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mass.
+        /// </summary>
+        public static string ShipStats_Mass {
+            get {
+                return ResourceManager.GetString("ShipStats_Mass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max number of fires.
         /// </summary>
         public static string ShipStats_MaxFireAmount {
@@ -2166,6 +2223,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rudder blast protection.
+        /// </summary>
+        public static string ShipStats_RudderBlastProtection {
+            get {
+                return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Second ping duration.
         /// </summary>
         public static string ShipStats_SecondPingDuration {
@@ -2265,6 +2331,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blast penetration.
+        /// </summary>
+        public static string ShipStats_SplashCoeff {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashCoeff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting planes on deck.
         /// </summary>
         public static string ShipStats_StartingNumberOnDeck {
@@ -2288,6 +2363,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TheoreticalDPM {
             get {
                 return ResourceManager.GetString("ShipStats_TheoreticalDPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theoretical FPM .
+        /// </summary>
+        public static string ShipStats_TheoreticalFPM {
+            get {
+                return ResourceManager.GetString("ShipStats_TheoreticalFPM", resourceCulture);
             }
         }
         

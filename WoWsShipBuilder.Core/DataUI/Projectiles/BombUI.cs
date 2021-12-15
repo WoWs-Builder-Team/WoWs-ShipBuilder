@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
@@ -18,6 +19,12 @@ public record BombUI : ProjectileUI, IDataUi
 
         [DataUiUnit("MM")]
         public int Penetration { get; set; }
+
+        [DataUiUnit("M")]
+        public decimal ExplosionRadius { get; set; }
+
+        [JsonIgnore]
+        public decimal SplashCoeff { get; set; }
 
         [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
@@ -67,6 +74,8 @@ public record BombUI : ProjectileUI, IDataUi
                 ArmingThreshold = armingTreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
+                ExplosionRadius = (decimal)bomb.ExplosionRadius,
+                SplashCoeff = (decimal)bomb.SplashCoeff,
             };
 
             bombUI.ProjectileData = bombUI.ToPropertyMapping();

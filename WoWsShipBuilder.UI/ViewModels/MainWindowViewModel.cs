@@ -49,15 +49,19 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentShipIndex = "_default";
 
+        private int? currentShipTier;
+
         private Ship effectiveShipData = null!;
 
         private string freeXp = "0";
 
         private string freeXpBonus = "0";
 
-        private List<string>? nextShipIndex = new();
+        private Dictionary<string, int>? nextShips = new();
 
         private string? previousShipIndex;
+
+        private int? previousShipTier;
 
         private Ship rawShipData = null!;
 
@@ -97,16 +101,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
         }
 
+        public int? CurrentShipTier
+        {
+            get => currentShipTier;
+            set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
+        }
+
         public string? PreviousShipIndex
         {
             get => previousShipIndex;
             set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
         }
 
-        public List<string>? NextShipIndex
+        public int? PreviousShipTier
         {
-            get => nextShipIndex;
-            set => this.RaiseAndSetIfChanged(ref nextShipIndex, value);
+            get => previousShipTier;
+            set => this.RaiseAndSetIfChanged(ref previousShipTier, value);
+        }
+
+        public Dictionary<string, int>? NextShips
+        {
+            get => nextShips;
+            set => this.RaiseAndSetIfChanged(ref nextShips, value);
         }
 
         public ShipModuleViewModel ShipModuleViewModel
@@ -267,7 +283,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             Logging.Logger.Info("Selecting new ship");
             var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin);
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, false);
             var result = await selectionWin.ShowDialog<ShipSummary>(self);
             if (result != null)
             {
@@ -329,9 +345,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
             CurrentShipIndex = ship.Index;
+            CurrentShipTier = ship.Tier;
             PreviousShipIndex = previousIndex;
-            NextShipIndex = nextShipsIndexes;
+            if (previousIndex != null)
+            {
+                PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
+            }
 
+            NextShips = nextShipsIndexes!.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
         }

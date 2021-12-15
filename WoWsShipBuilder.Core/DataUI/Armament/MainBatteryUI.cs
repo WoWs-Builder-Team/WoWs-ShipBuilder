@@ -91,12 +91,12 @@ namespace WoWsShipBuilder.Core.DataUI
 
             FireControl? suoConfiguration = ship.FireControlList[shipConfiguration.First(c => c.UcType == ComponentType.Suo).Components[ComponentType.Suo].First()];
 
-            List<(int BarrelCount, int TurretCount)> arrangementList = mainBattery.Guns
+            List<(int BarrelCount, int TurretCount, string GunName)> arrangementList = mainBattery.Guns
                 .GroupBy(gun => gun.NumBarrels)
-                .Select(group => (BarrelCount: group.Key, TurretCount: group.Count()))
+                .Select(group => (BarrelCount: group.Key, TurretCount: group.Count(), GunName: group.First().Name))
                 .OrderBy(item => item.TurretCount)
                 .ToList();
-            string turretArrangement = string.Join(", ", arrangementList.Select(item => $"{item.TurretCount} x {item.BarrelCount}"));
+            string turretArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TurretCount} x {item.BarrelCount} {Localizer.Instance[item.GunName].Localization}"));
             int barrelCount = arrangementList.Select(item => item.TurretCount * item.BarrelCount).Sum();
             Gun gun = mainBattery.Guns.First();
 
@@ -134,17 +134,17 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal hDispersion = Math.Round((decimal)modifiedDispersion.CalculateHorizontalDispersion((double)mainBattery.MaxRange), 2);
             decimal vDispersion = Math.Round((decimal)modifiedDispersion.CalculateVerticalDispersion((double)mainBattery.MaxRange), 2);
 
-            decimal rateOfFire = (60 / reload) * barrelCount;
+            decimal rateOfFire = 60 / reload;
 
             var maxRangeBW = (double)(mainBattery.MaxRange / 30);
             var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
 
             var mainBatteryUi = new MainBatteryUI
             {
-                Name = turretArrangement + " " + Localizer.Instance[mainBattery.Guns.First().Name].Localization,
+                Name = turretArrangement,
                 Range = range,
                 Reload = reload,
-                RoF = Math.Round(rateOfFire, 1),
+                RoF = Math.Round(rateOfFire * barrelCount, 1),
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
@@ -152,16 +152,16 @@ namespace WoWsShipBuilder.Core.DataUI
                 TaperDist = $"{modifiedDispersion.TaperDist / 1000} " + UnitLocalization.Unit_KM,
                 HorizontalDisp = hDispersion + " " + UnitLocalization.Unit_M,
                 VerticalDisp = vDispersion + " " + UnitLocalization.Unit_M,
-                HorizontalDispFormula = $"X * {Math.Round((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance, 4)} + {30 * modifiedDispersion.MinRadius}",
-                VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30, 8)} + {((-maxRangeBW * modifiedDispersion.Delim) * vRadiusCoeff) + modifiedDispersion.RadiusOnDelim})",
-                HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance) + (modifiedDispersion.MinRadius / (modifiedDispersion.TaperDist / 30)), 4)}",
-                VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((modifiedDispersion.RadiusOnDelim - modifiedDispersion.RadiusOnZero) / (maxRangeBW * modifiedDispersion.Delim)) / 30, 8)} + {modifiedDispersion.RadiusOnZero})",
+                HorizontalDispFormula = $"X * {Math.Round((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance * 1000, 4)} + {30 * modifiedDispersion.MinRadius}",
+                VerticalCoeffFormula = $"(X * {(decimal)Math.Round(vRadiusCoeff / 30 * 1000, 4)} + {((-maxRangeBW * modifiedDispersion.Delim) * vRadiusCoeff) + modifiedDispersion.RadiusOnDelim})",
+                HorizontalDispFormulaAtShortRange = $"X * {Math.Round(((modifiedDispersion.IdealRadius - modifiedDispersion.MinRadius) / modifiedDispersion.IdealDistance * 1000) + (modifiedDispersion.MinRadius / (modifiedDispersion.TaperDist / 30)), 4)}",
+                VerticalCoeffFormulaAtShortRange = $"(X * {(decimal)Math.Round(((modifiedDispersion.RadiusOnDelim - modifiedDispersion.RadiusOnZero) / (maxRangeBW * modifiedDispersion.Delim)) / 30 * 1000, 4)} + {modifiedDispersion.RadiusOnZero})",
                 DispersionData = mainBattery.DispersionValues,
                 OriginalMainBatteryData = mainBattery,
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, rateOfFire * barrelCount);
+            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

@@ -40,7 +40,6 @@ namespace WoWsShipBuilder.Core.DataProvider
                 new(new("de-DE"), "de"),
                 new(new("ja-JP"), "ja"),
                 new(new("ko-KR"), "ko"),
-                new(new("pl-PL"), "pl"),
                 new(new("ru-RU"), "ru"),
                 new(new("tr-TR"), "tr"),
             };
