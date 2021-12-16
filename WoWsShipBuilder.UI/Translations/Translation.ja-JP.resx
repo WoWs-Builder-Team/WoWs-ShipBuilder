@@ -487,10 +487,10 @@
     <value>エラー</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>選択した艦艇には主砲がありません</value>
+    <value>に主砲はありません</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>選択した艦艇は既に追加されています</value>
+    <value>と選択した砲弾は既に追加されています</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>種類</value>
@@ -853,7 +853,7 @@
     <value>砲弾を選択</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>選択した船には複数の砲弾があります。必要なものを選択してください。 同口径の砲弾の場合、弾種はHE-&gt;SAP-&gt;APの順に並んでいます。</value>
+    <value>には複数の砲弾があります。必要なものを選択してください。 同口径の砲弾の場合、弾種はHE-&gt;SAP-&gt;APの順に並んでいます。</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>通常アカウント</value>
@@ -898,7 +898,7 @@
     <value>散布界のグラフを表示</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>距離Xにおける式</value>
+    <value>距離X(km)における式</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>水平散布界[X]</value>
@@ -968,5 +968,35 @@
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>非表示</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>抗力係数</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>質量</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>理論値FPM </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>斉射ごとの火災発生率</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>爆発半径</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>爆風貫通力</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>エンジン爆風耐性</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>操舵装置爆風耐性</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>"モジュールの爆風耐性" + "兵装の爆風貫通力" &gt; 0 の場合
+     モジュールは機能停止する可能性があります
+"モジュールの爆風耐性" + "兵装の爆風貫通力" &lt;= 0 の場合
+     モジュールは機能停止しません</value>
   </data>
 </root>
