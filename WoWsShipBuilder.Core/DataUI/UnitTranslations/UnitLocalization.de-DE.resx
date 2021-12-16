@@ -156,4 +156,7 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>Schüsse/Minute</value>
   </data>
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>Brände/Min</value>
+  </data>
 </root>
