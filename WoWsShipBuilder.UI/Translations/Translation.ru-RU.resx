@@ -487,10 +487,10 @@
     <value>Ошибка</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>У выбранного корабля нет ГК</value>
+    <value>ГК отсутствует</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Выбранный корабль уже был добавлен</value>
+    <value>уже был добавлен с этим снарядом</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Тип</value>
@@ -853,7 +853,7 @@
     <value>Выберите снаряд</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Выбранный корабль имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
+    <value>имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Обычный аккаунт</value>
@@ -898,7 +898,7 @@
     <value>Показать график разброса</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Формула для расстояния Х</value>
+    <value>Формула для расстояния Х(км)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Горизонтальный разброс [X]</value>
@@ -968,5 +968,35 @@
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Скрыть</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Сопротивление воздуха</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Масса</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Теоретических пожаров в минуту </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Шанс пожара за залп</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Радиус взрыва</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Пробитие взрыва</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Защита двигателя от взрыва</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Защита рулей от взрыва</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &gt; 0 
+     Модуль может быть выведен из строя.
+Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &lt;= 0
+     модуль не может быть выведен из строя.</value>
   </data>
 </root>
