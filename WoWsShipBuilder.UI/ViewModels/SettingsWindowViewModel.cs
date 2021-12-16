@@ -216,8 +216,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (serverChanged || pathChanged)
             {
+                AppData.ResetCaches();
                 await new DownloadWindow().ShowDialog(self);
-                AppData.ShipSummaryList = null;
             }
 
             if (cultureChanged)

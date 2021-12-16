@@ -40,7 +40,7 @@ namespace WoWsShipBuilder.UI
                 {
                     Task.Run(async () =>
                     {
-                        await UpdateCheck();
+                        // await UpdateCheck();
                         Logging.Logger.Info("Finished updatecheck");
                     });
                 }

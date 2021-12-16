@@ -37,7 +37,21 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes)
         {
-            var consumable = AppData.ConsumableList![$"{name} {variant}"];
+            var consumableIdentifier = $"{name} {variant}";
+            if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
+            {
+                Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
+                consumable = new()
+                {
+                    Index = "error",
+                    Name = "error",
+                    DescId = "error",
+                    Group = "error",
+                    IconId = "error",
+                    ConsumableVariantName = "error",
+                    Modifiers = new(),
+                };
+            }
 
             var iconName = consumable.IconId;
             if (string.IsNullOrEmpty(iconName))
@@ -60,7 +74,7 @@ namespace WoWsShipBuilder.Core.DataUI
             int uses = consumable.NumConsumables;
             float cooldown = consumable.ReloadTime;
             float workTime = consumable.WorkTime;
-            if (isCvPlanes)
+            if (isCvPlanes && consumableModifiers.Any())
             {
                 workTime = modifiers.FindModifiers("planeConsumablesWorkTime").Aggregate(workTime, (current, modifier) => current * modifier);
 
@@ -102,7 +116,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
             }
-            else
+            else if (consumableModifiers.Any())
             {
                 var usesModifiers = modifiers.FindModifiers("additionalConsumables", true);
                 uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
@@ -158,7 +172,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
                 }
                 else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase))
-               {
+                {
                     var crashCrewUsesModifiers = modifiers.FindModifiers("crashCrewAdditionalConsumables", true);
                     uses = crashCrewUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
@@ -201,6 +215,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     var cooldownModifiers = modifiers.FindModifiers("torpedoReloaderReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
+            }
+            else
+            {
+                Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
             }
 
             var numberOfUses = uses.ToString();
