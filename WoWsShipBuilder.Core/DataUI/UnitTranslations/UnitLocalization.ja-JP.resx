@@ -156,4 +156,7 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>発/分</value>
   </data>
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>火災/分</value>
+  </data>
 </root>
