@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.UI.Translations
 
                 if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    string? localization = Translation.ResourceManager.GetString(localizerKey);
+                    string? localization = Translation.ResourceManager.GetString(localizerKey, culture);
                     if (localization == null)
                     {
                         Logging.Logger.Warn($"Missing localization for key {localizerKey}.");
@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.UI.Translations
 
                 if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return Translation.ResourceManager.GetString($"{stringParam}_{localizerKey}") ?? string.Empty;
+                    return Translation.ResourceManager.GetString($"{stringParam}_{localizerKey}", culture) ?? string.Empty;
                 }
 
                 if (stringParam.Equals("SKILL") || stringParam.Equals("SKILL_DESC"))
@@ -78,7 +78,7 @@ namespace WoWsShipBuilder.UI.Translations
             if (value is Enum enumValue)
             {
                 var enumString = enumValue.ToString();
-                return Translation.ResourceManager.GetString(enumString) ?? enumString;
+                return Translation.ResourceManager.GetString(enumString, culture) ?? enumString;
             }
 
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);

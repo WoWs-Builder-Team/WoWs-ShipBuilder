@@ -55,6 +55,8 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 logger.Info("Completed update check.");
             }
 
+            logger.Info("Checking installed localization files...");
+            await CheckInstalledLocalizations(serverType);
             logger.Info("Starting data validation...");
             string dataBasePath = appDataHelper.GetDataPath(serverType);
             if (!ValidateData(serverType, dataBasePath))
@@ -88,9 +90,10 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task UpdateLocalization(ServerType serverType)
         {
             var installedLocales = appDataHelper.GetInstalledLocales(serverType);
-            if (!installedLocales.Contains(AppData.Settings.Locale + ".json"))
+
+            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json"))
             {
-                installedLocales.Add(AppData.Settings.Locale + ".json");
+                installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json");
             }
 
             var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
@@ -305,6 +308,22 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             //     progressTracker.Report((3, "SplashScreen_CamoImages"));
             //     await awsClient.DownloadImages(ImageType.Camo, versionName);
             // }
+        }
+
+        public async Task CheckInstalledLocalizations(ServerType serverType)
+        {
+            List<string> installedLocales = appDataHelper.GetInstalledLocales(serverType, false);
+            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
+            {
+                logger.Info("Selected localization is not installed. Downloading file...");
+                string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
+                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
+            }
+            else
+            {
+                logger.Info("Selected localization is installed.");
+            }
         }
     }
 }

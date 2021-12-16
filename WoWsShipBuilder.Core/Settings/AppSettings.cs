@@ -1,40 +1,24 @@
 using System;
-using System.Globalization;
-using System.Threading;
+using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 
 namespace WoWsShipBuilder.Core.Settings
 {
     public class AppSettings
     {
-        private string locale = "en-GB";
+        [JsonConstructor]
+        public AppSettings(CultureDetails? selectedLanguage = null)
+        {
+            SelectedLanguage = selectedLanguage ?? AppDataHelper.Instance.DefaultCultureDetails;
+        }
 
         public bool AutoUpdateEnabled { get; set; } = true;
 
-        public string Locale
-        {
-            get => locale;
-            set
-            {
-                var culture = new CultureInfo(value);
-                Thread.CurrentThread.CurrentCulture = culture;
-                Thread.CurrentThread.CurrentUICulture = culture;
-                locale = value;
-
-                if (!AppData.IsInitialized)
-                {
-                    Logging.Logger.Debug("Initialization attempted before full app data setup. Ignoring language update.");
-                }
-                else
-                {
-                    Localizer.Instance.UpdateLanguage(value);
-                }
-            }
-        }
+        public CultureDetails SelectedLanguage { get; set; }
 
         public ServerType SelectedServerType { get; set; } = ServerType.Live;
 
-        public DateTime? LastDataUpdateCheck { get; set; } = null!;
+        public DateTime? LastDataUpdateCheck { get; set; }
 
         public string? CustomDataPath { get; set; }
 

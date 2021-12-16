@@ -7,8 +7,14 @@
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:dataProvider="clr-namespace:WoWsShipBuilder.Core.DataProvider;assembly=WoWsShipBuilder.Core"
         Height="500" Width="700" CanResize="False"
         WindowStartupLocation="CenterScreen">
+    
+    <Design.DataContext>
+        <viewModels:SettingsWindowViewModel />
+    </Design.DataContext>
 
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader Grid.Row="0" />
@@ -23,7 +29,13 @@
                             <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
                                 <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
-                                          SelectedItem="{Binding Path=SelectedLanguage}" />
+                                          SelectedItem="{Binding Path=SelectedLanguage}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="dataProvider:CultureDetails">
+                                            <TextBlock Text="{Binding CultureInfo.DisplayName}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
 
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Server}" VerticalAlignment="Center" />
                                 <ComboBox VerticalAlignment="Center" Items="{Binding Servers}" SelectedItem="{Binding SelectedServer}" />

@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
-        [DataUiUnit("ShotsPerSecond")]
+        [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
 
         public decimal Sigma { get; set; }

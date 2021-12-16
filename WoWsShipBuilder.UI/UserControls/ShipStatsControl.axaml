@@ -17,7 +17,6 @@
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter"/>
         <converters:ImagePathConverter x:Key="ImageConverter" />
-        <converters:ConsumableUiConverter x:Key="ConsumableUiConverter" />
         <converters:ModifierConverter x:Key="ModifierConverter"/>
     </UserControl.Resources>
     <UserControl.Styles>
@@ -418,9 +417,9 @@
                                 <ItemsControl Items="{Binding Weapon.ProjectileData}" Classes="Stagger">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel>
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="3 0 0 0"/>
                                                 <TextBlock Classes="Key"/>
-                                                <TextBlock Classes="Value"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -482,9 +481,9 @@
                                                 <ItemsControl Items="{Binding SecondaryBatteryData}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <DockPanel>
-                                                                <TextBlock Classes="Key"/>
-                                                                <TextBlock Classes="Value"/>
+                                                            <DockPanel LastChildFill="True">
+                                                                <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap"/>
+                                                                <TextBlock Classes="Key" />
                                                             </DockPanel>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
@@ -494,9 +493,9 @@
                                                 <ItemsControl Items="{Binding Shell.PropertyValueMapper}" Classes="Stagger">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
-                                                            <DockPanel>
+                                                            <DockPanel LastChildFill="True">
+                                                                <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="2 0 0 0"/>
                                                                 <TextBlock Classes="Key"/>
-                                                                <TextBlock Classes="Value"/>
                                                             </DockPanel>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>

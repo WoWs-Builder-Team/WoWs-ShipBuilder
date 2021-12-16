@@ -8,6 +8,7 @@
 - Add several parameters to ships armaments
 - Add blast protection parameter for engine and rudder (#9)
 - Add torpedo layout (#50)
+- Add the option to change the application language. For now, only EN, FR, DE, JA, KO, RU and TR are supported. More languages may be added in the future. (#61)
 
 ## Changes
 - Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)

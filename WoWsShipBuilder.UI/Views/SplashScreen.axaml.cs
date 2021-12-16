@@ -53,9 +53,6 @@ namespace WoWsShipBuilder.UI.Views
                 Task minimumRuntime = Task.Delay(1500);
                 Logger.Debug("Checking gamedata versions...");
                 await dataContext.VersionCheck();
-
-                Logger.Debug("Updating localization settings...");
-                Localizer.Instance.UpdateLanguage(AppData.Settings.Locale);
                 Logger.Debug("Startup tasks completed. Launching main window.");
 
                 await minimumRuntime;

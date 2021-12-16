@@ -1041,6 +1041,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour..
+        /// </summary>
+        public static string Settingswindow_LanguageChanged {
+            get {
+                return ResourceManager.GetString("Settingswindow_LanguageChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart required.
+        /// </summary>
+        public static string SettingsWindow_LanguageChanged_Title {
+            get {
+                return ResourceManager.GetString("SettingsWindow_LanguageChanged_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lead devs:.
         /// </summary>
         public static string SettingsWindow_LeadDevs {
@@ -2525,6 +2543,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SplashScreen_Done {
             get {
                 return ResourceManager.GetString("SplashScreen_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing....
+        /// </summary>
+        public static string SplashScreen_Init {
+            get {
+                return ResourceManager.GetString("SplashScreen_Init", resourceCulture);
             }
         }
         
