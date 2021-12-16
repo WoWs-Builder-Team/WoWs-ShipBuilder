@@ -12,7 +12,7 @@
 
 ## Changes
 - Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)
-- Dispersion formulas are now in Km istead of m
+- Dispersion formulas are now in Km instead of m
 
 ## Bugfixes
 - Show missing modules on aircraft carriers (#38)
