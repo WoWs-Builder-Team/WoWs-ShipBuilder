@@ -487,10 +487,10 @@
     <value>Fehler</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Das ausgewählte Schiff hat keine Hauptgeschütze</value>
+    <value>hat keine Haupgeschütze</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Das ausgewählte Schiff wurde bereits hinzugefügt</value>
+    <value>wurde bereits mit dieser Granate hinzugefügt</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Typ</value>
@@ -853,7 +853,7 @@
     <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Das ausgewählte Schiff hat mehr als eine Granate. Wähle die anzuzeigenden Granaten. Haben die Granaten das selbe Kaliber, ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
+    <value>hat mehr als eine Granate. Wähle die Granate, von der du die Ballistik haben möchtest. Angamommen das Kaliber ist gleich, die Reihenfolge ist HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Normaler Account</value>
@@ -898,7 +898,7 @@
     <value>Zeige Streuungsdiagramm</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formel für Reichweite X</value>
+    <value>Formel bei Reichweite X(km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale Streuung [X]</value>
@@ -968,5 +968,44 @@ Nur die auf das Wasser projizierte vertikale Streuung wird von der Geschwindigke
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Verbergen</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Luftwiderstand</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Masse</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Theoretische BPM</value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Brandwahrscheinlichkeit per Salve</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Explosionsradius</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Explosions-Durchschlagskraft</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Antriebs-Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Ruder-Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
+     Das Modul kann beschädigt werden.
+Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
+     Das Modul kann nicht beschädigt werden.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Neustart erforderlich</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Ein Neustart der Anwendung ist erforderlich, damit die Sprachänderung wirksam wird. Nicht neuzustarten kann zu unerwartetem Verhalten führen.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialisiere...</value>
   </data>
 </root>
