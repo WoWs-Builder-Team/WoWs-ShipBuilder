@@ -999,4 +999,13 @@
 "モジュールの爆風耐性" + "兵装の爆風貫通力" &lt;= 0 の場合
      モジュールは機能停止しません</value>
   </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>再起動が必要です</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>言語の変更を有効にするにはアプリケーションの再起動が必要です。再起動しないと予期しない動作が発生する可能性があります。</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>初期化中...</value>
+  </data>
 </root>
