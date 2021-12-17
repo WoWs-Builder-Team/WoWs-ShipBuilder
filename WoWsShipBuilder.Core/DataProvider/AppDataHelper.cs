@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
@@ -29,6 +30,22 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             this.fileSystem = fileSystem;
             DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+
+            DefaultCultureDetails = new(new("en-GB"), "en");
+            var languages = new List<CultureDetails>
+            {
+                DefaultCultureDetails,
+                new(new("nl-NL"), "nl"),
+                new(new("fr-FR"), "fr"),
+                new(new("de-DE"), "de"),
+                new(new("ja-JP"), "ja"),
+                new(new("ko-KR"), "ko"),
+                new(new("ru-RU"), "ru"),
+                new(new("tr-TR"), "tr"),
+            };
+            var builder = ImmutableList.CreateBuilder<CultureDetails>();
+            builder.AddRange(languages);
+            SupportedLanguages = builder.ToImmutable();
         }
 
         public static AppDataHelper Instance => InstanceValue.Value;
@@ -49,6 +66,10 @@ namespace WoWsShipBuilder.Core.DataProvider
         }
 
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
+
+        public CultureDetails DefaultCultureDetails { get; }
+
+        public IEnumerable<CultureDetails> SupportedLanguages { get; }
 
         public static Nation GetNationFromIndex(string index)
         {
@@ -94,11 +115,13 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// Find the list of currently installed localizations.
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
+        /// <param name="includeFileType">Specifies whether the list of installed locales should contain the file extensions for each file.</param>
         /// <returns>A possibly empty list of installed locales.</returns>
-        public List<string> GetInstalledLocales(ServerType serverType)
+        public List<string> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
         {
             fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
-            return fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file).Name).ToList();
+            var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
+            return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
         }
 
         /// <summary>

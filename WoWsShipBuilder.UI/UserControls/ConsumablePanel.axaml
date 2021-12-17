@@ -28,7 +28,7 @@
                 <Panel>
                     <Button Name="DropDownButton" Click="DropDownButton_OnClick" ToolTip.Placement="Right" ToolTip.HorizontalOffset="5"
                             IsVisible="{Binding Converter={StaticResource ListSizeConverter}, ConverterParameter=2}">
-                        <Image>
+                        <Image MaxWidth="60">
                             <Image.Styles>
                                 <Style Selector="Image">
                                     <Setter Property="Source">
@@ -56,7 +56,7 @@
                         </ToolTip.Tip>
                     </Button>
                     <Image ToolTip.Placement="Right" ToolTip.HorizontalOffset="5" IsEnabled="{Binding $self.IsVisible}"
-                        IsVisible="{Binding Converter={StaticResource ListSizeConverter}, ConverterParameter=-2}">
+                        IsVisible="{Binding Converter={StaticResource ListSizeConverter}, ConverterParameter=-2}" MaxWidth="60">
                         <Image.Styles>
                             <Style Selector="Image">
                                 <Setter Property="Source">

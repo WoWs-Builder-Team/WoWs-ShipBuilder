@@ -97,5 +97,16 @@ namespace WoWsShipBuilder.Core.DataProvider
                 .Append("ServerType: ").AppendLine(Settings.SelectedServerType.ToString());
             return result.ToString();
         }
+
+        public static void ResetCaches()
+        {
+            ShipSummaryList = null;
+            ConsumableList = null;
+            ProjectileCache.Clear();
+            AircraftCache.Clear();
+            ShipDictionary = null;
+            DataVersion = null;
+            Logging.Logger.Info("Cleared all appdata caches.");
+        }
     }
 }

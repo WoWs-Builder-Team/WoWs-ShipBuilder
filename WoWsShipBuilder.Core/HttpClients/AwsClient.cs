@@ -133,7 +133,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// </summary>
         /// <param name="serverType">The <see cref="ServerType"/> of the requested data.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task DownloadLanguage(ServerType serverType)
+        public async Task DownloadLanguage(ServerType serverType, string languageName)
         {
             Logger.Debug("Downloading language files for server type {}.", serverType);
             string server = serverType == ServerType.Live ? "live" : "pts";
@@ -144,13 +144,12 @@ namespace WoWsShipBuilder.Core.HttpClients
                 FileSystem.Directory.CreateDirectory(localePath);
             }
 
-            string fileName = "en-GB.json";
+            string fileName = $"{languageName}.json";
             string url = $"{Host}/api/{server}/Localization/{fileName}";
             string localeName = FileSystem.Path.Combine(localePath, fileName);
             await DownloadFileAsync(new Uri(url), localeName)
                 .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
-                .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted)
-                .ConfigureAwait(false);
+                .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted);
         }
     }
 }

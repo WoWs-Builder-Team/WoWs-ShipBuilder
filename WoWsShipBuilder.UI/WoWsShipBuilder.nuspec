@@ -9,6 +9,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>Copyright 2021</copyright>
         <iconUrl>https://raw.githubusercontent.com/WoWs-Builder-Team/WoWs-ShipBuilder/main/WoWsShipBuilder.UI/Assets/ShipBuilderIcon_bg.ico</iconUrl>
+<!--        <releaseNotes>$releaseNotes$</releaseNotes>-->
         <dependencies />
     </metadata>
     <files>

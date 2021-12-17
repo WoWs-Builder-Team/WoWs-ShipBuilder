@@ -1,4 +1,4 @@
-# Update 1.3.0 - pre1
+# Update 1.3.0 - RC1
 
 ## Additions
 - Add button to open dispersion and ballistics window directly from start menu
@@ -8,10 +8,11 @@
 - Add several parameters to ships armaments
 - Add blast protection parameter for engine and rudder (#9)
 - Add torpedo layout (#50)
+- Add the option to change the application language. For now, only EN, FR, DE, JA, KO, RU and TR are supported. More languages may be added in the future. (#61)
 
 ## Changes
 - Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)
-- Dispersion formulas are now in Km istead of m
+- Dispersion formulas are now in Km instead of m
 
 ## Bugfixes
 - Show missing modules on aircraft carriers (#38)
@@ -29,7 +30,9 @@
 - Fixed wrong unit for RoF in ship stats
 - Fixed incorrect value for theoretical DPM
 - Fixed incorrect guns name display
-- Fixed overmatch value not being displayed or being shown incorrectly 
+- Fixed overmatch value not being displayed or being shown incorrectly
+- Properly reset cached data on server type change to avoid exceptions on new ships
+- Limit size of consumable images to avoid overflows in case of errors
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
