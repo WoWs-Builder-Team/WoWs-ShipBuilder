@@ -142,7 +142,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch">
+                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             <ToolTip.Tip>
@@ -216,7 +216,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch">
+                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             <ToolTip.Tip>
@@ -297,7 +297,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch" Margin="5 0 0 0">
+                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding Weapon.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             <ToolTip.Tip>
@@ -424,7 +424,7 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <DockPanel HorizontalAlignment="Stretch" Margin="5 0 0 0" IsVisible="{Binding Weapon.SplashCoeff, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                <DockPanel HorizontalAlignment="Stretch" Margin="5 0 0 0" Background="Transparent" IsVisible="{Binding Weapon.SplashCoeff, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                     <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                     <TextBlock Text="{Binding Weapon.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                     <ToolTip.Tip>
@@ -500,7 +500,7 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <DockPanel HorizontalAlignment="Stretch" Margin="5 0 0 0">
+                                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0">
                                                     <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                                     <TextBlock Text="{Binding Shell.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                                     <ToolTip.Tip>
@@ -545,14 +545,14 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel HorizontalAlignment="Stretch">
+                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_RudderBlastProtection}" DockPanel.Dock="Left"/>
                             <TextBlock Text="{Binding ManeuverabilityUI.RudderBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                             <ToolTip.Tip>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
                             </ToolTip.Tip>
                         </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch">
+                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_EngineBlastProtection}" DockPanel.Dock="Left"/>
                             <TextBlock Text="{Binding ManeuverabilityUI.EngineBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                             <ToolTip.Tip>
