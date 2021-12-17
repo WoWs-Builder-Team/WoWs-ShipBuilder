@@ -235,9 +235,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private double plotScaling = 0.75;
+        private decimal plotScaling = 0.7m;
 
-        public double PlotScaling
+        public decimal PlotScaling
         {
             get => plotScaling;
             set

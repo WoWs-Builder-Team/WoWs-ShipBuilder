@@ -66,8 +66,8 @@
                 </TabItem>
                 <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_DispersionPlot}">
                     <Grid RowDefinitions="Auto, Auto, *" ColumnDefinitions="*">
-                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,Auto" RowDefinitions="*" Margin="40 10 40 0">
-                            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="20 0">
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,Auto" RowDefinitions="*" Margin="20 10 20 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="10 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_AimingRange}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="0" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -76,7 +76,7 @@
                                     <Slider Value="{Binding AimingRange}" Minimum="1" Maximum="40" TickFrequency="0.5" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_ShotsNumber}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="1" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -85,16 +85,16 @@
                                     <Slider Value="{Binding ShotsNumber}" Minimum="10" Maximum="300" TickFrequency="10" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="4" Margin="20 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="4" Margin="10 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotScaling}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
                                         <TextBlock Text="{Binding PlotScaling}" TextAlignment="Center" Width="60" Margin="0 3 0 5"/>
                                     </Border>
-                                    <Slider Value="{Binding PlotScaling}" Minimum="0.25" Maximum="4" TickFrequency="0.25" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
+                                    <Slider Value="{Binding PlotScaling}" Minimum="0.2" Maximum="4" TickFrequency="0.1" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="20 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="10 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <ComboBox Items="{Binding EllipsePlanesList}" SelectedItem="{Binding SelectedEllipsePlane}" MinWidth="171"
                                           BorderBrush="Gray" BorderThickness="1" Margin="20 0 20 5" HorizontalContentAlignment="Center">
@@ -105,7 +105,7 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="20 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="10 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DrawFusoReference}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <ComboBox Items="{Binding FusoPositionsList}" SelectedItem="{Binding SelectedFusoPosition}" MinWidth="123"
                                           BorderBrush="Gray" BorderThickness="1" Margin="20 0 20 5" HorizontalContentAlignment="Center">
