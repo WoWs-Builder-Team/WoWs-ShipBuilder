@@ -26,6 +26,15 @@
     <Target Name="PostBuildVersionDump" AfterTargets="Build">
         <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
     </Target>
+    <!--  Target to add project release notes to nuget package for squirrel during package generation. Uncomment replacement token in nuspec too.  -->
+<!--    <Target Name="ConfigureReleaseNotes" BeforeTargets="GenerateNuspec">-->
+<!--        <ReadLinesFromFile File="../ReleaseNotes.md">-->
+<!--            <Output TaskParameter="Lines" ItemName="ReleaseNoteLines" />-->
+<!--        </ReadLinesFromFile>-->
+<!--        <PropertyGroup>-->
+<!--            <NuspecProperties>$(NuspecProperties);releaseNotes=@(ReleaseNoteLines, '%0a')</NuspecProperties>-->
+<!--        </PropertyGroup>-->
+<!--    </Target>-->
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
