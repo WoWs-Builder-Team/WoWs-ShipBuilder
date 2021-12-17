@@ -121,7 +121,7 @@
     <value>Вернуться в меню</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Сброс билда</value>
+    <value>Сбросить билд</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
     <value>Поделиться билдом</value>
@@ -172,7 +172,7 @@
     <value>Статус:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Флажки </value>
+    <value>Сигналы </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
     <value>Вставьте название для билда. Название корабля будет добавлено автоматически.</value>
@@ -998,5 +998,14 @@
      Модуль может быть выведен из строя.
 Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &lt;= 0
      модуль не может быть выведен из строя.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Требуется перезапуск</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Для смены языка необходим перезапуск приложения. В противном случае возможны неожиданные проблемы.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Загрузка...</value>
   </data>
 </root>
