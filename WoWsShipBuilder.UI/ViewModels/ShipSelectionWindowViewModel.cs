@@ -111,7 +111,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private List<string> tierList = new() { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+        private List<string> tierList = new() { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI" };
 
         public List<string> TierList
         {

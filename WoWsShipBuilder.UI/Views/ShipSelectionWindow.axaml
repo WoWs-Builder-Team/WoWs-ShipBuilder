@@ -29,7 +29,7 @@
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TierFilter}" IsChecked="{Binding TierFilterChecked}"/>
-                <ComboBox Items="{Binding TierList}" PlaceholderText="I ~ X" SelectedItem="{Binding SelectedTier}" 
+                <ComboBox Items="{Binding TierList}" PlaceholderText="I ~ XI" SelectedItem="{Binding SelectedTier}" 
                           IsEnabled="{Binding TierFilterChecked}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
