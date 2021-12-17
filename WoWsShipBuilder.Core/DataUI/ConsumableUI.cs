@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -38,7 +39,8 @@ namespace WoWsShipBuilder.Core.DataUI
         public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes)
         {
             var consumableIdentifier = $"{name} {variant}";
-            if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
+            Consumable consumable = new ();
+            if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out consumable!) ?? false))
             {
                 Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
                 consumable = new()
@@ -53,7 +55,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 };
             }
 
-            var iconName = consumable.IconId;
+            var iconName = consumable!.IconId;
             if (string.IsNullOrEmpty(iconName))
             {
                 iconName = name;
