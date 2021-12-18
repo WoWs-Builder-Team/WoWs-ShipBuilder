@@ -61,6 +61,33 @@ namespace WoWsShipBuilder.Core.DataUI.UnitTranslations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AP.
+        /// </summary>
+        public static string ArmamentType_AP {
+            get {
+                return ResourceManager.GetString("ArmamentType_AP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HE.
+        /// </summary>
+        public static string ArmamentType_HE {
+            get {
+                return ResourceManager.GetString("ArmamentType_HE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAP.
+        /// </summary>
+        public static string ArmamentType_SAP {
+            get {
+                return ResourceManager.GetString("ArmamentType_SAP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to °.
         /// </summary>
         public static string Unit_Degree {
