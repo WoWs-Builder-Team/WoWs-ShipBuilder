@@ -159,7 +159,4 @@
   <data name="Unit_FPM" xml:space="preserve">
     <value>Brände/Min</value>
   </data>
-  <data name="Unit_SalovsPerMinute" xml:space="preserve">
-      <value>Salven/Minute</value>
-  </data>
 </root>
