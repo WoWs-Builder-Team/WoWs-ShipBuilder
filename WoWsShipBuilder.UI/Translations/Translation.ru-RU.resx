@@ -427,7 +427,7 @@
     <value>Шанс затопления</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Главная Калибр</value>
+    <value>Главный Калибр</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
     <value>Время для реакции</value>
@@ -985,18 +985,18 @@
     <value>Радиус взрыва</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Пробитие взрыва</value>
+    <value>Пробитие взрывом</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Защита двигателя от взрыва</value>
+    <value>Защита двигателя от взрывов</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Защита рулей от взрыва</value>
+    <value>Защита рулей от взрывов</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &gt; 0 
+    <value>Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &gt; 0 
      Модуль может быть выведен из строя.
-Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &lt;= 0
+Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &lt;= 0
      модуль не может быть выведен из строя.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
