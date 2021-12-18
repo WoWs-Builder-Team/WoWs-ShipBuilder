@@ -153,7 +153,7 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
-  <data name="Unit_ShotsPerSecond" xml:space="preserve">
-      <value>disparos/s</value>
+  <data name="Unit_ShotsPerMinute" xml:space="preserve">
+    <value>disparos/min</value>
   </data>
 </root>

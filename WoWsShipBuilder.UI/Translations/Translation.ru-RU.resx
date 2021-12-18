@@ -121,7 +121,7 @@
     <value>Вернуться в меню</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Сброс билда</value>
+    <value>Сбросить билд</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
     <value>Поделиться билдом</value>
@@ -172,7 +172,7 @@
     <value>Статус:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Флажки </value>
+    <value>Сигналы </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
     <value>Вставьте название для билда. Название корабля будет добавлено автоматически.</value>
@@ -337,7 +337,7 @@
     <value>Время поворота на 180°</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Горизонтальный разброс</value>
+    <value>Горизонтальный</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Дальность Стрельбы</value>
@@ -355,7 +355,7 @@
     <value>Скорость Наведения</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Вертикальный разброс</value>
+    <value>Вертикально</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Начальная скорость снаряда</value>
@@ -487,10 +487,10 @@
     <value>Ошибка</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>У выбранного корабля нет ГК</value>
+    <value>ГК отсутствует</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Выбранный корабль уже был добавлен</value>
+    <value>уже был добавлен с этим снарядом</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Тип</value>
@@ -535,13 +535,13 @@
     <value>Маскировка</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Дальность видимости с воздуха</value>
+    <value>Заметность с самолетов</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>При пожаре</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Дальность видимости с кораблей</value>
+    <value>Заметность с кораблей</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>При пожаре</value>
@@ -844,7 +844,7 @@
     <value>Показать график скорости при попадании</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Показать графики баллистики</value>
+    <value>Открыть графики баллистики</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Выбранный пользовательский путь недопустим.</value>
@@ -853,6 +853,159 @@
     <value>Выберите снаряд</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Выбранный корабль имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
+    <value>имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
+  </data>
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Обычный аккаунт</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>Общий Премиум аккаунт</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>Корабельный Премиум аккаунт</value>
+  </data>
+  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
+    <value>Скопировать версии</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Дальность обнаружения подлодкой с перископной глубины</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Дальность обнаружения подлодкой с рабочей глубины</value>
+  </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+    <value>Показать графики разброса и баллистики</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Вертикальный:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Горизонтальный:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Внутренний вертикальный:</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Внутренний горизонтальный:</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Разброс</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Показать графики разброса</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Показать график разброса</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Формула для расстояния Х(км)</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>Горизонтальный разброс [X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Расстояние прицеливания (км)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Графики баллистики</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Графики разброса</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>График разброса</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Масштаб графика</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Количество выстрелов</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Обновить график</value>
+  </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+    <value>Отправить базовые телеметрические данные (текущая версия приложения)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>Этот корабль не может стрелять на выбранное расстояние прицеливания</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Плоскость графика</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Горизонталь (вода)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Реальный</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Вертикально</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Fuso для справки</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>На графике снаряды прилетают справа.
+График повернут на 90 градусов, так чтобы вертикальный разброс отображался горизонтально, а горизонтальный - вертикально.
+
+БЕЛЫЙ эллипс показывает максимальный разброс на выбранном расстоянии прицеливания.
+КРАСНЫЙ эллипс показывает зону, в которую, в среднем, попадает 50% снарядов.
+ЧЕРНЫЙ эллипс показывает размер Фусо для сравнения.
+
+Корабли в игре в два раза больше окружения, поэтому корабль длиной 200 метров занимает 400 метров.
+Реальный эллипс рассеивания изображен на плоскости, перпендикулярной углу падения снаряда.
+Только вертикальный разброс, спроецированный на воде, зависит от скорости снаряда. Реальный - нет.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Объяснение графика</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Носом</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Бортом</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Скрыть</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Сопротивление воздуха</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Масса</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Теоретических пожаров в минуту </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Шанс пожара за залп</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Радиус взрыва</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Пробитие взрыва</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Защита двигателя от взрыва</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Защита рулей от взрыва</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &gt; 0 
+     Модуль может быть выведен из строя.
+Если "защита модуля от взрыва" + "Пробитие взрыва вооружения" &lt;= 0
+     модуль не может быть выведен из строя.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Требуется перезапуск</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Для смены языка необходим перезапуск приложения. В противном случае возможны неожиданные проблемы.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Загрузка...</value>
   </data>
 </root>

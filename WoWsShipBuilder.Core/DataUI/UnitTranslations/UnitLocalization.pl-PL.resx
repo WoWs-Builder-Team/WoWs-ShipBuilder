@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Unit_MPS" xml:space="preserve">
-    <value>м/с</value>
+    <value>m/s</value>
   </data>
   <data name="Unit_KG" xml:space="preserve">
-    <value>кг</value>
+    <value>kg</value>
   </data>
   <data name="Unit_MM" xml:space="preserve">
-    <value>мм</value>
+    <value>mm</value>
   </data>
   <data name="Unit_PerCent" xml:space="preserve">
     <value>%</value>
@@ -133,30 +133,27 @@
     <value>°</value>
   </data>
   <data name="Unit_S" xml:space="preserve">
-    <value>с</value>
+    <value>s</value>
   </data>
   <data name="Unit_KM" xml:space="preserve">
-    <value>Км</value>
+    <value>km</value>
   </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
-    <value>°/с</value>
+    <value>°/s</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>дпс</value>
+    <value>dps</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
-    <value>ХП</value>
+    <value>PW</value>
   </data>
   <data name="Unit_Knots" xml:space="preserve">
-    <value>уз</value>
+    <value>kts</value>
   </data>
   <data name="Unit_M" xml:space="preserve">
-    <value>м</value>
+    <value>m</value>
   </data>
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
-    <value>выстрелов/мин</value>
-  </data>
-  <data name="Unit_FPM" xml:space="preserve">
-    <value>пожаров/мин</value>
+    <value>strzały/min</value>
   </data>
 </root>
