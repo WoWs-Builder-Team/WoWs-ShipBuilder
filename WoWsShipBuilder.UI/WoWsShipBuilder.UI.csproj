@@ -10,7 +10,7 @@
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
         <VersionPrefix>1.3.0</VersionPrefix>
-        <VersionSuffix>RC1</VersionSuffix>
+<!--        <VersionSuffix>RC1</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
