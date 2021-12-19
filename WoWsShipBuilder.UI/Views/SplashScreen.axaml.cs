@@ -52,7 +52,15 @@ namespace WoWsShipBuilder.UI.Views
             {
                 Task minimumRuntime = Task.Delay(1500);
                 Logger.Debug("Checking gamedata versions...");
-                await dataContext.VersionCheck();
+                try
+                {
+                    await dataContext.VersionCheck();
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Encountered unexpected exception during version check.");
+                }
+
                 Logger.Debug("Startup tasks completed. Launching main window.");
 
                 await minimumRuntime;
