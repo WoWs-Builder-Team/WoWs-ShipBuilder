@@ -487,7 +487,7 @@
     <value>Hata</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Seçilen Gemi Ana Bataryalara Sahip değil</value>
+    <value>ana bataryalara sahip değil</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
     <value>Seçilen gemi zaten eklendi</value>
@@ -628,7 +628,7 @@
     <value>Güvertedeki Maksimum Uçak Sayısı</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Azami Hız</value>
+    <value>Azami hız</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Asgari Hız</value>
@@ -968,5 +968,44 @@ Sadece su üzerinde öngörülen dikey dağılım merminin hızından etkilenir.
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Gizle</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Hava Direnci</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Kütle</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Teorik DBY </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Salvo başına yangın çıkarma şansı</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Patlama Yarıçapı</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Patlama Delişi</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Motorun Patlayıcıya Koruması</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Dümenin Patlayıcıya Koruması</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>If "modülün patlayıcıya koruması" + "cephanenin patlama delişi" &gt; 0 
+     Modül devre dışı kalmaz.
+If "module blast protection" + "armament blast penetration" &lt;= 0
+     Modül devre dışı kalır.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Yeniden Başlatma Gerekli</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Başlatılıyor...</value>
   </data>
 </root>

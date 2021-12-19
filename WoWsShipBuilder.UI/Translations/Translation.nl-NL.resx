@@ -172,10 +172,10 @@
     <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Vlaggen </value>
+    <value>Signalen </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Voer een build naam in. De van het schip wordt automatisch toegevoegd.</value>
+    <value>Voer een build naam in. De naam van het schip wordt automatisch toegevoegd.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
     <value>Ander schip selecteren</value>
@@ -364,7 +364,7 @@
     <value>Granaat gewicht</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Theoretische DPM</value>
+    <value>Theoretische schade/min</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Bewapening overgangsdrempel</value>
@@ -373,10 +373,10 @@
     <value>Diepte explosie radius</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Kans op brand</value>
+    <value>Kans op vuur</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Fuseer timer</value>
+    <value>Fuseer tijd</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
     <value>Overtref waarde</value>
@@ -487,10 +487,10 @@
     <value>Error</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Het geselecteerde schip heeft geen hoofdgeschut</value>
+    <value>heeft geen hoofdgeschut</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Geselecteerde schip is reeds toegevoegd</value>
+    <value>is al toegevoegd met deze granaat</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
@@ -817,7 +817,7 @@
     <value>Tijdens de richt voorbereiding</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Motorboostduur</value>
+    <value>Tijd tot maximumsnelheid</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data versie:</value>
@@ -853,7 +853,7 @@
     <value>Selecteer een granaattype</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Het gekozen schip heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
+    <value>heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Standaard account</value>
@@ -898,7 +898,7 @@
     <value>Toon verspreidingsplot</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule op afstand X</value>
+    <value>Formule op afstand X(Km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale verspreiding[X]</value>
@@ -913,7 +913,7 @@
     <value>Verspreidings Grafieken</value>
   </data>
   <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
-    <value>Verspredings Plot</value>
+    <value>Verspreidings Plot</value>
   </data>
   <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
     <value>Plot Schalen</value>
@@ -968,5 +968,44 @@ Alleen de verticale verspreiding geprojecteerd op water wordt beïnvloed door de
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Verbergen</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Lucht weerstand</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Massa</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Theoretische Vuur/min </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Vuurkans per salvo</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Explosie radius</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Explosie penetratie</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Motor explosie bescherming</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Roer explosie bescherming</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Als "module explosie bescherming" + "bewapening explosie penetratie" &gt; 0 
+     De module kan beschadigd worden.
+Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
+     De module kan niet beschadigd worden.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Herstart vereist</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Een herstart van de applicatie is vereist om de taalwijziging door te voeren. Niet herstarten kan leiden tot onverwacht gedrag.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialiseren...</value>
   </data>
 </root>

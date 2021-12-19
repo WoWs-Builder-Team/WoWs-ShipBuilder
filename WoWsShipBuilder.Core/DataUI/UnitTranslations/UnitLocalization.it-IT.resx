@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Unit_MPS" xml:space="preserve">
-    <value>m/sn</value>
+    <value>m/s</value>
   </data>
   <data name="Unit_KG" xml:space="preserve">
     <value>kg</value>
@@ -133,19 +133,19 @@
     <value>°</value>
   </data>
   <data name="Unit_S" xml:space="preserve">
-    <value>sn</value>
+    <value>s</value>
   </data>
   <data name="Unit_KM" xml:space="preserve">
     <value>km</value>
   </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
-    <value>°/sn</value>
+    <value>°/s</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>sbh</value>
+    <value>dps</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
-    <value>cp</value>
+    <value>HP</value>
   </data>
   <data name="Unit_Knots" xml:space="preserve">
     <value>kts</value>
@@ -154,10 +154,10 @@
     <value>m</value>
   </data>
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
-    <value>atış/dk</value>
+    <value>colpi/min</value>
   </data>
   <data name="Unit_FPM" xml:space="preserve">
-    <value>yangın/dk</value>
+    <value>fuochi/min</value>
   </data>
   <data name="ArmamentType_AP" xml:space="preserve">
     <value>AP</value>
