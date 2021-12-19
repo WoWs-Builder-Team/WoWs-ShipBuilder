@@ -118,748 +118,567 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>메뉴로 돌아가기</value>
+    <value>Powrót do menu</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>빌드 초기화</value>
+    <value>Wyzeruj zestaw</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>빌드 공유</value>
+    <value>Udostępnij zestaw</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>자동 업데이트 활성</value>
+    <value>Włącz automatyczne aktualizacje</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>지우기</value>
+    <value>Wyczyść</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>앱 데이터 지우기</value>
+    <value>Wyczyść dane aplikacji</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>개발자:</value>
+    <value>Stworzone przez:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>정보</value>
+    <value>Informacje</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>언어</value>
+    <value>Język</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>초기화</value>
+    <value>Reset</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>기본 설정으로 초기화</value>
+    <value>Resetuj do ustawień domyślnych</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>설정</value>
+    <value>Ustawienia</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>버전:</value>
+    <value>Wersja:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>빌드 불러오기</value>
+    <value>Wczytaj zestaw</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>빌드 생성하기</value>
+    <value>Stwórz nowy zestaw</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>빌드 가져오기</value>
+    <value>Importuj zestaw...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>설정 및 정보</value>
+    <value>Ustawienia i informacje</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>상태:</value>
+    <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>깃발 </value>
+    <value>Oznaczenia </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>빌드 이름을 입력하세요. 함선명은 자동으로 추가됩니다.</value>
+    <value>Wprowadź nazwę zestawu. Nazwa okrętu jest dołączona automatycznie.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>함선 선택</value>
+    <value>Wybierz nowy okręt</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>디자인:</value>
+    <value>Grafika autorstwa:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>개발자: </value>
+    <value>Programiści: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>개발 책임:</value>
+    <value>Naczelni programiści:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>데이터 변환</value>
+    <value>Konwersja danych:</value>
   </data>
-  <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>함장 레벨</value>
-  </data>
-  <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>강화 스킬</value>
-  </data>
+  
+  
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>저장</value>
+    <value>Zapisz</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>서버</value>
+    <value>Serwer</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>기본 경험치</value>
+    <value>Bazowe PD</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>함장 경험치</value>
+    <value>PD Dowódcy:</value>
   </data>
-  <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>함장 경험치 보너스 %</value>
-  </data>
+  
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>자유 경험치</value>
+    <value>Wolne PD:</value>
   </data>
-  <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>자유 경험치 보너스 %</value>
-  </data>
-  <data name="MainWindow_Xp" xml:space="preserve">
-    <value>최정 경험치:</value>
-  </data>
+  
+  
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>경험치 보너스 %</value>
+    <value>PD bonus %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>경험치 계산기</value>
+    <value>Kalkulator PD</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>위장 이미지 다운로드</value>
+    <value>Pobieranie obrazów kamuflaży</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>완료</value>
+    <value>Gotowe</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>데이터 다운로드 중</value>
+    <value>Pobieranie danych</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>위장 이미지 다운로드 중</value>
+    <value>Pobieranie obrazów okrętów</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>항공모함</value>
+    <value>Lotniskowiec</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>전함</value>
+    <value>Pancernik</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>커먼웰스</value>
+    <value>Wspólnota</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>순양함</value>
+    <value>Krążownik</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>구축함</value>
+    <value>Niszczyciel</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>유럽</value>
+    <value>Europa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>프랑스</value>
+    <value>Francja</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>독일</value>
+    <value>Niemcy</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>이탈리아</value>
+    <value>Włochy</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>일본</value>
+    <value>Japonia</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>네덜란드</value>
+    <value>Niderlandy</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>범아메리카</value>
+    <value>Panameryka</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>범아시아</value>
+    <value>Azja Wschodnia</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>프리미엄</value>
+    <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>소련</value>
+    <value>Z.S.R.R.</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>스페인</value>
+    <value>Hiszpania</value>
   </data>
-  <data name="Special" xml:space="preserve">
-    <value>특수 함선</value>
-  </data>
+  
   <data name="Submarine" xml:space="preserve">
-    <value>잠수함</value>
+    <value>Okręt podwodny</value>
   </data>
-  <data name="TechTree" xml:space="preserve">
-    <value>테크 트리</value>
-  </data>
-  <data name="TestShip" xml:space="preserve">
-    <value>테스트 함선</value>
-  </data>
+  
+  
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>영국</value>
+    <value>Zjednoczone Królestwo</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>미국</value>
+    <value>Stany Zjednoczone</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>빈 슬롯</value>
+    <value>Puste miejsce</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>최소 경보 거리</value>
+    <value>Minimalna odległość wyświetlenia ostrzeżenia</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>함급</value>
+    <value>Klasa</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>확인</value>
+    <value>Zatwierdź</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>국가</value>
+    <value>Nacja</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>티어</value>
+    <value>Poziom</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>유형</value>
+    <value>Typ</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>검색 조건에 맞는 함선이 없습니다</value>
+    <value>Brak okrętów pasujących do kryteriów filtrowania</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>함선 검색</value>
+    <value>Szukaj okrętu</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>180° 선회 시간</value>
+    <value>Czas obrotu o 180°</value>
   </data>
   
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>사거리</value>
+    <value>Zasięg</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>연사 속도</value>
+    <value>Szybkostrzelność</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>재장전 시간</value>
+    <value>Czas przeładowania</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
-    <value>시그마</value>
-  </data>
-  <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>선회 속도</value>
+    <value>Sigma</value>
   </data>
   
+  
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>포구 속도</value>
+    <value>Początkowa prędkość pocisku</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>포탄 중량</value>
+    <value>Waga pocisku</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>분당 데미지</value>
+    <value>Teoretyczne Uszk./min.</value>
   </data>
-  <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>신관 작동 거리</value>
-  </data>
-  <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>심도 폭발 반경</value>
-  </data>
+  
+  
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>화재 발생율</value>
+    <value>Narażenie na pożar</value>
   </data>
-  <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>신관 시간</value>
-  </data>
-  <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>오버매치</value>
-  </data>
+  
+  
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>관통</value>
+    <value>Penetracja</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>도탄 각</value>
+    <value>Kąty rykoszetu</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>방공</value>
+    <value>Obrona przeciwlotnicza</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>항공기 내구도</value>
+    <value>PW samolotu</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>공습</value>
+    <value>Nalot bombowy</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>폭탄 유형</value>
+    <value>Typ bomby</value>
   </data>
-  <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>장착된 폭탄</value>
-  </data>
+  
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>지속 피해</value>
+    <value>Stałe uszkodzenia</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>피해</value>
+    <value>Uszkodzenia</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>지연</value>
+    <value>Opóźnienie</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>탐지 거리</value>
+    <value>Zasięg wykrywania</value>
   </data>
-  <data name="ShipStats_Flak" xml:space="preserve">
-    <value>대공포</value>
-  </data>
+  
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>대공포 피해</value>
+    <value>Uszkodzenia plot</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>타격 확률</value>
+    <value>Szansa na trafienie</value>
   </data>
-  <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>침수 확률</value>
-  </data>
+  
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>주포</value>
+    <value>Bateria główna</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>반응 시간</value>
+    <value>Czas reakcji</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>어뢰</value>
+    <value>Torpeda</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>함선 추가</value>
+    <value>Dodaj okręt</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>함선 제거</value>
+    <value>Usuń okręt</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>기동성</value>
+    <value>Zwrotność</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>각 화재의 총 피해</value>
+    <value>Całkowite uszkodzenia od pożaru</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>각 화재의 DPS</value>
+    <value>DPS na pożar</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>화재 지속 시간</value>
+    <value>Czas trwania pożaru</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>화재율 감소</value>
+    <value>Redukcja szansy na pożar</value>
   </data>
-  <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>각 침수의 총 피해</value>
-  </data>
+  
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>각 침수의 DPS</value>
+    <value>DPS na zalanie</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>침수 지속 시간</value>
+    <value>Czas trwania zalania</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>침수 확률</value>
+    <value>Prawdopodobieństwo zalania</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>내구도</value>
+    <value>Punkty wytrzymałości</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>최대 화재 갯수</value>
+    <value>Maksymalna liczba pożarów</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>최대 침수 갯수</value>
+    <value>Maksymalna liczba zalań</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>생존력</value>
+    <value>Przeżywalność</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>방뢰</value>
+    <value>Ochrona torpedowa</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>오류</value>
+    <value>Błąd</value>
   </data>
   
   
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>유형</value>
+    <value>Typ</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>주포 각도 보여주기</value>
+    <value>Pokaż kąty obrotu wieży</value>
   </data>
-  <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>기준 각도는 위에서 0°를 시작으로 (그림 상단) 시계 방향으로 돌아갑니다.</value>
-  </data>
+  
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>모든 각도 접기</value>
+    <value>Zwiń wszystkie kąty</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>각도 표시하지 않기</value>
+    <value>Nigdy nie pokazuj kątów</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>항상 각도 표시하기</value>
+    <value>Zawsze pokazuj kąty</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>모든 각도 확장하기</value>
+    <value>Rozwiń wszystkie kąty</value>
   </data>
-  <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>함장 스킬 및 위장</value>
-  </data>
+  
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>신호기</value>
+    <value>Sygnały</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>이름</value>
+    <value>Nazwa</value>
   </data>
-  <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>위장 보너스 적용</value>
-  </data>
+  
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>최소 신관 사거리</value>
+    <value>Odległość uzbrojenia</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>타격 가능</value>
+    <value>Może trafić</value>
   </data>
-  <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>피탐 거리</value>
-  </data>
-  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>항공 피탐 거리</value>
-  </data>
+  
+  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>화재 발생시</value>
+    <value>Gdy w ogniu</value>
   </data>
-  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>해상 피탐 거리</value>
-  </data>
+  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>화재 발생시</value>
+    <value>Gdy w ogniu</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>연막 내 포격 후</value>
+    <value>Po wystrzeleniu w dymie</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>최대 화재 발생</value>
+    <value>Maks. liczba pożarów</value>
   </data>
-  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>총 화재 피해</value>
-  </data>
+  
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>최대 침수 발생</value>
+    <value>Maks. liczba zalań</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>방뢰</value>
+    <value>Ochrona torpedowa</value>
   </data>
-  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>총 침수 피해</value>
-  </data>
-  <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>장거리 대공 아우라</value>
-  </data>
+  
+  
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>후진</value>
+    <value>Wstecz</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>전진</value>
+    <value>W przód</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>최고 속도</value>
+    <value>Maks. Prędkość</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>조타 시간</value>
+    <value>Czas przestawiania steru</value>
   </data>
-  <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>선회 반경</value>
-  </data>
-  <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>중거리 대공 아우라</value>
-  </data>
-  <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>단거리 대공 아우라</value>
-  </data>
-  <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>어뢰 분산</value>
-  </data>
-  <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>항공기</value>
-  </data>
+  
+  
+  
+  
+  
   <data name="Bomb" xml:space="preserve">
-    <value>폭탄</value>
+    <value>Bomba</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>로켓</value>
+    <value>Rakieta</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>속도</value>
+    <value>Prędkość</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>무기 유형</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
-    <value>물수제비 폭탄</value>
+    <value>Bomba skacząca</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>어뢰</value>
+    <value>Torpeda</value>
   </data>
-  <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>항공기 무장</value>
-  </data>
-  <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>공격 대기 시간</value>
-  </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>순항 속도</value>
-  </data>
+  
+  
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>내부 조준원 명중 확률</value>
+    <value>Bomba w wewnętrznej elipsie</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>갑판 위 최대 함재기 수</value>
+    <value>Maks. liczba samolotów na pokładzie</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>최고 속도</value>
+    <value>Maks. prędkość</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>최소 속도</value>
+    <value>Min. Prędkość</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>공격시 항공기 수</value>
-  </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>각 편대의 항공기 수</value>
-  </data>
+  
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>각 항공기의 내구도</value>
+    <value>PW na samolot</value>
   </data>
-  <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>회복 시간</value>
-  </data>
-  <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>시작시 갑판 위 함재기 수</value>
-  </data>
-  <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>각 항공기에 장착된 폭탄</value>
-  </data>
-  <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>투하 시간</value>
-  </data>
-  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>도달 시간</value>
-  </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>최대 사거리</value>
+    <value>Maksymalny zasięg</value>
   </data>
-  <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>최대 투하 거리</value>
-  </data>
+  
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>최소 사거리</value>
+    <value>Minimalny zasięg</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>갯수</value>
+    <value>Ładunki</value>
   </data>
-  <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>대잠 공습</value>
-  </data>
-  <data name="DepthCharge" xml:space="preserve">
-    <value>폭뢰</value>
-  </data>
+  
+  
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>분산도 시각화</value>
+    <value>Wizualizacja rozrzutu</value>
   </data>
-  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>대잠 폭뢰</value>
-  </data>
-  <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>첫 핑 지속 시간</value>
-  </data>
-  <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>핑 지속 시간</value>
-  </data>
+  
+  
+  
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>소나</value>
+    <value>Sonar</value>
   </data>
-  <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>핑 속도</value>
-  </data>
-  <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>핑 너비</value>
-  </data>
-  <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>두번째 핑 지속 시간</value>
-  </data>
+  
+  
+  
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>포탄</value>
+    <value>Pociski</value>
   </data>
-  <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>재사용 대기시간</value>
-  </data>
-  <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>지속 시간</value>
-  </data>
+  
+  
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>취소</value>
+    <value>Anuluj</value>
   </data>
-  <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>사용자 지정 경로 활성</value>
-  </data>
-  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>사용자 지정 경로 입력</value>
-  </data>
+  
+  
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>저장 후 종료</value>
+    <value>Zapisz i wyjdź</value>
   </data>
-  <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>일부 포탑 방향이 틀립니다. 워게이밍에서 얻은 데이터에 포함되어 있지 않아서, 대부분의 경우에만 작동하는 방법을 사용했습니다. 만약 포탑 방향이나 각도가 틀리다면 아래의 깃헙 혹은 디스코드 서버에서 알려주세요.</value>
-  </data>
-  <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>빌드가 저장됨</value>
-  </data>
-  <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>빌드가 클립보드에 복사되었습니다</value>
-  </data>
-  <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>빌드 삭제</value>
-  </data>
+  
+  
+  
+  
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>가져오기</value>
+    <value>Importuj</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>가져오기만</value>
+    <value>Tylko importuj</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>가져오기 및 저장</value>
+    <value>Importuj i zapisz</value>
   </data>
-  <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>빌드를 붙여넣으세요</value>
-  </data>
-  <data name="BuildImport_Title" xml:space="preserve">
-    <value>빌드 가져오기</value>
-  </data>
+  
+  
   <data name="Cancel" xml:space="preserve">
-    <value>취소</value>
+    <value>Anuluj</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>확인</value>
+    <value>Ok</value>
   </data>
-  <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>빌드 불러오는 중 오류</value>
-  </data>
-  <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>초기 가속 지속 시간</value>
-  </data>
-  <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>초기 가속 배수</value>
-  </data>
-  <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>탄두 변경 시간</value>
-  </data>
-  <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>주포 점사 모드</value>
-  </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>지속 시간</value>
+    <value>Czas trwania</value>
   </data>
-  <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>점사 후 장전</value>
-  </data>
-  <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>점사 중 장전</value>
-  </data>
-  <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>필요한 타격</value>
-  </data>
-  <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>점사 당 발사 수</value>
-  </data>
-  <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>특수 능력</value>
-  </data>
+  
+  
+  
+  
+  
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>데이터 다운로드 중...</value>
+    <value>Pobieranie danych...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>조준 시간</value>
+    <value>Czas celowania</value>
   </data>
-  <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>공격 중 입은 피해</value>
-  </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>공격 후 무적 시간</value>
-  </data>
+  
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>준비 시간</value>
+    <value>Czas przygotowania</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>최대 조준 시간</value>
+    <value>Czas do pełnego wycelowania</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>어뢰 발사기</value>
+    <value>Wyrzutnie torped</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>조준 중</value>
+    <value>Podczas celowania</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>기동 중 투하 면적 변동률</value>
-  </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>준비 중</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>최대 마력 도달 시간</value>
-  </data>
-  <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>데이터 버전:</value>
-  </data>
-  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>비행 시간</value>
-  </data>
-  <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>입사 각도</value>
-  </data>
-  <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>입사 속도</value>
-  </data>
-  <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>관통 그래프 보기</value>
-  </data>
-  <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>비행 시간 그래프 보기</value>
-  </data>
-  <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>입사 각도 그래프 보기</value>
-  </data>
-  <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>입사 속도 그래프 보기</value>
+    <value>Współczynnik zmiany obszaru zrzutu podczas manewrowania</value>
   </data>
   
-  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>선택한 사용자 지정 경로가 유효하지 않습니다</value>
-  </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>포탄 선택</value>
-  </data>
   
-  <data name="MainWindow_NormalAccount" xml:space="preserve">
-    <value>일반 계정</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
-    <value>워게이밍 프리미엄 계정</value>
+    <value>Konto premium WG</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
-    <value>월드오브워쉽 프리미엄 계정</value>
-  </data>
-  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
-    <value>버전 정보 복사</value>
-  </data>
-  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>잠수함 잠망경 심도 피탐 거리</value>
-  </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>잠수함 작전 심도 피탐 거리</value>
+    <value>Konto premium WoWs</value>
   </data>
   
   
@@ -874,6 +693,12 @@
   
   
   
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Zasięg celowania (km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Wykresy balistyczne</value>
+  </data>
   
   
   
@@ -889,7 +714,12 @@
   
   
   
-  
+  <data name="Broadside" xml:space="preserve">
+    <value>Burta</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Ukryj</value>
+  </data>
   
   
   
