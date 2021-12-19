@@ -487,10 +487,10 @@
     <value>Erreur</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Le navire sélectionné n'a pas de batterie principale</value>
+    <value>n'a pas de tourelles principales</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Le navire sélectionné a déjà été ajouté</value>
+    <value>à déjà été ajouté à cet obus</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
@@ -853,7 +853,8 @@
     <value>Sélectionnez un obus</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Le Navire sélectionné a plus d'un obus. Sélectionnez celui dont vous voulez savoir la balistique. En Assumant que c'est le même calibre, L'ordre des obus est ci-dessous:
+    <value>a plus d'un obus; Sélectionnez celui dont vous voulez savoir la balistique
+En assumant que c'est le même calibre, l'ordre des obus est ci-dessous:
 HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
@@ -899,7 +900,7 @@ HE-&gt;SAP-&gt;AP.</value>
     <value>Afficher le tracé de dispersion</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule à portée X</value>
+    <value>Formule à X portée (km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersion Horizontale[X]</value>
@@ -969,5 +970,37 @@ Seule la dispersion verticale projetée sur l'eau est affectée par la vitesse d
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Masquer</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Glissement dans l'air</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Masse</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>FPM Théorique </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Chance de mettre en feu un navire par salve</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Radius d'explosion</value>
+  </data>
+  
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Protection contre les explosions aux moteurs</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Protection contre les explosions au gouvernail</value>
+  </data>
+  
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Redémarrage nécessaire</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialisation...</value>
   </data>
 </root>
