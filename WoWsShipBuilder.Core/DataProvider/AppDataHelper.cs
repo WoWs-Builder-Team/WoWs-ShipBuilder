@@ -38,9 +38,10 @@ namespace WoWsShipBuilder.Core.DataProvider
                 new(new("nl-NL"), "nl"),
                 new(new("fr-FR"), "fr"),
                 new(new("de-DE"), "de"),
+                new(new("it-IT"), "it"),
                 new(new("ja-JP"), "ja"),
-                new(new("ko-KR"), "ko"),
                 new(new("ru-RU"), "ru"),
+                new(new("es-ES"), "es"),
                 new(new("tr-TR"), "tr"),
             };
             var builder = ImmutableList.CreateBuilder<CultureDetails>();

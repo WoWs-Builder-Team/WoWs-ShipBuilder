@@ -125,6 +125,31 @@
                             </StackPanel>
                         </Border>
                     </TabItem>
+                    
+                    <!-- Credits Tab -->
+                    <TabItem Header="{x:Static t:Translation.SettingsWindow_Credits}">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Spacing="5" Margin="5">
+                            <StackPanel.Styles>
+                                <Style Selector="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                </Style>
+                            </StackPanel.Styles>
+                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap"/>
+                            <TextBlock>darbiter</TextBlock>
+                            <TextBlock>Korbolko TR</TextBlock>
+                            <TextBlock>Taro_</TextBlock>
+                            <TextBlock>Sakura Isayeki</TextBlock>
+                            <TextBlock>dmc531</TextBlock>
+                            <TextBlock>antitank240814</TextBlock>
+                            <TextBlock>EdibleBug</TextBlock>
+                            <TextBlock>Östland</TextBlock>
+                            <TextBlock>PrinceNorris</TextBlock>
+                            <TextBlock>ThePolishDj</TextBlock>
+                            <TextBlock>REEEdamel</TextBlock>
+                            <TextBlock>BloodyTakao</TextBlock>
+                        </StackPanel>
+                    </TabItem>
                 </TabControl>
                 <!--Right panel-->
             </Border>

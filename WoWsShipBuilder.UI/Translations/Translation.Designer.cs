@@ -960,6 +960,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credits.
+        /// </summary>
+        public static string SettingsWindow_Credits {
+            get {
+                return ResourceManager.GetString("SettingsWindow_Credits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable custom path.
         /// </summary>
         public static string SettingsWindow_CustomPath {
@@ -1127,6 +1136,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_TelemetryEnabled {
             get {
                 return ResourceManager.GetString("SettingsWindow_TelemetryEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned..
+        /// </summary>
+        public static string SettingsWindow_TranslationCredits {
+            get {
+                return ResourceManager.GetString("SettingsWindow_TranslationCredits", resourceCulture);
             }
         }
         

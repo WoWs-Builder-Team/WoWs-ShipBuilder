@@ -1008,4 +1008,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="SplashScreen_Init" xml:space="preserve">
       <value>Initialisiere...</value>
   </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+      <value>Credits</value>
+  </data>
 </root>
