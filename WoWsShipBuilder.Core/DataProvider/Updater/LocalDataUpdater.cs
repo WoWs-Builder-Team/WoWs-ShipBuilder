@@ -192,7 +192,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             string versionName;
             try
             {
-                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
+                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.VersionName.IndexOf('#')];
             }
             catch (Exception e)
             {
