@@ -337,7 +337,7 @@
     <value>Dauer für 180°-Drehung</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontale Streuung</value>
+    <value>Horizontal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Reichweite</value>
@@ -355,7 +355,7 @@
     <value>Drehgeschwindigkeit</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertikale Streuung</value>
+    <value>Vertikal</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Mündungsgeschwindigkeit</value>
@@ -487,10 +487,10 @@
     <value>Fehler</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Das ausgewählte Schiff hat keine Hauptgeschütze</value>
+    <value>hat keine Haupgeschütze</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Das ausgewählte Schiff wurde bereits hinzugefügt</value>
+    <value>wurde bereits mit dieser Granate hinzugefügt</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Typ</value>
@@ -844,7 +844,7 @@
     <value>Zeige Einschlaggeschwindigkeitsgraph</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Öffne Ballistikgraphen</value>
+    <value>Zeige Ballistikgraphen</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
@@ -853,7 +853,7 @@
     <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Das ausgewählte Schiff hat mehr als eine Granate. Wähle die anzuzeigenden Granaten. Haben die Granaten das selbe Kaliber, ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
+    <value>hat mehr als eine Granate. Wähle die Granate, von der du die Ballistik haben möchtest. Angamommen das Kaliber ist gleich, die Reihenfolge ist HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Normaler Account</value>
@@ -872,5 +872,143 @@
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
     <value>Erkennbarkeit für U-Boote auf Einsatztiefe</value>
+  </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+    <value>Streuungs- und Ballistikdiagramme zeigen</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Vertikal:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontal:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Vertikal (innen):</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Horizontal (innen):</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Streuung</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Zeige Streuungsgraphen</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Zeige Streuungsdiagramm</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formel bei Reichweite X(km)</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>Horizontale Streuung [X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Zielreichweite (km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Ballistische Graphen</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Streuungsgraphen</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Streuungsdiagramm</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Skalierung</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Anzahl der Schüsse</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Diagramm aktualisieren</value>
+  </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+    <value>Grundlegende Telemetrie-Daten senden (aktuelle App-Version)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>Die Maximalreichweite dieses Schiffs ist geringer als die gewählte Zieldistanz</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Diagramm-Ebene</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontal (Wasser)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Echt</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Referenz-Fuso</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>In der Darstelklung kommen die Granaten von rechts.
+Das Diagramm ist um 90° rotiert, daher ist die vertikale Streuung horizontal und die horizontale Streuung vertikal dargestellt.
+
+Die weiße Ellipse zeigt die maximale Streuungsfläche für die gewählte Zieldistanz.
+Die rote Ellipse zeigt den Bereich, in dem durchschnittlich die Hälfte der Granaten landet.
+Die schwarze Ellipse zeigt die Größe der Fuso als Referenz.
+
+Im Spiel sind Schiffe zweimal so groß wie die Umgebung, somit ist ein 200m langes Schiff 400m lang.
+Die tatsächliche Streuungsellipse wird in einer Ebene gezeichnet, die senkrecht zum Auftreffwinkel der Granate steht.
+Nur die auf das Wasser projizierte vertikale Streuung wird von der Geschwindigkeit des Geschosses beeinflusst. Die reale Streuung ist nicht betroffen.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Diagramm-Erklärung</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Bug/spitz gewinkelt</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Breitseite</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Verbergen</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Luftwiderstand</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Masse</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Theoretische BPM</value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Brandwahrscheinlichkeit per Salve</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Explosionsradius</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Explosions-Durchschlagskraft</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Antriebs-Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Ruder-Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
+     Das Modul kann beschädigt werden.
+Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
+     Das Modul kann nicht beschädigt werden.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Neustart erforderlich</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Ein Neustart der Anwendung ist erforderlich, damit die Sprachänderung wirksam wird. Nicht neuzustarten kann zu unerwartetem Verhalten führen.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialisiere...</value>
+  </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+      <value>Credits</value>
   </data>
 </root>

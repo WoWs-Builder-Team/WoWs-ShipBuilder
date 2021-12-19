@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -43,6 +44,13 @@ namespace WoWsShipBuilder.Core.DataUI
             var torpedoModule = ship.TorpedoModules[torpConfiguration.Components[ComponentType.Torpedoes].First()];
             var launcher = torpedoModule.TorpedoLaunchers.First();
 
+            List<(int BarrelCount, int TorpCount)> arrangementList = torpedoModule.TorpedoLaunchers
+                .GroupBy(torpModule => torpModule.NumBarrels)
+                .Select(group => (BarrelCount: group.Key, TorpCount: group.Count()))
+                .OrderBy(item => item.TorpCount)
+                .ToList();
+            string torpArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TorpCount} x {item.BarrelCount} {Localizer.Instance[launcher.Name].Localization}"));
+
             var turnSpeedModifiers = modifiers.FindModifiers("GTRotationSpeed");
             decimal traverseSpeed = Math.Round(turnSpeedModifiers.Aggregate(launcher.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier), 2);
 
@@ -55,7 +63,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var torpedoUi = new TorpedoArmamentUI
             {
-                Name = launcher.Name,
+                Name = torpArrangement,
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Reload = reloadSpeed,

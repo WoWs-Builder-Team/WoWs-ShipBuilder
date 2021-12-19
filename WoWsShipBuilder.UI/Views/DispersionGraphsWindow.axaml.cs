@@ -1,11 +1,14 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class DispersionGraphsWindow : Window
+    public class DispersionGraphsWindow : ScalableWindow
     {
         public DispersionGraphsWindow()
         {
@@ -22,14 +25,42 @@ namespace WoWsShipBuilder.UI.Views
             Closing += DispersionGraphsWindow_Closing;
         }
 
-        private void DispersionGraphsWindow_Closing(object? sender, System.EventArgs e)
+        protected override void OnOpened(EventArgs e)
         {
-            ((MainWindowViewModel)Owner.DataContext!).ChildrenWindows.Remove(this);
+            base.OnOpened(e);
+
+            var currentScreen = Screens.ScreenFromVisual(this);
+            if (WindowScalingHelper.CheckScaling(currentScreen, this).Key)
+            {
+                WindowState = WindowState.Maximized;
+            }
         }
 
-        private void DispersionGraphsWindow_Opened(object? sender, System.EventArgs e)
+        private void DispersionGraphsWindow_Closing(object? sender, EventArgs e)
         {
-            ((MainWindowViewModel)Owner.DataContext!).ChildrenWindows.Add(this);
+            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            {
+                mainWindowViewModel.ChildrenWindows.Remove(this);
+            }
+            else
+            {
+                var startWindow = new StartingMenuWindow();
+                var startViewModel = new StartMenuViewModel(startWindow);
+                startWindow.DataContext = startViewModel;
+                startWindow.Show();
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    desktop.MainWindow = startWindow;
+                }
+            }
+        }
+
+        private void DispersionGraphsWindow_Opened(object? sender, EventArgs e)
+        {
+            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            {
+                mainWindowViewModel.ChildrenWindows.Add(this);
+            }
         }
     }
 }

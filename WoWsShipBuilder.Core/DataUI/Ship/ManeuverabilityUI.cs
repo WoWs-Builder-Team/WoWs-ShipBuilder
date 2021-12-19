@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -24,65 +25,36 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
+        public decimal RudderBlastProtection { get; set; }
+
+        public decimal EngineBlastProtection { get; set; }
+
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? ManeuverabilityData { get; set; }
 
         public static ManeuverabilityUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+
             var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine].First()];
 
-            decimal maxSpeedModifier = 1;
-            int maxSpeedIndex = modifiers.FindModifierIndex("speedCoef");
-            if (maxSpeedIndex > -1)
-            {
-                var modifiersValues = modifiers.FindModifiers("speedCoef").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    maxSpeedModifier *= value;
-                }
-            }
+            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-            decimal rudderShiftModifier = 1;
-            int rudderShiftIndex = modifiers.FindModifierIndex("SGRudderTime");
-            if (rudderShiftIndex > -1)
-            {
-                var modifiersValues = modifiers.FindModifiers("SGRudderTime").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    rudderShiftModifier *= value;
-                }
-            }
+            decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-            decimal fullPowerForwardModifier = 1;
-            int fullPowerForwardIndex = modifiers.FindModifierIndex("engineForwardUpTime");
-            if (rudderShiftIndex > -1)
-            {
-                var modifiersValues = modifiers.FindModifiers("engineForwardUpTime").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    fullPowerForwardModifier *= value;
-                }
-            }
+            decimal fullPowerForwardModifier = modifiers.FindModifiers("engineForwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-            decimal fullPowerBackwardModifier = 1;
-            int fullPowerBackwardIndex = modifiers.FindModifierIndex("engineBackwardUpTime");
-            if (rudderShiftIndex > -1)
-            {
-                var modifiersValues = modifiers.FindModifiers("engineBackwardUpTime").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    fullPowerBackwardModifier *= value;
-                }
-            }
+            decimal fullPowerBackwardModifier = modifiers.FindModifiers("engineBackwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
             var manouvrability = new ManeuverabilityUI
             {
-                ManeuverabilityFullPowerBackward = $"{engine.BackwardEngineUpTime * fullPowerBackwardModifier}s",
-                ManeuverabilityFullPowerForward = $"{engine.ForwardEngineUpTime * fullPowerForwardModifier}s",
+                ManeuverabilityFullPowerBackward = $"{engine.BackwardEngineUpTime * fullPowerBackwardModifier} {UnitLocalization.Unit_S}",
+                ManeuverabilityFullPowerForward = $"{engine.ForwardEngineUpTime * fullPowerForwardModifier} {UnitLocalization.Unit_S}",
                 ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
                 ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
                 ManeuverabilityTurningCircle = hull.TurningRadius,
+                RudderBlastProtection = hull.SteeringGearArmorCoeff,
+                EngineBlastProtection = engine.ArmorCoeff,
             };
 
             manouvrability.ManeuverabilityData = manouvrability.ToPropertyMapping();

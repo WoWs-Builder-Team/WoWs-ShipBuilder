@@ -9,7 +9,8 @@
         xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         Title="WoWs Ship Builder"
-        Height="850" Width="1775" CanResize="False"
+        Height="850" Width="1775" CanResize="True"
+        MinHeight="850" MinWidth="1775"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -17,141 +18,172 @@
 
     <Window.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
-        <conv:ClassToPathConverter x:Key="PathConverter"/>
+        <conv:ClassToPathConverter x:Key="PathConverter" />
         <conv:EnumConverter x:Key="EnumConverter" />
+        <conv:DecimalToRomanConverter x:Key="RomanConverter" />
     </Window.Resources>
 
-    <Grid RowDefinitions="30, *">
-        <userControls:AppHeader/>
+    <LayoutTransformControl>
+        <LayoutTransformControl.LayoutTransform>
+            <!-- Will trigger a binding notification for a null value, no way to suppress that. -->
+            <ScaleTransform ScaleX="{Binding ContentScaling, FallbackValue=1, TargetNullValue=1}" ScaleY="{Binding ContentScaling, FallbackValue=1, TargetNullValue=1}" />
+        </LayoutTransformControl.LayoutTransform>
 
-        <Grid Grid.Row="1" RowDefinitions="2*,9*">
-            <!--First row-->
-            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
-                <Grid ColumnDefinitions="*,3*,*">
-                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
-                        <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
-                                Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
-                                Margin="0,0,0,10" />
-                        <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
-                                Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
-                    </Grid>
-                    <RelativePanel Grid.Column="1">
-                        <!--PreviousShip-->
-                        <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip" RelativePanel.AlignBottomWith="CurrentShip" IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
-                            <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50" PointerReleased="OnClickChangeShipPrevious"/>
-                            <TextBlock Text="{Binding PreviousShipIndex, FallbackValue=None, Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                        <!--Current Ship-->
-                        <StackPanel  x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
-                            <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                                <Path Data="{Binding RawShipData.ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"  Fill="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}" Stroke="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}" StrokeThickness="1" />
-                                <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}" Margin="10,0,0,0"/>
+        <Grid RowDefinitions="30, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <userControls:AppHeader ShowMaximizeButton="True" />
+
+            <Grid Grid.Row="1" RowDefinitions="2*,9*">
+                <!--First row-->
+                <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                    <Grid ColumnDefinitions="*,3*,*">
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
+                                    Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,10" />
+                            <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
+                                    Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
+                        </Grid>
+                        <RelativePanel Grid.Column="1">
+                            <!--PreviousShip-->
+                            <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip"
+                                        RelativePanel.AlignBottomWith="CurrentShip"
+                                        IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50"
+                                       PointerReleased="OnClickChangeShipPrevious" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding PreviousShipTier, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
+                                    <TextBlock Text="{Binding PreviousShipIndex, FallbackValue=None, TargetNullValue=None, Converter={StaticResource Localizer}}"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                        <!--Next Ships-->
-                        <ItemsControl Items="{Binding NextShipIndex}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip" IsVisible="{Binding !!NextShipIndex.Count}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Classes="Clickable" Orientation="Vertical">
-                                        <Image Name="{Binding}" Source="{Binding Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50" PointerReleased="OnClickChangeShipNext"/>
-                                        <TextBlock Text="{Binding Converter={StaticResource Localizer}}" HorizontalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>                
-                    </RelativePanel>
-                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
-                          HorizontalAlignment="Center">
-                        <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"
-                                Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
-                                Margin="0,0,0,10" />
-                        <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
-                                HorizontalAlignment="Stretch" />
+                            <!--Current Ship-->
+                            <StackPanel x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignVerticalCenterWithPanel="True"
+                                        RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
+                                <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Path Data="{Binding RawShipData.ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                          Fill="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                          Stroke="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                          StrokeThickness="1" />
+                                    <TextBlock Text="{Binding CurrentShipTier, Converter={StaticResource RomanConverter}}" Margin="5 0"/>
+                                    <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <!--Next Ships-->
+                            <ItemsControl Items="{Binding NextShips}" RelativePanel.AlignBottomWith="CurrentShip" RelativePanel.RightOf="CurrentShip"
+                                          IsVisible="{Binding !!NextShips.Count}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Classes="Clickable" Orientation="Vertical">
+                                            <Image Name="{Binding Key}" Source="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}"
+                                                   Height="50" PointerReleased="OnClickChangeShipNext" />
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding Value, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
+                                                <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}}" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </RelativePanel>
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
+                              HorizontalAlignment="Center">
+                            <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"
+                                    Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,10" />
+                            <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
+                                    HorizontalAlignment="Stretch" />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Border>
-
-            <!--SecondRow-->
-            <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,4.5*,*" Margin="0,0,0,10" >
-                <!--Captain and flag selector-->
-                <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
-                    <Border Classes="BorderPanel" Grid.Row="0">
-                        <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0"/>
-                            <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock  Text="{x:Static t:Translation.MainWindow_Signals}" Margin="10,5,0,0"/>
-                            <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-                <!--Modules and consumables-->
-                <Grid Grid.Column="1" Margin="10,0,10,0" RowDefinitions="*,Auto, Auto">
-                    <userControls:ShipModuleControl HorizontalAlignment="Stretch"
-                                                    DataContext="{Binding ShipModuleViewModel}" />
-                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
-                        <userControls:UpgradeSelectorPanel DataContext="{Binding UpgradePanelViewModel}" HorizontalAlignment="Center"/>
-                    </Border>
-                    <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
-                        <userControls:ConsumablePanel DataContext="{Binding ConsumableViewModel}" HorizontalAlignment="Center" />
-                    </Border>
-                </Grid>
-                <!--Ship Stats-->
-                <Border Classes="BorderPanel" Grid.Column="2" Padding="5" Margin="0,0,10,0" CornerRadius="5">
-                    <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
                 </Border>
-                <!--XP calculator-->
-                <Grid Grid.Column="3" RowDefinitions="*, Auto" Margin="0,0,10,0">
-                    <Border Classes="BorderPanel" Grid.Row="0" >
-                        <StackPanel Orientation="Vertical" Margin="5">
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10"/>
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
-                            <TextBox Text="{Binding BaseXp}" MaxLength="5" Name="BaseXpInput" Margin="0,0,0,10" />
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
-                            <TextBox Text="{Binding XpBonus}" MaxLength="4" Name="XpInput" Margin="0,0,0,10" />
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
-                            <TextBox Text="{Binding CommanderXpBonus}" MaxLength="4" Name="CommanderXpInput" Margin="0,0,0,10" />
-                            <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
-                            <TextBox Text="{Binding FreeXpBonus}" MaxLength="4" Name="FreeXpInput" Margin="0,0,0,10" />
-                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}" Margin="0,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap"/>
-                            </RadioButton>
-                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}" Margin="0,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap"/>
-                            </RadioButton>
-                            <RadioButton GroupName="AccountType" IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}" Margin="0,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap"/>
-                            </RadioButton>
-                            <Separator Margin="0,0,0,5" />
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
-                                <TextBlock Text="{Binding Xp}" TextWrapping="Wrap" Margin="5,0,0,0" />
+
+                <!--SecondRow-->
+                <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,4.5*,*" Margin="0,0,0,10">
+                    <!--Captain and flag selector-->
+                    <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
+                        <Border Classes="BorderPanel" Grid.Row="0">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
+                                <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
-                                <TextBlock Text="{Binding CommanderXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
+                        </Border>
+                        <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
+                                <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
-                                <TextBlock Text="{Binding FreeXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
-                            </StackPanel>
-                        </StackPanel>
+                        </Border>
+                    </Grid>
+                    <!--Modules and consumables-->
+                    <Grid Grid.Column="1" Margin="10,0,10,0" RowDefinitions="*,Auto, Auto">
+                        <userControls:ShipModuleControl HorizontalAlignment="Stretch"
+                                                        DataContext="{Binding ShipModuleViewModel}" />
+                        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                            <userControls:UpgradeSelectorPanel DataContext="{Binding UpgradePanelViewModel}" HorizontalAlignment="Center" />
+                        </Border>
+                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5" Margin="0,10,0,0">
+                            <userControls:ConsumablePanel DataContext="{Binding ConsumableViewModel}" HorizontalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <!--Ship Stats-->
+                    <Border Classes="BorderPanel" Grid.Column="2" Padding="5" Margin="0,0,10,0" CornerRadius="5">
+                        <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
                     </Border>
-                    <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0" Padding="10">
-                        <Image Source="/Assets/Art/logo_white_text.png"/>
-                    </Border>
-                </Grid>            
+                    <!--XP calculator-->
+                    <Grid Grid.Column="3" RowDefinitions="*, Auto" Margin="0,0,10,0">
+                        <Border Classes="BorderPanel" Grid.Row="0">
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10" />
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
+                                <TextBox Text="{Binding BaseXp}" MaxLength="5" Name="BaseXpInput" Margin="0,0,0,10" />
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
+                                <TextBox Text="{Binding XpBonus}" MaxLength="4" Name="XpInput" Margin="0,0,0,10" />
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
+                                <TextBox Text="{Binding CommanderXpBonus}" MaxLength="4" Name="CommanderXpInput" Margin="0,0,0,10" />
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
+                                <TextBox Text="{Binding FreeXpBonus}" MaxLength="4" Name="FreeXpInput" Margin="0,0,0,10" />
+                                <RadioButton GroupName="AccountType"
+                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
+                                             Margin="0,0,0,5">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
+                                </RadioButton>
+                                <RadioButton GroupName="AccountType"
+                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
+                                             Margin="0,0,0,5">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
+                                </RadioButton>
+                                <RadioButton GroupName="AccountType"
+                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
+                                             Margin="0,0,0,5">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
+                                </RadioButton>
+                                <Separator Margin="0,0,0,5" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
+                                    <TextBlock Text="{Binding Xp}" TextWrapping="Wrap" Margin="5,0,0,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
+                                    <TextBlock Text="{Binding CommanderXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
+                                    <TextBlock Text="{Binding FreeXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0" Padding="10">
+                            <Image Source="/Assets/Art/logo_white_text.png" />
+                        </Border>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
-    </Grid>
+    </LayoutTransformControl>
+
 </Window>

@@ -35,7 +35,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref progress, value);
         }
 
-        private string downloadInfo = "placeholder";
+        private string downloadInfo = "SplashScreen_Init";
 
         public string DownloadInfo
         {
@@ -54,6 +54,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             var updater = new LocalDataUpdater(fileSystem, awsClient, AppDataHelper.Instance);
             await updater.RunDataUpdateCheck(AppData.Settings.SelectedServerType, progressTracker, forceVersionCheck);
+            Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
 
             progressTracker.Report((TaskNumber, "SplashScreen_Done"));
         }

@@ -34,7 +34,6 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("KM")]
         public decimal ConcealmentBySubOperating { get; set; }
 
-
         public static ConcealmentUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];

@@ -10,6 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
@@ -21,22 +22,33 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     class SettingsWindowViewModel : ViewModelBase
     {
-        private readonly SettingsWindow self;
+        private readonly SettingsWindow? self;
 
         private readonly IFileSystem fileSystem;
 
-        public SettingsWindowViewModel(SettingsWindow win, IFileSystem? fileSystem = null)
+        public SettingsWindowViewModel()
+            : this(null, new FileSystem())
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new InvalidOperationException("This constructor must not be used in the live application.");
+            }
+        }
+
+        public SettingsWindowViewModel(SettingsWindow? win, IFileSystem? fileSystem = null)
         {
             Logging.Logger.Info("Creating setting window view model");
             self = win;
             this.fileSystem = fileSystem ?? new FileSystem();
-            LanguagesList = languages.Keys.ToList();
-            SelectedLanguage = languages.Keys.First();
+            languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
+            SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
+                               ?? AppDataHelper.Instance.DefaultCultureDetails;
             Servers = Enum.GetNames<ServerType>().ToList();
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
             AutoUpdate = AppData.Settings.AutoUpdateEnabled;
             CustomPath = AppData.Settings.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
+            TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
 
             if (AppData.DataVersion is null)
             {
@@ -48,12 +60,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             DataVersion = AppData.DataVersion;
         }
-
-        // Add here all the currently supported languages
-        private readonly Dictionary<string, string> languages = new()
-        {
-            { "English", "en-GB" },
-        };
 
         private string dataVersion = default!;
 
@@ -71,7 +77,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref customPath, value);
         }
 
-        private bool isCustomPathEnabled = false;
+        private bool isCustomPathEnabled;
 
         public bool IsCustomPathEnabled
         {
@@ -79,7 +85,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref isCustomPathEnabled, value);
         }
 
-        private string version = $"{Assembly.GetExecutingAssembly().GetName().Version!.Major}.{Assembly.GetExecutingAssembly().GetName().Version!.Minor}.{Assembly.GetExecutingAssembly().GetName().Version!.Build}";
+        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 
         public string Version
         {
@@ -87,17 +93,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref version, value);
         }
 
-        private List<string>? languagesList;
+        private List<CultureDetails> languagesList;
 
-        public List<string>? LanguagesList
+        public List<CultureDetails> LanguagesList
         {
             get => languagesList;
             set => this.RaiseAndSetIfChanged(ref languagesList, value);
         }
 
-        private string selectedLanguage = null!;
+        private CultureDetails selectedLanguage = null!;
 
-        public string SelectedLanguage
+        public CultureDetails SelectedLanguage
         {
             get => selectedLanguage;
             set => this.RaiseAndSetIfChanged(ref selectedLanguage, value);
@@ -125,6 +131,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => servers;
             set => this.RaiseAndSetIfChanged(ref servers, value);
+        }
+
+        private bool telemetryDataEnabled;
+
+        public bool TelemetryDataEnabled
+        {
+            get => telemetryDataEnabled;
+            set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
         }
 
         public void ResetSettings()
@@ -169,6 +183,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             Logging.Logger.Info("Saving settings");
             bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
             bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
+            bool cultureChanged = false;
             if (IsCustomPathEnabled)
             {
                 if (!IsValidPath(CustomPath!))
@@ -180,32 +195,57 @@ namespace WoWsShipBuilder.UI.ViewModels
                 {
                     pathChanged = !AppData.Settings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
                     AppData.Settings.CustomDataPath = CustomPath;
-                    AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                    AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-                    AppData.Settings.Locale = languages[SelectedLanguage];
                 }
             }
             else
             {
                 AppData.Settings.CustomDataPath = null;
-                AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-                AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-                AppData.Settings.Locale = languages[SelectedLanguage];
             }
+
+            AppData.Settings.AutoUpdateEnabled = AutoUpdate;
+            AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+
+            // AppData.Settings.Locale = languages[SelectedLanguage];
+            if (!AppData.Settings.SelectedLanguage.Equals(SelectedLanguage))
+            {
+                AppData.Settings.SelectedLanguage = SelectedLanguage;
+                cultureChanged = true;
+            }
+
+            AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
 
             if (serverChanged || pathChanged)
             {
+                AppData.ResetCaches();
                 await new DownloadWindow().ShowDialog(self);
             }
 
-            self.Close();
+            if (cultureChanged)
+            {
+                var result = await MessageBox.Show(
+                    null,
+                    Translation.Settingswindow_LanguageChanged,
+                    Translation.SettingsWindow_LanguageChanged_Title,
+                    MessageBox.MessageBoxButtons.YesNo,
+                    MessageBox.MessageBoxIcon.Question,
+                    sizeToContent: SizeToContent.Height);
+                if (result == MessageBox.MessageBoxResult.Yes)
+                {
+                    AppSettingsHelper.SaveSettings();
+                    UpdateManager.RestartApp();
+                }
+            }
+
+            self?.Close();
         }
 
         public async void SelectFolder()
         {
-            OpenFolderDialog dialog = new OpenFolderDialog();
-            dialog.Directory = AppDataHelper.Instance.AppDataDirectory;
-            var path = await dialog.ShowAsync(self);
+            var dialog = new OpenFolderDialog
+            {
+                Directory = AppDataHelper.Instance.AppDataDirectory,
+            };
+            var path = await dialog.ShowAsync(self!);
             if (!string.IsNullOrEmpty(path))
             {
                 CustomPath = path;
@@ -215,7 +255,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void Cancel()
         {
-            self.Close();
+            self?.Close();
         }
 
         public async void CopyVersion()
@@ -224,22 +264,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             await Application.Current.Clipboard.SetTextAsync(appVersion);
         }
 
-        [SuppressMessage("System.IO.Abstractions", "IO0006:Replace Path class with IFileSystem.Path for improved testability", Justification = "Checking Path Existence only")]
         private bool IsValidPath(string path, bool exactPath = true)
         {
             bool isValid;
             try
             {
-                string fullPath = Path.GetFullPath(path);
-
                 if (exactPath)
                 {
-                    string root = Path.GetPathRoot(path)!;
-                    isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
+                    string root = fileSystem.Path.GetPathRoot(path)!;
+                    isValid = string.IsNullOrEmpty(root.Trim('\\', '/')) == false;
                 }
                 else
                 {
-                    isValid = Path.IsPathRooted(path);
+                    isValid = fileSystem.Path.IsPathRooted(path);
                 }
             }
             catch (Exception)

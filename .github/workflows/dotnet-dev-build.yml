@@ -1,0 +1,37 @@
+﻿name: Build and run tests on development branch
+
+on:
+  push:
+    branches:
+      - development
+    paths-ignore:
+      - '**/*.md'
+      - '.github/*.png'
+      - 'docs/**/*.*'
+      - 'workflows/*.yml'
+  pull_request:
+    branches:
+      - development
+    paths-ignore:
+      - '**/*.md'
+      - '.github/*.png'
+      - 'docs/**/*.*'
+      - 'workflows/*.yml'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    name: Build application on dev branch
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build application
+        run: dotnet build --no-restore -c Release
+      - name: Test application
+        run: dotnet test --no-build -c Release --verbosity normal

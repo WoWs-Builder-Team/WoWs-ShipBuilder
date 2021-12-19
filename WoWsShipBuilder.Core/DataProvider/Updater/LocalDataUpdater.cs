@@ -55,6 +55,8 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 logger.Info("Completed update check.");
             }
 
+            logger.Info("Checking installed localization files...");
+            await CheckInstalledLocalizations(serverType);
             logger.Info("Starting data validation...");
             string dataBasePath = appDataHelper.GetDataPath(serverType);
             if (!ValidateData(serverType, dataBasePath))
@@ -88,9 +90,10 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task UpdateLocalization(ServerType serverType)
         {
             var installedLocales = appDataHelper.GetInstalledLocales(serverType);
-            if (!installedLocales.Contains(AppData.Settings.Locale + ".json"))
+
+            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json"))
             {
-                installedLocales.Add(AppData.Settings.Locale + ".json");
+                installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json");
             }
 
             var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
@@ -159,8 +162,8 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 shouldLocalizationUpdate = true;
                 try
                 {
-                    string oldVersionSubstring = localVersionInfo.VersionName.Substring(0, localVersionInfo.VersionName.IndexOf('#'));
-                    string expectedOldVersion = onlineVersionInfo.LastVersionName.Substring(0, onlineVersionInfo.LastVersionName.IndexOf('#'));
+                    string oldVersionSubstring = localVersionInfo.VersionName[..localVersionInfo.VersionName.IndexOf('#')];
+                    string expectedOldVersion = onlineVersionInfo.LastVersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
                     canImagesDeltaUpdate = oldVersionSubstring.Equals(expectedOldVersion, StringComparison.Ordinal);
                 }
                 catch (Exception)
@@ -175,7 +178,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             else
             {
                 // Default case if there is no update available.
-                filesToDownload = new List<(string, string)>();
+                filesToDownload = new();
                 shouldImagesUpdate = false;
                 canImagesDeltaUpdate = false;
                 shouldLocalizationUpdate = false;
@@ -189,7 +192,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             string versionName;
             try
             {
-                versionName = onlineVersionInfo.LastVersionName.Substring(0, onlineVersionInfo.LastVersionName.IndexOf('#'));
+                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
             }
             catch (Exception e)
             {
@@ -197,13 +200,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 versionName = "0.10.10"; // Fallback value for now.
             }
 
-            return new UpdateCheckResult(
-                filesToDownload,
-                shouldImagesUpdate,
-                canImagesDeltaUpdate,
-                shouldLocalizationUpdate,
-                versionName,
-                serverType);
+            return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
         }
 
         /// <summary>
@@ -300,16 +297,32 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 await awsClient.DownloadImages(ImageType.Ship, versionName);
             }
 
-            var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
-            if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
+            // var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
+            // if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
+            // {
+            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
+            //     await awsClient.DownloadImages(ImageType.Camo);
+            // }
+            // else
+            // {
+            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
+            //     await awsClient.DownloadImages(ImageType.Camo, versionName);
+            // }
+        }
+
+        public async Task CheckInstalledLocalizations(ServerType serverType)
+        {
+            List<string> installedLocales = appDataHelper.GetInstalledLocales(serverType, false);
+            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
             {
-                progressTracker.Report((3, "SplashScreen_CamoImages"));
-                await awsClient.DownloadImages(ImageType.Camo);
+                logger.Info("Selected localization is not installed. Downloading file...");
+                string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
+                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
             }
             else
             {
-                progressTracker.Report((3, "SplashScreen_CamoImages"));
-                await awsClient.DownloadImages(ImageType.Camo, versionName);
+                logger.Info("Selected localization is installed.");
             }
         }
     }

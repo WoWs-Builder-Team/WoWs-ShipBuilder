@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Collections;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels

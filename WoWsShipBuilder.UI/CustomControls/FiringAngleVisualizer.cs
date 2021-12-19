@@ -585,6 +585,8 @@ namespace WoWsShipBuilder.UI.CustomControls
                 facingBackwards = true;
             }
 
+            startAngle %= 360;
+            endAngle %= 360;
             var drawingGroup = new DrawingGroup();
             drawingGroup.AddChild(CreateArcs(startAngle, endAngle, radius, center), TurretAngleColor, new SolidColorBrush(Colors.DarkGray));
 

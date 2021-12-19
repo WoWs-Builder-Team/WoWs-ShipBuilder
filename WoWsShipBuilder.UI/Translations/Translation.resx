@@ -337,7 +337,7 @@
     <value>180° turn time</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal dispersion</value>
+    <value>Horizontal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Range</value>
@@ -355,7 +355,7 @@
     <value>Traverse speed</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical dispersion</value>
+    <value>Vertical</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Initial shell velocity</value>
@@ -487,10 +487,10 @@
     <value>Error</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>The selected ship has no main guns</value>
+    <value>has no main guns</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Selected ship has already been added</value>
+    <value>has already been added with that shell</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
@@ -844,7 +844,7 @@
     <value>Show impact velocity graph</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Open ballistic graphs</value>
+    <value>Show ballistic graphs</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>The selected custom path is not valid.</value>
@@ -853,7 +853,7 @@
     <value>Select a shell</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>The selected ship has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
+    <value>has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Normal account</value>
@@ -872,5 +872,146 @@
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
     <value>Concealment by sub at operating depth</value>
+  </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+    <value>Show dispersion and ballistics graphs</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Vertical:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontal:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Inner Vertical:</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Inner Horizontal:</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Dispersion</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Show dispersion graphs</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Show dispersion plot</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formula at range X(Km)</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>HorizontalDispersion[X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Aiming Range (Km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Ballistic Graphs</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Dispersion Graphs</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Dispersion Plot</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Plot Scaling</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Shots Number</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Refresh Plot</value>
+  </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+    <value>Send basic telemetry data (current app version)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>THIS SHIP CAN'T REACH THE SELECTED AIMING RANGE</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Plot Plane</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontal (Water)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Real</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Fuso Reference</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>In the plot, shells are coming from the right side.
+The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
+
+The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
+The RED ellipse shows the area where 50% of the shells lends on average.
+The BLACK ellipse shows the size of a Fuso as reference.
+
+Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
+The real dispersion ellipse is drawn on a plane perpendicular to the shell's impact angle.
+Only the vertical dispersion projected on water is affected by shell's speed. The real one is not.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Plot explanation</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>Bow in</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>Broadside</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Air Drag</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Mass</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>Theoretical FPM </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Fire chance per salvo</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Explosion radius</value>
+  </data>
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Blast penetration</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Engine blast protection</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Rudder blast protection</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>If "module blast protection" + "armament blast penetration" &gt; 0 
+     The module can be incapacitated.
+If "module blast protection" + "armament blast penetration" &lt;= 0
+     The module can not be incapacitated.</value>
+  </data>
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Restart required</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initializing...</value>
+  </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+      <value>Credits</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+      <value>Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned.</value>
   </data>
 </root>

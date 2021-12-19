@@ -11,13 +11,13 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Sentry.NLog" Version="3.11.1" />
-      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+      <PackageReference Include="Sentry.NLog" Version="3.12.2" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.17.2" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="1.17.6" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <EmbeddedResource Update="DataUI\UnitTranslations\UnitLocalization.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>UnitLocalization.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>

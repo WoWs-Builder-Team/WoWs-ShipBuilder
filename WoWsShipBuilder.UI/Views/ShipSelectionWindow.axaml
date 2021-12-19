@@ -29,7 +29,7 @@
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TierFilter}" IsChecked="{Binding TierFilterChecked}"/>
-                <ComboBox Items="{Binding TierList}" PlaceholderText="I ~ X" SelectedItem="{Binding SelectedTier}" 
+                <ComboBox Items="{Binding TierList}" PlaceholderText="I ~ XI" SelectedItem="{Binding SelectedTier}" 
                           IsEnabled="{Binding TierFilterChecked}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
@@ -49,8 +49,8 @@
             </StackPanel>
             <TextBox Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Margin="10" Text="{Binding InputText}" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
                      TextAlignment="Center" Name="FilterBox" />
-            <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Items="{Binding SummaryList}" IsVisible="{Binding !!SummaryList.Count}"
-                     HorizontalAlignment="Stretch" Margin="10 0" MaxHeight="300" SelectedItem="{Binding SelectedShip}">
+            <ListBox Name="SelectionList" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Items="{Binding SummaryList}" IsVisible="{Binding !!SummaryList.Count}"
+                     HorizontalAlignment="Stretch" Margin="10 0" MaxHeight="300" SelectedItems="{Binding SelectedShipList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Panel HorizontalAlignment="Stretch" DoubleTapped="ListItem_OnDoubleTapped">

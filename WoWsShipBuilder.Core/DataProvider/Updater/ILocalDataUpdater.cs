@@ -50,5 +50,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <returns><see langword="true"/> if the updater should run, <see langword="false"/> otherwise.</returns>
         public bool ShouldUpdaterRun(ServerType serverType);
+
+        public Task CheckInstalledLocalizations(ServerType serverType);
     }
 }

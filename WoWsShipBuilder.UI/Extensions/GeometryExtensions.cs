@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Media;
 
@@ -50,6 +50,31 @@ namespace WoWsShipBuilder.UI.Extensions
         public static void AddChild(this DrawingGroup drawingGroup, Geometry geometry, IBrush areaBrush, IBrush? borderBrush = null)
         {
             drawingGroup.Children.Add(geometry, areaBrush, borderBrush);
+        }
+
+        public static Point AddX(this Point point, double x)
+        {
+            return point + new Point(x, 0);
+        }
+
+        public static Point AddY(this Point point, double y)
+        {
+            return point + new Point(0, y);
+        }
+
+        public static Point MultiplyX(this Point point, double x)
+        {
+            return new(point.X * x, point.Y);
+        }
+
+        public static Point MultiplyY(this Point point, double y)
+        {
+            return new(point.X, point.Y * y);
+        }
+
+        public static Point SwapXY(this Point point)
+        {
+            return new(point.Y, point.X);
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿name: Requirement check for merges with main.
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    name: Release build and version check
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Build application
+        run: dotnet build -c ReleaseTest
+      - name: Test application
+        run: dotnet test --no-build -c ReleaseTest --verbosity normal

@@ -38,7 +38,7 @@
         <Setter Property="FontSize" Value="17" />
     </Style>
     <!--Expander for ship stats-->
-    <Style Selector="Expander /template/ ToggleButton#PART_toggle">
+    <Style Selector="Expander.modules /template/ ToggleButton#PART_toggle">
         <Setter Property="Template">
             <ControlTemplate>
                 <Border BorderThickness="1" Background="Transparent">

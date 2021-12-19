@@ -142,7 +142,7 @@
     <value>°/с</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>дпс</value>
+    <value>увс</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
     <value>ХП</value>
@@ -153,7 +153,19 @@
   <data name="Unit_M" xml:space="preserve">
     <value>м</value>
   </data>
-  <data name="Unit_ShotsPerSecond" xml:space="preserve">
-      <value>выстрелов/с</value>
+  <data name="Unit_ShotsPerMinute" xml:space="preserve">
+    <value>выстрелов/мин</value>
+  </data>
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>пожаров/мин</value>
+  </data>
+  <data name="ArmamentType_AP" xml:space="preserve">
+    <value>ББ</value>
+  </data>
+  <data name="ArmamentType_HE" xml:space="preserve">
+    <value>ОФ</value>
+  </data>
+  <data name="ArmamentType_SAP" xml:space="preserve">
+    <value>ПББ</value>
   </data>
 </root>

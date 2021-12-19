@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilderDataStructures;
 
@@ -19,20 +20,37 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Index { get; set; } = default!;
 
+        [DataUiUnit("KG")]
+        public decimal Mass { get; set; }
+
         public string Type { get; set; } = default!;
 
         public decimal Damage { get; set; }
 
         public string TheoreticalDPM { get; set; } = default!;
 
+        [DataUiUnit("M")]
+        public decimal ExplosionRadius { get; set; }
+
+        [JsonIgnore]
+        public decimal SplashCoeff { get; set; }
+
         [DataUiUnit("MPS")]
         public decimal ShellVelocity { get; set; }
+
+        public decimal AirDrag { get; set; }
 
         [DataUiUnit("MM")]
         public int Penetration { get; set; }
 
+        [DataUiUnit("MM")]
+        public decimal Overmatch { get; set; }
+
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
+
+        [DataUiUnit("PerCent")]
+        public decimal FireChancePerSalvo { get; set; }
 
         [DataUiUnit("Degree")]
         public string? RicochetAngles { get; set; }
@@ -44,13 +62,13 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal MaxRicochetAngle { get; set; }
 
         [DataUiUnit("MM")]
-        public decimal Overmatch { get; set; }
-
-        [DataUiUnit("MM")]
         public decimal ArmingThreshold { get; set; }
 
         [DataUiUnit("S")]
         public decimal FuseTimer { get; set; }
+
+        [DataUiUnit("FPM")]
+        public decimal TheoreticalFPM { get; set; }
 
         public decimal DepthExplosion { get; set; }
 
@@ -60,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, decimal dpmFactor)
+        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal salvosPerMinute)
         {
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
@@ -70,10 +88,16 @@ namespace WoWsShipBuilder.Core.DataUI
                 // Values that may be ignored depending on shell type
                 var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);
                 var fuseTimer = Math.Round((decimal)shell.FuseTimer, 3);
+                var overmatch = Math.Truncate((decimal)(shell.Caliber * 1000 / 14.3));
 
                 float shellDamage = shell.Damage;
                 float shellFireChance = shell.FireChance * 100;
                 float shellPenetration = shell.Penetration;
+                float shellAirDrag = shell.AirDrag;
+                float shellMass = shell.Mass;
+                string shellType = "";
+
+                // float shellExplosionSize = shell.ExplosionSize;
                 switch (shell.ShellType)
                 {
                     case ShellType.HE:
@@ -81,6 +105,8 @@ namespace WoWsShipBuilder.Core.DataUI
                         int index;
                         armingTreshold = 0;
                         fuseTimer = 0;
+                        overmatch = 0;
+                        shellType = UnitLocalization.ArmamentType_HE;
 
                         // IFHE fire chance malus
                         if (shell.Caliber > 0.139f)
@@ -124,6 +150,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         armingTreshold = 0;
                         fuseTimer = 0;
+                        shellType = UnitLocalization.ArmamentType_SAP;
                         shellDamage = modifiers.FindModifiers("GMHECSDamageCoeff").Aggregate(shellDamage, (current, modifier) => current * modifier);
                         break;
                     }
@@ -132,6 +159,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         // TODO: check and fix modifier names and application
                         int index;
+                        shellType = UnitLocalization.ArmamentType_AP;
                         if (shell.Caliber >= 0.190f)
                         {
                             index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
@@ -154,7 +182,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
                 decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-                var dpmNumber = Math.Round((decimal)shellDamage * dpmFactor);
+                var dpmNumber = Math.Round((decimal)shellDamage * barrelCount * salvosPerMinute);
+                var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
 
                 NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
                 nfi.NumberGroupSeparator = "'";
@@ -163,11 +192,17 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     Name = Localizer.Instance[shell.Name].Localization,
                     Type = shell.ShellType.ToString(),
+                    Mass = (decimal)shellMass,
                     Damage = Math.Round((decimal)shellDamage),
+                    ExplosionRadius = (decimal)shell.ExplosionRadius,
+                    SplashCoeff = (decimal)shell.SplashCoeff,
                     ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
                     Penetration = (int)Math.Truncate(shellPenetration),
+                    AirDrag = Math.Round((decimal)shellAirDrag, 2),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
-                    Overmatch = Math.Round((decimal)(shell.Caliber / 14.3)),
+                    FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
+                    TheoreticalFPM = Math.Round(fireChancePerSalvo * salvosPerMinute, 2),
+                    Overmatch = overmatch,
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,
                     TheoreticalDPM = dpmNumber.ToString("n0", nfi),

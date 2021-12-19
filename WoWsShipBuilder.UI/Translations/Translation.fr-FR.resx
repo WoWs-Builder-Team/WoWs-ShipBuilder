@@ -337,7 +337,7 @@
     <value>Temps de giration à 180°</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Dispersion horizontale</value>
+    <value>Horizontale</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Portée</value>
@@ -355,7 +355,7 @@
     <value>Vitesse de rotation</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Dispersion verticale</value>
+    <value>Verticale</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Vitesse initiale de l'obus</value>
@@ -487,10 +487,10 @@
     <value>Erreur</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>Le navire sélectionné n'a pas de batterie principale</value>
+    <value>n'a pas de tourelles principales</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Le navire sélectionné a déjà été ajouté</value>
+    <value>à déjà été ajouté à cet obus</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
@@ -844,7 +844,7 @@
     <value>Afficher le graphique de la vitesse d'impact</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Ouvrir le graphique des balistiques</value>
+    <value>Afficher les graphes des balistiques</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Le chemin personnalisé sélectionné est invalide.</value>
@@ -853,7 +853,154 @@
     <value>Sélectionnez un obus</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Le Navire sélectionné a plus d'un obus. Sélectionnez celui dont vous voulez savoir la balistique. En Assumant que c'est le même calibre, L'ordre des obus est ci-dessous:
+    <value>a plus d'un obus; Sélectionnez celui dont vous voulez savoir la balistique
+En assumant que c'est le même calibre, l'ordre des obus est ci-dessous:
 HE-&gt;SAP-&gt;AP.</value>
+  </data>
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Compte standard</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>Compte premium WG</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>Compte Premium WoWs</value>
+  </data>
+  <data name="SettingsWindow_CopyVersions" xml:space="preserve">
+    <value>Copier les versions</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+    <value>Détectabilité du sous-marin au niveau de profondeur du périscope</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+    <value>Détectabilité du sous-marin a profondeur de fonctionnement</value>
+  </data>
+  <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
+    <value>Afficher les graphiques de dispersion et de balistique</value>
+  </data>
+  <data name="DispersionPlot_Vertical" xml:space="preserve">
+    <value>Vertical:</value>
+  </data>
+  <data name="DispersionPlot_Horizontal" xml:space="preserve">
+    <value>Horizontale:</value>
+  </data>
+  <data name="DispersionPlot_InnerVertical" xml:space="preserve">
+    <value>Intérieur vertical:</value>
+  </data>
+  <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
+    <value>Intérieur Horizontale:</value>
+  </data>
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Dispersion</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Afficher les graphes de dispersion</value>
+  </data>
+  <data name="ShipStats_ShowDispPlot" xml:space="preserve">
+    <value>Afficher le tracé de dispersion</value>
+  </data>
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+    <value>Formule à X portée (km)</value>
+  </data>
+  <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
+    <value>Dispersion Horizontale[X]</value>
+  </data>
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Portée de visée (Km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Graphes balistiques</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Graphes de dispersion</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
+    <value>Tracé de dispersion</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
+    <value>Échelle de Tracé</value>
+  </data>
+  <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
+    <value>Nombre de tirs</value>
+  </data>
+  <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
+    <value>Actualiser le tracé</value>
+  </data>
+  <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
+    <value>Envoyer des données de télémétrie de base (version actuelle de l'application)</value>
+  </data>
+  <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
+    <value>CE NAVIRE NE PEUT PAS ATTEINDRE LA PORTÉE DE VISÉE SÉLECTIONNÉE</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
+    <value>Plan de Tracé</value>
+  </data>
+  <data name="HorizontalPlane" xml:space="preserve">
+    <value>Horizontale (Eau)</value>
+  </data>
+  <data name="RealPlane" xml:space="preserve">
+    <value>Réel</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>Verticale</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Référence Fuso</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>Sur le Tracé, les obus viennent du coté droit.
+Le Tracé est tourné de 90° donc la dispersion verticale est montré de manière horizontale et inversement.
+
+L'ellipse BLANCHE affiche la zone de dispersion maximale à la portée sélectionnée.
+L'ellipse ROUGE affiche la zone où 50% des obus atterrissent en moyenne.
+L'ellipse NOIRE affiche la taille d'un Fuso pour référence.
+
+Les navires en jeu sont deux fois plus grands comparés à l'environnement, donc un navire de 200m de long mesurera en réalité 400m.
+La réelle ellipse de dispersion est dessinée sur un plan perpendiculaire à l'angle d'impact de l'obus.
+Seule la dispersion verticale projetée sur l'eau est affectée par la vitesse de l'obus. La dispersion réelle ne l'est pas.</value>
+  </data>
+  <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
+    <value>Explication du tracé</value>
+  </data>
+  <data name="BowIn" xml:space="preserve">
+    <value>De proue</value>
+  </data>
+  <data name="Broadside" xml:space="preserve">
+    <value>De flanc</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Masquer</value>
+  </data>
+  <data name="ShipStats_AirDrag" xml:space="preserve">
+    <value>Glissement dans l'air</value>
+  </data>
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Masse</value>
+  </data>
+  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
+    <value>FPM Théorique </value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+    <value>Chance de mettre en feu un navire par salve</value>
+  </data>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+    <value>Radius d'explosion</value>
+  </data>
+  
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+    <value>Protection contre les explosions aux moteurs</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+    <value>Protection contre les explosions au gouvernail</value>
+  </data>
+  
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+      <value>Redémarrage nécessaire</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+      <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+      <value>Initialisation...</value>
   </data>
 </root>
