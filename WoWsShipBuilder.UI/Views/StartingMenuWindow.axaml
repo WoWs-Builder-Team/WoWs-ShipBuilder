@@ -29,7 +29,8 @@
 
     <LayoutTransformControl>
         <LayoutTransformControl.LayoutTransform>
-            <ScaleTransform ScaleX="{Binding ContentScaling}" ScaleY="{Binding ContentScaling}" />
+            <!-- Will trigger a binding notification for a null value, no way to suppress that. -->
+            <ScaleTransform ScaleX="{Binding ContentScaling, TargetNullValue=1, FallbackValue=1}" ScaleY="{Binding ContentScaling, TargetNullValue=1, FallbackValue=1}" />
         </LayoutTransformControl.LayoutTransform>
         <Grid RowDefinitions="30,1.35*,Auto,*,Auto, Auto">
             <userControls:AppHeader Grid.Row="0" ShowTitle="False" />
