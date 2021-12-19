@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1000"
+             mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="1000"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
@@ -350,9 +350,9 @@
                                     <ItemsControl Items="{Binding LongRangeAura.AntiAirData}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <DockPanel>
-                                                    <TextBlock Classes="Key"/>
-                                                    <TextBlock Classes="Value"/>
+                                                <DockPanel LastChildFill="True">
+                                                    <TextBlock Classes="Value" DockPanel.Dock="Right"/>
+                                                    <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
                                                 </DockPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -364,9 +364,9 @@
                                     <ItemsControl Items="{Binding MediumRangeAura.AntiAirData}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <DockPanel>
-                                                    <TextBlock Classes="Key"/>
-                                                    <TextBlock Classes="Value"/>
+                                                <DockPanel LastChildFill="True">
+                                                    <TextBlock Classes="Value" DockPanel.Dock="Right"/>
+                                                    <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
                                                 </DockPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -378,9 +378,9 @@
                                     <ItemsControl Items="{Binding ShortRangeAura.AntiAirData}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <DockPanel>
-                                                    <TextBlock Classes="Key"/>
-                                                    <TextBlock Classes="Value"/>
+                                                <DockPanel LastChildFill="True">
+                                                    <TextBlock Classes="Value" DockPanel.Dock="Right"/>
+                                                    <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
                                                 </DockPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
@@ -444,9 +444,9 @@
                                 <ItemsControl Items="{Binding DepthChargesLauncherData}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel>
-                                                <TextBlock Classes="Key"/>
-                                                <TextBlock Classes="Value"/>
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Classes="Value" DockPanel.Dock="Right"/>
+                                                <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -454,9 +454,9 @@
                                 <ItemsControl Items="{Binding DepthCharge.ProjectileData}" Margin="0,5,0,0">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel>
-                                                <TextBlock Classes="Key"/>
-                                                <TextBlock Classes="Value"/>
+                                            <DockPanel LastChildFill="True">
+                                                <TextBlock Classes="Value" DockPanel.Dock="Right"/>
+                                                <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -500,9 +500,9 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
-                                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0">
-                                                    <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
+                                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0" LastChildFill="True">
                                                     <TextBlock Text="{Binding Shell.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                    <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" TextWrapping="Wrap"/>
                                                     <ToolTip.Tip>
                                                         <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
                                                     </ToolTip.Tip>
@@ -545,16 +545,16 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_RudderBlastProtection}" DockPanel.Dock="Left"/>
+                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
                             <TextBlock Text="{Binding ManeuverabilityUI.RudderBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_RudderBlastProtection}" TextWrapping="Wrap"/>
                             <ToolTip.Tip>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
                             </ToolTip.Tip>
                         </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_EngineBlastProtection}" DockPanel.Dock="Left"/>
+                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
                             <TextBlock Text="{Binding ManeuverabilityUI.EngineBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                            <TextBlock Text="{x:Static t:Translation.ShipStats_EngineBlastProtection}" TextWrapping="Wrap"/>
                             <ToolTip.Tip>
                                 <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
                             </ToolTip.Tip>
