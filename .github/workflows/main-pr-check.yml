@@ -16,9 +16,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - name: Restore dependencies
-        run: dotnet restore
       - name: Build application
-        run: dotnet build --no-restore -c ReleaseTest
+        run: dotnet build -c ReleaseTest
       - name: Test application
         run: dotnet test --no-build -c ReleaseTest --verbosity normal
