@@ -357,9 +357,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Kąty rykoszetu</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Obrona przeciwlotnicza</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>PW samolotu</value>
   </data>
@@ -720,6 +718,7 @@
   <data name="DontShow" xml:space="preserve">
     <value>Ukryj</value>
   </data>
+  
   
   
   
