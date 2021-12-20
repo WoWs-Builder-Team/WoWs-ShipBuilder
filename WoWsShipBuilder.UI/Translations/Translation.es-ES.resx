@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ángulos de rebote</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Defensas Antiaérea</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>HP de aeronaves</value>
   </data>
@@ -957,6 +955,7 @@ Sólo la dispersión vertical proyectada en el agua se ve afectada por la veloci
   <data name="DontShow" xml:space="preserve">
     <value>Ocultar</value>
   </data>
+  
   
   
   
