@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Angoli di rimbalzo</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Difesa AA</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>HP Aerei</value>
   </data>
@@ -1000,14 +998,15 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
      Il modulo non può essere incapacitato.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Riavvio richiesto</value>
+    <value>Riavvio richiesto</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Per rendere effettivo il cambiamento di lingua è necessario riavviare l'applicazione. Non riavviare può comportare un comportamento inatteso.</value>
+    <value>Per rendere effettivo il cambiamento di lingua è necessario riavviare l'applicazione. Non riavviare può comportare un comportamento inatteso.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Inizializzazione...</value>
+    <value>Inizializzazione...</value>
   </data>
+  
   
   
 </root>
