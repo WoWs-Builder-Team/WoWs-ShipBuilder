@@ -1221,7 +1221,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AA defense.
+        ///   Looks up a localized string similar to AA Defense.
         /// </summary>
         public static string ShipStats_AADefense {
             get {
@@ -2246,6 +2246,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_RudderBlastProtection {
             get {
                 return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secondary Battery.
+        /// </summary>
+        public static string ShipStats_SecondaryBattery {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondaryBattery", resourceCulture);
             }
         }
         

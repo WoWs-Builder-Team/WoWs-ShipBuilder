@@ -293,7 +293,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             var colCount = ColumnDefinitions.Count;
 
             if (rowCount == 0 || colCount == 0)
-                {
+            {
                 return;
             }
 

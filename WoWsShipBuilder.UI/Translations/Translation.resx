@@ -388,7 +388,7 @@
     <value>Ricochet angles</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>AA defense</value>
+    <value>AA Defense</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Aircraft HP</value>
@@ -1000,18 +1000,21 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
      The module can not be incapacitated.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Restart required</value>
+    <value>Restart required</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour.</value>
+    <value>A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Initializing...</value>
+    <value>Initializing...</value>
   </data>
   <data name="SettingsWindow_Credits" xml:space="preserve">
-      <value>Credits</value>
+    <value>Credits</value>
   </data>
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
-      <value>Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned.</value>
+    <value>Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Secondary Battery</value>
   </data>
 </root>

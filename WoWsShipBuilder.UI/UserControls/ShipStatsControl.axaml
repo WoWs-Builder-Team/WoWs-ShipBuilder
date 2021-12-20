@@ -142,7 +142,7 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
+                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" IsVisible="{Binding ShowBlastPenetration}">
                                             <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                             <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             <ToolTip.Tip>
@@ -341,7 +341,7 @@
                     
                     <!-- Anti Air -->
                     <DataTemplate DataType="dataUi:AntiAirUI">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="AA Defense"
+                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static t:Translation.ShipStats_AADefense}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical" Spacing="5">
@@ -467,7 +467,7 @@
                     
                     <!-- Secondaries -->
                     <DataTemplate DataType="dataUi:SecondaryBatteryUiContainer">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="Secondary Battery"
+                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static t:Translation.ShipStats_SecondaryBattery}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" 
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical">

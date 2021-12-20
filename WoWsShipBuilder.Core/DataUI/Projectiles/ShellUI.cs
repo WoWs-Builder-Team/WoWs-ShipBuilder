@@ -76,6 +76,9 @@ namespace WoWsShipBuilder.Core.DataUI
         public bool IsLastEntry { get; private set; }
 
         [JsonIgnore]
+        public bool ShowBlastPenetration { get; private set; }
+
+        [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
         public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal salvosPerMinute)
@@ -95,9 +98,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 float shellPenetration = shell.Penetration;
                 float shellAirDrag = shell.AirDrag;
                 float shellMass = shell.Mass;
+                bool showBlastPenetration = false;
                 string shellType = "";
 
-                // float shellExplosionSize = shell.ExplosionSize;
                 switch (shell.ShellType)
                 {
                     case ShellType.HE:
@@ -106,6 +109,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         armingTreshold = 0;
                         fuseTimer = 0;
                         overmatch = 0;
+                        showBlastPenetration = true;
                         shellType = UnitLocalization.ArmamentType_HE;
 
                         // IFHE fire chance malus
@@ -207,6 +211,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     FuseTimer = fuseTimer,
                     TheoreticalDPM = dpmNumber.ToString("n0", nfi),
                     Index = shell.Name,
+                    ShowBlastPenetration = showBlastPenetration,
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)

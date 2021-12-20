@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Translations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {
@@ -304,10 +307,10 @@ namespace WoWsShipBuilder.UI.CustomControls
             yInnerRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
 
             // text
-            var verticalDiameter = new FormattedText($"{Translation.DispersionPlot_Vertical} {Math.Round(xOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var verticalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerVertical} {Math.Round(xInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameter = new FormattedText($"{Translation.DispersionPlot_Horizontal} {Math.Round(yOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameterHalfHitPoints = new FormattedText($"{Translation.DispersionPlot_InnerHorizontal} {Math.Round(yInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameter = new TextLayout($"{Translation.DispersionPlot_Vertical} {Math.Round(xOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, Foreground);
+            var verticalDiameterHalfHitPoints = new TextLayout($"{Translation.DispersionPlot_InnerVertical} {Math.Round(xInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, Foreground);
+            var horizontalDiameter = new TextLayout($"{Translation.DispersionPlot_Horizontal} {Math.Round(yOuterRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, Foreground);
+            var horizontalDiameterHalfHitPoints = new TextLayout($"{Translation.DispersionPlot_InnerHorizontal} {Math.Round(yInnerRadius * 2 / PlotScaling)} {unit}", Typeface.Default, FontSize, Foreground);
 
             // X axis
             context.DrawLine(new Pen(Brushes.Gray, 1), center.AddX(-xOuterRadius), center.AddX(xOuterRadius));
@@ -320,36 +323,50 @@ namespace WoWsShipBuilder.UI.CustomControls
             context.DrawLine(new Pen(Brushes.White, 1), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + segmentEndHeight));
             context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)), center.AddX(xOuterRadius).AddY(yOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)));
 
-            context.DrawText(Foreground, center.AddX(-verticalDiameter.Bounds.Width / 2).AddY(yOuterRadius + offsetFromEllipse + textOffset + verticalDiameter.Bounds.Height), verticalDiameter);
+            using (context.PushPostTransform(Matrix.CreateTranslation(center.X - (verticalDiameter.Size.Width / 2), center.Y + yOuterRadius + offsetFromEllipse + textOffset + verticalDiameter.Size.Height)))
+            {
+                verticalDiameter.Draw(context);
+            }
 
             // horizontalDiameter
             context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse).AddY(-yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - segmentEndHeight).AddY(-yOuterRadius));
             context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse).AddY(yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - segmentEndHeight).AddY(yOuterRadius));
             context.DrawLine(new Pen(Brushes.White, 1), center.AddX(-xOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)).AddY(yOuterRadius), center.AddX(-xOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)).AddY(-yOuterRadius));
 
-            var rotation1 = context.PushSetTransform(Matrix.CreateRotation(-Math.PI / 2));
-            context.DrawText(Foreground, center.SwapXY().MultiplyX(-1).AddX(-horizontalDiameter.Bounds.Width / 2).AddY(-xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameter.Bounds.Height)), horizontalDiameter);
-            rotation1.Dispose();
+            using(context.PushSetTransform(Matrix.CreateRotation(-Math.PI / 2)))
+            {
+                using (context.PushPostTransform(Matrix.CreateTranslation(center.X - xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameter.Size.Height), center.Y + (horizontalDiameter.Size.Width / 2))))
+                {
+                    horizontalDiameter.Draw(context);
+                }
+            }
 
             // verticalDiameterHalfHitPoints
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - segmentEndHeight));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - segmentEndHeight));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(-xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)), center.AddX(xInnerRadius).AddY(-yOuterRadius - offsetFromEllipse - (segmentEndHeight / 2)));
 
-            context.DrawText(Foreground, center.AddX(-verticalDiameterHalfHitPoints.Bounds.Width / 2).AddY(-yOuterRadius - offsetFromEllipse - textOffset - (2 * verticalDiameterHalfHitPoints.Bounds.Height)), verticalDiameterHalfHitPoints);
+            using (context.PushPostTransform(Matrix.CreateTranslation(center.X - (verticalDiameterHalfHitPoints.Size.Width / 2), center.Y - yOuterRadius - offsetFromEllipse - textOffset - (2 * verticalDiameterHalfHitPoints.Size.Height))))
+            {
+                verticalDiameterHalfHitPoints.Draw(context);
+            }
 
             // horizontalDiameterHalfHitPoints
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(-yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(-yInnerRadius));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + segmentEndHeight).AddY(yInnerRadius));
             context.DrawLine(new Pen(Brushes.Red, 1), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(yInnerRadius), center.AddX(xOuterRadius + offsetFromEllipse + (segmentEndHeight / 2)).AddY(-yInnerRadius));
 
-            var rotation2 = context.PushSetTransform(Matrix.CreateRotation(Math.PI / 2));
-            context.DrawText(Foreground, center.SwapXY().AddX(-horizontalDiameterHalfHitPoints.Bounds.Width / 2).MultiplyY(-1).AddY(-xOuterRadius - offsetFromEllipse - textOffset - (2 * horizontalDiameterHalfHitPoints.Bounds.Height)), horizontalDiameterHalfHitPoints);
-            rotation2.Dispose();
+            using (context.PushSetTransform(Matrix.CreateRotation(Math.PI / 2)))
+            {
+                using (context.PushPostTransform(Matrix.CreateTranslation(center.X + xOuterRadius + offsetFromEllipse + textOffset + (2 * horizontalDiameterHalfHitPoints.Size.Height), center.Y - (horizontalDiameterHalfHitPoints.Size.Width / 2))))
+                {
+                    horizontalDiameterHalfHitPoints.Draw(context);
+                }
+            }
 
             // min plot size
-            var height = 2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Bounds.Height + verticalDiameter.Bounds.Height);
-            var width = 2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Bounds.Height + horizontalDiameterHalfHitPoints.Bounds.Height);
+            var height = 2 * (yOuterRadius + offsetFromEllipse + textOffset + verticalDiameterHalfHitPoints.Size.Height + verticalDiameter.Size.Height);
+            var width = 2 * (xOuterRadius + offsetFromEllipse + textOffset + horizontalDiameter.Size.Height + horizontalDiameterHalfHitPoints.Size.Height);
 
             if (height > MinHeight)
             {
