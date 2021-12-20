@@ -1008,4 +1008,10 @@
   <data name="SplashScreen_Init" xml:space="preserve">
       <value>初期化中...</value>
   </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+      <value>クレジット</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+      <value>このプロジェクトの翻訳を手伝ってくれた以下のコミュニティメンバーの方々に感謝します。以下では、少なくとも10件のコントリビューションを持つすべてのメンバーについて紹介します。</value>
+  </data>
 </root>
