@@ -1003,4 +1003,6 @@ Seule la dispersion verticale projetée sur l'eau est affectée par la vitesse d
   <data name="SplashScreen_Init" xml:space="preserve">
       <value>Initialisation...</value>
   </data>
+  
+  
 </root>
