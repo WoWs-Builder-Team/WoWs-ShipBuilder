@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ricochet hoeken</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Luchtafweer</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Vliegtuig levenspunten</value>
   </data>
@@ -1000,14 +998,15 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
      De module kan niet beschadigd worden.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Herstart vereist</value>
+    <value>Herstart vereist</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Een herstart van de applicatie is vereist om de taalwijziging door te voeren. Niet herstarten kan leiden tot onverwacht gedrag.</value>
+    <value>Een herstart van de applicatie is vereist om de taalwijziging door te voeren. Niet herstarten kan leiden tot onverwacht gedrag.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Initialiseren...</value>
+    <value>Initialiseren...</value>
   </data>
+  
   
   
 </root>
