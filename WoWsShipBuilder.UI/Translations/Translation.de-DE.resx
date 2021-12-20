@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ricochet-Winkel</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Luftabwehr</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Flugzeug-Trefferpunkte</value>
   </data>
@@ -1000,14 +998,15 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
      Das Modul kann nicht beschädigt werden.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Neustart erforderlich</value>
+    <value>Neustart erforderlich</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Ein Neustart der Anwendung ist erforderlich, damit die Sprachänderung wirksam wird. Nicht neuzustarten kann zu unerwartetem Verhalten führen.</value>
+    <value>Ein Neustart der Anwendung ist erforderlich, damit die Sprachänderung wirksam wird. Nicht neuzustarten kann zu unerwartetem Verhalten führen.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Initialisiere...</value>
+    <value>Initialisiere...</value>
   </data>
+  
   
   
 </root>
