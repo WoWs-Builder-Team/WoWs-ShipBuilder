@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Sekme Açıları</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Uçaksavar</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Uçak CP'si</value>
   </data>
@@ -1000,14 +998,15 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
      Modül devre dışı kalır.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Yeniden Başlatma Gerekli</value>
+    <value>Yeniden Başlatma Gerekli</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
+    <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Başlatılıyor...</value>
+    <value>Başlatılıyor...</value>
   </data>
+  
   
   
 </root>
