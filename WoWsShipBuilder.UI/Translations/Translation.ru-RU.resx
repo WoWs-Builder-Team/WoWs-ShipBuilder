@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Углы рикошета</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>ПВО</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>ХП Самолетов</value>
   </data>
@@ -1000,14 +998,15 @@
      модуль не может быть выведен из строя.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Требуется перезапуск</value>
+    <value>Требуется перезапуск</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Для смены языка необходим перезапуск приложения. В противном случае возможны неожиданные проблемы.</value>
+    <value>Для смены языка необходим перезапуск приложения. В противном случае возможны неожиданные проблемы.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Загрузка...</value>
+    <value>Загрузка...</value>
   </data>
+  
   
   
 </root>
