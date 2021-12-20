@@ -1008,4 +1008,6 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="SplashScreen_Init" xml:space="preserve">
       <value>Inizializzazione...</value>
   </data>
+  
+  
 </root>
