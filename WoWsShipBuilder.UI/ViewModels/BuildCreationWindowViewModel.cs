@@ -18,8 +18,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             self = win;
             build = currentBuild;
-            SaveBuildCommand = ReactiveCommand.Create(() => SaveBuild());
-            CloseBuildCommand = ReactiveCommand.Create(() => CloseBuild());
+            SaveBuildCommand = ReactiveCommand.Create(SaveBuild);
+            CloseBuildCommand = ReactiveCommand.Create(CloseBuild);
             ShipName = shipName;
         }
 
@@ -50,12 +50,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.Builds.Insert(0, build);
             await Application.Current.Clipboard.SetTextAsync(buildString);
             await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
-            self.Close();
+            self.Close(true);
         }
 
         private void CloseBuild()
         {
-            self.Close();
+            self.Close(false);
         }
     }
 }

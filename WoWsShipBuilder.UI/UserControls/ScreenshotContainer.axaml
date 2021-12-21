@@ -1,0 +1,68 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="570"
+             x:Class="WoWsShipBuilder.UI.UserControls.ScreenshotContainer"
+             Background="{DynamicResource ThemeBackgroundColor}"
+             Width="1100" Height="570" Padding="10">
+    <Design.DataContext>
+        <viewModels:ScreenshotContainerViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <converters:ClassToPathConverter x:Key="PathConverter" />
+        <converters:DecimalToRomanConverter x:Key="RomanConverter" />
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Title">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="*, 5, 470" IsHitTestVisible="False">
+        <Grid ColumnDefinitions="*,5,*,5,*" RowDefinitions="*">
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <LayoutTransformControl VerticalAlignment="Center" Margin="0 3 0 0">
+                    <LayoutTransformControl.LayoutTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </LayoutTransformControl.LayoutTransform>
+                    <Path Data="{Binding ShipData.ShipClass, Converter={StaticResource PathConverter}}"
+                          Fill="{Binding ShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                          Stroke="{Binding ShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                          StrokeThickness="1" />
+                </LayoutTransformControl>
+                <TextBlock Classes="Title" Text="{Binding ShipData.Tier, Converter={StaticResource RomanConverter}}" 
+                           VerticalAlignment="Center" Margin="10 0" />
+                <TextBlock Classes="Title" Text="{Binding ShipData.Index, Converter={StaticResource Localizer}}" VerticalAlignment="Center" />
+            </StackPanel>
+            <Image Grid.Column="4" Source="/Assets/ShipBuilderIcon_bg.ico" HorizontalAlignment="Right" MaxWidth="100" />
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,5,*" RowDefinitions="Auto,5,*">
+            <Border Classes="BorderPanel" Grid.Row="0">
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="{x:Static t:Translation.ScreenshotWindow_CaptainSkills}" Margin="10,10,0,0" />
+                    <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Classes="BorderPanel" Grid.Row="0">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{x:Static t:Translation.MainWindow_Signals}" Margin="10,10,0,0" />
+                    <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="0" Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5">
+                <userControls:UpgradeSelectorPanel DataContext="{Binding UpgradePanelViewModel}" HorizontalAlignment="Center" />
+            </Border>
+            <Border Grid.Column="2" Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5">
+                <userControls:ConsumablePanel DataContext="{Binding ConsumableViewModel}" HorizontalAlignment="Center" />
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

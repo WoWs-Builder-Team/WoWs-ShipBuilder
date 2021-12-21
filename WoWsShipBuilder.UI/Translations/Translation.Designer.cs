@@ -906,6 +906,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Captain skills.
+        /// </summary>
+        public static string ScreenshotWindow_CaptainSkills {
+            get {
+                return ResourceManager.GetString("ScreenshotWindow_CaptainSkills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Art by:.
         /// </summary>
         public static string SettingsWindow_ArtBy {

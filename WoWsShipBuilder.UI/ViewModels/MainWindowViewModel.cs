@@ -255,7 +255,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
         }
 
-        public void OpenSaveBuild()
+        public async void OpenSaveBuild()
         {
             Logging.Logger.Info("Saving build");
             var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
@@ -263,7 +263,21 @@ namespace WoWsShipBuilder.UI.ViewModels
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
             win.ShowInTaskbar = false;
-            win.ShowDialog(self);
+            var dialogResult = await win.ShowDialog<bool>(self);
+            if (!dialogResult)
+            {
+                return;
+            }
+
+            var screenshotWindow = new ScreenshotWindow
+            {
+                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData),
+            };
+            screenshotWindow.Show();
+
+            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName);
+            ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow, outputPath);
+            screenshotWindow.Close();
         }
 
         public void BackToMenu()

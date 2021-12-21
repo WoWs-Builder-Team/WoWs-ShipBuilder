@@ -38,11 +38,13 @@ namespace WoWsShipBuilder.UI
 
                 if (AppData.Settings.AutoUpdateEnabled)
                 {
+#if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
                     {
                         await UpdateCheck();
                         Logging.Logger.Info("Finished updatecheck");
                     });
+#endif
                 }
             }
 
