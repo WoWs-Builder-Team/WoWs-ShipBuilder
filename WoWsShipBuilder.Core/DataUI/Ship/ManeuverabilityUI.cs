@@ -25,8 +25,10 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
+        [JsonIgnore]
         public decimal RudderBlastProtection { get; set; }
 
+        [JsonIgnore]
         public decimal EngineBlastProtection { get; set; }
 
         [JsonIgnore]
