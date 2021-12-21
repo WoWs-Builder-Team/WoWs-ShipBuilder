@@ -3,6 +3,7 @@
 ## Additions
 
 ## Changes
+- It's now possible to manually adjust the size of each column displaying ships stats just by dragging the column edge.
 
 ## Bugfixes
 - Fixed Secondary battery and AA defense armaments not having localization.
