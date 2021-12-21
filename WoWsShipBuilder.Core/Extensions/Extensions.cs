@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.Extensions
             }
 
             return dataSource.Where(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
-            .Select(modifier => modifier.Value);
+                        .Select(modifier => modifier.Value);
         }
 
         public static bool IsValidIndex(this int index) => index > -1;
