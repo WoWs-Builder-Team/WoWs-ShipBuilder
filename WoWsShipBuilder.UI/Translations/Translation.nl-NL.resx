@@ -387,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ricochet hoeken</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Luchtafweer</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Vliegtuig levenspunten</value>
   </data>
@@ -1006,7 +1008,13 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="SplashScreen_Init" xml:space="preserve">
     <value>Initialiseren...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Met dank aan</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Met dank aan de volgende communityleden voor hun hulp bij de vertaling van dit project. Hieronder worden alle leden met ten minste 10 bijdragen vermeld.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Secondair geschut</value>
+  </data>
 </root>
