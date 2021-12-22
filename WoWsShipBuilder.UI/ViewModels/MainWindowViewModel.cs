@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -276,7 +278,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             screenshotWindow.Show();
 
             string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName);
-            ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow, outputPath);
+            await using var bitmapData = new MemoryStream();
+            using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
+            bitmap.Save(bitmapData);
+            bitmapData.Seek(0, SeekOrigin.Begin);
+            BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
+
             screenshotWindow.Close();
         }
 

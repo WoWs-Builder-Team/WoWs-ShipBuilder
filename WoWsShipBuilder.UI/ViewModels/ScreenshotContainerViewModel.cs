@@ -51,15 +51,22 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ConsumableViewModel ConsumableViewModel { get; }
 
-        public static void RenderScreenshot(Window window, string outputFileName)
+        internal static Bitmap RenderScreenshot(Window window)
         {
             var screenshotContainer = window.FindControl<ScreenshotContainer>("ScreenshotContainer");
             var pixelSize = new PixelSize((int)screenshotContainer.Width, (int)screenshotContainer.Height);
-            using var bitmap = new RenderTargetBitmap(pixelSize);
+            var bitmap = new RenderTargetBitmap(pixelSize);
             var size = pixelSize.ToSize(1);
             screenshotContainer.Measure(size);
             screenshotContainer.Arrange(new(size));
             bitmap.Render(screenshotContainer);
+
+            return bitmap;
+        }
+
+        public static void RenderScreenshot(Window window, string outputFileName)
+        {
+            using var bitmap = RenderScreenshot(window);
             bitmap.Save(outputFileName);
         }
     }

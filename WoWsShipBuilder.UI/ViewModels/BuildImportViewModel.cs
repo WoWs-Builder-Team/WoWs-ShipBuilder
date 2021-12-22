@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Metadata;
+using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -30,7 +28,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref importOnly, value);
         }
 
-        private string? buildString = default!;
+        private string? buildString;
 
         public string? BuildString
         {
@@ -42,6 +40,40 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             BuildString = null;
             self.Close();
+        }
+
+        public async void LoadFromImage(object parameter)
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                AllowMultiple = false,
+                Directory = AppDataHelper.Instance.BuildImageOutputDirectory,
+                Filters = new()
+                {
+                    new()
+                    {
+                        Name = "PNG Files",
+                        Extensions = new() { "png" },
+                    },
+                },
+            };
+
+            string[]? result = await fileDialog.ShowAsync(self);
+            if (result is not { Length: > 0 })
+            {
+                return;
+            }
+
+            string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
+            var build = JsonConvert.DeserializeObject<Build>(buildJson);
+
+            if (build == null)
+            {
+                await MessageBox.Show(self, "Could not read build data from file. Has the file been compressed?", "Invalid file", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                return;
+            }
+
+            ProcessLoadedBuild(build);
         }
 
         public async void Import(object parameter)
@@ -60,6 +92,17 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
+            ProcessLoadedBuild(build);
+        }
+
+        [DependsOn(nameof(BuildString))]
+        public bool CanImport(object parameter)
+        {
+            return !string.IsNullOrWhiteSpace(BuildString);
+        }
+
+        private void ProcessLoadedBuild(Build build)
+        {
             if (!ImportOnly)
             {
                 Logging.Logger.Info("Adding build to saved ones.");
@@ -67,12 +110,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             self.Close(build);
-        }
-
-        [DependsOn(nameof(BuildString))]
-        public bool CanImport(object parameter)
-        {
-            return !string.IsNullOrWhiteSpace(BuildString);
         }
     }
 }

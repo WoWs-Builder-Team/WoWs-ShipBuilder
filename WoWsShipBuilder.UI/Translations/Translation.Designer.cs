@@ -142,6 +142,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import from Image.
+        /// </summary>
+        public static string BuildImport_ImportFromImage {
+            get {
+                return ResourceManager.GetString("BuildImport_ImportFromImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import only.
         /// </summary>
         public static string BuildImport_ImportOnly {
