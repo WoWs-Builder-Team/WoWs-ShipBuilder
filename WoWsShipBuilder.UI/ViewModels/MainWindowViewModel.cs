@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -283,6 +284,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             bitmap.Save(bitmapData);
             bitmapData.Seek(0, SeekOrigin.Begin);
             BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
+            if (OperatingSystem.IsWindows())
+            {
+                using var savedBitmap = new Bitmap(outputPath);
+                await ClipboardHelper.SetBitmapAsync(savedBitmap);
+            }
 
             screenshotWindow.Close();
         }
