@@ -40,9 +40,11 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var consumableIdentifier = $"{name} {variant}";
             Consumable consumable = new ();
+            var usingFallback = false;
             if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out consumable!) ?? false))
             {
                 Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
+                usingFallback = true;
                 consumable = new()
                 {
                     Index = "error",
@@ -225,7 +227,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     consumableModifiers["updateFrequency"] = hydrophoneUpdateFrequency;
                 }
             }
-            else
+            else if (usingFallback)
             {
                 Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
             }
