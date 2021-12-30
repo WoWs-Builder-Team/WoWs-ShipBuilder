@@ -295,15 +295,16 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In the plot, shells are coming from the right side.
-        ///The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
-        ///
-        ///The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
-        ///The RED ellipse shows the area where 50% of the shells lends on average.
+        ///   Looks up a localized string similar to The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
+        ///The RED ellipse shows the area where 50% of the shells lands on average.
         ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
-        ///Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
-        ///The real dispers [rest of string was truncated]&quot;;.
+        ///Plot planes:
+        ///1) HORIZONTAL: 
+        ///    shows the shells impact point with the water;
+        ///    by selecting this plane you get a view from above;
+        ///    this is the plot you mainly want to look at when comparing ships dispersions;
+        ///    the ellipse on this plane is vertically stretched because of shells sp [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DispersionGraphWindow_DispPlotDescription {
             get {
@@ -339,6 +340,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal.
+        /// </summary>
+        public static string DispersionGraphWindow_Horizontal {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_Horizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Impact Angle.
         /// </summary>
         public static string DispersionGraphWindow_ImpactAngle {
@@ -362,6 +372,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DispersionGraphWindow_NoRange {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_NoRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plot Orientation.
+        /// </summary>
+        public static string DispersionGraphWindow_PlotOrientation {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_PlotOrientation", resourceCulture);
             }
         }
         
@@ -461,6 +480,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string DispersionGraphWindow_ShowPenetrationGraph {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_ShowPenetrationGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical.
+        /// </summary>
+        public static string DispersionGraphWindow_Vertical {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_Vertical", resourceCulture);
             }
         }
         
@@ -879,7 +907,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Real.
+        ///   Looks up a localized string similar to Impact Angle.
         /// </summary>
         public static string RealPlane {
             get {
@@ -2142,6 +2170,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Potential FPM .
+        /// </summary>
+        public static string ShipStats_PotentialFPM {
+            get {
+                return ResourceManager.GetString("ShipStats_PotentialFPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to During preparation.
         /// </summary>
         public static string ShipStats_Preparation {
@@ -2390,15 +2427,6 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TheoreticalDPM {
             get {
                 return ResourceManager.GetString("ShipStats_TheoreticalDPM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theoretical FPM .
-        /// </summary>
-        public static string ShipStats_TheoreticalFPM {
-            get {
-                return ResourceManager.GetString("ShipStats_TheoreticalFPM", resourceCulture);
             }
         }
         
