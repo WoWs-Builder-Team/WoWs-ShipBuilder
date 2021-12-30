@@ -291,6 +291,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedFusoPosition, value);
         }
 
+        private bool isVertical = true;
+
+        public bool IsVertical
+        {
+            get => isVertical;
+            set => this.RaiseAndSetIfChanged(ref isVertical, value);
+        }
+
         /// <summary>
         /// Add a ship to the ones currently visualized.
         /// </summary>
