@@ -44,7 +44,7 @@
         </Style>
     </UserControl.Styles>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <customControls:AutoGrid ColumnDefinitions="Auto,5,*,5,*" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
+        <customControls:AutoGrid ColumnDefinitions="Auto,Auto,Auto,Auto,*" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
             
             <!-- Main Armaments -->
             <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="5,0,0,0">
@@ -332,7 +332,7 @@
                 </Expander>
             </StackPanel>
             
-            <GridSplitter Background="Transparent" ResizeDirection="Columns"/>
+            <GridSplitter Background="Transparent" ResizeDirection="Columns" Width="5"/>
 
             <ItemsControl Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch" IsVisible="{Binding !!CurrentShipStats.SecondColumnContent.Count}">
                 <ItemsControl.ItemsPanel>
@@ -521,7 +521,7 @@
                 </ItemsControl.DataTemplates>
             </ItemsControl>
 
-            <GridSplitter Background="Transparent" ResizeDirection="Columns"/>
+            <GridSplitter Background="Transparent" ResizeDirection="Columns" Width="5"/>
             
             <!--Misc-->
             <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="0 0 0 5">
