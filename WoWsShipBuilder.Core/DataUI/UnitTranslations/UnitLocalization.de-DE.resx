@@ -159,7 +159,13 @@
   <data name="Unit_FPM" xml:space="preserve">
     <value>Brände/Min</value>
   </data>
-  
-  
-  
+  <data name="ArmamentType_AP" xml:space="preserve">
+    <value>AP</value>
+  </data>
+  <data name="ArmamentType_HE" xml:space="preserve">
+    <value>HE</value>
+  </data>
+  <data name="ArmamentType_SAP" xml:space="preserve">
+    <value>SAP</value>
+  </data>
 </root>
