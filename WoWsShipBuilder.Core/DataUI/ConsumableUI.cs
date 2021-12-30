@@ -53,6 +53,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     ConsumableVariantName = "error",
                     Modifiers = new(),
                 };
+                consumable.Modifiers.Add("error", 1);
             }
 
             var iconName = consumable!.IconId;
@@ -76,7 +77,7 @@ namespace WoWsShipBuilder.Core.DataUI
             int uses = consumable.NumConsumables;
             float cooldown = consumable.ReloadTime;
             float workTime = consumable.WorkTime;
-            if (isCvPlanes && consumableModifiers.Any())
+            if (isCvPlanes && !consumableModifiers.ContainsKey("error"))
             {
                 workTime = modifiers.FindModifiers("planeConsumablesWorkTime").Aggregate(workTime, (current, modifier) => current * modifier);
 
@@ -118,7 +119,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
                 }
             }
-            else if (consumableModifiers.Any())
+            else if (!consumableModifiers.ContainsKey("error"))
             {
                 var usesModifiers = modifiers.FindModifiers("additionalConsumables", true);
                 uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
@@ -216,6 +217,12 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     var cooldownModifiers = modifiers.FindModifiers("torpedoReloaderReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+                }
+                else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
+                    var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["updateFrequency"], (current, modifier) => current * modifier);
+                    consumableModifiers["updateFrequency"] = hydrophoneUpdateFrequency;
                 }
             }
             else
