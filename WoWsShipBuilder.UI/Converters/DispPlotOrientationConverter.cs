@@ -9,7 +9,6 @@ namespace WoWsShipBuilder.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
             var index = Orientation.Horizontal;
 
             if (value is bool isVertical && !isVertical)
