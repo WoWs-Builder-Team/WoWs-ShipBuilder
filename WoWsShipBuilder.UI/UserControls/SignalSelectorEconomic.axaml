@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="SignalSelectorEconomic"
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             x:Class="WoWsShipBuilder.UI.UserControls.SignalSelectorEconomic">
+
+    <Design.DataContext>
+        <vm:SignalSelectorEconomicViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <conv:ImagePathConverter x:Key="ImagePathConverter" />
+        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
+    </UserControl.Resources>
+    <DockPanel>
+        <ItemsControl DockPanel.Dock="Bottom" Items="{Binding SignalList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <customControls:AutoGrid ColumnCount="4" RowCount="3" ColumnWidth="*" RowHeight="*"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Panel Background="Transparent" Margin="5" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                        <ToolTip.Tip>
+                            <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                        </ToolTip.Tip>
+                        <customControls:NumberedButton
+                            BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}">
+                            <customControls:NumberedButton.IsChecked>
+                                <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
+                                    <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
+                                    <Binding Path="Value"/>
+                                </MultiBinding>
+                            </customControls:NumberedButton.IsChecked>
+                        </customControls:NumberedButton>
+                    </Panel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.Styles>
+                <Style Selector="customControls|NumberedButton:disabled">
+                    <Setter Property="Opacity" Value="0.4" />
+                </Style>
+                <Style Selector="customControls|NumberedButton:checked">
+                    <Setter Property="Opacity" Value="1" />
+                </Style>
+            </ItemsControl.Styles>
+        </ItemsControl>
+    </DockPanel>
+</UserControl>
