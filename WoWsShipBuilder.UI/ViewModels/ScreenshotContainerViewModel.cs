@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -17,7 +18,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipModuleViewModel = new(ship.ShipUpgradeInfo);
             UpgradePanelViewModel = new(ship);
             ConsumableViewModel = new(ship);
-            BuildName = ship.Name;
+            BuildName = "Test-build - " + ship.Name;
             ShipData = ship;
         }
 
@@ -50,6 +51,15 @@ namespace WoWsShipBuilder.UI.ViewModels
         public UpgradePanelViewModel UpgradePanelViewModel { get; }
 
         public ConsumableViewModel ConsumableViewModel { get; }
+
+        public string EffectiveBuildName
+        {
+            get
+            {
+                int separatorIndex = BuildName.LastIndexOf(" - ", StringComparison.Ordinal);
+                return separatorIndex > -1 ? BuildName[..BuildName.LastIndexOf(" - ", StringComparison.Ordinal)] : BuildName;
+            }
+        }
 
         internal static Bitmap RenderScreenshot(Window window)
         {

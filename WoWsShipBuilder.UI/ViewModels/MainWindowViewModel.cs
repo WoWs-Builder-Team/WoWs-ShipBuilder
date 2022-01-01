@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -81,6 +82,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         private string xp = "0";
 
         private string xpBonus = "0";
+
+        private string? currentBuildName;
 
         public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
         {
@@ -262,6 +265,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             Logging.Logger.Info("Saving build");
             var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
+            if (currentBuildName != null)
+            {
+                currentBuild.BuildName = currentBuildName;
+            }
+
             var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
@@ -272,25 +280,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var screenshotWindow = new ScreenshotWindow
-            {
-                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData),
-            };
-            screenshotWindow.Show();
-
-            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName);
-            await using var bitmapData = new MemoryStream();
-            using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
-            bitmap.Save(bitmapData);
-            bitmapData.Seek(0, SeekOrigin.Begin);
-            BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
-            if (OperatingSystem.IsWindows())
-            {
-                using var savedBitmap = new Bitmap(outputPath);
-                await ClipboardHelper.SetBitmapAsync(savedBitmap);
-            }
-
-            screenshotWindow.Close();
+            currentBuildName = currentBuild.BuildName;
+            CreateBuildImage(currentBuild);
         }
 
         public void BackToMenu()
@@ -316,6 +307,33 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 Logging.Logger.Info("New ship selected: {0}", result.Index);
                 LoadNewShip(result);
+            }
+        }
+
+        private async void CreateBuildImage(Build currentBuild)
+        {
+            var screenshotWindow = new ScreenshotWindow
+            {
+                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData),
+            };
+            screenshotWindow.Show();
+
+            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName);
+            await using var bitmapData = new MemoryStream();
+            using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
+            bitmap.Save(bitmapData);
+            bitmapData.Seek(0, SeekOrigin.Begin);
+            BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
+            if (OperatingSystem.IsWindows())
+            {
+                using var savedBitmap = new Bitmap(outputPath);
+                await ClipboardHelper.SetBitmapAsync(savedBitmap);
+            }
+
+            screenshotWindow.Close();
+            if (AppData.Settings.OpenExplorerAfterImageSave)
+            {
+                Process.Start("explorer.exe", $"/select, \"{outputPath}\"");
             }
         }
 
@@ -382,6 +400,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             NextShips = nextShipsIndexes!.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
+            if (build != null)
+            {
+                currentBuildName = build.BuildName;
+            }
         }
 
         private void AddChangeListeners()
@@ -430,6 +452,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();
             CancellationToken token = tokenSource.Token;
+            currentBuildName = null;
             Task.Run(
                 async () =>
                 {

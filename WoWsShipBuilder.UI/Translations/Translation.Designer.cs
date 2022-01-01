@@ -124,7 +124,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build string copied to clipboard.
+        ///   Looks up a localized string similar to Build image copied to clipboard.
         /// </summary>
         public static string BuildCreationWindow_SavedClipboard {
             get {
@@ -1091,6 +1091,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_LeadDevs {
             get {
                 return ResourceManager.GetString("SettingsWindow_LeadDevs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open explorer when saving a build image.
+        /// </summary>
+        public static string SettingsWindow_OpenExplorerAfterImageSave {
+            get {
+                return ResourceManager.GetString("SettingsWindow_OpenExplorerAfterImageSave", resourceCulture);
             }
         }
         

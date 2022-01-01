@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="500"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="550"
         x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:dataProvider="clr-namespace:WoWsShipBuilder.Core.DataProvider;assembly=WoWsShipBuilder.Core"
-        Height="500" Width="700" CanResize="False"
+        Height="550" Width="700" CanResize="False"
         WindowStartupLocation="CenterScreen">
     
     <Design.DataContext>
@@ -26,7 +26,7 @@
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <!-- ReSharper disable Xaml.MissingGridIndex -->
-                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
                                 <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
                                           SelectedItem="{Binding Path=SelectedLanguage}">
@@ -53,6 +53,9 @@
 
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap" VerticalAlignment="Center" />
                                 <CheckBox IsChecked="{Binding TelemetryDataEnabled}" />
+                                
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_OpenExplorerAfterImageSave}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                <CheckBox IsChecked="{Binding OpenExplorerAfterImageSave}" />
 
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_CustomPath}" TextWrapping="Wrap" />
                                 <CheckBox IsChecked="{Binding IsCustomPathEnabled}" />

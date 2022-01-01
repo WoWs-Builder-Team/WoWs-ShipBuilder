@@ -727,7 +727,7 @@
     <value>Build saved</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Build string copied to clipboard</value>
+    <value>Build image copied to clipboard</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
     <value>Delete build</value>
@@ -1022,5 +1022,8 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="BuildImport_ImportFromImage" xml:space="preserve">
       <value>Import from Image</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+      <value>Open explorer when saving a build image</value>
   </data>
 </root>

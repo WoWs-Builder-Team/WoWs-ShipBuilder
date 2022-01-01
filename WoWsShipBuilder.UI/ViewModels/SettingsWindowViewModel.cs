@@ -49,6 +49,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             CustomPath = AppData.Settings.CustomDataPath;
             IsCustomPathEnabled = !(CustomPath is null);
             TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
+            OpenExplorerAfterImageSave = AppData.Settings.OpenExplorerAfterImageSave;
 
             if (AppData.DataVersion is null)
             {
@@ -141,6 +142,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
         }
 
+        private bool openExplorerAfterImageSave;
+
+        public bool OpenExplorerAfterImageSave
+        {
+            get => openExplorerAfterImageSave;
+            set => this.RaiseAndSetIfChanged(ref openExplorerAfterImageSave, value);
+        }
+
         public void ResetSettings()
         {
             var cleanSettings = new AppSettings();
@@ -213,6 +222,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
+            AppData.Settings.OpenExplorerAfterImageSave = OpenExplorerAfterImageSave;
 
             if (serverChanged || pathChanged)
             {

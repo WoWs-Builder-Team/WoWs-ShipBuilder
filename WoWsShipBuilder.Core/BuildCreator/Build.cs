@@ -9,16 +9,14 @@ namespace WoWsShipBuilder.Core.BuildCreator
 {
     public class Build
     {
-        public Build()
-        {
-        }
-
+        [JsonConstructor]
         public Build(string buildName)
         {
             BuildName = buildName;
         }
 
         public Build(string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
+            : this(string.Empty)
         {
             ShipIndex = shipIndex;
             Nation = nation;
@@ -30,7 +28,7 @@ namespace WoWsShipBuilder.Core.BuildCreator
             Consumables = consumables;
         }
 
-        public string BuildName { get; set; } = default!;
+        public string BuildName { get; set; }
 
         public string ShipIndex { get; set; } = default!;
 
@@ -58,21 +56,13 @@ namespace WoWsShipBuilder.Core.BuildCreator
         {
             try
             {
-                var decodedOutput = System.Convert.FromBase64String(buildString);
-                using (MemoryStream inputStream = new MemoryStream(decodedOutput))
-                {
-                    using (DeflateStream gzip =
-                      new DeflateStream(inputStream, CompressionMode.Decompress))
-                    {
-                        using (StreamReader reader =
-                          new StreamReader(gzip, System.Text.Encoding.UTF8))
-                        {
-                            var buildJson = reader.ReadToEnd();
-                            var build = JsonConvert.DeserializeObject<Build>(buildJson);
-                            return build!;
-                        }
-                    }
-                }
+                byte[] decodedOutput = Convert.FromBase64String(buildString);
+                using var inputStream = new MemoryStream(decodedOutput);
+                using var gzip = new DeflateStream(inputStream, CompressionMode.Decompress);
+                using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
+                string buildJson = reader.ReadToEnd();
+                var build = JsonConvert.DeserializeObject<Build>(buildJson);
+                return build!;
             }
             catch (Exception e)
             {
@@ -83,23 +73,19 @@ namespace WoWsShipBuilder.Core.BuildCreator
 
         public string CreateStringFromBuild()
         {
-            var buildString = JsonConvert.SerializeObject(this);
-            using (MemoryStream output = new MemoryStream())
+            string buildString = JsonConvert.SerializeObject(this);
+            using var output = new MemoryStream();
+            using (var gzip = new DeflateStream(output, CompressionLevel.Optimal))
             {
-                using (DeflateStream gzip =
-                  new DeflateStream(output, CompressionLevel.Optimal))
+                using (var writer = new StreamWriter(gzip, System.Text.Encoding.UTF8))
                 {
-                    using (StreamWriter writer =
-                      new StreamWriter(gzip, System.Text.Encoding.UTF8))
-                    {
-                        writer.Write(buildString);
-                    }
+                    writer.Write(buildString);
                 }
-
-                var bytes = output.ToArray();
-                var encodedOutput = System.Convert.ToBase64String(bytes);
-                return encodedOutput;
             }
+
+            byte[] bytes = output.ToArray();
+            string encodedOutput = Convert.ToBase64String(bytes);
+            return encodedOutput;
         }
     }
 }

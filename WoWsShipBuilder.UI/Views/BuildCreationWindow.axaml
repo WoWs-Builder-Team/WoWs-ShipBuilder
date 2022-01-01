@@ -2,15 +2,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="165"
+        mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="175"
         x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        CanResize="False" Width="300" Height="165" WindowStartupLocation="CenterOwner"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        CanResize="False" Width="380" WindowStartupLocation="CenterOwner" SizeToContent="Height"
         Title="BuildCreationWindow">
+    <Design.DataContext>
+        <viewModels:BuildCreationWindowViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="30,*">
         <userControls:AppHeader Grid.Row="0"/>
-        <StackPanel Grid.Row="1" Margin="10" Spacing="10">
+        <StackPanel Grid.Row="1" Margin="10" Spacing="15">
             <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_InsertBuildName}" TextWrapping="Wrap"/>
             <Grid ColumnDefinitions="*,Auto">
                 <TextBox Text="{Binding BuildName}" VerticalAlignment="Center"/>
@@ -19,10 +23,13 @@
                     <TextBlock Text="{Binding ShipName}"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
-                <Button IsDefault="True" Content="Save" Width="60" Command="{Binding SaveBuildCommand}"/>
-                <Button IsCancel="True" Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}"/>
-            </StackPanel>
+            <DockPanel LastChildFill="True">
+                <Button Content="Export build image (no save!)" Command="{Binding ExportScreenshot}" DockPanel.Dock="Left" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
+                    <Button IsDefault="True" Content="Save" Width="60" Command="{Binding SaveBuild}"/>
+                    <Button IsCancel="True" Content="Cancel" Width="60" Command="{Binding CloseBuild}"/>
+                </StackPanel>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </Window>

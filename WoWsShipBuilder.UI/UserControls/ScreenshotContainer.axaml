@@ -27,6 +27,9 @@
 
     <Grid RowDefinitions="*, 5, 470" IsHitTestVisible="False">
         <Grid ColumnDefinitions="*,5,*,5,*" RowDefinitions="*">
+            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="{Binding EffectiveBuildName}" TextWrapping="Wrap" FontSize="18"/>
+            </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <LayoutTransformControl VerticalAlignment="Center" Margin="0 3 0 0">
                     <LayoutTransformControl.LayoutTransform>
