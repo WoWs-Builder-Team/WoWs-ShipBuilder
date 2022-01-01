@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal FuseTimer { get; set; }
 
         [DataUiUnit("FPM")]
-        public decimal TheoreticalFPM { get; set; }
+        public decimal PotentialFPM { get; set; }
 
         public decimal DepthExplosion { get; set; }
 
@@ -205,7 +205,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     AirDrag = Math.Round((decimal)shellAirDrag, 2),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
-                    TheoreticalFPM = Math.Round(fireChancePerSalvo * salvosPerMinute, 2),
+                    PotentialFPM = Math.Round((decimal)shellFireChance / 100 * barrelCount * salvosPerMinute, 2),
                     Overmatch = overmatch,
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,

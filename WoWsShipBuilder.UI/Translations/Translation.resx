@@ -937,7 +937,7 @@
     <value>Horizontal (Water)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Real</value>
+    <value>Impact Angle</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Vertical</value>
@@ -946,16 +946,28 @@
     <value>Fuso Reference</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>In the plot, shells are coming from the right side.
-The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
-
-The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
-The RED ellipse shows the area where 50% of the shells lends on average.
+    <value>The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
+The RED ellipse shows the area where 50% of the shells lands on average.
 The BLACK ellipse shows the size of a Fuso as reference.
 
-Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
-The real dispersion ellipse is drawn on a plane perpendicular to the shell's impact angle.
-Only the vertical dispersion projected on water is affected by shell's speed. The real one is not.</value>
+Plot planes:
+1) HORIZONTAL: 
+    shows the shells impact point with the water;
+    by selecting this plane you get a view from above;
+    this is the plot you mainly want to look at when comparing ships dispersions;
+    the ellipse on this plane is vertically stretched because of shells speed.
+2) VERTICAL: 
+    shows the shells impact point with a vertical surface;
+    by selecting this plane you get a view from the front;
+    useful for very precise vertical accuracy analysis.
+3) IMPACT ANGLE: 
+    shows the shells impact point with a surface angled at the shells impact angle;
+    by selecting this plane you get a view from the shells impact angle;
+    it's the plane where the game actually draws the dispersion ellipse during battles;
+    the ellipse on this plane is not affected by shells speed;
+    useful if you want to compare ships dispersion without taking into consideration shells speed.
+
+Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Plot explanation</value>
@@ -975,8 +987,8 @@ Only the vertical dispersion projected on water is affected by shell's speed. Th
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Mass</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>Theoretical FPM </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potential FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Fire chance per salvo</value>
@@ -1016,6 +1028,15 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_SecondaryBattery" xml:space="preserve">
     <value>Secondary Battery</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Plot Orientation</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Vertical</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
       <value>Captain skills</value>

@@ -44,10 +44,10 @@
         </Style>
     </UserControl.Styles>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <customControls:AutoGrid ColumnDefinitions="Auto,*,*" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
+        <customControls:AutoGrid ColumnDefinitions="Auto,Auto,Auto,Auto,*" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
             
             <!-- Main Armaments -->
-            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" MaxWidth="260" Margin="5,0,2.5,0">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="5,0,0,0">
                
                 <!--Main guns-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
@@ -331,7 +331,10 @@
                     </StackPanel>
                 </Expander>
             </StackPanel>
-            <ItemsControl Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch" IsVisible="{Binding !!CurrentShipStats.SecondColumnContent.Count}" Margin="2.5,0,2.5,0">
+            
+            <GridSplitter Background="Transparent" ResizeDirection="Columns" Width="5"/>
+
+            <ItemsControl Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch" IsVisible="{Binding !!CurrentShipStats.SecondColumnContent.Count}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical" Spacing="10"></VirtualizingStackPanel>
@@ -475,7 +478,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Vertical">
-                                                <DockPanel Classes="NameValuePanel">
+                                                <DockPanel Classes="NameValuePanel" Margin="0 0 0 5">
                                                     <TextBlock Text="{Binding Name}"/>
                                                 </DockPanel>
                                                 <ItemsControl Items="{Binding SecondaryBatteryData}">
@@ -517,9 +520,11 @@
                     </DataTemplate>
                 </ItemsControl.DataTemplates>
             </ItemsControl>
+
+            <GridSplitter Background="Transparent" ResizeDirection="Columns" Width="5"/>
             
             <!--Misc-->
-            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="2.5,0,5,0">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="0 0 0 5">
                 
                 <!--Maneuverability-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuverability}"

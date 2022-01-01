@@ -344,6 +344,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 modifiers.Add(("visibilityFactor", 0.97f));
             }
 
+            if (SkillOrderList.Any(skill => skill.SkillNumber == 14))
+            {
+                modifiers.Add(("fireResistanceEnabled", 1));
+            }
+
             return modifiers;
         }
 
