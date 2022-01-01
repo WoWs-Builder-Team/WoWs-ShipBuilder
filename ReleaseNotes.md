@@ -1,6 +1,7 @@
 # Update 1.3.2 - pre
 
 ## Additions
+- Export screenshots of ship builds and allow loading ship builds from these screenshots (#73)
 
 ## Changes
 
