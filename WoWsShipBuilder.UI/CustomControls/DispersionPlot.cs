@@ -47,6 +47,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             PlotScalingProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
+            EllipsePlaneProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             FusoPositionProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             IsVerticalProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
         }

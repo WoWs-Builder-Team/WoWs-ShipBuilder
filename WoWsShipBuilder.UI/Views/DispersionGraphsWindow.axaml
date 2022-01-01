@@ -90,7 +90,7 @@
                                     <Slider Value="{Binding ShotsNumber}" Minimum="10" Maximum="300" TickFrequency="10" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="4" Margin="5 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="3" Margin="5 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotScaling}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
@@ -99,7 +99,7 @@
                                     <Slider Value="{Binding PlotScaling}" Minimum="0.2" Maximum="4" TickFrequency="0.1" IsSnapToTickEnabled="True" DockPanel.Dock="Left"/>
                                 </DockPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="5 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="4" Margin="5 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <ComboBox Items="{Binding EllipsePlanesList}" SelectedItem="{Binding SelectedEllipsePlane}" MinWidth="171"
                                           BorderBrush="Gray" BorderThickness="1" Margin="10 0 10 5" HorizontalContentAlignment="Center">
@@ -110,7 +110,7 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="15 0 5 0">
+                            <StackPanel Orientation="Vertical" Grid.Column="5" Margin="5 0">
                                 <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotOrientation}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <Border BorderThickness="1" BorderBrush="Gray">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 0 5 0">
@@ -132,7 +132,7 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
+                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
                         </Grid>
                         <Expander Grid.Row="0" Header="{x:Static t:Translation.DispersionGraphWindow_DispPlotExplanation}" FontSize="15" ExpandDirection="Down" IsExpanded="False" Margin="10 10 10 0" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
                             <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DispPlotDescription}"/>
@@ -155,7 +155,7 @@
                                                     </Border>
                                                     <customControls:DispersionPlot DispersionPlotParameters="{Binding DispersionEllipse}"
                                                                                    PlotScaling="{Binding $parent[Window].DataContext.PlotScaling}"
-                                                                                   EllipsePlane="{Binding $parent[Window].DataContext.EffectiveEllipsePlane}"
+                                                                                   EllipsePlane="{Binding $parent[Window].DataContext.SelectedEllipsePlane}"
                                                                                    FusoPosition="{Binding $parent[Window].DataContext.SelectedFusoPosition}"
                                                                                    IsVisible="{Binding DispersionEllipse.IsValid}"
                                                                                    IsVertical="{Binding $parent[Window].DataContext.IsVertical}"/>
