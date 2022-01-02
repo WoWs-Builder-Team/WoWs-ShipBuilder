@@ -5,7 +5,7 @@
 - It's now possible to rotate the dispersion plot.
 
 ## Changes
-- Canged name for one of the ellipse planes from "real" to "impact angle".
+- Changed name for one of the ellipse planes from "real" to "impact angle".
 - Improved dispersion plot explanation section.
 - Changed Theoretical FPM value into Potential FPM: now it calculates the probability of each shell to set a fire instead of the probability of setting at least 1 fire with an entire salvo.
 
