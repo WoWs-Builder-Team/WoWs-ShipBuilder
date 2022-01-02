@@ -578,6 +578,11 @@ namespace WoWsShipBuilder.UI.CustomControls
                 endAngle += 360;
             }
 
+            if (startAngle > 180)
+            {
+                startAngle -= 360;
+            }
+
             if (shipTurret.VerticalPosition >= 3)
             {
                 startAngle += 180;
@@ -587,6 +592,7 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             startAngle %= 360;
             endAngle %= 360;
+
             var drawingGroup = new DrawingGroup();
             drawingGroup.AddChild(CreateArcs(startAngle, endAngle, radius, center), TurretAngleColor, new SolidColorBrush(Colors.DarkGray));
 

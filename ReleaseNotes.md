@@ -17,6 +17,7 @@
 - Fixed Fire Prevention skill not decreasing the amount of fires spots.
 - Fixed Hydrophone Mod 1 not decreasing the ping intervals for the hydrophone consumable.
 - Fixed Superintendent not increasing the amount of Reserve Battery Unit consumable.
+- Fix wrong turret angle rendering for front guns if gun angles are outside the valid value range.
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
