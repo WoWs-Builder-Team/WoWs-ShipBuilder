@@ -85,7 +85,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 MainWindow win = new();
                 win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex);
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = win;
                 }
@@ -107,7 +107,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             window.DataContext = viewModel;
             window.Show();
 
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = window;
             }

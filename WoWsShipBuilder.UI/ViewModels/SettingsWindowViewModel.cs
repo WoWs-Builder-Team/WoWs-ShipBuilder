@@ -158,7 +158,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 if (appDataDir.Exists)
                 {
                     appDataDir.Delete(true);
-                    (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+                    (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
                 }
                 else
                 {
@@ -261,7 +261,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void CopyVersion()
         {
             var appVersion = $"App Version: {Version}{Environment.NewLine}Data Version: {DataVersion}";
-            await Application.Current.Clipboard.SetTextAsync(appVersion);
+            await Application.Current!.Clipboard!.SetTextAsync(appVersion);
         }
 
         private bool IsValidPath(string path, bool exactPath = true)

@@ -8,7 +8,7 @@ namespace WoWsShipBuilder.UI.Converters
 {
     public class StatGridConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is not int listSize)
             {
@@ -33,9 +33,9 @@ namespace WoWsShipBuilder.UI.Converters
             return new BindingNotification(new NotSupportedException());
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
         }
     }
 }

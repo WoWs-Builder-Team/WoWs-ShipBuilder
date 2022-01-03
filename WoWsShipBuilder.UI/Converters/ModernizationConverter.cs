@@ -12,7 +12,7 @@ namespace WoWsShipBuilder.UI.Converters
     {
         private static readonly ImagePathConverter ImagePathConverter = new();
 
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             if (values[0] is List<Modernization> modernizations && values[1] is AvaloniaList<Modernization> selectedModernizations)
             {

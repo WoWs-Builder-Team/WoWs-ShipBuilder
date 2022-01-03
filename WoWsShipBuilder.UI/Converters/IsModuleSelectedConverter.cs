@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.Converters
         /// <param name="culture">The converter culture.</param>
         /// <returns><see langword="true"/> if the module is part of the selected modules, <see langword="false"/> otherwise.</returns>
         /// <exception cref="NotSupportedException">Occurs if the content of the provided value list does not match the expected types.</exception>
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             if (values[0] is AvaloniaList<ShipUpgrade> shipUpgrades && values[1] is ShipUpgrade thisUpgrade)
             {
