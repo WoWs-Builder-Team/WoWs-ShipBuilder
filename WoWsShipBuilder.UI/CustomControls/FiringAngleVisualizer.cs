@@ -424,8 +424,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             var typeface = new Typeface(FontFamily, FontStyle, FontWeight.Bold);
             var fontSize = 28;
-            var plusText = new FormattedText("+", typeface, fontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var minusText = new FormattedText("-", typeface, fontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var plusText = new FormattedText("+", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
+            var minusText = new FormattedText("-", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
             var leftPoint = new Point(20, (Bounds.Size.Height / 2) - (minusText.Bounds.Height / 2));
             context.DrawText(Foreground, leftPoint, minusText);
             var rightPoint = new Point(Bounds.Size.Width - 20 - plusText.Bounds.Width, (Bounds.Size.Height / 2) - (plusText.Bounds.Height / 2));
@@ -658,7 +658,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 $"{effectiveStartAngle}° to {effectiveEndAngle}°",
                 new Typeface(FontFamily, FontStyle, FontWeight),
                 FontSize,
-                TextAlignment.Center,
+                TextAlignment.Left,
                 TextWrapping.NoWrap,
                 Size.Infinity);
 
