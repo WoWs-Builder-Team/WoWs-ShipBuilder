@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using WoWsShipBuilder.UI.ViewModels;
@@ -9,6 +10,7 @@ namespace WoWsShipBuilder.UI
     {
         public bool SupportsRecycling => false;
 
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "All types referenced are manually included or referenced elsewhere.")]
         public IControl Build(object data)
         {
             var name = data.GetType().FullName!.Replace("ViewModel", "View");

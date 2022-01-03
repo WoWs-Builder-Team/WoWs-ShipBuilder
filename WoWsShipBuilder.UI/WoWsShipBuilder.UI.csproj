@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
         <Win32Resource />
@@ -17,11 +17,17 @@
     </PropertyGroup>
     <PropertyGroup>
         <NuspecFile>WoWsShipBuilder.nuspec</NuspecFile>
-        <NuspecBasePath>bin/$(Configuration)/net5.0/publish</NuspecBasePath>
+        <NuspecBasePath>bin/$(Configuration)/publish</NuspecBasePath>
         <NuspecProperties>$(NuspecProperties);version=$(VersionPrefix)</NuspecProperties>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
+        <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
     </PropertyGroup>
     <Target Name="PostBuildVersionDump" AfterTargets="Build">
         <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
