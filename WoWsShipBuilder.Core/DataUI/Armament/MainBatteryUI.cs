@@ -78,14 +78,16 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            string[]? supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
             {
-                mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+                mainBattery = ship.MainBatteryModuleList[supportedModules.First()];
             }
             else
             {
-                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
                 mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
             }
 
