@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
-using NLog.Fluent;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataUI;
 
@@ -14,7 +12,7 @@ namespace WoWsShipBuilder.UI.Converters
 {
     public class ConsumableUiConverter : IMultiValueConverter
     {
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             if (values.Count < 2)
             {

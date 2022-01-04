@@ -62,7 +62,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
+        <PackageReference Include="System.IO.Abstractions" Version="16.0.1" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />

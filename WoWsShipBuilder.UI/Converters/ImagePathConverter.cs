@@ -37,10 +37,10 @@ namespace WoWsShipBuilder.UI.Converters
         }
 
         [SuppressMessage("Spacing Rules", "SA1008", Justification = "StyleCop error results in false positive.")]
-        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
 
             switch (value)
             {
@@ -85,11 +85,11 @@ namespace WoWsShipBuilder.UI.Converters
                     Uri uri;
                     if (modernization.Index != null)
                     {
-                        uri = new Uri($"avares://{assemblyName}/Assets/modernization_icons/icon_modernization_{modernization.Name}.png");
+                        uri = new($"avares://{assemblyName}/Assets/modernization_icons/icon_modernization_{modernization.Name}.png");
                     }
                     else
                     {
-                        uri = new Uri($"avares://{assemblyName}/Assets/modernization_icons/modernization_default3.png");
+                        uri = new($"avares://{assemblyName}/Assets/modernization_icons/modernization_default3.png");
                     }
 
                     Stream asset = LoadEmbeddedAsset(assets, uri);
@@ -152,7 +152,7 @@ namespace WoWsShipBuilder.UI.Converters
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }

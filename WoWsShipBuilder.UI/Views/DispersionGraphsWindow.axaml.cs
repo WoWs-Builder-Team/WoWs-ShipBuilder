@@ -48,7 +48,7 @@ namespace WoWsShipBuilder.UI.Views
                 var startViewModel = new StartMenuViewModel(startWindow);
                 startWindow.DataContext = startViewModel;
                 startWindow.Show();
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = startWindow;
                 }

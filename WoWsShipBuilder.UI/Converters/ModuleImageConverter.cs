@@ -13,7 +13,7 @@ namespace WoWsShipBuilder.UI.Converters
 {
     public class ModuleImageConverter : IMultiValueConverter
     {
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             if (values[0] is not ShipUpgrade upgrade || values[1] is not bool isSelected || !targetType.IsAssignableFrom(typeof(Bitmap)))
             {
@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.Converters
             }
 
             string assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
             var baseUri = $"avares://{assemblyName}/Assets/modules/";
             string uriSuffix = isSelected ? "_installed" : string.Empty;
 
@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.UI.Converters
                 asset = null;
             }
 
-            asset ??= assets.Open(new Uri($"{baseUri}placeholder.png"));
+            asset ??= assets.Open(new($"{baseUri}placeholder.png"));
             return new Bitmap(asset);
         }
     }

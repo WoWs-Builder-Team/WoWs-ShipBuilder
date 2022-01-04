@@ -9,7 +9,7 @@ namespace WoWsShipBuilder.UI.Converters
 {
     public class ListContainsToBoolConverter : IMultiValueConverter
     {
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             bool contains = false;
             if (values[0] is IList skillList && values[1] is object item)

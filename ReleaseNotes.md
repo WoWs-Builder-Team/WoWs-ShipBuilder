@@ -6,7 +6,7 @@
 - Export screenshots of ship builds and allow loading ship builds from these screenshots (#73)
 
 ## Changes
-- Canged name for one of the ellipse planes from "real" to "impact angle".
+- Changed name for one of the ellipse planes from "real" to "impact angle".
 - Improved dispersion plot explanation section.
 - Changed Theoretical FPM value into Potential FPM: now it calculates the probability of each shell to set a fire instead of the probability of setting at least 1 fire with an entire salvo.
 
@@ -18,6 +18,9 @@
 - Fixed Fire Prevention skill not decreasing the amount of fires spots.
 - Fixed Hydrophone Mod 1 not decreasing the ping intervals for the hydrophone consumable.
 - Fixed Superintendent not increasing the amount of Reserve Battery Unit consumable.
+- Fixed wrong turret angle rendering for front guns if gun angles are outside the valid value range.
+- Fixed vigilance torpedo protection bonus being applied incorrectly.
+- Fixed a bug causing the window icon to become blurry when opening a ship window.
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 

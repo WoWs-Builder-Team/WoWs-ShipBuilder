@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             AppData.Builds.Insert(0, build);
-            await Application.Current.Clipboard.SetTextAsync(buildString);
+            await Application.Current!.Clipboard!.SetTextAsync(buildString);
             await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
             self?.Close(true);
         }
