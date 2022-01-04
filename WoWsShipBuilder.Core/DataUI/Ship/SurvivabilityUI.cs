@@ -31,7 +31,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal FloodAmount { get; set; }
 
         [DataUiUnit("PerCent")]
-        public int FloodTorpedoProtection { get; set; }
+        public decimal FloodTorpedoProtection { get; set; }
 
         [DataUiUnit("S")]
         public decimal FloodDuration { get; set; }
@@ -80,8 +80,8 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal fireResistanceModifiers = modifiers.FindModifiers("burnProb").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
             decimal fireResistance = baseFireResistance + ((1 - baseFireResistance) * (1 - fireResistanceModifiers));
 
-            decimal modifiedFloodingCoeff = modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance * 3, (current, modifier) => current + (decimal)modifier) * 100;
-            var torpedoProtection = (int)Math.Round(100 - modifiedFloodingCoeff);
+            decimal modifiedFloodingCoeff = modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance * 3, (current, modifier) => current - ((decimal)modifier / 100)) * 100;
+            decimal torpedoProtection = Math.Round(100 - modifiedFloodingCoeff, 1);
             decimal fireDps = Math.Round(hitPoints * shipHull.FireTickDamage / 100);
             decimal fireTotalDamage = Math.Round(fireDuration * fireDps);
 
