@@ -387,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>跳弾角度</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>対空火力</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>航空機のHP</value>
   </data>
@@ -935,7 +937,7 @@
     <value>水平(水面)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>実在の</value>
+    <value>着弾角度</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>垂直</value>
@@ -944,16 +946,28 @@
     <value>扶桑を基準にする</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>プロットにおいて、砲弾は右側から飛んできています。
-図示は90度回転しており、垂直散布界は水平に、水平散布界は垂直に表示されます。
-
-白の楕円は、選択された射撃距離の最大散布界を示しています。
-赤の楕円は、平均50%の砲弾が着弾する範囲を示しています。
+    <value>白の楕円は、選択された射撃距離における最大散布界を示しています。
+赤の楕円は、平均50%の砲弾が着弾する面積を示しています。
 黒の楕円は、基準として扶桑の大きさを示しています。
 
-ゲーム内の船は環境の2倍大きくなっているため、200mの船が実際に占めるスペースは400mです。
-本来の散布界楕円は、終端弾道に対して垂直に生成されます。
-弾速は、水面に投影される垂直散布界のみに影響を与えます。本来の散布界はこれに影響されません。</value>
+プロット平面:
+1) 水平方向: 
+    砲弾が水面と接触する点を表示します;
+    この面を選択すると、鉛直上方向からの視点に切り替わります;
+    他の船と散布界を比較する場合は、このプロットを使用するとよいでしょう;
+    この平面上の楕円は、砲弾速度の影響で引き伸ばされています。
+2) 垂直方向: 
+    海面に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、正面からの視点に切り替わります;
+    垂直散布界の精密な分析を行う際に有効です。
+3) 着弾角度方向: 
+    砲弾の着弾角度に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、砲弾の着弾角度からの視点に切り替わります;
+    戦闘において、ゲームが実際に使用する楕円です;
+    この楕円は砲弾速度の影響を受けません;
+    砲弾速度を考慮しない散布界の比較に有効です.
+
+ゲーム内の船は周辺環境の2倍に拡大されているため、200mの船が実際に占めるスペースは400mです。</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>プロットの説明</value>
@@ -973,8 +987,8 @@
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>質量</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>理論値FPM </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>潜在的分間火災率 </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>斉射ごとの火災発生率</value>
@@ -1012,5 +1026,16 @@
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
     <value>このプロジェクトの翻訳を手伝ってくれた以下のコミュニティメンバーの方々に感謝します。以下では、少なくとも10件のコントリビューションを持つすべてのメンバーについて紹介します。</value>
   </data>
-  
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>副砲</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>水平</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>プロットの向き</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>垂直</value>
+  </data>
 </root>
