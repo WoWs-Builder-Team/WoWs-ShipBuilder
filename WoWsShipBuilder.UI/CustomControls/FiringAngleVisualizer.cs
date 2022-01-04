@@ -583,7 +583,7 @@ namespace WoWsShipBuilder.UI.CustomControls
                 startAngle -= 360;
             }
 
-            if (shipTurret.VerticalPosition >= 3)
+            if (shipTurret.TurretOrientation == TurretOrientation.Backward)
             {
                 startAngle += 180;
                 endAngle += 180;
