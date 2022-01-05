@@ -23,6 +23,7 @@
                     <TextBlock Text="{Binding ShipName}"/>
                 </StackPanel>
             </Grid>
+            <CheckBox IsChecked="{Binding IncludeSignals}" Content="{x:Static t:Translation.BuildCreationWindow_IncludeSignals}" />
             <DockPanel LastChildFill="True">
                 <Button Content="{x:Static t:Translation.BuildCreationWindow_ExportImage}" Command="{Binding ExportScreenshot}" DockPanel.Dock="Left" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">

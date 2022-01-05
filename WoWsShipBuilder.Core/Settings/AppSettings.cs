@@ -27,5 +27,7 @@ namespace WoWsShipBuilder.Core.Settings
         public bool OpenExplorerAfterImageSave { get; set; } = true;
 
         public string? LastImageImportPath { get; set; }
+
+        public bool IncludeSignalsForImageExport { get; set; }
     }
 }

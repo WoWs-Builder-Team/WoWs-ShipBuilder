@@ -11,20 +11,21 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class ScreenshotContainerViewModel : ViewModelBase
     {
         public ScreenshotContainerViewModel()
+            : this(new("Test-build"), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
         {
-            var (ship, _) = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa);
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, ship.ShipNation);
-            SignalSelectorViewModel = new();
-            ShipModuleViewModel = new(ship.ShipUpgradeInfo);
-            UpgradePanelViewModel = new(ship);
-            ConsumableViewModel = new(ship);
-            BuildName = "Test-build - " + ship.Name;
-            ShipData = ship;
+            // var (ship, _) = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa);
+            // CaptainSkillSelectorViewModel = new(ship.ShipClass, ship.ShipNation);
+            // SignalSelectorViewModel = new();
+            // ShipModuleViewModel = new(ship.ShipUpgradeInfo);
+            // UpgradePanelViewModel = new(ship);
+            // ConsumableViewModel = new(ship);
+            // BuildName = "Test-build - " + ship.Name;
+            // ShipData = ship;
         }
 
-        public ScreenshotContainerViewModel(Build build, Ship ship)
+        public ScreenshotContainerViewModel(Build build, Ship ship, bool includeSignals = true)
         {
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, ship.ShipNation);
+            CaptainSkillSelectorViewModel = new(ship.ShipClass, ship.ShipNation, true);
             CaptainSkillSelectorViewModel.LoadBuild(build.Skills, build.Captain);
             SignalSelectorViewModel = new();
             SignalSelectorViewModel.LoadBuild(build.Signals);
@@ -36,11 +37,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             ConsumableViewModel.LoadBuild(build.Consumables);
             BuildName = build.BuildName;
             ShipData = ship;
+            IncludeSignals = includeSignals;
+            Width = includeSignals ? 1100 : 600;
         }
 
         public string BuildName { get; }
 
         public Ship ShipData { get; }
+
+        public bool IncludeSignals { get; }
 
         public CaptainSkillSelectorViewModel CaptainSkillSelectorViewModel { get; }
 
@@ -51,6 +56,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         public UpgradePanelViewModel UpgradePanelViewModel { get; }
 
         public ConsumableViewModel ConsumableViewModel { get; }
+
+        public int Width { get; }
 
         public string EffectiveBuildName
         {

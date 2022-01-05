@@ -124,6 +124,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include signals and consumables in image.
+        /// </summary>
+        public static string BuildCreationWindow_IncludeSignals {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_IncludeSignals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert the build name. The ship name is automatically included..
         /// </summary>
         public static string BuildCreationWindow_InsertBuildName {

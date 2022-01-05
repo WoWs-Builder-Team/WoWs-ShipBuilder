@@ -1068,4 +1068,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="Dialog_SaveExit" xml:space="preserve">
       <value>Save &amp; Exit</value>
   </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+      <value>Include signals and consumables in image</value>
+  </data>
 </root>

@@ -15,8 +15,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildCreationWindowViewModel : ViewModelBase
     {
-        private BuildCreationWindow? self;
-        private Build build;
+        private readonly BuildCreationWindow? self;
+        private readonly Build build;
 
         public BuildCreationWindowViewModel()
             : this(null, new("Test-build - Test-ship"), "Test-ship")
@@ -34,6 +34,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipName = shipName;
             BuildName = build.BuildName.Replace(" - " + ShipName, string.Empty);
             IsNewBuild = string.IsNullOrEmpty(BuildName);
+            IncludeSignals = AppData.Settings.IncludeSignalsForImageExport;
         }
 
         private string shipName = default!;
@@ -52,6 +53,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref buildName, value);
         }
 
+        private bool includeSignals;
+
+        public bool IncludeSignals
+        {
+            get => includeSignals;
+            set => this.RaiseAndSetIfChanged(ref includeSignals, value);
+        }
+
         public bool IsNewBuild { get; }
 
         public async void SaveBuild()
@@ -68,7 +77,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.Builds.Insert(0, build);
             await Application.Current!.Clipboard!.SetTextAsync(buildString);
             await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
-            self?.Close(true);
+            self?.Close((true, false));
         }
 
         [DependsOn(nameof(BuildName))]
@@ -77,7 +86,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void ExportScreenshot()
         {
             build.BuildName = CreateEffectiveBuildName();
-            self?.Close(true);
+            self?.Close((true, IncludeSignals));
         }
 
         [DependsOn(nameof(BuildName))]
@@ -85,7 +94,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void CloseBuild()
         {
-            self?.Close(false);
+            self?.Close((false, false));
         }
 
         private string CreateEffectiveBuildName() => BuildName + " - " + ShipName;

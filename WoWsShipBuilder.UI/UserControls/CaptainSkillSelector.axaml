@@ -35,7 +35,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox> 
                 </StackPanel>
-                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" 
+                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" IsVisible="{Binding !ScreenshotMode}"
                           Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">

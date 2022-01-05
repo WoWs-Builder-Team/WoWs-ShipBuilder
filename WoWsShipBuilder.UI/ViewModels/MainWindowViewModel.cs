@@ -278,14 +278,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             var win = new BuildCreationWindow();
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
             win.ShowInTaskbar = false;
-            var dialogResult = await win.ShowDialog<bool>(self);
-            if (!dialogResult)
+            (bool saveBuild, bool includeSignals) dialogResult = await win.ShowDialog<(bool, bool)>(self);
+            if (!dialogResult.saveBuild)
             {
                 return;
             }
 
+            AppData.Settings.IncludeSignalsForImageExport = dialogResult.includeSignals;
             currentBuildName = currentBuild.BuildName;
-            CreateBuildImage(currentBuild);
+            CreateBuildImage(currentBuild, dialogResult.includeSignals);
         }
 
         public void BackToMenu()
@@ -314,11 +315,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private async void CreateBuildImage(Build currentBuild)
+        private async void CreateBuildImage(Build currentBuild, bool includeSignals)
         {
             var screenshotWindow = new ScreenshotWindow
             {
-                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData),
+                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData, includeSignals),
             };
             screenshotWindow.Show();
 
