@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using System.Linq;
 using Avalonia;
 using Avalonia.Collections;
@@ -20,15 +21,17 @@ namespace WoWsShipBuilder.UI.ViewModels
     class StartMenuViewModel : ViewModelBase, IScalableViewModel
     {
         private readonly StartingMenuWindow? self;
+        private readonly IFileSystem fileSystem;
 
         public StartMenuViewModel()
-            : this(null)
+            : this(null, new FileSystem())
         {
         }
 
-        public StartMenuViewModel(StartingMenuWindow? window)
+        public StartMenuViewModel(StartingMenuWindow? window, IFileSystem fileSystem)
         {
             self = window;
+            this.fileSystem = fileSystem;
             if (!AppData.Builds.Any())
             {
                 AppDataHelper.Instance.LoadBuilds();
@@ -84,7 +87,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 MainWindow win = new();
-                win.DataContext = new MainWindowViewModel(ship!, win, result.PrevShipIndex, result.NextShipsIndex);
+                win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, result.PrevShipIndex, result.NextShipsIndex);
                 if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = win;
@@ -121,7 +124,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (SelectedBuild.Equals(0))
             {
                 BuildImportWindow importWin = new();
-                importWin.DataContext = new BuildImportViewModel(importWin);
+                importWin.DataContext = new BuildImportViewModel(importWin, fileSystem);
                 build = await importWin.ShowDialog<Build>(self);
                 if (build is null)
                 {
@@ -151,7 +154,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
             AppDataHelper.Instance.LoadNationFiles(summary.Nation);
             MainWindow win = new();
-            win.DataContext = new MainWindowViewModel(ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
+            win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
             win.Show();
             self?.Close();
         }

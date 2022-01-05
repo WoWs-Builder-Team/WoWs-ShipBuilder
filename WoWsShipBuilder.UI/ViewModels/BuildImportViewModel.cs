@@ -1,4 +1,5 @@
 using System;
+using System.IO.Abstractions;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
@@ -13,11 +14,23 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildImportViewModel : ViewModelBase
     {
-        private Window self;
+        private readonly Window? self;
 
-        public BuildImportViewModel(Window win)
+        private readonly IFileSystem fileSystem;
+
+        public BuildImportViewModel()
+            : this(null, new FileSystem())
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public BuildImportViewModel(Window? win, IFileSystem fileSystem)
         {
             self = win;
+            this.fileSystem = fileSystem;
         }
 
         private bool importOnly = true;
@@ -39,7 +52,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void Cancel()
         {
             BuildString = null;
-            self.Close();
+            self?.Close();
         }
 
         public async void LoadFromImage(object parameter)
@@ -47,23 +60,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             var fileDialog = new OpenFileDialog
             {
                 AllowMultiple = false,
-                Directory = AppDataHelper.Instance.BuildImageOutputDirectory,
+                Directory = AppData.Settings.LastImageImportPath ?? AppDataHelper.Instance.BuildImageOutputDirectory,
                 Filters = new()
                 {
-                    new()
-                    {
-                        Name = "PNG Files",
-                        Extensions = new() { "png" },
-                    },
+                    new() { Name = "PNG Files", Extensions = new() { "png" } },
                 },
             };
 
-            string[]? result = await fileDialog.ShowAsync(self);
+            string[]? result = await fileDialog.ShowAsync(self!);
             if (result is not { Length: > 0 })
             {
                 return;
             }
 
+            AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
             string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
             var build = JsonConvert.DeserializeObject<Build>(buildJson);
 
@@ -109,7 +119,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.Builds.Insert(0, build);
             }
 
-            self.Close(build);
+            self?.Close(build);
         }
     }
 }

@@ -24,10 +24,10 @@
                 </StackPanel>
             </Grid>
             <DockPanel LastChildFill="True">
-                <Button Content="Export build image (no save!)" Command="{Binding ExportScreenshot}" DockPanel.Dock="Left" />
+                <Button Content="{x:Static t:Translation.BuildCreationWindow_ExportImage}" Command="{Binding ExportScreenshot}" DockPanel.Dock="Left" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
-                    <Button IsDefault="True" Content="Save" Width="60" Command="{Binding SaveBuild}"/>
-                    <Button IsCancel="True" Content="Cancel" Width="60" Command="{Binding CloseBuild}"/>
+                    <Button IsDefault="True" Content="{x:Static t:Translation.Dialog_Save}" Width="60" Command="{Binding SaveBuild}"/>
+                    <Button IsCancel="True" Content="{x:Static t:Translation.Dialog_Cancel}" Width="60" Command="{Binding CloseBuild}"/>
                 </StackPanel>
             </DockPanel>
         </StackPanel>

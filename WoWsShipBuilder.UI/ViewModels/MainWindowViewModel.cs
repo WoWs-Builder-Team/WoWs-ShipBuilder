@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,6 +39,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly MainWindow? self;
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
+
+        private readonly IFileSystem fileSystem;
 
         private Account accountType = Account.Normal;
 
@@ -85,9 +88,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
+        public MainWindowViewModel(IFileSystem fileSystem, Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
         {
             self = window;
+            this.fileSystem = fileSystem;
             tokenSource = new();
             ContentScaling = contentScaling;
 
@@ -95,7 +99,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public MainWindowViewModel()
-            : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
+            : this(new FileSystem(), AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
         {
         }
 
@@ -287,7 +291,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void BackToMenu()
         {
             StartingMenuWindow win = new();
-            win.DataContext = new StartMenuViewModel(win);
+            win.DataContext = new StartMenuViewModel(win, fileSystem);
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = win;

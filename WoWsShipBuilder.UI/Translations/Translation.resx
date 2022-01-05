@@ -1047,4 +1047,25 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
       <value>Open explorer when saving a build image</value>
   </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+      <value>Export build as image</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+      <value>Save</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+      <value>Cancel</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+      <value>Yes</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+      <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+      <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+      <value>Save &amp; Exit</value>
+  </data>
 </root>
