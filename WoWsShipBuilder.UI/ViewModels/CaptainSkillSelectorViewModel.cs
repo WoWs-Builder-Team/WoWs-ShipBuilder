@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Metadata;
+using DynamicData;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -154,6 +155,25 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => conditionalModifiersList;
         }
 
+        private bool skillActivationPopupOpen;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the skill activation popup is visibile. Also notifies of changes after the popup is closed.
+        /// </summary>
+        public bool SkillActivationPopupOpen
+        {
+            get => skillActivationPopupOpen;
+            set
+            {
+                if (!value)
+                {
+                    this.RaisePropertyChanged(nameof(SkillOrderList));
+                }
+
+                this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
+            } 
+        }
+
         /// <summary>
         /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
         /// </summary>
@@ -232,7 +252,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     foreach (var modifier in skill.ConditionalModifiers)
                     {
                         var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, false));
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
                     }
                 }
 
@@ -407,7 +427,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null)
+            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null && (skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs))
                .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
                .ToList();
 
@@ -419,6 +439,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (SkillOrderList.Any(skill => skill.SkillNumber == 14))
             {
                 modifiers.Add(("fireResistanceEnabled", 1));
+            }
+
+            if (ConditionalModifiersList.Count > 0)
+            {
+                var conditionalSkillIds = ConditionalModifiersList.Where(skill => skill.Status).Select(skill => skill.SkillId);
+                var conditionalModifiers = SkillOrderList.ToList().Where(skill => conditionalSkillIds.Contains(skill.SkillNumber))
+                    .SelectMany(m => m.ConditionalModifiers).Select(effect => (effect.Key, effect.Value)).ToList();
+                modifiers.AddRange(conditionalModifiers);
+            }
+
+            if (SkillOrderList.Any(skill => skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs))
+            {
+                modifiers.Add(("lastChanceReloadCoefficient", 0.2f * (100 - ArHpPercentage)));
             }
 
             return modifiers;

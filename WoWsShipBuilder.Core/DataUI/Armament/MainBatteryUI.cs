@@ -104,7 +104,10 @@ namespace WoWsShipBuilder.Core.DataUI
 
             // Calculate main battery reload
             var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
-            decimal reload = Math.Round(reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+            decimal reload = reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier);
+
+            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            reload = Math.Round(arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
 
             // Rotation speed modifiers
             var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");

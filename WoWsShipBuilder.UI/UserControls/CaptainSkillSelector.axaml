@@ -38,7 +38,7 @@
                 <Button Name="SkillActivationButton" Content="Open Skill Enabling" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click"/>
                 
                 <!--Popup to manage skill activation-->
-                <Popup PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" IsLightDismissEnabled="True" Width="400">
+                <Popup IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" IsLightDismissEnabled="True" Width="400">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
                         <Grid Margin="10" Grid.Row="1" RowDefinitions="Auto,*,Auto">
                             <TextBlock Grid.Row="0" Text="With the following slider and toggles, you can enable or disable certain conditional skill effects." TextWrapping="Wrap"/>

@@ -9,10 +9,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class SkillActivationItemViewModel : ViewModelBase
     {
-        public SkillActivationItemViewModel(string name, bool activationStatus)
+        public SkillActivationItemViewModel(string name, int skillId, bool activationStatus)
         {
             SkillName = name;
             Status = activationStatus;
+            SkillId = skillId;
         }
 
         private string skillName = default!;
@@ -30,5 +31,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => status;
             set => this.RaiseAndSetIfChanged(ref status, value);
         }
+
+        public int SkillId { get; set; }
     }
 }

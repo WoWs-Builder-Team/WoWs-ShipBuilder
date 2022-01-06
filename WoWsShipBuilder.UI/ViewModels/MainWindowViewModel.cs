@@ -364,6 +364,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
             collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
+            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillOrderList).Subscribe(_ => UpdateStatsViewModel()));
         }
 
         private void CalculateXPValues()
