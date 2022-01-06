@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.ShipSelectionWindow" Height="450" Width="500"
         GotFocus="InputElement_OnGotFocus"
-        WindowStartupLocation="CenterScreen" CanResize="False" ShowInTaskbar="False" SizeToContent="Height">
+        WindowStartupLocation="CenterOwner" CanResize="False" ShowInTaskbar="False" SizeToContent="Height">
     <Design.DataContext>
         <viewModels:ShipSelectionWindowViewModel />
     </Design.DataContext>
