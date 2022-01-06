@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class ScreenshotContainerViewModel : ViewModelBase
     {
         public ScreenshotContainerViewModel()
-            : this(new("Test-build"), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
+            : this(new("Test-build"), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, true)
         {
             // var (ship, _) = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa);
             // CaptainSkillSelectorViewModel = new(ship.ShipClass, ship.ShipNation);

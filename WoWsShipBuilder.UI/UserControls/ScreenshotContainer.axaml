@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter" />
         <converters:DecimalToRomanConverter x:Key="RomanConverter" />
+        <converters:ImagePathConverter x:Key="ImagePathConverter" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.Title">
@@ -26,11 +27,10 @@
 
     <Panel>
         <Grid RowDefinitions="*, 5, 450" IsHitTestVisible="False" IsVisible="{Binding IncludeSignals}">
-            <Grid ColumnDefinitions="*,5,*,5,*" RowDefinitions="*">
-                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding EffectiveBuildName}" TextWrapping="Wrap" FontSize="18" />
-                </StackPanel>
-                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Grid ColumnDefinitions="*,5,3*,5,*" RowDefinitions="2*,*">
+                <Image Source="{Binding ShipData.Index, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}"
+                       HorizontalAlignment="Left" VerticalAlignment="Stretch" Height="90" />
+                <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <LayoutTransformControl VerticalAlignment="Center" Margin="0 3 0 0">
                         <LayoutTransformControl.LayoutTransform>
                             <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
@@ -44,7 +44,10 @@
                                VerticalAlignment="Center" Margin="10 0" />
                     <TextBlock Classes="Title" Text="{Binding ShipData.Index, Converter={StaticResource Localizer}}" VerticalAlignment="Center" />
                 </StackPanel>
-                <Image Grid.Column="4" Source="/Assets/ShipBuilderIcon_bg.ico" HorizontalAlignment="Right" MaxWidth="100" />
+                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding EffectiveBuildName}" TextWrapping="Wrap" FontSize="18" />
+                </StackPanel>
+                <Image Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" Source="/Assets/ShipBuilderIcon_bg.ico" HorizontalAlignment="Right" MaxWidth="100" />
             </Grid>
 
             <Grid Grid.Row="2" ColumnDefinitions="*,5,*" RowDefinitions="Auto,5,*">
