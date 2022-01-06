@@ -133,11 +133,12 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// Helper method to create the path for a build image file.
         /// </summary>
         /// <param name="buildName">The name of the saved build.</param>
+        /// <param name="shipName">The name of the ship of the build</param>
         /// <returns>The path where the generated image should be stored.</returns>
-        public string GetImageOutputPath(string buildName)
+        public string GetImageOutputPath(string buildName, string shipName)
         {
             fileSystem.Directory.CreateDirectory(BuildImageOutputDirectory);
-            return fileSystem.Path.Combine(BuildImageOutputDirectory, buildName + ".png");
+            return fileSystem.Path.Combine(BuildImageOutputDirectory, shipName + " - " + buildName + ".png");
         }
 
         /// <summary>

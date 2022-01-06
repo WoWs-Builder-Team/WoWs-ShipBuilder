@@ -65,7 +65,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void SaveBuild()
         {
-            build.BuildName = CreateEffectiveBuildName();
+            build.BuildName = BuildName!;
             var buildString = build.CreateStringFromBuild();
             var oldBuild = AppData.Builds.FirstOrDefault(existingBuild => existingBuild.BuildName.Equals(build.BuildName));
             if (oldBuild != null)
@@ -85,7 +85,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void ExportScreenshot()
         {
-            build.BuildName = CreateEffectiveBuildName();
+            build.BuildName = BuildName!;
             self?.Close((true, IncludeSignals));
         }
 
@@ -96,7 +96,5 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             self?.Close((false, false));
         }
-
-        private string CreateEffectiveBuildName() => BuildName + " - " + ShipName;
     }
 }

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.Core.BuildCreator
 {
     public class Build
     {
+        private const int CurrentBuildVersion = 2;
+
         [JsonConstructor]
         public Build(string buildName)
         {
@@ -26,11 +29,15 @@ namespace WoWsShipBuilder.Core.BuildCreator
             Skills = skills;
             Signals = signals;
             Consumables = consumables;
+            BuildVersion = CurrentBuildVersion;
         }
 
         public string BuildName { get; set; }
 
-        public string ShipIndex { get; set; } = default!;
+        [JsonIgnore]
+        public string DisplayName => string.IsNullOrWhiteSpace(ShipIndex) ? BuildName : BuildName + " - " + Localizer.Instance[ShipIndex].Localization;
+
+        public string ShipIndex { get; set; } = string.Empty;
 
         public Nation Nation { get; set; }
 
@@ -45,6 +52,8 @@ namespace WoWsShipBuilder.Core.BuildCreator
         public List<string> Consumables { get; set; } = new();
 
         public List<string> Signals { get; set; } = new();
+
+        public int BuildVersion { get; init; } = 1;
 
         /// <summary>
         /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.
@@ -62,7 +71,7 @@ namespace WoWsShipBuilder.Core.BuildCreator
                 using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
                 string buildJson = reader.ReadToEnd();
                 var build = JsonConvert.DeserializeObject<Build>(buildJson);
-                return build!;
+                return UpgradeBuild(build!);
             }
             catch (Exception e)
             {
@@ -86,6 +95,26 @@ namespace WoWsShipBuilder.Core.BuildCreator
             byte[] bytes = output.ToArray();
             string encodedOutput = Convert.ToBase64String(bytes);
             return encodedOutput;
+        }
+
+        /// <summary>
+        /// Helper method to upgrade a build from an old build format to the current build format.
+        /// </summary>
+        /// <param name="oldBuild">The old build.</param>
+        /// <returns>The updated build.</returns>
+        private static Build UpgradeBuild(Build oldBuild)
+        {
+            if (oldBuild.BuildVersion <= 1)
+            {
+                Logging.Logger.Info("Upgrading build {} from build version {} to current version.", oldBuild.BuildName, oldBuild.BuildVersion);
+                var buildShipName = " - " + Localizer.Instance[oldBuild.ShipIndex].Localization;
+                if (oldBuild.BuildName.Contains(buildShipName))
+                {
+                    oldBuild.BuildName = oldBuild.BuildName.Replace(buildShipName, string.Empty);
+                }
+            }
+
+            return oldBuild;
         }
     }
 }

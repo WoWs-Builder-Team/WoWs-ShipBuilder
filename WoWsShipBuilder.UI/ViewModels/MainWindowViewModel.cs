@@ -323,7 +323,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             };
             screenshotWindow.Show();
 
-            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName);
+            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName, Localizer.Instance[currentBuild.ShipIndex].Localization);
             await using var bitmapData = new MemoryStream();
             using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
             bitmap.Save(bitmapData);

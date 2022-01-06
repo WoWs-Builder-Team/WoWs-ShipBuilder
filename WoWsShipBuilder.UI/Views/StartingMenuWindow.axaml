@@ -47,8 +47,8 @@
                         <DataTemplate>
                             <!--Helper stack panel to catch the double tap event. Background set to transparent so we can get hit tested.-->
                             <StackPanel Background="Transparent" DoubleTapped="LoadBuild">
-                                <TextBlock Text="{Binding BuildName}" TextWrapping="NoWrap"
-                                           TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding BuildName}"
+                                <TextBlock Text="{Binding DisplayName}" TextWrapping="NoWrap"
+                                           TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding DisplayName}"
                                            ToolTip.ShowDelay="800" />
                             </StackPanel>
                         </DataTemplate>
