@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.CustomControls;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilderDataStructures;
@@ -22,6 +25,20 @@ namespace WoWsShipBuilder.UI.UserControls
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void OnSkillActiation_Click(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                var parent = button.Parent;
+                var skillActivationPopup = parent?.LogicalChildren.FirstOrDefault(child => child is Popup) as Popup;
+                var dc = DataContext as CaptainSkillSelectorViewModel;
+                if (dc!.ConditionalModifiersList.Count > 0 || dc!.ShowArHpSelection)
+                {
+                    skillActivationPopup!.IsOpen = true;
+                }
+            }
         }
 
         // For future feature: right click to set alternative skills

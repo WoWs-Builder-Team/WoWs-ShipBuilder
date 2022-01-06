@@ -327,7 +327,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             // Viewmodel inits
             SignalSelectorViewModel = new SignalSelectorViewModel();
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
+            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation, self!);
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);

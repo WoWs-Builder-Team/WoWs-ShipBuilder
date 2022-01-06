@@ -1,25 +1,37 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Utilities;
+using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class CaptainSkillSelectorViewModel : ViewModelBase
     {
+        private const int ArSkillNumber = 23;
+
+        private const int ArSkillNumberSubs = 82;
+
         private readonly ShipClass currentClass;
 
         private readonly Logger logger;
 
-        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
+        private readonly Window self;
+
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, Window parent)
         {
             logger = Logging.GetLogger("CaptainSkillVM");
+            self = parent;
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
@@ -110,6 +122,38 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
         }
 
+        private bool showArHpSelection = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the hp bar slider for adrenaline rush should be shown.
+        /// </summary>
+        public bool ShowArHpSelection
+        {
+            get => showArHpSelection;
+            set => this.RaiseAndSetIfChanged(ref showArHpSelection, value);
+        }
+
+        private int arHpPercentage = 100;
+
+        /// <summary>
+        /// Gets or sets the current Adrenaline rush hp percentage.
+        /// </summary>
+        public int ArHpPercentage
+        {
+            get => arHpPercentage;
+            set => this.RaiseAndSetIfChanged(ref arHpPercentage, value);
+        }
+
+        private AvaloniaList<SkillActivationItemViewModel> conditionalModifiersList = new();
+
+        /// <summary>
+        /// Gets the dictionary containing the conditional modifiers and their activation status.
+        /// </summary>
+        public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList
+        {
+            get => conditionalModifiersList;
+        }
+
         /// <summary>
         /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
         /// </summary>
@@ -157,6 +201,20 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ReorderSkillList();
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints -= pointCost;
+                if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = false;
+                }
+
+                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                {
+                    foreach (var modifier in skill.ConditionalModifiers)
+                    {
+                        var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                        ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
+                    }
+                }
+
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
             else
@@ -164,6 +222,20 @@ namespace WoWsShipBuilder.UI.ViewModels
                 SkillOrderList.Add(skill);
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints += pointCost;
+                if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = true;
+                }
+
+                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                {
+                    foreach (var modifier in skill.ConditionalModifiers)
+                    {
+                        var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, false));
+                    }
+                }
+
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
         }
@@ -335,7 +407,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-            var modifiers = SkillOrderList.Where(skill => skill.Modifiers != null)
+            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null)
                .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
                .ToList();
 

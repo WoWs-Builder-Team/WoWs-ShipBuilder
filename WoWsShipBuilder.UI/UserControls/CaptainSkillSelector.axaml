@@ -19,9 +19,9 @@
     <Grid ColumnDefinitions="*">
 
         <DockPanel>
-            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
-                <StackPanel Name="CaptainPoints" HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Margin="0,5,0,0">                
-                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center" />
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
+                <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">                
+                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
@@ -35,7 +35,40 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox> 
                 </StackPanel>
-                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" 
+                <Button Name="SkillActivationButton" Content="Open Skill Enabling" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click"/>
+                
+                <!--Popup to manage skill activation-->
+                <Popup PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" IsLightDismissEnabled="True" Width="400">
+                    <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
+                        <Grid Margin="10" Grid.Row="1" RowDefinitions="Auto,*,Auto">
+                            <TextBlock Grid.Row="0" Text="With the following slider and toggles, you can enable or disable certain conditional skill effects." TextWrapping="Wrap"/>
+                            <ScrollViewer Grid.Row="1" Margin="10,10">
+                                <StackPanel Orientation="Vertical">
+                                    <DockPanel LastChildFill="True" IsVisible="{Binding ShowAr}">
+                                        <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                            <TextBlock Text="Adrenaline Rush HP: "/>
+                                            <TextBlock Text="{Binding ArHpPercentage}"/>
+                                            <TextBlock Text=" %"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                    <ItemsControl Items="{Binding ConditionalModifiersList}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <DockPanel LastChildFill="True">
+                                                    <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                                                    <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>                  
+                </Popup>
+                
+                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
                           Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
