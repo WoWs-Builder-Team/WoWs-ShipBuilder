@@ -1,18 +1,11 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Metadata;
-using DynamicData;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Utilities;
-using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -27,12 +20,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly Logger logger;
 
-        private readonly Window self;
+        public CaptainSkillSelectorViewModel()
+            : this(ShipClass.Cruiser, Nation.Usa)
+        {
+        }
 
-        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, Window parent)
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
         {
             logger = Logging.GetLogger("CaptainSkillVM");
-            self = parent;
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
@@ -58,9 +53,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
-                var currentlySelectednumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
+                var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
-                foreach (var skillNumber in currentlySelectednumbersList)
+                foreach (var skillNumber in currentlySelectedNumbersList)
                 {
                     var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
                     SkillOrderList.Add(skill);
@@ -112,18 +107,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillList, value);
         }
 
-        private AvaloniaList<Skill> skillOrderList = new();
-
         /// <summary>
-        /// Gets or sets the List containing the selected skill in the order they were selected.
+        /// Gets the List containing the selected skill in the order they were selected.
         /// </summary>
-        public AvaloniaList<Skill> SkillOrderList
-        {
-            get => skillOrderList;
-            set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
-        }
+        public AvaloniaList<Skill> SkillOrderList { get; } = new();
 
-        private bool showArHpSelection = false;
+        private bool showArHpSelection;
 
         /// <summary>
         /// Gets or sets a value indicating whether the hp bar slider for adrenaline rush should be shown.
@@ -145,15 +134,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref arHpPercentage, value);
         }
 
-        private AvaloniaList<SkillActivationItemViewModel> conditionalModifiersList = new();
-
         /// <summary>
         /// Gets the dictionary containing the conditional modifiers and their activation status.
         /// </summary>
-        public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList
-        {
-            get => conditionalModifiersList;
-        }
+        public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
 
         private bool skillActivationPopupOpen;
 
@@ -163,15 +147,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public bool SkillActivationPopupOpen
         {
             get => skillActivationPopupOpen;
-            set
-            {
-                if (!value)
-                {
-                    this.RaisePropertyChanged(nameof(SkillOrderList));
-                }
-
-                this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
-            } 
+            set => this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
         }
 
         /// <summary>
@@ -183,14 +159,13 @@ namespace WoWsShipBuilder.UI.ViewModels
         private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
-            var skills = captain!.Skills;
+            var skills = captain.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
             filteredSkills.ForEach(skill =>
             {
                 // Get only the tier for the relevant class
                 var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
-                var first = classSkill.First();
                 skill.Value.Tiers = classSkill;
 
                 // Get only the value for the relevant class
@@ -228,11 +203,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
                 {
-                    foreach (var modifier in skill.ConditionalModifiers)
-                    {
-                        var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
-                        ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
-                    }
+                    var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                    ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
                 }
 
                 this.RaisePropertyChanged(nameof(SkillOrderList));
@@ -242,18 +214,15 @@ namespace WoWsShipBuilder.UI.ViewModels
                 SkillOrderList.Add(skill);
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints += pointCost;
-                if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
+                if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
                 {
                     ShowArHpSelection = true;
                 }
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
                 {
-                    foreach (var modifier in skill.ConditionalModifiers)
-                    {
-                        var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
-                    }
+                    var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                    ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
                 }
 
                 this.RaisePropertyChanged(nameof(SkillOrderList));
@@ -289,16 +258,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                     }
 
                     // If it's not, i search the skill of the previous tier. If at least one exist, i can add it
-                    List<int>? previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
+                    List<int> previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
 
-                    if (previousTierSkills != null && previousTierSkills.Count > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return previousTierSkills.Count > 0;
                 }
 
                 // Removing skill
@@ -449,7 +411,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 modifiers.AddRange(conditionalModifiers);
             }
 
-            if (SkillOrderList.Any(skill => skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs))
+            if (SkillOrderList.Any(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs))
             {
                 modifiers.Add(("lastChanceReloadCoefficient", 0.2f * (100 - ArHpPercentage)));
             }
@@ -461,11 +423,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// Create a list of skill numbers from the currently selected list.
         /// </summary>
         /// <returns>The list of currently selected skill numbers.</returns>
-        public List<int> GetSkillNumberList()
-        {
-            var list = SkillOrderList.Select(skill => skill.SkillNumber).ToList();
-            return list;
-        }
+        public List<int> GetSkillNumberList() => SkillOrderList.Select(skill => skill.SkillNumber).ToList();
 
         /// <summary>
         /// Return the index of the selected captain.

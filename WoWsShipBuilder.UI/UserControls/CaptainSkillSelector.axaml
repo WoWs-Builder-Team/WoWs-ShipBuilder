@@ -8,7 +8,11 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              x:Name="Control">
+    <Design.DataContext>
+        <viewModels:CaptainSkillSelectorViewModel />
+    </Design.DataContext>
 
     <UserControl.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
@@ -44,7 +48,7 @@
                             <TextBlock Grid.Row="0" Text="With the following slider and toggles, you can enable or disable certain conditional skill effects." TextWrapping="Wrap"/>
                             <ScrollViewer Grid.Row="1" Margin="10,10">
                                 <StackPanel Orientation="Vertical">
-                                    <DockPanel LastChildFill="True" IsVisible="{Binding ShowAr}">
+                                    <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
                                         <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
                                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                                             <TextBlock Text="Adrenaline Rush HP: "/>
