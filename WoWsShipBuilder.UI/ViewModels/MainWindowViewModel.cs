@@ -17,6 +17,8 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilderDataStructures;
@@ -274,26 +276,42 @@ namespace WoWsShipBuilder.UI.ViewModels
                 currentBuild.BuildName = currentBuildName;
             }
 
-            var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
-            var win = new BuildCreationWindow();
+            string shipName = Localizer.Instance[CurrentShipIndex!].Localization;
+            var win = new BuildCreationWindow
+            {
+                ShowInTaskbar = false,
+            };
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
-            win.ShowInTaskbar = false;
-            (bool saveBuild, bool includeSignals) dialogResult = await win.ShowDialog<(bool, bool)>(self);
-            if (!dialogResult.saveBuild)
+            var dialogResult = await win.ShowDialog<BuildCreationResult>(self);
+            if (!dialogResult.Save)
             {
                 return;
             }
 
-            AppData.Settings.IncludeSignalsForImageExport = dialogResult.includeSignals;
+            AppData.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
             currentBuildName = currentBuild.BuildName;
-            CreateBuildImage(currentBuild, dialogResult.includeSignals);
+            string outputPath = await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
+
+            string infoBoxContent;
+            if (dialogResult.CopyImageToClipboard)
+            {
+                infoBoxContent = Translation.BuildCreationWindow_SavedImageToClipboard;
+            }
+            else
+            {
+                await Application.Current.Clipboard.SetTextAsync(currentBuild.CreateStringFromBuild());
+                infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
+            }
+
+            await MessageBox.Show(self, infoBoxContent, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+            OpenExplorerForFile(outputPath);
         }
 
         public void BackToMenu()
         {
             StartingMenuWindow win = new();
             win.DataContext = new StartMenuViewModel(win, fileSystem);
-            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = win;
             }
@@ -315,7 +333,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private async void CreateBuildImage(Build currentBuild, bool includeSignals)
+        private static void OpenExplorerForFile(string filePath)
+        {
+            if (AppData.Settings.OpenExplorerAfterImageSave)
+            {
+                Process.Start("explorer.exe", $"/select, \"{filePath}\"");
+            }
+        }
+
+        private async Task<string> CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
         {
             var screenshotWindow = new ScreenshotWindow
             {
@@ -329,17 +355,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             bitmap.Save(bitmapData);
             bitmapData.Seek(0, SeekOrigin.Begin);
             BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
-            if (OperatingSystem.IsWindows())
+            if (copyToClipboard)
             {
-                using var savedBitmap = new Bitmap(outputPath);
-                await ClipboardHelper.SetBitmapAsync(savedBitmap);
+                if (OperatingSystem.IsWindows())
+                {
+                    using var savedBitmap = new Bitmap(outputPath);
+                    await ClipboardHelper.SetBitmapAsync(savedBitmap);
+                }
             }
 
             screenshotWindow.Close();
-            if (AppData.Settings.OpenExplorerAfterImageSave)
-            {
-                Process.Start("explorer.exe", $"/select, \"{outputPath}\"");
-            }
+            return outputPath;
         }
 
         private void LoadNewShip(ShipSummary summary)

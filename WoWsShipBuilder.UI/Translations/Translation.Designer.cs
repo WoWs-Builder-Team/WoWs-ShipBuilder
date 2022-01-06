@@ -115,11 +115,20 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export build as image.
+        ///   Looks up a localized string similar to Save &amp; copy image.
         /// </summary>
         public static string BuildCreationWindow_ExportImage {
             get {
                 return ResourceManager.GetString("BuildCreationWindow_ExportImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save &amp; copy string.
+        /// </summary>
+        public static string BuildCreationWindow_ExportString {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_ExportString", resourceCulture);
             }
         }
         
@@ -142,11 +151,20 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Build image copied to clipboard.
+        ///   Looks up a localized string similar to Build string copied to clipboard.
         /// </summary>
         public static string BuildCreationWindow_SavedClipboard {
             get {
                 return ResourceManager.GetString("BuildCreationWindow_SavedClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build image copied to clipboard.
+        /// </summary>
+        public static string BuildCreationWindow_SavedImageToClipboard {
+            get {
+                return ResourceManager.GetString("BuildCreationWindow_SavedImageToClipboard", resourceCulture);
             }
         }
         

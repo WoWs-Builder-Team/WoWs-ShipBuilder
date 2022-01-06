@@ -1,14 +1,11 @@
 using System;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -32,7 +29,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             self = win;
             build = currentBuild;
             ShipName = shipName;
-            BuildName = build.BuildName.Replace(" - " + ShipName, string.Empty);
+            BuildName = build.BuildName;
             IsNewBuild = string.IsNullOrEmpty(BuildName);
             IncludeSignals = AppData.Settings.IncludeSignalsForImageExport;
         }
@@ -63,10 +60,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public bool IsNewBuild { get; }
 
-        public async void SaveBuild()
+        private void SaveBuild()
         {
             build.BuildName = BuildName!;
-            var buildString = build.CreateStringFromBuild();
             var oldBuild = AppData.Builds.FirstOrDefault(existingBuild => existingBuild.BuildName.Equals(build.BuildName));
             if (oldBuild != null)
             {
@@ -75,26 +71,33 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             AppData.Builds.Insert(0, build);
-            await Application.Current!.Clipboard!.SetTextAsync(buildString);
-            await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
-            self?.Close((true, false));
         }
 
-        [DependsOn(nameof(BuildName))]
-        public bool CanSaveBuild(object parameter) => !string.IsNullOrWhiteSpace(BuildName);
+        private bool CanSaveBuild() => !string.IsNullOrWhiteSpace(BuildName);
 
-        public void ExportScreenshot()
+        public void SaveAndCopyString()
         {
-            build.BuildName = BuildName!;
-            self?.Close((true, IncludeSignals));
+            SaveBuild();
+            self?.Close(new BuildCreationResult(true, IncludeSignals));
         }
 
         [DependsOn(nameof(BuildName))]
-        public bool CanExportScreenshot(object parameter) => CanSaveBuild(parameter);
+        public bool CanSaveAndCopyString(object parameter) => CanSaveBuild();
+
+        public void SaveAndCopyImage()
+        {
+            SaveBuild();
+            self?.Close(new BuildCreationResult(true, IncludeSignals, true));
+        }
+
+        [DependsOn(nameof(BuildName))]
+        public bool CanSaveAndCopyImage(object parameter) => CanSaveBuild();
 
         public void CloseBuild()
         {
-            self?.Close((false, false));
+            self?.Close(new BuildCreationResult(false));
         }
     }
+
+    public sealed record BuildCreationResult(bool Save, bool IncludeSignals = false, bool CopyImageToClipboard = false);
 }
