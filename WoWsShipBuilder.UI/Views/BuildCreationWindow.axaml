@@ -13,7 +13,7 @@
         <viewModels:BuildCreationWindowViewModel />
     </Design.DataContext>
     <Grid RowDefinitions="30,*">
-        <userControls:AppHeader Grid.Row="0"/>
+        <userControls:AppHeader Grid.Row="0" ShowMinimizeButton="False"/>
         <StackPanel Grid.Row="1" Margin="10" Spacing="15">
             <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_InsertBuildName}" TextWrapping="Wrap"/>
             <Grid ColumnDefinitions="*,Auto">

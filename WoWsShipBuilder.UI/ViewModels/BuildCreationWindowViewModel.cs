@@ -99,5 +99,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
     }
 
-    public sealed record BuildCreationResult(bool Save, bool IncludeSignals = false, bool CopyImageToClipboard = false);
+    public sealed record BuildCreationResult(bool Save, bool IncludeSignals = false, bool CopyImageToClipboard = false)
+    {
+        public static BuildCreationResult Canceled { get; } = new(false);
+    }
 }

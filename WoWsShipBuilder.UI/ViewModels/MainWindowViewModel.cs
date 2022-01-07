@@ -282,7 +282,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ShowInTaskbar = false,
             };
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
-            var dialogResult = await win.ShowDialog<BuildCreationResult>(self);
+            var dialogResult = await win.ShowDialog<BuildCreationResult?>(self) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)
             {
                 return;
