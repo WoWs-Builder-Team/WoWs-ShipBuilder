@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             BuildList.CollectionChanged += BuildList_CollectionChanged;
-            BuildList.Add(new Build(Translation.StartMenu_ImportBuild));
+            BuildList.Add(new(Translation.StartMenu_ImportBuild));
             BuildList.AddRange(AppData.Builds);
         }
 
@@ -52,7 +52,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         public int? SelectedBuild
         {
             get => selectedBuild;
-            set => this.RaiseAndSetIfChanged(ref selectedBuild, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedBuild, value);
+                this.RaisePropertyChanged(nameof(LoadBuildButtonText));
+            }
         }
 
         private AvaloniaList<Build> buildList = new();
@@ -71,6 +75,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref contentScaling, value);
         }
 
+        public string LoadBuildButtonText => SelectedBuild is > 0 ? Translation.StartMenu_LoadBuild : Translation.StartMenu_ImportBuild;
+
         public async void NewBuild()
         {
             if (Design.IsDesignMode)
@@ -88,7 +94,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppDataHelper.Instance.LoadNationFiles(result.Nation);
                 MainWindow win = new();
                 win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, result.PrevShipIndex, result.NextShipsIndex);
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = win;
                 }
@@ -110,7 +116,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             window.DataContext = viewModel;
             window.Show();
 
-            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = window;
             }
@@ -118,22 +124,22 @@ namespace WoWsShipBuilder.UI.ViewModels
             self?.Close();
         }
 
-        public async void LoadBuild(object parameter)
+        public async void LoadBuild()
         {
-            Build build;
-            if (SelectedBuild.Equals(0))
+            Build? build;
+            if (SelectedBuild is > 0)
+            {
+                build = BuildList.ElementAt(SelectedBuild.Value);
+            }
+            else
             {
                 BuildImportWindow importWin = new();
                 importWin.DataContext = new BuildImportViewModel(importWin, fileSystem);
-                build = await importWin.ShowDialog<Build>(self);
+                build = await importWin.ShowDialog<Build?>(self);
                 if (build is null)
                 {
                     return;
                 }
-            }
-            else
-            {
-                build = BuildList.ElementAt(SelectedBuild!.Value);
             }
 
             Logging.Logger.Info("Loading build {0}", JsonConvert.SerializeObject(build));
@@ -159,12 +165,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             self?.Close();
         }
 
-        [DependsOn(nameof(SelectedBuild))]
-        public bool CanLoadBuild(object parameter)
-        {
-            return SelectedBuild != null && SelectedBuild >= 0;
-        }
-
         public void DeleteBuild()
         {
             AppData.Builds.RemoveAt(SelectedBuild!.Value - 1);
@@ -172,17 +172,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         [DependsOn(nameof(SelectedBuild))]
-        public bool CanDeleteBuild(object parameter)
-        {
-            if (SelectedBuild != null && SelectedBuild > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool CanDeleteBuild(object parameter) => SelectedBuild is > 0;
 
         public void Setting()
         {
