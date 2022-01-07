@@ -25,7 +25,7 @@
     </Window.Styles>
     
     <Grid RowDefinitions="30, auto, auto, 50">
-        <userControls:AppHeader Grid.Row="0"/>
+        <userControls:AppHeader Grid.Row="0" ShowMinimizeButton="False"/>
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
                 <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TierFilter}" IsChecked="{Binding TierFilterChecked}"/>

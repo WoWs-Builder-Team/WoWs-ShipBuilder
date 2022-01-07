@@ -13,7 +13,7 @@
         <viewModels:BuildImportViewModel />
     </Design.DataContext>
     <Grid RowDefinitions="30,Auto, Auto, Auto">
-        <userControls:AppHeader Title="{x:Static t:Translation.BuildImport_Title}"/>
+        <userControls:AppHeader Title="{x:Static t:Translation.BuildImport_Title}" ShowMinimizeButton="False"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="10">
             <RadioButton GroupName="ImportType" Content="{x:Static t:Translation.BuildImport_ImportOnly}" IsChecked="{Binding ImportOnly}"/>
             <RadioButton GroupName="ImportType" Content="{x:Static t:Translation.BuildImport_ImportSave}"/>

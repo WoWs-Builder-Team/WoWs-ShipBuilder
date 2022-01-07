@@ -3,6 +3,7 @@ using System.IO.Abstractions;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -75,7 +76,19 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
             string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
-            var build = JsonConvert.DeserializeObject<Build>(buildJson);
+
+            JsonSerializerSettings serializerSettings = new()
+            {
+                Error = (_, args) =>
+                {
+                    if (args.ErrorContext.Error is JsonReaderException)
+                    {
+                        Logging.Logger.Info("Tried to load an invalid build string from an image file. Message: {}", args.ErrorContext.Error.Message);
+                        args.ErrorContext.Handled = true;
+                    }
+                },
+            };
+            var build = JsonConvert.DeserializeObject<Build>(buildJson, serializerSettings);
 
             if (build == null)
             {
