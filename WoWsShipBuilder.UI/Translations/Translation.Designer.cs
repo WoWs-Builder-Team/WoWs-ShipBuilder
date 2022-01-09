@@ -1105,7 +1105,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable custom path.
+        ///   Looks up a localized string similar to Enable custom cache path.
         /// </summary>
         public static string SettingsWindow_CustomPath {
             get {
@@ -1159,7 +1159,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert custom path.
+        ///   Looks up a localized string similar to Insert custom cache path.
         /// </summary>
         public static string SettingsWindow_InsertCustomPath {
             get {
@@ -1168,7 +1168,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected custom path is not valid..
+        ///   Looks up a localized string similar to The selected custom cache path is not valid..
         /// </summary>
         public static string SettingsWindow_InvalidCustomPath {
             get {
