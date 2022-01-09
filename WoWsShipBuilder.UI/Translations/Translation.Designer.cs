@@ -1060,6 +1060,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom build image path.
+        /// </summary>
+        public static string SettingsWindow_BuildImagePath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_BuildImagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected custom build image path is invalid..
+        /// </summary>
+        public static string SettingsWindow_BuildImagePathInvalid {
+            get {
+                return ResourceManager.GetString("SettingsWindow_BuildImagePathInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string SettingsWindow_Cancel {
@@ -1146,6 +1164,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string SettingsWindow_Devs {
             get {
                 return ResourceManager.GetString("SettingsWindow_Devs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable custom build image path.
+        /// </summary>
+        public static string SettingsWindow_EnableBuildImagePath {
+            get {
+                return ResourceManager.GetString("SettingsWindow_EnableBuildImagePath", resourceCulture);
             }
         }
         

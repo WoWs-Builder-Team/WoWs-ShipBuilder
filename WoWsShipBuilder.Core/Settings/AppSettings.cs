@@ -29,5 +29,7 @@ namespace WoWsShipBuilder.Core.Settings
         public string? LastImageImportPath { get; set; }
 
         public bool IncludeSignalsForImageExport { get; set; }
+
+        public string? CustomImagePath { get; set; }
     }
 }

@@ -1077,4 +1077,13 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
       <value>Build image copied to clipboard</value>
   </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+      <value>Enable custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+      <value>Custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+      <value>The selected custom build image path is invalid.</value>
+  </data>
 </root>

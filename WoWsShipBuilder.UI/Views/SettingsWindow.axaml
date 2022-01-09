@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="550"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="635"
         x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:dataProvider="clr-namespace:WoWsShipBuilder.Core.DataProvider;assembly=WoWsShipBuilder.Core"
-        Height="550" Width="700" CanResize="False"
+        Height="635" Width="700" CanResize="False"
         WindowStartupLocation="CenterScreen">
     
     <Design.DataContext>
@@ -19,14 +19,14 @@
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader Grid.Row="0" />
         <Grid ColumnDefinitions="4*,3*" Grid.Row="1">
-            <Border Classes="BorderPanel" Grid.Row="0" Margin="5">
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="10 10 5 10">
                 <TabControl>
 
                     <!-- Settings Tab -->
                     <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <!-- ReSharper disable Xaml.MissingGridIndex -->
-                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                            <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
                                 <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
                                 <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
                                           SelectedItem="{Binding Path=SelectedLanguage}">
@@ -63,7 +63,25 @@
                                 <TextBox IsEnabled="{Binding IsCustomPathEnabled}" Grid.ColumnSpan="2"
                                          Watermark="{x:Static t:Translation.SettingsWindow_InsertCustomPath}" Text="{Binding CustomPath}">
                                     <TextBox.InnerRightContent>
-                                        <Button Content="..." Command="{Binding SelectFolder}" Margin="5,0,0,0" />
+                                        <Button Content="..." Command="{Binding SelectCachePath}" Margin="5,0,0,0" />
+                                    </TextBox.InnerRightContent>
+                                    <TextBox.Styles>
+                                        <Style Selector="TextBox /template/ TextPresenter">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                        </Style>
+                                        <Style Selector="TextBox /template/ TextBlock#watermark">
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                        </Style>
+                                    </TextBox.Styles>
+                                </TextBox>
+                                
+                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_EnableBuildImagePath}" TextWrapping="Wrap" />
+                                <CheckBox IsChecked="{Binding IsCustomBuildImagePathEnabled}" />
+
+                                <TextBox IsEnabled="{Binding IsCustomBuildImagePathEnabled}" Grid.ColumnSpan="2"
+                                         Watermark="{x:Static t:Translation.SettingsWindow_BuildImagePath}" Text="{Binding CustomBuildImagePath}">
+                                    <TextBox.InnerRightContent>
+                                        <Button Content="..." Command="{Binding SelectBuildImagePath}" Margin="5,0,0,0" />
                                     </TextBox.InnerRightContent>
                                     <TextBox.Styles>
                                         <Style Selector="TextBox /template/ TextPresenter">
@@ -156,7 +174,7 @@
                 </TabControl>
                 <!--Right panel-->
             </Border>
-            <Border Classes="BorderPanel" Grid.Column="1" Margin="10" Padding="10">
+            <Border Classes="BorderPanel" Grid.Column="1" Margin="5 10 10 10" Padding="10">
                 <Image Source="/Assets/Art/logo_white_text.png" />
             </Border>
         </Grid>

@@ -70,7 +70,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
 
-        public string BuildImageOutputDirectory => fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
+        public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public CultureDetails DefaultCultureDetails { get; }
 
@@ -137,8 +137,9 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <returns>The path where the generated image should be stored.</returns>
         public string GetImageOutputPath(string buildName, string shipName)
         {
-            fileSystem.Directory.CreateDirectory(BuildImageOutputDirectory);
-            return fileSystem.Path.Combine(BuildImageOutputDirectory, shipName + " - " + buildName + ".png");
+            string directory = BuildImageOutputDirectory;
+            fileSystem.Directory.CreateDirectory(directory);
+            return fileSystem.Path.Combine(directory, shipName + " - " + buildName + ".png");
         }
 
         /// <summary>
