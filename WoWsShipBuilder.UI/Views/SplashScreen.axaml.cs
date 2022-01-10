@@ -7,7 +7,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using NLog;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views

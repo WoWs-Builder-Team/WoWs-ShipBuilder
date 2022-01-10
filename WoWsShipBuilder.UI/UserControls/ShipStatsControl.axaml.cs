@@ -1,14 +1,12 @@
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 using static WoWsShipBuilder.UI.ViewModels.DispersionGraphViewModel;
 
 namespace WoWsShipBuilder.UI.UserControls

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI

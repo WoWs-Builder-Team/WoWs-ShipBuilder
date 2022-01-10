@@ -1,16 +1,9 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilder.UI.CustomControls;
 using WoWsShipBuilder.UI.ViewModels;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.UserControls
 {

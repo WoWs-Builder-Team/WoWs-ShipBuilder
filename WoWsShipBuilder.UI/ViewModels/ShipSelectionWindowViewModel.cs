@@ -9,7 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
