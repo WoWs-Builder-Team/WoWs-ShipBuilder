@@ -346,7 +346,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
             }
 
-            NextShips = nextShipsIndexes!.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
+            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
         }
