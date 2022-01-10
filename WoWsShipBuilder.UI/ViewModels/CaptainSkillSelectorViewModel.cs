@@ -76,7 +76,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
                     SkillOrderList.Add(skill);
                 }
-
             }
         }
 
@@ -269,6 +268,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     {
                         ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
                     }
+
                     SkillActivationButtonEnabled = true;
                 }
 
