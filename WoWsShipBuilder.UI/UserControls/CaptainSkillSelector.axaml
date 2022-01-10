@@ -39,35 +39,49 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox> 
                 </StackPanel>
-                <Button Name="SkillActivationButton" Content="Open Skill Enabling" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click"/>
+                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="Open Skill Enabling" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click"/>
                 
                 <!--Popup to manage skill activation-->
                 <Popup IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" IsLightDismissEnabled="True" Width="400">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
                         <Grid Margin="10" Grid.Row="1" RowDefinitions="Auto,*,Auto">
                             <TextBlock Grid.Row="0" Text="With the following slider and toggles, you can enable or disable certain conditional skill effects." TextWrapping="Wrap"/>
-                            <ScrollViewer Grid.Row="1" Margin="10,10">
-                                <StackPanel Orientation="Vertical">
-                                    <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
-                                        <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
-                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                                            <TextBlock Text="Adrenaline Rush HP: "/>
-                                            <TextBlock Text="{Binding ArHpPercentage}"/>
-                                            <TextBlock Text=" %"/>
-                                        </StackPanel>
-                                    </DockPanel>
-                                    <ItemsControl Items="{Binding ConditionalModifiersList}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <DockPanel LastChildFill="True">
-                                                    <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                                                    <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
-                                                </DockPanel>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </ScrollViewer>
+                            <StackPanel Orientation="Vertical" Margin="5,5" Grid.Row="1">
+                                <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
+                                    <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                        <TextBlock Text="Adrenaline Rush HP: "/>
+                                        <TextBlock Text="{Binding ArHpPercentage}"/>
+                                        <TextBlock Text=" %"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <ItemsControl Items="{Binding ConditionalModifiersList}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel LastChildFill="True">
+                                                <StackPanel Spacing="10" Orientation="Horizontal" DockPanel.Dock="Right">
+                                                    <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
+                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <ItemsControl Items="{Binding CaptainTalentsList}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel LastChildFill="True">
+                                                <StackPanel Spacing="10" Orientation="Horizontal" DockPanel.Dock="Right">
+                                                    <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
+                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
                         </Grid>
                     </Border>                  
                 </Popup>

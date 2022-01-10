@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
@@ -15,6 +17,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         private const int ArSkillNumber = 23;
 
         private const int ArSkillNumberSubs = 82;
+
+        private const int FuriousSkillNumber = 81;
 
         private readonly ShipClass currentClass;
 
@@ -53,6 +57,18 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
+
+                foreach (var skill in SkillList)
+                {
+                    if (skill.Value.ConditionalModifiers != null && skill.Value.ConditionalModifiers.Count > 0)
+                    {
+                        foreach (var modifier in skill.Value.ConditionalModifiers)
+                        {
+                            Debug.WriteLine(skill.Key + " --> " + modifier);
+                        }
+                    }
+                }
+
                 var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
                 foreach (var skillNumber in currentlySelectedNumbersList)
@@ -60,6 +76,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
                     SkillOrderList.Add(skill);
                 }
+
             }
         }
 
@@ -139,15 +156,31 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// </summary>
         public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
 
+        /// <summary>
+        /// Gets the dictionary containing the conditional modifiers and their activation status.
+        /// </summary>
+        public AvaloniaList<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
+
         private bool skillActivationPopupOpen;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the skill activation popup is visibile. Also notifies of changes after the popup is closed.
+        /// Gets or sets a value indicating whether the skill activation popup is visibile.
         /// </summary>
         public bool SkillActivationPopupOpen
         {
             get => skillActivationPopupOpen;
             set => this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
+        }
+
+        private bool skillActivationButtonEnabled = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the skill activation button is enabled.
+        /// </summary>
+        public bool SkillActivationButtonEnabled
+        {
+            get => skillActivationButtonEnabled;
+            set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
         }
 
         /// <summary>
@@ -207,6 +240,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
                 }
 
+                if (showArHpSelection == false && ConditionalModifiersList.Count == 0)
+                {
+                    SkillActivationButtonEnabled = false;
+                }
+
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
             else
@@ -217,12 +255,21 @@ namespace WoWsShipBuilder.UI.ViewModels
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
                 {
                     ShowArHpSelection = true;
+                    SkillActivationButtonEnabled = true;
                 }
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
                 {
                     var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
-                    ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
+                    if (skill.SkillNumber is FuriousSkillNumber)
+                    {
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false, 4, 1));
+                    }
+                    else
+                    {
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
+                    }
+                    SkillActivationButtonEnabled = true;
                 }
 
                 this.RaisePropertyChanged(nameof(SkillOrderList));
@@ -389,7 +436,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null && (skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs))
+            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
                .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
                .ToList();
 
@@ -405,15 +452,25 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (ConditionalModifiersList.Count > 0)
             {
-                var conditionalSkillIds = ConditionalModifiersList.Where(skill => skill.Status).Select(skill => skill.SkillId);
+                var conditionalSkillIds = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber).Select(skill => skill.SkillId);
                 var conditionalModifiers = SkillOrderList.ToList().Where(skill => conditionalSkillIds.Contains(skill.SkillNumber))
                     .SelectMany(m => m.ConditionalModifiers).Select(effect => (effect.Key, effect.Value)).ToList();
                 modifiers.AddRange(conditionalModifiers);
+
+                // Custom handling for Furious skill. Needs to take into account the number of fires
+                var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
+                var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
+                if (furiousSkill is not null && furiousSkillModifier is not null)
+                {
+                    var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
+                    modifiers.Add(("GMShotDelay", multiplier));
+                }
             }
 
-            if (SkillOrderList.Any(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs))
+            var arSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
+            if (arSkill is not null)
             {
-                modifiers.Add(("lastChanceReloadCoefficient", 0.2f * (100 - ArHpPercentage)));
+                modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - ArHpPercentage)));
             }
 
             return modifiers;
