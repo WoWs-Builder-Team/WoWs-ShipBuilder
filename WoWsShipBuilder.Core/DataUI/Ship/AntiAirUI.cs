@@ -67,6 +67,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
+            var constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
+
             var aaUI = new AntiAirUI();
             aaUI.expanderKey = $"{ship.Index}_AA";
             if (!ShipUI.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))

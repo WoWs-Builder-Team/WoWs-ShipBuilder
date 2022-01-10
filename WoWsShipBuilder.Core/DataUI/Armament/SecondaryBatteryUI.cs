@@ -56,6 +56,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 var reloadModifiers = modifiers.FindModifiers("GSShotDelay");
                 var reload = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
 
+                var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+                reload = Math.Round(arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
+
                 var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
                 var range = Math.Round(rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier), 2);
 

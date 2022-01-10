@@ -57,6 +57,9 @@ namespace WoWsShipBuilder.Core.DataUI
             var reloadSpeedModifiers = modifiers.FindModifiers("GTShotDelay");
             decimal reloadSpeed = Math.Round(reloadSpeedModifiers.Aggregate(launcher.Reload, (current, modifier) => current * (decimal)modifier), 2);
 
+            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            reloadSpeed = Math.Round(arModifiers.Aggregate(reloadSpeed, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
+
             var torpedoArea = $"{launcher.TorpedoAngles[0]}° - {launcher.TorpedoAngles[1]}°";
 
             var torpedoes = TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers);
