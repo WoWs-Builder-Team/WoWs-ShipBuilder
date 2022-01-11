@@ -95,4 +95,10 @@
       </EmbeddedResource>
       <EmbeddedResource Include="Settings\ApplicationOptions.json" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="..\docs\Third-Party-Licenses.txt">
+        <Link>Third-Party-Licenses.txt</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

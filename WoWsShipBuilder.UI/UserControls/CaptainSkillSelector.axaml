@@ -8,7 +8,11 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              x:Name="Control">
+    <Design.DataContext>
+        <viewModels:CaptainSkillSelectorViewModel />
+    </Design.DataContext>
 
     <UserControl.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
@@ -27,15 +31,17 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,5,0,0">
                     <TextBlock Text="Captain:" Padding="5,0" VerticalAlignment="Center" />
-                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" VerticalAlignment="Center" >
+                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox> 
+                    <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" 
+                               IsVisible="{Binding ScreenshotMode}"/>
                 </StackPanel>
-                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" 
+                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="1" IsVisible="{Binding !ScreenshotMode}"
                           Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">

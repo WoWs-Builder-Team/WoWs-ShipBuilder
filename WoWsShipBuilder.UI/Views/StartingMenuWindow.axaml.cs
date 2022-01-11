@@ -44,7 +44,7 @@ namespace WoWsShipBuilder.UI.Views
         private void LoadBuild(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             var dc = (StartMenuViewModel)DataContext!;
-            dc.LoadBuild(null!);
+            dc.LoadBuild();
         }
     }
 }

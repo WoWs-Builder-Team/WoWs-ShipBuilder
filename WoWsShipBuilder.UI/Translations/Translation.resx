@@ -1041,4 +1041,52 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
     <value>Shells Path</value>
   </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+      <value>Captain skills</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+      <value>Import from Image</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+      <value>Open explorer when saving a build image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+      <value>Save &amp; copy image</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+      <value>Save</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+      <value>Cancel</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+      <value>Yes</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+      <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+      <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+      <value>Save &amp; Exit</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+      <value>Include signals and consumables in image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+      <value>Save &amp; copy string</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+      <value>Build image copied to clipboard</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+      <value>Enable custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+      <value>Custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+      <value>The selected custom build image path is invalid.</value>
+  </data>
 </root>

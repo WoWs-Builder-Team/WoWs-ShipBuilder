@@ -1,25 +1,37 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO.Abstractions;
 using Avalonia.Controls;
 using Avalonia.Metadata;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildImportViewModel : ViewModelBase
     {
-        private Window self;
+        private readonly Window? self;
 
-        public BuildImportViewModel(Window win)
+        private readonly IFileSystem fileSystem;
+
+        public BuildImportViewModel()
+            : this(null, new FileSystem())
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public BuildImportViewModel(Window? win, IFileSystem fileSystem)
         {
             self = win;
+            this.fileSystem = fileSystem;
         }
 
         private bool importOnly = true;
@@ -30,7 +42,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref importOnly, value);
         }
 
-        private string? buildString = default!;
+        private string? buildString;
 
         public string? BuildString
         {
@@ -41,7 +53,50 @@ namespace WoWsShipBuilder.UI.ViewModels
         public void Cancel()
         {
             BuildString = null;
-            self.Close();
+            self?.Close();
+        }
+
+        public async void LoadFromImage(object parameter)
+        {
+            var fileDialog = new OpenFileDialog
+            {
+                AllowMultiple = false,
+                Directory = AppData.Settings.LastImageImportPath ?? AppDataHelper.Instance.BuildImageOutputDirectory,
+                Filters = new()
+                {
+                    new() { Name = "PNG Files", Extensions = new() { "png" } },
+                },
+            };
+
+            string[]? result = await fileDialog.ShowAsync(self!);
+            if (result is not { Length: > 0 })
+            {
+                return;
+            }
+
+            AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
+            string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
+
+            JsonSerializerSettings serializerSettings = new()
+            {
+                Error = (_, args) =>
+                {
+                    if (args.ErrorContext.Error is JsonReaderException)
+                    {
+                        Logging.Logger.Info("Tried to load an invalid build string from an image file. Message: {}", args.ErrorContext.Error.Message);
+                        args.ErrorContext.Handled = true;
+                    }
+                },
+            };
+            var build = JsonConvert.DeserializeObject<Build>(buildJson, serializerSettings);
+
+            if (build == null)
+            {
+                await MessageBox.Show(self, "Could not read build data from file. Has the file been compressed?", "Invalid file", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                return;
+            }
+
+            ProcessLoadedBuild(build);
         }
 
         public async void Import(object parameter)
@@ -60,19 +115,24 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            if (!ImportOnly)
-            {
-                Logging.Logger.Info("Adding build to saved ones.");
-                AppData.Builds.Insert(0, build);
-            }
-
-            self.Close(build);
+            ProcessLoadedBuild(build);
         }
 
         [DependsOn(nameof(BuildString))]
         public bool CanImport(object parameter)
         {
             return !string.IsNullOrWhiteSpace(BuildString);
+        }
+
+        private void ProcessLoadedBuild(Build build)
+        {
+            if (!ImportOnly)
+            {
+                Logging.Logger.Info("Adding build to saved ones.");
+                AppData.Builds.Insert(0, build);
+            }
+
+            self?.Close(build);
         }
     }
 }

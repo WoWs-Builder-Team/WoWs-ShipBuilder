@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Splat;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
@@ -30,6 +32,7 @@ namespace WoWsShipBuilder.UI
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                Locator.CurrentMutable.RegisterConstant(new FileSystem(), typeof(IFileSystem));
                 AppSettingsHelper.LoadSettings();
                 Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
                 desktop.Exit += OnExit;
@@ -38,11 +41,13 @@ namespace WoWsShipBuilder.UI
 
                 if (AppData.Settings.AutoUpdateEnabled)
                 {
+#if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
                     {
                         await UpdateCheck();
                         Logging.Logger.Info("Finished updatecheck");
                     });
+#endif
                 }
             }
 

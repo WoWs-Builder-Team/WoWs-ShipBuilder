@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using NLog;
 using ReactiveUI;
@@ -17,9 +18,19 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly Logger logger;
 
-        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
+        public CaptainSkillSelectorViewModel()
+            : this(ShipClass.Cruiser, Nation.Usa)
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, bool screenshotMode = false)
         {
             logger = Logging.GetLogger("CaptainSkillVM");
+            ScreenshotMode = screenshotMode;
             var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
@@ -109,6 +120,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => skillOrderList;
             set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
         }
+
+        public bool ScreenshotMode { get; }
 
         /// <summary>
         /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
