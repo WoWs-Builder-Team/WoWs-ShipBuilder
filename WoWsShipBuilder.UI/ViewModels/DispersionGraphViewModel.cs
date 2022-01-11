@@ -255,7 +255,28 @@ namespace WoWsShipBuilder.UI.ViewModels
         public EllipsePlanes SelectedEllipsePlane
         {
             get => selectedEllipsePlane;
-            set => this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
+                if (value == EllipsePlanes.HorizontalPlane)
+                {
+                    IsHorizontalPlane = true;
+                    IsVerticalPlane = false;
+                    IsRealPlane = false;
+                }
+                else if (value == EllipsePlanes.VerticalPlane)
+                {
+                    IsHorizontalPlane = false;
+                    IsVerticalPlane = true;
+                    IsRealPlane = false;
+                }
+                else
+                {
+                    IsHorizontalPlane = false;
+                    IsVerticalPlane = false;
+                    IsRealPlane = true;
+                }
+            }
         }
 
         private List<FusoPositions> fusoPositionsList = Enum.GetValues<FusoPositions>().ToList();
@@ -280,6 +301,30 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => isVertical;
             set => this.RaiseAndSetIfChanged(ref isVertical, value);
+        }
+
+        private bool isVerticalPlane = false;
+
+        public bool IsVerticalPlane
+        {
+            get => isVerticalPlane;
+            set => this.RaiseAndSetIfChanged(ref isVerticalPlane, value);
+        }
+
+        private bool isHorizontalPlane = true;
+
+        public bool IsHorizontalPlane
+        {
+            get => isHorizontalPlane;
+            set => this.RaiseAndSetIfChanged(ref isHorizontalPlane, value);
+        }
+
+        private bool isRealPlane = false;
+
+        public bool IsRealPlane
+        {
+            get => isRealPlane;
+            set => this.RaiseAndSetIfChanged(ref isRealPlane, value);
         }
 
         /// <summary>

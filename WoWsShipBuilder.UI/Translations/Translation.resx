@@ -1038,6 +1038,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
     <value>Vertical</value>
   </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Shells Path</value>
+  </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
       <value>Captain skills</value>
   </data>
