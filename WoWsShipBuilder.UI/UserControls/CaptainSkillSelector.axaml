@@ -76,7 +76,7 @@
                                                     <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
                                                     <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0"/>
                                                 </StackPanel>
-                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" VerticalAlignment="Center" Margin="0,0,10,0" DockPanel.Dock="Left"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>

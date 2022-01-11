@@ -58,17 +58,23 @@ namespace WoWsShipBuilder.UI.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
 
-                foreach (var skill in SkillList)
+                if (newCaptain!.UniqueSkills != null)
                 {
-                    if (skill.Value.ConditionalModifiers != null && skill.Value.ConditionalModifiers.Count > 0)
+                    foreach ((string name, UniqueSkill talent) in newCaptain!.UniqueSkills)
                     {
-                        foreach (var modifier in skill.Value.ConditionalModifiers)
+                        SkillActivationItemViewModel talentModel;
+                        if (talent.MaxTriggerNum <= 1)
                         {
-                            Debug.WriteLine(skill.Key + " --> " + modifier);
+                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, false, description: talent.TranslationId + "_DESCRIPTION");
                         }
+                        else
+                        {
+                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
+                        }
+
+                        CaptainTalentsList.Add(talentModel);
                     }
                 }
-
                 var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
                 foreach (var skillNumber in currentlySelectedNumbersList)
