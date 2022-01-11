@@ -26,11 +26,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var parent = button.Parent;
                 var skillActivationPopup = parent?.LogicalChildren.FirstOrDefault(child => child is Popup) as Popup;
-                var dc = DataContext as CaptainSkillSelectorViewModel;
-                if (dc!.ConditionalModifiersList.Count > 0 || dc!.ShowArHpSelection)
-                {
-                    skillActivationPopup!.IsOpen = true;
-                }
+                skillActivationPopup!.IsOpen = true;
             }
         }
 

@@ -1,16 +1,18 @@
+using System.Collections.Generic;
 using ReactiveUI;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class SkillActivationItemViewModel : ViewModelBase
     {
-        public SkillActivationItemViewModel(string name, int skillId, bool activationStatus, int maximumActivations = 0, int activationNumbers = 0, string description = "")
+        public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 0, string description = "")
         {
             SkillName = name;
             Status = activationStatus;
             SkillId = skillId;
             MaximumActivations = maximumActivations;
             ActivationNumbers = activationNumbers;
+            Modifiers = modifiers;
             Description = description;
         }
 
@@ -37,6 +39,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => activationNumbers;
             set => this.RaiseAndSetIfChanged(ref activationNumbers, value);
         }
+
+        public Dictionary<string, float> Modifiers { get; } = new();
 
         public int SkillId { get; }
 

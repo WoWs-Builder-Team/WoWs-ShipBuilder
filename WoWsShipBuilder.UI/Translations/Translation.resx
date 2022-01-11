@@ -1038,4 +1038,13 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
     <value>Vertical</value>
   </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Skill &amp; Talents</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standard captain</value>
+  </data>
 </root>

@@ -107,7 +107,10 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal reload = reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier);
 
             var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-            reload = Math.Round(arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
+            reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
+
+            var artilleryReloadCoeffModifiers = modifiers.FindModifiers("artilleryReloadCoeff");
+            reload = Math.Round(artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff), 2);
 
             // Rotation speed modifiers
             var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");

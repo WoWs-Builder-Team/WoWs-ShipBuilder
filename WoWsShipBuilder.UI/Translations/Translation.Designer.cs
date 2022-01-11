@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
@@ -201,6 +201,33 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string CaptainSkillSelector_Points {
             get {
                 return ResourceManager.GetString("CaptainSkillSelector_Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skill &amp; Talents.
+        /// </summary>
+        public static string CaptainSkillSelector_SkillTalent {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_SkillTalent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics..
+        /// </summary>
+        public static string CaptainSkillSelector_SkillTalentDescription {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_SkillTalentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard captain.
+        /// </summary>
+        public static string CaptainSkillSelector_StandardCaptain {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_StandardCaptain", resourceCulture);
             }
         }
         

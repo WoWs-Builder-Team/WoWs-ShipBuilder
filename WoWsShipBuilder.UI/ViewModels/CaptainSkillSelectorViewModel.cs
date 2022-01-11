@@ -9,6 +9,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -32,7 +33,13 @@ namespace WoWsShipBuilder.UI.ViewModels
         public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation)
         {
             logger = Logging.GetLogger("CaptainSkillVM");
-            var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
+            var defaultCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType)!.Single().Value;
+
+            // Rename Default Captain
+            defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
+            var captainList = new Dictionary<string, Captain>();
+            captainList.Add(Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain);
+
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
@@ -57,24 +64,29 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
+                CaptainTalentsList.Clear();
 
                 if (newCaptain!.UniqueSkills != null)
                 {
                     foreach ((string name, UniqueSkill talent) in newCaptain!.UniqueSkills)
                     {
                         SkillActivationItemViewModel talentModel;
+
+                        // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
+                        var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime"))).ToDictionary(x => x.Key, x => x.Value);
                         if (talent.MaxTriggerNum <= 1)
                         {
-                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, false, description: talent.TranslationId + "_DESCRIPTION");
+                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
                         }
                         else
                         {
-                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
+                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
                         }
 
                         CaptainTalentsList.Add(talentModel);
                     }
                 }
+
                 var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
                 foreach (var skillNumber in currentlySelectedNumbersList)
@@ -82,6 +94,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
                     SkillOrderList.Add(skill);
                 }
+
+                SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
             }
         }
 
@@ -245,11 +259,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
                 }
 
-                if (showArHpSelection == false && ConditionalModifiersList.Count == 0)
-                {
-                    SkillActivationButtonEnabled = false;
-                }
-
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
             else
@@ -260,7 +269,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
                 {
                     ShowArHpSelection = true;
-                    SkillActivationButtonEnabled = true;
                 }
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
@@ -268,18 +276,18 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
                     if (skill.SkillNumber is FuriousSkillNumber)
                     {
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false, 4, 1));
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1));
                     }
                     else
                     {
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, false));
+                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, skill.ConditionalModifiers, false));
                     }
-
-                    SkillActivationButtonEnabled = true;
                 }
 
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
+
+            SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
         }
 
         /// <summary>
@@ -458,9 +466,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (ConditionalModifiersList.Count > 0)
             {
-                var conditionalSkillIds = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber).Select(skill => skill.SkillId);
-                var conditionalModifiers = SkillOrderList.ToList().Where(skill => conditionalSkillIds.Contains(skill.SkillNumber))
-                    .SelectMany(m => m.ConditionalModifiers).Select(effect => (effect.Key, effect.Value)).ToList();
+                var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber).SelectMany(skill => skill.Modifiers).Select(x => (x.Key, x.Value));
+
                 modifiers.AddRange(conditionalModifiers);
 
                 // Custom handling for Furious skill. Needs to take into account the number of fires
@@ -477,6 +484,18 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (arSkill is not null)
             {
                 modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - ArHpPercentage)));
+            }
+
+            if (CaptainTalentsList.Count > 0)
+            {
+                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1).SelectMany(skill => skill.Modifiers).Select(x => (x.Key, x.Value));
+                modifiers.AddRange(talentModifiers);
+
+                var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1)
+                    .SelectMany(talent => talent.Modifiers.Select(modifier => new KeyValuePair<string, float>(modifier.Key, (float)Math.Pow(modifier.Value, talent.ActivationNumbers))))
+                    .Select(x => (x.Key, x.Value));
+
+                modifiers.AddRange(talentMultipleActivationModifiers);
             }
 
             return modifiers;
