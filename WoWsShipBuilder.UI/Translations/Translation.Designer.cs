@@ -439,6 +439,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shells Path.
+        /// </summary>
+        public static string DispersionGraphWindow_ShellsPath {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_ShellsPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shots Number.
         /// </summary>
         public static string DispersionGraphWindow_ShotsNumber {

@@ -3,6 +3,7 @@
 ## Additions
 - It's now possible to manually adjust the size of each column displaying ships stats just by dragging the column edge.
 - It's now possible to rotate the dispersion plot.
+- On the dispersion plot tab there are now two icons idicating the incoming shells path and the plane where the plot is currently being drawn.
 
 ## Changes
 - Changed name for one of the ellipse planes from "real" to "impact angle".
@@ -18,7 +19,8 @@
 - Fixed Hydrophone Mod 1 not decreasing the ping intervals for the hydrophone consumable.
 - Fixed Superintendent not increasing the amount of Reserve Battery Unit consumable.
 - Fixed wrong turret angle rendering for front guns if gun angles are outside the valid value range.
-- Fixed vigilance torpedo protection bonus being applied incorrectly.
+- Fixed Vigilance torpedo protection bonus being applied incorrectly.
+- Fixed November Foxtrot buff not being displayed correctly.
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
