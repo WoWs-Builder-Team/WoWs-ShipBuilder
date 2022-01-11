@@ -712,10 +712,10 @@
     <value>キャンセル</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>カスタムパスの有効化</value>
+      <value>キャッシュ用カスタムパスの有効化</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>カスタムパスを挿入</value>
+      <value>キャッシュ用カスタムパスを入力</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>保存して終了</value>
@@ -847,7 +847,7 @@
     <value>弾道のグラフを開く</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>選択したパスは有効ではありません。</value>
+      <value>選択したカスタムパスは有効ではありません。</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>砲弾を選択</value>
@@ -1037,5 +1037,8 @@
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
     <value>垂直</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>砲弾の軌道</value>
   </data>
 </root>
