@@ -42,9 +42,9 @@
                 <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center"/>
                 
                 <!--Popup to manage skill activation-->
-                <Popup IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
+                <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
-                        <Grid Margin="10" Grid.Row="1" RowDefinitions="Auto,*,Auto">
+                        <Grid Margin="10" RowDefinitions="Auto,*,Auto">
                             <TextBlock Grid.Row="0" Text="{x:Static t:Translation.CaptainSkillSelector_SkillTalentDescription}" TextWrapping="Wrap" />
                             <StackPanel Orientation="Vertical" Margin="5,0" Grid.Row="1">
                                 <Separator Margin="0,5"/>

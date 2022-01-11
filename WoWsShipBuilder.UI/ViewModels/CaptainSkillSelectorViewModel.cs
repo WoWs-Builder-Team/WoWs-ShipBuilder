@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Metadata;
@@ -37,17 +36,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             // Rename Default Captain
             defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
-            var captainList = new Dictionary<string, Captain>();
-            captainList.Add(Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain);
+            var captainList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
-                captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
+                captainList = captainList.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
             }
 
             currentClass = shipClass;
-            CaptainList = captainList!.Select(x => x.Value).ToList();
+            CaptainList = captainList.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
         }
 
@@ -76,11 +74,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                         var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime"))).ToDictionary(x => x.Key, x => x.Value);
                         if (talent.MaxTriggerNum <= 1)
                         {
-                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
+                            talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
                         }
                         else
                         {
-                            talentModel = new SkillActivationItemViewModel(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
+                            talentModel = new(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
                         }
 
                         CaptainTalentsList.Add(talentModel);
@@ -207,7 +205,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// </summary>
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
-        /// <returns>A dictionary containg the skill for the class from the captain.</returns>
+        /// <returns>A dictionary containing the skill for the class from the captain.</returns>
         private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
@@ -276,11 +274,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
                     if (skill.SkillNumber is FuriousSkillNumber)
                     {
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1));
+                        ConditionalModifiersList.Add(new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1));
                     }
                     else
                     {
-                        ConditionalModifiersList.Add(new SkillActivationItemViewModel(skillName, skill.SkillNumber, skill.ConditionalModifiers, false));
+                        ConditionalModifiersList.Add(new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false));
                     }
                 }
 
@@ -450,8 +448,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-            var modifiers = SkillOrderList.ToList().Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
-               .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
+            var modifiers = SkillOrderList.ToList()
+                .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
+               .SelectMany(m => m.Modifiers)
+                .Select(effect => (effect.Key, effect.Value))
                .ToList();
 
             if (CamoEnabled)
@@ -466,7 +466,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (ConditionalModifiersList.Count > 0)
             {
-                var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber).SelectMany(skill => skill.Modifiers).Select(x => (x.Key, x.Value));
+                var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
+                    .SelectMany(skill => skill.Modifiers)
+                    .Select(x => (x.Key, x.Value));
 
                 modifiers.AddRange(conditionalModifiers);
 
@@ -488,12 +490,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (CaptainTalentsList.Count > 0)
             {
-                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1).SelectMany(skill => skill.Modifiers).Select(x => (x.Key, x.Value));
+                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1)
+                    .SelectMany(skill => skill.Modifiers)
+                    .Select(x => (x.Key, x.Value));
                 modifiers.AddRange(talentModifiers);
 
                 var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1)
-                    .SelectMany(talent => talent.Modifiers.Select(modifier => new KeyValuePair<string, float>(modifier.Key, (float)Math.Pow(modifier.Value, talent.ActivationNumbers))))
-                    .Select(x => (x.Key, x.Value));
+                    .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
+                    .Select(x => (x.Key, (float)x.Value));
 
                 modifiers.AddRange(talentMultipleActivationModifiers);
             }
