@@ -3,7 +3,7 @@
 ## Additions
 - It's now possible to manually adjust the size of each column displaying ships stats just by dragging the column edge.
 - It's now possible to rotate the dispersion plot.
-- On the dispersion plot tab there are now two icons idicating the incoming shells path and the plane where the plot is currently being drawn.
+- On the dispersion plot tab there are now two icons indicating the incoming shells path and the plane where the plot is currently being drawn.
 - Export screenshots of ship builds and allow loading ship builds from these screenshots (#73)
 
 ## Changes
