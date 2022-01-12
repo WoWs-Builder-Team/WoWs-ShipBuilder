@@ -152,6 +152,9 @@ namespace WoWsShipBuilder.Core.DataUI
             var restorationTimeModifiers = modifiers.FindModifiers("planeSpawnTime");
             decimal restorationTime = Math.Round((decimal)restorationTimeModifiers.Aggregate(plane.RestorationTime, (current, modifier) => current * modifier), 2);
 
+            var talentRestorationModifiers = modifiers.FindModifiers("airplaneReloadCoeff");
+            restorationTime = Math.Round((decimal)talentRestorationModifiers.Aggregate(restorationTime, (current, modifier) => current * (decimal)modifier), 2);
+
             float planeHP = 0;
             float cruisingSpeed = plane.Speed;
             float minSpeedMultiplier = plane.SpeedMinModifier;
@@ -228,6 +231,9 @@ namespace WoWsShipBuilder.Core.DataUI
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
             decimal finalCruisingSpeed = Math.Round((decimal)cruisingSpeedModifiers.Aggregate(cruisingSpeed, (current, modifier) => current * modifier), 0);
 
+            var talentCruisingSpeedModifiers = modifiers.FindModifiers("squadronSpeedCoeff");
+            finalCruisingSpeed = Math.Round(talentCruisingSpeedModifiers.Aggregate(finalCruisingSpeed, (current, modifier) => current * (decimal)modifier), 0);
+            
             var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
             maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 

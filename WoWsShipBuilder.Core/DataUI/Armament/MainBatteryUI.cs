@@ -120,7 +120,10 @@ namespace WoWsShipBuilder.Core.DataUI
             // Range modifiers
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
-            decimal range = Math.Round(rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
+            decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
+            
+            var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
+            range = Math.Round(talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
             // Consider dispersion modifiers
             var modifiedDispersion = new Dispersion

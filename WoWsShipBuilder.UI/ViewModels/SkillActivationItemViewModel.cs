@@ -5,7 +5,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class SkillActivationItemViewModel : ViewModelBase
     {
-        public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 0, string description = "")
+        public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
         {
             SkillName = name;
             Status = activationStatus;

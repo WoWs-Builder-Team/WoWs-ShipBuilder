@@ -51,7 +51,7 @@
                                 <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
                                     <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
                                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                                        <TextBlock Text="Adrenaline Rush HP: "/>
+                                        <TextBlock Text="Adrenaline Rush HP: " FontWeight="Bold"/>
                                         <TextBlock Text="{Binding ArHpPercentage}"/>
                                         <TextBlock Text=" %"/>
                                     </StackPanel>
@@ -61,8 +61,8 @@
                                         <DataTemplate>
                                             <DockPanel LastChildFill="True">
                                                 <StackPanel Spacing="10" Orientation="Horizontal" DockPanel.Dock="Right">
+                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="1" Width="60" MaxWidth="60"/>
                                                     <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
-                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0"/>
                                                 </StackPanel>
                                                 <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}, ConverterParameter=SKILL}" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold" DockPanel.Dock="Left"/>
                                             </DockPanel>
@@ -82,7 +82,7 @@
                                         <DataTemplate>
                                             <DockPanel LastChildFill="True" Margin="0,5">
                                                 <StackPanel Spacing="10" Orientation="Horizontal" DockPanel.Dock="Right">
-                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0" ClipValueToMinMax="True" MaxHeight="40"/>
+                                                    <NumericUpDown IsVisible="{Binding !!MaximumActivations}" IsEnabled="{Binding Status}" Value="{Binding ActivationNumbers}" Maximum="{Binding MaximumActivations}" Minimum="0" ClipValueToMinMax="True" MaxHeight="40" Width="60" MaxWidth="60"/>
                                                     <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left"  Margin="0,0,10,0" Spacing="5">

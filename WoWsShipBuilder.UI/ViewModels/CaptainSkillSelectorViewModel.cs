@@ -66,6 +66,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 if (newCaptain!.UniqueSkills != null)
                 {
+                    CaptainWithTalents = true;
                     foreach ((string name, UniqueSkill talent) in newCaptain!.UniqueSkills)
                     {
                         SkillActivationItemViewModel talentModel;
@@ -83,6 +84,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                         CaptainTalentsList.Add(talentModel);
                     }
+                }
+                else
+                {
+                    CaptainWithTalents = false;
                 }
 
                 var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
@@ -198,6 +203,17 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => skillActivationButtonEnabled;
             set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
+        }
+
+        private bool captainWithTalents = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current captain has talents.
+        /// </summary>
+        public bool CaptainWithTalents
+        {
+            get => captainWithTalents;
+            set => this.RaiseAndSetIfChanged(ref captainWithTalents, value);
         }
 
         /// <summary>
@@ -490,16 +506,20 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (CaptainTalentsList.Count > 0)
             {
-                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1)
+                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
                     .SelectMany(skill => skill.Modifiers)
                     .Select(x => (x.Key, x.Value));
                 modifiers.AddRange(talentModifiers);
 
-                var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1)
+                var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
                     .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
                     .Select(x => (x.Key, (float)x.Value));
-
                 modifiers.AddRange(talentMultipleActivationModifiers);
+
+                var talentFireChanceModifier = CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+                    .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
+                    .Select(x => (x.Key, (float)x.Value));
+                modifiers.AddRange(talentFireChanceModifier);
             }
 
             return modifiers;

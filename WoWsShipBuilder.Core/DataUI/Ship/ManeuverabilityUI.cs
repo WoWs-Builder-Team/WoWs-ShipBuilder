@@ -40,7 +40,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine].First()];
 
-            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+
+            maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
 
             decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 

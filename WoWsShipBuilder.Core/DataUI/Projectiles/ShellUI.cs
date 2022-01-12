@@ -144,6 +144,9 @@ namespace WoWsShipBuilder.Core.DataUI
                         var burnChanceModifierName = $"artilleryBurnChanceBonus";
                         shellFireChance += modifiers.FindModifiers(burnChanceModifierName).Select(m => m * 100).Sum();
 
+                        // Talent modifier
+                        shellFireChance += modifiers.FindModifiers("burnProbabilityBonus").Select(m => m * 100).Sum();
+
                         // IFHE and possibly modifiers from supership abilities
                         shellPenetration = modifiers.FindModifiers("penetrationCoeffHE").Aggregate(shellPenetration, (current, modifier) => current * modifier);
 
