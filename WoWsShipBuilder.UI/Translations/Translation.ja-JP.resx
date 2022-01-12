@@ -1041,4 +1041,52 @@
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
     <value>砲弾の軌道</value>
   </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+      <value>艦長スキル</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+      <value>画像からインポート</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+      <value>ビルドの画像を保存するときにエクスプローラを開く</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+      <value>画像を保存してコピー</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+      <value>保存</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+      <value>キャンセル</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+      <value>はい</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+      <value>いいえ</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+      <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+      <value>保存して終了</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+      <value>信号旗と消耗品を画像に含める</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+      <value>文字列を保存してコピー</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+      <value>ビルドの画像がクリップボードにコピーされました</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+      <value>ビルド画像用カスタムパスを有効にする</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+      <value>ビルド画像用カスタムパス</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+      <value>選択したカスタムパスは有効ではありません。</value>
+  </data>
 </root>
