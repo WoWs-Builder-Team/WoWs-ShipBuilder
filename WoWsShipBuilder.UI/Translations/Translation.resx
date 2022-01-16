@@ -1098,4 +1098,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
     <value>Standard captain</value>
   </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+      <value>Captain:</value>
+  </data>
 </root>

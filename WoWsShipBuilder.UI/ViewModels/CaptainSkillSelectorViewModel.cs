@@ -295,21 +295,29 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
                 {
-                    var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
-                    if (skill.SkillNumber is FuriousSkillNumber)
-                    {
-                        ConditionalModifiersList.Add(new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1));
-                    }
-                    else
-                    {
-                        ConditionalModifiersList.Add(new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false));
-                    }
+                    ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
                 }
 
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
 
             SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+        }
+
+        private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
+        {
+            var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+            SkillActivationItemViewModel result;
+            if (skill.SkillNumber is FuriousSkillNumber)
+            {
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1);
+            }
+            else
+            {
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -560,6 +568,18 @@ namespace WoWsShipBuilder.UI.ViewModels
             var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
             AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
+            foreach (var skill in SkillOrderList)
+            {
+                if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = true;
+                }
+
+                if (skill.ConditionalModifiers?.Any() ?? false)
+                {
+                    ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
+                }
+            }
         }
     }
 }

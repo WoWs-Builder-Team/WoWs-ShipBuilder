@@ -54,22 +54,25 @@ namespace WoWsShipBuilder.Core.DataUI
                 var secondaryGun = secondaryGroup.First();
 
                 var reloadModifiers = modifiers.FindModifiers("GSShotDelay");
-                var reload = Math.Round(reloadModifiers.Aggregate(secondaryGun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+                var reload = reloadModifiers.Aggregate((float)secondaryGun.Reload, (current, reloadModifier) => current * reloadModifier);
 
                 var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-                reload = Math.Round(arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
+                reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - (arModifier / 100)));
+
+                var otherReloadModifiers = modifiers.FindModifiers("ATBAReloadCoeff");
+                reload = otherReloadModifiers.Aggregate(reload, (current, modifier) => current * modifier);
 
                 var rangeModifiers = modifiers.FindModifiers("GSMaxDist");
                 var range = Math.Round(rangeModifiers.Aggregate(secondary.MaxRange, (current, rangeModifier) => current * (decimal)rangeModifier), 2);
 
-                var rof = 60 / reload;
+                var rof = Math.Round(60 / (decimal)reload, 1);
 
                 var secondaryUI = new SecondaryBatteryUI
                 {
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
                     Range = Math.Round(range / 1000, 2),
-                    Reload = reload,
-                    RoF = Math.Round(rof),
+                    Reload = Math.Round((decimal)reload, 2),
+                    RoF = rof,
                     Sigma = secondary.Sigma,
                 };
 

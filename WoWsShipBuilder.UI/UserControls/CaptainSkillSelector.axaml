@@ -29,19 +29,23 @@
                     <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,5,0,5">
-                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" VerticalAlignment="Center" MaxWidth="150" Margin="10,0">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,5,0,5" IsVisible="{Binding !ScreenshotMode}">
+                    <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" 
+                              VerticalAlignment="Center" MaxWidth="150" Margin="10,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBlock Text="Captain:" Padding="5,0" VerticalAlignment="Center" IsVisible="{Binding ScreenshotMode}" />
-                    <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" 
-                               IsVisible="{Binding ScreenshotMode}"/>
                 </StackPanel>
-                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center"/>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Spacing="3" Margin="0 5" 
+                            IsVisible="{Binding ScreenshotMode}">
+                    <TextBlock Text="{x:Static t:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
+                    <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" FontSize="15" />
+                </StackPanel>
+                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" 
+                        Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"/>
                 
                 <!--Popup to manage skill activation-->
                 <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
