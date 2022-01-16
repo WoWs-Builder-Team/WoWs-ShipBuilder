@@ -30,7 +30,6 @@
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="0,5,0,5">
-                    <!--<TextBlock Text="Captain:" Padding="5,0" VerticalAlignment="Center" />-->
                     <ComboBox Items="{Binding CaptainList}" SelectedItem="{Binding SelectedCaptain}" VerticalAlignment="Center" MaxWidth="150" Margin="10,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -88,7 +87,6 @@
                                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left"  Margin="0,0,10,0" Spacing="5">
                                                 <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
-                                                <!--ToolTip.Tip="{Binding Description, Converter={StaticResource Localizer}}"-->
                                                 </StackPanel>
                                             </DockPanel>
                                         </DataTemplate>
