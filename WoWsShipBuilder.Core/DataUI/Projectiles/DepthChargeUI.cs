@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
                 Damage = (int)Math.Round(damage, 0),
                 FireChance = Math.Round((decimal)depthCharge.FireChance * 100, 2),
                 FloodingChance = Math.Round((decimal)depthCharge.FloodChance * 100, 2),
-                ExplosionRadius = (decimal)depthCharge.ExplosionRadius,
+                ExplosionRadius = Math.Round((decimal)depthCharge.ExplosionRadius, 2),
             };
 
             depthChargeUI.ProjectileData = depthChargeUI.ToPropertyMapping();

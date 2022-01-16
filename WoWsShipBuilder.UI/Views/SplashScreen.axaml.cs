@@ -1,4 +1,5 @@
 using System;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,7 +7,9 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using NLog;
+using Splat;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
@@ -67,8 +70,8 @@ namespace WoWsShipBuilder.UI.Views
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     var startWindow = new StartingMenuWindow();
-                    startWindow.DataContext = new StartMenuViewModel(startWindow);
-                    if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    startWindow.DataContext = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
+                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = startWindow;
                     }

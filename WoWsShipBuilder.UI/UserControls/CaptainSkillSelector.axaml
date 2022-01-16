@@ -36,7 +36,10 @@
                                 <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox> 
+                    </ComboBox>
+                    <TextBlock Text="Captain:" Padding="5,0" VerticalAlignment="Center" IsVisible="{Binding ScreenshotMode}" />
+                    <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" 
+                               IsVisible="{Binding ScreenshotMode}"/>
                 </StackPanel>
                 <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center"/>
                 
@@ -98,7 +101,7 @@
                 </Popup>
                 
                 <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
-                          Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0"/>
+                          Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
