@@ -387,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Ricochet-Winkel</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Luftabwehr</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Flugzeug-Trefferpunkte</value>
   </data>
@@ -665,10 +667,10 @@
     <value>Minimale reichweite</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Ladungen</value>
+    <value>Bomben pro Ladung</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>Anti Uboot Waffen - Luftschlag</value>
+    <value>Wasserbomben-Luftschlag</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>Wasserbomben</value>
@@ -677,7 +679,7 @@
     <value>Streuungsanzeige</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Anti Uboot Waffen - Wasserbomben</value>
+    <value>Wasserbomben-Werfer</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>Erste ping Dauer</value>
@@ -710,10 +712,10 @@
     <value>Abbrechen</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Benutzerdefinierten Pfad verwenden</value>
+    <value>Benutzerdefinierten Datenpfad aktivieren</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Benutzerdefinierten Pfad eingeben</value>
+    <value>Benutzerdefinierten Datenpfad eingeben</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Speichern &amp; Verlassen</value>
@@ -935,7 +937,7 @@
     <value>Horizontal (Wasser)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Echt</value>
+    <value>Einschlagwinkel</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Vertikal</value>
@@ -944,16 +946,28 @@
     <value>Referenz-Fuso</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>In der Darstelklung kommen die Granaten von rechts.
-Das Diagramm ist um 90° rotiert, daher ist die vertikale Streuung horizontal und die horizontale Streuung vertikal dargestellt.
+    <value>Die Weiße Ellipse zeigt die maximale Streuungsfläche für die ausgewählte Zieldistanz.
+Die Rote Ellipse zeigt den Bereich, in dem durchschnittlich 50% der Granaten landen.
+Die Schwarze Ellipse zeigt die Größe einer Fuso als Referenz an.
 
-Die weiße Ellipse zeigt die maximale Streuungsfläche für die gewählte Zieldistanz.
-Die rote Ellipse zeigt den Bereich, in dem durchschnittlich die Hälfte der Granaten landet.
-Die schwarze Ellipse zeigt die Größe der Fuso als Referenz.
+Diagramm-Ebenen:
+1) HORIZONTAL: 
+    Zeigt den Einschlagpunkt der Granaten auf dem Wasser.
+    Diese Ansicht entspricht einer Ansicht aus der Vogelperspektive.
+    Dies ist die meistgenutzte Diagrammebene wenn verschiedene Schiffe verglichen werden sollen. 
+    Die Ellipse auf dieser Ebene ist wegen der Geschwindigkeit der Geschosse vertikal gestreckt.
+2) VERTIKAL: 
+    Zeigt den Einschlagpunkt der Granaten auf einer vertikalen Oberfläche.
+    Diese Ansicht entspricht einer Ansicht von vorne.
+    Nützlich für eine sehr präzise Analyse der vertikalen Streuung.
+3) Einschlags-Winkel: 
+    Zeigt den Einschlagpunkt der Granaten auf einer senkrecht zur Flugbahn der Granaten stehenden Ebene.
+    Diese Ansicht geht von der Perspektive der Granate aus.
+    Diese Ebene ist die tatsächlich während Gefechten relevante Ebene im Spiel.
+    Die Ellipse auf dieser Ebene ist nicht von der Granatengeschwindigkeit betroffen.
+    Nützlich, wenn Streuungen von Schiffen ohne Einfluss der Granatengeschwindigkeit verglichen werden sollen.
 
-Im Spiel sind Schiffe zweimal so groß wie die Umgebung, somit ist ein 200m langes Schiff 400m lang.
-Die tatsächliche Streuungsellipse wird in einer Ebene gezeichnet, die senkrecht zum Auftreffwinkel der Granate steht.
-Nur die auf das Wasser projizierte vertikale Streuung wird von der Geschwindigkeit des Geschosses beeinflusst. Die reale Streuung ist nicht betroffen.</value>
+Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes Schiff 400m lang ist.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Diagramm-Erklärung</value>
@@ -973,8 +987,8 @@ Nur die auf das Wasser projizierte vertikale Streuung wird von der Geschwindigke
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masse</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>Theoretische BPM</value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potentielle BPM</value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Brandwahrscheinlichkeit per Salve</value>
@@ -1006,7 +1020,88 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="SplashScreen_Init" xml:space="preserve">
     <value>Initialisiere...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Danksagung</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Danke an die folgenden Mitglieder der Community für die Übersetzung des Projekts. Unten werden alle Mitglieder mit mindestens 10 Beiträgen genannt.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Sekundärbatterie</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Ausrichtung der Diagramme</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Vertikal</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Granaten-Flugrichtung</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Kapitänsfertigkeiten</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Aus Grafik importieren</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Datei-Explorer beim Speichern einer Build-Grafik öffnen</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Speichern &amp; Grafik kopieren</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Speichern &amp; Verlassen</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Signale und Verbrauchsmaterialien in Grafik anzeigen</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Speichern &amp; Build-Text kopieren</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Build-Grafik wurde in die Zwischenablage kopiert</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Benutzerdefinierten Pfad für Build-Grafiken aktivieren</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Benutzerdefinierter Build-Grafik Pfad</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Der ausgewählte Pfad ist ungültig.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Fertigkeiten und Talente</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Mit den folgenden Schieberegler und Schalter können einzelne bedingte Fertigkeitseffekte aktiviert und deaktiviert werden. Für einige Effekte kann außerdem die Zahl der Aktivierungen gewählt werden. Beachte, dass nicht alle Fertigkeiten und Talente einen Effekt auf die Statistiken des Schiffs haben.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standard-Kapitän</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Kapitän:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bomben in einer Ladung</value>
+  </data>
 </root>
