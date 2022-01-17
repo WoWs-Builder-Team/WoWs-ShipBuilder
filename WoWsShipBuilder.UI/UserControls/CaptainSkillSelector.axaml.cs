@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using Avalonia;
+using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using WoWsShipBuilder.UI.CustomControls;
 using WoWsShipBuilder.UI.ViewModels;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -22,6 +18,16 @@ namespace WoWsShipBuilder.UI.UserControls
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void OnSkillActiation_Click(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                var parent = button.Parent;
+                var skillActivationPopup = parent?.LogicalChildren.FirstOrDefault(child => child is Popup) as Popup;
+                skillActivationPopup!.IsOpen = true;
+            }
         }
 
         // For future feature: right click to set alternative skills

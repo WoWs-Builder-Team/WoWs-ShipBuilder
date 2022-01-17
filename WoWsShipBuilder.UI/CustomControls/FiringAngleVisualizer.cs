@@ -9,8 +9,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Extensions;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {

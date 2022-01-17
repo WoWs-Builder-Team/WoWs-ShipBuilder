@@ -13,10 +13,10 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.ViewModels

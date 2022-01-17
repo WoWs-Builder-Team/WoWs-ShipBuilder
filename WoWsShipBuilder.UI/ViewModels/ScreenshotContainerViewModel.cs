@@ -3,8 +3,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.UserControls;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

@@ -8,7 +8,7 @@
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
-             xmlns:data="clr-namespace:WoWsShipBuilderDataStructures;assembly=WoWsShipBuilderDataStructures"
+             xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
     <Design.DataContext>

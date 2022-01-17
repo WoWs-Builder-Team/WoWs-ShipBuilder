@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.BuildCreator
 {

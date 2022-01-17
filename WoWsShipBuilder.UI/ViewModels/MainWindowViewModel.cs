@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -17,11 +18,11 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -35,12 +36,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
     class MainWindowViewModel : ViewModelBase, IScalableViewModel
     {
-        // ReSharper disable once CollectionNeverQueried.Local
-        private readonly List<IDisposable?> collectionChangeListeners = new();
-
         private readonly MainWindow? self;
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
+
+        private readonly CompositeDisposable disposables = new();
 
         private readonly IFileSystem fileSystem;
 
@@ -370,22 +370,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void LoadNewShip(ShipSummary summary)
         {
-            foreach (var listener in collectionChangeListeners)
-            {
-                listener!.Dispose();
-            }
-
-            var temp = ChildrenWindows.ToList();
-            foreach (var window in temp)
+            foreach (var window in ChildrenWindows.ToList())
             {
                 window.Close();
             }
 
-            collectionChangeListeners.Clear();
+            disposables.Clear();
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
             AppDataHelper.Instance.LoadNationFiles(summary.Nation);
 
-            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex, null);
+            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
@@ -428,7 +422,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
             }
 
-            NextShips = nextShipsIndexes!.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
+            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
             if (build != null)
@@ -439,17 +433,27 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void AddChangeListeners()
         {
-            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
+            ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+        }
+
+        private void HandleCaptainParamsChange(bool newValue)
+        {
+            if (!newValue)
+            {
+                UpdateStatsViewModel();
+            }
         }
 
         private void CalculateXPValues()
         {
-            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) &&
-                !string.IsNullOrEmpty(FreeXpBonus))
+            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
             {
                 var baseXp = Convert.ToInt32(BaseXp);
                 var xpBonus = Convert.ToDouble(XpBonus);
@@ -481,7 +485,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             tokenSource.Cancel();
             tokenSource.Dispose();
-            tokenSource = new CancellationTokenSource();
+            tokenSource = new();
             CancellationToken token = tokenSource.Token;
             currentBuildName = null;
             Task.Run(

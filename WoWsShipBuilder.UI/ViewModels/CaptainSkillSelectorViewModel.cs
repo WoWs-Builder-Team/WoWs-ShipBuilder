@@ -8,12 +8,19 @@ using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class CaptainSkillSelectorViewModel : ViewModelBase
     {
+        private const int ArSkillNumber = 23;
+
+        private const int ArSkillNumberSubs = 82;
+
+        private const int FuriousSkillNumber = 81;
+
         private readonly ShipClass currentClass;
 
         private readonly Logger logger;
@@ -31,15 +38,20 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             logger = Logging.GetLogger("CaptainSkillVM");
             ScreenshotMode = screenshotMode;
-            var captainList = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType);
+            var defaultCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType)!.Single().Value;
+
+            // Rename Default Captain
+            defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
+            var captainList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
+
             var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
-                captainList = captainList!.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
+                captainList = captainList.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
             }
 
             currentClass = shipClass;
-            CaptainList = captainList!.Select(x => x.Value).ToList();
+            CaptainList = captainList.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
         }
 
@@ -56,13 +68,43 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
                 SkillList = GetSkillsForClass(currentClass, newCaptain);
-                var currentlySelectednumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
+                CaptainTalentsList.Clear();
+
+                if (newCaptain!.UniqueSkills != null)
+                {
+                    CaptainWithTalents = true;
+                    foreach ((string name, UniqueSkill talent) in newCaptain!.UniqueSkills)
+                    {
+                        SkillActivationItemViewModel talentModel;
+
+                        // get all the modifiers from the talents. workTime is excluded because it's for talents that automatically trigger a consumable, so it's not an effect we can show.
+                        var modifiers = talent.SkillEffects.SelectMany(effect => effect.Value.Modifiers.Where(modifier => !modifier.Key.Equals("workTime"))).ToDictionary(x => x.Key, x => x.Value);
+                        if (talent.MaxTriggerNum <= 1)
+                        {
+                            talentModel = new(talent.TranslationId, -1, modifiers, false, description: talent.TranslationId + "_DESCRIPTION");
+                        }
+                        else
+                        {
+                            talentModel = new(talent.TranslationId, -1, modifiers, false, talent.MaxTriggerNum, 1, talent.TranslationId + "_DESCRIPTION");
+                        }
+
+                        CaptainTalentsList.Add(talentModel);
+                    }
+                }
+                else
+                {
+                    CaptainWithTalents = false;
+                }
+
+                var currentlySelectedNumbersList = SkillOrderList.Select(x => x.SkillNumber).ToList();
                 SkillOrderList.Clear();
-                foreach (var skillNumber in currentlySelectednumbersList)
+                foreach (var skillNumber in currentlySelectedNumbersList)
                 {
                     var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
                     SkillOrderList.Add(skill);
                 }
+
+                SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
             }
         }
 
@@ -110,15 +152,74 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref skillList, value);
         }
 
-        private AvaloniaList<Skill> skillOrderList = new();
+        /// <summary>
+        /// Gets the List containing the selected skill in the order they were selected.
+        /// </summary>
+        public AvaloniaList<Skill> SkillOrderList { get; } = new();
+
+        private bool showArHpSelection;
 
         /// <summary>
-        /// Gets or sets the List containing the selected skill in the order they were selected.
+        /// Gets or sets a value indicating whether the hp bar slider for adrenaline rush should be shown.
         /// </summary>
-        public AvaloniaList<Skill> SkillOrderList
+        public bool ShowArHpSelection
         {
-            get => skillOrderList;
-            set => this.RaiseAndSetIfChanged(ref skillOrderList, value);
+            get => showArHpSelection;
+            set => this.RaiseAndSetIfChanged(ref showArHpSelection, value);
+        }
+
+        private int arHpPercentage = 100;
+
+        /// <summary>
+        /// Gets or sets the current Adrenaline rush hp percentage.
+        /// </summary>
+        public int ArHpPercentage
+        {
+            get => arHpPercentage;
+            set => this.RaiseAndSetIfChanged(ref arHpPercentage, value);
+        }
+
+        /// <summary>
+        /// Gets the dictionary containing the conditional modifiers and their activation status.
+        /// </summary>
+        public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
+
+        /// <summary>
+        /// Gets the dictionary containing the conditional modifiers and their activation status.
+        /// </summary>
+        public AvaloniaList<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
+
+        private bool skillActivationPopupOpen;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the skill activation popup is visibile.
+        /// </summary>
+        public bool SkillActivationPopupOpen
+        {
+            get => skillActivationPopupOpen;
+            set => this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
+        }
+
+        private bool skillActivationButtonEnabled = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the skill activation button is enabled.
+        /// </summary>
+        public bool SkillActivationButtonEnabled
+        {
+            get => skillActivationButtonEnabled;
+            set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
+        }
+
+        private bool captainWithTalents = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current captain has talents.
+        /// </summary>
+        public bool CaptainWithTalents
+        {
+            get => captainWithTalents;
+            set => this.RaiseAndSetIfChanged(ref captainWithTalents, value);
         }
 
         public bool ScreenshotMode { get; }
@@ -128,18 +229,17 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// </summary>
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
-        /// <returns>A dictionary containg the skill for the class from the captain.</returns>
+        /// <returns>A dictionary containing the skill for the class from the captain.</returns>
         private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
-            var skills = captain!.Skills;
+            var skills = captain.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
             filteredSkills.ForEach(skill =>
             {
                 // Get only the tier for the relevant class
                 var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
-                var first = classSkill.First();
                 skill.Value.Tiers = classSkill;
 
                 // Get only the value for the relevant class
@@ -170,6 +270,17 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ReorderSkillList();
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints -= pointCost;
+                if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = false;
+                }
+
+                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                {
+                    var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                    ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
+                }
+
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
             else
@@ -177,8 +288,36 @@ namespace WoWsShipBuilder.UI.ViewModels
                 SkillOrderList.Add(skill);
                 var pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints += pointCost;
+                if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = true;
+                }
+
+                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                {
+                    ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
+                }
+
                 this.RaisePropertyChanged(nameof(SkillOrderList));
             }
+
+            SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
+        }
+
+        private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
+        {
+            var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+            SkillActivationItemViewModel result;
+            if (skill.SkillNumber is FuriousSkillNumber)
+            {
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1);
+            }
+            else
+            {
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -210,16 +349,9 @@ namespace WoWsShipBuilder.UI.ViewModels
                     }
 
                     // If it's not, i search the skill of the previous tier. If at least one exist, i can add it
-                    List<int>? previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
+                    List<int> previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
 
-                    if (previousTierSkills != null && previousTierSkills.Count > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return previousTierSkills.Count > 0;
                 }
 
                 // Removing skill
@@ -348,8 +480,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <returns>The List of modifiers of the currently selected skill.</returns>
         public List<(string, float)> GetModifiersList()
         {
-            var modifiers = SkillOrderList.Where(skill => skill.Modifiers != null)
-               .SelectMany(m => m.Modifiers).Select(effect => (effect.Key, effect.Value))
+            var modifiers = SkillOrderList.ToList()
+                .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
+               .SelectMany(m => m.Modifiers)
+                .Select(effect => (effect.Key, effect.Value))
                .ToList();
 
             if (CamoEnabled)
@@ -362,6 +496,48 @@ namespace WoWsShipBuilder.UI.ViewModels
                 modifiers.Add(("fireResistanceEnabled", 1));
             }
 
+            if (ConditionalModifiersList.Count > 0)
+            {
+                var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)
+                    .SelectMany(skill => skill.Modifiers)
+                    .Select(x => (x.Key, x.Value));
+
+                modifiers.AddRange(conditionalModifiers);
+
+                // Custom handling for Furious skill. Needs to take into account the number of fires
+                var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
+                var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
+                if (furiousSkill is not null && furiousSkillModifier is not null)
+                {
+                    var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
+                    modifiers.Add(("GMShotDelay", multiplier));
+                }
+            }
+
+            var arSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs);
+            if (arSkill is not null)
+            {
+                modifiers.Add(("lastChanceReloadCoefficient", arSkill.Modifiers["lastChanceReloadCoefficient"] * (100 - ArHpPercentage)));
+            }
+
+            if (CaptainTalentsList.Count > 0)
+            {
+                var talentModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations <= 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+                    .SelectMany(skill => skill.Modifiers)
+                    .Select(x => (x.Key, x.Value));
+                modifiers.AddRange(talentModifiers);
+
+                var talentMultipleActivationModifiers = CaptainTalentsList.Where(talent => talent.Status && talent.MaximumActivations > 1 && !talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+                    .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Pow(modifier.Value, talent.ActivationNumbers))))
+                    .Select(x => (x.Key, (float)x.Value));
+                modifiers.AddRange(talentMultipleActivationModifiers);
+
+                var talentFireChanceModifier = CaptainTalentsList.Where(talent => talent.Status && talent.Modifiers.Any(modifier => modifier.Key.Equals("burnProbabilityBonus")))
+                    .SelectMany(talent => talent.Modifiers.Select(modifier => (modifier.Key, Value: Math.Round(modifier.Value * talent.ActivationNumbers, 2))))
+                    .Select(x => (x.Key, (float)x.Value));
+                modifiers.AddRange(talentFireChanceModifier);
+            }
+
             return modifiers;
         }
 
@@ -369,11 +545,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// Create a list of skill numbers from the currently selected list.
         /// </summary>
         /// <returns>The list of currently selected skill numbers.</returns>
-        public List<int> GetSkillNumberList()
-        {
-            var list = SkillOrderList.Select(skill => skill.SkillNumber).ToList();
-            return list;
-        }
+        public List<int> GetSkillNumberList() => SkillOrderList.Select(skill => skill.SkillNumber).ToList();
 
         /// <summary>
         /// Return the index of the selected captain.
@@ -396,6 +568,18 @@ namespace WoWsShipBuilder.UI.ViewModels
             var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
             AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
+            foreach (var skill in SkillOrderList)
+            {
+                if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
+                {
+                    ShowArHpSelection = true;
+                }
+
+                if (skill.ConditionalModifiers?.Any() ?? false)
+                {
+                    ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
+                }
+            }
         }
     }
 }

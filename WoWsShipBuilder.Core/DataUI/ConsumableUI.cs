@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -125,6 +125,9 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 var usesModifiers = modifiers.FindModifiers("additionalConsumables", true);
                 uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
+
+                var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
+                uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));              
 
                 var allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime");
                 cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => (current * modifier));
