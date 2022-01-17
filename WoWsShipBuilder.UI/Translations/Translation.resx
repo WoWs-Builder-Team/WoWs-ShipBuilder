@@ -715,7 +715,7 @@
     <value>Enable custom data path</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insert custom cache path</value>
+    <value>Insert custom data path</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Save &amp; exit</value>
@@ -847,7 +847,7 @@
     <value>Show ballistic graphs</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>The selected custom cache path is not valid.</value>
+    <value>The selected custom data path is not valid.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Select a shell</value>
