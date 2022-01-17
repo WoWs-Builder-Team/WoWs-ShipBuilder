@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
@@ -1168,7 +1168,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable custom cache path.
+        ///   Looks up a localized string similar to Enable custom data path.
         /// </summary>
         public static string SettingsWindow_CustomPath {
             get {
@@ -1537,7 +1537,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ASW airstrike.
+        ///   Looks up a localized string similar to ASW Airstrike.
         /// </summary>
         public static string ShipStats_AswAirstrike {
             get {
@@ -1572,6 +1572,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_BlastExplanation {
             get {
                 return ResourceManager.GetString("ShipStats_BlastExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bombs in a charge.
+        /// </summary>
+        public static string ShipStats_BombsPerCharge {
+            get {
+                return ResourceManager.GetString("ShipStats_BombsPerCharge", resourceCulture);
             }
         }
         
@@ -1747,7 +1756,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ASW depth Charges.
+        ///   Looks up a localized string similar to ASW Depth Charges.
         /// </summary>
         public static string ShipStats_DepthChargesLauncher {
             get {
@@ -2269,7 +2278,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charges.
+        ///   Looks up a localized string similar to Number of charges.
         /// </summary>
         public static string ShipStats_NumberOfUses {
             get {
@@ -2656,7 +2665,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Torpedo launchers.
+        ///   Looks up a localized string similar to Torpedo Launchers.
         /// </summary>
         public static string ShipStats_TorpedoLaunchers {
             get {

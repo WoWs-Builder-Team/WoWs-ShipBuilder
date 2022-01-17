@@ -5,6 +5,8 @@
 - It's now possible to rotate the dispersion plot.
 - On the dispersion plot tab there are now two icons indicating the incoming shells path and the plane where the plot is currently being drawn.
 - Export screenshots of ship builds and allow loading ship builds from these screenshots (#73)
+- It's now possible to activate the effects of captain's talents and conditional skills.
+- It's now possible to specify the HP % for Adrenaline Rush.
 
 ## Changes
 - Changed name for one of the ellipse planes from "real" to "impact angle".
@@ -23,6 +25,7 @@
 - Fixed Vigilance torpedo protection bonus being applied incorrectly.
 - Fixed November Foxtrot buff not being displayed correctly.
 - Fixed a bug causing the window icon to become blurry when opening a ship window.
+- Fixed amount of bombs in a charge for depth charges being calculated incorrectly.
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 

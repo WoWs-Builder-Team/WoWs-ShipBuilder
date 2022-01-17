@@ -23,7 +23,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public int NumberOfUses { get; set; }
 
-        public int AmmoPerAttack { get; set; }
+        public int BombsPerCharge { get; set; }
 
         [JsonIgnore]
         public ProjectileUI? DepthCharge { get; set; }
@@ -42,7 +42,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 return null;
             }
 
-            var ammoPerAttack = depthChargesArray.DepthCharges.Sum(charge => charge.DepthChargesNumber);
+            var ammoPerAttack = depthChargesArray.DepthCharges.Sum(charge => charge.DepthChargesNumber) * depthChargesArray.NumShots;
             var ammoName = depthChargesArray.DepthCharges.First(charge => charge.DepthChargesNumber > 0).AmmoList.First();
 
             var numberOfUses = modifiers.FindModifiers("dcNumPacksBonus").Aggregate(depthChargesArray.MaxPacks, (current, modifier) => current + (int)modifier);
@@ -53,7 +53,7 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 Reload = depthChargesArray.Reload,
                 NumberOfUses = numberOfUses,
-                AmmoPerAttack = ammoPerAttack,
+                BombsPerCharge = ammoPerAttack,
                 DepthCharge = ammo,
             };
 
