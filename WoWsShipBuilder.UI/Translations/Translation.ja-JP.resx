@@ -667,7 +667,7 @@
     <value>最小射程</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>数</value>
+    <value>爆雷数</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>爆雷空襲</value>
@@ -679,7 +679,7 @@
     <value>散布界の可視化</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>爆雷</value>
+    <value>空襲爆雷</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>1回目のピンガー効果時間</value>
@@ -712,10 +712,10 @@
     <value>キャンセル</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-      <value>キャッシュ用カスタムパスの有効化</value>
+    <value>データ用カスタムパスの有効化</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-      <value>キャッシュ用カスタムパスを入力</value>
+    <value>データ用カスタムパスを入力</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>保存して終了</value>
@@ -847,7 +847,7 @@
     <value>弾道のグラフを開く</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-      <value>選択したカスタムパスは有効ではありません。</value>
+    <value>選択したカスタムパスは有効ではありません。</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>砲弾を選択</value>
@@ -1042,51 +1042,66 @@
     <value>砲弾の軌道</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
-      <value>艦長スキル</value>
+    <value>艦長スキル</value>
   </data>
   <data name="BuildImport_ImportFromImage" xml:space="preserve">
-      <value>画像からインポート</value>
+    <value>画像からインポート</value>
   </data>
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
-      <value>ビルドの画像を保存するときにエクスプローラを開く</value>
+    <value>ビルドの画像を保存するときにエクスプローラを開く</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-      <value>画像を保存してコピー</value>
+    <value>画像を保存してコピー</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
-      <value>保存</value>
+    <value>保存</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
-      <value>キャンセル</value>
+    <value>キャンセル</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-      <value>はい</value>
+    <value>はい</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
-      <value>いいえ</value>
+    <value>いいえ</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
-      <value>Ok</value>
+    <value>Ok</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
-      <value>保存して終了</value>
+    <value>保存して終了</value>
   </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
-      <value>信号旗と消耗品を画像に含める</value>
+    <value>信号旗と消耗品を画像に含める</value>
   </data>
   <data name="BuildCreationWindow_ExportString" xml:space="preserve">
-      <value>文字列を保存してコピー</value>
+    <value>文字列を保存してコピー</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
-      <value>ビルドの画像がクリップボードにコピーされました</value>
+    <value>ビルドの画像がクリップボードにコピーされました</value>
   </data>
   <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
-      <value>ビルド画像用カスタムパスを有効にする</value>
+    <value>ビルド画像用カスタムパスを有効にする</value>
   </data>
   <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
-      <value>ビルド画像用カスタムパス</value>
+    <value>ビルド画像用カスタムパス</value>
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
-      <value>選択したカスタムパスは有効ではありません。</value>
+    <value>選択したカスタムパスは有効ではありません。</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>艦長スキルと特殊能力</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>次のスライダーとトグルを使用すると、特定の条件付き艦長スキルを有効または無効にできます。 可能であれば、特殊能力が発動する回数を選択することもできます。 すべての艦長スキル/特殊能力が艦艇の性能表示に影響するわけではないことに注意してください。</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>標準的な船長</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>艦長:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>1回あたりの爆弾</value>
   </data>
 </root>
