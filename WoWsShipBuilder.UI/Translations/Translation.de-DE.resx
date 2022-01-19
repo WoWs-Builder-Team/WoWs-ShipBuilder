@@ -1104,7 +1104,4 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
     <value>Bomben in einer Ladung</value>
   </data>
-  <data name="SettingsWindow_Credits" xml:space="preserve">
-      <value>Credits</value>
-  </data>
 </root>
