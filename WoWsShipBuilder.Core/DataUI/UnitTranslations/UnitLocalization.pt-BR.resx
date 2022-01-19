@@ -136,28 +136,28 @@
     <value>s</value>
   </data>
   <data name="Unit_KM" xml:space="preserve">
-    <value>km</value>
+    <value>Km</value>
   </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>DPS</value>
+    <value>dps</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
-    <value>TP</value>
+    <value>HP</value>
   </data>
   <data name="Unit_Knots" xml:space="preserve">
-    <value>kn</value>
+    <value>nós</value>
   </data>
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
-    <value>Schüsse/Minute</value>
+    <value>tiros/min</value>
   </data>
   <data name="Unit_FPM" xml:space="preserve">
-    <value>Brände/Min</value>
+    <value>fogos/min</value>
   </data>
   <data name="ArmamentType_AP" xml:space="preserve">
     <value>AP</value>
