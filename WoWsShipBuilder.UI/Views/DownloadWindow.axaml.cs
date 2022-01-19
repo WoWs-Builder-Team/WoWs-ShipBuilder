@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
@@ -33,7 +35,15 @@ namespace WoWsShipBuilder.UI.Views
             Task.Run(async () =>
             {
                 var viewmodel = new SplashScreenViewModel();
-                await viewmodel.VersionCheck(true);
+                try
+                {
+                    await viewmodel.VersionCheck(true);
+                }
+                catch (Exception e)
+                {
+                    Logging.Logger.Error(e, "Encountered unexpected error during data download.");
+                }
+
                 await Dispatcher.UIThread.InvokeAsync(Close);
             });
         }

@@ -1,4 +1,5 @@
 using System;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,8 +7,9 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using NLog;
+using Splat;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
@@ -52,7 +54,15 @@ namespace WoWsShipBuilder.UI.Views
             {
                 Task minimumRuntime = Task.Delay(1500);
                 Logger.Debug("Checking gamedata versions...");
-                await dataContext.VersionCheck();
+                try
+                {
+                    await dataContext.VersionCheck();
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Encountered unexpected exception during version check.");
+                }
+
                 Logger.Debug("Startup tasks completed. Launching main window.");
 
                 await minimumRuntime;
@@ -60,7 +70,7 @@ namespace WoWsShipBuilder.UI.Views
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     var startWindow = new StartingMenuWindow();
-                    startWindow.DataContext = new StartMenuViewModel(startWindow);
+                    startWindow.DataContext = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
                     if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = startWindow;

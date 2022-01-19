@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.UI.UserControls
             if (icon != MessageBoxIcon.None)
             {
                 var iconControl = msgbox.FindControl<Image>("Icon");
-                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
                 Bitmap? bitmap = null;
                 switch (icon)
                 {

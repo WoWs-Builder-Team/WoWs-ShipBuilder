@@ -7,7 +7,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
@@ -15,7 +15,9 @@ namespace WoWsShipBuilder.Core.DataProvider
     {
         #region Static Fields and Constants
 
-        private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new AppDataHelper());
+        private const string ShipBuilderName = "WoWsShipBuilder";
+
+        private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new());
 
         #endregion
 
@@ -29,7 +31,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         internal AppDataHelper(IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
-            DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WoWsShipBuilder");
+            DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
 
             DefaultCultureDetails = new(new("en-GB"), "en");
             var languages = new List<CultureDetails>
@@ -38,9 +40,10 @@ namespace WoWsShipBuilder.Core.DataProvider
                 new(new("nl-NL"), "nl"),
                 new(new("fr-FR"), "fr"),
                 new(new("de-DE"), "de"),
+                new(new("it-IT"), "it"),
                 new(new("ja-JP"), "ja"),
-                new(new("ko-KR"), "ko"),
                 new(new("ru-RU"), "ru"),
+                new(new("es-ES"), "es"),
                 new(new("tr-TR"), "tr"),
             };
             var builder = ImmutableList.CreateBuilder<CultureDetails>();
@@ -66,6 +69,8 @@ namespace WoWsShipBuilder.Core.DataProvider
         }
 
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
+
+        public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public CultureDetails DefaultCultureDetails { get; }
 
@@ -122,6 +127,19 @@ namespace WoWsShipBuilder.Core.DataProvider
             fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
             var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
             return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
+        }
+
+        /// <summary>
+        /// Helper method to create the path for a build image file.
+        /// </summary>
+        /// <param name="buildName">The name of the saved build.</param>
+        /// <param name="shipName">The name of the ship of the build</param>
+        /// <returns>The path where the generated image should be stored.</returns>
+        public string GetImageOutputPath(string buildName, string shipName)
+        {
+            string directory = BuildImageOutputDirectory;
+            fileSystem.Directory.CreateDirectory(directory);
+            return fileSystem.Path.Combine(directory, shipName + " - " + buildName + ".png");
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider.Updater
 {
@@ -192,7 +192,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             string versionName;
             try
             {
-                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
+                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.VersionName.IndexOf('#')];
             }
             catch (Exception e)
             {

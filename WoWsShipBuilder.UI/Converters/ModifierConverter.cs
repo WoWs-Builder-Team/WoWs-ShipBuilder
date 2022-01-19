@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.Converters
             "StyleCop.CSharp.ReadabilityRules",
             "SA1123:Do not place regions within elements",
             Justification = "<The code is a fucking mess otherwise>")]
-        public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             string value = "";
             string description = "";
@@ -147,7 +147,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                         break;
                     }
-                        
+
                     // This is Adrenaline Rush
                     case { } str when str.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase):
                         value = $"-{modifier}%";

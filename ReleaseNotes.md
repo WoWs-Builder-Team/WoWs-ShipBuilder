@@ -1,38 +1,31 @@
-# Update 1.3.0 - RC1
+# Update 1.3.2 - pre
 
 ## Additions
-- Add button to open dispersion and ballistics window directly from start menu
-- Add dispersion plot in the dispersion and ballistics window
-- Add optional telemetry data in settings. Telemetry data is disabled by default and needs to be enabled manually
-- Add a tooltip for dispersion formula in main battery column (#10)
-- Add several parameters to ships armaments
-- Add blast protection parameter for engine and rudder (#9)
-- Add torpedo layout (#50)
-- Add the option to change the application language. For now, only EN, FR, DE, JA, KO, RU and TR are supported. More languages may be added in the future. (#61)
+- It's now possible to manually adjust the size of each column displaying ships stats just by dragging the column edge.
+- It's now possible to rotate the dispersion plot.
+- On the dispersion plot tab there are now two icons indicating the incoming shells path and the plane where the plot is currently being drawn.
+- Export screenshots of ship builds and allow loading ship builds from these screenshots (#73)
+- It's now possible to activate the effects of captain's talents and conditional skills.
+- It's now possible to specify the HP % for Adrenaline Rush.
 
 ## Changes
-- Windows now automatically resize to fit on smaller screens or on screens with dpi scaling enabled (#56)
-- Dispersion formulas are now in Km instead of m
+- Changed name for one of the ellipse planes from "real" to "impact angle".
+- Improved dispersion plot explanation section.
+- Changed Theoretical FPM value into Potential FPM: now it calculates the probability of each shell to set a fire instead of the probability of setting at least 1 fire with an entire salvo.
 
 ## Bugfixes
-- Show missing modules on aircraft carriers (#38)
-- Fixed a crash when selecting ship with no main guns in the dispersion or ballistic graphs
-- Fixed a display bug of Montana's turret angles
-- Fixed invalid app manifest configurations regarding scaling
-- Hide AA expander when there is no anti air on a ship (#45)
-- Fix InvalidOperationException when showing the dialog after an application update (#46)
-- Clear list of ships for the ship selection window after the server type is changed in the settings window
-- Update embedded icons to show correct versions of the Airstrike upgrade
-- Fixed modifier calculation for some CV upgrades
-- Fixed additional spotter planes provided by "Eye in the Sky" not being taken into account
-- Fixed engine upgrade modifier calculation
-- Fixed bug in incremental image updates using the wrong version name
-- Fixed wrong unit for RoF in ship stats
-- Fixed incorrect value for theoretical DPM
-- Fixed incorrect guns name display
-- Fixed overmatch value not being displayed or being shown incorrectly
-- Properly reset cached data on server type change to avoid exceptions on new ships
-- Limit size of consumable images to avoid overflows in case of errors
+- Fixed Secondary battery and AA defense armaments not having localization.
+- Fixed Blast penetration parameter being shown for AP and SAP.
+- Fixed Japanese localization in the dispersion plot.
+- Fixed Rudder and Engine blast protection being listed twice for some ships.
+- Fixed Fire Prevention skill not decreasing the amount of fires spots.
+- Fixed Hydrophone Mod 1 not decreasing the ping intervals for the hydrophone consumable.
+- Fixed Superintendent not increasing the amount of Reserve Battery Unit consumable.
+- Fixed wrong turret angle rendering for front guns if gun angles are outside the valid value range.
+- Fixed Vigilance torpedo protection bonus being applied incorrectly.
+- Fixed November Foxtrot buff not being displayed correctly.
+- Fixed a bug causing the window icon to become blurry when opening a ship window.
+- Fixed amount of bombs in a charge for depth charges being calculated incorrectly.
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 

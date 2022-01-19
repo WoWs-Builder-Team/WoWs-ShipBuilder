@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Extensions
 {
@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.Extensions
             }
 
             return dataSource.Where(modifier => modifier.Key.Contains(filter, StringComparison.InvariantCultureIgnoreCase))
-            .Select(modifier => modifier.Value);
+                        .Select(modifier => modifier.Value);
         }
 
         public static bool IsValidIndex(this int index) => index > -1;

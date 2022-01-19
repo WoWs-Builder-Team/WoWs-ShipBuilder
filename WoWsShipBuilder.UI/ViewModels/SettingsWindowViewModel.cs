@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -47,8 +48,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
             AutoUpdate = AppData.Settings.AutoUpdateEnabled;
             CustomPath = AppData.Settings.CustomDataPath;
-            IsCustomPathEnabled = !(CustomPath is null);
+            CustomBuildImagePath = AppData.Settings.CustomImagePath;
+            IsCustomPathEnabled = CustomPath is not null;
+            IsCustomBuildImagePathEnabled = CustomBuildImagePath is not null;
             TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
+            OpenExplorerAfterImageSave = AppData.Settings.OpenExplorerAfterImageSave;
 
             if (AppData.DataVersion is null)
             {
@@ -86,6 +90,22 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+
+        private bool isCustomBuildImagePathEnabled;
+
+        public bool IsCustomBuildImagePathEnabled
+        {
+            get => isCustomBuildImagePathEnabled;
+            set => this.RaiseAndSetIfChanged(ref isCustomBuildImagePathEnabled, value);
+        }
+
+        private string? customBuildImagePath;
+
+        public string? CustomBuildImagePath
+        {
+            get => customBuildImagePath;
+            set => this.RaiseAndSetIfChanged(ref customBuildImagePath, value);
+        }
 
         public string Version
         {
@@ -141,6 +161,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
         }
 
+        private bool openExplorerAfterImageSave;
+
+        public bool OpenExplorerAfterImageSave
+        {
+            get => openExplorerAfterImageSave;
+            set => this.RaiseAndSetIfChanged(ref openExplorerAfterImageSave, value);
+        }
+
         public void ResetSettings()
         {
             var cleanSettings = new AppSettings();
@@ -183,6 +211,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             Logging.Logger.Info("Saving settings");
             bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
             bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
+            bool imagePathChanged = IsCustomBuildImagePathEnabled ? !(CustomBuildImagePath?.Equals(AppData.Settings.CustomImagePath) ?? false) : AppData.Settings.CustomImagePath != null;
             bool cultureChanged = false;
             if (IsCustomPathEnabled)
             {
@@ -202,6 +231,23 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.Settings.CustomDataPath = null;
             }
 
+            if (imagePathChanged)
+            {
+                if (!IsCustomBuildImagePathEnabled || string.IsNullOrWhiteSpace(CustomBuildImagePath))
+                {
+                    AppData.Settings.CustomImagePath = null;
+                }
+                else if (IsValidPath(CustomBuildImagePath ?? string.Empty))
+                {
+                    AppData.Settings.CustomImagePath = CustomBuildImagePath;
+                }
+                else
+                {
+                    await MessageBox.Show(self, Translation.SettingsWindow_BuildImagePathInvalid, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
             AppData.Settings.AutoUpdateEnabled = AutoUpdate;
             AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
 
@@ -213,6 +259,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
+            AppData.Settings.OpenExplorerAfterImageSave = OpenExplorerAfterImageSave;
 
             if (serverChanged || pathChanged)
             {
@@ -239,17 +286,31 @@ namespace WoWsShipBuilder.UI.ViewModels
             self?.Close();
         }
 
-        public async void SelectFolder()
+        private async Task<string?> SelectFolder()
         {
             var dialog = new OpenFolderDialog
             {
                 Directory = AppDataHelper.Instance.AppDataDirectory,
             };
-            var path = await dialog.ShowAsync(self!);
-            if (!string.IsNullOrEmpty(path))
+            return await dialog.ShowAsync(self!);
+        }
+
+        public async void SelectCachePath()
+        {
+            string? cachePath = await SelectFolder();
+            if (!string.IsNullOrWhiteSpace(cachePath))
             {
-                CustomPath = path;
+                CustomPath = cachePath;
                 IsCustomPathEnabled = true;
+            }
+        }
+
+        public async void SelectBuildImagePath()
+        {
+            string? imagePath = await SelectFolder();
+            if (!string.IsNullOrWhiteSpace(imagePath))
+            {
+                CustomBuildImagePath = imagePath;
             }
         }
 

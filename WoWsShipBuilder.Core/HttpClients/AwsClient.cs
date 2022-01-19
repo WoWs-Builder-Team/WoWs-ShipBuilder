@@ -8,7 +8,7 @@ using NLog;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
@@ -32,7 +32,7 @@ namespace WoWsShipBuilder.Core.HttpClients
         internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler)
             : base(fileSystem, appDataHelper)
         {
-            Client = new HttpClient(new RetryHttpHandler(handler ?? new HttpClientHandler()));
+            Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
 
         public static AwsClient Instance => InstanceValue.Value;
@@ -77,17 +77,13 @@ namespace WoWsShipBuilder.Core.HttpClients
             string zipPath = FileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
             try
             {
-                await DownloadFileAsync(new Uri(zipUrl), zipPath)
-                    .ContinueWith(
-                        t => Logger.Warn(t.Exception, "Exception while downloading images from uri: {}", zipUrl),
-                        TaskContinuationOptions.OnlyOnFaulted)
-                    .ContinueWith(_ => { }, TaskContinuationOptions.NotOnFaulted);
+                await DownloadFileAsync(new(zipUrl), zipPath);
                 ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
                 FileSystem.File.Delete(zipPath);
             }
             catch (HttpRequestException e)
             {
-                Logger.Error(e, "Failed to download images.");
+                Logger.Warn(e, "Failed to download images from uri {}.", zipUrl);
             }
         }
 
@@ -112,44 +108,25 @@ namespace WoWsShipBuilder.Core.HttpClients
             foreach ((string category, string fileName) in relativeFilePaths)
             {
                 string localFileName = FileSystem.Path.Combine(AppDataHelper.GetDataPath(serverType), category, fileName);
-                Uri uri = string.IsNullOrWhiteSpace(category) ? new Uri(baseUrl + fileName) : new Uri(baseUrl + $"{category}/{fileName}");
-                Task task = Task.Run(async () =>
+                Uri uri = string.IsNullOrWhiteSpace(category) ? new(baseUrl + fileName) : new(baseUrl + $"{category}/{fileName}");
+                var task = Task.Run(async () =>
                 {
-                    await DownloadFileAsync(uri, localFileName)
-                        .ContinueWith(
-                            t => Logger.Warn(t.Exception, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName),
-                            TaskContinuationOptions.OnlyOnFaulted)
-                        .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted);
+                    try
+                    {
+                        await DownloadFileAsync(uri, localFileName);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Logger.Warn(e, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName);
+                    }
+
                     progress.Report(1);
                 });
                 taskList.Add(task);
             }
 
+            // TODO: handle exceptions all at one place
             await Task.WhenAll(taskList);
-        }
-
-        /// <summary>
-        /// Downloads program languages.
-        /// </summary>
-        /// <param name="serverType">The <see cref="ServerType"/> of the requested data.</param>
-        /// <returns>The task object representing the asynchronous operation.</returns>
-        public async Task DownloadLanguage(ServerType serverType, string languageName)
-        {
-            Logger.Debug("Downloading language files for server type {}.", serverType);
-            string server = serverType == ServerType.Live ? "live" : "pts";
-
-            string localePath = FileSystem.Path.Combine(AppDataHelper.Instance.GetDataPath(serverType), "Localization");
-            if (!FileSystem.Directory.Exists(localePath))
-            {
-                FileSystem.Directory.CreateDirectory(localePath);
-            }
-
-            string fileName = $"{languageName}.json";
-            string url = $"{Host}/api/{server}/Localization/{fileName}";
-            string localeName = FileSystem.Path.Combine(localePath, fileName);
-            await DownloadFileAsync(new Uri(url), localeName)
-                .ContinueWith(t => Logger.Error(t.Exception, "Error while downloading localization with url {}.", url), TaskContinuationOptions.OnlyOnFaulted)
-                .ContinueWith(t => { }, TaskContinuationOptions.NotOnFaulted);
         }
     }
 }

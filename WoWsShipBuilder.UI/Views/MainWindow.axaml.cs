@@ -1,4 +1,5 @@
 using System;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
@@ -6,7 +7,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Splat;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
@@ -60,7 +63,7 @@ namespace WoWsShipBuilder.UI.Views
             var ship = AppData.ShipDictionary![shipIndex!];
             var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).PrevShipIndex;
             var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).NextShipsIndex;
-            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex, contentScaling: dc!.ContentScaling);
+            DataContext = new MainWindowViewModel(Locator.Current.GetServiceSafe<IFileSystem>(), ship, this, prevShipIndex, nextShipIndex, contentScaling: dc!.ContentScaling);
         }
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
@@ -69,7 +72,7 @@ namespace WoWsShipBuilder.UI.Views
             var ship = AppData.ShipDictionary![dc!.PreviousShipIndex!];
             var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).PrevShipIndex;
             var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).NextShipsIndex;
-            DataContext = new MainWindowViewModel(ship, this, prevShipIndex, nextShipIndex, contentScaling: dc.ContentScaling);
+            DataContext = new MainWindowViewModel(Locator.Current.GetServiceSafe<IFileSystem>(), ship, this, prevShipIndex, nextShipIndex, contentScaling: dc.ContentScaling);
         }
     }
 }

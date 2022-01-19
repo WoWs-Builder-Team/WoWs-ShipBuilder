@@ -2,15 +2,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="165"
+        mc:Ignorable="d" d:DesignWidth="390" d:DesignHeight="175"
         x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
         xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        CanResize="False" Width="300" Height="165" WindowStartupLocation="CenterOwner"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        CanResize="False" Width="390" WindowStartupLocation="CenterOwner" SizeToContent="Height"
         Title="BuildCreationWindow">
+    <Design.DataContext>
+        <viewModels:BuildCreationWindowViewModel />
+    </Design.DataContext>
     <Grid RowDefinitions="30,*">
-        <userControls:AppHeader Grid.Row="0"/>
-        <StackPanel Grid.Row="1" Margin="10" Spacing="10">
+        <userControls:AppHeader Grid.Row="0" ShowMinimizeButton="False"/>
+        <StackPanel Grid.Row="1" Margin="10" Spacing="15">
             <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_InsertBuildName}" TextWrapping="Wrap"/>
             <Grid ColumnDefinitions="*,Auto">
                 <TextBox Text="{Binding BuildName}" VerticalAlignment="Center"/>
@@ -19,10 +23,18 @@
                     <TextBlock Text="{Binding ShipName}"/>
                 </StackPanel>
             </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="15">
-                <Button IsDefault="True" Content="Save" Width="60" Command="{Binding SaveBuildCommand}"/>
-                <Button IsCancel="True" Content="Cancel" Width="60" Command="{Binding CloseBuildCommand}"/>
-            </StackPanel>
+            <CheckBox IsChecked="{Binding IncludeSignals}" Content="{x:Static t:Translation.BuildCreationWindow_IncludeSignals}" />
+            <DockPanel LastChildFill="True">
+                <StackPanel Orientation="Horizontal" Spacing="10" DockPanel.Dock="Left">
+                    <Button IsDefault="True" Command="{Binding SaveAndCopyImage}">
+                        <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_ExportImage}" TextWrapping="Wrap"/>
+                    </Button>
+                    <Button Command="{Binding SaveAndCopyString}">
+                        <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_ExportString}" TextWrapping="Wrap"/>
+                    </Button>
+                </StackPanel>
+                <Button IsCancel="True" Content="{x:Static t:Translation.Dialog_Cancel}" Width="60" Command="{Binding CloseBuild}" HorizontalAlignment="Right"/>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </Window>

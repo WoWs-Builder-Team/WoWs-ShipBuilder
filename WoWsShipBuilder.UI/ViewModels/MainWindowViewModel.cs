@@ -1,20 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media.Imaging;
+using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -28,12 +36,13 @@ namespace WoWsShipBuilder.UI.ViewModels
 
     class MainWindowViewModel : ViewModelBase, IScalableViewModel
     {
-        // ReSharper disable once CollectionNeverQueried.Local
-        private readonly List<IDisposable?> collectionChangeListeners = new();
-
         private readonly MainWindow? self;
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
+
+        private readonly CompositeDisposable disposables = new();
+
+        private readonly IFileSystem fileSystem;
 
         private Account accountType = Account.Normal;
 
@@ -79,9 +88,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string xpBonus = "0";
 
-        public MainWindowViewModel(Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
+        private string? currentBuildName;
+
+        public MainWindowViewModel(IFileSystem fileSystem, Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
         {
             self = window;
+            this.fileSystem = fileSystem;
             tokenSource = new();
             ContentScaling = contentScaling;
 
@@ -89,7 +101,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public MainWindowViewModel()
-            : this(AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
+            : this(new FileSystem(), AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
         {
         }
 
@@ -255,21 +267,50 @@ namespace WoWsShipBuilder.UI.ViewModels
             LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
         }
 
-        public void OpenSaveBuild()
+        public async void OpenSaveBuild()
         {
             Logging.Logger.Info("Saving build");
             var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
-            var shipName = Localizer.Instance[CurrentShipIndex!].Localization;
-            var win = new BuildCreationWindow();
+            if (currentBuildName != null)
+            {
+                currentBuild.BuildName = currentBuildName;
+            }
+
+            string shipName = Localizer.Instance[CurrentShipIndex!].Localization;
+            var win = new BuildCreationWindow
+            {
+                ShowInTaskbar = false,
+            };
             win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
-            win.ShowInTaskbar = false;
-            win.ShowDialog(self);
+            var dialogResult = await win.ShowDialog<BuildCreationResult?>(self) ?? BuildCreationResult.Canceled;
+            if (!dialogResult.Save)
+            {
+                return;
+            }
+
+            AppData.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
+            currentBuildName = currentBuild.BuildName;
+            string outputPath = await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
+
+            string infoBoxContent;
+            if (dialogResult.CopyImageToClipboard)
+            {
+                infoBoxContent = Translation.BuildCreationWindow_SavedImageToClipboard;
+            }
+            else
+            {
+                await Application.Current.Clipboard.SetTextAsync(currentBuild.CreateStringFromBuild());
+                infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
+            }
+
+            await MessageBox.Show(self, infoBoxContent, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+            OpenExplorerForFile(outputPath);
         }
 
         public void BackToMenu()
         {
             StartingMenuWindow win = new();
-            win.DataContext = new StartMenuViewModel(win);
+            win.DataContext = new StartMenuViewModel(win, fileSystem);
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = win;
@@ -292,24 +333,53 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private void LoadNewShip(ShipSummary summary)
+        private static void OpenExplorerForFile(string filePath)
         {
-            foreach (var listener in collectionChangeListeners)
+            if (AppData.Settings.OpenExplorerAfterImageSave)
             {
-                listener!.Dispose();
+                Process.Start("explorer.exe", $"/select, \"{filePath}\"");
+            }
+        }
+
+        private async Task<string> CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
+        {
+            var screenshotWindow = new ScreenshotWindow
+            {
+                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData, includeSignals),
+            };
+            screenshotWindow.Show();
+
+            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName, Localizer.Instance[currentBuild.ShipIndex].Localization);
+            await using var bitmapData = new MemoryStream();
+            using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
+            bitmap.Save(bitmapData);
+            bitmapData.Seek(0, SeekOrigin.Begin);
+            BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
+            if (copyToClipboard)
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    using var savedBitmap = new Bitmap(outputPath);
+                    await ClipboardHelper.SetBitmapAsync(savedBitmap);
+                }
             }
 
-            var temp = ChildrenWindows.ToList();
-            foreach (var window in temp)
+            screenshotWindow.Close();
+            return outputPath;
+        }
+
+        private void LoadNewShip(ShipSummary summary)
+        {
+            foreach (var window in ChildrenWindows.ToList())
             {
                 window.Close();
             }
 
-            collectionChangeListeners.Clear();
+            disposables.Clear();
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
             AppDataHelper.Instance.LoadNationFiles(summary.Nation);
 
-            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex, null);
+            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
@@ -352,24 +422,38 @@ namespace WoWsShipBuilder.UI.ViewModels
                 PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
             }
 
-            NextShips = nextShipsIndexes!.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
+            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
+            if (build != null)
+            {
+                currentBuildName = build.BuildName;
+            }
         }
 
         private void AddChangeListeners()
         {
-            collectionChangeListeners.Add(ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()));
-            collectionChangeListeners.Add(CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()));
+            ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
+            CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+        }
+
+        private void HandleCaptainParamsChange(bool newValue)
+        {
+            if (!newValue)
+            {
+                UpdateStatsViewModel();
+            }
         }
 
         private void CalculateXPValues()
         {
-            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) &&
-                !string.IsNullOrEmpty(FreeXpBonus))
+            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
             {
                 var baseXp = Convert.ToInt32(BaseXp);
                 var xpBonus = Convert.ToDouble(XpBonus);
@@ -401,8 +485,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             tokenSource.Cancel();
             tokenSource.Dispose();
-            tokenSource = new CancellationTokenSource();
+            tokenSource = new();
             CancellationToken token = tokenSource.Token;
+            currentBuildName = null;
             Task.Run(
                 async () =>
                 {

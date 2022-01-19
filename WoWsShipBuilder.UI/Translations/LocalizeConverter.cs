@@ -24,7 +24,7 @@ namespace WoWsShipBuilder.UI.Translations
         /// <param name="culture">The conversion culture. Ignored by this converter, use the selected locale of<see cref="AppData.Settings"/> instead.</param>
         /// <returns>The localized string or the provided value if there is no localization available.</returns>
         /// <exception cref="NotSupportedException">Occurs if the provided value is not a string and the target type is not string either.</exception>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is string localizerKey && targetType.IsAssignableFrom(typeof(string)))
             {
@@ -84,7 +84,7 @@ namespace WoWsShipBuilder.UI.Translations
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
         }

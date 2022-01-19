@@ -23,5 +23,13 @@ namespace WoWsShipBuilder.Core.Settings
         public string? CustomDataPath { get; set; }
 
         public bool SendTelemetryData { get; set; }
+
+        public bool OpenExplorerAfterImageSave { get; set; }
+
+        public string? LastImageImportPath { get; set; }
+
+        public bool IncludeSignalsForImageExport { get; set; }
+
+        public string? CustomImagePath { get; set; }
     }
 }
