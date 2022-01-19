@@ -1104,4 +1104,10 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
     <value>Bombs in a charge</value>
   </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+      <value>Current Ships</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+      <value>Ships to Delete</value>
+  </data>
 </root>

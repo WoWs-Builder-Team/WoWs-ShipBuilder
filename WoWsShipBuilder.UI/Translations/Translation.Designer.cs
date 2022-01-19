@@ -664,6 +664,24 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Ships.
+        /// </summary>
+        public static string DispersionWindow_CurrentShips {
+            get {
+                return ResourceManager.GetString("DispersionWindow_CurrentShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ships to Delete.
+        /// </summary>
+        public static string DispersionWindow_ShipsToDelete {
+            get {
+                return ResourceManager.GetString("DispersionWindow_ShipsToDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispersion visualization.
         /// </summary>
         public static string DispersionWindow_Title {
