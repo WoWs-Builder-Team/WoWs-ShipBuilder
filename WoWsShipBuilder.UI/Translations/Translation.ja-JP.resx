@@ -1039,7 +1039,7 @@
     <value>垂直</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>砲弾の軌道</value>
+    <value>弾道</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>艦長スキル</value>
@@ -1105,9 +1105,9 @@
     <value>1回あたりの爆弾</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-      <value>現在の艦艇</value>
+    <value>現在の艦艇</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-      <value>削除する艦艇</value>
+    <value>削除する艦艇</value>
   </data>
 </root>
