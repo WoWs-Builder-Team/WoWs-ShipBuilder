@@ -1039,7 +1039,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Vertical</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Shells Path</value>
+    <value>Shell Trajectory</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>Captain skills</value>
@@ -1105,9 +1105,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Bombs in a charge</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-      <value>Current Ships</value>
+    <value>Current Ships</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-      <value>Ships to Delete</value>
+    <value>Ships to Delete</value>
   </data>
 </root>

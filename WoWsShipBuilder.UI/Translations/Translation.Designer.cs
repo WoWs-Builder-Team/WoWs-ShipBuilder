@@ -565,7 +565,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shells Path.
+        ///   Looks up a localized string similar to Shell Trajectory.
         /// </summary>
         public static string DispersionGraphWindow_ShellsPath {
             get {
