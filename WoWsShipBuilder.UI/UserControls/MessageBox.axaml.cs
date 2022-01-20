@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -119,18 +120,18 @@ namespace WoWsShipBuilder.UI.UserControls
 
             if (buttons == MessageBoxButtons.Ok || buttons == MessageBoxButtons.OkCancel)
             {
-                AddButton("Ok", MessageBoxResult.Ok, true);
+                AddButton(Translation.Dialog_Ok, MessageBoxResult.Ok, true);
             }
 
             if (buttons == MessageBoxButtons.YesNo || buttons == MessageBoxButtons.YesNoCancel)
             {
-                AddButton("Yes", MessageBoxResult.Yes);
-                AddButton("No", MessageBoxResult.No, true);
+                AddButton(Translation.Dialog_Yes, MessageBoxResult.Yes);
+                AddButton(Translation.Dialog_No, MessageBoxResult.No, true);
             }
 
             if (buttons == MessageBoxButtons.OkCancel || buttons == MessageBoxButtons.YesNoCancel)
             {
-                AddButton("Cancel", MessageBoxResult.Cancel, true);
+                AddButton(Translation.Dialog_Cancel, MessageBoxResult.Cancel, true);
             }
 
             var tcs = new TaskCompletionSource<MessageBoxResult>();
