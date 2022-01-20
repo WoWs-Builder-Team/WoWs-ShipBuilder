@@ -1104,4 +1104,10 @@
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
     <value>1回あたりの爆弾</value>
   </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+      <value>現在の艦艇</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+      <value>削除する艦艇</value>
+  </data>
 </root>
