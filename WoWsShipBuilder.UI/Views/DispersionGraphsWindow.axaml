@@ -245,15 +245,15 @@
                                   Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
                                   IsVisible="{Binding !IsRealPlane}">
                                 </Path>
-                                <Path Stretch="Fill" Stroke="Red" StrokeThickness="4"
+                                <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="4"
                                   Data="M 0 0 L 0 -5 Z"
                                   IsVisible="{Binding IsVerticalPlane}">
                                 </Path>
-                                <Path Stretch="Fill" Stroke="Red" StrokeThickness="4"
+                                <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="4"
                                   Data="M 0 0 M 0 5 H 5 Z"
                                   IsVisible="{Binding IsHorizontalPlane}">
                                 </Path>
-                                <Path Stretch="Fill" Stroke="Red" StrokeThickness="4"
+                                <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="4"
                                   Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
                                   IsVisible="{Binding IsRealPlane}">
                                 </Path>
