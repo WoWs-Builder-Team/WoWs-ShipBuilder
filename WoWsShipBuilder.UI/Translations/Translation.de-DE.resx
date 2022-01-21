@@ -1039,7 +1039,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Vertikal</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Granaten-Flugrichtung</value>
+    <value>Granatenflugbahn</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>Kapitänsfertigkeiten</value>
@@ -1105,9 +1105,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Bomben in einer Ladung</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-      <value>Aktuelle Schiffe</value>
+    <value>Aktuelle Schiffe</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-      <value>Zu löschende Schiffe</value>
+    <value>Zu löschende Schiffe</value>
   </data>
 </root>
