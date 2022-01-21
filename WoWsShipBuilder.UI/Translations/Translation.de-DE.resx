@@ -853,7 +853,7 @@
     <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>hat mehr als eine Granate. Wähle die Granate, von der du die Ballistik haben möchtest. Angamommen das Kaliber ist gleich, die Reihenfolge ist HE-&gt;SAP-&gt;AP.</value>
+    <value>hat mehr als eine Granate. Wähle die Granate, deren Ballistik du sehen möchtest. Bei gleichem Kaliber ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Normaler Account</value>
@@ -1039,7 +1039,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Vertikal</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Granaten-Flugrichtung</value>
+    <value>Granatenflugbahn</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>Kapitänsfertigkeiten</value>
@@ -1103,5 +1103,11 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   </data>
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
     <value>Bomben in einer Ladung</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Aktuelle Schiffe</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Zu löschende Schiffe</value>
   </data>
 </root>
