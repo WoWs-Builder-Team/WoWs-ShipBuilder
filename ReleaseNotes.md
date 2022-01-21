@@ -1,4 +1,4 @@
-# Update 1.3.2 - pre
+# Update 1.4.0
 
 ## Additions
 - It's now possible to manually adjust the size of each column displaying ships stats just by dragging the column edge.
