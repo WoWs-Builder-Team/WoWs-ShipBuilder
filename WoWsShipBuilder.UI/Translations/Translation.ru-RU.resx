@@ -1038,7 +1038,7 @@
     <value>Вертикальный</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Траектория снаряда</value>
+    <value>Траектория Снаряда</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>Перки капитана</value>
@@ -1104,9 +1104,9 @@
     <value>Бомб в сбросе</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-      <value>Текущие Корабли</value>
+    <value>Текущие Корабли</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-      <value>Удаляемые Корабли</value>
+    <value>Удаляемые Корабли</value>
   </data>
 </root>
