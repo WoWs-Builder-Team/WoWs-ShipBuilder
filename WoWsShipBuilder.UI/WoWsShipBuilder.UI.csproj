@@ -9,8 +9,8 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.3.1</VersionPrefix>
-<!--        <VersionSuffix>RC1</VersionSuffix>-->
+        <VersionPrefix>1.4.0</VersionPrefix>
+<!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
@@ -62,7 +62,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
+        <PackageReference Include="System.IO.Abstractions" Version="16.1.4" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
@@ -94,5 +94,11 @@
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Include="Settings\ApplicationOptions.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="..\docs\Third-Party-Licenses.txt">
+        <Link>Third-Party-Licenses.txt</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 </Project>

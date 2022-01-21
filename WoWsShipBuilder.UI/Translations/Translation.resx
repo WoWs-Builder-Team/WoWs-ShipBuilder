@@ -388,7 +388,7 @@
     <value>Ricochet angles</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>AA defense</value>
+    <value>AA Defense</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Aircraft HP</value>
@@ -667,10 +667,10 @@
     <value>Minimum range</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Charges</value>
+    <value>Number of charges</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW airstrike</value>
+    <value>ASW Airstrike</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>Depth charges</value>
@@ -679,7 +679,7 @@
     <value>Dispersion visualization</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW depth Charges</value>
+    <value>ASW Depth Charges</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>First ping duration</value>
@@ -712,10 +712,10 @@
     <value>Cancel</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Enable custom path</value>
+    <value>Enable custom data path</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insert custom path</value>
+    <value>Insert custom data path</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Save &amp; exit</value>
@@ -805,7 +805,7 @@
     <value>Time to fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpedo launchers</value>
+    <value>Torpedo Launchers</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>During aiming</value>
@@ -847,7 +847,7 @@
     <value>Show ballistic graphs</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>The selected custom path is not valid.</value>
+    <value>The selected custom data path is not valid.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Select a shell</value>
@@ -937,7 +937,7 @@
     <value>Horizontal (Water)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Real</value>
+    <value>Impact Angle</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Vertical</value>
@@ -946,16 +946,28 @@
     <value>Fuso Reference</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>In the plot, shells are coming from the right side.
-The plot is rotated by 90° so the vertical dispersion is shown horizontally and the horizontal dispersion is shown vertically.
-
-The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
-The RED ellipse shows the area where 50% of the shells lends on average.
+    <value>The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
+The RED ellipse shows the area where 50% of the shells lands on average.
 The BLACK ellipse shows the size of a Fuso as reference.
 
-Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.
-The real dispersion ellipse is drawn on a plane perpendicular to the shell's impact angle.
-Only the vertical dispersion projected on water is affected by shell's speed. The real one is not.</value>
+Plot planes:
+1) HORIZONTAL: 
+    shows the shells impact point with the water;
+    by selecting this plane you get a view from above;
+    this is the plot you mainly want to look at when comparing ships dispersions;
+    the ellipse on this plane is vertically stretched because of shells speed.
+2) VERTICAL: 
+    shows the shells impact point with a vertical surface;
+    by selecting this plane you get a view from the front;
+    useful for very precise vertical accuracy analysis.
+3) IMPACT ANGLE: 
+    shows the shells impact point with a surface angled at the shells impact angle;
+    by selecting this plane you get a view from the shells impact angle;
+    it's the plane where the game actually draws the dispersion ellipse during battles;
+    the ellipse on this plane is not affected by shells speed;
+    useful if you want to compare ships dispersion without taking into consideration shells speed.
+
+Ships in game are twice as big as the environment so a 200m long ship takes the space of 400m.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Plot explanation</value>
@@ -975,8 +987,8 @@ Only the vertical dispersion projected on water is affected by shell's speed. Th
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Mass</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>Theoretical FPM </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potential FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Fire chance per salvo</value>
@@ -1000,18 +1012,102 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
      The module can not be incapacitated.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Restart required</value>
+    <value>Restart required</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour.</value>
+    <value>A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Initializing...</value>
+    <value>Initializing...</value>
   </data>
   <data name="SettingsWindow_Credits" xml:space="preserve">
-      <value>Credits</value>
+    <value>Credits</value>
   </data>
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
-      <value>Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned.</value>
+    <value>Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Secondary Battery</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Plot Orientation</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Shell Trajectory</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Captain skills</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Import from Image</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Open explorer when saving a build image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Save &amp; copy image</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Save &amp; Exit</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Include signals and consumables in image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Save &amp; copy string</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Build image copied to clipboard</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Enable custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>The selected custom build image path is invalid.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Skill &amp; Talents</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standard captain</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Captain:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombs in a charge</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Current Ships</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Ships to Delete</value>
   </data>
 </root>

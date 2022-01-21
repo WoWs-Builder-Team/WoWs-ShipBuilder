@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Core.DataUI
@@ -78,14 +78,16 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            string[]? supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
             {
-                mainBattery = ship.MainBatteryModuleList[artilleryConfiguration.Components[ComponentType.Artillery].First()];
+                mainBattery = ship.MainBatteryModuleList[supportedModules.First()];
             }
             else
             {
-                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First();
+                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
                 mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
             }
 
@@ -102,7 +104,13 @@ namespace WoWsShipBuilder.Core.DataUI
 
             // Calculate main battery reload
             var reloadModifiers = modifiers.FindModifiers("GMShotDelay");
-            decimal reload = Math.Round(reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier), 2);
+            decimal reload = reloadModifiers.Aggregate(gun.Reload, (current, reloadModifier) => current * (decimal)reloadModifier);
+
+            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
+
+            var artilleryReloadCoeffModifiers = modifiers.FindModifiers("artilleryReloadCoeff");
+            reload = Math.Round(artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff), 2);
 
             // Rotation speed modifiers
             var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");
@@ -112,7 +120,10 @@ namespace WoWsShipBuilder.Core.DataUI
             // Range modifiers
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
-            decimal range = Math.Round(rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier) / 1000, 2);
+            decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
+            
+            var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
+            range = Math.Round(talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
             // Consider dispersion modifiers
             var modifiedDispersion = new Dispersion

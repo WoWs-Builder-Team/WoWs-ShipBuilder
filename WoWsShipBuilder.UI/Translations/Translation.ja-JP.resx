@@ -667,7 +667,7 @@
     <value>最小射程</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>数</value>
+    <value>爆雷数</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>爆雷空襲</value>
@@ -679,7 +679,7 @@
     <value>散布界の可視化</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>爆雷</value>
+    <value>空襲爆雷</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>1回目のピンガー効果時間</value>
@@ -712,10 +712,10 @@
     <value>キャンセル</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>カスタムパスの有効化</value>
+    <value>データ用カスタムパスの有効化</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>カスタムパスを挿入</value>
+    <value>データ用カスタムパスを入力</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>保存して終了</value>
@@ -847,7 +847,7 @@
     <value>弾道のグラフを開く</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>選択したパスは有効ではありません。</value>
+    <value>選択したカスタムパスは有効ではありません。</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>砲弾を選択</value>
@@ -937,7 +937,7 @@
     <value>水平(水面)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>実在の</value>
+    <value>着弾角度</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>垂直</value>
@@ -946,16 +946,28 @@
     <value>扶桑を基準にする</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>プロットにおいて、砲弾は右側から飛んできています。
-図示は90度回転しており、垂直散布界は水平に、水平散布界は垂直に表示されます。
-
-白の楕円は、選択された射撃距離の最大散布界を示しています。
-赤の楕円は、平均50%の砲弾が着弾する範囲を示しています。
+    <value>白の楕円は、選択された射撃距離における最大散布界を示しています。
+赤の楕円は、平均50%の砲弾が着弾する面積を示しています。
 黒の楕円は、基準として扶桑の大きさを示しています。
 
-ゲーム内の船は環境の2倍大きくなっているため、200mの船が実際に占めるスペースは400mです。
-本来の散布界楕円は、終端弾道に対して垂直に生成されます。
-弾速は、水面に投影される垂直散布界のみに影響を与えます。本来の散布界はこれに影響されません。</value>
+プロット平面:
+1) 水平方向: 
+    砲弾が水面と接触する点を表示します;
+    この面を選択すると、鉛直上方向からの視点に切り替わります;
+    他の船と散布界を比較する場合は、このプロットを使用するとよいでしょう;
+    この平面上の楕円は、砲弾速度の影響で引き伸ばされています。
+2) 垂直方向: 
+    海面に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、正面からの視点に切り替わります;
+    垂直散布界の精密な分析を行う際に有効です。
+3) 着弾角度方向: 
+    砲弾の着弾角度に対して垂直な平面と砲弾が接触する点を表示します;
+    この面を選択すると、砲弾の着弾角度からの視点に切り替わります;
+    戦闘において、ゲームが実際に使用する楕円です;
+    この楕円は砲弾速度の影響を受けません;
+    砲弾速度を考慮しない散布界の比較に有効です.
+
+ゲーム内の船は周辺環境の2倍に拡大されているため、200mの船が実際に占めるスペースは400mです。</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>プロットの説明</value>
@@ -975,8 +987,8 @@
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>質量</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>理論値FPM </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>潜在的分間火災率 </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>斉射ごとの火災発生率</value>
@@ -1000,12 +1012,102 @@
      モジュールは機能停止しません</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>再起動が必要です</value>
+    <value>再起動が必要です</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>言語の変更を有効にするにはアプリケーションの再起動が必要です。再起動しないと予期しない動作が発生する可能性があります。</value>
+    <value>言語の変更を有効にするにはアプリケーションの再起動が必要です。再起動しないと予期しない動作が発生する可能性があります。</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>初期化中...</value>
+    <value>初期化中...</value>
+  </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>クレジット</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>このプロジェクトの翻訳を手伝ってくれた以下のコミュニティメンバーの方々に感謝します。以下では、少なくとも10件のコントリビューションを持つすべてのメンバーについて紹介します。</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>副砲</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>水平</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>プロットの向き</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>垂直</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>弾道</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>艦長スキル</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>画像からインポート</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>ビルドの画像を保存するときにエクスプローラを開く</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>画像を保存してコピー</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>はい</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>いいえ</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>保存して終了</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>信号旗と消耗品を画像に含める</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>文字列を保存してコピー</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>ビルドの画像がクリップボードにコピーされました</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>ビルド画像用カスタムパスを有効にする</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>ビルド画像用カスタムパス</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>選択したカスタムパスは有効ではありません。</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>艦長スキルと特殊能力</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>次のスライダーとトグルを使用すると、特定の条件付き艦長スキルを有効または無効にできます。 可能であれば、特殊能力が発動する回数を選択することもできます。 すべての艦長スキル/特殊能力が艦艇の性能表示に影響するわけではないことに注意してください。</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>標準的な船長</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>艦長:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>1回あたりの爆弾</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>現在の艦艇</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>削除する艦艇</value>
   </data>
 </root>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -25,8 +25,10 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
+        [JsonIgnore]
         public decimal RudderBlastProtection { get; set; }
 
+        [JsonIgnore]
         public decimal EngineBlastProtection { get; set; }
 
         [JsonIgnore]
@@ -38,7 +40,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine].First()];
 
-            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+
+            maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
 
             decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 

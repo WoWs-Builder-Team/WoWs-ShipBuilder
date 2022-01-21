@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -81,6 +81,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var reloadModifiers = modifiers.FindModifiers("asReloadTimeCoeff");
             var reload = Math.Round(reloadModifiers.Aggregate(airstrike.ReloadTime, (current, modifier) => current * (decimal)modifier), 2);
+
+            var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            reload = Math.Round(arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
 
             var planeHp = plane.MaxHealth;
             var planeHpModifiers = modifiers.FindModifiers("asMaxHealthCoeff");

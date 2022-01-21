@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -68,12 +68,15 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal FuseTimer { get; set; }
 
         [DataUiUnit("FPM")]
-        public decimal TheoreticalFPM { get; set; }
+        public decimal PotentialFPM { get; set; }
 
         public decimal DepthExplosion { get; set; }
 
         [JsonIgnore]
         public bool IsLastEntry { get; private set; }
+
+        [JsonIgnore]
+        public bool ShowBlastPenetration { get; private set; }
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
@@ -95,9 +98,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 float shellPenetration = shell.Penetration;
                 float shellAirDrag = shell.AirDrag;
                 float shellMass = shell.Mass;
+                bool showBlastPenetration = false;
                 string shellType = "";
 
-                // float shellExplosionSize = shell.ExplosionSize;
                 switch (shell.ShellType)
                 {
                     case ShellType.HE:
@@ -106,6 +109,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         armingTreshold = 0;
                         fuseTimer = 0;
                         overmatch = 0;
+                        showBlastPenetration = true;
                         shellType = UnitLocalization.ArmamentType_HE;
 
                         // IFHE fire chance malus
@@ -139,6 +143,9 @@ namespace WoWsShipBuilder.Core.DataUI
                         // Demolition expert
                         var burnChanceModifierName = $"artilleryBurnChanceBonus";
                         shellFireChance += modifiers.FindModifiers(burnChanceModifierName).Select(m => m * 100).Sum();
+
+                        // Talent modifier
+                        shellFireChance += modifiers.FindModifiers("burnProbabilityBonus").Select(m => m * 100).Sum();
 
                         // IFHE and possibly modifiers from supership abilities
                         shellPenetration = modifiers.FindModifiers("penetrationCoeffHE").Aggregate(shellPenetration, (current, modifier) => current * modifier);
@@ -201,12 +208,13 @@ namespace WoWsShipBuilder.Core.DataUI
                     AirDrag = Math.Round((decimal)shellAirDrag, 2),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
-                    TheoreticalFPM = Math.Round(fireChancePerSalvo * salvosPerMinute, 2),
+                    PotentialFPM = Math.Round((decimal)shellFireChance / 100 * barrelCount * salvosPerMinute, 2),
                     Overmatch = overmatch,
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,
                     TheoreticalDPM = dpmNumber.ToString("n0", nfi),
                     Index = shell.Name,
+                    ShowBlastPenetration = showBlastPenetration,
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)

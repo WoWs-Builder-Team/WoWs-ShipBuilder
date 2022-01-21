@@ -388,7 +388,7 @@
     <value>Sekme Açıları</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Uçaksavar</value>
+    <value>Hava Savunma</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>Uçak CP'si</value>
@@ -667,10 +667,10 @@
     <value>Asgari Menzil</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Kullanılabilir</value>
+    <value>Salvo Sayısı</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>Sualtı Bombardımanı</value>
+    <value>DAH Sualtı Bombardımanı</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>Sualtı Bombaları</value>
@@ -679,7 +679,7 @@
     <value>Dağılım Görselleştirme</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>DSH Sualtı Bombaları</value>
+    <value>DAH Sualtı Bombaları</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>İlk Ping Süresi</value>
@@ -712,10 +712,10 @@
     <value>İptal</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Kayıt Klasörünü Değiştirme</value>
+    <value>Dosya Konumunu değiştir</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Kaydedilecek Klasörü Seçin</value>
+    <value>Dosya konumunu seçiniz</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Kaydet &amp; Çık</value>
@@ -847,7 +847,7 @@
     <value>Balistik Grafiğini Göster</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>Seçilen Dosya konumu geçerli değil.</value>
+    <value>Seçilen dosya konumu geçerli değil.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Mermi türü seçin</value>
@@ -937,7 +937,7 @@
     <value>Yatay (Deniz)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Gerçek</value>
+    <value>Çarpma Açısı</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Yatay</value>
@@ -946,16 +946,28 @@
     <value>Fuso Referansı</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>Bu diyagrama göre mermiler sağ taraftan gelmektedir.
-Diyagram 90° döndürüldüğü için için dikey dağılım yatay olarak, yatay dağılım ise dikey olarak görüntülenmektedir.
+    <value>Beyaz Elips, seçilen hedef menzilindeki maksimum dağılımı gösterir.
+Kırmızı Elips, Mermilerin ortalama %50 ' sinin düşeceği alanı gösterir.
+Siyah Elips, Fuso gemisinin boyutunu referans olarak gösterir.
 
-Beyaz elips seçilen hedef menzildeki maksimum dağılımı göstermektedir.
-Kırmızı elips mermilerin %50 ' sinin ortalama olarak düşeceği yeri göstermektedir.
-Siyah elips ile hedef gemi olarak Fuso'nun boyutları belirtilmektedir.
+Grafik Yüzeyleri:
+1) YATAY: 
+    mermilerin su üstünde çarpma noktalarını gösterir;
+    bu yüzeyi seçerek yukarıdan bir görünüm elde edersiniz;
+    gemi dağılımlarını karşılaştırırken bu grafiğe bakmalısınız;
+    bu düzlemdeki elips, mermilerin hızından dolayı dikey olarak gerilir.
+2) DİKEY: 
+    dikey düzlemde mermilerin çarpma noktasını gösterir;
+    bu yüzeyi seçerek önden bir görünüm elde edersiniz;
+    çok hassas dikey doğruluk analizi yapmakta kullanışlıdır.
+3) ÇARPMA AÇISI: 
+    merminin çarpma noktasını, açılı yüzeye çarpma açısı ile gösterir;
+    bu yüzeyi seçerek merminin çarpma açısından bir görünüm elde edersiniz;
+    bu yüzey, Oyunun savaş içerisinde çizdiği gerçek dağılım elipsini gösterir.;
+    bu düzlemdeki elips mermilerin hızından etkilenmez;
+    gemilerin mermi hızlarını dikkate almadan karşılaştırma yapmak için kullanışlıdır.
 
-Oyun içerisinde, gemilerin boyutları gösterilenden 2 kat daha büyük olduğu için, 200 metre uzunluğundaki bir gemi 400 metre yer kaplamaktadır.
-Gerçek dağılım elips'i merminin çarpma açısına dik bir düzlem üzerinde çizilir.
-Sadece su üzerinde öngörülen dikey dağılım merminin hızından etkilenir. Gerçek olan etkilenmez.</value>
+Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metre uzunluğundaki bir gemi 400 metre yer kaplar.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Diyagram Açıklaması</value>
@@ -975,8 +987,8 @@ Sadece su üzerinde öngörülen dikey dağılım merminin hızından etkilenir.
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Kütle</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>Teorik DBY </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potansiyel DBY </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Salvo başına yangın çıkarma şansı</value>
@@ -1000,12 +1012,102 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
      Modül devre dışı kalır.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Yeniden Başlatma Gerekli</value>
+    <value>Yeniden Başlatma Gerekli</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
+    <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Başlatılıyor...</value>
+    <value>Başlatılıyor...</value>
+  </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Hazırlayanlar</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Bu projenin çevirisine yardımcı oldukları için aşağıdaki Topluluk üyelerine teşekkür ederiz. Aşağıda, En az 10 katkısı olan tüm üyelerden bahsedilmiştir.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>İkincil Batarya</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Yatay</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Grafik Oryantasyonu</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Yatay</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Mermi Yönü</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Komutan Yetenekleri</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Resimden Aktar</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Konfigürasyon resmini kaydederken Windows Gezgini açın</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Resmi kaydet &amp; kopyala</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Kaydet &amp; Çık</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Sancak ve sarf malzemelerini resime dahil et</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Metni kaydet &amp; kopyala</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Konfigürasyon resmi panoya kopyalandı</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Konfigürasyon resmi kayıt noktasını değiştir</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Konfigürasyon resmi kayıt noktası seçin</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Seçilen konfigürasyon resminin konumu geçersiz.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Beceri &amp; Yetenekler</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Kaydırıcı ve seçenek geçişlerini kullanarak belirli koşullara bağlı beceri efektlerini etkinleştirebilir yada devre dışı bırakabilirsiniz. Eğer mümkünse, yetenek etkilerinin kaç kez tetiklenebileceği de seçebilirsiniz. Ancak beceri/yeteneklerin gemi istatistikleri üzerinde bir etkisi olmayacağını unutmayın.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standart Komutan</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Komutan:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Salvodaki bomba sayısı</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+      <value>Mevcut Gemiler</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+      <value>Silinecek Gemiler</value>
   </data>
 </root>

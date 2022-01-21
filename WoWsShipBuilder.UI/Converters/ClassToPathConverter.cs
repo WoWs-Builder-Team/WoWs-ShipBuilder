@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -19,7 +15,7 @@ namespace WoWsShipBuilder.UI.Converters
         private const string CCIcon = "M 0 0 H 8.2021 L 3.175 9.525 H 0 Z M 11.6573 0 6.6302 9.525 h 5.0271 l 8.599 -4.7625 z";
         private const string SubIcon = "m 0 0 h 3.175 V 9.7896 h -3.175 z M 5.8208 0.1719 V 9.6969 L 18.124 4.9344 Z";
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is ShipClass shipClass)
             {
@@ -69,7 +65,7 @@ namespace WoWsShipBuilder.UI.Converters
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }

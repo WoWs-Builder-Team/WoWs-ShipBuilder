@@ -154,7 +154,7 @@
     <value>м</value>
   </data>
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
-    <value>выстрелов/мин</value>
+    <value>снарядов/мин</value>
   </data>
   <data name="Unit_FPM" xml:space="preserve">
     <value>пожаров/мин</value>

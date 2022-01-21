@@ -1,8 +1,11 @@
 using System;
+using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Splat;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
@@ -45,10 +48,10 @@ namespace WoWsShipBuilder.UI.Views
             else
             {
                 var startWindow = new StartingMenuWindow();
-                var startViewModel = new StartMenuViewModel(startWindow);
+                var startViewModel = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
                 startWindow.DataContext = startViewModel;
                 startWindow.Show();
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = startWindow;
                 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -6,7 +5,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.UI.ViewModels;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Views
 {

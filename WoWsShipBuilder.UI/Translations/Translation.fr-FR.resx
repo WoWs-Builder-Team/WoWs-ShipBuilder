@@ -387,9 +387,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Angles de Ricochet</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Défense anti-aérienne</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>PV de l'avion</value>
   </data>
@@ -995,12 +993,15 @@ Seule la dispersion verticale projetée sur l'eau est affectée par la vitesse d
   </data>
   
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-      <value>Redémarrage nécessaire</value>
+    <value>Redémarrage nécessaire</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-      <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
+    <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-      <value>Initialisation...</value>
+    <value>Initialisation...</value>
   </data>
+  
+  
+  
 </root>
