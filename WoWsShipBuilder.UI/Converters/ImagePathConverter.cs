@@ -45,110 +45,116 @@ namespace WoWsShipBuilder.UI.Converters
             switch (value)
             {
                 case string imageName when parameter is string type:
-                {
-                    Logger.Debug("Processing regular image name.");
-                    Uri? uri = null;
+                    {
+                        Logger.Debug("Processing regular image name.");
+                        Uri? uri = null;
 
-                    if (imageName.Equals("blank"))
-                    {
-                        uri = new Uri($"avares://{assemblyName}/Assets/blank.png");
-                    }
-                    else if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        imageName = GetSkillimageId(imageName).ToLower();
-                        uri = new Uri($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
-                    }
-                    else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        string? imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
-                        Stream stream;
-                        if (fileSystem.File.Exists(imagePath))
+                        if (imageName.Equals("blank"))
                         {
-                            stream = fileSystem.File.OpenRead(imagePath);
+                            uri = new Uri($"avares://{assemblyName}/Assets/blank.png");
+                        }
+                        else if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            imageName = GetSkillimageId(imageName).ToLower();
+                            uri = new Uri($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
+                        }
+                        else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            string? imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
+                            Stream stream;
+                            if (fileSystem.File.Exists(imagePath))
+                            {
+                                stream = fileSystem.File.OpenRead(imagePath);
+                            }
+                            else
+                            {
+                                Logger.Warn("Using fallback error icon because image '{}' was not found.", imagePath);
+                                stream = LoadErrorIcon(assets);
+                            }
+
+                            return new Bitmap(stream);
+                        }
+
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
+                    }
+
+                case Modernization modernization:
+                    {
+                        Logger.Debug("Processing modernization.");
+                        Uri uri;
+                        if (modernization.Index != null)
+                        {
+                            uri = new($"avares://{assemblyName}/Assets/modernization_icons/icon_modernization_{modernization.Name}.png");
                         }
                         else
                         {
-                            Logger.Warn("Using fallback error icon because image '{}' was not found.", imagePath);
-                            stream = LoadErrorIcon(assets);
+                            uri = new($"avares://{assemblyName}/Assets/modernization_icons/modernization_default3.png");
                         }
 
-                        return new Bitmap(stream);
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
                     }
-
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
-                }
-
-                case Modernization modernization:
-                {
-                    Logger.Debug("Processing modernization.");
-                    Uri uri;
-                    if (modernization.Index != null)
-                    {
-                        uri = new($"avares://{assemblyName}/Assets/modernization_icons/icon_modernization_{modernization.Name}.png");
-                    }
-                    else
-                    {
-                        uri = new($"avares://{assemblyName}/Assets/modernization_icons/modernization_default3.png");
-                    }
-
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
-                }
 
                 case Consumable or (ShipConsumable, Consumable):
-                {
-                    Logger.Debug("Processing consumable.");
-                    if (value is not Consumable consumable)
                     {
-                        consumable = (((ShipConsumable, Consumable tmpConsumable))value).tmpConsumable;
+                        Logger.Debug("Processing consumable.");
+                        if (value is not Consumable consumable)
+                        {
+                            consumable = (((ShipConsumable, Consumable tmpConsumable))value).tmpConsumable;
+                        }
+
+                        string iconName = string.IsNullOrEmpty(consumable.IconId) ? consumable.Name : consumable.IconId;
+                        Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
+
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
                     }
-
-                    string iconName = string.IsNullOrEmpty(consumable.IconId) ? consumable.Name : consumable.IconId;
-                    Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
-
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
-                }
 
                 case ConsumableUI consumableUI:
-                {
-                    Logger.Debug("Processing consumableUI.");
-                    string iconName = consumableUI.IconName;
-                    Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
+                    {
+                        Logger.Debug("Processing consumableUI.");
+                        string iconName = consumableUI.IconName;
+                        Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
 
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
-                }
+                        Stream asset = LoadEmbeddedAsset(assets, uri);
+                        return new Bitmap(asset);
+                    }
 
                 case Exterior exterior:
-                {
-                    Logger.Debug("Processing Exterior.");
-                    if (!string.IsNullOrEmpty(exterior.Name) && parameter != null && parameter.ToString()!.Equals("Flags", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        Uri uri = new($"avares://{assemblyName}/Assets/signal_flags/{exterior.Name}.png");
-                        Stream asset = LoadEmbeddedAsset(assets, uri);
-                        return new Bitmap(asset);
+                        Logger.Debug("Processing Exterior.");
+                        if (!string.IsNullOrEmpty(exterior.Name) && parameter != null && parameter.ToString()!.Equals("Flags", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            Uri uri = new($"avares://{assemblyName}/Assets/signal_flags/{exterior.Name}.png");
+                            Stream asset = LoadEmbeddedAsset(assets, uri);
+                            return new Bitmap(asset);
+                        }
+                        else if (!string.IsNullOrEmpty(exterior.Name) && parameter != null && (parameter.ToString()!.Equals("Camouflage", StringComparison.InvariantCultureIgnoreCase) || parameter.ToString()!.Equals("Permoflage", StringComparison.InvariantCultureIgnoreCase)))
+                        {
+                            Uri uri = new($"avares://{assemblyName}/Assets/camouflages/{exterior.Name}.png");
+                            Stream asset = LoadEmbeddedAsset(assets, uri);
+                            return new Bitmap(asset);
+                        }
+                        else if (string.IsNullOrEmpty(exterior.Name))
+                        {
+                            Uri uri = new($"avares://{assemblyName}/Assets/blank.png");
+                            Stream asset = LoadEmbeddedAsset(assets, uri);
+                            return new Bitmap(asset);
+                        }
+                        else
+                        {
+                            Stream asset = LoadEmbeddedAsset(assets, null);
+                            return new Bitmap(asset);
+                        }
                     }
-                    else if (string.IsNullOrEmpty(exterior.Name))
+
+                default:
                     {
-                        Uri uri = new($"avares://{assemblyName}/Assets/blank.png");
-                        Stream asset = LoadEmbeddedAsset(assets, uri);
-                        return new Bitmap(asset);
-                    }
-                    else
-                    {
+                        Logger.Warn($"Unable to find handler for type {value?.GetType()}. Falling back to default implementation.");
                         Stream asset = LoadEmbeddedAsset(assets, null);
                         return new Bitmap(asset);
                     }
-                }
-
-                default:
-                {
-                    Logger.Warn($"Unable to find handler for type {value?.GetType()}. Falling back to default implementation.");
-                    Stream asset = LoadEmbeddedAsset(assets, null);
-                    return new Bitmap(asset);
-                }
             }
         }
 
