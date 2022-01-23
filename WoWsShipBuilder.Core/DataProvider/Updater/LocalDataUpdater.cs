@@ -318,7 +318,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 logger.Info("Selected localization is not installed. Downloading file...");
                 string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
                 await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
-                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
+                logger.Info("Downloaded localization file for selected localization. Updating localizer data...");
             }
             else
             {
