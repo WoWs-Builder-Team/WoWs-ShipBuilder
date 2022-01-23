@@ -1,22 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Data.Converters;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class DecimalToRomanConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             string shipTier = string.Empty;
             if (value is int tier)
-{
+            {
                 shipTier = tier switch
                 {
                     1 => "I",
@@ -37,7 +31,7 @@ namespace WoWsShipBuilder.UI.Converters
             return shipTier;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

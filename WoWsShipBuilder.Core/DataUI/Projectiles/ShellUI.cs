@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -143,6 +143,9 @@ namespace WoWsShipBuilder.Core.DataUI
                         // Demolition expert
                         var burnChanceModifierName = $"artilleryBurnChanceBonus";
                         shellFireChance += modifiers.FindModifiers(burnChanceModifierName).Select(m => m * 100).Sum();
+
+                        // Talent modifier
+                        shellFireChance += modifiers.FindModifiers("burnProbabilityBonus").Select(m => m * 100).Sum();
 
                         // IFHE and possibly modifiers from supership abilities
                         shellPenetration = modifiers.FindModifiers("penetrationCoeffHE").Aggregate(shellPenetration, (current, modifier) => current * modifier);

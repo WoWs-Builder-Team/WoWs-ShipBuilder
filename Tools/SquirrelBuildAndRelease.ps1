@@ -7,6 +7,7 @@ dotnet build -c $buildConfig
 Write-Output "Publishing build"
 dotnet publish WoWsShipBuilder.UI -c $buildConfig -p:PublishProfile=PublishWindows
 Copy-Item -Path WoWsShipBuilder.UI\bin\$buildConfig\net5.0\runtimes\win7-x64\native\av_libGLESv2.dll -Destination WoWsShipBuilder.UI\bin\$buildConfig\net5.0\publish\
+Copy-Item -Path WoWsShipBuilder.UI\bin\$buildConfig\net5.0\Third-Party-Licenses.txt -Destination WoWsShipBuilder.UI\bin\$buildConfig\net5.0\publish\
 Write-Output "Packing published build into nuget package"
 dotnet pack WoWsShipBuilder.UI -c $buildConfig --no-build
 Write-Output "Creating Squirrel.Windows release"

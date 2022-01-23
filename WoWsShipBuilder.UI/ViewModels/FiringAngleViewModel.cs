@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

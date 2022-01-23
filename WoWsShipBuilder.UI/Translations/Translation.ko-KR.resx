@@ -383,9 +383,7 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>도탄 각</value>
   </data>
-  <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>방공</value>
-  </data>
+  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>항공기 내구도</value>
   </data>
@@ -861,6 +859,9 @@
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
     <value>잠수함 작전 심도 피탐 거리</value>
   </data>
+  
+  
+  
   
   
   

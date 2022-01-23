@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.UI.ViewModels;
-using WoWsShipBuilderDataStructures;
 
 namespace WoWsShipBuilder.UI.Views
 {

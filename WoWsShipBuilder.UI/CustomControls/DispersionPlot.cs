@@ -47,6 +47,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         {
             DispersionPlotParametersProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             PlotScalingProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
+            EllipsePlaneProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             FusoPositionProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
             IsVerticalProperty.Changed.AddClassHandler<DispersionPlot>((x, e) => x.InvalidateVisual());
         }
@@ -383,10 +384,10 @@ namespace WoWsShipBuilder.UI.CustomControls
                 innverVertical = tmp4;
             }
 
-            var verticalDiameter = new FormattedText($"{vertical} {Math.Round(xOuterRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var verticalDiameterHalfHitPoints = new FormattedText($"{innverVertical} {Math.Round(xInnerRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameter = new FormattedText($"{horizontal} {Math.Round(yOuterRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
-            var horizontalDiameterHalfHitPoints = new FormattedText($"{innerHorizontal} {Math.Round(yInnerRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Center, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameter = new FormattedText($"{vertical} {Math.Round(xOuterRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
+            var verticalDiameterHalfHitPoints = new FormattedText($"{innverVertical} {Math.Round(xInnerRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameter = new FormattedText($"{horizontal} {Math.Round(yOuterRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
+            var horizontalDiameterHalfHitPoints = new FormattedText($"{innerHorizontal} {Math.Round(yInnerRadius * 2 / PlotScaling)} {unit}", typeface, FontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
 
             // X axis
             context.DrawLine(new Pen(Brushes.Gray, 1), center.AddX(-xOuterRadius), center.AddX(xOuterRadius));

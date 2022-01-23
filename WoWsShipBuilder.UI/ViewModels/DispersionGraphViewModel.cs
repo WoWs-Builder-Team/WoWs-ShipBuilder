@@ -13,10 +13,10 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
-using WoWsShipBuilderDataStructures;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -105,7 +105,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             HorizontalModel = hModel;
             VerticalModel = vModel;
             InitialTab = (int)initialTab;
-            effectiveEllipsePlane = selectedEllipsePlane;
         }
 
         private void DispersionPlotList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -240,11 +239,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public decimal PlotScaling
         {
             get => plotScaling;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref plotScaling, value);
-                refreshNeeded = true;
-            }
+            set => this.RaiseAndSetIfChanged(ref plotScaling, value);
         }
 
         private List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
@@ -263,16 +258,25 @@ namespace WoWsShipBuilder.UI.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
-                refreshNeeded = true;
+                if (value == EllipsePlanes.HorizontalPlane)
+                {
+                    IsHorizontalPlane = true;
+                    IsVerticalPlane = false;
+                    IsRealPlane = false;
+                }
+                else if (value == EllipsePlanes.VerticalPlane)
+                {
+                    IsHorizontalPlane = false;
+                    IsVerticalPlane = true;
+                    IsRealPlane = false;
+                }
+                else
+                {
+                    IsHorizontalPlane = false;
+                    IsVerticalPlane = false;
+                    IsRealPlane = true;
+                }
             }
-        }
-
-        private EllipsePlanes effectiveEllipsePlane;
-
-        public EllipsePlanes EffectiveEllipsePlane
-        {
-            get => effectiveEllipsePlane;
-            set => this.RaiseAndSetIfChanged(ref effectiveEllipsePlane, value);
         }
 
         private List<FusoPositions> fusoPositionsList = Enum.GetValues<FusoPositions>().ToList();
@@ -297,6 +301,30 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => isVertical;
             set => this.RaiseAndSetIfChanged(ref isVertical, value);
+        }
+
+        private bool isVerticalPlane = false;
+
+        public bool IsVerticalPlane
+        {
+            get => isVerticalPlane;
+            set => this.RaiseAndSetIfChanged(ref isVerticalPlane, value);
+        }
+
+        private bool isHorizontalPlane = true;
+
+        public bool IsHorizontalPlane
+        {
+            get => isHorizontalPlane;
+            set => this.RaiseAndSetIfChanged(ref isHorizontalPlane, value);
+        }
+
+        private bool isRealPlane = false;
+
+        public bool IsRealPlane
+        {
+            get => isRealPlane;
+            set => this.RaiseAndSetIfChanged(ref isRealPlane, value);
         }
 
         /// <summary>
@@ -486,7 +514,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 itemViewModel.IsLast = false;
             }
 
-            EffectiveEllipsePlane = SelectedEllipsePlane;
             DispersionPlotList.LastOrDefault()?.UpdateIsLast(true);
         }
 

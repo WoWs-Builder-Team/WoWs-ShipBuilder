@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {

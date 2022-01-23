@@ -5,7 +5,7 @@ using Avalonia.Collections;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilderDataStructures;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -66,6 +66,9 @@ namespace WoWsShipBuilder.Core.DataUI
                     constantDamageBonus *= value;
                 }
             }
+
+            var constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
 
             var aaUI = new AntiAirUI();
             aaUI.expanderKey = $"{ship.Index}_AA";

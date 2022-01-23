@@ -1,26 +1,37 @@
-using System.Windows.Input;
-using Avalonia;
+using System;
+using System.Linq;
+using Avalonia.Controls;
+using Avalonia.Metadata;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildCreationWindowViewModel : ViewModelBase
     {
-        private BuildCreationWindow self;
-        private Build build;
+        private readonly BuildCreationWindow? self;
+        private readonly Build build;
 
-        public BuildCreationWindowViewModel(BuildCreationWindow win, Build currentBuild, string shipName)
+        public BuildCreationWindowViewModel()
+            : this(null, new("Test-build - Test-ship"), "Test-ship")
+        {
+            if (!Design.IsDesignMode)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        public BuildCreationWindowViewModel(BuildCreationWindow? win, Build currentBuild, string shipName)
         {
             self = win;
             build = currentBuild;
-            SaveBuildCommand = ReactiveCommand.Create(() => SaveBuild());
-            CloseBuildCommand = ReactiveCommand.Create(() => CloseBuild());
             ShipName = shipName;
+            BuildName = build.BuildName;
+            IsNewBuild = string.IsNullOrEmpty(BuildName);
+            IncludeSignals = AppData.Settings.IncludeSignalsForImageExport;
         }
 
         private string shipName = default!;
@@ -39,23 +50,57 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref buildName, value);
         }
 
-        public ICommand SaveBuildCommand { get; }
+        private bool includeSignals;
 
-        public ICommand CloseBuildCommand { get; }
-
-        private async void SaveBuild()
+        public bool IncludeSignals
         {
-            build.BuildName = BuildName + " - " + ShipName;
-            var buildString = build.CreateStringFromBuild();
+            get => includeSignals;
+            set => this.RaiseAndSetIfChanged(ref includeSignals, value);
+        }
+
+        public bool IsNewBuild { get; }
+
+        private void SaveBuild()
+        {
+            build.BuildName = BuildName!;
+            var oldBuild = AppData.Builds.FirstOrDefault(existingBuild => existingBuild.BuildName.Equals(build.BuildName));
+            if (oldBuild != null)
+            {
+                Logging.Logger.Info("Removing old build with identical name from list of saved builds to replace with new build.");
+                AppData.Builds.Remove(oldBuild);
+            }
+
             AppData.Builds.Insert(0, build);
-            await Application.Current.Clipboard.SetTextAsync(buildString);
-            await MessageBox.Show(self, Translation.BuildCreationWindow_SavedClipboard, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
-            self.Close();
         }
 
-        private void CloseBuild()
+        private bool CanSaveBuild() => !string.IsNullOrWhiteSpace(BuildName);
+
+        public void SaveAndCopyString()
         {
-            self.Close();
+            SaveBuild();
+            self?.Close(new BuildCreationResult(true, IncludeSignals));
         }
+
+        [DependsOn(nameof(BuildName))]
+        public bool CanSaveAndCopyString(object parameter) => CanSaveBuild();
+
+        public void SaveAndCopyImage()
+        {
+            SaveBuild();
+            self?.Close(new BuildCreationResult(true, IncludeSignals, true));
+        }
+
+        [DependsOn(nameof(BuildName))]
+        public bool CanSaveAndCopyImage(object parameter) => CanSaveBuild();
+
+        public void CloseBuild()
+        {
+            self?.Close(new BuildCreationResult(false));
+        }
+    }
+
+    public sealed record BuildCreationResult(bool Save, bool IncludeSignals = false, bool CopyImageToClipboard = false)
+    {
+        public static BuildCreationResult Canceled { get; } = new(false);
     }
 }

@@ -667,10 +667,10 @@
     <value>Minimum range</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Charges</value>
+    <value>Number of charges</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW airstrike</value>
+    <value>ASW Airstrike</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>Depth charges</value>
@@ -679,7 +679,7 @@
     <value>Dispersion visualization</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>ASW depth Charges</value>
+    <value>ASW Depth Charges</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>First ping duration</value>
@@ -712,10 +712,10 @@
     <value>Cancel</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Enable custom path</value>
+    <value>Enable custom data path</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insert custom path</value>
+    <value>Insert custom data path</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Save &amp; exit</value>
@@ -805,7 +805,7 @@
     <value>Time to fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpedo launchers</value>
+    <value>Torpedo Launchers</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>During aiming</value>
@@ -847,7 +847,7 @@
     <value>Show ballistic graphs</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>The selected custom path is not valid.</value>
+    <value>The selected custom data path is not valid.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Select a shell</value>
@@ -1037,5 +1037,77 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
     <value>Vertical</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Shell Trajectory</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Captain skills</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Import from Image</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Open explorer when saving a build image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Save &amp; copy image</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Save &amp; Exit</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Include signals and consumables in image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Save &amp; copy string</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Build image copied to clipboard</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Enable custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Custom build image path</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>The selected custom build image path is invalid.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Skill &amp; Talents</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standard captain</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Captain:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombs in a charge</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Current Ships</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Ships to Delete</value>
   </data>
 </root>
