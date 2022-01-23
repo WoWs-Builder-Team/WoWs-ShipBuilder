@@ -16,7 +16,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public SignalSelectorEconomicViewModel()
         {
-            // Can I add this like this?
             logger = Logging.GetLogger("SignalSelectorEconomicVM");
             SignalList = LoadSignalList();
         }
@@ -35,6 +34,18 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             get => selectedSignals;
             set => this.RaiseAndSetIfChanged(ref selectedSignals, value);
+        }
+
+        public void SignalCommandExecute(Exterior flag)
+        {
+            if (SelectedSignals.Contains(flag))
+            {
+                SelectedSignals.Remove(flag);
+            }
+            else
+            {
+                SelectedSignals.Add(flag);
+            }
         }
 
         private List<KeyValuePair<string, Exterior>> LoadSignalList()
