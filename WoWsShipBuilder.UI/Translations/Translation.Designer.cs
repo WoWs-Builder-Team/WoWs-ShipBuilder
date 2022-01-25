@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
@@ -1002,6 +1002,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MessageBox_Error {
             get {
                 return ResourceManager.GetString("MessageBox_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues..
+        /// </summary>
+        public static string MessageBox_LoadingError {
+            get {
+                return ResourceManager.GetString("MessageBox_LoadingError", resourceCulture);
             }
         }
         

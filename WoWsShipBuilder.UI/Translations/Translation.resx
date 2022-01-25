@@ -1110,4 +1110,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
     <value>Ships to Delete</value>
   </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues.</value>
+  </data>
 </root>
