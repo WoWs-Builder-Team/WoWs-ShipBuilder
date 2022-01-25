@@ -667,7 +667,7 @@
     <value>Alcance mínimo</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Cargas</value>
+    <value>Número de cargas</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>Ataque Aéreo ASW</value>
@@ -679,7 +679,7 @@
     <value>Visualização da dispersão</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Cargas de profundidade ASW</value>
+    <value>Cargas de Profundidade ASW</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>Duração do primeiro ping</value>
@@ -712,10 +712,10 @@
     <value>Cancelar</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Habilitar caminho customizado</value>
+    <value>Habilitar caminho customizado para os dados</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Inserir caminho personalizado</value>
+    <value>Inserir caminho customizado para os dados</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Salvar e Sair</value>
@@ -847,10 +847,10 @@
     <value>Mostrar gráficos de balística</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>O caminho personalizado selecionado não é válido.</value>
+    <value>O caminho customizado para os dados não é válido.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Selecionar um projétil</value>
+    <value>Selecione um projétil</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>possui mais de um projétil. Selecione o projétil do qual você quer o gráfico de balística. Assumindo como padrão o calibre, a ordem dos projéteis abaixo é HE-&gt;SAP-&gt;AP.</value>
@@ -937,7 +937,7 @@
     <value>Horizontal (Água)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Real</value>
+    <value>Ângulo de Impacto</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Vertical</value>
@@ -946,16 +946,28 @@
     <value>Referência do Fuso</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>Na plotagem, os projéteis estão vindo do lado direito.
-O gráfico é rotacionado por 90° então a dispersão vertical é mostrada horizontalmente e a dispersão horizontal é mostrada verticalmente.
-
-A elipse BRANCA mostra a área máxima de dispersão no alcance de mira selecionado.
-A elipse VERMELHA mostra a área onde 50% dos projéteis caem em média.
+    <value>A elipse BRANCA mostra a área máxima de dispersão no alcance de mira selecionado.
+A elipse VERMELHA mostra a área onde 50% dos projéteis caem, em média.
 A elipse PRETA mostra o tamanho de um Fuso como referência.
 
-Os navios no jogo são duas vezes maiores que o ambiente, por isso um navio de 200 m de comprimento toma o espaço de 400m.
-A elipse real de dispersão é desenhada em um plano perpendicular ao ângulo de impacto do projétil.
-Apenas a dispersão vertical projetada na água é afetada pela velocidade do projétil. A dispersão real não é.</value>
+Planos de plotagem:
+1) HORIZONTAL: 
+    mostra o ponto de impacto dos projéteis com a água;
+    selecionando este plano você obtém uma visão vinda de cima;
+    este é o plano que você quer dar mais atenção ao comparar as dispersões dos navios;
+    a elipse neste plano está verticalmente esticada devido à velocidade dos projéteis.
+2) VERTICAL: 
+    mostra o ponto de impacto dos projéteis com uma superfície vertical;
+    selecionando este plano você obtém uma visão vinda da frente;
+    útil para uma análise precisa da precisão vertical.
+3) ÂNGULO DE IMPACTO: 
+    mostra o ponto de impacto dos projéteis com uma superfície inclinada no ângulo de impacto dos projéteis;
+    selecionando este plano você obtém uma visão vinda do ângulo de impacto dos projéteis;
+    é o plano no qual o jogo realmente desenha a elipse de dispersão durante as batalhas;
+    a elipse neste plano não é afetada pela velocidade dos projéteis;
+    útil se você quiser comparar a dispersão dos navios sem levar em consideração a velocidade dos projéteis.
+
+Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200m de comprimento ocupa o espaço de 400m.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Explicação da plotagem</value>
@@ -975,8 +987,8 @@ Apenas a dispersão vertical projetada na água é afetada pela velocidade do pr
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>FPM Teórico </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>FPM Potencial </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Chance de incêndio por salva</value>
@@ -1016,5 +1028,86 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   </data>
   <data name="ShipStats_SecondaryBattery" xml:space="preserve">
     <value>Bateria Secundária</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Orientação da Plotagem</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Trajetória do Projétil</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Habilidades do Comandante</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importar de imagem</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Abrir o Explorador de Arquivos ao salvar uma imagem de build</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Salvar e copiar imagem</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Salvar e Sair</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Incluir sinais e consumíveis na imagem</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Salvar &amp; copiar texto</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Imagem da build copiada para área de transferência</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Habilitar caminho personalizado para imagem de build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Caminho personalizado para imagem de build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>O caminho personalizado selecionado para imagem de build é inválido.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Habilidades &amp; Talentos</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Com o seguinte controle deslizante e botões, você pode ativar ou desativar certos efeitos condicionais das habilidades. Você também pode selecionar quantas vezes ativar o efeito do talento, se possível. Note que nem todas as habilidades/talentos terão efeito nas estatísticas do navio.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Comandante padrão</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Comandante:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombas em uma carga</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Navios atuais</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Navios para Excluir</value>
   </data>
 </root>

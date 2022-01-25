@@ -355,7 +355,7 @@
     <value>Скорость Наведения</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Вертикально</value>
+    <value>Вертикальный</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Начальная скорость снаряда</value>
@@ -387,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Углы рикошета</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>ПВО</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>ХП Самолетов</value>
   </data>
@@ -665,7 +667,7 @@
     <value>Минимальная дальность</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Заряды</value>
+    <value>Количество зарядов</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>Авиаудар ПЛО</value>
@@ -677,7 +679,7 @@
     <value>Визуализация разброса</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Глубинные бомбы ПЛО</value>
+    <value>Глубинные бомбы</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>Время действия первого импульса</value>
@@ -710,10 +712,10 @@
     <value>Отмена</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Включить свой путь</value>
+    <value>Включить пользовательский путь для сохранения данных</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Вставить свой путь</value>
+    <value>Ввести пользовательский путь данных</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Сохранить и выйти</value>
@@ -845,7 +847,7 @@
     <value>Открыть графики баллистики</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>Выбранный пользовательский путь недопустим.</value>
+    <value>Выбранный пользовательский адрес недействителен.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Выберите снаряд</value>
@@ -935,7 +937,7 @@
     <value>Горизонталь (вода)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Реальный</value>
+    <value>Угол при попадании</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Вертикально</value>
@@ -944,16 +946,27 @@
     <value>Fuso для справки</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>На графике снаряды прилетают справа.
-График повернут на 90 градусов, так чтобы вертикальный разброс отображался горизонтально, а горизонтальный - вертикально.
+    <value>БЕЛЫЙ эллипс показывает максимальный разброс на выбранной дистанции стрельбы.
+КРАСНЫЙ эллипс показывает зону, в которую, в среднем, попадает 50% снарядов на выбранной дистанции стрельбы.
+ЧЕРНЫЙ эллипс показывает размеры Фусо для наглядности
 
-БЕЛЫЙ эллипс показывает максимальный разброс на выбранном расстоянии прицеливания.
-КРАСНЫЙ эллипс показывает зону, в которую, в среднем, попадает 50% снарядов.
-ЧЕРНЫЙ эллипс показывает размер Фусо для сравнения.
+1) Горизонтальный: 
+   показывает точку соприкосновения снаряда с водой;
+   выбирая данный режим, вы получаете вид сверху;
+   по данному графику удобнее всего сравнивать разброс разных кораблей;
+   эллипс растянут вертикально из-за скорости снаряда.
+2) Вертикальный: 
+    показывает точку соприкосновения снаряда с вертикальной плоскостью;
+    выбирая данный режим, вы получаете вид спереди;
+    удобен для точного анализа вертикальной точности.
+3) Угол входа:
+    показывает точку соприкосновения снаряда с поверхностью под углом входа; 
+    выбирая данный режим, вы получаете вид под углом входа снаряда;
+    это плоскость, на которой игра фактически рассчитывает эллипс разброса в бою;
+    эллипс на данном графике не зависит от скорости полета снаряда;
+    полезен, если вы хотите сравнить точность кораблей без учета скорости полета снаряда.
 
-Корабли в игре в два раза больше окружения, поэтому корабль длиной 200 метров занимает 400 метров.
-Реальный эллипс рассеивания изображен на плоскости, перпендикулярной углу падения снаряда.
-Только вертикальный разброс, спроецированный на воде, зависит от скорости снаряда. Реальный - нет.</value>
+Корабли в игре в два раза больше окружающей среды, поэтому корабль длиной 200 метров занимает пространство 400 метров.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Объяснение графика</value>
@@ -973,8 +986,8 @@
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Масса</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>Теоретических пожаров в минуту </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Потенциальных пожаров/мин </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Шанс пожара за залп</value>
@@ -1006,7 +1019,94 @@
   <data name="SplashScreen_Init" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Благодарности</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Благодарим следующих игроков за помощь в переводе приложения на разные языки. Ниже представлены те, кто перевел как минимум 10 реплик.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>ПМК</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Горизонтальный</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Ориентация графика</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Вертикальный</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Траектория Снаряда</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Перки капитана</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Импортировать с изображения</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Открыть Проводник при сохранении изображения билда</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Сохранить и копировать изображение</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ок</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Сохранить и выйти</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Добавить на изображение сигналы и расходники</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Сохранить и копировать строку</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Изображение билда скопировано в буфер обмена</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Включить пользовательский путь для изображений билдов</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Пользовательский путь для изображений билдов</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Выбранный пользовательский путь для изображений недействителен.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Перки и таланты</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>С помощью данных переключателей, вы можете включить или выключить определенные активируемые при определенных условиях эффекты от перков. Вы также можете выбрать, сколько раз сработает эффект таланта, если это возможно. Обратите внимание, что не все перки/таланты оказывают влияние на ТТХ корабля.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Обычный капитан</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Командир:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Бомб в сбросе</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Текущие Корабли</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Удаляемые Корабли</value>
+  </data>
 </root>

@@ -161,18 +161,24 @@
                                 </Style>
                             </StackPanel.Styles>
                             <TextBlock Text="{x:Static t:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap" />
-                            <TextBlock>darbiter</TextBlock>
-                            <TextBlock>Korbolko TR</TextBlock>
                             <TextBlock>Taro_</TextBlock>
-                            <TextBlock>Sakura Isayeki</TextBlock>
                             <TextBlock>dmc531</TextBlock>
-                            <TextBlock>antitank240814</TextBlock>
+                            <TextBlock>caduzanon</TextBlock>
+                            <TextBlock>Korbolko TR</TextBlock>
+                            <TextBlock>Marco Picchietti</TextBlock>
+                            <TextBlock>Sakura Isayeki</TextBlock>
+                            <TextBlock>darbiter</TextBlock>
                             <TextBlock>EdibleBug</TextBlock>
                             <TextBlock>Östland</TextBlock>
+                            <TextBlock>antitank240814</TextBlock>
+                            <TextBlock>REEEdamel</TextBlock>
+                            <TextBlock>Gitaristing</TextBlock>
+                            <TextBlock>BloodyTakao</TextBlock>
+                            <TextBlock>iDiego</TextBlock>
+                            <TextBlock>Commander Cornflakes</TextBlock>
                             <TextBlock>PrinceNorris</TextBlock>
                             <TextBlock>ThePolishDj</TextBlock>
-                            <TextBlock>REEEdamel</TextBlock>
-                            <TextBlock>BloodyTakao</TextBlock>
+                            <TextBlock>Tommy Tommy</TextBlock>
                         </StackPanel>
                     </TabItem>
                 </TabControl>
