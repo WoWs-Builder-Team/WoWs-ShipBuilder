@@ -2440,7 +2440,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reload time.
+        ///   Looks up a localized string similar to Theoretical Reload time.
         /// </summary>
         public static string ShipStats_Reload {
             get {
@@ -2715,6 +2715,24 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TraverseSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_TraverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True Reload.
+        /// </summary>
+        public static string ShipStats_TrueReload {
+            get {
+                return ResourceManager.GetString("ShipStats_TrueReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server updates only every 0.285714285714 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
+        /// </summary>
+        public static string ShipStats_TrueReloadTooltip {
+            get {
+                return ResourceManager.GetString("ShipStats_TrueReloadTooltip", resourceCulture);
             }
         }
         
