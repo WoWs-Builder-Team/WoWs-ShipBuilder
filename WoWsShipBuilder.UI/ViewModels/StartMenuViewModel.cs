@@ -180,7 +180,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Logging.Logger.Error(e, $"Error during the loading of the local json files");
                 await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
             }
-
         }
 
         public void DeleteBuild()
