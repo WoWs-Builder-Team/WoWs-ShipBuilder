@@ -14,6 +14,7 @@ using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
@@ -44,7 +45,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
                                ?? AppDataHelper.Instance.DefaultCultureDetails;
+#if DEBUG
             Servers = Enum.GetNames<ServerType>().ToList();
+#else
+            Servers = new List<ServerType> { ServerType.Live, ServerType.Pts }.Select(serverType => Enum.GetName(serverType) ?? serverType.StringName()).ToList();
+#endif
             SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
             AutoUpdate = AppData.Settings.AutoUpdateEnabled;
             CustomPath = AppData.Settings.CustomDataPath;
@@ -59,7 +64,14 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
 
                 var localVersionInfo = AppDataHelper.Instance.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
-                AppData.DataVersion = localVersionInfo?.VersionName ?? "No VersionInfo found";
+                if (localVersionInfo?.CurrentVersion?.MainVersion != null)
+                {
+                    AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+                }
+                else
+                {
+                    AppData.DataVersion = "No VersionInfo found";
+                }
             }
 
             DataVersion = AppData.DataVersion;

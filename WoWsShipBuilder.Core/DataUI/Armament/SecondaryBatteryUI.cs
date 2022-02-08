@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
 
@@ -18,6 +19,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         [DataUiUnit("S")]
         public decimal Reload { get; set; }
+
+        [JsonIgnore]
+        public string TrueReload { get; set; } = default!;
 
         [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
@@ -67,18 +71,22 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var rof = Math.Round(60 / (decimal)reload, 1);
 
+                var trueReload = Math.Ceiling((decimal)reload / Constants.TickRate) * Constants.TickRate;
+                decimal trueRateOfFire = 60 / trueReload;
+
                 var secondaryUI = new SecondaryBatteryUI
                 {
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
+                    TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
                     RoF = rof,
                     Sigma = secondary.Sigma,
                 };
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, trueRateOfFire).First();
                 }
                 catch (KeyNotFoundException e)
                 {

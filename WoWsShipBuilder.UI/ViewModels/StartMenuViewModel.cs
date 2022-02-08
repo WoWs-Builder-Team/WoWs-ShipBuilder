@@ -1,3 +1,4 @@
+using System;
 using System.IO.Abstractions;
 using System.Linq;
 using Avalonia;
@@ -90,17 +91,25 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
-                var ship = AppDataHelper.Instance.GetShipFromSummary(result);
-                AppDataHelper.Instance.LoadNationFiles(result.Nation);
-                MainWindow win = new();
-                win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, result.PrevShipIndex, result.NextShipsIndex);
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                try
                 {
-                    desktop.MainWindow = win;
-                }
+                    var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                    AppDataHelper.Instance.LoadNationFiles(result.Nation);
+                    MainWindow win = new();
+                    win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, result.PrevShipIndex, result.NextShipsIndex);
+                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    {
+                        desktop.MainWindow = win;
+                    }
 
-                win.Show();
-                self?.Close();
+                    win.Show();
+                    self?.Close();
+                }
+                catch (Exception e)
+                {
+                    Logging.Logger.Error(e, $"Error during the loading of the local json files");
+                    await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
+                }
             }
         }
 
@@ -157,12 +166,20 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
-            AppDataHelper.Instance.LoadNationFiles(summary.Nation);
-            MainWindow win = new();
-            win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
-            win.Show();
-            self?.Close();
+            try
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
+                AppDataHelper.Instance.LoadNationFiles(summary.Nation);
+                MainWindow win = new();
+                win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
+                win.Show();
+                self?.Close();
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Error(e, $"Error during the loading of the local json files");
+                await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
+            }
         }
 
         public void DeleteBuild()

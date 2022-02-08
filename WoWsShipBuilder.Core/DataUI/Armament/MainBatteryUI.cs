@@ -22,8 +22,14 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("S")]
         public decimal Reload { get; set; }
 
+        [JsonIgnore]
+        public string TrueReload { get; set; } = default!;
+
         [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
+
+        [JsonIgnore]
+        public string TrueRoF { get; set; } = default!;
 
         [DataUiUnit("S")]
         public decimal TurnTime { get; set; }
@@ -110,7 +116,7 @@ namespace WoWsShipBuilder.Core.DataUI
             reload = arModifiers.Aggregate(reload, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
 
             var artilleryReloadCoeffModifiers = modifiers.FindModifiers("artilleryReloadCoeff");
-            reload = Math.Round(artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff), 2);
+            reload = artilleryReloadCoeffModifiers.Aggregate(reload, (current, artilleryReloadCoeff) => current * (decimal)artilleryReloadCoeff);
 
             // Rotation speed modifiers
             var turnSpeedModifiers = modifiers.FindModifiers("GMRotationSpeed");
@@ -121,7 +127,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
             decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
-            
+
             var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
             range = Math.Round(talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
@@ -150,12 +156,18 @@ namespace WoWsShipBuilder.Core.DataUI
             var maxRangeBW = (double)(mainBattery.MaxRange / 30);
             var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
 
+            var trueReload = Math.Ceiling(reload / Constants.TickRate) * Constants.TickRate;
+            decimal trueRateOfFire = 60 / trueReload;
+
+            // rounding reload in here to get a more accurate True reload
             var mainBatteryUi = new MainBatteryUI
             {
                 Name = turretArrangement,
                 Range = range,
-                Reload = reload,
+                Reload = Math.Round(reload, 2),
+                TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
                 RoF = Math.Round(rateOfFire * barrelCount, 1),
+                TrueRoF = trueRateOfFire + UnitLocalization.Unit_ShotsPerMinute,
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
@@ -172,7 +184,7 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire);
+            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, trueRateOfFire);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

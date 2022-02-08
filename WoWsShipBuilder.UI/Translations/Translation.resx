@@ -346,7 +346,7 @@
     <value>Rate of fire</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Reload time</value>
+    <value>Theoretical Reload time</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -1109,5 +1109,14 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
     <value>Ships to Delete</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>True Reload</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>The server updates only every 0.285714285714 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
   </data>
 </root>

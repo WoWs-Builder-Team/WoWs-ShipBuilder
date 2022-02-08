@@ -35,7 +35,9 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task CheckJsonFileVersion_ExistingDataOneVersionDiff_IncrementalUpdate()
         {
             // Arrange
-            var localVersionInfo = CreateTestVersionInfo(1, "0.10.9#1");
+            var currentVersion = new GameVersion(new(0, 10, 10), GameVersionType.Live, 1);
+            var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
+            var localVersionInfo = CreateTestVersionInfo(1, previousVersion);
             var testVersionInfo = new VersionInfo(
                 new Dictionary<string, List<FileVersion>>
                 {
@@ -43,8 +45,8 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                     { "Ship", new List<FileVersion> { new("Japan.json", 1), new("Germany.json", 1) } },
                 },
                 2,
-                "0.10.10#1",
-                localVersionInfo.VersionName);
+                currentVersion,
+                localVersionInfo.CurrentVersion);
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
             appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(localVersionInfo);

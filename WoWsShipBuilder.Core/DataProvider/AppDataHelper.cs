@@ -42,6 +42,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 new(new("de-DE"), "de"),
                 new(new("it-IT"), "it"),
                 new(new("ja-JP"), "ja"),
+                new(new("pt-BR"), "pt_br"),
                 new(new("ru-RU"), "ru"),
                 new(new("es-ES"), "es"),
                 new(new("tr-TR"), "tr"),
@@ -105,7 +106,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string GetDataPath(ServerType serverType)
         {
-            string serverName = serverType == ServerType.Live ? "live" : "pts";
+            string serverName = serverType.StringName();
             return fileSystem.Path.Combine(AppDataDirectory, "json", serverName);
         }
 
@@ -133,7 +134,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// Helper method to create the path for a build image file.
         /// </summary>
         /// <param name="buildName">The name of the saved build.</param>
-        /// <param name="shipName">The name of the ship of the build</param>
+        /// <param name="shipName">The name of the ship of the build.</param>
         /// <returns>The path where the generated image should be stored.</returns>
         public string GetImageOutputPath(string buildName, string shipName)
         {

@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
@@ -1002,6 +1002,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string MessageBox_Error {
             get {
                 return ResourceManager.GetString("MessageBox_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues..
+        /// </summary>
+        public static string MessageBox_LoadingError {
+            get {
+                return ResourceManager.GetString("MessageBox_LoadingError", resourceCulture);
             }
         }
         
@@ -2431,7 +2440,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reload time.
+        ///   Looks up a localized string similar to Theoretical Reload time.
         /// </summary>
         public static string ShipStats_Reload {
             get {
@@ -2706,6 +2715,24 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string ShipStats_TraverseSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_TraverseSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True Reload.
+        /// </summary>
+        public static string ShipStats_TrueReload {
+            get {
+                return ResourceManager.GetString("ShipStats_TrueReload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server updates only every 0.285714285714 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
+        /// </summary>
+        public static string ShipStats_TrueReloadTooltip {
+            get {
+                return ResourceManager.GetString("ShipStats_TrueReloadTooltip", resourceCulture);
             }
         }
         

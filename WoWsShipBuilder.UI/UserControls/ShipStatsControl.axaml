@@ -66,7 +66,7 @@
                         <DockPanel Classes="NameValuePanel">
                             <TextBlock Text="{Binding Name}"/>
                         </DockPanel>
-                        <ItemsControl Items="{Binding PropertyValueMapper}" Margin="0 5">
+                        <ItemsControl Items="{Binding PropertyValueMapper}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel Classes="NameValuePanel">
@@ -76,7 +76,15 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}"/>
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static t:Translation.ShipStats_TrueReload}">
+                                <ToolTip.Tip>
+                                    <TextBlock Text="{x:Static t:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
+                                </ToolTip.Tip>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TrueReload}"/>
+                        </DockPanel>
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}" Margin="0 5"/>
                         <DockPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
                             <TextBlock Text="{Binding HorizontalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
@@ -500,6 +508,14 @@
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
+                                                <DockPanel HorizontalAlignment="Stretch">
+                                                    <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static t:Translation.ShipStats_TrueReload}">
+                                                        <ToolTip.Tip>
+                                                            <TextBlock Text="{x:Static t:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
+                                                        </ToolTip.Tip>
+                                                    </TextBlock>
+                                                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TrueReload}"/>
+                                                </DockPanel>
                                                 <Separator Margin="0,5"/>
                                                 <TextBlock Text="{x:Static t:Translation.ShipStats_Shells}" Margin="0 0 0 5"/>
                                                 <ItemsControl Items="{Binding Shell.PropertyValueMapper}" Classes="Stagger">
