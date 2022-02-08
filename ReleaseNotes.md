@@ -1,7 +1,7 @@
 # Update 1.4.1 - pre
 
 ## Additions
-
+- Add compatibility check before updating gamedata and prevent downloading of an incompatible data version
 
 ## Changes
 
