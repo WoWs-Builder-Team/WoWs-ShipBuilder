@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var rof = Math.Round(60 / (decimal)reload, 1);
 
-                var trueReload = Math.Ceiling((decimal)reload / 0.285714285714m) * 0.285714285714m;
+                var trueReload = Math.Ceiling((decimal)reload / Constants.TickRate) * Constants.TickRate;
                 decimal trueRateOfFire = 60 / trueReload;
 
                 var secondaryUI = new SecondaryBatteryUI

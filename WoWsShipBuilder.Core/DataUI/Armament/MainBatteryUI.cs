@@ -127,7 +127,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
             decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
-            
+
             var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
             range = Math.Round(talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000, 2);
 
@@ -156,7 +156,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var maxRangeBW = (double)(mainBattery.MaxRange / 30);
             var vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBW * (1 - modifiedDispersion.Delim));
 
-            var trueReload = Math.Ceiling(reload / 0.285714285714m) * 0.285714285714m;
+            var trueReload = Math.Ceiling(reload / Constants.TickRate) * Constants.TickRate;
             decimal trueRateOfFire = 60 / trueReload;
 
             // rounding reload in here to get a more accurate True reload
@@ -164,7 +164,7 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 Name = turretArrangement,
                 Range = range,
-                Reload = Math.Round(reload , 2),
+                Reload = Math.Round(reload, 2),
                 TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
                 RoF = Math.Round(rateOfFire * barrelCount, 1),
                 TrueRoF = trueRateOfFire + UnitLocalization.Unit_ShotsPerMinute,
