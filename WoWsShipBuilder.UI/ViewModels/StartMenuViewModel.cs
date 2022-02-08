@@ -1,3 +1,4 @@
+using System;
 using System.IO.Abstractions;
 using System.Linq;
 using Avalonia;
@@ -104,7 +105,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     win.Show();
                     self?.Close();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Logging.Logger.Error(e, $"Error during the loading of the local json files");
                     await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
@@ -165,12 +166,21 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
-            AppDataHelper.Instance.LoadNationFiles(summary.Nation);
-            MainWindow win = new();
-            win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
-            win.Show();
-            self?.Close();
+            try
+            {
+                var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
+                AppDataHelper.Instance.LoadNationFiles(summary.Nation);
+                MainWindow win = new();
+                win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
+                win.Show();
+                self?.Close();
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Error(e, $"Error during the loading of the local json files");
+                await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
+            }
+
         }
 
         public void DeleteBuild()
