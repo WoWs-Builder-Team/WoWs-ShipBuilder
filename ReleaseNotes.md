@@ -1,7 +1,7 @@
-# Update 1.4.1 - pre
+# Update 1.4.1
 
 ## Additions
-- Add compatibility check before updating gamedata and prevent downloading of an incompatible data version
+- Add compatibility check before updating game data and prevent downloading of an incompatible data version
 - Added true reload stat. This will show the true reload you will get from your upgrades, taking into account the server tick rate.## Changes
 
 
