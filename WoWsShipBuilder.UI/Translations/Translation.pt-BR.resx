@@ -346,7 +346,7 @@
     <value>Taxa de Fogo</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Tempo de recarga</value>
+    <value>Tempo Teórico de Recarga</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -1112,5 +1112,11 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   </data>
   <data name="MessageBox_LoadingError" xml:space="preserve">
     <value>Ocorreu um erro durante o carregamento dos dados. Isso pode ser devido ao formato de dados não ser compatível com uma versão mais antiga do programa ou dados corrompidos. Se você não estiver na versão mais recente, espere até que você receba uma mensagem pedindo para reiniciar o aplicativo e atualizar, ou atualize manualmente caso as atualizações automáticas estejam desativadas. Se você estiver na última versão, use a janela de configuração para limpar todos os dados armazenados do aplicativo para resolver problemas de dados corrompidos.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Tempo Real de Recarga</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>O servidor atualiza apenas a cada 0,285714285714 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidos para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
   </data>
 </root>
