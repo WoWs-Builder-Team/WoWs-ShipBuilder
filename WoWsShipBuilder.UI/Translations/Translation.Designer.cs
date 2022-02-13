@@ -2728,7 +2728,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server updates only every 0.285714285714 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
+        ///   Looks up a localized string similar to The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
         /// </summary>
         public static string ShipStats_TrueReloadTooltip {
             get {

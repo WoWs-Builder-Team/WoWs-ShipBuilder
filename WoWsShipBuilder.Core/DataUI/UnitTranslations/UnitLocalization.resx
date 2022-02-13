@@ -136,7 +136,7 @@
     <value>s</value>
   </data>
   <data name="Unit_KM" xml:space="preserve">
-    <value>Km</value>
+    <value>km</value>
   </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
