@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.HttpClients;
@@ -162,16 +163,14 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 shouldLocalizationUpdate = true;
                 try
                 {
-                    string oldVersionSubstring = localVersionInfo.VersionName[..localVersionInfo.VersionName.IndexOf('#')];
-                    string expectedOldVersion = onlineVersionInfo.LastVersionName[..onlineVersionInfo.LastVersionName.IndexOf('#')];
-                    canImagesDeltaUpdate = oldVersionSubstring.Equals(expectedOldVersion, StringComparison.Ordinal);
+                    canImagesDeltaUpdate = onlineVersionInfo.LastVersion != null && onlineVersionInfo.LastVersion.MainVersion == localVersionInfo.CurrentVersion?.MainVersion;
                 }
                 catch (Exception)
                 {
                     logger.Error(
                         "Unable to strip suffix from a version name. Local version name: {LocalVersion}, Online version name: {OnlineVersion}.",
-                        localVersionInfo.VersionName,
-                        onlineVersionInfo.VersionName);
+                        localVersionInfo.CurrentVersion,
+                        onlineVersionInfo.CurrentVersion);
                     canImagesDeltaUpdate = false;
                 }
             }
@@ -190,14 +189,33 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             }
 
             string versionName;
-            try
+            if (onlineVersionInfo.CurrentVersion != null)
             {
-                versionName = onlineVersionInfo.VersionName[..onlineVersionInfo.VersionName.IndexOf('#')];
+                versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
             }
-            catch (Exception e)
+            else
             {
-                logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
-                versionName = "0.10.10"; // Fallback value for now.
+                // TODO: remove legacy compatibility code with update 1.5.0
+                try
+                {
+#pragma warning disable CS0618
+                    versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
+#pragma warning restore CS0618
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
+                    versionName = "0.11.0"; // Fallback value for now.
+                }
+            }
+
+            var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
+            if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
+            {
+                logger.Warn(
+                    "Data structures version of online data not supported yet. Highest supported version: {}, online version: {}",
+                    currentDataStructureVersion,
+                    onlineVersionInfo.DataStructuresVersion);
             }
 
             return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);

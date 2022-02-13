@@ -42,16 +42,6 @@ namespace WoWsShipBuilder.Core.Extensions
         public static bool IsValidIndex(this int index) => index > -1;
 
         /// <summary>
-        /// Converts a <see cref="ServerType"/> value into a string that can be used in urls or file system paths.
-        /// </summary>
-        /// <param name="serverType">The <see cref="ServerType"/> to convert.</param>
-        /// <returns>A string representation of the server type.</returns>
-        public static string StringName(this ServerType serverType)
-        {
-            return serverType == ServerType.Live ? "live" : "pts";
-        }
-
-        /// <summary>
         /// Sets the value of the dictionary for the specified nation key if the value is not null.
         /// </summary>
         /// <param name="thisDict">The dictionary extended by this method.</param>

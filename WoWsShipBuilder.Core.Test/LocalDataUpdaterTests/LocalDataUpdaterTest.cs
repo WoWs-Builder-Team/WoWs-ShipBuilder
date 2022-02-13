@@ -25,7 +25,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper = new Mock<AppDataHelper>(MockBehavior.Loose, mockFileSystem);
         }
 
-        private VersionInfo CreateTestVersionInfo(int versionCode, string versionName = "")
+        private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion? gameVersion = null)
         {
             return new VersionInfo(
                 new Dictionary<string, List<FileVersion>>
@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                     { "Ship", new List<FileVersion> { new("Japan.json", versionCode), new("Germany.json", versionCode) } },
                 },
                 versionCode,
-                versionName);
+                gameVersion);
         }
     }
 }

@@ -107,28 +107,28 @@ namespace WoWsShipBuilder.Core.DataUI
             if (rocketConfiguration != null)
             {
                 var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
-                planes.Add(skipModule);
+                planes.AddRange(skipModule);
             }
 
             ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
             if (torpConfiguration != null)
             {
                 var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
-                planes.Add(skipModule);
+                planes.AddRange(skipModule);
             }
 
             ShipUpgrade? diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
             if (diveConfiguration != null)
             {
                 var diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
-                planes.Add(diveModule);
+                planes.AddRange(diveModule);
             }
 
             ShipUpgrade? skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
             if (skipConfiguration != null)
             {
                 var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
-                planes.Add(skipModule);
+                planes.AddRange(skipModule);
             }
 
             foreach (var value in planes)
@@ -233,7 +233,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var talentCruisingSpeedModifiers = modifiers.FindModifiers("squadronSpeedCoeff");
             finalCruisingSpeed = Math.Round(talentCruisingSpeedModifiers.Aggregate(finalCruisingSpeed, (current, modifier) => current * (decimal)modifier), 0);
-            
+
             var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
             maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 

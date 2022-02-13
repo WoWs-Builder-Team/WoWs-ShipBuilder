@@ -1,4 +1,4 @@
-# Update 1.4.1 - pre
+# Update 1.4.2 - pre
 
 ## Additions
 
@@ -7,7 +7,8 @@
 
 
 ## Bugfixes
-- Enable Portuguese in the language selection in the app settings
+
+
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
