@@ -83,6 +83,8 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         public static List<Build> Builds { get; set; } = new();
 
+        public static Dictionary<Nation, Dictionary<string, Exterior>> ExteriorCache { get; set; } = new();
+
 #if DEBUG
         public static bool IsDebug => true;
 #else

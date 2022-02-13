@@ -7,12 +7,10 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record CamouflageUI : IDataUi
+    public record ExteriorUI : IDataUi
     {
-        [JsonIgnore]
         public string Name { get; set; } = default!;
 
-        [JsonIgnore]
         public string Type { get; set; } = default!;
 
         public Dictionary<string, float> Modifiers { get; set; } = null!;

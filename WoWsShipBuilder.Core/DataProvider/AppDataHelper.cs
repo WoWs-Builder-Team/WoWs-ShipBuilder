@@ -236,6 +236,36 @@ namespace WoWsShipBuilder.Core.DataProvider
             return AppData.AircraftCache[nation][aircraftName];
         }
 
+        public List<Exterior> GetCommonExterior()
+        {
+            if (!AppData.ExteriorCache.ContainsKey(Nation.Common))
+            {
+                AppData.ExteriorCache.SetIfNotNull(Nation.Common, ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType));
+            }
+
+            return AppData.ExteriorCache[Nation.Common].Values.ToList();
+        }
+
+        public List<Exterior> GetShipExterior(List<string> camoIndexes)
+        {
+            var nationGrouping = camoIndexes.GroupBy(camo => GetNationFromIndex(camo));
+            List<Exterior> camoList = new List<Exterior>();
+            foreach (var camo in nationGrouping)
+            {
+                var nation = camo.Key;
+                if (!AppData.ExteriorCache.ContainsKey(nation))
+                {
+                    AppData.ExteriorCache.SetIfNotNull(nation, ReadLocalJsonData<Exterior>(nation, AppData.Settings.SelectedServerType));
+                }
+                foreach(var camoIndex in camo.ToList())
+                {
+                    camoList.Add(AppData.ExteriorCache[nation][camoIndex]);
+                }
+            }
+
+            return camoList;
+        }
+
         public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Localization", $"{language}.json");
