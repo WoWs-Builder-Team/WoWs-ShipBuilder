@@ -84,7 +84,7 @@
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TrueReload}"/>
                         </DockPanel>
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}" Margin="0 5"/>
+                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}" Margin="0 5 0 0"/>
                         <DockPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
                             <TextBlock Text="{Binding HorizontalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>

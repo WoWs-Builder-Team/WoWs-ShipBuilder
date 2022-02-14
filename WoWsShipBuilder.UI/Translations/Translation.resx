@@ -346,7 +346,7 @@
     <value>Rate of fire</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Theoretical Reload time</value>
+    <value>Reload Time</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -430,7 +430,7 @@
     <value>Main Battery</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaction time</value>
+    <value>Reaction Time</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
@@ -1114,9 +1114,15 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues.</value>
   </data>
   <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>True Reload</value>
+    <value>Server-side Reload Time</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
     <value>The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>Server-side DPM</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Server-side RoF</value>
   </data>
 </root>
