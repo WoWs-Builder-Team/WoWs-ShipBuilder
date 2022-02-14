@@ -243,7 +243,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 AppData.ExteriorCache.SetIfNotNull(Nation.Common, ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType));
             }
 
-            return AppData.ExteriorCache[Nation.Common].Values.ToList();
+            return AppData.ExteriorCache[Nation.Common].Values.Where(camo => camo.Type != ExteriorType.Permoflage).ToList();
         }
 
         public List<Exterior> GetShipExterior(List<string> camoIndexes)
@@ -257,6 +257,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 {
                     AppData.ExteriorCache.SetIfNotNull(nation, ReadLocalJsonData<Exterior>(nation, AppData.Settings.SelectedServerType));
                 }
+
                 foreach(var camoIndex in camo.ToList())
                 {
                     camoList.Add(AppData.ExteriorCache[nation][camoIndex]);
