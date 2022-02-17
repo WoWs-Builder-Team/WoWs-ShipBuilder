@@ -387,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Angoli di rimbalzo</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Difesa AA</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>HP Aerei</value>
   </data>
@@ -665,7 +667,7 @@
     <value>Portata minima</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Cariche</value>
+    <value>Numero di cariche</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
     <value>Incursione aerea ASW</value>
@@ -710,10 +712,10 @@
     <value>Annulla</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Usa percorso personalizzato</value>
+    <value>Abilita percorso dati personalizzato</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Inserisci percorso personalizzato</value>
+    <value>Inserisci percorso dati personalizzato</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Salva ed esci</value>
@@ -803,7 +805,7 @@
     <value>Tempo per puntamento completo</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Lancia siluri</value>
+    <value>Lancia Siluri</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>Durante il puntamento</value>
@@ -935,7 +937,7 @@
     <value>Orizzontale (Acqua)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Reale</value>
+    <value>Angolo d'Impatto</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Verticale</value>
@@ -944,16 +946,28 @@
     <value>Fuso di riferimento</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>Nel grafico i colpi vengono da destra.
-Il grafico è ruotato di 90°, quindi la dispersione verticale è mostrata in orizzontale e viceversa.
+    <value>L'ellisse BIANCA mostra l'area di dispersione massima nell'intervallo di puntamento selezionato.
+L'ellisse ROSSA mostra l'area in cui il 50% dei proiettili atterra in media.
+L'ellisse NERO mostra la dimensione di una Fuso come riferimento.
 
-L'elisse BIANCA mostra l'aerea di dispersione massima alla distanza di tiro selezionata.
-L'elisse ROSSA mostra l'area in cuil il 50% dei proiettili colpisce in media.
-L'ellisse NERO mostra le dimensioni della Fuso di riferimento.
+Piani dei grafici:
+1) ORIZZONTALE: 
+    mostra il punto di impatto del proiettile con l'acqua;
+    selezionando questo piano si ottiene una vista dall'alto;
+    questo è il grafico che si vuole usare principalmente quando si confrontano le dispersioni delle navi;
+    l'ellisse su questo piano è allungata verticalmente a causa della velocità dei proiettili.
+2) VERTICALE: 
+    mostra il punto di impatto dei proiettili con una superficie verticale;
+    selezionando questo piano si ottiene una vista frontale;
+    utile per un'analisi di accuratezza verticale molto precisa.
+3) ANGOLO IMPATTO: 
+    mostra il punto di impatto del proiettile con una superficie angolata all'angolo di impatto del proiettile;
+    selezionando questo piano si ottiene una vista dall'angolo di impatto dei proiettili;
+    è il piano in cui il gioco disegna l'ellisse di dispersione durante le battaglie;
+    l'ellisse su questo piano non è influenzata dalla velocità dei proiettili;
+    utile se si desidera confrontare la dispersione delle navi senza tenere conto della velocità dei proiettili.
 
-Le navi nel gioco sono grandi il doppio dell'ambiente, quindi una nave lunga 200m occupa uno spazio di 400m.
-L'ellisse reale della dispersione è disegnato su un piano perpendicolare all'angolo di impatto del proiettile.
-Solo la dispersione verticale proiettata sull'acqua è affetta dalla velocità del colpo, quella reale non lo è.</value>
+Le navi in gioco sono due volte più grandi dell'ambiente quindi una nave lunga 200 metri prende lo spazio di 400m.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Spiegazione del grafico</value>
@@ -973,8 +987,8 @@ Solo la dispersione verticale proiettata sull'acqua è affetta dalla velocità d
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  <data name="ShipStats_TheoreticalFPM" xml:space="preserve">
-    <value>FPM teorici </value>
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>FPM Potenziale </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Probabilità di incendio per salva</value>
@@ -1006,7 +1020,112 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="SplashScreen_Init" xml:space="preserve">
     <value>Inizializzazione...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Ringraziamenti</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Grazie ai seguenti membri della comunità per aver aiutato con la traduzione di questo progetto. Qui di seguito, tutti i membri con almeno 10 contributi sono menzionati.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Batteria Secondaria</value>
+  </data>
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Orizzontale</value>
+  </data>
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Orientamento Grafico</value>
+  </data>
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Verticale</value>
+  </data>
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Traiettoria del Proiettile</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Abilità capitano</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importa da immagine</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Apri explorer quando si salva un'immagine di una build</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Salva &amp; copia immagine</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Salva</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Sì</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Salva ed esci</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Includi segnali e consumabili nell'immagine</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Salva &amp; copia stringa</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Stringa della build copiata negli appunti</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Abilita percorso personalizzato immagine build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Percorso personalizzato immagine build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Il percorso personalizzato selezionato per l'immagine build non è valido.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Abilità &amp; Talenti</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Con i seguenti cursori e bottoni, è possibile attivare o disattivare alcuni effetti condizionali delle abilità. Puoi anche selezionare quante volte attivare l'effetto del talento, se possibile. Nota che non tutte le abilità/talenti avranno un effetto sulle statistiche della nave.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Capitano standard</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Capitano:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombe in una carica</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Navi Attuali</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Navi da eliminare</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Si è verificato un errore durante il caricamento dei dati. Questo può essere dovuto al fatto che il formato dei dati non sia compatibile con una vecchia versione dell'app o a dati corrotti. Se non sei sull'ultima versione, aspetta che ti venga chiesto di riavviare l'app per aggiornare, o aggiorna manualmente se hai disabilitato gli aggiornamenti automatici. Se sei sull'ultima versione, usa la finestra delle impostazioni per pulire tutti i dati dell'applicazione memorizzati per risolvere i problemi di corruzione dei dati.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Tempo di ricarica lato server</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>Il server aggiorna solo ogni 0.142857142857 secondi. Ciò significa che le ricariche che cadono tra i multipli di questo numero verranno spostati dopo il tick. Il valore qui indicato mostra la vera ricarica ottenuta, che può essere diversa dalla ricarica teorica sopra.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>DPM lato server</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Rateo di fuoco lato server</value>
+  </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>Il nome della build contiene caratteri non validi. Sono ammessi solo lettere, numeri, spazi, trattini e trattini bassi.</value>
+  </data>
 </root>
