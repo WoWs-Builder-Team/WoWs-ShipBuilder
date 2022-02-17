@@ -346,7 +346,7 @@
     <value>Скорострельность</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Время перезарядки</value>
+    <value>Перезарядка</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Сигма</value>
@@ -523,7 +523,7 @@
     <value>Название</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Применить бонусы камуфляжа</value>
+    <value>Бонусы камуфляжа</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
     <value>Дальность взведения</value>
@@ -1108,5 +1108,20 @@
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
     <value>Удаляемые Корабли</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Произошла ошибка при загрузке данных. Это может быть вызвано тем, что данные были повреждены, либо же формат данных не совместим со старой версией приложения. Если вы не используете последнюю версию, подождите, пока вы не получите запрос о перезапуске приложения для обновления, или, если вы отключили автоматическое обновление, обновите вручную. Если вы используете последнюю версию, воспользуйтесь окном настроек для очистки всех сохраненных данных приложения для решения проблемы повреждения данных.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Серверная Перезарядка</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>Сервер обновляется раз в 0.142857142857 секунды. Это значит, что перезарядки попадающие в период между обновлениями откладываются до следующего обновления. Значение указанное здесь - ваша истинная перезарядка, и она может отличаться от теоретической, указанной выше.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>Серверный ДПМ</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Серверная Скорострельность</value>
   </data>
 </root>
