@@ -346,7 +346,7 @@
     <value>Feuerrate</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Theoretische Nachladezeit</value>
+    <value>Nachladezeit</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -1114,9 +1114,18 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Beim Laden der Daten ist ein Fehler aufgetreten. Möglicherweise ist das Datenformat nicht mehr mit einer älteren Version der App kompatibel oder einige Daten sind beschädigt. Wenn die App nicht auf dem neuesten Stand ist, warte auf die Update-Benachrichtigung oder aktualisiere sie manuell, wenn automatische Updates deaktiviert sind. Wenn die App bereits auf dem neuesten Stand ist, kannst du unter Einstellungen die gespeicherten Anwendungsdaten löschen, um Probleme mit beschädigten Daten zu lösen.</value>
   </data>
   <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>Echte Nachladezeit</value>
+    <value>Serverseitige Nachladezeit</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Die Server-Aktualisierungsrate beträgt 0.285714285714 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
+    <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>Serverseitige DPM</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Serverseitige Feuerrate</value>
+  </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>Der Build-Name enthält ungültige Zeichen. Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche und Unterstriche erlaubt.</value>
   </data>
 </root>

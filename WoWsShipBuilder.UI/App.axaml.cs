@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -44,8 +45,15 @@ namespace WoWsShipBuilder.UI
 #if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
                     {
-                        await UpdateCheck();
-                        Logging.Logger.Info("Finished updatecheck");
+                        if (OperatingSystem.IsWindows())
+                        {
+                            await UpdateCheck();
+                            Logging.Logger.Info("Finished updatecheck");
+                        }
+                        else
+                        {
+                            Logging.Logger.Warn("Skipped updatecheck");
+                        }
                     });
 #endif
                 }
@@ -63,10 +71,12 @@ namespace WoWsShipBuilder.UI
             Logging.Logger.Info(new string('-', 30));
         }
 
+        [SupportedOSPlatform("windows")]
         private async Task UpdateCheck()
         {
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
-            using UpdateManager updateManager = await UpdateManager.GitHubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+
+            using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
             Logging.Logger.Info("Update manager initialized.");
             try
             {
@@ -74,6 +84,7 @@ namespace WoWsShipBuilder.UI
                 var release = await updateManager.UpdateApp();
                 if (release == null)
                 {
+                    Logging.Logger.Info("No app update found.");
                     return;
                 }
 
@@ -87,7 +98,10 @@ namespace WoWsShipBuilder.UI
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
                     Logging.Logger.Info("User decided to restart after update.");
-                    UpdateManager.RestartApp();
+                    if (OperatingSystem.IsWindows())
+                    {
+                        UpdateManager.RestartApp();
+                    }
                 }
             }
             catch (NullReferenceException)

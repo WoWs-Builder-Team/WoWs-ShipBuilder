@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
@@ -2431,7 +2431,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reaction time.
+        ///   Looks up a localized string similar to Reaction Time.
         /// </summary>
         public static string ShipStats_ReactionTime {
             get {
@@ -2440,7 +2440,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Theoretical Reload time.
+        ///   Looks up a localized string similar to Reload Time.
         /// </summary>
         public static string ShipStats_Reload {
             get {
@@ -2656,6 +2656,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server-side DPM.
+        /// </summary>
+        public static string ShipStats_TheoreticalTrueDPM {
+            get {
+                return ResourceManager.GetString("ShipStats_TheoreticalTrueDPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time to fully aimed.
         /// </summary>
         public static string ShipStats_TimeToFullyAimed {
@@ -2719,7 +2728,7 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to True Reload.
+        ///   Looks up a localized string similar to Server-side Reload Time.
         /// </summary>
         public static string ShipStats_TrueReload {
             get {
@@ -2728,11 +2737,20 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server updates only every 0.285714285714 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
+        ///   Looks up a localized string similar to The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
         /// </summary>
         public static string ShipStats_TrueReloadTooltip {
             get {
                 return ResourceManager.GetString("ShipStats_TrueReloadTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server-side RoF.
+        /// </summary>
+        public static string ShipStats_TrueRoF {
+            get {
+                return ResourceManager.GetString("ShipStats_TrueRoF", resourceCulture);
             }
         }
         
@@ -2994,6 +3012,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Usa {
             get {
                 return ResourceManager.GetString("Usa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed..
+        /// </summary>
+        public static string Validation_BuildName {
+            get {
+                return ResourceManager.GetString("Validation_BuildName", resourceCulture);
             }
         }
         

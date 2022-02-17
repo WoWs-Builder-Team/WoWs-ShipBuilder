@@ -173,6 +173,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 {
                     var workTimeModifiers = modifiers.FindModifiers("sonarWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
+
+                    var torpDetectionModifiers = modifiers.FindModifiers("TorpedoDetectionCoefficient");
+                    var distTorpedo = torpDetectionModifiers.Aggregate(consumableModifiers["distTorpedo"], (current, modifier) => current * modifier);
+                    consumableModifiers["distTorpedo"] = distTorpedo;
                 }
                 else if (name.Contains("PCY020", StringComparison.InvariantCultureIgnoreCase))
                 {

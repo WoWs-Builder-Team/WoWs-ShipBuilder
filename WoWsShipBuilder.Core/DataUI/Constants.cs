@@ -1,7 +1,7 @@
-﻿namespace WoWsShipBuilder.Core.DataUI
+namespace WoWsShipBuilder.Core.DataUI
 {
     public static class Constants
     {
-        public const decimal TickRate = 0.285714285714m;
+        public const decimal TickRate = 0.142857142857m;
     }
 }

@@ -346,7 +346,7 @@
     <value>Atış Hızı</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Yükleme Süresi</value>
+    <value>Teorik Yeniden Doldurma Süresi</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
@@ -1039,7 +1039,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Yatay</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Mermi Yönü</value>
+    <value>Mermi Yolu</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
     <value>Komutan Yetenekleri</value>
@@ -1105,9 +1105,18 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Salvodaki bomba sayısı</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-      <value>Mevcut Gemiler</value>
+    <value>Mevcut Gemiler</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-      <value>Silinecek Gemiler</value>
+    <value>Silinecek Gemiler</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Veri yüklenirken bir hata oluştu. Söz konusu veri biçiminin uygulamanın eski bir sürümü ile uyumlu olmaması veya verinin bozuk olmasından kaynaklanıyor olabilir. Eğer son sürümde değil iseniz, güncellemek için uygulamayı yeniden başlatma ile ilgili bir istem alana kadar bekleyin, Eğer otomatik güncellemeleri devre dışı bıraktı iseniz manuel olarak güncelleme yapın. Eğer son sürüm kullanıyorsanız, veri bozulmasına ilişkin sorunları çözmek için ayarlar penceresinden depolanan uygulama verilerini temizleyin.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Gerçek Yeniden Doldurma Süresi</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
   </data>
 </root>

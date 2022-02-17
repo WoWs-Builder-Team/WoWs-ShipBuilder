@@ -9,7 +9,7 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.4.1</VersionPrefix>
+        <VersionPrefix>1.4.2</VersionPrefix>
 <!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -51,7 +51,7 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
-        <PackageReference Include="Clowd.Squirrel" Version="2.6.34-pre" />
+        <PackageReference Include="Clowd.Squirrel" Version="2.7.98-pre" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
@@ -62,7 +62,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="16.1.4" />
+        <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />

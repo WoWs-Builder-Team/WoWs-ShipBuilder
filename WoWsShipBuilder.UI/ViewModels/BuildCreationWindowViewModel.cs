@@ -1,17 +1,21 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildCreationWindowViewModel : ViewModelBase
     {
+        private const string BuildNameRegex = "^[a-zA-Z0-9][a-zA-Z0-9_ -]*$";
         private readonly BuildCreationWindow? self;
         private readonly Build build;
 
@@ -44,6 +48,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? buildName;
 
+        [RegularExpression(BuildNameRegex, ErrorMessageResourceName = "Validation_BuildName", ErrorMessageResourceType = typeof(Translation))]
         public string? BuildName
         {
             get => buildName;
@@ -73,7 +78,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.Builds.Insert(0, build);
         }
 
-        private bool CanSaveBuild() => !string.IsNullOrWhiteSpace(BuildName);
+        private bool CanSaveBuild()
+        {
+            return !string.IsNullOrWhiteSpace(BuildName) && Regex.IsMatch(BuildName, BuildNameRegex);
+        }
 
         public void SaveAndCopyString()
         {

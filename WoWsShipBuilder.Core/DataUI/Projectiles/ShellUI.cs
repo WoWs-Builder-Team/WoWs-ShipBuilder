@@ -29,6 +29,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public string TheoreticalDPM { get; set; } = default!;
 
+        public string TheoreticalTrueDPM { get; set; } = default!;
+
         [DataUiUnit("M")]
         public decimal ExplosionRadius { get; set; }
 
@@ -81,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal salvosPerMinute)
+        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof)
         {
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
@@ -189,7 +191,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
                 decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-                var dpmNumber = Math.Round((decimal)shellDamage * barrelCount * salvosPerMinute);
+                var dpmNumber = Math.Round((decimal)shellDamage * barrelCount * rof);
+                var trueDmpNumber = Math.Round((decimal)shellDamage * barrelCount * trueRof);
                 var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
 
                 NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
@@ -208,11 +211,12 @@ namespace WoWsShipBuilder.Core.DataUI
                     AirDrag = Math.Round((decimal)shellAirDrag, 2),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
-                    PotentialFPM = Math.Round((decimal)shellFireChance / 100 * barrelCount * salvosPerMinute, 2),
+                    PotentialFPM = Math.Round((decimal)shellFireChance / 100 * barrelCount * rof, 2),
                     Overmatch = overmatch,
                     ArmingThreshold = armingTreshold,
                     FuseTimer = fuseTimer,
                     TheoreticalDPM = dpmNumber.ToString("n0", nfi),
+                    TheoreticalTrueDPM = trueDmpNumber.ToString("n0", nfi),
                     Index = shell.Name,
                     ShowBlastPenetration = showBlastPenetration,
                 };
