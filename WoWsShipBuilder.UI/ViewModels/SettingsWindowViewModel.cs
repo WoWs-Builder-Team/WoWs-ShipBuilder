@@ -291,7 +291,10 @@ namespace WoWsShipBuilder.UI.ViewModels
                 if (result == MessageBox.MessageBoxResult.Yes)
                 {
                     AppSettingsHelper.SaveSettings();
-                    UpdateManager.RestartApp();
+                    if (OperatingSystem.IsWindows())
+                    {
+                        UpdateManager.RestartApp();
+                    }
                 }
             }
 

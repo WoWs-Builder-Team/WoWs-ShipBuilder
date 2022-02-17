@@ -13,5 +13,6 @@
             </dpiAwareness>
         </asmv3:windowsSettings>
     </asmv3:application>
+    <SquirrelAwareVersion xmlns="urn:schema-squirrel-com:asm.v1">1</SquirrelAwareVersion>
 
 </assembly>
