@@ -20,24 +20,24 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal Range { get; set; }
 
         [DataUiUnit("S")]
-        public decimal Reload { get; set; }
-
-        [JsonIgnore]
-        public string TrueReload { get; set; } = default!;
-
-        [DataUiUnit("ShotsPerMinute")]
-        public decimal RoF { get; set; }
-
-        [JsonIgnore]
-        public string TrueRoF { get; set; } = default!;
-
-        [DataUiUnit("S")]
         public decimal TurnTime { get; set; }
 
         [DataUiUnit("DegreePerSecond")]
         public decimal TraverseSpeed { get; set; }
 
         public decimal Sigma { get; set; }
+
+        [DataUiUnit("ShotsPerMinute")]
+        public decimal RoF { get; set; }
+
+        [DataUiUnit("ShotsPerMinute")]
+        public decimal TrueRoF { get; set; } = default!;
+
+        [DataUiUnit("S")]
+        public decimal Reload { get; set; }
+
+        [JsonIgnore]
+        public string TrueReload { get; set; } = default!;
 
         [JsonIgnore]
         public string HorizontalDisp { get; set; } = default!;
@@ -167,7 +167,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 Reload = Math.Round(reload, 2),
                 TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
                 RoF = Math.Round(rateOfFire * barrelCount, 1),
-                TrueRoF = trueRateOfFire + UnitLocalization.Unit_ShotsPerMinute,
+                TrueRoF = Math.Round(trueRateOfFire * barrelCount, 1),
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Sigma = mainBattery.Sigma,
@@ -184,7 +184,7 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, trueRateOfFire);
+            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

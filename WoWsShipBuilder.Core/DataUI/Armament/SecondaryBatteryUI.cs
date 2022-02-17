@@ -17,16 +17,19 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal Reload { get; set; }
-
         [JsonIgnore]
         public string TrueReload { get; set; } = default!;
 
         [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
 
+        [DataUiUnit("ShotsPerMinute")]
+        public decimal TrueRoF { get; set; }
+
         public decimal Sigma { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal Reload { get; set; }
 
         [JsonIgnore]
         public ShellUI? Shell { get; set; }
@@ -72,7 +75,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var rof = Math.Round(60 / (decimal)reload, 1);
 
                 var trueReload = Math.Ceiling((decimal)reload / Constants.TickRate) * Constants.TickRate;
-                decimal trueRateOfFire = 60 / trueReload;
+                decimal trueRateOfFire = Math.Round(60 / trueReload, 1);
 
                 var secondaryUI = new SecondaryBatteryUI
                 {
@@ -80,13 +83,14 @@ namespace WoWsShipBuilder.Core.DataUI
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
                     TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
+                    TrueRoF = trueRateOfFire,
                     RoF = rof,
                     Sigma = secondary.Sigma,
                 };
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, trueRateOfFire).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire).First();
                 }
                 catch (KeyNotFoundException e)
                 {
