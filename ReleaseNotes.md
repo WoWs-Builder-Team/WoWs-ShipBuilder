@@ -1,4 +1,4 @@
-# Update 1.4.2 - pre
+# Update 1.4.2
 
 ## Additions
 - Added server-side rate of fire and DPM values.
