@@ -3016,6 +3016,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed..
+        /// </summary>
+        public static string Validation_BuildName {
+            get {
+                return ResourceManager.GetString("Validation_BuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical.
         /// </summary>
         public static string VerticalPlane {
