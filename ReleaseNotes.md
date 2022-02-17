@@ -2,6 +2,7 @@
 
 ## Additions
 - Added server-side rate of fire and DPM values.
+- Dispersion plot window now stores number of shots, aiming range and plot orientation when closing the window.
 
 ## Changes
 

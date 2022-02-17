@@ -56,6 +56,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
             self = win;
 
+            AimingRange = AppData.Settings.DispersionPlotSettings.AimingRange;
+            ShotsNumber = AppData.Settings.DispersionPlotSettings.ShotsNumber;
+            IsVertical = AppData.Settings.DispersionPlotSettings.IsVertical;
+
             logger.Info("Creating base plot models");
             var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
             var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
@@ -300,7 +304,11 @@ namespace WoWsShipBuilder.UI.ViewModels
         public bool IsVertical
         {
             get => isVertical;
-            set => this.RaiseAndSetIfChanged(ref isVertical, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref isVertical, value);
+                AppData.Settings.DispersionPlotSettings.IsVertical = value;
+            }
         }
 
         private bool isVerticalPlane = false;
@@ -379,7 +387,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                             var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
 
                             // calculate the name that will be shown for this particular series
-                            var shellName = Localizer.Instance[$"{shellIndex}"].Localization;                           
+                            var shellName = Localizer.Instance[$"{shellIndex}"].Localization;
 
                             var name = $"{shipName} - {shellName}";
 
@@ -454,7 +462,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                             await MessageBox.Show(self, shipName + " " + Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                         }
                     }
-                } 
+                }
             }
         }
 
@@ -505,6 +513,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 return;
             }
+
+            AppData.Settings.DispersionPlotSettings.AimingRange = AimingRange;
+            AppData.Settings.DispersionPlotSettings.ShotsNumber = ShotsNumber;
 
             foreach (var itemViewModel in DispersionPlotList)
             {

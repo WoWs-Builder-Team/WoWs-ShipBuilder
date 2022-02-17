@@ -31,5 +31,7 @@ namespace WoWsShipBuilder.Core.Settings
         public bool IncludeSignalsForImageExport { get; set; }
 
         public string? CustomImagePath { get; set; }
+
+        public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
     }
 }
