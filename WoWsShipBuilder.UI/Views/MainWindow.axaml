@@ -11,7 +11,8 @@
         Title="WoWs Ship Builder"
         Height="850" Width="1775" CanResize="True"
         MinHeight="850" MinWidth="1775"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Closed="MainWindow_OnClosed">
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>

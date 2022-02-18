@@ -4,26 +4,27 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Utilities;
-using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class StartMenuViewModel : ViewModelBase, IScalableViewModel
     {
         private readonly IFileSystem fileSystem;
+
+        private readonly INavigationService navigationService;
 
         private AvaloniaList<Build> buildList = new();
 
@@ -32,13 +33,14 @@ namespace WoWsShipBuilder.UI.ViewModels
         private int? selectedBuild;
 
         public StartMenuViewModel()
-            : this(new FileSystem())
+            : this(new FileSystem(), new NavigationService())
         {
         }
 
-        public StartMenuViewModel(IFileSystem fileSystem)
+        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService)
         {
             this.fileSystem = fileSystem;
+            this.navigationService = navigationService;
             if (!AppData.Builds.Any())
             {
                 AppDataHelper.Instance.LoadBuilds();
@@ -97,17 +99,19 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
                 try
                 {
-                    var ship = AppDataHelper.Instance.GetShipFromSummary(result);
+                    var ship = AppDataHelper.Instance.GetShipFromSummary(result)!;
                     AppDataHelper.Instance.LoadNationFiles(result.Nation);
-                    MainWindow win = new();
-                    win.DataContext = new MainWindowViewModel(fileSystem, ship!, result.PrevShipIndex, result.NextShipsIndex);
-                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                    {
-                        desktop.MainWindow = win;
-                    }
+                    navigationService.OpenMainWindow(ship, result, closeMainWindow: true);
 
-                    win.Show();
-                    await CloseInteraction.Handle(Unit.Default);
+                    // MainWindow win = new();
+                    // win.DataContext = new MainWindowViewModel(fileSystem, ship!, result);
+                    // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    // {
+                    //     desktop.MainWindow = win;
+                    // }
+                    //
+                    // win.Show();
+                    // await CloseInteraction.Handle(Unit.Default);
                 }
                 catch (Exception e)
                 {
@@ -117,24 +121,26 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public async void OpenDispersionGraphWindow()
+        public void OpenDispersionGraphWindow()
         {
             if (Design.IsDesignMode)
             {
                 return;
             }
 
-            var window = new DispersionGraphsWindow();
-            var viewModel = new DispersionGraphViewModel(window);
-            window.DataContext = viewModel;
-            window.Show();
+            navigationService.OpenDispersionPlotWindow(true);
 
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = window;
-            }
-
-            await CloseInteraction.Handle(Unit.Default);
+            // var window = new DispersionGraphsWindow();
+            // var viewModel = new DispersionGraphViewModel(window);
+            // window.DataContext = viewModel;
+            // window.Show();
+            //
+            // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            // {
+            //     desktop.MainWindow = window;
+            // }
+            //
+            // await CloseInteraction.Handle(Unit.Default);
         }
 
         public async void LoadBuild()
@@ -170,12 +176,14 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             try
             {
-                var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
+                var ship = AppDataHelper.Instance.GetShipFromSummary(summary)!;
                 AppDataHelper.Instance.LoadNationFiles(summary.Nation);
-                MainWindow win = new();
-                win.DataContext = new MainWindowViewModel(fileSystem, ship!, summary.PrevShipIndex, summary.NextShipsIndex, build);
-                win.Show();
-                await CloseInteraction.Handle(Unit.Default);
+                navigationService.OpenMainWindow(ship, summary, build, true);
+
+                // MainWindow win = new();
+                // win.DataContext = new MainWindowViewModel(fileSystem, ship!, summary, build);
+                // win.Show();
+                // await CloseInteraction.Handle(Unit.Default);
             }
             catch (Exception e)
             {

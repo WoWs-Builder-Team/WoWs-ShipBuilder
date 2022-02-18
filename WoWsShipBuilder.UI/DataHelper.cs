@@ -27,5 +27,11 @@ namespace WoWsShipBuilder.UI
 
             return (ship, configuration);
         }
+
+        public static ShipSummary GetPreviewShipSummary(ShipClass shipClass, int tier, Nation nation)
+        {
+            var ship = LoadPreviewShip(shipClass, tier, nation);
+            return AppDataHelper.Instance.GetShipSummaryList(ServerType.Live).First(summary => summary.Index == ship.Ship.Index);
+        }
     }
 }

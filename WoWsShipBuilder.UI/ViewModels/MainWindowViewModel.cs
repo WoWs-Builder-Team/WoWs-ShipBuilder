@@ -2,16 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -19,6 +18,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Utilities;
@@ -40,7 +40,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly CompositeDisposable disposables = new();
 
-        private readonly IFileSystem fileSystem;
+        private readonly INavigationService navigationService;
 
         private Account accountType = Account.Normal;
 
@@ -88,17 +88,20 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(IFileSystem fileSystem, Ship ship, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
+        public MainWindowViewModel(INavigationService navigationService, Ship ship, ShipSummary shipSummary, Build? build = null, double contentScaling = 1)
         {
-            this.fileSystem = fileSystem;
+            this.navigationService = navigationService;
             tokenSource = new();
             ContentScaling = contentScaling;
+            PreviousShipIndex = shipSummary.PrevShipIndex;
 
-            InitializeData(ship, previousShipIndex, nextShipsIndexes, build);
+            LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
+
+            InitializeData(ship, PreviousShipIndex, shipSummary.NextShipsIndex, build);
         }
 
         public MainWindowViewModel()
-            : this(new FileSystem(), AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null)
+            : this(null!, DataHelper.LoadPreviewShip(ShipClass.Destroyer, 9, Nation.Germany).Ship, DataHelper.GetPreviewShipSummary(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 
@@ -302,19 +305,15 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         // Handle(true) closes this window too
-        public Interaction<bool, Unit> CloseInteraction { get; } = new();
+        public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
-        public async void BackToMenu()
+        public Interaction<StartMenuViewModel, Unit> OpenStartMenuInteraction { get; } = new();
+
+        public ICommand LoadShipFromIndexCommand { get; }
+
+        public void BackToMenu()
         {
-            StartMenuWindow win = new();
-            win.DataContext = new StartMenuViewModel(fileSystem);
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = win;
-            }
-
-            win.Show();
-            await CloseInteraction.Handle(true);
+            navigationService.OpenStartMenu(true);
         }
 
         public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectNewShipInteraction { get; } = new();
@@ -337,6 +336,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 Process.Start("explorer.exe", $"/select, \"{filePath}\"");
             }
+        }
+
+        private async Task LoadShipFromIndexExecute(string shipIndex)
+        {
+            var shipSummary = AppData.ShipSummaryList!.First(summary => summary.Index == shipIndex);
+            await LoadNewShip(shipSummary);
         }
 
         private async Task<string> CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
@@ -369,7 +374,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private async Task LoadNewShip(ShipSummary summary)
         {
             // only close child windows
-            await CloseInteraction.Handle(false);
+            await CloseChildrenInteraction.Handle(Unit.Default);
 
             disposables.Clear();
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);

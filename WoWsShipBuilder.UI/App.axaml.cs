@@ -4,17 +4,24 @@ using System.IO.Abstractions;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using Autofac;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using ReactiveUI;
 using Splat;
+using Splat.Autofac;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Extensions;
+using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
@@ -23,6 +30,8 @@ namespace WoWsShipBuilder.UI
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
+        private IContainer container = null!;
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -33,7 +42,8 @@ namespace WoWsShipBuilder.UI
             Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                Locator.CurrentMutable.RegisterConstant(new FileSystem(), typeof(IFileSystem));
+                container = SetupDependencyInjection();
+
                 AppSettingsHelper.LoadSettings();
                 Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
                 desktop.Exit += OnExit;
@@ -69,6 +79,30 @@ namespace WoWsShipBuilder.UI
             AppDataHelper.Instance.SaveBuilds();
             Logging.Logger.Info("Exiting...");
             Logging.Logger.Info(new string('-', 30));
+        }
+
+        private IContainer SetupDependencyInjection()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
+            builder.RegisterType<StartMenuViewModel>();
+            builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<DispersionGraphViewModel>();
+
+            var resolver = builder.UseAutofacDependencyResolver();
+            Locator.SetLocator(resolver);
+
+            PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Avalonia);
+            Locator.CurrentMutable.InitializeSplat();
+            Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
+            resolver.InitializeAvalonia();
+
+            var diContainer = builder.Build();
+            resolver.SetLifetimeScope(diContainer);
+
+            return diContainer;
         }
 
         [SupportedOSPlatform("windows")]

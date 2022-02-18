@@ -27,5 +27,12 @@ namespace WoWsShipBuilder.UI.Extensions
                 Locator.CurrentMutable.RegisterConstant(new AvaloniaActivationForViewFetcher(), typeof(IActivationForViewFetcher));
                 Locator.CurrentMutable.RegisterConstant(new AutoDataTemplateBindingHook(), typeof(IPropertyBindingHook));
             }));
+
+        public static void InitializeAvalonia(this IMutableDependencyResolver resolver)
+        {
+            RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
+            resolver.RegisterConstant(new AvaloniaActivationForViewFetcher(), typeof(IActivationForViewFetcher));
+            resolver.RegisterConstant(new AutoDataTemplateBindingHook(), typeof(IPropertyBindingHook));
+        }
     }
 }

@@ -7,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
@@ -74,16 +75,18 @@ namespace WoWsShipBuilder.UI.Views
             }
             else
             {
-                var startViewModel = new StartMenuViewModel(Locator.Current.GetServiceSafe<IFileSystem>());
-                var startWindow = new StartMenuWindow
-                {
-                    DataContext = startViewModel,
-                };
-                startWindow.Show();
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    desktop.MainWindow = startWindow;
-                }
+                Locator.Current.GetServiceSafe<INavigationService>().OpenStartMenu();
+
+                // var startViewModel = ;
+                // var startWindow = new StartMenuWindow
+                // {
+                //     DataContext = startViewModel,
+                // };
+                // startWindow.Show();
+                // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                // {
+                //     desktop.MainWindow = startWindow;
+                // }
             }
         }
 

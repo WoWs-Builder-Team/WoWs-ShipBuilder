@@ -2,7 +2,6 @@ using System;
 using System.Runtime.Versioning;
 using System.Threading;
 using Avalonia;
-using Avalonia.ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;

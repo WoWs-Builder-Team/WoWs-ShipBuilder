@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.UI.Views
                 {
                     var startWindow = new StartMenuWindow
                     {
-                        DataContext = new StartMenuViewModel(Locator.Current.GetServiceSafe<IFileSystem>()),
+                        DataContext = Locator.Current.GetServiceSafe<StartMenuViewModel>(),
                     };
                     if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {

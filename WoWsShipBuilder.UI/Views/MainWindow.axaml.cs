@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Mixins;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
-using Splat;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
@@ -44,16 +41,11 @@ namespace WoWsShipBuilder.UI.Views
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);
 
-                ViewModel?.CloseInteraction.RegisterHandler(interaction =>
+                ViewModel?.CloseChildrenInteraction.RegisterHandler(interaction =>
                 {
                     foreach (var childWindow in ChildWindows)
                     {
                         childWindow.Close();
-                    }
-
-                    if (interaction.Input)
-                    {
-                        Close();
                     }
 
                     interaction.SetOutput(Unit.Default);
@@ -71,6 +63,21 @@ namespace WoWsShipBuilder.UI.Views
                 ViewModel?.BuildCreatedInteraction.RegisterHandler(async interaction =>
                 {
                     await MessageBox.Show(this, interaction.Input, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+                    interaction.SetOutput(Unit.Default);
+                }).DisposeWith(disposables);
+
+                ViewModel?.OpenStartMenuInteraction.RegisterHandler(interaction =>
+                {
+                    StartMenuWindow win = new()
+                    {
+                        DataContext = interaction.Input,
+                    };
+                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    {
+                        desktop.MainWindow = win;
+                    }
+
+                    win.Show();
                     interaction.SetOutput(Unit.Default);
                 }).DisposeWith(disposables);
             });
@@ -108,22 +115,24 @@ namespace WoWsShipBuilder.UI.Views
 
         public void OnClickChangeShipNext(object sender, PointerReleasedEventArgs e)
         {
-            var dc = DataContext as MainWindowViewModel;
-            var image = sender as Image;
-            var shipIndex = image!.Name;
-            var ship = AppData.ShipDictionary![shipIndex!];
-            var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).PrevShipIndex;
-            var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == shipIndex).NextShipsIndex;
-            DataContext = new MainWindowViewModel(Locator.Current.GetServiceSafe<IFileSystem>(), ship, prevShipIndex, nextShipIndex, contentScaling: dc!.ContentScaling);
+            var image = (Image)sender;
+            string? shipIndex = image.Name;
+            ViewModel?.LoadShipFromIndexCommand.Execute(shipIndex);
         }
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
         {
-            var dc = DataContext as MainWindowViewModel;
-            var ship = AppData.ShipDictionary![dc!.PreviousShipIndex!];
-            var prevShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).PrevShipIndex;
-            var nextShipIndex = AppData.ShipSummaryList!.First(x => x.Index == dc.PreviousShipIndex!).NextShipsIndex;
-            DataContext = new MainWindowViewModel(Locator.Current.GetServiceSafe<IFileSystem>(), ship, prevShipIndex, nextShipIndex, contentScaling: dc.ContentScaling);
+            var shipIndex = ViewModel?.PreviousShipIndex;
+            ViewModel?.LoadShipFromIndexCommand.Execute(shipIndex);
+        }
+
+        private void MainWindow_OnClosed(object? sender, EventArgs e)
+        {
+            foreach (var childWindow in ChildWindows.ToList())
+            {
+                childWindow.Close();
+                ChildWindows.Remove(childWindow);
+            }
         }
     }
 }
