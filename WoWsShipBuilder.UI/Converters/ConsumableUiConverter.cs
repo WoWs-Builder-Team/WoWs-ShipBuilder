@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using Avalonia.Collections;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core;
@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Converters
                 return "";
             }
 
-            if (values[0] is List<ConsumableUI> consumables && values[1] is AvaloniaList<ConsumableUI> selectedConsumables)
+            if (values[0] is List<ConsumableUI> consumables && values[1] is ObservableCollection<ConsumableUI> selectedConsumables)
             {
                 switch (parameter)
                 {
