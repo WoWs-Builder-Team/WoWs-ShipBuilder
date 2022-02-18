@@ -35,6 +35,15 @@ namespace WoWsShipBuilder.UI.Views
                         var result = await selectionWindow.ShowDialog<List<ShipSummary>>(this);
                         interaction.SetOutput(result);
                     }));
+                    disposable(ViewModel.ShellSelectionInteraction.RegisterHandler(async interaction =>
+                    {
+                        var valueSelectionWindow = new ValueSelectionWindow
+                        {
+                            DataContext = interaction.Input,
+                        };
+                        var result = await valueSelectionWindow.ShowDialog<string>(this);
+                        interaction.SetOutput(result);
+                    }));
                 }
             });
         }

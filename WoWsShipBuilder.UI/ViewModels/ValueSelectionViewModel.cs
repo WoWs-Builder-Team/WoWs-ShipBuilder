@@ -1,20 +1,28 @@
+using System;
 using System.Collections.Generic;
-using Avalonia.Controls;
-using Avalonia.Metadata;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using ReactiveUI;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ValueSelectionViewModel : ViewModelBase
     {
-        private Window self;
+        public ValueSelectionViewModel()
+            : this("Test", "Placeholder", new() { "item1", "item2" })
+        {
+        }
 
-        public ValueSelectionViewModel(Window win, string text, string itemPlaceholderText, List<string> items)
+        public ValueSelectionViewModel(string text, string itemPlaceholderText, List<string> items)
         {
             Text = text;
             ItemPlaceholderText = itemPlaceholderText;
             Items = items;
-            self = win;
+
+            IObservable<bool>? canOkExecute = this.WhenAnyValue(x => x.SelectedItem, selector: selected => selected != null);
+            OkCommand = ReactiveCommand.CreateFromTask(Ok, canOkExecute);
         }
 
         private string text = default!;
@@ -48,21 +56,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             get => selectedItem;
             set => this.RaiseAndSetIfChanged(ref selectedItem, value);
         }
-       
-        public void Ok(object parameter)
+
+        public Interaction<string?, Unit> ConfirmationInteraction { get; } = new();
+
+        public ICommand OkCommand { get; }
+
+        private async Task Ok()
         {
-            self.Close(SelectedItem);
+            await ConfirmationInteraction.Handle(SelectedItem);
         }
 
-        [DependsOn(nameof(SelectedItem))]
-        public bool CanOk(object parameter)
+        public async void Cancel()
         {
-            return SelectedItem != null;
-        }
-
-        public void Cancel()
-        {
-            self.Close();
+            await ConfirmationInteraction.Handle(null);
         }
     }
 }

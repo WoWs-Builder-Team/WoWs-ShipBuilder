@@ -340,6 +340,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> AddShipInteraction { get; }
 
+        public Interaction<ValueSelectionViewModel, string?> ShellSelectionInteraction { get; } = new();
+
         /// <summary>
         /// Add a ship to the ones currently visualized.
         /// </summary>
@@ -365,17 +367,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                             // Get all the shell of that ship, and propose the choice to the user.
                             var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
-                            string shellIndex;
+                            string? shellIndex;
                             if (shellsName.Count == 1)
                             {
                                 shellIndex = shellsName.First();
                             }
                             else
                             {
-                                var win = new ValueSelectionWindow();
-                                win.DataContext = new ValueSelectionViewModel(win, shipName + " " + Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
-
-                                shellIndex = await win.ShowDialog<string>(self);
+                                var vm = new ValueSelectionViewModel(shipName + " " + Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
+                                shellIndex = await ShellSelectionInteraction.Handle(vm);
                             }
 
                             // If the user didn't select a shell, return and do nothing.
