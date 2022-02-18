@@ -68,9 +68,9 @@ namespace WoWsShipBuilder.UI.Views
 
         private void DispersionGraphsWindow_Closing(object? sender, EventArgs e)
         {
-            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (Owner is MainWindow mainWindow)
             {
-                mainWindowViewModel.ChildrenWindows.Remove(this);
+                mainWindow.ChildWindows.Remove(this);
             }
             else
             {
@@ -89,9 +89,9 @@ namespace WoWsShipBuilder.UI.Views
 
         private void DispersionGraphsWindow_Opened(object? sender, EventArgs e)
         {
-            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (Owner is MainWindow mainWindow)
             {
-                mainWindowViewModel.ChildrenWindows.Add(this);
+                mainWindow.ChildWindows.Add(this);
             }
         }
     }

@@ -8,7 +8,6 @@ using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
@@ -38,8 +37,7 @@ namespace WoWsShipBuilder.UI.Views
             {
                 ViewModel?.SelectShipInteraction.RegisterHandler(async interaction =>
                 {
-                    var selectionWindow = new ShipSelectionWindow(false);
-                    var result = await selectionWindow.ShowDialog<List<ShipSummary>>(this);
+                    var result = await new ShipSelectionWindow(false) { DataContext = interaction.Input }.ShowDialog<List<ShipSummary>>(this);
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);
 
@@ -56,6 +54,7 @@ namespace WoWsShipBuilder.UI.Views
                         DataContext = interaction.Input,
                         ShowInTaskbar = false,
                     }.ShowDialog(this);
+                    interaction.SetOutput(Unit.Default);
                 }).DisposeWith(disposables);
 
                 ViewModel?.BuildImportInteraction.RegisterHandler(async interaction =>

@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
@@ -20,7 +21,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
 
@@ -34,10 +34,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         WGPremium,
     }
 
-    class MainWindowViewModel : ViewModelBase, IScalableViewModel
+    public class MainWindowViewModel : ViewModelBase, IScalableViewModel
     {
-        private readonly MainWindow? self;
-
         private readonly SemaphoreSlim semaphore = new(1, 1);
 
         private readonly CompositeDisposable disposables = new();
@@ -90,9 +88,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(IFileSystem fileSystem, Ship ship, MainWindow? window, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
+        public MainWindowViewModel(IFileSystem fileSystem, Ship ship, string? previousShipIndex, List<string>? nextShipsIndexes, Build? build = null, double contentScaling = 1)
         {
-            self = window;
             this.fileSystem = fileSystem;
             tokenSource = new();
             ContentScaling = contentScaling;
@@ -101,11 +98,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public MainWindowViewModel()
-            : this(new FileSystem(), AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null, null)
+            : this(new FileSystem(), AppDataHelper.Instance.ReadLocalJsonData<Ship>(Nation.Germany, ServerType.Live)!["PGSD109"], null, null)
         {
         }
-
-        public List<Window> ChildrenWindows { get; set; } = new();
 
         public string? CurrentShipIndex
         {
@@ -261,11 +256,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref contentScaling, value);
         }
 
-        public void ResetBuild()
+        public async void ResetBuild()
         {
             Logging.Logger.Info("Resetting build");
-            LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
+            await LoadNewShip(AppData.ShipSummaryList!.First(summary => summary.Index.Equals(CurrentShipIndex)));
         }
+
+        public Interaction<BuildCreationWindowViewModel, BuildCreationResult?> BuildCreationInteraction { get; } = new();
+
+        public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
         public async void OpenSaveBuild()
         {
@@ -277,12 +276,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             string shipName = Localizer.Instance[CurrentShipIndex!].Localization;
-            var win = new BuildCreationWindow
-            {
-                ShowInTaskbar = false,
-            };
-            win.DataContext = new BuildCreationWindowViewModel(win, currentBuild, shipName);
-            var dialogResult = await win.ShowDialog<BuildCreationResult?>(self) ?? BuildCreationResult.Canceled;
+            var dialogResult = await BuildCreationInteraction.Handle(new(currentBuild, shipName)) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)
             {
                 return;
@@ -303,11 +297,14 @@ namespace WoWsShipBuilder.UI.ViewModels
                 infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
             }
 
-            await MessageBox.Show(self, infoBoxContent, Translation.BuildCreationWindow_BuildSaved, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Info);
+            await BuildCreatedInteraction.Handle(infoBoxContent);
             OpenExplorerForFile(outputPath);
         }
 
-        public void BackToMenu()
+        // Handle(true) closes this window too
+        public Interaction<bool, Unit> CloseInteraction { get; } = new();
+
+        public async void BackToMenu()
         {
             StartMenuWindow win = new();
             win.DataContext = new StartMenuViewModel(fileSystem);
@@ -317,19 +314,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             win.Show();
-            self?.Close();
+            await CloseInteraction.Handle(true);
         }
+
+        public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectNewShipInteraction { get; } = new();
 
         public async void NewShipSelection()
         {
             Logging.Logger.Info("Selecting new ship");
-            var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(false);
-            var result = (await selectionWin.ShowDialog<List<ShipSummary>>(self)).FirstOrDefault();
+
+            var result = (await SelectNewShipInteraction.Handle(new(false)))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info("New ship selected: {0}", result.Index);
-                LoadNewShip(result);
+                await LoadNewShip(result);
             }
         }
 
@@ -368,12 +366,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             return outputPath;
         }
 
-        private void LoadNewShip(ShipSummary summary)
+        private async Task LoadNewShip(ShipSummary summary)
         {
-            foreach (var window in ChildrenWindows.ToList())
-            {
-                window.Close();
-            }
+            // only close child windows
+            await CloseInteraction.Handle(false);
 
             disposables.Clear();
             var ship = AppDataHelper.Instance.GetShipFromSummary(summary);

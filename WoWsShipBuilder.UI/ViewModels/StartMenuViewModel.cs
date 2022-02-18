@@ -67,7 +67,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public string LoadBuildButtonText => SelectedBuild is > 0 ? Translation.StartMenu_LoadBuild : Translation.StartMenu_ImportBuild;
 
-        public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>> SelectShipInteraction { get; } = new();
+        public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectShipInteraction { get; } = new();
 
         public Interaction<Unit, Unit> CloseInteraction { get; } = new();
 
@@ -91,7 +91,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var dc = new ShipSelectionWindowViewModel(false);
-            var result = (await SelectShipInteraction.Handle(dc)).FirstOrDefault();
+            var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
@@ -100,7 +100,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var ship = AppDataHelper.Instance.GetShipFromSummary(result);
                     AppDataHelper.Instance.LoadNationFiles(result.Nation);
                     MainWindow win = new();
-                    win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, result.PrevShipIndex, result.NextShipsIndex);
+                    win.DataContext = new MainWindowViewModel(fileSystem, ship!, result.PrevShipIndex, result.NextShipsIndex);
                     if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = win;
@@ -173,7 +173,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
                 AppDataHelper.Instance.LoadNationFiles(summary.Nation);
                 MainWindow win = new();
-                win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
+                win.DataContext = new MainWindowViewModel(fileSystem, ship!, summary.PrevShipIndex, summary.NextShipsIndex, build);
                 win.Show();
                 await CloseInteraction.Handle(Unit.Default);
             }

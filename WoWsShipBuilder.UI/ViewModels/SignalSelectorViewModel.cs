@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    internal class SignalSelectorViewModel : ViewModelBase
+    public class SignalSelectorViewModel : ViewModelBase
     {
         private readonly Logger logger;
 

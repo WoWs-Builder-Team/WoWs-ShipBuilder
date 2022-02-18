@@ -54,6 +54,12 @@ namespace WoWsShipBuilder.UI.Views
                     interaction.SetOutput(Unit.Default);
                     (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
                 });
+
+                ViewModel?.CloseInteraction.RegisterHandler(interaction =>
+                {
+                    Close();
+                    interaction.SetOutput(Unit.Default);
+                }).DisposeWith(disposables);
             });
         }
 

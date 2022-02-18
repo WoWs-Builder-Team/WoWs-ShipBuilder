@@ -1,36 +1,29 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
-using Avalonia.Controls;
 using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildCreationWindowViewModel : ViewModelBase
     {
         private const string BuildNameRegex = "^[a-zA-Z0-9][a-zA-Z0-9_ -]*$";
-        private readonly BuildCreationWindow? self;
         private readonly Build build;
 
         public BuildCreationWindowViewModel()
-            : this(null, new("Test-build - Test-ship"), "Test-ship")
+            : this(new("Test-build - Test-ship"), "Test-ship")
         {
-            if (!Design.IsDesignMode)
-            {
-                throw new InvalidOperationException();
-            }
         }
 
-        public BuildCreationWindowViewModel(BuildCreationWindow? win, Build currentBuild, string shipName)
+        public BuildCreationWindowViewModel(Build currentBuild, string shipName)
         {
-            self = win;
             build = currentBuild;
             ShipName = shipName;
             BuildName = build.BuildName;
@@ -65,6 +58,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public bool IsNewBuild { get; }
 
+        public Interaction<BuildCreationResult, Unit> CloseInteraction { get; } = new();
+
         private void SaveBuild()
         {
             build.BuildName = BuildName!;
@@ -83,27 +78,27 @@ namespace WoWsShipBuilder.UI.ViewModels
             return !string.IsNullOrWhiteSpace(BuildName) && Regex.IsMatch(BuildName, BuildNameRegex);
         }
 
-        public void SaveAndCopyString()
+        public async void SaveAndCopyString()
         {
             SaveBuild();
-            self?.Close(new BuildCreationResult(true, IncludeSignals));
+            await CloseInteraction.Handle(new(true, IncludeSignals));
         }
 
         [DependsOn(nameof(BuildName))]
         public bool CanSaveAndCopyString(object parameter) => CanSaveBuild();
 
-        public void SaveAndCopyImage()
+        public async void SaveAndCopyImage()
         {
             SaveBuild();
-            self?.Close(new BuildCreationResult(true, IncludeSignals, true));
+            await CloseInteraction.Handle(new(true, IncludeSignals, true));
         }
 
         [DependsOn(nameof(BuildName))]
         public bool CanSaveAndCopyImage(object parameter) => CanSaveBuild();
 
-        public void CloseBuild()
+        public async void CloseBuild()
         {
-            self?.Close(new BuildCreationResult(false));
+            await CloseInteraction.Handle(new(false));
         }
     }
 
