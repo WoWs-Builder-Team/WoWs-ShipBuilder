@@ -12,9 +12,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ConsumableViewModel : ViewModelBase, IBuildStorable
     {
-        private List<List<ConsumableUI>> shipConsumables = null!;
-
         private readonly Ship ship;
+
+        private List<List<ConsumableUI>> shipConsumables = null!;
 
         public ConsumableViewModel()
             : this(new())

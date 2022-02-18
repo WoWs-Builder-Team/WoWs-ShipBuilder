@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Collections;
-using Avalonia.Metadata;
+using System.Reactive.Linq;
+using DynamicData;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -48,6 +49,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             currentClass = shipClass;
             CaptainList = captainList.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
+
+            this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
         }
 
         private Captain? selectedCaptain;
@@ -95,7 +98,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 SkillOrderList.Clear();
                 foreach (var skillNumber in currentlySelectedNumbersList)
                 {
-                    var skill = SkillList.Values.Single(x => x.SkillNumber.Equals(skillNumber));
+                    var skill = SkillList.Values.Single(x => x.Skill.SkillNumber.Equals(skillNumber)).Skill;
                     SkillOrderList.Add(skill);
                 }
 
@@ -136,12 +139,12 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref assignedPoints, value);
         }
 
-        private Dictionary<string, Skill>? skillList;
+        private Dictionary<string, SkillItemViewModel>? skillList;
 
         /// <summary>
         /// Gets or sets the dictionary of skillList.
         /// </summary>
-        public Dictionary<string, Skill>? SkillList
+        public Dictionary<string, SkillItemViewModel>? SkillList
         {
             get => skillList;
             set => this.RaiseAndSetIfChanged(ref skillList, value);
@@ -150,7 +153,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <summary>
         /// Gets the List containing the selected skill in the order they were selected.
         /// </summary>
-        public AvaloniaList<Skill> SkillOrderList { get; } = new();
+        public ObservableCollection<Skill> SkillOrderList { get; } = new();
 
         private bool showArHpSelection;
 
@@ -177,12 +180,12 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <summary>
         /// Gets the dictionary containing the conditional modifiers and their activation status.
         /// </summary>
-        public AvaloniaList<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
+        public ObservableCollection<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
 
         /// <summary>
         /// Gets the dictionary containing the conditional modifiers and their activation status.
         /// </summary>
-        public AvaloniaList<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
+        public ObservableCollection<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
 
         private bool skillActivationPopupOpen;
 
@@ -225,7 +228,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
         /// <returns>A dictionary containing the skill for the class from the captain.</returns>
-        private Dictionary<string, Skill> GetSkillsForClass(ShipClass shipClass, Captain? captain)
+        private Dictionary<string, SkillItemViewModel> GetSkillsForClass(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
             var skills = captain.Skills;
@@ -248,9 +251,28 @@ namespace WoWsShipBuilder.UI.ViewModels
                     skill.Value.Modifiers = modifierClassSkill;
                 }
             });
-            var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => x.Value);
+            var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this));
             logger.Info("Found {0} skills", filteredDictionary.Count);
             return filteredDictionary;
+        }
+
+        /// <summary>
+        /// Helper method to trigger a reevaluation of the <see cref="SkillItemViewModel.CanExecute"/> property of the skill view models.
+        /// Also responsible for resetting the result cache after each evaluation.
+        /// </summary>
+        private void UpdateCanAddSkill()
+        {
+            if (SkillList == null)
+            {
+                return;
+            }
+
+            SkillItemViewModel.CanAddCache.Clear();
+            SkillItemViewModel.CanRemoveCache.Clear();
+            foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
+            {
+                skill.Value.CanExecuteChanged();
+            }
         }
 
         /// <summary>
@@ -272,7 +294,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
                 if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
                 {
-                    var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+                    var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
                 }
 
@@ -301,7 +323,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private SkillActivationItemViewModel CreateItemViewModelForSkill(Skill skill)
         {
-            var skillName = SkillList!.Single(x => x.Value.Equals(skill)).Key;
+            var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
             SkillActivationItemViewModel result;
             if (skill.SkillNumber is FuriousSkillNumber)
             {
@@ -313,71 +335,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Check if a certain <see cref="Skill"/> can be added to <see cref="SkillOrderList"/>.
-        /// </summary>
-        /// <param name="parameter"> The <see cref="Skill"/> object to add to <see cref="SkillOrderList"/>.</param>
-        /// <returns> If the <see cref="Skill"/> can be added.</returns>
-        [DependsOn(nameof(SkillOrderList))]
-        public bool CanAddSkill(object parameter)
-        {
-            if (parameter is Skill skill)
-            {
-                // Get cost of the skill i'm trying to add
-                var currentSkillTier = skill.Tiers.First().Tier;
-
-                // Adding skill
-                if (!SkillOrderList.Contains(skill))
-                {
-                    // If the points would go over 21, can't add the skill
-                    if (AssignedPoints + currentSkillTier + 1 > 21)
-                    {
-                        return false;
-                    }
-
-                    // If it's a skill of the first tier, i can always add it
-                    if (currentSkillTier == 0)
-                    {
-                        return true;
-                    }
-
-                    // If it's not, i search the skill of the previous tier. If at least one exist, i can add it
-                    List<int> previousTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier - 1).ToList();
-
-                    return previousTierSkills.Count > 0;
-                }
-
-                // Removing skill
-                else
-                {
-                    // If the skill tier is 4 (tier 3, since our index start from 0), can always remove
-                    if (currentSkillTier == 3)
-                    {
-                        return true;
-                    }
-
-                    var nextTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost > currentSkillTier).ToList();
-
-                    var sameTierSkills = SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).Where(skillCost => skillCost == currentSkillTier).ToList();
-
-                    if (nextTierSkills.Count > 0 && sameTierSkills.Count > 1)
-                    {
-                        return true;
-                    }
-                    else if (nextTierSkills.Count > 0 && sameTierSkills.Count == 1)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         /// <summary>

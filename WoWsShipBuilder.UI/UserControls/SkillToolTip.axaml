@@ -15,9 +15,9 @@
     <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
         <TextBlock Classes="ModifierTitle" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL}"/>
         <TextBlock Classes="ModifierDesc" IsVisible="{Binding $self.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Text="{Binding Key, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_DESC}"/>
-        <StackPanel IsVisible="{Binding Value.Modifiers, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <StackPanel IsVisible="{Binding Value.Skill.Modifiers, Converter={x:Static ObjectConverters.IsNotNull}}">
             <Separator/>
-            <ItemsControl Items="{Binding Value.Modifiers}" FontSize="13" FontWeight="Normal">
+            <ItemsControl Items="{Binding Value.Skill.Modifiers}" FontSize="13" FontWeight="Normal">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
@@ -34,10 +34,10 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <StackPanel IsVisible="{Binding Value.ConditionalModifiers, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
+        <StackPanel IsVisible="{Binding Value.Skill.ConditionalModifiers, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
             <Separator/>
-            <TextBlock Classes="ModifierDesc" Text="{Binding Value.ConditionalTriggerType, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_TRIGGER}"/>
-            <ItemsControl Items="{Binding Value.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
+            <TextBlock Classes="ModifierDesc" Text="{Binding Value.Skill.ConditionalTriggerType, Converter={StaticResource LocalizeConverter}, ConverterParameter=SKILL_TRIGGER}"/>
+            <ItemsControl Items="{Binding Value.Skill.ConditionalModifiers}" FontSize="13" FontWeight="Normal">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding #CondModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
