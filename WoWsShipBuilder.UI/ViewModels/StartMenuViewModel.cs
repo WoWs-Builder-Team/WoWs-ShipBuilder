@@ -144,7 +144,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             else
             {
                 BuildImportWindow importWin = new();
-                importWin.DataContext = new BuildImportViewModel(importWin, fileSystem);
+                importWin.DataContext = new BuildImportViewModel(fileSystem);
                 build = await importWin.ShowDialog<Build?>(self);
                 if (build is null)
                 {

@@ -1,26 +1,25 @@
 using System;
 using System.IO.Abstractions;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class BuildImportViewModel : ViewModelBase
     {
-        private readonly Window? self;
-
         private readonly IFileSystem fileSystem;
 
         public BuildImportViewModel()
-            : this(null, new FileSystem())
+            : this(new FileSystem())
         {
             if (!Design.IsDesignMode)
             {
@@ -28,9 +27,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public BuildImportViewModel(Window? win, IFileSystem fileSystem)
+        public BuildImportViewModel(IFileSystem fileSystem)
         {
-            self = win;
             this.fileSystem = fileSystem;
         }
 
@@ -50,25 +48,21 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref buildString, value);
         }
 
-        public void Cancel()
+        public Interaction<Build?, Unit> CloseInteraction { get; } = new();
+
+        public Interaction<Unit, string[]?> FileDialogInteraction { get; } = new();
+
+        public Interaction<(string text, string title), Unit> MessageBoxInteraction { get; } = new();
+
+        public async void Cancel()
         {
             BuildString = null;
-            self?.Close();
+            await CloseInteraction.Handle(null); // TODO: async?
         }
 
         public async void LoadFromImage(object parameter)
         {
-            var fileDialog = new OpenFileDialog
-            {
-                AllowMultiple = false,
-                Directory = AppData.Settings.LastImageImportPath ?? AppDataHelper.Instance.BuildImageOutputDirectory,
-                Filters = new()
-                {
-                    new() { Name = "PNG Files", Extensions = new() { "png" } },
-                },
-            };
-
-            string[]? result = await fileDialog.ShowAsync(self!);
+            string[]? result = await FileDialogInteraction.Handle(Unit.Default);
             if (result is not { Length: > 0 })
             {
                 return;
@@ -92,11 +86,11 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (build == null)
             {
-                await MessageBox.Show(self, "Could not read build data from file. Has the file been compressed?", "Invalid file", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                await MessageBoxInteraction.Handle(("Could not read build data from file. Has the file been compressed?", "Invalid file"));
                 return;
             }
 
-            ProcessLoadedBuild(build);
+            await ProcessLoadedBuild(build);
         }
 
         public async void Import(object parameter)
@@ -111,11 +105,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             catch (Exception e)
             {
                 Logging.Logger.Warn(e, "Error in creating the build.");
-                await MessageBox.Show(self, "The Build string is not in the correct format.", "Invalid string.", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                await MessageBoxInteraction.Handle(("The Build string is not in the correct format.", "Invalid string."));
                 return;
             }
 
-            ProcessLoadedBuild(build);
+            await ProcessLoadedBuild(build);
         }
 
         [DependsOn(nameof(BuildString))]
@@ -124,7 +118,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             return !string.IsNullOrWhiteSpace(BuildString);
         }
 
-        private void ProcessLoadedBuild(Build build)
+        private async Task ProcessLoadedBuild(Build build)
         {
             if (!ImportOnly)
             {
@@ -132,7 +126,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppData.Builds.Insert(0, build);
             }
 
-            self?.Close(build);
+            await CloseInteraction.Handle(build); // TODO: async?
         }
     }
 }
