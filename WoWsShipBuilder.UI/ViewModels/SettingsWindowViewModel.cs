@@ -5,42 +5,60 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
-using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class SettingsWindowViewModel : ViewModelBase
+    public class SettingsWindowViewModel : ViewModelBase
     {
-        private readonly SettingsWindow? self;
-
         private readonly IFileSystem fileSystem;
 
+        private bool autoUpdate;
+
+        private string? customBuildImagePath;
+
+        private string? customPath;
+
+        private string dataVersion = default!;
+
+        private bool isCustomBuildImagePathEnabled;
+
+        private bool isCustomPathEnabled;
+
+        private List<CultureDetails> languagesList;
+
+        private bool openExplorerAfterImageSave;
+
+        private CultureDetails selectedLanguage = null!;
+
+        private string selectedServer = null!;
+
+        private List<string> servers = null!;
+
+        private bool telemetryDataEnabled;
+
+        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+
         public SettingsWindowViewModel()
-            : this(null, new FileSystem())
+            : this(new FileSystem())
         {
-            if (!Design.IsDesignMode)
-            {
-                throw new InvalidOperationException("This constructor must not be used in the live application.");
-            }
         }
 
-        public SettingsWindowViewModel(SettingsWindow? win, IFileSystem? fileSystem = null)
+        public SettingsWindowViewModel(IFileSystem? fileSystem = null)
         {
             Logging.Logger.Info("Creating setting window view model");
-            self = win;
             this.fileSystem = fileSystem ?? new FileSystem();
             languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
@@ -77,15 +95,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             DataVersion = AppData.DataVersion;
         }
 
-        private string dataVersion = default!;
-
         public string DataVersion
         {
             get => dataVersion;
             set => this.RaiseAndSetIfChanged(ref dataVersion, value);
         }
-
-        private string? customPath;
 
         public string? CustomPath
         {
@@ -93,25 +107,17 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref customPath, value);
         }
 
-        private bool isCustomPathEnabled;
-
         public bool IsCustomPathEnabled
         {
             get => isCustomPathEnabled;
             set => this.RaiseAndSetIfChanged(ref isCustomPathEnabled, value);
         }
 
-        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-
-        private bool isCustomBuildImagePathEnabled;
-
         public bool IsCustomBuildImagePathEnabled
         {
             get => isCustomBuildImagePathEnabled;
             set => this.RaiseAndSetIfChanged(ref isCustomBuildImagePathEnabled, value);
         }
-
-        private string? customBuildImagePath;
 
         public string? CustomBuildImagePath
         {
@@ -125,15 +131,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref version, value);
         }
 
-        private List<CultureDetails> languagesList;
-
         public List<CultureDetails> LanguagesList
         {
             get => languagesList;
             set => this.RaiseAndSetIfChanged(ref languagesList, value);
         }
-
-        private CultureDetails selectedLanguage = null!;
 
         public CultureDetails SelectedLanguage
         {
@@ -141,15 +143,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedLanguage, value);
         }
 
-        private string selectedServer = null!;
-
         public string SelectedServer
         {
             get => selectedServer;
             set => this.RaiseAndSetIfChanged(ref selectedServer, value);
         }
-
-        private bool autoUpdate;
 
         public bool AutoUpdate
         {
@@ -157,15 +155,11 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref autoUpdate, value);
         }
 
-        private List<string> servers = null!;
-
         public List<string> Servers
         {
             get => servers;
             set => this.RaiseAndSetIfChanged(ref servers, value);
         }
-
-        private bool telemetryDataEnabled;
 
         public bool TelemetryDataEnabled
         {
@@ -173,13 +167,23 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
         }
 
-        private bool openExplorerAfterImageSave;
-
         public bool OpenExplorerAfterImageSave
         {
             get => openExplorerAfterImageSave;
             set => this.RaiseAndSetIfChanged(ref openExplorerAfterImageSave, value);
         }
+
+        public Interaction<(string title, string text), MessageBox.MessageBoxResult> ShowWarningInteraction { get; } = new();
+
+        public Interaction<(string title, string text), Unit> ShowErrorInteraction { get; } = new();
+
+        public Interaction<Unit, Unit> ShutdownInteraction { get; } = new();
+
+        public Interaction<Unit, Unit> ShowDownloadWindowInteraction { get; } = new();
+
+        public Interaction<Unit, Unit> CloseInteraction { get; } = new();
+
+        public Interaction<string, string?> SelectFolderInteraction { get; } = new();
 
         public void ResetSettings()
         {
@@ -190,7 +194,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         [SuppressMessage("System.IO.Abstractions", "IO0007", Justification = "Method just delete a folder.")]
         public async void CleanAppData()
         {
-            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will close the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
+            var result = await ShowWarningInteraction.Handle(("Warning", $"Do you want to delete all data?{Environment.NewLine}This will close the program."));
             if (result == MessageBox.MessageBoxResult.Yes)
             {
                 var appData = AppDataHelper.Instance.AppDataDirectory;
@@ -198,11 +202,11 @@ namespace WoWsShipBuilder.UI.ViewModels
                 if (appDataDir.Exists)
                 {
                     appDataDir.Delete(true);
-                    (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+                    await ShutdownInteraction.Handle(Unit.Default);
                 }
                 else
                 {
-                    await MessageBox.Show(self, $"Error in deleting data. Data folder does not exit", "Warning", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await ShowErrorInteraction.Handle(("Warning", "Error in deleting data. Data folder does not exit"));
                 }
             }
         }
@@ -229,7 +233,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 if (!IsValidPath(CustomPath!))
                 {
-                    await MessageBox.Show(self, Translation.SettingsWindow_InvalidCustomPath, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await ShowErrorInteraction.Handle((Translation.MessageBox_Error, Translation.SettingsWindow_InvalidCustomPath));
                     return;
                 }
                 else
@@ -255,7 +259,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
                 else
                 {
-                    await MessageBox.Show(self, Translation.SettingsWindow_BuildImagePathInvalid, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await ShowErrorInteraction.Handle((Translation.MessageBox_Error, Translation.SettingsWindow_BuildImagePathInvalid));
                     return;
                 }
             }
@@ -276,7 +280,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (serverChanged || pathChanged)
             {
                 AppData.ResetCaches();
-                await new DownloadWindow().ShowDialog(self);
+                await ShowDownloadWindowInteraction.Handle(Unit.Default);
             }
 
             if (cultureChanged)
@@ -298,16 +302,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 }
             }
 
-            self?.Close();
-        }
-
-        private async Task<string?> SelectFolder()
-        {
-            var dialog = new OpenFolderDialog
-            {
-                Directory = AppDataHelper.Instance.AppDataDirectory,
-            };
-            return await dialog.ShowAsync(self!);
+            await CloseInteraction.Handle(Unit.Default);
         }
 
         public async void SelectCachePath()
@@ -329,15 +324,20 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public void Cancel()
+        public async void Cancel()
         {
-            self?.Close();
+            await CloseInteraction.Handle(Unit.Default);
         }
 
         public async void CopyVersion()
         {
             var appVersion = $"App Version: {Version}{Environment.NewLine}Data Version: {DataVersion}";
             await Application.Current.Clipboard.SetTextAsync(appVersion);
+        }
+
+        private async Task<string?> SelectFolder()
+        {
+            return await SelectFolderInteraction.Handle(AppDataHelper.Instance.AppDataDirectory);
         }
 
         private bool IsValidPath(string path, bool exactPath = true)

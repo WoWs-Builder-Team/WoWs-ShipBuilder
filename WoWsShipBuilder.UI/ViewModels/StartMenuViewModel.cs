@@ -202,8 +202,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             SettingsWindow win = new()
             {
                 ShowInTaskbar = false,
+                DataContext = new SettingsWindowViewModel(fileSystem),
             };
-            win.DataContext = new SettingsWindowViewModel(win);
             win.ShowDialog(self);
         }
     }
