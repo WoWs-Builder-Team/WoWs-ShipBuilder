@@ -64,6 +64,6 @@
                        TextAlignment="Center"
                        IsVisible="{Binding !!!SummaryList.Count}" VerticalAlignment="Center" FontSize="15"/>
         </Grid>
-        <Button Grid.Row="3" IsDefault="True" Command="{Binding Confirm}" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
+        <Button Grid.Row="3" IsDefault="True" Command="{Binding ConfirmCommand}" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
     </Grid>
 </Window>

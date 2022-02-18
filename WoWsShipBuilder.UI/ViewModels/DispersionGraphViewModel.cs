@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -54,7 +55,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             logger = Logging.GetLogger("DispersiongGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
+
             self = win;
+            AddShipInteraction = new();
 
             AimingRange = AppData.Settings.DispersionPlotSettings.AimingRange;
             ShotsNumber = AppData.Settings.DispersionPlotSettings.ShotsNumber;
@@ -335,15 +338,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref isRealPlane, value);
         }
 
+        public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> AddShipInteraction { get; }
+
         /// <summary>
         /// Add a ship to the ones currently visualized.
         /// </summary>
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            var selectionWin = new ShipSelectionWindow(true);
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, true);
-            var resultList = await selectionWin.ShowDialog<List<ShipSummary>>(self);
+            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true));
 
             if (resultList != null && resultList.Count > 0)
             {

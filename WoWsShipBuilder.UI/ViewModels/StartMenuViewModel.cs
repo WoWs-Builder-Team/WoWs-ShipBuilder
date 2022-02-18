@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using Avalonia;
@@ -86,8 +87,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(selectionWin, false);
-            var result = await selectionWin.ShowDialog<ShipSummary>(self);
+            selectionWin.DataContext = new ShipSelectionWindowViewModel(false);
+            var result = (await selectionWin.ShowDialog<List<ShipSummary>>(self)).FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");

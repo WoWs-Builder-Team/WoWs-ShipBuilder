@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Avalonia.Collections;
-using Avalonia.Controls;
-using Avalonia.Metadata;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
@@ -15,20 +16,15 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ShipSelectionWindowViewModel : ViewModelBase
     {
-        private readonly Window? self;
-
         private CancellationTokenSource tokenSource;
 
-        private bool multiSelectionEnabled = false;
-
         public ShipSelectionWindowViewModel()
-            : this(null, false)
+            : this(false)
         {
         }
 
-        public ShipSelectionWindowViewModel(Window? win, bool multiSelection)
+        public ShipSelectionWindowViewModel(bool multiSelection)
         {
-            self = win;
             tokenSource = new CancellationTokenSource();
 
             AppData.ShipSummaryList ??= AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
@@ -36,14 +32,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
             FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
             SummaryList = new AvaloniaList<KeyValuePair<string, ShipSummary>>(FilteredShipNameDictionary.Select(entry => entry));
-            multiSelectionEnabled = multiSelection;
-            SelectedShipList.CollectionChanged += SelectedShipList_CollectionChanged;
+            MultiSelectionEnabled = multiSelection;
+
+            var canConfirmExecute = this.WhenAnyValue(x => x.SelectedShipList.Count, count => count > 0);
+            ConfirmCommand = ReactiveCommand.CreateFromTask(Confirm, canConfirmExecute);
         }
 
-        private void SelectedShipList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.RaisePropertyChanged(nameof(SelectedShipList));
-        }
+        public bool MultiSelectionEnabled { get; }
+
+        public ICommand ConfirmCommand { get; }
 
         public AvaloniaList<KeyValuePair<string, ShipSummary>> SummaryList { get; }
 
@@ -176,12 +173,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
-        private AvaloniaList<KeyValuePair<string, ShipSummary>> selectedShipList = new();
-
-        public AvaloniaList<KeyValuePair<string, ShipSummary>> SelectedShipList
-        {
-            get => selectedShipList;
-        }
+        public AvaloniaList<KeyValuePair<string, ShipSummary>> SelectedShipList { get; } = new();
 
         private string inputText = string.Empty;
 
@@ -206,6 +198,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         private readonly SemaphoreSlim semaphore = new(1, 1);
+
+        public Interaction<List<ShipSummary>?, Unit> CloseInteraction { get; } = new();
 
         private void ApplyFilter()
         {
@@ -257,30 +251,16 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (result && !string.IsNullOrWhiteSpace(textSearch))
             {
-                result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) !=
-                         -1;
+                result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
             }
 
             return result;
         }
 
-        public void Confirm(object parameter)
+        private async Task Confirm()
         {
-            if (multiSelectionEnabled)
-            {
-                var list = SelectedShipList!.Select(x => x.Value).ToList();
-                self?.Close(list);
-            }
-            else
-            {
-                self?.Close(SelectedShipList!.First().Value);
-            }
-        }
-
-        [DependsOn(nameof(SelectedShipList))]
-        public bool CanConfirm(object parameter)
-        {
-            return SelectedShipList.Count > 0;        
+            List<ShipSummary> result = MultiSelectionEnabled ? SelectedShipList.Select(x => x.Value).ToList() : new() { SelectedShipList.First().Value };
+            await CloseInteraction.Handle(result);
         }
     }
 }

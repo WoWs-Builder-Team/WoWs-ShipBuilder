@@ -1,17 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public class DispersionGraphsWindow : ScalableWindow
+    public class DispersionGraphsWindow : ScalableReactiveWindow<DispersionGraphViewModel>
     {
         public DispersionGraphsWindow()
         {
@@ -19,6 +22,21 @@ namespace WoWsShipBuilder.UI.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+            this.WhenActivated(disposable =>
+            {
+                if (ViewModel != null)
+                {
+                    disposable(ViewModel.AddShipInteraction.RegisterHandler(async interaction =>
+                    {
+                        var selectionWindow = new ShipSelectionWindow(interaction.Input.MultiSelectionEnabled)
+                        {
+                            DataContext = interaction.Input,
+                        };
+                        var result = await selectionWindow.ShowDialog<List<ShipSummary>>(this);
+                        interaction.SetOutput(result);
+                    }));
+                }
+            });
         }
 
         private void InitializeComponent()
@@ -51,7 +69,7 @@ namespace WoWsShipBuilder.UI.Views
                 var startViewModel = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
                 startWindow.DataContext = startViewModel;
                 startWindow.Show();
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                 {
                     desktop.MainWindow = startWindow;
                 }
