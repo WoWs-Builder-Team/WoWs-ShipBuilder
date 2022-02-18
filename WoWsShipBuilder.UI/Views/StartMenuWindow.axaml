@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
-        x:Class="WoWsShipBuilder.UI.Views.StartingMenuWindow"
+        x:Class="WoWsShipBuilder.UI.Views.StartMenuWindow"
         xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"

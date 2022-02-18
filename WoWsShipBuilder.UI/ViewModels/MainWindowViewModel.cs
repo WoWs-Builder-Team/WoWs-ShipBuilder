@@ -309,8 +309,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void BackToMenu()
         {
-            StartingMenuWindow win = new();
-            win.DataContext = new StartMenuViewModel(win, fileSystem);
+            StartMenuWindow win = new();
+            win.DataContext = new StartMenuViewModel(fileSystem);
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = win;

@@ -69,8 +69,10 @@ namespace WoWsShipBuilder.UI.Views
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    var startWindow = new StartingMenuWindow();
-                    startWindow.DataContext = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
+                    var startWindow = new StartMenuWindow
+                    {
+                        DataContext = new StartMenuViewModel(Locator.Current.GetServiceSafe<IFileSystem>()),
+                    };
                     if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = startWindow;

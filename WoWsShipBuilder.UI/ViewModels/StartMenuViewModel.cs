@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -14,25 +16,28 @@ using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class StartMenuViewModel : ViewModelBase, IScalableViewModel
+    public class StartMenuViewModel : ViewModelBase, IScalableViewModel
     {
-        private readonly StartingMenuWindow? self;
         private readonly IFileSystem fileSystem;
 
+        private AvaloniaList<Build> buildList = new();
+
+        private double contentScaling = 1;
+
+        private int? selectedBuild;
+
         public StartMenuViewModel()
-            : this(null, new FileSystem())
+            : this(new FileSystem())
         {
         }
 
-        public StartMenuViewModel(StartingMenuWindow? window, IFileSystem fileSystem)
+        public StartMenuViewModel(IFileSystem fileSystem)
         {
-            self = window;
             this.fileSystem = fileSystem;
             if (!AppData.Builds.Any())
             {
@@ -44,13 +49,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             BuildList.AddRange(AppData.Builds);
         }
 
-        private void BuildList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.RaisePropertyChanged(nameof(BuildList));
-        }
-
-        private int? selectedBuild;
-
         public int? SelectedBuild
         {
             get => selectedBuild;
@@ -61,23 +59,29 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private AvaloniaList<Build> buildList = new();
-
         public AvaloniaList<Build> BuildList
         {
             get => buildList;
             set => this.RaiseAndSetIfChanged(ref buildList, value);
         }
 
-        private double contentScaling = 1;
+        public string LoadBuildButtonText => SelectedBuild is > 0 ? Translation.StartMenu_LoadBuild : Translation.StartMenu_ImportBuild;
+
+        public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>> SelectShipInteraction { get; } = new();
+
+        public Interaction<Unit, Unit> CloseInteraction { get; } = new();
+
+        public Interaction<BuildImportViewModel, Build?> BuildImportInteraction { get; } = new();
+
+        public Interaction<(string title, string text, bool autoSize), Unit> MessageBoxInteraction { get; } = new();
+
+        public Interaction<SettingsWindowViewModel, Unit> ShowSettingsInteraction { get; } = new();
 
         public double ContentScaling
         {
             get => contentScaling;
             set => this.RaiseAndSetIfChanged(ref contentScaling, value);
         }
-
-        public string LoadBuildButtonText => SelectedBuild is > 0 ? Translation.StartMenu_LoadBuild : Translation.StartMenu_ImportBuild;
 
         public async void NewBuild()
         {
@@ -86,9 +90,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 return;
             }
 
-            var selectionWin = new ShipSelectionWindow();
-            selectionWin.DataContext = new ShipSelectionWindowViewModel(false);
-            var result = (await selectionWin.ShowDialog<List<ShipSummary>>(self)).FirstOrDefault();
+            var dc = new ShipSelectionWindowViewModel(false);
+            var result = (await SelectShipInteraction.Handle(dc)).FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
@@ -104,17 +107,17 @@ namespace WoWsShipBuilder.UI.ViewModels
                     }
 
                     win.Show();
-                    self?.Close();
+                    await CloseInteraction.Handle(Unit.Default);
                 }
                 catch (Exception e)
                 {
                     Logging.Logger.Error(e, $"Error during the loading of the local json files");
-                    await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
+                    await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
                 }
             }
         }
 
-        public void OpenDispersionGraphWindow()
+        public async void OpenDispersionGraphWindow()
         {
             if (Design.IsDesignMode)
             {
@@ -131,7 +134,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 desktop.MainWindow = window;
             }
 
-            self?.Close();
+            await CloseInteraction.Handle(Unit.Default);
         }
 
         public async void LoadBuild()
@@ -143,9 +146,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
             else
             {
-                BuildImportWindow importWin = new();
-                importWin.DataContext = new BuildImportViewModel(fileSystem);
-                build = await importWin.ShowDialog<Build?>(self);
+                build = await BuildImportInteraction.Handle(new(fileSystem));
                 if (build is null)
                 {
                     return;
@@ -163,7 +164,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
             if (summary is null)
             {
-                await MessageBox.Show(self, Translation.StartMenu_BuildLoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.StartMenu_BuildLoadingError, false));
                 return;
             }
 
@@ -174,12 +175,12 @@ namespace WoWsShipBuilder.UI.ViewModels
                 MainWindow win = new();
                 win.DataContext = new MainWindowViewModel(fileSystem, ship!, win, summary.PrevShipIndex, summary.NextShipsIndex, build);
                 win.Show();
-                self?.Close();
+                await CloseInteraction.Handle(Unit.Default);
             }
             catch (Exception e)
             {
                 Logging.Logger.Error(e, $"Error during the loading of the local json files");
-                await MessageBox.Show(self, Translation.MessageBox_LoadingError, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error, 500, sizeToContent: SizeToContent.Height);
+                await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
             }
         }
 
@@ -192,19 +193,19 @@ namespace WoWsShipBuilder.UI.ViewModels
         [DependsOn(nameof(SelectedBuild))]
         public bool CanDeleteBuild(object parameter) => SelectedBuild is > 0;
 
-        public void Setting()
+        public async void Setting()
         {
             if (Design.IsDesignMode)
             {
                 return;
             }
 
-            SettingsWindow win = new()
-            {
-                ShowInTaskbar = false,
-                DataContext = new SettingsWindowViewModel(fileSystem),
-            };
-            win.ShowDialog(self);
+            await ShowSettingsInteraction.Handle(new(fileSystem));
+        }
+
+        private void BuildList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(BuildList));
         }
     }
 }
