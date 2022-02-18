@@ -71,8 +71,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> SelectShipInteraction { get; } = new();
 
-        public Interaction<Unit, Unit> CloseInteraction { get; } = new();
-
         public Interaction<BuildImportViewModel, Build?> BuildImportInteraction { get; } = new();
 
         public Interaction<(string title, string text, bool autoSize), Unit> MessageBoxInteraction { get; } = new();
@@ -102,16 +100,6 @@ namespace WoWsShipBuilder.UI.ViewModels
                     var ship = AppDataHelper.Instance.GetShipFromSummary(result)!;
                     AppDataHelper.Instance.LoadNationFiles(result.Nation);
                     navigationService.OpenMainWindow(ship, result, closeMainWindow: true);
-
-                    // MainWindow win = new();
-                    // win.DataContext = new MainWindowViewModel(fileSystem, ship!, result);
-                    // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                    // {
-                    //     desktop.MainWindow = win;
-                    // }
-                    //
-                    // win.Show();
-                    // await CloseInteraction.Handle(Unit.Default);
                 }
                 catch (Exception e)
                 {
@@ -129,18 +117,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             navigationService.OpenDispersionPlotWindow(true);
-
-            // var window = new DispersionGraphsWindow();
-            // var viewModel = new DispersionGraphViewModel(window);
-            // window.DataContext = viewModel;
-            // window.Show();
-            //
-            // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            // {
-            //     desktop.MainWindow = window;
-            // }
-            //
-            // await CloseInteraction.Handle(Unit.Default);
         }
 
         public async void LoadBuild()

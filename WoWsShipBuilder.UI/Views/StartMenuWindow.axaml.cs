@@ -41,12 +41,6 @@ namespace WoWsShipBuilder.UI.Views
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);
 
-                ViewModel?.CloseInteraction.RegisterHandler(interaction =>
-                {
-                    Close();
-                    interaction.SetOutput(Unit.Default);
-                }).DisposeWith(disposables);
-
                 ViewModel?.ShowSettingsInteraction.RegisterHandler(async interaction =>
                 {
                     await new SettingsWindow

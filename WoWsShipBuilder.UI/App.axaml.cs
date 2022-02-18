@@ -95,8 +95,8 @@ namespace WoWsShipBuilder.UI
             Locator.SetLocator(resolver);
 
             PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Avalonia);
-            Locator.CurrentMutable.InitializeSplat();
-            Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
+            resolver.InitializeSplat();
+            resolver.InitializeReactiveUI(RegistrationNamespace.Avalonia);
             resolver.InitializeAvalonia();
 
             var diContainer = builder.Build();

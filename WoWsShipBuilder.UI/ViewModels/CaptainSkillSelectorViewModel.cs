@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Metadata;
 using NLog;
 using ReactiveUI;
@@ -28,10 +27,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         public CaptainSkillSelectorViewModel()
             : this(ShipClass.Cruiser, Nation.Usa)
         {
-            if (!Design.IsDesignMode)
-            {
-                throw new InvalidOperationException();
-            }
         }
 
         public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, bool screenshotMode = false)

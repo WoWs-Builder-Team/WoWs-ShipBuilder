@@ -26,10 +26,10 @@
             <CheckBox IsChecked="{Binding IncludeSignals}" Content="{x:Static t:Translation.BuildCreationWindow_IncludeSignals}" />
             <DockPanel LastChildFill="True">
                 <StackPanel Orientation="Horizontal" Spacing="10" DockPanel.Dock="Left">
-                    <Button IsDefault="True" Command="{Binding SaveAndCopyImage}">
+                    <Button IsDefault="True" Command="{Binding SaveAndCopyImageCommand}">
                         <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_ExportImage}" TextWrapping="Wrap"/>
                     </Button>
-                    <Button Command="{Binding SaveAndCopyString}">
+                    <Button Command="{Binding SaveAndCopyStringCommand}">
                         <TextBlock Text="{x:Static t:Translation.BuildCreationWindow_ExportString}" TextWrapping="Wrap"/>
                     </Button>
                 </StackPanel>

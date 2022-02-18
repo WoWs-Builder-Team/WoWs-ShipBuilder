@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Collections;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataUI;
@@ -13,22 +14,22 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private List<List<ConsumableUI>> shipConsumables = null!;
 
-        private Ship ship;
+        private readonly Ship ship;
 
         public ConsumableViewModel()
-            : this(new Ship())
+            : this(new())
         {
         }
 
         public ConsumableViewModel(Ship ship)
         {
             this.ship = ship;
-            SelectedConsumables = new AvaloniaList<ConsumableUI>();
-            UpdateShipConsumables(new List<(string, float)>(), true);
+            SelectedConsumables = new();
+            UpdateShipConsumables(new(), true);
             OnConsumableSelected = newConsumable =>
             {
                 var removeList = SelectedConsumables.Where(consumable => consumable.Slot == newConsumable.Slot).ToList();
-                SelectedConsumables.RemoveAll(removeList);
+                SelectedConsumables.RemoveMany(removeList);
                 SelectedConsumables.Add(newConsumable);
                 this.RaisePropertyChanged(nameof(SelectedConsumables));
             };
@@ -67,7 +68,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref shipConsumables, value);
         }
 
-        public AvaloniaList<ConsumableUI> SelectedConsumables { get; private set; }
+        public ObservableCollection<ConsumableUI> SelectedConsumables { get; private set; }
 
         public Action<ConsumableUI> OnConsumableSelected { get; }
 
@@ -80,7 +81,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var removeList = SelectedConsumables.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
-            SelectedConsumables.RemoveAll(removeList);
+            SelectedConsumables.RemoveMany(removeList);
             SelectedConsumables.AddRange(selection);
             this.RaisePropertyChanged(nameof(SelectedConsumables));
         }

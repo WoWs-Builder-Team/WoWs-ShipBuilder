@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Extensions

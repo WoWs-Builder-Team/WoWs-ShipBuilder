@@ -3,8 +3,6 @@ using System.IO.Abstractions;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Metadata;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -21,16 +19,17 @@ namespace WoWsShipBuilder.UI.ViewModels
         public BuildImportViewModel()
             : this(new FileSystem())
         {
-            if (!Design.IsDesignMode)
-            {
-                throw new InvalidOperationException();
-            }
         }
 
         public BuildImportViewModel(IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
+
+            var canImportExecute = this.WhenAnyValue(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
+            ImportCommand = ReactiveCommand.CreateFromTask(Import, canImportExecute);
         }
+
+        public ReactiveCommand<Unit, Unit> ImportCommand { get; }
 
         private bool importOnly = true;
 
@@ -93,7 +92,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             await ProcessLoadedBuild(build);
         }
 
-        public async void Import(object parameter)
+        private async Task Import()
         {
             Build build;
             Logging.Logger.Info("Trying to import build string: {0}", BuildString);
@@ -110,12 +109,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             await ProcessLoadedBuild(build);
-        }
-
-        [DependsOn(nameof(BuildString))]
-        public bool CanImport(object parameter)
-        {
-            return !string.IsNullOrWhiteSpace(BuildString);
         }
 
         private async Task ProcessLoadedBuild(Build build)

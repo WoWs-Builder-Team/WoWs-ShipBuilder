@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
-using Avalonia.Metadata;
+using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -29,6 +29,10 @@ namespace WoWsShipBuilder.UI.ViewModels
             BuildName = build.BuildName;
             IsNewBuild = string.IsNullOrEmpty(BuildName);
             IncludeSignals = AppData.Settings.IncludeSignalsForImageExport;
+
+            var canSaveExecute = this.WhenAnyValue(x => x.BuildName, CanSaveBuild);
+            SaveAndCopyStringCommand = ReactiveCommand.CreateFromTask(SaveAndCopyString, canSaveExecute);
+            SaveAndCopyImageCommand = ReactiveCommand.CreateFromTask(SaveAndCopyImage, canSaveExecute);
         }
 
         private string shipName = default!;
@@ -60,6 +64,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<BuildCreationResult, Unit> CloseInteraction { get; } = new();
 
+        public ReactiveCommand<Unit, Unit> SaveAndCopyStringCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> SaveAndCopyImageCommand { get; }
+
         private void SaveBuild()
         {
             build.BuildName = BuildName!;
@@ -73,28 +81,22 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.Builds.Insert(0, build);
         }
 
-        private bool CanSaveBuild()
+        private bool CanSaveBuild(string? name)
         {
-            return !string.IsNullOrWhiteSpace(BuildName) && Regex.IsMatch(BuildName, BuildNameRegex);
+            return !string.IsNullOrWhiteSpace(name) && Regex.IsMatch(name, BuildNameRegex);
         }
 
-        public async void SaveAndCopyString()
+        private async Task SaveAndCopyString()
         {
             SaveBuild();
             await CloseInteraction.Handle(new(true, IncludeSignals));
         }
 
-        [DependsOn(nameof(BuildName))]
-        public bool CanSaveAndCopyString(object parameter) => CanSaveBuild();
-
-        public async void SaveAndCopyImage()
+        private async Task SaveAndCopyImage()
         {
             SaveBuild();
             await CloseInteraction.Handle(new(true, IncludeSignals, true));
         }
-
-        [DependsOn(nameof(BuildName))]
-        public bool CanSaveAndCopyImage(object parameter) => CanSaveBuild();
 
         public async void CloseBuild()
         {
