@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -10,10 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
-using Avalonia.Collections;
-using Avalonia.Media.Imaging;
 using DynamicData.Binding;
-using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -23,7 +19,6 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.Utilities;
-using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -42,6 +37,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly CompositeDisposable disposables = new();
 
         private readonly INavigationService navigationService;
+
+        private readonly IScreenshotRenderService screenshotRenderService;
 
         private Account accountType = Account.Normal;
 
@@ -89,9 +86,10 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(INavigationService navigationService, Ship ship, ShipSummary shipSummary, Build? build = null, double contentScaling = 1)
+        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, Ship ship, ShipSummary shipSummary, Build? build = null, double contentScaling = 1)
         {
             this.navigationService = navigationService;
+            this.screenshotRenderService = screenshotRenderService;
             tokenSource = new();
             ContentScaling = contentScaling;
             PreviousShipIndex = shipSummary.PrevShipIndex;
@@ -102,7 +100,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public MainWindowViewModel()
-            : this(null!, DataHelper.LoadPreviewShip(ShipClass.Destroyer, 9, Nation.Germany).Ship, DataHelper.GetPreviewShipSummary(ShipClass.Destroyer, 9, Nation.Germany))
+            : this(null!, null!, DataHelper.LoadPreviewShip(ShipClass.Destroyer, 9, Nation.Germany).Ship, DataHelper.GetPreviewShipSummary(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 
@@ -347,28 +345,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async Task<string> CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
         {
-            var screenshotWindow = new ScreenshotWindow
-            {
-                DataContext = new ScreenshotContainerViewModel(currentBuild, RawShipData, includeSignals),
-            };
-            screenshotWindow.Show();
-
             string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName, Localizer.Instance[currentBuild.ShipIndex].Localization);
-            await using var bitmapData = new MemoryStream();
-            using var bitmap = ScreenshotContainerViewModel.RenderScreenshot(screenshotWindow);
-            bitmap.Save(bitmapData);
-            bitmapData.Seek(0, SeekOrigin.Begin);
-            BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(currentBuild), outputPath);
-            if (copyToClipboard)
-            {
-                if (OperatingSystem.IsWindows())
-                {
-                    using var savedBitmap = new Bitmap(outputPath);
-                    await ClipboardHelper.SetBitmapAsync(savedBitmap);
-                }
-            }
-
-            screenshotWindow.Close();
+            await screenshotRenderService.CreateBuildImageAsync(currentBuild, RawShipData, includeSignals, outputPath, copyToClipboard);
             return outputPath;
         }
 
@@ -436,9 +414,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         private void AddChangeListeners()
         {
             ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
-            UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
-            SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
-            CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            UpgradePanelViewModel.SelectedModernizationList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
+            SignalSelectorViewModel?.SelectedSignals.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
+            CaptainSkillSelectorViewModel?.SkillOrderList.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
 
             CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
             CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);

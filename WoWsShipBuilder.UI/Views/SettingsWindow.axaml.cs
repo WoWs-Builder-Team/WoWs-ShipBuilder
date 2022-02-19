@@ -7,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
+using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels;
 
@@ -60,6 +61,18 @@ namespace WoWsShipBuilder.UI.Views
                     Close();
                     interaction.SetOutput(Unit.Default);
                 }).DisposeWith(disposables);
+
+                ViewModel?.RestartAppMessageInteraction.RegisterHandler(async interaction =>
+                {
+                    var result = await MessageBox.Show(
+                        null,
+                        Translation.Settingswindow_LanguageChanged,
+                        Translation.SettingsWindow_LanguageChanged_Title,
+                        MessageBox.MessageBoxButtons.YesNo,
+                        MessageBox.MessageBoxIcon.Question,
+                        sizeToContent: SizeToContent.Height);
+                    interaction.SetOutput(result == MessageBox.MessageBoxResult.Yes);
+                });
             });
         }
 

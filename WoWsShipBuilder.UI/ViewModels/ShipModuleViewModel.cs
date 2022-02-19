@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
@@ -53,7 +53,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public ObservableCollection<ShipUpgrade> SelectedModules { get; } = new();
+        public CustomObservableCollection<ShipUpgrade> SelectedModules { get; } = new();
 
         public void SelectModuleExecute(ShipUpgrade parameter)
         {

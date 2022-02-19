@@ -153,7 +153,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <summary>
         /// Gets the List containing the selected skill in the order they were selected.
         /// </summary>
-        public ObservableCollection<Skill> SkillOrderList { get; } = new();
+        public CustomObservableCollection<Skill> SkillOrderList { get; } = new();
 
         private bool showArHpSelection;
 
@@ -180,12 +180,12 @@ namespace WoWsShipBuilder.UI.ViewModels
         /// <summary>
         /// Gets the dictionary containing the conditional modifiers and their activation status.
         /// </summary>
-        public ObservableCollection<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
+        public CustomObservableCollection<SkillActivationItemViewModel> ConditionalModifiersList { get; } = new();
 
         /// <summary>
         /// Gets the dictionary containing the conditional modifiers and their activation status.
         /// </summary>
-        public ObservableCollection<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
+        public CustomObservableCollection<SkillActivationItemViewModel> CaptainTalentsList { get; } = new();
 
         private bool skillActivationPopupOpen;
 

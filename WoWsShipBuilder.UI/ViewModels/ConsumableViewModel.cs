@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
@@ -68,7 +69,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref shipConsumables, value);
         }
 
-        public ObservableCollection<ConsumableUI> SelectedConsumables { get; private set; }
+        public CustomObservableCollection<ConsumableUI> SelectedConsumables { get; private set; }
 
         public Action<ConsumableUI> OnConsumableSelected { get; }
 

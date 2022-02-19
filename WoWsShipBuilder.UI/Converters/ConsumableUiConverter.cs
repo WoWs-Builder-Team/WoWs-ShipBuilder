@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core;
@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.Converters
                 return "";
             }
 
-            if (values[0] is List<ConsumableUI> consumables && values[1] is ObservableCollection<ConsumableUI> selectedConsumables)
+            if (values[0] is List<ConsumableUI> consumables && values[1] is CustomObservableCollection<ConsumableUI> selectedConsumables)
             {
                 switch (parameter)
                 {
@@ -45,7 +45,7 @@ namespace WoWsShipBuilder.UI.Converters
             }
 
             Logging.Logger.Trace("No matching processing path for consumable data conversion found. Element 1: {0}, Element 2: {1}", values[0], values[1]);
-            return 0;
+            return new BindingNotification(new NotSupportedException());
         }
     }
 }

@@ -10,7 +10,6 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
@@ -185,6 +184,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<string, string?> SelectFolderInteraction { get; } = new();
 
+        public Interaction<Unit, bool> RestartAppMessageInteraction { get; } = new();
+
         public void ResetSettings()
         {
             var cleanSettings = new AppSettings();
@@ -285,14 +286,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             if (cultureChanged)
             {
-                var result = await MessageBox.Show(
-                    null,
-                    Translation.Settingswindow_LanguageChanged,
-                    Translation.SettingsWindow_LanguageChanged_Title,
-                    MessageBox.MessageBoxButtons.YesNo,
-                    MessageBox.MessageBoxIcon.Question,
-                    sizeToContent: SizeToContent.Height);
-                if (result == MessageBox.MessageBoxResult.Yes)
+                bool result = await RestartAppMessageInteraction.Handle(Unit.Default);
+                if (result)
                 {
                     AppSettingsHelper.SaveSettings();
                     if (OperatingSystem.IsWindows())

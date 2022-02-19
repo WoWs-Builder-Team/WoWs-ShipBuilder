@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Avalonia.Collections;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -14,7 +15,7 @@ namespace WoWsShipBuilder.UI.Converters
 
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (values[0] is List<Modernization> modernizations && values[1] is AvaloniaList<Modernization> selectedModernizations)
+            if (values[0] is List<Modernization> modernizations && values[1] is CustomObservableCollection<Modernization> selectedModernizations)
             {
                 switch (parameter)
                 {
@@ -37,7 +38,7 @@ namespace WoWsShipBuilder.UI.Converters
                 }
             }
 
-            return 0;
+            return new BindingNotification(new NotSupportedException());
         }
     }
 }

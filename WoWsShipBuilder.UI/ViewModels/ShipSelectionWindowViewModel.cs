@@ -7,8 +7,8 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia.Collections;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 
@@ -30,8 +30,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             AppData.ShipSummaryList ??= AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
 
             Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
-            FilteredShipNameDictionary = new SortedDictionary<string, ShipSummary>(shipNameDictionary);
-            SummaryList = new AvaloniaList<KeyValuePair<string, ShipSummary>>(FilteredShipNameDictionary.Select(entry => entry));
+            FilteredShipNameDictionary = new(shipNameDictionary);
+            SummaryList = new(FilteredShipNameDictionary.Select(entry => entry));
             MultiSelectionEnabled = multiSelection;
 
             var canConfirmExecute = this.WhenAnyValue(x => x.SelectedShipList.Count, count => count > 0);
@@ -42,7 +42,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ICommand ConfirmCommand { get; }
 
-        public AvaloniaList<KeyValuePair<string, ShipSummary>> SummaryList { get; }
+        public CustomObservableCollection<KeyValuePair<string, ShipSummary>> SummaryList { get; }
 
         private bool tierFilterChecked;
 
@@ -173,7 +173,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
-        public AvaloniaList<KeyValuePair<string, ShipSummary>> SelectedShipList { get; } = new();
+        public CustomObservableCollection<KeyValuePair<string, ShipSummary>> SelectedShipList { get; } = new();
 
         private string inputText = string.Empty;
 

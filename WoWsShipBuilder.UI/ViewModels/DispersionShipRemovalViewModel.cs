@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -43,15 +44,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             this.RaisePropertyChanged(nameof(CurrentSelection));
         }
 
-        private ObservableCollection<string> currentShipList = new();
+        private CustomObservableCollection<string> currentShipList = new();
 
-        public ObservableCollection<string> CurrentShipList { get; }
+        public CustomObservableCollection<string> CurrentShipList { get; }
 
-        public ObservableCollection<string> ShipsToDeleteList { get; } = new();
+        public CustomObservableCollection<string> ShipsToDeleteList { get; } = new();
 
-        public ObservableCollection<string> CurrentSelection { get; } = new();
+        public CustomObservableCollection<string> CurrentSelection { get; } = new();
 
-        public ObservableCollection<string> RemoveSelection { get; } = new();
+        public CustomObservableCollection<string> RemoveSelection { get; } = new();
 
         public void RemoveShips()
         {

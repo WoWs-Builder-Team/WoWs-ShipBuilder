@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Collections;
 using Avalonia.Metadata;
 using NLog;
 using ReactiveUI;
@@ -36,13 +35,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalsNumber, value);
         }
 
-        private AvaloniaList<Exterior> selectedSignals = new();
-
-        public AvaloniaList<Exterior> SelectedSignals
-        {
-            get => selectedSignals;
-            set => this.RaiseAndSetIfChanged(ref selectedSignals, value);
-        }
+        public CustomObservableCollection<Exterior> SelectedSignals { get; } = new();
 
         [DependsOn(nameof(SignalsNumber))]
         public bool CanSignalCommandExecute(object parameter)

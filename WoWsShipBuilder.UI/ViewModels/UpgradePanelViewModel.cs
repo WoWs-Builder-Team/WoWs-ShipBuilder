@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Collections;
+using DynamicData;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
@@ -43,12 +45,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             AvailableModernizationList = groupedList;
-            SelectedModernizationList = new AvaloniaList<Modernization>(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
+            SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
 
             OnModernizationSelected = (modernization, modernizationList) =>
             {
                 int listIndex = AvailableModernizationList.IndexOf(modernizationList);
                 var oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
+
                 if (oldSelection != null)
                 {
                     SelectedModernizationList.Remove(oldSelection);
@@ -65,7 +68,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }
 
-        public AvaloniaList<Modernization> SelectedModernizationList { get; }
+        public CustomObservableCollection<Modernization> SelectedModernizationList { get; }
 
         public List<List<Modernization>> AvailableModernizationList
         {
@@ -90,7 +93,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var removeList = SelectedModernizationList.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
-            SelectedModernizationList.RemoveAll(removeList);
+            SelectedModernizationList.RemoveMany(removeList);
             SelectedModernizationList.AddRange(selection);
             this.RaisePropertyChanged(nameof(SelectedModernizationList));
         }

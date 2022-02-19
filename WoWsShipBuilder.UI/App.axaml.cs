@@ -90,6 +90,7 @@ namespace WoWsShipBuilder.UI
             builder.RegisterType<MainWindowViewModel>();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<DispersionGraphViewModel>();
+            builder.RegisterType<AvaloniaScreenshotRenderService>().As<IScreenshotRenderService>();
 
             var resolver = builder.UseAutofacDependencyResolver();
             Locator.SetLocator(resolver);
