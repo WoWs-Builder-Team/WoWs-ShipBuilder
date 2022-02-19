@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Collections;
+using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
@@ -14,7 +15,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private static readonly UpgradeInfo TestUpgradeInfo = new()
         {
-            ShipUpgrades = new List<ShipUpgrade>
+            ShipUpgrades = new()
             {
                 new() { UcType = ComponentType.Artillery, Name = "3", Prev = "2" },
                 new() { UcType = ComponentType.Artillery, Name = "1", Prev = "" },
@@ -52,7 +53,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public AvaloniaList<ShipUpgrade> SelectedModules { get; } = new();
+        public ObservableCollection<ShipUpgrade> SelectedModules { get; } = new();
 
         public void SelectModuleExecute(ShipUpgrade parameter)
         {
@@ -64,11 +65,13 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipUpgrade? oldItem = SelectedModules.FirstOrDefault(module => module.UcType == parameter.UcType);
             if (oldItem != null)
             {
-                SelectedModules.Remove(oldItem);
+                // SelectedModules.Remove(oldItem);
+                SelectedModules.Replace(oldItem, parameter);
             }
-
-            SelectedModules.Add(parameter);
-            this.RaisePropertyChanged(nameof(SelectedModules));
+            else
+            {
+                SelectedModules.Add(parameter);
+            }
         }
 
         public void LoadBuild(IEnumerable<string> storedData)
@@ -80,7 +83,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();
-            SelectedModules.RemoveAll(modulesToRemove);
+            SelectedModules.RemoveMany(modulesToRemove);
             SelectedModules.AddRange(results);
         }
 

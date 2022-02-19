@@ -1,19 +1,37 @@
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Collections;
-using Avalonia.Metadata;
+using System.Reactive;
+using System.Reactive.Linq;
+using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class DispersionShipRemovalViewModel : ViewModelBase
     {
+        public DispersionShipRemovalViewModel()
+            : this(new())
+        {
+        }
+
         public DispersionShipRemovalViewModel(List<string> currentShipList)
         {
-            CurrentShipList = new AvaloniaList<string>(currentShipList);
+            CurrentShipList = new(currentShipList);
             CurrentSelection.CollectionChanged += CurrentSelection_CollectionChanged;
             RemoveSelection.CollectionChanged += RemoveSelection_CollectionChanged;
+
+            IObservable<bool> canRemoveExecute = CurrentSelection.ToObservableChangeSet().Select(_ => CurrentSelection.Any());
+            IObservable<bool> canRestoreExecute = RemoveSelection.ToObservableChangeSet().Select(_ => RemoveSelection.Any());
+            RemoveShipsCommand = ReactiveCommand.Create(RemoveShips, canRemoveExecute);
+            RestoreShipsCommand = ReactiveCommand.Create(RestoreShips, canRestoreExecute);
         }
+
+        public ReactiveCommand<Unit, Unit> RemoveShipsCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> RestoreShipsCommand { get; }
 
         private void RemoveSelection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -25,57 +43,28 @@ namespace WoWsShipBuilder.UI.ViewModels
             this.RaisePropertyChanged(nameof(CurrentSelection));
         }
 
-        private AvaloniaList<string> currentShipList = new();
+        private ObservableCollection<string> currentShipList = new();
 
-        public AvaloniaList<string> CurrentShipList
-        {
-            get => currentShipList;
-            set => this.RaiseAndSetIfChanged(ref currentShipList, value);
-        }
+        public ObservableCollection<string> CurrentShipList { get; }
 
-        private AvaloniaList<string> shipsToDeleteList = new();
+        public ObservableCollection<string> ShipsToDeleteList { get; } = new();
 
-        public AvaloniaList<string> ShipsToDeleteList
-        {
-            get => shipsToDeleteList;
-            set => this.RaiseAndSetIfChanged(ref shipsToDeleteList, value);
-        }
+        public ObservableCollection<string> CurrentSelection { get; } = new();
 
-        private AvaloniaList<string> currentSelection = new();
-
-        public AvaloniaList<string> CurrentSelection
-        {
-            get => currentSelection;
-            set => this.RaiseAndSetIfChanged(ref currentSelection, value);
-        }
-
-        private AvaloniaList<string> removeSelection = new();
-
-        public AvaloniaList<string> RemoveSelection
-        {
-            get => removeSelection;
-            set => this.RaiseAndSetIfChanged(ref removeSelection, value);
-        }
+        public ObservableCollection<string> RemoveSelection { get; } = new();
 
         public void RemoveShips()
         {
             var curr = CurrentSelection.ToList();
             ShipsToDeleteList.AddRange(curr);
-            CurrentShipList.RemoveAll(curr);
+            CurrentShipList.RemoveMany(curr);
         }
-
-        // TODO: Change into something that does listen to CollectionChanged events.
-        [DependsOn(nameof(CurrentSelection))]
-        public bool CanRemoveShips(object parameter) => CurrentSelection.Count > 0;
 
         public void RestoreShips()
         {
             var rem = RemoveSelection.ToList();
             CurrentShipList.AddRange(rem);
-            ShipsToDeleteList.RemoveAll(rem);
+            ShipsToDeleteList.RemoveMany(rem);
         }
-
-        [DependsOn(nameof(RemoveSelection))]
-        public bool CanRestoreShips(object parameter) => RemoveSelection.Count > 0;
     }
 }

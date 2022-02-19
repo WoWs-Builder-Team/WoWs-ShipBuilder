@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Media.Imaging;
+using DynamicData.Binding;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -434,7 +435,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private void AddChangeListeners()
         {
-            ShipModuleViewModel.SelectedModules.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
+            ShipModuleViewModel.SelectedModules.ToObservableChangeSet().Do(_ => UpdateStatsViewModel()).Subscribe().DisposeWith(disposables);
             UpgradePanelViewModel.SelectedModernizationList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
             SignalSelectorViewModel!.SelectedSignals.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
             CaptainSkillSelectorViewModel!.SkillOrderList.WeakSubscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
