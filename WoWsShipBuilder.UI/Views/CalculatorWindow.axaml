@@ -2,21 +2,52 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
         x:Class="WoWsShipBuilder.UI.Views.Calculator"
-        Title="Calculator">
-    <ItemsControl>
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel></WrapPanel>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+        Title="WoWs Ship Builder"
+        Height="700" Width="500" CanResize="True"
+        WindowStartupLocation="CenterScreen">
+    <!--<Design.DataContext>
+        <vm:CalculatorViewModel />
+    </Design.DataContext>-->
+    <Grid RowDefinitions="30, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <userControls:AppHeader ShowMaximizeButton="True" />
+        
+        <Grid Grid.Row="1" ColumnDefinitions="*,*">
+            <!-- Left side, Camos + Filter options-->
+            <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                <ItemsControl Grid.Column="0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <!-- Right side, Signals + Calculator-->
+            <Grid Grid.Column="1" RowDefinitions="*,Auto">
+                <Border Classes="BorderPanel" Grid.Row="0" Margin="10">
+                    <StackPanel Orientation="Vertical">
+                        <userControls:SignalSelectorEconomic DataContext="{Binding SignalSelectorEconomicViewModel}" />
+                    </StackPanel>
+                </Border>
+                <Border Classes="BorderPanel" Grid.Row="1" Margin="10">
+                    <!-- Calculator-->
+                    
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
 </Window>
 <!--
 make it a new window only signals as usercontrol
