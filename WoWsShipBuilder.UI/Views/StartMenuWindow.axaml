@@ -39,7 +39,7 @@
                     Margin="10" />
             <StackPanel Orientation="Vertical" Grid.Row="3" Width="250" Spacing="10" Margin="0,10,0,10">
                 <Button Command="{Binding LoadBuild}" Content="{Binding LoadBuildButtonText}" />
-                <Button Command="{Binding DeleteBuild}" Content="{x:Static p:Translation.StartMenu_DeleteBuild}" />
+                <Button Command="{Binding DeleteBuildCommand}" Content="{x:Static p:Translation.StartMenu_DeleteBuild}" />
                 <ListBox Items="{Binding BuildList}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedBuild}"
                          SelectionMode="Single" VirtualizationMode="None"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">

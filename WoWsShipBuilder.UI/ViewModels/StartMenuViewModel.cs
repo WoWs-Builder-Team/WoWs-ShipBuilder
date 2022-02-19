@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using Avalonia.Collections;
-using Avalonia.Controls;
-using Avalonia.Metadata;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -26,8 +24,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly INavigationService navigationService;
 
-        private AvaloniaList<Build> buildList = new();
-
         private double contentScaling = 1;
 
         private int? selectedBuild;
@@ -46,9 +42,13 @@ namespace WoWsShipBuilder.UI.ViewModels
                 AppDataHelper.Instance.LoadBuilds();
             }
 
+            var builds = new List<Build> { new(Translation.StartMenu_ImportBuild) };
+            builds.AddRange(AppData.Builds);
+            BuildList = new(builds);
             BuildList.CollectionChanged += BuildList_CollectionChanged;
-            BuildList.Add(new(Translation.StartMenu_ImportBuild));
-            BuildList.AddRange(AppData.Builds);
+
+            var canDeleteBuild = this.WhenAnyValue(x => x.SelectedBuild, buildNumber => buildNumber > 0);
+            DeleteBuildCommand = ReactiveCommand.Create(DeleteBuild, canDeleteBuild);
         }
 
         public int? SelectedBuild
@@ -61,11 +61,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public AvaloniaList<Build> BuildList
-        {
-            get => buildList;
-            set => this.RaiseAndSetIfChanged(ref buildList, value);
-        }
+        public ObservableCollection<Build> BuildList { get; }
 
         public string LoadBuildButtonText => SelectedBuild is > 0 ? Translation.StartMenu_LoadBuild : Translation.StartMenu_ImportBuild;
 
@@ -77,6 +73,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<SettingsWindowViewModel, Unit> ShowSettingsInteraction { get; } = new();
 
+        public ReactiveCommand<Unit, Unit> DeleteBuildCommand { get; }
+
         public double ContentScaling
         {
             get => contentScaling;
@@ -85,11 +83,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void NewBuild()
         {
-            if (Design.IsDesignMode)
-            {
-                return;
-            }
-
             var dc = new ShipSelectionWindowViewModel(false);
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
@@ -111,11 +104,6 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public void OpenDispersionGraphWindow()
         {
-            if (Design.IsDesignMode)
-            {
-                return;
-            }
-
             navigationService.OpenDispersionPlotWindow(true);
         }
 
@@ -168,22 +156,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public void DeleteBuild()
+        private void DeleteBuild()
         {
             AppData.Builds.RemoveAt(SelectedBuild!.Value - 1);
             BuildList.RemoveAt(SelectedBuild!.Value);
         }
 
-        [DependsOn(nameof(SelectedBuild))]
-        public bool CanDeleteBuild(object parameter) => SelectedBuild is > 0;
-
         public async void Setting()
         {
-            if (Design.IsDesignMode)
-            {
-                return;
-            }
-
             await ShowSettingsInteraction.Handle(new(fileSystem));
         }
 
