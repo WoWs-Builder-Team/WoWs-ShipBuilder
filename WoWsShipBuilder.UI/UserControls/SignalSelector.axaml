@@ -36,15 +36,15 @@
                 <DataTemplate>
                     <Panel Background="Transparent" Margin="5" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                         <ToolTip.Tip>
-                            <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                            <userControls:FlagToolTip DataContext="{Binding Value.Signal}"/>
                         </ToolTip.Tip>
                         <customControls:NumberedButton
-                            BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
-                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}">
+                            BackgroundImage="{Binding Value.Signal, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Signal}">
                             <customControls:NumberedButton.IsChecked>
                                 <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
                                     <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
-                                    <Binding Path="Value"/>
+                                    <Binding Path="Value.Signal"/>
                                 </MultiBinding>
                             </customControls:NumberedButton.IsChecked>
                         </customControls:NumberedButton>
