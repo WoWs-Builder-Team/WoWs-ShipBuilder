@@ -715,7 +715,7 @@
 </value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Enregistrer &amp; quitter</value>
+    <value/>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>L'orientation de la tourelle est incorrecte. Les données de WG ne l'incluent pas, donc nous utilisons une solution qui fonctionne dans la plupart des cas. Si vous trouvez un cas d'orientation d'une tourelle et/ou d'angle erroné, signalez-le sur Github ou en rejoignant le serveur Discord ci-dessous.</value>
@@ -1081,7 +1081,7 @@ Si "module de protection de projection de module" + "pénétration de projection
     <value>Les données du chemin personnalisé sont invalides.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Compétences &amp; Talents</value>
+    <value/>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Avec le curseur et les boutons suivants, vous pouvez activer ou désactiver certains effets de compétences conditionnelles. Vous pouvez aussi choisir le nombre de fois pour déclencher l'effet de talent, si possible. Notez que toutes les compétences/talents n'auront pas d'effet sur les statistiques du navire.</value>

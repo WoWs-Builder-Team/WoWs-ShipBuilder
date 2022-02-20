@@ -135,9 +135,7 @@
   <data name="Unit_S" xml:space="preserve">
     <value>s</value>
   </data>
-  <data name="Unit_KM" xml:space="preserve">
-    <value>km</value>
-  </data>
+  
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
@@ -156,8 +154,16 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>strzały/min</value>
   </data>
-  
-  
-  
-  
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>pożary/min</value>
+  </data>
+  <data name="ArmamentType_AP" xml:space="preserve">
+    <value>PP</value>
+  </data>
+  <data name="ArmamentType_HE" xml:space="preserve">
+    <value>OB</value>
+  </data>
+  <data name="ArmamentType_SAP" xml:space="preserve">
+    <value>PPO</value>
+  </data>
 </root>

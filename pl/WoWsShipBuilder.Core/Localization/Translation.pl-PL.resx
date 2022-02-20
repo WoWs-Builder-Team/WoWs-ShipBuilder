@@ -600,7 +600,7 @@
     <value>Maks. liczba samolotów na pokładzie</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Maks. prędkość</value>
+    <value>Maks. Prędkość</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Min. Prędkość</value>

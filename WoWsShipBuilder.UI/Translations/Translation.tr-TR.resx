@@ -345,9 +345,7 @@
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>Atış Hızı</value>
   </data>
-  <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Teorik Yeniden Doldurma Süresi</value>
-  </data>
+  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
@@ -429,9 +427,7 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Ana Batarya</value>
   </data>
-  <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaksiyon Süresi</value>
-  </data>
+  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpido</value>
   </data>
@@ -1113,10 +1109,11 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="MessageBox_LoadingError" xml:space="preserve">
     <value>Veri yüklenirken bir hata oluştu. Söz konusu veri biçiminin uygulamanın eski bir sürümü ile uyumlu olmaması veya verinin bozuk olmasından kaynaklanıyor olabilir. Eğer son sürümde değil iseniz, güncellemek için uygulamayı yeniden başlatma ile ilgili bir istem alana kadar bekleyin, Eğer otomatik güncellemeleri devre dışı bıraktı iseniz manuel olarak güncelleme yapın. Eğer son sürüm kullanıyorsanız, veri bozulmasına ilişkin sorunları çözmek için ayarlar penceresinden depolanan uygulama verilerini temizleyin.</value>
   </data>
-  <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>Gerçek Yeniden Doldurma Süresi</value>
-  </data>
+  
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
     <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
   </data>
+  
+  
+  
 </root>
