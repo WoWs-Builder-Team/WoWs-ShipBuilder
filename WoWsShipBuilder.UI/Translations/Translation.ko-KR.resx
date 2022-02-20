@@ -336,23 +336,25 @@
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° 선회 시간</value>
   </data>
-  
+  <data name="ShipStats_HorizontalDisp" xml:space="preserve">
+    <value>수평 분산</value>
+  </data>
   <data name="ShipStats_Range" xml:space="preserve">
     <value>사거리</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>연사 속도</value>
   </data>
-  <data name="ShipStats_Reload" xml:space="preserve">
-    <value>재장전 시간</value>
-  </data>
+  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>시그마</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
     <value>선회 속도</value>
   </data>
-  
+  <data name="ShipStats_VerticalDisp" xml:space="preserve">
+    <value>수직 분산</value>
+  </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>포구 속도</value>
   </data>
@@ -423,9 +425,7 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>주포</value>
   </data>
-  <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>반응 시간</value>
-  </data>
+  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>어뢰</value>
   </data>
@@ -480,8 +480,12 @@
   <data name="MessageBox_Error" xml:space="preserve">
     <value>오류</value>
   </data>
-  
-  
+  <data name="MessageBox_ShipNoGun" xml:space="preserve">
+    <value>선택한 함선은 주함포 무장이 없습니다.</value>
+  </data>
+  <data name="MessageBox_DuplicateShip" xml:space="preserve">
+    <value>선택한 함선은 이미 추가되어 있습니다.</value>
+  </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>유형</value>
   </data>
@@ -656,21 +660,15 @@
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
     <value>최소 사거리</value>
   </data>
-  <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>갯수</value>
-  </data>
-  <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>대잠 공습</value>
-  </data>
+  
+  
   <data name="DepthCharge" xml:space="preserve">
     <value>폭뢰</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>분산도 시각화</value>
   </data>
-  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>대잠 폭뢰</value>
-  </data>
+  
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>첫 핑 지속 시간</value>
   </data>
@@ -701,12 +699,8 @@
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
-  <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>사용자 지정 경로 활성</value>
-  </data>
-  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>사용자 지정 경로 입력</value>
-  </data>
+  
+  
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>저장 후 종료</value>
   </data>
@@ -794,9 +788,7 @@
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
     <value>최대 조준 시간</value>
   </data>
-  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>어뢰 발사기</value>
-  </data>
+  
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>조준 중</value>
   </data>
@@ -833,14 +825,16 @@
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
     <value>입사 속도 그래프 보기</value>
   </data>
-  
-  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>선택한 사용자 지정 경로가 유효하지 않습니다</value>
+  <data name="ShipStats_OpenBallistic" xml:space="preserve">
+    <value>탄도 그래프 열기</value>
   </data>
+  
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>포탄 선택</value>
   </data>
-  
+  <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
+    <value>해당 함선에는 2개 이상의 포탄이 있습니다. 원하는 포탄을 선택하세요. 구경이 같다면 고폭탄-&gt;반철갑탄-&gt;철갑탄 순입니다.</value>
+  </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>일반 계정</value>
   </data>
@@ -880,9 +874,56 @@
   
   
   
+  <data name="RealPlane" xml:space="preserve">
+    <value>입사 각도</value>
+  </data>
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>수직 분산</value>
+  </data>
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>수평 분산</value>
+  </data>
+  
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>수직 분산</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  
+  
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>확인</value>
+  </data>
   
   
   
