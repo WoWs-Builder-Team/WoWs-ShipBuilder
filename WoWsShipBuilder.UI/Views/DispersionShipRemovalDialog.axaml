@@ -5,13 +5,13 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="270"
         x:Class="WoWsShipBuilder.UI.Views.DispersionShipRemovalDialog"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         WindowStartupLocation="CenterOwner" CanResize="False" Width="600" Height="270">
     <Grid RowDefinitions="30,*, Auto">
         <userControls:AppHeader Grid.Row="0"/>
         <Grid ColumnDefinitions="*,Auto,*" Grid.Row="1" Margin="10">
             <StackPanel Orientation="Vertical" Grid.Column="0" Spacing="10">
-                <TextBlock Text="{x:Static t:Translation.DispersionWindow_CurrentShips}"/>
+                <TextBlock Text="{x:Static translations:Translation.DispersionWindow_CurrentShips}"/>
                 <ListBox MinHeight="150" Items="{Binding CurrentShipList}" SelectedItems="{Binding CurrentSelection}" SelectionMode="Multiple" HorizontalAlignment="Stretch"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Spacing="20" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,10,0">
@@ -19,7 +19,7 @@
                 <Button Content="&lt;--" Command="{Binding RestoreShips}" FontSize="20"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="2" Spacing="10">
-                <TextBlock Text="{x:Static t:Translation.DispersionWindow_ShipsToDelete}"/>
+                <TextBlock Text="{x:Static translations:Translation.DispersionWindow_ShipsToDelete}"/>
                 <ListBox MinHeight="150" Items="{Binding ShipsToDeleteList}" SelectedItems="{Binding RemoveSelection}" SelectionMode="Multiple" HorizontalAlignment="Stretch"/>
             </StackPanel>
         </Grid>

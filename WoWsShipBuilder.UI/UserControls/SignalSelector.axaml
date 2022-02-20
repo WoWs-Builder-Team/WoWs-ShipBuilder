@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
              xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -22,7 +22,7 @@
 
     <DockPanel>  
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-            <TextBlock Text="{x:Static t:Translation.SignalSelector_Flags}" FontSize="13" />
+            <TextBlock Text="{x:Static translations:Translation.SignalSelector_Flags}" FontSize="13" />
             <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
             <TextBlock Text="/8" FontSize="13" />
         </StackPanel>

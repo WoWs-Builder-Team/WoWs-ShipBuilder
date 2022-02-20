@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
         x:Class="WoWsShipBuilder.UI.Views.DownloadWindow"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         Title="DownloadWindow"
         Name="DownloadWindow"
@@ -13,7 +13,7 @@
 
     <Grid RowDefinitions="30,*">
         <userControls:AppHeader ShowCloseButton="False" ShowMinimizeButton="False" 
-                                Title="{x:Static t:Translation.DownloadWindow_Downloading}"/>
+                                Title="{x:Static translations:Translation.DownloadWindow_Downloading}"/>
         <Border Classes="BorderPanel" Grid.Row="1" Margin="10">
             <StackPanel Orientation="Vertical" Spacing="10" Margin="10">
                 <Image Source="/Assets/Art/logo_white_text.png" Height="150" />

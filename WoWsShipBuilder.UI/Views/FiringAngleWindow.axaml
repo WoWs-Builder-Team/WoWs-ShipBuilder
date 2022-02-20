@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.FiringAngleWindow"
         CanResize="True" WindowStartupLocation="CenterScreen"
@@ -16,10 +16,10 @@
                 ShowAllAngles="{Binding ShowAllText}" PermanentAngleText="{Binding PermaText}"
                 Foreground="{StaticResource ThemeBackgroundBrush}"/>
         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10" Spacing="10">
-            <TextBlock TextWrapping="Wrap" Text="{x:Static t:Translation.FiringAngleWindow_AngleExplanation}" HorizontalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="{x:Static translations:Translation.FiringAngleWindow_AngleExplanation}" HorizontalAlignment="Center"/>
             <Button Content="{Binding ShowAllTextButton}" HorizontalAlignment="Stretch" Command="{Binding SetShowAll}"/>
             <Button Content="{Binding PermaTextButton}" HorizontalAlignment="Stretch" Command="{Binding SetPermaText}"/>
-            <TextBlock TextWrapping="Wrap" Text="{x:Static t:Translation.FiringAngleWindow_Disclaimer}" HorizontalAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="{x:Static translations:Translation.FiringAngleWindow_Disclaimer}" HorizontalAlignment="Center"/>
             <Border BorderBrush="White" BorderThickness="1">
                 <Image Source="/Assets/discord.png" Width="150" Cursor="Hand" PointerReleased="OpenDiscord"/>
             </Border>

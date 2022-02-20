@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="566"
         x:Class="WoWsShipBuilder.UI.Views.SplashScreen"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         Title="SplashScreenWindow"
         Name="SplashScreenWindow"
@@ -25,7 +25,7 @@
                      Value="{Binding Progress}"
                      ShowProgressText="True" FontSize="20" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" RelativePanel.Above="ProgressBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-            <TextBlock Text="{x:Static t:Translation.DownloadWindow_Status}" Padding="5,0,0,5" FontSize="25" />
+            <TextBlock Text="{x:Static translations:Translation.DownloadWindow_Status}" Padding="5,0,0,5" FontSize="25" />
             <TextBlock Text="{Binding DownloadInfo, Converter={StaticResource Localizer}, ConverterParameter=resx}" Padding="5,0,0,5" FontSize="25" />
         </StackPanel>
     </RelativePanel>

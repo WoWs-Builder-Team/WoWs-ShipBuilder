@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
@@ -28,26 +28,26 @@
         <userControls:AppHeader Grid.Row="0" ShowMinimizeButton="False"/>
         <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
-                <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TierFilter}" IsChecked="{Binding TierFilterChecked}"/>
+                <CheckBox Content="{x:Static translations:Translation.ShipSelectionWindow_TierFilter}" IsChecked="{Binding TierFilterChecked}"/>
                 <ComboBox Items="{Binding TierList}" PlaceholderText="I ~ XI" SelectedItem="{Binding SelectedTier}" 
                           IsEnabled="{Binding TierFilterChecked}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
-                <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_ClassFilter}" IsChecked="{Binding ClassFilterChecked}"/>
+                <CheckBox Content="{x:Static translations:Translation.ShipSelectionWindow_ClassFilter}" IsChecked="{Binding ClassFilterChecked}"/>
                 <ComboBox Classes="LocalizedEntry" Items="{Binding ClassList}" PlaceholderText="All" 
                           SelectedItem="{Binding SelectedClass}" IsEnabled="{Binding ClassFilterChecked}"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
-                <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_NationFilter}" IsChecked="{Binding NationFilterChecked}"/>
+                <CheckBox Content="{x:Static translations:Translation.ShipSelectionWindow_NationFilter}" IsChecked="{Binding NationFilterChecked}"/>
                 <ComboBox Classes="LocalizedEntry" Items="{Binding NationList}" PlaceholderText="All" 
                           SelectedItem="{Binding SelectedNation}" IsEnabled="{Binding NationFilterChecked}"/>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Vertical" Spacing="10" Margin="10">
-                <CheckBox Content="{x:Static t:Translation.ShipSelectionWindow_TypeFilter}" IsChecked="{Binding TypeFilterChecked}"/>
+                <CheckBox Content="{x:Static translations:Translation.ShipSelectionWindow_TypeFilter}" IsChecked="{Binding TypeFilterChecked}"/>
                 <ComboBox Classes="LocalizedEntry" Items="{Binding TypeList}" PlaceholderText="All" 
                           SelectedItem="{Binding SelectedType}" IsEnabled="{Binding TypeFilterChecked}"/>
             </StackPanel>
-            <TextBox Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Margin="10" Text="{Binding InputText}" Watermark="{x:Static t:Translation.ShipSelectionWindow_SearchShip}"
+            <TextBox Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Margin="10" Text="{Binding InputText}" Watermark="{x:Static translations:Translation.ShipSelectionWindow_SearchShip}"
                      TextAlignment="Center" Name="FilterBox" />
             <ListBox Name="SelectionList" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Items="{Binding SummaryList}" IsVisible="{Binding !!SummaryList.Count}"
                      HorizontalAlignment="Stretch" Margin="10 0" MaxHeight="300" SelectedItems="{Binding SelectedShipList}">
@@ -60,10 +60,10 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="10,5,10,5" 
-                       Text="{x:Static t:Translation.ShipSelectionWindow_NoResultsFound}" Foreground="Red"
+                       Text="{x:Static translations:Translation.ShipSelectionWindow_NoResultsFound}" Foreground="Red"
                        TextAlignment="Center"
                        IsVisible="{Binding !!!SummaryList.Count}" VerticalAlignment="Center" FontSize="15"/>
         </Grid>
-        <Button Grid.Row="3" IsDefault="True" Command="{Binding Confirm}" Content="{x:Static t:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
+        <Button Grid.Row="3" IsDefault="True" Command="{Binding Confirm}" Content="{x:Static translations:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
     </Grid>
 </Window>

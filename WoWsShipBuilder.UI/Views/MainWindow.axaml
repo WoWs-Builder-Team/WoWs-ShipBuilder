@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1700" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
@@ -38,10 +38,10 @@
                     <Grid ColumnDefinitions="*,3*,*">
                         <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
                               HorizontalAlignment="Center">
-                            <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_BackToMenu}"
                                     Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
                                     Margin="0,0,0,10" />
-                            <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
+                            <Button Name="NewShip" Content="{x:Static translations:Translation.MainWindow_NewShipSelection}"
                                     Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
                         </Grid>
                         <RelativePanel Grid.Column="1">
@@ -93,10 +93,10 @@
                         </RelativePanel>
                         <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
                               HorizontalAlignment="Center">
-                            <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_ShareBuild}"
                                     Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
                                     Margin="0,0,0,10" />
-                            <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
                                     HorizontalAlignment="Stretch" />
                         </Grid>
                     </Grid>
@@ -108,13 +108,13 @@
                     <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
                         <Border Classes="BorderPanel" Grid.Row="0">
                             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
                                 <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
                             </StackPanel>
                         </Border>
                         <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
                                 <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
                             </StackPanel>
                         </Border>
@@ -138,41 +138,41 @@
                     <Grid Grid.Column="3" RowDefinitions="*, Auto" Margin="0,0,10,0">
                         <Border Classes="BorderPanel" Grid.Row="0">
                             <StackPanel Orientation="Vertical" Margin="5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_BaseXp}" />
                                 <TextBox Text="{Binding BaseXp}" MaxLength="5" Name="BaseXpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_XpBonus}" />
                                 <TextBox Text="{Binding XpBonus}" MaxLength="4" Name="XpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_CommanderXpBonus}" />
                                 <TextBox Text="{Binding CommanderXpBonus}" MaxLength="4" Name="CommanderXpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_FreeXpBonus}" />
                                 <TextBox Text="{Binding FreeXpBonus}" MaxLength="4" Name="FreeXpInput" Margin="0,0,0,10" />
                                 <RadioButton GroupName="AccountType"
                                              IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
                                              Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
                                 </RadioButton>
                                 <RadioButton GroupName="AccountType"
                                              IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
                                              Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
                                 </RadioButton>
                                 <RadioButton GroupName="AccountType"
                                              IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
                                              Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
                                 </RadioButton>
                                 <Separator Margin="0,0,0,5" />
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_Xp}" />
                                     <TextBlock Text="{Binding Xp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_CommanderXp}" />
                                     <TextBlock Text="{Binding CommanderXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
+                                    <TextBlock Text="{x:Static translations:Translation.MainWindow_FreeXp}" />
                                     <TextBlock Text="{Binding FreeXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
                                 </StackPanel>
                             </StackPanel>

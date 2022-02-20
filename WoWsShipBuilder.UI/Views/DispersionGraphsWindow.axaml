@@ -7,7 +7,7 @@
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         WindowStartupLocation="CenterScreen" CanResize="True"
@@ -55,14 +55,14 @@
     </Window.Resources>
 
     <Grid RowDefinitions="30,Auto, *">
-        <userControls:AppHeader Grid.Row="0" ShowMaximizeButton="True" Title="{x:Static t:Translation.DispersionWindow_Title}"/>
+        <userControls:AppHeader Grid.Row="0" ShowMaximizeButton="True" Title="{x:Static translations:Translation.DispersionWindow_Title}"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Spacing="10" HorizontalAlignment="Center">
-            <Button Content="{x:Static t:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
-            <Button Content="{x:Static t:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
+            <Button Content="{x:Static translations:Translation.DispersionGraphWindow_AddShip}" Command="{Binding AddShip}"/>
+            <Button Content="{x:Static translations:Translation.DispersionGraphWindow_RemoveShip}" Command="{Binding RemoveShip}"/>
         </StackPanel>
         <Border Classes="BorderPanel" Margin="10" Grid.Row="2">
             <TabControl SelectedIndex="{Binding InitialTab}">
-                <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_DispersionGraphs}">
+                <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_DispersionGraphs}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <StackPanel Orientation="Vertical">
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
@@ -70,11 +70,11 @@
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_DispersionPlot}">
+                <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_DispersionPlot}">
                     <Grid RowDefinitions="Auto, Auto, Auto, *" ColumnDefinitions="Auto,*">
                         <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*,*,*,*,*" RowDefinitions="*" Margin="10 10 10 0">
                             <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_AimingRange}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_AimingRange}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="0" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
                                         <TextBlock Width="60" Text="{Binding AimingRange}" TextAlignment="Center" Margin="0 3 0 5"/>
@@ -83,7 +83,7 @@
                                 </DockPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_ShotsNumber}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_ShotsNumber}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel Grid.Column="1" LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
                                         <TextBlock Text="{Binding ShotsNumber}" TextAlignment="Center" Width="60" Margin="0 3 0 5"/>
@@ -92,7 +92,7 @@
                                 </DockPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="3" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotScaling}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotScaling}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <DockPanel LastChildFill="True">
                                     <Border BorderThickness="1" BorderBrush="Gray" DockPanel.Dock="Right" Margin="10 0 0 0">
                                         <TextBlock Text="{Binding PlotScaling}" TextAlignment="Center" Width="60" Margin="0 3 0 5"/>
@@ -101,7 +101,7 @@
                                 </DockPanel>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="4" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <ComboBox Items="{Binding EllipsePlanesList}" SelectedItem="{Binding SelectedEllipsePlane}" MinWidth="171"
                                           BorderBrush="Gray" BorderThickness="1" Margin="10 0 10 5" HorizontalContentAlignment="Center">
                                     <ComboBox.ItemTemplate>
@@ -112,18 +112,18 @@
                                 </ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="5" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotOrientation}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotOrientation}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <Border BorderThickness="1" BorderBrush="Gray">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5 0 5 0">
-                                        <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_Horizontal}" TextAlignment="Center" VerticalAlignment="Center" Margin="0 3 3 5"/>
+                                        <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Horizontal}" TextAlignment="Center" VerticalAlignment="Center" Margin="0 3 3 5"/>
                                         <RadioButton IsChecked="{Binding !IsVertical}"/>
                                         <RadioButton IsChecked="{Binding IsVertical}"/>
-                                        <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_Vertical}" TextAlignment="Center" VerticalAlignment="Center" Margin="0 3 0 5"/>
+                                        <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Vertical}" TextAlignment="Center" VerticalAlignment="Center" Margin="0 3 0 5"/>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="6" Margin="5 0">
-                                <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DrawFusoReference}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_DrawFusoReference}" HorizontalAlignment="Center" Margin="0 0 10 3"/>
                                 <ComboBox Items="{Binding FusoPositionsList}" SelectedItem="{Binding SelectedFusoPosition}" MinWidth="123"
                                           BorderBrush="Gray" BorderThickness="1" Margin="10 0 10 5" HorizontalContentAlignment="Center">
                                     <ComboBox.ItemTemplate>
@@ -133,10 +133,10 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <Button Command="{Binding RefreshPlot}" Content="{x:Static t:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
+                            <Button Command="{Binding RefreshPlot}" Content="{x:Static translations:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
                         </Grid>
-                        <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static t:Translation.DispersionGraphWindow_DispPlotExplanation}" FontSize="15" ExpandDirection="Down" IsExpanded="False" Margin="10 10 10 0" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
-                            <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_DispPlotDescription}"/>
+                        <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static translations:Translation.DispersionGraphWindow_DispPlotExplanation}" FontSize="15" ExpandDirection="Down" IsExpanded="False" Margin="10 10 10 0" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+                            <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_DispPlotDescription}"/>
                             <Expander.Styles>
                                 <Style Selector="Expander /template/ ToggleButton#PART_toggle">
                                     <Setter Property="Template">
@@ -188,7 +188,7 @@
                                                                                    IsVertical="{Binding $parent[Window].DataContext.IsVertical}"/>
                                                     <Border BorderBrush="Red" BorderThickness="3" HorizontalAlignment="Stretch" CornerRadius="5" Margin="10 0"
                                                             IsVisible="{Binding !DispersionEllipse.IsValid}">
-                                                        <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_NoRange}"
+                                                        <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_NoRange}"
                                                                    IsVisible="{Binding !DispersionEllipse.IsValid}" Foreground="Red" HorizontalAlignment="Stretch"
                                                                    TextAlignment="Center" FontSize="15" Margin="25"/>
                                                     </Border>
@@ -231,7 +231,7 @@
                                     <RotateTransform Angle="{Binding IsVertical, Converter={StaticResource RotationConverter}}"/>
                                 </Path.RenderTransform>
                             </Path>
-                            <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_ShellsPath}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_ShellsPath}" HorizontalAlignment="Center" TextAlignment="Center"/>
                             <Panel Width="60" Height="60" Margin="5">
                                 <Path Stretch="Fill" Stroke="Gray" StrokeThickness="4"
                                   Data="M 0 0 L 0 -5 Z"
@@ -258,19 +258,19 @@
                                   IsVisible="{Binding IsRealPlane}">
                                 </Path>
                             </Panel>
-                            <TextBlock Text="{x:Static t:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotPlane}" HorizontalAlignment="Center" TextAlignment="Center"/>
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static t:Translation.DispersionGraphWindow_BallisticGraphs}">
+                <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_BallisticGraphs}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <StackPanel Orientation="Vertical">
                             <Border BorderThickness="2" BorderBrush="Gray" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
-                                    <CheckBox IsChecked="{Binding ShowPen}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowPenetrationGraph}"/>
-                                    <CheckBox IsChecked="{Binding ShowFlightTime}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowFlightTimeGraph}"/>
-                                    <CheckBox IsChecked="{Binding ShowImpactVelocity}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowImpactVelocityGraph}"/>
-                                    <CheckBox IsChecked="{Binding ShowImpactAngle}" Content="{x:Static t:Translation.DispersionGraphWindow_ShowImpactAngleGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowPen}" Content="{x:Static translations:Translation.DispersionGraphWindow_ShowPenetrationGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowFlightTime}" Content="{x:Static translations:Translation.DispersionGraphWindow_ShowFlightTimeGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowImpactVelocity}" Content="{x:Static translations:Translation.DispersionGraphWindow_ShowImpactVelocityGraph}"/>
+                                    <CheckBox IsChecked="{Binding ShowImpactAngle}" Content="{x:Static translations:Translation.DispersionGraphWindow_ShowImpactAngleGraph}"/>
                                 </StackPanel>
                             </Border>
                             <oxy:PlotView IsVisible="{Binding ShowPen}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding PenetrationModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
