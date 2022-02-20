@@ -1128,4 +1128,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Validation_BuildName" xml:space="preserve">
       <value>Der Build-Name enthält ungültige Zeichen. Es sind nur Buchstaben, Zahlen, Leerzeichen, Bindestriche und Unterstriche erlaubt.</value>
   </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Nur ein Wert zum Testen</value>
+  </data>
 </root>
