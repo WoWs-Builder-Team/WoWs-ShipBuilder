@@ -1128,4 +1128,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="Validation_BuildName" xml:space="preserve">
       <value>The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed.</value>
   </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Just a value for testing</value>
+  </data>
 </root>

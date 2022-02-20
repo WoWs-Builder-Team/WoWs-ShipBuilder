@@ -2980,6 +2980,15 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Just a value for testing.
+        /// </summary>
+        public static string Teststring {
+            get {
+                return ResourceManager.GetString("Teststring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Empty slot.
         /// </summary>
         public static string TITLE_PlaceholderMod {
