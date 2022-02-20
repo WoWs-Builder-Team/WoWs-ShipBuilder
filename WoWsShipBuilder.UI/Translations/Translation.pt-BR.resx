@@ -1125,4 +1125,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Taxa de Fogo no Servidor</value>
   </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
+  </data>
 </root>
