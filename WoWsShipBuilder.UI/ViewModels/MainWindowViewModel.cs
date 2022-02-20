@@ -7,17 +7,16 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia;
 using DynamicData.Binding;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -29,7 +28,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         WGPremium,
     }
 
-    public class MainWindowViewModel : ViewModelBase, IScalableViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         private readonly SemaphoreSlim semaphore = new(1, 1);
 
@@ -38,6 +37,8 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly INavigationService navigationService;
 
         private readonly IScreenshotRenderService screenshotRenderService;
+
+        private readonly IClipboardService clipboardService;
 
         private Account accountType = Account.Normal;
 
@@ -85,21 +86,21 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, Ship ship, ShipSummary shipSummary, Build? build = null, double contentScaling = 1)
+        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, IClipboardService clipboardService, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
             this.screenshotRenderService = screenshotRenderService;
+            this.clipboardService = clipboardService;
             tokenSource = new();
-            ContentScaling = contentScaling;
-            PreviousShipIndex = shipSummary.PrevShipIndex;
+            PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
 
             LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
 
-            InitializeData(ship, PreviousShipIndex, shipSummary.NextShipsIndex, build);
+            InitializeData(viewModelParams.Ship, PreviousShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
         }
 
         public MainWindowViewModel()
-            : this(null!, null!, DataHelper.LoadPreviewShip(ShipClass.Destroyer, 9, Nation.Germany).Ship, DataHelper.GetPreviewShipSummary(ShipClass.Destroyer, 9, Nation.Germany))
+            : this(null!, null!, null!, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 
@@ -249,14 +250,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
         }
 
-        private double contentScaling = 1;
-
-        public double ContentScaling
-        {
-            get => contentScaling;
-            set => this.RaiseAndSetIfChanged(ref contentScaling, value);
-        }
-
         public async void ResetBuild()
         {
             Logging.Logger.Info("Resetting build");
@@ -294,7 +287,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
             else
             {
-                await Application.Current.Clipboard.SetTextAsync(currentBuild.CreateStringFromBuild());
+                await clipboardService.SetTextAsync(currentBuild.CreateStringFromBuild());
                 infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
             }
 

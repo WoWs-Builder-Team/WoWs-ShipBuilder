@@ -7,6 +7,14 @@ namespace WoWsShipBuilder.UI.Utilities
 {
     public class ScalableWindow : Window, IScalableWindow
     {
+        public static readonly StyledProperty<double> ContentScalingProperty = AvaloniaProperty.Register<ScalableWindow, double>(nameof(ContentScaling));
+
+        public double ContentScaling
+        {
+            get => GetValue(ContentScalingProperty);
+            set => SetValue(ContentScalingProperty, value);
+        }
+
         public void ProcessResizing(Size newSize, PlatformResizeReason resizeReason) => HandleResized(newSize, resizeReason);
     }
 

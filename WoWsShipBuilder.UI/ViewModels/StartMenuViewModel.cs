@@ -14,17 +14,14 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    public class StartMenuViewModel : ViewModelBase, IScalableViewModel
+    public class StartMenuViewModel : ViewModelBase
     {
         private readonly IFileSystem fileSystem;
 
         private readonly INavigationService navigationService;
-
-        private double contentScaling = 1;
 
         private int? selectedBuild;
 
@@ -74,12 +71,6 @@ namespace WoWsShipBuilder.UI.ViewModels
         public Interaction<SettingsWindowViewModel, Unit> ShowSettingsInteraction { get; } = new();
 
         public ReactiveCommand<Unit, Unit> DeleteBuildCommand { get; }
-
-        public double ContentScaling
-        {
-            get => contentScaling;
-            set => this.RaiseAndSetIfChanged(ref contentScaling, value);
-        }
 
         public async void NewBuild()
         {

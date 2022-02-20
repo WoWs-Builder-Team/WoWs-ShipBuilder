@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 
@@ -32,6 +33,11 @@ namespace WoWsShipBuilder.UI
         {
             var ship = LoadPreviewShip(shipClass, tier, nation);
             return AppDataHelper.Instance.GetShipSummaryList(ServerType.Live).First(summary => summary.Index == ship.Ship.Index);
+        }
+
+        public static MainViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)
+        {
+            return new(LoadPreviewShip(shipClass, tier, nation).Ship, GetPreviewShipSummary(shipClass, tier, nation));
         }
     }
 }

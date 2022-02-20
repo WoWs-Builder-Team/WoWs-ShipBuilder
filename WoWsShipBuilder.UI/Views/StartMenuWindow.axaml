@@ -7,9 +7,11 @@
         xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:utilities="clr-namespace:WoWsShipBuilder.UI.Utilities"
         Title="WoWs Ship Builder"
         Name="StartWindow"
         Height="800" Width="400" CanResize="False"
+        utilities:Scaling.ContentScaling="1"
         WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
@@ -30,7 +32,7 @@
     <LayoutTransformControl>
         <LayoutTransformControl.LayoutTransform>
             <!-- Will trigger a binding notification for a null value, no way to suppress that. -->
-            <ScaleTransform ScaleX="{Binding ContentScaling, TargetNullValue=1, FallbackValue=1}" ScaleY="{Binding ContentScaling, TargetNullValue=1, FallbackValue=1}" />
+            <ScaleTransform ScaleX="{Binding $parent[Window].(utilities:Scaling.ContentScaling), TargetNullValue=1, FallbackValue=1}" ScaleY="{Binding $parent[Window].(utilities:Scaling.ContentScaling), TargetNullValue=1, FallbackValue=1}" />
         </LayoutTransformControl.LayoutTransform>
         <Grid RowDefinitions="30,1.35*,Auto,*,Auto, Auto">
             <userControls:AppHeader Grid.Row="0" ShowTitle="False" />
