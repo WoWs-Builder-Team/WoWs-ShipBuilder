@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - main
       - development
+      - l10n_development
     paths-ignore:
       - '**/*.md'
       - '.github/*.png'
