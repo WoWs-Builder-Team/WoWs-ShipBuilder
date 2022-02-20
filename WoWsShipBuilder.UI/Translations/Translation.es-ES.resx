@@ -345,9 +345,7 @@
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>Tasa de disparo</value>
   </data>
-  <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Tiempo de recarga</value>
-  </data>
+  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
@@ -427,9 +425,7 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Batería principal</value>
   </data>
-  <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Tiempo de reacción</value>
-  </data>
+  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpedo</value>
   </data>
@@ -660,21 +656,15 @@
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
     <value>Rango mínimo</value>
   </data>
-  <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Cargas</value>
-  </data>
-  <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>ASW airstrike</value>
-  </data>
+  
+  
   <data name="DepthCharge" xml:space="preserve">
     <value>Cargos de profundidad</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>Visualización de dispersión</value>
   </data>
-  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Cargos de profundidad ASW</value>
-  </data>
+  
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>Duración del primer ping</value>
   </data>
@@ -705,12 +695,8 @@
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
-  <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Activar ruta personalizada</value>
-  </data>
-  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Insertar ruta personalizada</value>
-  </data>
+  
+  
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Guardar y salir</value>
   </data>
@@ -798,9 +784,7 @@
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
     <value>Tiempo para apuntar totalmente</value>
   </data>
-  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Lanzadores de torpedos</value>
-  </data>
+  
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>Durante el apuntamiento</value>
   </data>
@@ -840,9 +824,7 @@
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
     <value>Mostrar gráficos de balística</value>
   </data>
-  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>La ruta personalizada seleccionada no es válida.</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Seleccione un obús</value>
   </data>
@@ -925,7 +907,7 @@
   </data>
   
   <data name="RealPlane" xml:space="preserve">
-    <value>Real</value>
+    <value>Ángulo de impacto</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
     <value>Vertical</value>
@@ -933,18 +915,7 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Referencia Fuso</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>En la trama, los proyectiles provienen del lado derecho.
-La gráfica se gira en 90° para que la dispersión vertical se muestre horizontalmente y la dispersión horizontal se muestre verticalmente.
-
-La elipse BLANCA muestra el área de dispersión máxima en el alcance seleccionado.
-La elipse ROJA muestra el área donde el 50% de los proyectiles prestan en promedio.
-La elipse NEGRA muestra el tamaño de un Fuso como referencia.
-
-Los barcos en el juego son dos veces más grandes que el medio ambiente, por lo que un barco de 200 metros de largo ocupa el espacio de 400m.
-La elipse de dispersión real se dibuja en un plano perpendicular al ángulo de impacto del obús.
-Sólo la dispersión vertical proyectada en el agua se ve afectada por la velocidad del obús. En la real no es así.</value>
-  </data>
+  
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Explicación de la trama</value>
   </data>
@@ -955,6 +926,49 @@ Sólo la dispersión vertical proyectada en el agua se ve afectada por la veloci
   <data name="DontShow" xml:space="preserve">
     <value>Ocultar</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  
+  
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  
+  
+  
+  
+  
   
   
   
