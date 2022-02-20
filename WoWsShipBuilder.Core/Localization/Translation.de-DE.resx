@@ -166,7 +166,7 @@
     <value>Build importieren...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value/>
+    <value>Einstellungen und Info</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
     <value>Status:</value>
@@ -718,7 +718,7 @@
     <value>Benutzerdefinierten Datenpfad eingeben</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value/>
+    <value>Speichern und Verlassen</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Die Orientierung einiger Geschütztürme ist falsch. Die Daten von WG enthalten die Orientierung nicht, daher berechnen wir diese mithilfe eines Workarounds. Falls du einen fehlerhaften Turm oder falsche Winkel sehen solltest, melde diese bitte auf GitHub oder auf unserem Discord Server.</value>
@@ -1051,7 +1051,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Datei-Explorer beim Speichern einer Build-Grafik öffnen</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-    <value/>
+    <value>Speichern und Grafik kopieren</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Speichern</value>
@@ -1069,13 +1069,13 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Ok</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
-    <value/>
+    <value>Speichern und Verlassen</value>
   </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
     <value>Signale und Verbrauchsmaterialien in Grafik anzeigen</value>
   </data>
   <data name="BuildCreationWindow_ExportString" xml:space="preserve">
-    <value/>
+    <value>Speichern &amp; Build-Text kopieren</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
     <value>Build-Grafik wurde in die Zwischenablage kopiert</value>
