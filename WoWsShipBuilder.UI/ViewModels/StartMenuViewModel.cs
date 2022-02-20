@@ -23,17 +23,20 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly INavigationService navigationService;
 
+        private readonly IClipboardService clipboardService;
+
         private int? selectedBuild;
 
         public StartMenuViewModel()
-            : this(new FileSystem(), new NavigationService())
+            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService())
         {
         }
 
-        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService)
+        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService)
         {
             this.fileSystem = fileSystem;
             this.navigationService = navigationService;
+            this.clipboardService = clipboardService;
             if (!AppData.Builds.Any())
             {
                 AppDataHelper.Instance.LoadBuilds();
@@ -155,7 +158,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void Setting()
         {
-            await ShowSettingsInteraction.Handle(new(fileSystem));
+            await ShowSettingsInteraction.Handle(new(fileSystem, clipboardService));
         }
 
         private void BuildList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

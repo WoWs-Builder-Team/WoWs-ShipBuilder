@@ -4,6 +4,7 @@ using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
@@ -84,6 +85,17 @@ namespace WoWsShipBuilder.UI.Views
         private void OpenDiscord(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
         {
             string url = "https://discord.gg/C8EaepZJDY";
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true,
+            });
+        }
+
+        private void DonateButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            const string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
 
             Process.Start(new ProcessStartInfo
             {

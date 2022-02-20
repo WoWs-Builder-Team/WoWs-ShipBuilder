@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions;
@@ -9,12 +8,13 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Avalonia;
 using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 
@@ -23,6 +23,8 @@ namespace WoWsShipBuilder.UI.ViewModels
     public class SettingsWindowViewModel : ViewModelBase
     {
         private readonly IFileSystem fileSystem;
+
+        private readonly IClipboardService clipboardService;
 
         private bool autoUpdate;
 
@@ -51,14 +53,15 @@ namespace WoWsShipBuilder.UI.ViewModels
         private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 
         public SettingsWindowViewModel()
-            : this(new FileSystem())
+            : this(new FileSystem(), new AvaloniaClipboardService())
         {
         }
 
-        public SettingsWindowViewModel(IFileSystem? fileSystem = null)
+        public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService)
         {
             Logging.Logger.Info("Creating setting window view model");
-            this.fileSystem = fileSystem ?? new FileSystem();
+            this.fileSystem = fileSystem;
+            this.clipboardService = clipboardService;
             languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
                                ?? AppDataHelper.Instance.DefaultCultureDetails;
@@ -212,17 +215,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public void Donate()
-        {
-            string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = url,
-                UseShellExecute = true,
-            });
-        }
-
         public async void Save()
         {
             Logging.Logger.Info("Saving settings");
@@ -327,7 +319,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public async void CopyVersion()
         {
             var appVersion = $"App Version: {Version}{Environment.NewLine}Data Version: {DataVersion}";
-            await Application.Current.Clipboard.SetTextAsync(appVersion);
+            await clipboardService.SetTextAsync(appVersion);
         }
 
         private async Task<string?> SelectFolder()
