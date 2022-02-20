@@ -5,6 +5,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -35,7 +36,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref progress, value);
         }
 
-        private string downloadInfo = "SplashScreen_Init";
+        private string downloadInfo = Translation.SplashScreen_Init;
 
         public string DownloadInfo
         {
@@ -64,7 +65,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 logger.Error(e, "Encountered unexpected exception during version check.");
             }
 
-            progressTracker.Report((TaskNumber, "SplashScreen_Done"));
+            progressTracker.Report((TaskNumber, Translation.SplashScreen_Done));
         }
     }
 }

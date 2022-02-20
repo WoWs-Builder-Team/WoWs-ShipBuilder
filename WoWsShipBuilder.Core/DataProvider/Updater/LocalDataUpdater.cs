@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider.Updater
 {
@@ -278,7 +279,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             if (checkResult.AvailableFileUpdates.Any())
             {
                 logger.Info("Updating {0} files...", checkResult.AvailableFileUpdates.Count);
-                progressTracker.Report((1, "SplashScreen_Json"));
+                progressTracker.Report((1, Translation.SplashScreen_Json));
                 await awsClient.DownloadFiles(serverType, checkResult.AvailableFileUpdates);
             }
 
@@ -307,12 +308,12 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
-                progressTracker.Report((2, "SplashScreen_ShipImages"));
+                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
                 await awsClient.DownloadImages(ImageType.Ship);
             }
             else
             {
-                progressTracker.Report((2, "SplashScreen_ShipImages"));
+                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
                 await awsClient.DownloadImages(ImageType.Ship, versionName);
             }
 
