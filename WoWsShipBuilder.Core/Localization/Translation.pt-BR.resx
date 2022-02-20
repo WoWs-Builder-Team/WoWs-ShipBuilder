@@ -165,6 +165,9 @@
   <data name="StartMenu_ImportBuild" xml:space="preserve">
     <value>Importar build...</value>
   </data>
+  <data name="StartMenu_Settings" xml:space="preserve">
+    <value>Configurações &ampersand; Info</value>
+  </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
     <value>Status:</value>
   </data>
@@ -1071,6 +1074,9 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
     <value>Incluir sinais e consumíveis na imagem</value>
   </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Salvar &ampersand; copiar texto</value>
+  </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
     <value>Imagem da build copiada para área de transferência</value>
   </data>
@@ -1082,6 +1088,9 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>O caminho personalizado selecionado para imagem de build é inválido.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Habilidades &ampersand; Talentos</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Com o seguinte controle deslizante e botões, você pode ativar ou desativar certos efeitos condicionais das habilidades. Você também pode selecionar quantas vezes ativar o efeito do talento, se possível. Note que nem todas as habilidades/talentos terão efeito nas estatísticas do navio.</value>
@@ -1119,4 +1128,5 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="Validation_BuildName" xml:space="preserve">
       <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
   </data>
+  
 </root>

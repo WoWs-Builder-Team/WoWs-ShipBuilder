@@ -699,6 +699,11 @@
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  
+  
+  <data name="SettingsWindow_SaveExit" xml:space="preserve">
+    <value>Enregistrer &ampersand; quitter</value>
+  </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>L'orientation de la tourelle est incorrecte. Les données de WG ne l'incluent pas, donc nous utilisons une solution qui fonctionne dans la plupart des cas. Si vous trouvez un cas d'orientation d'une tourelle et/ou d'angle erroné, signalez-le sur Github ou en rejoignant le serveur Discord ci-dessous.</value>
   </data>
@@ -991,6 +996,7 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  
   
   
   

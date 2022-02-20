@@ -1050,6 +1050,9 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
     <value>Apri explorer quando si salva un'immagine di una build</value>
   </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Salva &ampersand; copia immagine</value>
+  </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Salva</value>
   </data>
@@ -1071,6 +1074,9 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
     <value>Includi segnali e consumabili nell'immagine</value>
   </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Salva &ampersand; copia stringa</value>
+  </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
     <value>Stringa della build copiata negli appunti</value>
   </data>
@@ -1082,6 +1088,9 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Il percorso personalizzato selezionato per l'immagine build non è valido.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Abilità &ampersand; Talenti</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Con i seguenti cursori e bottoni, è possibile attivare o disattivare alcuni effetti condizionali delle abilità. Puoi anche selezionare quante volte attivare l'effetto del talento, se possibile. Nota che non tutte le abilità/talenti avranno un effetto sulle statistiche della nave.</value>
@@ -1119,4 +1128,5 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="Validation_BuildName" xml:space="preserve">
       <value>Il nome della build contiene caratteri non validi. Sono ammessi solo lettere, numeri, spazi, trattini e trattini bassi.</value>
   </data>
+  
 </root>
