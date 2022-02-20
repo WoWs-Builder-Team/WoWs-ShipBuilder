@@ -1124,6 +1124,10 @@
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Серверная Скорострельность</value>
   </data>
-  
-  
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>Название билда содержит недопустимые символы. Допускаются только буквы, цифры, пробелы, дефисы и подчеркивания.</value>
+  </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Просто значение для тестирования</value>
+  </data>
 </root>
