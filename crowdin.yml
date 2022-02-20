@@ -1,6 +1,4 @@
 files:
-  - source: /WoWsShipBuilder.UI/Translations/Translation.resx
-    translation: /WoWsShipBuilder.UI/Translations/Translation.%locale%.resx
   - source: /WoWsShipBuilder.Core/Localization/Translation.resx
     translation: /WoWsShipBuilder.Core/Localization/Translation.%locale%.resx
   - source: /WoWsShipBuilder.Core/DataUI/UnitTranslations/UnitLocalization.resx
