@@ -1,0 +1,903 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainWindow_BackToMenu" xml:space="preserve">
+    <value>Powrót do menu</value>
+  </data>
+  <data name="MainWindow_ResetBuild" xml:space="preserve">
+    <value>Wyzeruj zestaw</value>
+  </data>
+  <data name="MainWindow_ShareBuild" xml:space="preserve">
+    <value>Udostępnij zestaw</value>
+  </data>
+  <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
+    <value>Włącz automatyczne aktualizacje</value>
+  </data>
+  <data name="SettingsWindow_Clean" xml:space="preserve">
+    <value>Wyczyść</value>
+  </data>
+  <data name="SettingsWindow_CleanAppData" xml:space="preserve">
+    <value>Wyczyść dane aplikacji</value>
+  </data>
+  <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
+    <value>Stworzone przez:</value>
+  </data>
+  <data name="SettingsWindow_Info" xml:space="preserve">
+    <value>Informacje</value>
+  </data>
+  <data name="SettingsWindow_Language" xml:space="preserve">
+    <value>Język</value>
+  </data>
+  <data name="SettingsWindow_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SettingsWindow_ResetSettings" xml:space="preserve">
+    <value>Resetuj do ustawień domyślnych</value>
+  </data>
+  <data name="SettingsWindow_Settings" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="SettingsWindow_Version" xml:space="preserve">
+    <value>Wersja:</value>
+  </data>
+  <data name="StartMenu_LoadBuild" xml:space="preserve">
+    <value>Wczytaj zestaw</value>
+  </data>
+  <data name="StartMenu_NewBuild" xml:space="preserve">
+    <value>Stwórz nowy zestaw</value>
+  </data>
+  <data name="StartMenu_ImportBuild" xml:space="preserve">
+    <value>Importuj zestaw...</value>
+  </data>
+  <data name="StartMenu_Settings" xml:space="preserve">
+    <value>Ustawienia i informacje</value>
+  </data>
+  <data name="DownloadWindow_Status" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="SignalSelector_Flags" xml:space="preserve">
+    <value>Oznaczenia </value>
+  </data>
+  <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
+    <value>Wprowadź nazwę zestawu. Nazwa okrętu jest dołączona automatycznie.</value>
+  </data>
+  <data name="MainWindow_NewShipSelection" xml:space="preserve">
+    <value>Wybierz nowy okręt</value>
+  </data>
+  <data name="SettingsWindow_ArtBy" xml:space="preserve">
+    <value>Grafika autorstwa:</value>
+  </data>
+  <data name="SettingsWindow_Devs" xml:space="preserve">
+    <value>Programiści: </value>
+  </data>
+  <data name="SettingsWindow_LeadDevs" xml:space="preserve">
+    <value>Naczelni programiści:</value>
+  </data>
+  <data name="SettingsWindow_Data" xml:space="preserve">
+    <value>Konwersja danych:</value>
+  </data>
+  <data name="CaptainSkillSelector_Points" xml:space="preserve">
+    <value>Punkty kapitana:</value>
+  </data>
+  <data name="CaptainSkillSelector_Talents" xml:space="preserve">
+    <value>Talenty kapitana</value>
+  </data>
+  <data name="SettingsWindow_Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="SettingsWindow_Server" xml:space="preserve">
+    <value>Serwer</value>
+  </data>
+  <data name="MainWindow_BaseXp" xml:space="preserve">
+    <value>Bazowe PD</value>
+  </data>
+  <data name="MainWindow_CommanderXp" xml:space="preserve">
+    <value>PD Dowódcy:</value>
+  </data>
+  <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
+    <value>Procentów premii PD od dowódcy</value>
+  </data>
+  <data name="MainWindow_FreeXp" xml:space="preserve">
+    <value>Wolne PD:</value>
+  </data>
+  <data name="MainWindow_FreeXpBonus" xml:space="preserve">
+    <value>Procentów premii wolnych PD</value>
+  </data>
+  <data name="MainWindow_Xp" xml:space="preserve">
+    <value>PD w sumie:</value>
+  </data>
+  <data name="MainWindow_XpBonus" xml:space="preserve">
+    <value>PD bonus %</value>
+  </data>
+  <data name="MainWindow_XpCalculator" xml:space="preserve">
+    <value>Kalkulator PD</value>
+  </data>
+  <data name="SplashScreen_CamoImages" xml:space="preserve">
+    <value>Pobieranie obrazów kamuflaży</value>
+  </data>
+  <data name="SplashScreen_Done" xml:space="preserve">
+    <value>Gotowe</value>
+  </data>
+  <data name="SplashScreen_Json" xml:space="preserve">
+    <value>Pobieranie danych</value>
+  </data>
+  <data name="SplashScreen_ShipImages" xml:space="preserve">
+    <value>Pobieranie obrazów okrętów</value>
+  </data>
+  <data name="AirCarrier" xml:space="preserve">
+    <value>Lotniskowiec</value>
+  </data>
+  <data name="Battleship" xml:space="preserve">
+    <value>Pancernik</value>
+  </data>
+  <data name="Commonwealth" xml:space="preserve">
+    <value>Wspólnota</value>
+  </data>
+  <data name="Cruiser" xml:space="preserve">
+    <value>Krążownik</value>
+  </data>
+  <data name="Destroyer" xml:space="preserve">
+    <value>Niszczyciel</value>
+  </data>
+  <data name="Europe" xml:space="preserve">
+    <value>Europa</value>
+  </data>
+  <data name="France" xml:space="preserve">
+    <value>Francja</value>
+  </data>
+  <data name="Germany" xml:space="preserve">
+    <value>Niemcy</value>
+  </data>
+  <data name="Italy" xml:space="preserve">
+    <value>Włochy</value>
+  </data>
+  <data name="Japan" xml:space="preserve">
+    <value>Japonia</value>
+  </data>
+  <data name="Netherlands" xml:space="preserve">
+    <value>Niderlandy</value>
+  </data>
+  <data name="PanAmerica" xml:space="preserve">
+    <value>Panameryka</value>
+  </data>
+  <data name="PanAsia" xml:space="preserve">
+    <value>Azja Wschodnia</value>
+  </data>
+  <data name="Premium" xml:space="preserve">
+    <value>Premium</value>
+  </data>
+  <data name="Russia" xml:space="preserve">
+    <value>Z.S.R.R.</value>
+  </data>
+  <data name="Spain" xml:space="preserve">
+    <value>Hiszpania</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Specjalne</value>
+  </data>
+  <data name="Submarine" xml:space="preserve">
+    <value>Okręt podwodny</value>
+  </data>
+  <data name="TechTree" xml:space="preserve">
+    <value>Drzewo technologiczne</value>
+  </data>
+  <data name="TestShip" xml:space="preserve">
+    <value>Okręt testowy</value>
+  </data>
+  <data name="UnitedKingdom" xml:space="preserve">
+    <value>Zjednoczone Królestwo</value>
+  </data>
+  <data name="Usa" xml:space="preserve">
+    <value>Stany Zjednoczone</value>
+  </data>
+  <data name="TITLE_PlaceholderMod" xml:space="preserve">
+    <value>Puste miejsce</value>
+  </data>
+  <data name="IncomingFireAlertDesc" xml:space="preserve">
+    <value>Minimalna odległość wyświetlenia ostrzeżenia</value>
+  </data>
+  <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
+    <value>Klasa</value>
+  </data>
+  <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
+    <value>Zatwierdź</value>
+  </data>
+  <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
+    <value>Nacja</value>
+  </data>
+  <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
+    <value>Poziom</value>
+  </data>
+  <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
+    <value>Brak okrętów pasujących do kryteriów filtrowania</value>
+  </data>
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+    <value>Szukaj okrętu</value>
+  </data>
+  <data name="ShipStats_TurnTime" xml:space="preserve">
+    <value>Czas obrotu o 180°</value>
+  </data>
+  <data name="ShipStats_HorizontalDisp" xml:space="preserve">
+    <value>W poziomie</value>
+  </data>
+  <data name="ShipStats_Range" xml:space="preserve">
+    <value>Zasięg</value>
+  </data>
+  <data name="ShipStats_RoF" xml:space="preserve">
+    <value>Szybkostrzelność</value>
+  </data>
+  
+  <data name="ShipStats_Sigma" xml:space="preserve">
+    <value>Sigma</value>
+  </data>
+  <data name="ShipStats_TraverseSpeed" xml:space="preserve">
+    <value>Prędkość obrotu</value>
+  </data>
+  <data name="ShipStats_VerticalDisp" xml:space="preserve">
+    <value>W pionie</value>
+  </data>
+  <data name="ShipStats_ShellVelocity" xml:space="preserve">
+    <value>Początkowa prędkość pocisku</value>
+  </data>
+  <data name="ShipStats_ShellWeight" xml:space="preserve">
+    <value>Waga pocisku</value>
+  </data>
+  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+    <value>Teoretyczne Uszk./min.</value>
+  </data>
+  
+  <data name="ShipStats_DepthExplosion" xml:space="preserve">
+    <value>Promień eksplozji ładunku głębinowego</value>
+  </data>
+  <data name="ShipStats_FireChance" xml:space="preserve">
+    <value>Narażenie na pożar</value>
+  </data>
+  <data name="ShipStats_FuseTimer" xml:space="preserve">
+    <value>Czas do uzbrojenia</value>
+  </data>
+  <data name="ShipStats_Overmatch" xml:space="preserve">
+    <value>Możliwości przebicia na wylot</value>
+  </data>
+  <data name="ShipStats_Penetration" xml:space="preserve">
+    <value>Penetracja</value>
+  </data>
+  <data name="ShipStats_RicochetAngles" xml:space="preserve">
+    <value>Kąty rykoszetu</value>
+  </data>
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Obrona plot.</value>
+  </data>
+  <data name="ShipStats_AircraftHP" xml:space="preserve">
+    <value>PW samolotu</value>
+  </data>
+  <data name="ShipStats_Airstrike" xml:space="preserve">
+    <value>Nalot bombowy</value>
+  </data>
+  <data name="ShipStats_BombType" xml:space="preserve">
+    <value>Typ bomby</value>
+  </data>
+  <data name="ShipStats_BompPayload" xml:space="preserve">
+    <value>Bomb w zrzucie</value>
+  </data>
+  <data name="ShipStats_ConstantDamage" xml:space="preserve">
+    <value>Stałe uszkodzenia</value>
+  </data>
+  <data name="ShipStats_Damage" xml:space="preserve">
+    <value>Uszkodzenia</value>
+  </data>
+  <data name="ShipStats_Delay" xml:space="preserve">
+    <value>Opóźnienie</value>
+  </data>
+  <data name="ShipStats_Detectability" xml:space="preserve">
+    <value>Zasięg wykrywania</value>
+  </data>
+  <data name="ShipStats_Flak" xml:space="preserve">
+    <value>Flak</value>
+  </data>
+  <data name="ShipStats_FlakDamage" xml:space="preserve">
+    <value>Uszkodzenia plot</value>
+  </data>
+  <data name="ShipStats_HitChance" xml:space="preserve">
+    <value>Szansa na trafienie</value>
+  </data>
+  <data name="ShipStats_FloodingChance" xml:space="preserve">
+    <value>Szansa na zalanie</value>
+  </data>
+  <data name="ShipStats_MainBattery" xml:space="preserve">
+    <value>Bateria główna</value>
+  </data>
+  
+  <data name="ShipStats_Torpedo" xml:space="preserve">
+    <value>Torpeda</value>
+  </data>
+  <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
+    <value>Dodaj okręt</value>
+  </data>
+  <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
+    <value>Usuń okręt</value>
+  </data>
+  <data name="ShipStats_Maneuverability" xml:space="preserve">
+    <value>Zwrotność</value>
+  </data>
+  <data name="ShipStats_FireDamageTotal" xml:space="preserve">
+    <value>Całkowite uszkodzenia od pożaru</value>
+  </data>
+  <data name="ShipStats_FireDPS" xml:space="preserve">
+    <value>DPS na pożar</value>
+  </data>
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+    <value>Czas trwania pożaru</value>
+  </data>
+  <data name="ShipStats_FireReduction" xml:space="preserve">
+    <value>Redukcja szansy na pożar</value>
+  </data>
+  
+  <data name="ShipStats_FloodDPS" xml:space="preserve">
+    <value>DPS na zalanie</value>
+  </data>
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+    <value>Czas trwania zalania</value>
+  </data>
+  <data name="ShipStats_FloodProbability" xml:space="preserve">
+    <value>Prawdopodobieństwo zalania</value>
+  </data>
+  <data name="ShipStats_HitPoints" xml:space="preserve">
+    <value>Punkty wytrzymałości</value>
+  </data>
+  <data name="ShipStats_MaxFireAmount" xml:space="preserve">
+    <value>Maksymalna liczba pożarów</value>
+  </data>
+  <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
+    <value>Maksymalna liczba zalań</value>
+  </data>
+  <data name="ShipStats_Survivability" xml:space="preserve">
+    <value>Przeżywalność</value>
+  </data>
+  <data name="ShipStats_TorpedoProtection" xml:space="preserve">
+    <value>Ochrona torpedowa</value>
+  </data>
+  <data name="MessageBox_Error" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="MessageBox_ShipNoGun" xml:space="preserve">
+    <value>nie posiada baterii głównej</value>
+  </data>
+  
+  <data name="ShipStats_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="ShipStats_TurretAngles" xml:space="preserve">
+    <value>Pokaż kąty obrotu wieży</value>
+  </data>
+  
+  <data name="FiringAngleWindow_HideAll" xml:space="preserve">
+    <value>Zwiń wszystkie kąty</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
+    <value>Nigdy nie pokazuj kątów</value>
+  </data>
+  <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
+    <value>Zawsze pokazuj kąty</value>
+  </data>
+  <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
+    <value>Rozwiń wszystkie kąty</value>
+  </data>
+  
+  <data name="MainWindow_Signals" xml:space="preserve">
+    <value>Sygnały</value>
+  </data>
+  <data name="ShipStats_Name" xml:space="preserve">
+    <value>Nazwa</value>
+  </data>
+  <data name="CaptainSkillSelector_Camo" xml:space="preserve">
+    <value>Zastosuj bonusy kamuflażu</value>
+  </data>
+  <data name="ShipStats_ArmingDistance" xml:space="preserve">
+    <value>Odległość uzbrojenia</value>
+  </data>
+  <data name="ShipStats_CanHitClasses" xml:space="preserve">
+    <value>Może trafić</value>
+  </data>
+  <data name="ShipStats_Concealment" xml:space="preserve">
+    <value>Maskowanie</value>
+  </data>
+  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
+    <value>Maskowanie od lotnictwa</value>
+  </data>
+  <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
+    <value>Gdy w ogniu</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
+    <value>Maskowanie od marynarki</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
+    <value>Gdy w ogniu</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
+    <value>Po wystrzeleniu w dymie</value>
+  </data>
+  <data name="ShipStats_FireAmount" xml:space="preserve">
+    <value>Maks. liczba pożarów</value>
+  </data>
+  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
+    <value>Całkowite obrażenia od pożaru</value>
+  </data>
+  <data name="ShipStats_FloodAmount" xml:space="preserve">
+    <value>Maks. liczba zalań</value>
+  </data>
+  <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
+    <value>Ochrona torpedowa</value>
+  </data>
+  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
+    <value>Całkowite obrażenia od zalania</value>
+  </data>
+  
+  <data name="ShipStats_Backward" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="ShipStats_Forward" xml:space="preserve">
+    <value>W przód</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
+    <value>Maks. Prędkość</value>
+  </data>
+  <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
+    <value>Czas przestawiania steru</value>
+  </data>
+  
+  
+  
+  <data name="ShipStats_TorpedoArea" xml:space="preserve">
+    <value>Rozrzut torped</value>
+  </data>
+  
+  <data name="Bomb" xml:space="preserve">
+    <value>Bomba</value>
+  </data>
+  <data name="Rocket" xml:space="preserve">
+    <value>Rakieta</value>
+  </data>
+  <data name="ShipStats_Speed" xml:space="preserve">
+    <value>Prędkość</value>
+  </data>
+  <data name="ShipStats_WeaponType" xml:space="preserve">
+    <value>Typ uzbrojenia</value>
+  </data>
+  <data name="SkipBomb" xml:space="preserve">
+    <value>Bomba skacząca</value>
+  </data>
+  <data name="Torpedo" xml:space="preserve">
+    <value>Torpeda</value>
+  </data>
+  <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
+    <value>Uzbrojenie na samolot</value>
+  </data>
+  
+  
+  <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
+    <value>Bomba w wewnętrznej elipsie</value>
+  </data>
+  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
+    <value>Maks. liczba samolotów na pokładzie</value>
+  </data>
+  <data name="ShipStats_MaxSpeed" xml:space="preserve">
+    <value>Maks. Prędkość</value>
+  </data>
+  <data name="ShipStats_MinSpeed" xml:space="preserve">
+    <value>Min. Prędkość</value>
+  </data>
+  
+  
+  <data name="ShipStats_PlaneHP" xml:space="preserve">
+    <value>PW na samolot</value>
+  </data>
+  <data name="ShipStats_RestorationTime" xml:space="preserve">
+    <value>Czas odnowienia</value>
+  </data>
+  <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
+    <value>Początkowo samolotów na pokładzie</value>
+  </data>
+  <data name="ShipStats_BombsPerPlane" xml:space="preserve">
+    <value>Bomb na samolot</value>
+  </data>
+  <data name="ShipStats_DropTime" xml:space="preserve">
+    <value>Czas zrzutu</value>
+  </data>
+  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
+    <value>Czas dotarcia do celu</value>
+  </data>
+  <data name="ShipStats_MaximumDistance" xml:space="preserve">
+    <value>Maksymalny zasięg</value>
+  </data>
+  
+  <data name="ShipStats_MinimumDistance" xml:space="preserve">
+    <value>Minimalny zasięg</value>
+  </data>
+  <data name="ShipStats_NumberOfUses" xml:space="preserve">
+    <value>Ilość ładunków</value>
+  </data>
+  
+  <data name="DepthCharge" xml:space="preserve">
+    <value>Ładunków głębinowych</value>
+  </data>
+  <data name="DispersionWindow_Title" xml:space="preserve">
+    <value>Wizualizacja rozrzutu</value>
+  </data>
+  
+  
+  
+  <data name="ShipStats_PingerGun" xml:space="preserve">
+    <value>Sonar</value>
+  </data>
+  
+  
+  
+  <data name="ShipStats_Shells" xml:space="preserve">
+    <value>Pociski</value>
+  </data>
+  <data name="ShipStats_Cooldown" xml:space="preserve">
+    <value>Czas odnowienia</value>
+  </data>
+  
+  <data name="SettingsWindow_Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  
+  
+  <data name="SettingsWindow_SaveExit" xml:space="preserve">
+    <value>Zapisz i wyjdź</value>
+  </data>
+  
+  <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
+    <value>Konfiguracja zapisana</value>
+  </data>
+  
+  <data name="StartMenu_DeleteBuild" xml:space="preserve">
+    <value>Usuń konfigurację</value>
+  </data>
+  <data name="BuildImport_Import" xml:space="preserve">
+    <value>Importuj</value>
+  </data>
+  <data name="BuildImport_ImportOnly" xml:space="preserve">
+    <value>Tylko importuj</value>
+  </data>
+  <data name="BuildImport_ImportSave" xml:space="preserve">
+    <value>Importuj i zapisz</value>
+  </data>
+  
+  <data name="BuildImport_Title" xml:space="preserve">
+    <value>Importuj konfigurację</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  
+  
+  
+  <data name="ShipStats_TimeToSwitch" xml:space="preserve">
+    <value>Czas na zmianę amunicji</value>
+  </data>
+  
+  <data name="ShipStats_Duration" xml:space="preserve">
+    <value>Czas trwania</value>
+  </data>
+  
+  
+  
+  
+  
+  <data name="DownloadWindow_Downloading" xml:space="preserve">
+    <value>Pobieranie danych...</value>
+  </data>
+  <data name="ShipStats_AimingTime" xml:space="preserve">
+    <value>Czas celowania</value>
+  </data>
+  
+  
+  <data name="ShipStats_PreparationTime" xml:space="preserve">
+    <value>Czas przygotowania</value>
+  </data>
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+    <value>Czas do pełnego wycelowania</value>
+  </data>
+  
+  <data name="ShipStats_Aiming" xml:space="preserve">
+    <value>Podczas celowania</value>
+  </data>
+  <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
+    <value>Współczynnik zmiany obszaru zrzutu podczas manewrowania</value>
+  </data>
+  
+  
+  <data name="SettingsWindow_DataVersion" xml:space="preserve">
+    <value>Wersja danych:</value>
+  </data>
+  <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
+    <value>Czas lotu</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+    <value>Wybierz pocisk</value>
+  </data>
+  
+  <data name="MainWindow_NormalAccount" xml:space="preserve">
+    <value>Zwykłe konto</value>
+  </data>
+  <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
+    <value>Konto premium WG</value>
+  </data>
+  <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>Konto premium WoWs</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_Dispersion" xml:space="preserve">
+    <value>Rozrzut</value>
+  </data>
+  <data name="ShipStats_ShowDispGraph" xml:space="preserve">
+    <value>Pokaż wykresy rozrzutu</value>
+  </data>
+  
+  
+  
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+    <value>Zasięg celowania (km)</value>
+  </data>
+  <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
+    <value>Wykresy balistyczne</value>
+  </data>
+  <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
+    <value>Wykresy rozrzutu</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="VerticalPlane" xml:space="preserve">
+    <value>W pionie</value>
+  </data>
+  <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
+    <value>Porównanie do Fuso</value>
+  </data>
+  
+  
+  
+  <data name="Broadside" xml:space="preserve">
+    <value>Burta</value>
+  </data>
+  <data name="DontShow" xml:space="preserve">
+    <value>Ukryj</value>
+  </data>
+  
+  <data name="ShipStats_Mass" xml:space="preserve">
+    <value>Masa</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
+    <value>Wymagany restart</value>
+  </data>
+  <data name="Settingswindow_LanguageChanged" xml:space="preserve">
+    <value>Należy ponownie uruchomić aplikację, aby ukończyć zmianę języka. W przeciwnym wypadku mogą wystąpić problemy.</value>
+  </data>
+  <data name="SplashScreen_Init" xml:space="preserve">
+    <value>Inicjalizacja...</value>
+  </data>
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Twórcy</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Podziękowania dla następujących członków społeczności za pomoc w tłumaczeniu tego projektu. Poniżej wymieniono osoby, które przesłały co najmniej 10 sugestii.</value>
+  </data>
+  
+  <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
+    <value>W poziomie</value>
+  </data>
+  
+  <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
+    <value>W pionie</value>
+  </data>
+  
+  
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importuj z obrazu</value>
+  </data>
+  
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Zapisz i skopiuj obraz</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Tak</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Zapisz i wyjdź</value>
+  </data>
+  
+  
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Skopiowano obraz zestawu do schowka</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Niestandardowa ścieżka do obrazu zestawu</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Scieżka do obrazu zestawu</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Wybrana ścieżka obrazu zestawu jest nieprawidłowa.</value>
+  </data>
+  
+  
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standardowy kapitan</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Kapitan:</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</root>
