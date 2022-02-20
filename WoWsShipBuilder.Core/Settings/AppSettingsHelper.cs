@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.Core.Settings
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public static class AppSettingsHelper
     {
-        private static readonly string SettingFile = Path.Combine(AppDataHelper.Instance.DefaultAppDataDirectory, "settings.json");
+        private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
 
         public static void SaveSettings()
         {

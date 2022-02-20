@@ -26,6 +26,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly IClipboardService clipboardService;
 
+        private readonly IAppDataService appDataService;
+
         private bool autoUpdate;
 
         private string? customBuildImagePath;
@@ -53,18 +55,19 @@ namespace WoWsShipBuilder.UI.ViewModels
         private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 
         public SettingsWindowViewModel()
-            : this(new FileSystem(), new AvaloniaClipboardService())
+            : this(new FileSystem(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
         {
         }
 
-        public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService)
+        public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
         {
             Logging.Logger.Info("Creating setting window view model");
             this.fileSystem = fileSystem;
             this.clipboardService = clipboardService;
-            languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
+            this.appDataService = appDataService;
+            languagesList = AppConstants.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
-                               ?? AppDataHelper.Instance.DefaultCultureDetails;
+                               ?? AppConstants.DefaultCultureDetails;
 #if DEBUG
             Servers = Enum.GetNames<ServerType>().ToList();
 #else
@@ -83,7 +86,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
 
-                var localVersionInfo = AppDataHelper.Instance.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
+                var localVersionInfo = appDataService.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
                 if (localVersionInfo?.CurrentVersion?.MainVersion != null)
                 {
                     AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
@@ -201,7 +204,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             var result = await ShowWarningInteraction.Handle(("Warning", $"Do you want to delete all data?{Environment.NewLine}This will close the program."));
             if (result == MessageBox.MessageBoxResult.Yes)
             {
-                var appData = AppDataHelper.Instance.AppDataDirectory;
+                var appData = appDataService.AppDataDirectory;
                 var appDataDir = new DirectoryInfo(appData);
                 if (appDataDir.Exists)
                 {
@@ -324,7 +327,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private async Task<string?> SelectFolder()
         {
-            return await SelectFolderInteraction.Handle(AppDataHelper.Instance.AppDataDirectory);
+            return await SelectFolderInteraction.Handle(appDataService.AppDataDirectory);
         }
 
         private bool IsValidPath(string path, bool exactPath = true)

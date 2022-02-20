@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -40,7 +41,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> SecondaryBatteryData { get; set; } = default!;
 
-        public static List<SecondaryBatteryUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+        public static List<SecondaryBatteryUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             TurretModule? secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()]
                 .SecondaryModule;
@@ -90,7 +91,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService).First();
                 }
                 catch (KeyNotFoundException e)
                 {

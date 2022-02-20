@@ -25,21 +25,24 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly IClipboardService clipboardService;
 
+        private readonly IAppDataService appDataService;
+
         private int? selectedBuild;
 
         public StartMenuViewModel()
-            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService())
+            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
         {
         }
 
-        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService)
+        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
         {
             this.fileSystem = fileSystem;
             this.navigationService = navigationService;
             this.clipboardService = clipboardService;
+            this.appDataService = appDataService;
             if (!AppData.Builds.Any())
             {
-                AppDataHelper.Instance.LoadBuilds();
+                appDataService.LoadBuilds();
             }
 
             var builds = new List<Build> { new(Translation.StartMenu_ImportBuild) };
@@ -84,8 +87,8 @@ namespace WoWsShipBuilder.UI.ViewModels
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
                 try
                 {
-                    var ship = AppDataHelper.Instance.GetShipFromSummary(result)!;
-                    AppDataHelper.Instance.LoadNationFiles(result.Nation);
+                    var ship = appDataService.GetShipFromSummary(result)!;
+                    appDataService.LoadNationFiles(result.Nation);
                     navigationService.OpenMainWindow(ship, result, closeMainWindow: true);
                 }
                 catch (Exception e)
@@ -122,7 +125,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             if (AppData.ShipSummaryList == null)
             {
                 Logging.Logger.Info("Ship summary is null, loading it.");
-                AppData.ShipSummaryList = AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
+                AppData.ShipSummaryList = appDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
@@ -134,14 +137,9 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             try
             {
-                var ship = AppDataHelper.Instance.GetShipFromSummary(summary)!;
-                AppDataHelper.Instance.LoadNationFiles(summary.Nation);
+                var ship = appDataService.GetShipFromSummary(summary)!;
+                appDataService.LoadNationFiles(summary.Nation);
                 navigationService.OpenMainWindow(ship, summary, build, true);
-
-                // MainWindow win = new();
-                // win.DataContext = new MainWindowViewModel(fileSystem, ship!, summary, build);
-                // win.Show();
-                // await CloseInteraction.Handle(Unit.Default);
             }
             catch (Exception e)
             {
@@ -158,7 +156,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async void Setting()
         {
-            await ShowSettingsInteraction.Handle(new(fileSystem, clipboardService));
+            await ShowSettingsInteraction.Handle(new(fileSystem, clipboardService, appDataService));
         }
 
         private void BuildList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

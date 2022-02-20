@@ -4,7 +4,7 @@ using System.Threading;
 using Avalonia;
 using Squirrel;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 
@@ -20,7 +20,7 @@ namespace WoWsShipBuilder.UI
             Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
             Logging.Logger.Info("------------------------------");
             Logging.Logger.Info("Starting application...");
-            var culture = AppDataHelper.Instance.DefaultCultureDetails.CultureInfo;
+            var culture = AppConstants.DefaultCultureDetails.CultureInfo;
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 

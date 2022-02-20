@@ -20,14 +20,14 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
 
         private MockFileSystem mockFileSystem = default!;
 
-        private AppDataHelper appDataHelper = default!;
+        private DesktopAppDataService appDataHelper = default!;
 
         [SetUp]
         public void Setup()
         {
             messageHandlerMock = new Mock<HttpMessageHandler>();
             mockFileSystem = new MockFileSystem();
-            appDataHelper = new AppDataHelper(mockFileSystem);
+            appDataHelper = new DesktopAppDataService(mockFileSystem);
             messageHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",

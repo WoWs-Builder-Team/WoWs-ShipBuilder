@@ -1,58 +1,45 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using Newtonsoft.Json;
+using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    public class AppDataHelper : IAppDataService
+    public class DesktopAppDataService : IAppDataService
     {
         #region Static Fields and Constants
 
         private const string ShipBuilderName = "WoWsShipBuilder";
 
-        private static readonly Lazy<AppDataHelper> InstanceValue = new(() => new());
+#pragma warning disable CS8603
+        private static readonly Lazy<DesktopAppDataService> InstanceValue = new(() => Locator.Current.GetService<DesktopAppDataService>() ?? PreviewInstance);
+#pragma warning restore CS8603
 
         #endregion
 
         private readonly IFileSystem fileSystem;
 
-        private AppDataHelper()
+        private DesktopAppDataService()
             : this(new FileSystem())
         {
         }
 
-        internal AppDataHelper(IFileSystem fileSystem)
+        public DesktopAppDataService(IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
             DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
-
-            DefaultCultureDetails = new(new("en-GB"), "en");
-            var languages = new List<CultureDetails>
-            {
-                DefaultCultureDetails,
-                new(new("nl-NL"), "nl"),
-                new(new("fr-FR"), "fr"),
-                new(new("de-DE"), "de"),
-                new(new("it-IT"), "it"),
-                new(new("ja-JP"), "ja"),
-                new(new("pt-BR"), "pt_br"),
-                new(new("ru-RU"), "ru"),
-                new(new("es-ES"), "es"),
-                new(new("tr-TR"), "tr"),
-            };
-            var builder = ImmutableList.CreateBuilder<CultureDetails>();
-            builder.AddRange(languages);
-            SupportedLanguages = builder.ToImmutable();
         }
 
-        public static AppDataHelper Instance => InstanceValue.Value;
+        public static DesktopAppDataService Instance => InstanceValue.Value;
+
+        public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem());
 
         public string DefaultAppDataDirectory { get; }
 
@@ -72,37 +59,6 @@ namespace WoWsShipBuilder.Core.DataProvider
         public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
 
         public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
-
-        public CultureDetails DefaultCultureDetails { get; }
-
-        public IEnumerable<CultureDetails> SupportedLanguages { get; }
-
-        public static Nation GetNationFromIndex(string index)
-        {
-            if (index.Length < 7)
-            {
-                Logging.Logger.Error("Invalid index, received value {}.", index);
-                return Nation.Common;
-            }
-
-            return index[1] switch
-            {
-                'A' => Nation.Usa,
-                'B' => Nation.UnitedKingdom,
-                'F' => Nation.France,
-                'G' => Nation.Germany,
-                'H' => Nation.Netherlands,
-                'I' => Nation.Italy,
-                'J' => Nation.Japan,
-                'R' => Nation.Russia,
-                'S' => Nation.Spain,
-                'U' => Nation.Commonwealth,
-                'V' => Nation.PanAmerica,
-                'W' => Nation.Europe,
-                'Z' => Nation.PanAsia,
-                _ => Nation.Common,
-            };
-        }
 
         public string GetDataPath(ServerType serverType)
         {
@@ -152,8 +108,8 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <returns>A dictionary containing the deserialized file content.</returns>
         public Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType)
         {
-            string categoryString = GetCategoryString<T>();
-            string nationString = GetNationString(nation);
+            string categoryString = IAppDataService.GetCategoryString<T>();
+            string nationString = IAppDataService.GetNationString(nation);
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
             return DeserializeFile<Dictionary<string, T>>(fileName);
         }
@@ -163,7 +119,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        public virtual VersionInfo? ReadLocalVersionInfo(ServerType serverType)
+        public VersionInfo? ReadLocalVersionInfo(ServerType serverType)
         {
             string filePath = fileSystem.Path.Combine(GetDataPath(serverType), "VersionInfo.json");
             return DeserializeFile<VersionInfo>(filePath);
@@ -178,6 +134,11 @@ namespace WoWsShipBuilder.Core.DataProvider
         public void LoadNationFiles(Nation nation)
         {
             var server = AppData.Settings.SelectedServerType;
+            if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
+            {
+                AppData.ShipDictionary = ReadLocalJsonData<Ship>(nation, server);
+            }
+
             AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, server));
             AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, server));
             AppData.ConsumableList ??= ReadLocalJsonData<Consumable>(Nation.Common, server);
@@ -192,7 +153,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
         public Projectile GetProjectile(string projectileName)
         {
-            var nation = GetNationFromIndex(projectileName);
+            var nation = IAppDataService.GetNationFromIndex(projectileName);
             if (!AppData.ProjectileCache.ContainsKey(nation))
             {
                 AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
@@ -227,7 +188,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
         public Aircraft GetAircraft(string aircraftName)
         {
-            var nation = GetNationFromIndex(aircraftName);
+            var nation = IAppDataService.GetNationFromIndex(aircraftName);
             if (!AppData.AircraftCache.ContainsKey(nation))
             {
                 AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
@@ -272,7 +233,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         public void SaveBuilds()
         {
-            var path = fileSystem.Path.Combine(Instance.DefaultAppDataDirectory, "builds.json");
+            var path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
             var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
             string buildsString = JsonConvert.SerializeObject(builds);
             fileSystem.File.WriteAllText(path, buildsString);
@@ -280,7 +241,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public void LoadBuilds()
         {
-            string path = fileSystem.Path.Combine(Instance.DefaultAppDataDirectory, "builds.json");
+            string path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
             if (fileSystem.File.Exists(path))
             {
                 var rawBuildList = JsonConvert.DeserializeObject<List<string>>(fileSystem.File.ReadAllText(path));
@@ -306,35 +267,6 @@ namespace WoWsShipBuilder.Core.DataProvider
             var jsonReader = new JsonTextReader(streamReader);
             var serializer = new JsonSerializer();
             return serializer.Deserialize<T>(jsonReader);
-        }
-
-        private static string GetNationString(Nation nation)
-        {
-            return nation switch
-            {
-                Nation.PanAmerica => "Pan_America",
-                Nation.PanAsia => "Pan_Asia",
-                Nation.UnitedKingdom => "United_Kingdom",
-                Nation.Usa => "USA",
-                _ => nation.ToString() ?? throw new InvalidOperationException("Unable to retrieve enum name."),
-            };
-        }
-
-        private static string GetCategoryString<T>()
-        {
-            return typeof(T) switch
-            {
-                var consumableType when consumableType == typeof(Consumable) => "Ability",
-                var aircraftType when aircraftType == typeof(Aircraft) => "Aircraft",
-                var crewType when crewType == typeof(Captain) => "Crew",
-                var exteriorType when exteriorType == typeof(Exterior) => "Exterior",
-                var gunType when gunType == typeof(Gun) => "Gun",
-                var modernizationType when modernizationType == typeof(Modernization) => "Modernization",
-                var projectileType when typeof(Projectile).IsAssignableFrom(projectileType) => "Projectile",
-                var shipType when shipType == typeof(Ship) => "Ship",
-                var moduleType when moduleType == typeof(Module) => "Unit",
-                _ => throw new InvalidOperationException(),
-            };
         }
     }
 }

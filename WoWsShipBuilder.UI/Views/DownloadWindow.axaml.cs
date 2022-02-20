@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Splat;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
 

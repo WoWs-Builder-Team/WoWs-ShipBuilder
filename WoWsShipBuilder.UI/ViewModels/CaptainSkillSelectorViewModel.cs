@@ -32,13 +32,13 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             logger = Logging.GetLogger("CaptainSkillVM");
             ScreenshotMode = screenshotMode;
-            var defaultCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType)!.Single().Value;
+            var defaultCaptain = DesktopAppDataService.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType)!.Single().Value;
 
             // Rename Default Captain
             defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
             var captainList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
-            var nationCaptain = AppDataHelper.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
+            var nationCaptain = DesktopAppDataService.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
             if (nationCaptain != null && nationCaptain.Count > 0)
             {
                 captainList = captainList.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
@@ -249,6 +249,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                     skill.Value.Modifiers = modifierClassSkill;
                 }
             });
+            Console.WriteLine("SKILLS: " + skills.Count);
             var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this));
             logger.Info("Found {0} skills", filteredDictionary.Count);
             return filteredDictionary;

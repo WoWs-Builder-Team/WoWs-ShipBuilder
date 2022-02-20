@@ -14,9 +14,9 @@ namespace WoWsShipBuilder.UI
 
         public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
         {
-            AppDataHelper.Instance.LoadNationFiles(nation);
+            DesktopAppDataService.PreviewInstance.LoadNationFiles(nation);
 
-            var ship = AppDataHelper.Instance.ReadLocalJsonData<Ship>(nation, ServerType.Live)!
+            var ship = DesktopAppDataService.PreviewInstance.ReadLocalJsonData<Ship>(nation, ServerType.Live)!
                 .Select(entry => entry.Value)
                 .First(ship => ship.ShipClass == shipClass && ship.Tier == tier);
 
@@ -32,7 +32,7 @@ namespace WoWsShipBuilder.UI
         public static ShipSummary GetPreviewShipSummary(ShipClass shipClass, int tier, Nation nation)
         {
             var ship = LoadPreviewShip(shipClass, tier, nation);
-            return AppDataHelper.Instance.GetShipSummaryList(ServerType.Live).First(summary => summary.Index == ship.Ship.Index);
+            return DesktopAppDataService.PreviewInstance.GetShipSummaryList(ServerType.Live).First(summary => summary.Index == ship.Ship.Index);
         }
 
         public static MainViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)

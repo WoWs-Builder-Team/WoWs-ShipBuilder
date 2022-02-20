@@ -5,21 +5,22 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 namespace WoWsShipBuilder.Core.HttpClients
 {
     public abstract class ClientBase
     {
-        protected ClientBase(IFileSystem fileSystem, AppDataHelper appDataHelper)
+        protected ClientBase(IFileSystem fileSystem, IAppDataService appDataService)
         {
             FileSystem = fileSystem;
-            AppDataHelper = appDataHelper;
+            AppDataService = appDataService;
         }
 
         protected IFileSystem FileSystem { get; }
 
-        protected AppDataHelper AppDataHelper { get; }
+        protected IAppDataService AppDataService { get; }
 
         protected abstract HttpClient Client { get; }
 

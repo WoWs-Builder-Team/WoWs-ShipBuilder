@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private List<KeyValuePair<string, SignalItemViewModel>> LoadSignalList()
         {
-            var dict = AppDataHelper.Instance.ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType);
+            var dict = DesktopAppDataService.Instance.ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType);
             if (dict == null)
             {
                 logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump());

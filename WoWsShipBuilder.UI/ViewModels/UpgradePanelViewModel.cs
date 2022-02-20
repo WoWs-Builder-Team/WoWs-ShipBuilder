@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public UpgradePanelViewModel(Ship ship)
         {
-            Dictionary<string, Modernization> upgradeData = AppDataHelper.Instance.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ??
+            Dictionary<string, Modernization> upgradeData = DesktopAppDataService.Instance.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ??
                                                             new Dictionary<string, Modernization>();
 
             List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)

@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.ViewModels;
@@ -46,9 +47,10 @@ namespace WoWsShipBuilder.UI.Services
         public void OpenMainWindow(Ship ship, ShipSummary summary, Build? build = null, bool closeMainWindow = false)
         {
             using var subScope = scope.BeginLifetimeScope();
+            var vmParams = new MainViewModelParams(ship, summary, build);
             MainWindow win = new()
             {
-                DataContext = subScope.Resolve<MainWindowViewModel>(new NamedParameter("ship", ship), new NamedParameter("shipSummary", summary), new TypedParameter(typeof(Build), build)),
+                DataContext = subScope.Resolve<MainWindowViewModel>(new TypedParameter(typeof(MainViewModelParams), vmParams)),
             };
 
             win.Show();

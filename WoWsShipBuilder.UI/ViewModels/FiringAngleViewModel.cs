@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         public FiringAngleViewModel()
         {
             var testData = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Germany);
-            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new List<(string, float)>());
+            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance);
             Turrets = currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
         }
 

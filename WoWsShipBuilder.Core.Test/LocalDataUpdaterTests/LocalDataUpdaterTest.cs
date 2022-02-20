@@ -15,14 +15,14 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
 
         private Mock<IAwsClient> awsClientMock = default!;
 
-        private Mock<AppDataHelper> appDataHelper = default!;
+        private Mock<DesktopAppDataService> appDataHelper = default!;
 
         [SetUp]
         public void Setup()
         {
             mockFileSystem = new MockFileSystem();
             awsClientMock = new Mock<IAwsClient>();
-            appDataHelper = new Mock<AppDataHelper>(MockBehavior.Loose, mockFileSystem);
+            appDataHelper = new Mock<DesktopAppDataService>(MockBehavior.Loose, mockFileSystem);
         }
 
         private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion? gameVersion = null)

@@ -60,7 +60,7 @@ namespace WoWsShipBuilder.UI.Converters
                     }
                     else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        string? imagePath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
+                        string? imagePath = fileSystem.Path.Combine(DesktopAppDataService.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
                         Stream stream;
                         if (fileSystem.File.Exists(imagePath))
                         {

@@ -18,7 +18,7 @@ namespace WoWsShipBuilder.UI.Services
     {
         public async Task CreateBuildImageAsync(Build build, Ship rawShipData, bool includeSignals, bool copyToClipboard)
         {
-            string outputPath = AppDataHelper.Instance.GetImageOutputPath(build.BuildName, Localizer.Instance[build.ShipIndex].Localization);
+            string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Localizer.Instance[build.ShipIndex].Localization);
             var screenshotWindow = new ScreenshotWindow
             {
                 DataContext = new ScreenshotContainerViewModel(build, rawShipData, includeSignals),

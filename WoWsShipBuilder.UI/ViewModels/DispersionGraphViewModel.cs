@@ -354,7 +354,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 foreach (var result in resultList)
                 {
-                    Ship? ship = result != null ? AppDataHelper.Instance.GetShipFromSummary(result, false) : null;
+                    Ship? ship = result != null ? DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
                     if (ship != null)
                     {
                         var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
@@ -408,7 +408,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                                 VerticalModel!.Series.Add(vSeries);
 
                                 // create and add the ballistic series
-                                ArtilleryShell shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+                                ArtilleryShell shell = DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                                 var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 

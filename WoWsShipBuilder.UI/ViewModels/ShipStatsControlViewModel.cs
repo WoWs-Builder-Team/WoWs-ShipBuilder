@@ -1,24 +1,30 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ReactiveUI;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
     public class ShipStatsControlViewModel : ViewModelBase
     {
-        public ShipStatsControlViewModel(Ship ship, List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
+        private readonly IAppDataService appDataService;
+
+        public ShipStatsControlViewModel(Ship ship, List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
+            this.appDataService = appDataService;
             BaseShipStats = ship;
-            currentShipStats = ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers);
+            currentShipStats = ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService);
         }
 
         public ShipStatsControlViewModel()
         {
+            appDataService = DesktopAppDataService.PreviewInstance;
             var testData = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany);
             BaseShipStats = testData.Ship;
-            currentShipStats = ShipUI.FromShip(BaseShipStats, testData.Configuration, new List<(string, float)>());
+            currentShipStats = ShipUI.FromShip(BaseShipStats, testData.Configuration, new(), appDataService);
         }
 
         private ShipUI? currentShipStats;
@@ -34,7 +40,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
         {
-            ShipUI shipStats = await Task.Run(() => ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers));
+            ShipUI shipStats = await Task.Run(() => ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService));
             CurrentShipStats = shipStats;
         }
     }

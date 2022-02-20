@@ -40,6 +40,8 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private readonly IClipboardService clipboardService;
 
+        private readonly IAppDataService appDataService;
+
         private Account accountType = Account.Normal;
 
         private string baseXp = "0";
@@ -86,11 +88,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private string? currentBuildName;
 
-        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, IClipboardService clipboardService, MainViewModelParams viewModelParams)
+        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
             this.screenshotRenderService = screenshotRenderService;
             this.clipboardService = clipboardService;
+            this.appDataService = appDataService;
             tokenSource = new();
             PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
 
@@ -100,7 +103,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public MainWindowViewModel()
-            : this(null!, null!, null!, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
+            : this(null!, null!, null!, DesktopAppDataService.PreviewInstance, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 
@@ -337,14 +340,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             await CloseChildrenInteraction.Handle(Unit.Default);
 
             disposables.Clear();
-            var ship = AppDataHelper.Instance.GetShipFromSummary(summary);
-            AppDataHelper.Instance.LoadNationFiles(summary.Nation);
+            var ship = appDataService.GetShipFromSummary(summary);
+            appDataService.LoadNationFiles(summary.Nation);
 
             InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
         private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
+            Console.WriteLine("DATACACHE: " + (AppData.ShipDictionary?.Count ?? -1));
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
 
@@ -373,7 +377,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 ConsumableViewModel.LoadBuild(build.Consumables);
             }
 
-            ShipStatsControlViewModel = new ShipStatsControlViewModel(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
+            ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
 
             CurrentShipIndex = ship.Index;
             CurrentShipTier = ship.Tier;

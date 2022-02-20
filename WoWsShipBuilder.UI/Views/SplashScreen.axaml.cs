@@ -6,6 +6,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;

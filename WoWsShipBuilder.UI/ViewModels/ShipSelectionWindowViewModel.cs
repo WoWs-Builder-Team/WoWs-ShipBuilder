@@ -27,7 +27,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             tokenSource = new CancellationTokenSource();
 
-            AppData.ShipSummaryList ??= AppDataHelper.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
+            AppData.ShipSummaryList ??= DesktopAppDataService.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
 
             Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
             FilteredShipNameDictionary = new(shipNameDictionary);

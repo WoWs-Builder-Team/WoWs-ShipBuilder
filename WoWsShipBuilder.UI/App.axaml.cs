@@ -76,9 +76,10 @@ namespace WoWsShipBuilder.UI
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
+            using var scope = container.BeginLifetimeScope();
             Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
-            AppDataHelper.Instance.SaveBuilds();
+            scope.Resolve<IAppDataService>().SaveBuilds();
             Logging.Logger.Info("Exiting...");
             Logging.Logger.Info(new string('-', 30));
         }
@@ -88,7 +89,7 @@ namespace WoWsShipBuilder.UI
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
-            builder.RegisterInstance(AppDataHelper.Instance).As<AppDataHelper>().SingleInstance();
+            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<AvaloniaScreenshotRenderService>().As<IScreenshotRenderService>();

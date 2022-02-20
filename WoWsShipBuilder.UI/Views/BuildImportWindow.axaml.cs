@@ -1,6 +1,7 @@
 using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Mixins;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
@@ -20,36 +21,33 @@ namespace WoWsShipBuilder.UI.Views
 #endif
             this.WhenActivated(disposable =>
             {
-                if (ViewModel != null)
+                ViewModel?.CloseInteraction.RegisterHandler(interaction =>
                 {
-                    disposable(ViewModel.CloseInteraction.RegisterHandler(interaction =>
-                    {
-                        Close(interaction.Input);
-                        interaction.SetOutput(Unit.Default);
-                    }));
+                    Close(interaction.Input);
+                    interaction.SetOutput(Unit.Default);
+                }).DisposeWith(disposable);
 
-                    disposable(ViewModel.FileDialogInteraction.RegisterHandler(async interaction =>
+                ViewModel?.FileDialogInteraction.RegisterHandler(async interaction =>
+                {
+                    var fileDialog = new OpenFileDialog
                     {
-                        var fileDialog = new OpenFileDialog
+                        AllowMultiple = false,
+                        Directory = AppData.Settings.LastImageImportPath ?? DesktopAppDataService.Instance.BuildImageOutputDirectory,
+                        Filters = new()
                         {
-                            AllowMultiple = false,
-                            Directory = AppData.Settings.LastImageImportPath ?? AppDataHelper.Instance.BuildImageOutputDirectory,
-                            Filters = new()
-                            {
-                                new() { Name = "PNG Files", Extensions = new() { "png" } },
-                            },
-                        };
+                            new() { Name = "PNG Files", Extensions = new() { "png" } },
+                        },
+                    };
 
-                        string[]? result = await fileDialog.ShowAsync(this);
-                        interaction.SetOutput(result);
-                    }));
+                    string[]? result = await fileDialog.ShowAsync(this);
+                    interaction.SetOutput(result);
+                }).DisposeWith(disposable);
 
-                    disposable(ViewModel.MessageBoxInteraction.RegisterHandler(async interaction =>
-                    {
-                        await MessageBox.Show(this, interaction.Input.text, interaction.Input.title, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                        interaction.SetOutput(Unit.Default);
-                    }));
-                }
+                ViewModel?.MessageBoxInteraction.RegisterHandler(async interaction =>
+                {
+                    await MessageBox.Show(this, interaction.Input.text, interaction.Input.title, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    interaction.SetOutput(Unit.Default);
+                }).DisposeWith(disposable);
             });
         }
 

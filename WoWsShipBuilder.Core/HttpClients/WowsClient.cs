@@ -25,11 +25,11 @@ namespace WoWsShipBuilder.Core.HttpClients
         private readonly IFileSystem fileSystem;
 
         private WowsClient()
-            : this(new FileSystem(), AppDataHelper.Instance, new RetryHttpHandler(new HttpClientHandler()))
+            : this(new FileSystem(), DesktopAppDataService.Instance, new RetryHttpHandler(new HttpClientHandler()))
         {
         }
 
-        internal WowsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler = null)
+        internal WowsClient(IFileSystem fileSystem, DesktopAppDataService appDataHelper, HttpMessageHandler? handler = null)
             : base(fileSystem, appDataHelper)
         {
             this.fileSystem = fileSystem;
@@ -204,7 +204,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                     foreach (ImageSize size in sizes)
                     {
                         string imageSize = size == ImageSize.Small ? "" : $"_{size}";
-                        string folderPath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", "Ships");
+                        string folderPath = fileSystem.Path.Combine(DesktopAppDataService.Instance.AppDataDirectory, "Images", "Ships");
 
                         if (!fileSystem.Directory.Exists(folderPath))
                         {
@@ -220,7 +220,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             {
                 foreach ((long key, var value) in data)
                 {
-                    string folderPath = fileSystem.Path.Combine(AppDataHelper.Instance.AppDataDirectory, "Images", "Camos");
+                    string folderPath = fileSystem.Path.Combine(DesktopAppDataService.Instance.AppDataDirectory, "Images", "Camos");
 
                     if (!fileSystem.Directory.Exists(folderPath))
                     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Splat;
 
-namespace WoWsShipBuilder.UI.Extensions
+namespace WoWsShipBuilder.Core.Extensions
 {
     public static class LocatorExtensions
     {
