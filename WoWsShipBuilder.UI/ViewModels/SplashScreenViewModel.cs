@@ -1,10 +1,10 @@
 using System;
-using System.IO.Abstractions;
 using System.Threading.Tasks;
+using NLog;
 using ReactiveUI;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
-using WoWsShipBuilder.Core.HttpClients;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -12,21 +12,21 @@ namespace WoWsShipBuilder.UI.ViewModels
     {
         private const int TaskNumber = 4;
 
-        private readonly IAwsClient awsClient;
+        private readonly ILocalDataUpdater localDataUpdater;
 
-        private readonly IFileSystem fileSystem;
+        private readonly ILogger logger;
 
         private double progress;
 
         public SplashScreenViewModel()
-            : this(AwsClient.Instance, new FileSystem())
+            : this(null!)
         {
         }
 
-        public SplashScreenViewModel(IAwsClient awsClient, IFileSystem fileSystem)
+        public SplashScreenViewModel(ILocalDataUpdater localDataUpdater)
         {
-            this.awsClient = awsClient;
-            this.fileSystem = fileSystem;
+            this.localDataUpdater = localDataUpdater;
+            logger = Logging.GetLogger("SplashScreen");
         }
 
         public double Progress
@@ -45,6 +45,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public async Task VersionCheck(bool forceVersionCheck = false)
         {
+            logger.Debug("Checking gamedata versions...");
             IProgress<(int, string)> progressTracker = new Progress<(int state, string title)>(value =>
             {
                 // ReSharper disable once PossibleLossOfFraction
@@ -52,9 +53,16 @@ namespace WoWsShipBuilder.UI.ViewModels
                 DownloadInfo = value.title;
             });
 
-            var updater = new LocalDataUpdater(fileSystem, awsClient, AppDataHelper.Instance);
-            await updater.RunDataUpdateCheck(AppData.Settings.SelectedServerType, progressTracker, forceVersionCheck);
-            Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
+            try
+            {
+                await localDataUpdater.RunDataUpdateCheck(AppData.Settings.SelectedServerType, progressTracker, forceVersionCheck);
+                Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
+                logger.Debug("Version check and update tasks completed. Launching main window.");
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Encountered unexpected exception during version check.");
+            }
 
             progressTracker.Report((TaskNumber, "SplashScreen_Done"));
         }

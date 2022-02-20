@@ -4,7 +4,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Splat;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
 
 namespace WoWsShipBuilder.UI.Views
@@ -34,7 +36,7 @@ namespace WoWsShipBuilder.UI.Views
 
             Task.Run(async () =>
             {
-                var viewmodel = new SplashScreenViewModel();
+                var viewmodel = Locator.Current.GetServiceSafe<SplashScreenViewModel>();
                 try
                 {
                     await viewmodel.VersionCheck(true);

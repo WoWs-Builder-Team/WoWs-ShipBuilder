@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.DataStructures;
 
@@ -14,28 +13,15 @@ namespace WoWsShipBuilder.Core.HttpClients
 {
     public class AwsClient : ClientBase, IAwsClient
     {
-        #region Static Fields and Constants
-
         private const string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
-
-        private static readonly Lazy<AwsClient> InstanceValue = new(() => new AwsClient());
 
         private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
-        #endregion
-
-        private AwsClient()
-            : this(new FileSystem(), AppDataHelper.Instance, null)
-        {
-        }
-
-        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler)
+        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler = null)
             : base(fileSystem, appDataHelper)
         {
             Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
-
-        public static AwsClient Instance => InstanceValue.Value;
 
         protected override HttpClient Client { get; }
 

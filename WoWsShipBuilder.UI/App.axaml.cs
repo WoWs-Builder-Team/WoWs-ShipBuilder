@@ -15,6 +15,8 @@ using Splat.Autofac;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
@@ -47,7 +49,7 @@ namespace WoWsShipBuilder.UI
                 AppSettingsHelper.LoadSettings();
                 Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
                 desktop.Exit += OnExit;
-                desktop.MainWindow = new SplashScreen(versionDetails);
+                desktop.MainWindow = new SplashScreen();
                 Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
 
                 if (AppData.Settings.AutoUpdateEnabled)
@@ -86,12 +88,17 @@ namespace WoWsShipBuilder.UI
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
-            builder.RegisterType<StartMenuViewModel>();
-            builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterInstance(AppDataHelper.Instance).As<AppDataHelper>().SingleInstance();
+            builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            builder.RegisterType<DispersionGraphViewModel>();
             builder.RegisterType<AvaloniaScreenshotRenderService>().As<IScreenshotRenderService>();
             builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
+            builder.RegisterType<LocalDataUpdater>().As<ILocalDataUpdater>();
+
+            builder.RegisterType<StartMenuViewModel>();
+            builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterType<DispersionGraphViewModel>();
+            builder.RegisterType<SplashScreenViewModel>();
 
             var resolver = builder.UseAutofacDependencyResolver();
             Locator.SetLocator(resolver);

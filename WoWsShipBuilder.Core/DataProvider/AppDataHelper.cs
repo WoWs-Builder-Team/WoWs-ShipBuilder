@@ -11,7 +11,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    public class AppDataHelper
+    public class AppDataHelper : IAppDataService
     {
         #region Static Fields and Constants
 
