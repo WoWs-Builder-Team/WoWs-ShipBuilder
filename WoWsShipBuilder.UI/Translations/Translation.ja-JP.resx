@@ -345,9 +345,7 @@
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>発射速度</value>
   </data>
-  <data name="ShipStats_Reload" xml:space="preserve">
-    <value>理論上の装填時間</value>
-  </data>
+  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>シグマ値</value>
   </data>
@@ -429,9 +427,7 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>主砲</value>
   </data>
-  <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>反応時間</value>
-  </data>
+  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>魚雷</value>
   </data>
@@ -1113,10 +1109,11 @@
   <data name="MessageBox_LoadingError" xml:space="preserve">
     <value>データの読み込み中にエラーが発生しました。 これは、古いバージョンのアプリまたは破損したデータと互換性がないデータ形式が原因である可能性があります。 最新バージョンでない場合は、アプリの再起動のプロンプトが表示されるまでお待ちください。 自動更新を無効にした場合は手動で更新することもできます。 最新バージョンの場合は、データの破損の問題を解決するために、設定ウィンドウから保存されているアプリケーションデータをクリーンアップしてください。</value>
   </data>
-  <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>実際の装填時間</value>
-  </data>
+  
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
     <value>サーバー側の状態は0.142857142857秒ごとに更新されます。つまり、この数の倍数にならない装填時間はその後ティックへ移動されます。 ここで表示される値は、実際のリロードを示しています。これは、上記の理論上の装填時間とは異なる場合があります。</value>
   </data>
+  
+  
+  
 </root>
