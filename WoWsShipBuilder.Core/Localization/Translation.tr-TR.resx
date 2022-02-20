@@ -713,6 +713,9 @@
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
     <value>Dosya konumunu seçiniz</value>
   </data>
+  <data name="SettingsWindow_SaveExit" xml:space="preserve">
+    <value/>
+  </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Bazı Taretlere ait bilgiler yanlış olabilir. Çünkü Wargaming'den bu verileri alamıyoruz bu nedenle işe yaradığınız bildiğimiz bir çözümü kullanarak bu verileri tamamlıyoruz. Eğer Taretlere ait bilgilerde bir yanlışlık fark ederseniz yada belirtilen taret açılarında hata olduğunu düşünüyorsanız, Lütfen bunu Github üzerinden bize bildirin yada Discord sunucumuza aşağıdaki Linki kullanarak katılın.</value>
   </data>
@@ -1043,6 +1046,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
     <value>Konfigürasyon resmini kaydederken Windows Gezgini açın</value>
   </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value/>
+  </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Kaydet</value>
   </data>
@@ -1058,8 +1064,14 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Tamam</value>
   </data>
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value/>
+  </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
     <value>Sancak ve sarf malzemelerini resime dahil et</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value/>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
     <value>Konfigürasyon resmi panoya kopyalandı</value>
@@ -1072,6 +1084,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Seçilen konfigürasyon resminin konumu geçersiz.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value/>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Kaydırıcı ve seçenek geçişlerini kullanarak belirli koşullara bağlı beceri efektlerini etkinleştirebilir yada devre dışı bırakabilirsiniz. Eğer mümkünse, yetenek etkilerinin kaç kez tetiklenebileceği de seçebilirsiniz. Ancak beceri/yeteneklerin gemi istatistikleri üzerinde bir etkisi olmayacağını unutmayın.</value>
@@ -1098,6 +1113,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
     <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
   </data>
+  
   
   
   
