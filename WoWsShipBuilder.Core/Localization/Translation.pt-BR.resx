@@ -118,902 +118,1014 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Retour au menu</value>
+    <value>Voltar ao Menu</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Réinitialiser la composition</value>
+    <value>Redefinir build</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Partager la composition</value>
+    <value>Compartilhar build</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Activer les mises à jour automatiques</value>
+    <value>Habilitar atualizações automáticas</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Effacer</value>
+    <value>Limpar</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Effacer les données de l'application</value>
+    <value>Redefinir dados do aplicativo</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Développé par:</value>
+    <value>Desenvolvido por:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Info</value>
+    <value>Informações</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Langue</value>
+    <value>Idioma</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
+    <value>Redefinir</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Réinitialiser les paramètres par défaut</value>
+    <value>Redefinir configurações para o padrão</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Configurações</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Version:</value>
+    <value>Versão:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Charger une composition</value>
+    <value>Carregar uma Build</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Créer une nouvelle composition</value>
+    <value>Criar uma Build</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Importer une composition...</value>
+    <value>Importar build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Paramètres et infos</value>
+    <value/>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>État:</value>
+    <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Pavillons </value>
+    <value>Bandeiras </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insérer le nom de la composition. Le nom du navire sera automatiquement ajouté.</value>
+    <value>Insira o nome da build. O nome do navio é incluído automaticamente.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Sélectionner un nouveau navire</value>
+    <value>Selecionar novo navio</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art par:</value>
+    <value>Arte por:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Devs: </value>
+    <value>Desenvolvedores: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Devs lead:</value>
+    <value>Desenvolvedores líderes:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Conversion de données:</value>
+    <value>Conversão de dados:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Points de commandant:</value>
+    <value>Pontos do Capitão:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Compétences de commandant</value>
+    <value>Talentos do Capitão</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Salvar</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Serveur</value>
+    <value>Servidor</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>XP de Base</value>
+    <value>XP Base</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>XP de Commandant:</value>
+    <value>XP de Comandante:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>% de bonus d'XP de Commandant</value>
+    <value>Bônus de XP de Comandante %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>XP libre:</value>
+    <value>XP Livre:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>% de bonus d'XP Libre</value>
+    <value>Bônus de XP Livre %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>XP finale:</value>
+    <value>XP Final:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>% de Bonus d'XP</value>
+    <value>Bônus de XP %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>Calculateur d'XP</value>
+    <value>Calculador de XP</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Téléchargement des images de camos</value>
+    <value>Baixando imagens de camuflagem</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Terminé</value>
+    <value>Concluído</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Téléchargement des données</value>
+    <value>Baixando dados</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Téléchargement des images de navire</value>
+    <value>Baixando imagens dos navios</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>Porte-avions</value>
+    <value>Porta Aviões</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Cuirassé</value>
+    <value>Encouraçado</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Commonwealth</value>
+    <value>Comunidade das Nações</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Croiseur</value>
+    <value>Cruzador</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Destroyer</value>
+    <value>Contratorpedeiro</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Europe</value>
+    <value>Europa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>France</value>
+    <value>França</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Allemagne</value>
+    <value>Alemanha</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Italie</value>
+    <value>Itália</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Japon</value>
+    <value>Japão</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Pays-Bas</value>
+    <value>Os Países Baixos</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan-Amérique</value>
+    <value>Pan-América</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan-Asie</value>
+    <value>Pan-Ásia</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Prémium</value>
+    <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>Union Soviétique</value>
+    <value>U.R.S.S.</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Espagne</value>
+    <value>Espanha</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Spécial</value>
+    <value>Especial</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Sous-marin</value>
+    <value>Submarino</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Arbre techno</value>
+    <value>Árvore Tecnológica</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Navire de test</value>
+    <value>Navio de teste</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>Royaume-Uni</value>
+    <value>Reino Unido</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>États-Unis</value>
+    <value>E.U.A.</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Emplacement vide</value>
+    <value>Espaço vazio</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Portée minimum pour l'apparition de l'avertissement</value>
+    <value>Alcance mínimo para o aviso aparecer</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
     <value>Classe</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Confirmer</value>
+    <value>Confirmar</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Nation</value>
+    <value>Nação</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Tier</value>
+    <value>Nível</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>Type</value>
+    <value>Tipo</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Aucun navire ne correspond aux critères de filtrage</value>
+    <value>Nenhum navio encontrado com os critérios atuais de filtragem</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Rechercher un navire</value>
+    <value>Procurar navio</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>Temps de giration à 180°</value>
+    <value>Tempo para virar 180°</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontale</value>
+    <value>Horizontal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Portée</value>
+    <value>Alcance</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Cadence de Tir</value>
+    <value>Taxa de Fogo</value>
   </data>
-  
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Tempo de recarga</value>
+  </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Vitesse de rotation</value>
+    <value>Velocidade de rotação</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Vertical</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Vitesse initiale de l'obus</value>
+    <value>Velocidade inicial do projétil</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Masse de l'obus</value>
+    <value>Peso do projétil</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>DPM Théorique</value>
+    <value>DPM Teórico</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Seuil d'armement</value>
+    <value>Limite para Armar</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Rayon d'explosion de profondeur</value>
+    <value>Raio de explosão profunda</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Chance d'incendie</value>
+    <value>Chance de incêndio</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Temps d'amorce</value>
+    <value>Temporizador do fusível</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Capacité d'Overmatch</value>
+    <value>Capacidade de overmatch</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Pénétration</value>
+    <value>Penetração</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Angles de Ricochet</value>
+    <value>Ângulos de ricochete</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Defesa AA</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>PV de l'avion</value>
+    <value>HP da Aeronave</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Frappe aérienne</value>
+    <value>Ataque Aéreo</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Type de bombe</value>
+    <value>Tipo de Bomba</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombes armées</value>
+    <value>Bombas na Carga</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Dégâts constants</value>
+    <value>Dano constante</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Dégâts</value>
+    <value>Dano</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Délai</value>
+    <value>Delay</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Portée de détectabilité</value>
+    <value>Alcance de Detecção</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
     <value>Flak</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Dégâts de Flak</value>
+    <value>Dano de Flak</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Probabilité de toucher</value>
+    <value>Chance de acerto</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Probabilité d'inondation</value>
+    <value>Chance de inundação</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Batterie Principale</value>
+    <value>Bateria Principal</value>
   </data>
-  
+  <data name="ShipStats_ReactionTime" xml:space="preserve">
+    <value>Tempo de reação</value>
+  </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Torpille</value>
+    <value>Torpedos</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Ajouter un navire</value>
+    <value>Adicionar navio</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Supprimer un navire</value>
+    <value>Remover navio</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Maniabilité</value>
+    <value>Manobrabilidade</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Dégâts totaux par incendie</value>
+    <value>Dano total por incêndio</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>DPS par incendie</value>
+    <value>DPS por incêndio</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Durée d'incendie</value>
+    <value>Duração do incêndio</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Réduction de chance d'incendie</value>
+    <value>Redução de chance de incêndio</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Dégâts totaux par inondation</value>
+    <value>Dano total por inundação</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>DPS par inondation</value>
+    <value>DPS por inundação</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Durée d'inondation</value>
+    <value>Duração da inundação</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Probabilité d'inondation</value>
+    <value>Probabilidade de inundação</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Points de vie</value>
+    <value>Pontos de Vida</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Nombre maximum d'incendies</value>
+    <value>Número máximo de incêndios</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Nombre maximum d'inondations</value>
+    <value>Número máximo de inundações</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Capacité de survie</value>
+    <value>Sobrevivência</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Protection contre les torpilles</value>
+    <value>Proteção de torpedo</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Erreur</value>
+    <value>Erro</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>n'a pas de tourelles principales</value>
+    <value>não possui armas principais</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>à déjà été ajouté à cet obus</value>
+    <value>já foi adicionado com esse projétil</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>Type</value>
+    <value>Tipo</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Afficher les angles de tourelle</value>
+    <value>Mostrar ângulos das torres</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>L'angle de référence utilisé commence à 0° sur l'avant (en haut de l'image) et va dans le sens horaire</value>
+    <value>O ângulo de referência usado começa em 0° na frente (parte superior da imagem) e vai na direção do sentido horário</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Cacher tous les angles</value>
+    <value>Ocultar todos os ângulos</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Ne jamais montrer les angles</value>
+    <value>Nunca mostrar ângulos</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Toujours afficher les angles</value>
+    <value>Sempre mostrar ângulos</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Montrer tous les angles</value>
+    <value>Expandir todos os ângulos</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Compétences de Commandant et Camouflage</value>
+    <value>Habilidades de Capitão e Camuflagem</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Pavillons</value>
+    <value>Sinais</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Nom</value>
+    <value>Nome</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Appliquer les bonus de camouflage</value>
+    <value>Aplicar bônus da camuflagem</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Distance d'armement</value>
+    <value>Distância de armamento</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Peut toucher</value>
+    <value>Pode acertar</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Dissimulation</value>
+    <value>Ocultamento</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Détectabilité par les airs</value>
+    <value>Ocultamento por ar</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Quand en feu</value>
+    <value>Quando em chamas</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Détectabilité par la mer</value>
+    <value>Ocultamento por mar</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Quand en feu</value>
+    <value>Quando em chamas</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Après avoir tiré depuis un écran de fumée</value>
+    <value>Após disparo em fumaça</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Nombre maximum d'incendies</value>
+    <value>Número máximo de incêndios</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Dégâts d'incendie totaux</value>
+    <value>Dano total por incêndio</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Nombre maximum d'inondations</value>
+    <value>Número máximo de inundações</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Protection contre les torpilles</value>
+    <value>Proteção de torpedo</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Dégâts totaux des inondations</value>
+    <value>Dano total por inundação</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Aura longue portée</value>
+    <value>Aura de longo alcance</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Vers l’arrière</value>
+    <value>Para trás</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Vers l'avant</value>
+    <value>Para a frente</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Vitesse max</value>
+    <value>Velocidade máxima</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Temps de basculement du gouvernail</value>
+    <value>Tempo de virada do leme</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Rayon de giration</value>
+    <value>Raio da curva</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Aura moyenne portée</value>
+    <value>Aura de alcance médio</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Aura courte portée</value>
+    <value>Aura de curto alcance</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Espacement de torpilles</value>
+    <value>Dispersão do torpedo</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Avions</value>
+    <value>Aeronaves</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Bombe</value>
+    <value>Bomba</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Roquette</value>
+    <value>Foguete</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Vitesse</value>
+    <value>Velocidade</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Type d'armement</value>
+    <value>Tipo de armamento</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Bombe à ricochet</value>
+    <value>Skip bomb</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpille</value>
+    <value>Torpedos</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Armes par avion</value>
+    <value>Armas por avião</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Temps de recharge par attaque</value>
+    <value>Tempo de recarga do ataque</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Vitesse de croisière</value>
+    <value>Velocidade de cruzeiro</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bombe dans l'ellipse intérieure</value>
+    <value>Bombas na elipse interna</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Avions max sur le pont</value>
+    <value>Número máximo de aeronaves no convés</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Vitesse max</value>
+    <value>Velocidade máxima</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Vitesse min</value>
+    <value>Velocidade mínima</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Avions par attaque</value>
+    <value>Aeronaves por ataque</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Avions dans un escadron</value>
+    <value>Aeronaves em um esquadrão</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>PS par avion</value>
+    <value>HP por avião</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Temps de restauration</value>
+    <value>Tempo de restauração</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Avions de départ sur le pont</value>
+    <value>Aeronaves iniciais no convés</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Bombes par avion</value>
+    <value>Bombas por aeronave</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Temps de largage</value>
+    <value>Tempo de drop</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Temps pour arriver</value>
+    <value>Tempo para chegada</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Portée maximale</value>
+    <value>Alcance máximo</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Longueur de largage max</value>
+    <value>Comprimento máximo do drop</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Portée minimale</value>
+    <value>Alcance mínimo</value>
   </data>
-  
-  
+  <data name="ShipStats_NumberOfUses" xml:space="preserve">
+    <value>Número de cargas</value>
+  </data>
+  <data name="ShipStats_AswAirstrike" xml:space="preserve">
+    <value>Ataque Aéreo ASW</value>
+  </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Charges de profondeur</value>
+    <value>Cargas de profundidade</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Visualisation de la dispersion</value>
+    <value>Visualização da dispersão</value>
   </data>
-  
+  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
+    <value>Cargas de Profundidade ASW</value>
+  </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>Durée du premier ping</value>
+    <value>Duração do primeiro ping</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Durée du ping</value>
+    <value>Duração do ping</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
     <value>Sonar</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Vitesse de ping</value>
+    <value>Velocidade do ping</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Largeur du ping</value>
+    <value>Largura do ping</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Durée du deuxième ping</value>
+    <value>Duração do segundo ping</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Obus</value>
+    <value>Projéteis</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Rechargement</value>
+    <value>Recarga</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Temps d'action</value>
+    <value>Tempo de ação</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Cancelar</value>
   </data>
-  
-  
+  <data name="SettingsWindow_CustomPath" xml:space="preserve">
+    <value>Habilitar caminho customizado para os dados</value>
+  </data>
+  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
+    <value>Inserir caminho customizado para os dados</value>
+  </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Enregistrer &amp; quitter</value>
+    <value>Salvar e Sair</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>L'orientation de la tourelle est incorrecte. Les données de WG ne l'incluent pas, donc nous utilisons une solution qui fonctionne dans la plupart des cas. Si vous trouvez un cas d'orientation d'une tourelle et/ou d'angle erroné, signalez-le sur Github ou en rejoignant le serveur Discord ci-dessous.</value>
+    <value>Alguma orientação de torre está errada. Os dados da WG não as incluem, então nós usamos uma solução alternativa para a maioria dos casos. Se você encontrar um caso de orientação de torre e/ou ângulo errado, reporte-o no Github ou entre no servidor do Discord abaixo.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Composition sauvegardée</value>
+    <value>Build salva</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Chaîne de composition copiée dans le presse-papiers</value>
+    <value>String da Build copiada para a área de transferência</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Supprimer la composition</value>
+    <value>Excluir build</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Importer</value>
+    <value>Importar</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Importer uniquement</value>
+    <value>Apenas importar</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Importer et enregistrer</value>
+    <value>Importar e salvar</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Coller la chaîne de composition ici</value>
+    <value>Colar a string da Build aqui</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Importer une composition</value>
+    <value>Importar Build</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Cancelar</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Erreur lors du chargement de la composition</value>
+    <value>Erro durante o carregamento da build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Durée initiale du boost</value>
+    <value>Duração do boost inicial</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Multiplicateur de vitesse de boost initiale</value>
+    <value>Multiplicador de velocidade do boost inicial</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Délai de changement de munitions</value>
+    <value>Tempo para mudar munição</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Mode de rafale d'artillerie</value>
+    <value>Disparo em Rajada</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Durée</value>
+    <value>Duração</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Rechargement après rafale</value>
+    <value>Recarga após rajada</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Rechargement pendant la rafale</value>
+    <value>Recarga durante rajada</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Coups nécessaires</value>
+    <value>Acertos necessários</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Tirs en une rafale</value>
+    <value>Tiros em uma rajada</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Compétences spéciales</value>
+    <value>Habilidades especiais</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Téléchargement des données...</value>
+    <value>Baixando dados...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Temps de visée</value>
+    <value>Tempo de mira</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Dégâts reçus pendant l'attaque</value>
+    <value>Dano recebido durante o ataque</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Délai d'invulnérabilité après l'attaque</value>
+    <value>Tempo de invulnerabilidade após ataque</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Temps de préparation</value>
+    <value>Tempo de preparação</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Délai jusqu'à pleine visée</value>
+    <value>Tempo para mirar completamente</value>
   </data>
-  
+  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
+    <value>Lançadores de Torpedo</value>
+  </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Pendant la visée</value>
+    <value>Durante a mira</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Taux de changement de zone de largage lors de la manœuvre</value>
+    <value>Taxa de mudança da área do drop enquanto manobra</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Pendant la préparation</value>
+    <value>Durante a preparação</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Temps de pleine puissance</value>
+    <value>Tempo para potência total</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Version des données:</value>
+    <value>Versão dos dados:</value>
   </data>
   <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>Temps de vol</value>
+    <value>Tempo de voo</value>
   </data>
   <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>Angle d'impact</value>
+    <value>Ângulo de Impacto</value>
   </data>
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>Vitesse d'impact</value>
+    <value>Velocidade de Impacto</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Afficher le graphique de pénétration</value>
+    <value>Mostrar gráfico de penetração</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>Afficher le graphique de temps de vol</value>
+    <value>Mostrar gráfico de tempo de voo</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Afficher le graphique de l'angle d'impact</value>
+    <value>Mostrar gráfico de ângulo de impacto</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>Afficher le graphique de la vitesse d'impact</value>
+    <value>Mostrar gráfico de velocidade de impacto</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Afficher les graphes des balistiques</value>
+    <value>Mostrar gráficos de balística</value>
   </data>
-  
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>O caminho customizado para os dados não é válido.</value>
+  </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Sélectionnez un obus</value>
+    <value>Selecione um projétil</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>a plus d'un obus; Sélectionnez celui dont vous voulez savoir la balistique
-En assumant que c'est le même calibre, l'ordre des obus est ci-dessous:
-HE-&gt;SAP-&gt;AP.</value>
+    <value>possui mais de um projétil. Selecione o projétil do qual você quer o gráfico de balística. Assumindo como padrão o calibre, a ordem dos projéteis abaixo é HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
-    <value>Compte standard</value>
+    <value>Conta normal</value>
   </data>
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
-    <value>Compte premium WG</value>
+    <value>Conta Premium WG</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
-    <value>Compte Premium WoWs</value>
+    <value>Conta Premium WoWs</value>
   </data>
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
-    <value>Copier les versions</value>
+    <value>Copiar versões</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Détectabilité du sous-marin au niveau de profondeur du périscope</value>
+    <value>Ocultamento do submarino na profundidade de periscópio</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Détectabilité du sous-marin a profondeur de fonctionnement</value>
+    <value>Ocultamento do submarino na profundidade de operação</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-    <value>Afficher les graphiques de dispersion et de balistique</value>
+    <value>Mostrar gráficos de dispersão e balística</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
     <value>Vertical:</value>
   </data>
   <data name="DispersionPlot_Horizontal" xml:space="preserve">
-    <value>Horizontale:</value>
+    <value>Horizontal:</value>
   </data>
   <data name="DispersionPlot_InnerVertical" xml:space="preserve">
-    <value>Intérieur vertical:</value>
+    <value>Vertical Interna:</value>
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
-    <value>Intérieur Horizontale:</value>
+    <value>Horizontal Interior:</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
-    <value>Dispersion</value>
+    <value>Dispersão</value>
   </data>
   <data name="ShipStats_ShowDispGraph" xml:space="preserve">
-    <value>Afficher les graphes de dispersion</value>
+    <value>Mostrar gráficos de dispersão</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>Afficher le tracé de dispersion</value>
+    <value>Mostrar plotagem de dispersão</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule à X portée (km)</value>
+    <value>Fórmula no alcance X(Km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
-    <value>Dispersion Horizontale[X]</value>
+    <value>Dispersão Horizontal[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Portée de visée (Km)</value>
+    <value>Alcance de Mira (Km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
-    <value>Graphes balistiques</value>
+    <value>Gráficos de Balística</value>
   </data>
   <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
-    <value>Graphes de dispersion</value>
+    <value>Gráficos de Dispersão</value>
   </data>
   <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
-    <value>Tracé de dispersion</value>
+    <value>Gráfico de Dispersão</value>
   </data>
   <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
-    <value>Échelle de Tracé</value>
+    <value>Escala do Gráfico</value>
   </data>
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
-    <value>Nombre de tirs</value>
+    <value>Número de Tiros</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
-    <value>Actualiser le tracé</value>
+    <value>Atualizar Plot</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-    <value>Envoyer des données de télémétrie de base (version actuelle de l'application)</value>
+    <value>Enviar dados básicos de telemetria (versão atual do app)</value>
   </data>
   <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
-    <value>CE NAVIRE NE PEUT PAS ATTEINDRE LA PORTÉE DE VISÉE SÉLECTIONNÉE</value>
+    <value>ESTE NAVIO NÃO CONSEGUE ALCANÇAR A DISTÂNCIA DE MIRA SELECIONADA</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Plan de Tracé</value>
+    <value>Plano de Plotagem</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
-    <value>Horizontale (Eau)</value>
+    <value>Horizontal (Água)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Angle d'impact</value>
+    <value>Ângulo de Impacto</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Vertical</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Référence Fuso</value>
+    <value>Referência do Fuso</value>
   </data>
-  
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>A elipse BRANCA mostra a área máxima de dispersão no alcance de mira selecionado.
+A elipse VERMELHA mostra a área onde 50% dos projéteis caem, em média.
+A elipse PRETA mostra o tamanho de um Fuso como referência.
+
+Planos de plotagem:
+1) HORIZONTAL: 
+    mostra o ponto de impacto dos projéteis com a água;
+    selecionando este plano você obtém uma visão vinda de cima;
+    este é o plano que você quer dar mais atenção ao comparar as dispersões dos navios;
+    a elipse neste plano está verticalmente esticada devido à velocidade dos projéteis.
+2) VERTICAL: 
+    mostra o ponto de impacto dos projéteis com uma superfície vertical;
+    selecionando este plano você obtém uma visão vinda da frente;
+    útil para uma análise precisa da precisão vertical.
+3) ÂNGULO DE IMPACTO: 
+    mostra o ponto de impacto dos projéteis com uma superfície inclinada no ângulo de impacto dos projéteis;
+    selecionando este plano você obtém uma visão vinda do ângulo de impacto dos projéteis;
+    é o plano no qual o jogo realmente desenha a elipse de dispersão durante as batalhas;
+    a elipse neste plano não é afetada pela velocidade dos projéteis;
+    útil se você quiser comparar a dispersão dos navios sem levar em consideração a velocidade dos projéteis.
+
+Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200m de comprimento ocupa o espaço de 400m.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
-    <value>Explication du tracé</value>
+    <value>Explicação da plotagem</value>
   </data>
   <data name="BowIn" xml:space="preserve">
-    <value>De proue</value>
+    <value>Proa para a frente</value>
   </data>
   <data name="Broadside" xml:space="preserve">
-    <value>De flanc</value>
+    <value>"De lado"</value>
   </data>
   <data name="DontShow" xml:space="preserve">
-    <value>Masquer</value>
+    <value>Ocultar</value>
   </data>
   <data name="ShipStats_AirDrag" xml:space="preserve">
-    <value>Glissement dans l'air</value>
+    <value>Arrasto pelo Ar</value>
   </data>
   <data name="ShipStats_Mass" xml:space="preserve">
-    <value>Masse</value>
+    <value>Massa</value>
   </data>
-  
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>FPM Potencial </value>
+  </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Chance de mettre en feu un navire par salve</value>
+    <value>Chance de incêndio por salva</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Radius d'explosion</value>
+    <value>Raio de explosão</value>
   </data>
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Penetração da explosão</value>
+  </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions aux moteurs</value>
+    <value>Proteção do motor contra explosões</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions au gouvernail</value>
+    <value>Proteção do leme contra explosões</value>
   </data>
-  
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &gt; 0 
+     O módulo pode ser incapacitado.
+Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &lt;= 0
+     O módulo não pode ser incapacitado.</value>
+  </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-    <value>Redémarrage nécessaire</value>
+    <value>Reinicialização necessária</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-    <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
+    <value>Uma reinicialização do aplicativo é necessária para que a troca de idioma tenha efeito. Não reiniciar pode resultar em um comportamento inesperado.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-    <value>Initialisation...</value>
+    <value>Inicializando...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Créditos</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Obrigado aos seguintes membros da comunidade por ajudar com a tradução deste projeto. Abaixo, todos os membros com pelo menos 10 contribuições são mencionados.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Bateria Secundária</value>
+  </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
-    <value>Horizontale</value>
+    <value>Horizontal</value>
   </data>
-  
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Orientação da Plotagem</value>
+  </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Vertical</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Trajetória do Projétil</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Habilidades do Comandante</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importar de imagem</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Abrir o Explorador de Arquivos ao salvar uma imagem de build</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Salvar e copiar imagem</value>
+  </data>
   <data name="Dialog_Save" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Salvar</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Cancelar</value>
   </data>
-  
-  
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Não</value>
+  </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Salvar e Sair</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Incluir sinais e consumíveis na imagem</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Imagem da build copiada para área de transferência</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Habilitar caminho personalizado para imagem de build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Caminho personalizado para imagem de build</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>O caminho personalizado selecionado para imagem de build é inválido.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Com o seguinte controle deslizante e botões, você pode ativar ou desativar certos efeitos condicionais das habilidades. Você também pode selecionar quantas vezes ativar o efeito do talento, se possível. Note que nem todas as habilidades/talentos terão efeito nas estatísticas do navio.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Comandante padrão</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Comandante:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombas em uma carga</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Navios atuais</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Navios para Excluir</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Ocorreu um erro durante o carregamento dos dados. Isso pode ser devido ao formato de dados não ser compatível com uma versão mais antiga do programa ou dados corrompidos. Se você não estiver na versão mais recente, espere até que você receba uma mensagem pedindo para reiniciar o aplicativo e atualizar, ou atualize manualmente caso as atualizações automáticas estejam desativadas. Se você estiver na última versão, use a janela de configuração para limpar todos os dados armazenados do aplicativo para resolver problemas de dados corrompidos.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Tempo de Recarga no Servidor</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>DPM no Servidor</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Taxa de Fogo no Servidor</value>
+  </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
+  </data>
 </root>

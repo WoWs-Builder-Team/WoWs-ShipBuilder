@@ -118,902 +118,1012 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Retour au menu</value>
+    <value>Terug naar het menu</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Réinitialiser la composition</value>
+    <value>Reset build</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Partager la composition</value>
+    <value>Deel build</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Activer les mises à jour automatiques</value>
+    <value>Automatische updates inschakelen</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Effacer</value>
+    <value>Opschonen</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Effacer les données de l'application</value>
+    <value>Applicatie data opschonen</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Développé par:</value>
+    <value>Ontwikkeld door:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
     <value>Info</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Langue</value>
+    <value>Taal</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
+    <value>Reset</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Réinitialiser les paramètres par défaut</value>
+    <value>Standaardinstellingen herstellen</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>Instellingen</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Version:</value>
+    <value>Versie:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Charger une composition</value>
+    <value>Laad een build</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Créer une nouvelle composition</value>
+    <value>Nieuwe build</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Importer une composition...</value>
+    <value>Importeer build...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Paramètres et infos</value>
+    <value>Instellingen en info</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>État:</value>
+    <value>Status:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Pavillons </value>
+    <value>Signalen </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insérer le nom de la composition. Le nom du navire sera automatiquement ajouté.</value>
+    <value>Voer een build naam in. De naam van het schip wordt automatisch toegevoegd.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Sélectionner un nouveau navire</value>
+    <value>Ander schip selecteren</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art par:</value>
+    <value>Kunst door:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
     <value>Devs: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Devs lead:</value>
+    <value>Lead devs:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Conversion de données:</value>
+    <value>Data conversie:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Points de commandant:</value>
+    <value>Kapiteins punten:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Compétences de commandant</value>
+    <value>Kapitein talenten</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Opslaan</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Serveur</value>
+    <value>Server</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>XP de Base</value>
+    <value>Basis XP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>XP de Commandant:</value>
+    <value>Commandant XP:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>% de bonus d'XP de Commandant</value>
+    <value>Commandant XP bonus %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>XP libre:</value>
+    <value>Vrije XP:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>% de bonus d'XP Libre</value>
+    <value>Vrije XP bonus %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>XP finale:</value>
+    <value>Totaal XP:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>% de Bonus d'XP</value>
+    <value>XP bonus %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>Calculateur d'XP</value>
+    <value>XP calculator</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Téléchargement des images de camos</value>
+    <value>Camouflage afbeeldingen downloaden</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Terminé</value>
+    <value>Gereed</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Téléchargement des données</value>
+    <value>Data downloaden</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Téléchargement des images de navire</value>
+    <value>Schip afbeeldingen downloaden</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>Porte-avions</value>
+    <value>Vliegdekschip</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Cuirassé</value>
+    <value>Slagschip</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Commonwealth</value>
+    <value>Gemenebest</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Croiseur</value>
+    <value>Kruiser</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Destroyer</value>
+    <value>Torpedobootjager</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Europe</value>
+    <value>Europa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>France</value>
+    <value>Frankrijk</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Allemagne</value>
+    <value>Duitsland</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Italie</value>
+    <value>Italië</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Japon</value>
+    <value>Japan</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Pays-Bas</value>
+    <value>Nederland</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan-Amérique</value>
+    <value>Pan-Amerika</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan-Asie</value>
+    <value>Pan-Azië</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Prémium</value>
+    <value>Premium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>Union Soviétique</value>
+    <value>Sovjet-Unie</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Espagne</value>
+    <value>Spanje</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Spécial</value>
+    <value>Speciaal</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Sous-marin</value>
+    <value>Duikboot</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Arbre techno</value>
+    <value>Technologie boom</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Navire de test</value>
+    <value>Test schip</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>Royaume-Uni</value>
+    <value>V.K.</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>États-Unis</value>
+    <value>V.S.</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Emplacement vide</value>
+    <value>Leeg slot</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Portée minimum pour l'apparition de l'avertissement</value>
+    <value>Minimum bereik voordat de waarschuwing wordt weergeven</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Classe</value>
+    <value>Klasse</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Confirmer</value>
+    <value>Bevestigen</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Nation</value>
+    <value>Natie</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Tier</value>
+    <value>Niveau</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Aucun navire ne correspond aux critères de filtrage</value>
+    <value>Geen schepen die aan de filtercriteria voldoen</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Rechercher un navire</value>
+    <value>Zoeken naar schip</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>Temps de giration à 180°</value>
+    <value>180° draaitijd</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontale</value>
+    <value>Horizontaal</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Portée</value>
+    <value>Bereik</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Cadence de Tir</value>
+    <value>Schiet ratio</value>
   </data>
-  
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Herlaad Tijd</value>
+  </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Vitesse de rotation</value>
+    <value>Draai snelheid</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Verticaal</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Vitesse initiale de l'obus</value>
+    <value>Initiële granaat snelheid</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Masse de l'obus</value>
+    <value>Granaat gewicht</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>DPM Théorique</value>
+    <value>Theoretische schade/min</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Seuil d'armement</value>
+    <value>Bewapening overgangsdrempel</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Rayon d'explosion de profondeur</value>
+    <value>Diepte explosie radius</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Chance d'incendie</value>
+    <value>Kans op vuur</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Temps d'amorce</value>
+    <value>Fuseer tijd</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Capacité d'Overmatch</value>
+    <value>Overtref waarde</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Pénétration</value>
+    <value>Penetratie</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Angles de Ricochet</value>
+    <value>Ricochet hoeken</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Luchtafweer</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>PV de l'avion</value>
+    <value>Vliegtuig levenspunten</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Frappe aérienne</value>
+    <value>Luchtaanval</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Type de bombe</value>
+    <value>Bom type</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombes armées</value>
+    <value>Bommen in lading</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Dégâts constants</value>
+    <value>Constante schade</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Dégâts</value>
+    <value>Schade</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Délai</value>
+    <value>Vertraging</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Portée de détectabilité</value>
+    <value>Detecteerbaarheid</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Flak</value>
+    <value>Granaatexplosies</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Dégâts de Flak</value>
+    <value>Granaatexplosie schade</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Probabilité de toucher</value>
+    <value>Kans op treffer</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Probabilité d'inondation</value>
+    <value>Overstromingskans</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Batterie Principale</value>
+    <value>Hoofd Geschut</value>
   </data>
-  
+  <data name="ShipStats_ReactionTime" xml:space="preserve">
+    <value>Reactie Tijd</value>
+  </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Torpille</value>
+    <value>Torpedo</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Ajouter un navire</value>
+    <value>Schip toevoegen</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Supprimer un navire</value>
+    <value>Schip verwijderen</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Maniabilité</value>
+    <value>Manoeuvreerbaarheid</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Dégâts totaux par incendie</value>
+    <value>Totale schade per brand</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>DPS par incendie</value>
+    <value>Schade per seconde per brand</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Durée d'incendie</value>
+    <value>Duur van brand</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Réduction de chance d'incendie</value>
+    <value>Vuurkans vermindering</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Dégâts totaux par inondation</value>
+    <value>Totale schade per overstroming</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>DPS par inondation</value>
+    <value>Schade per seconde per overstroming</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Durée d'inondation</value>
+    <value>Overstromingsduur</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Probabilité d'inondation</value>
+    <value>Overstromingskans</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Points de vie</value>
+    <value>Levenspunten</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Nombre maximum d'incendies</value>
+    <value>Maximaal aantal branden</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Nombre maximum d'inondations</value>
+    <value>Maximum aantal overstromingen</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Capacité de survie</value>
+    <value>Overlevingsvermogen</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Protection contre les torpilles</value>
+    <value>Torpedo bescherming</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Erreur</value>
+    <value>Error</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>n'a pas de tourelles principales</value>
+    <value>heeft geen hoofdgeschut</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>à déjà été ajouté à cet obus</value>
+    <value>is al toegevoegd met deze granaat</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Afficher les angles de tourelle</value>
+    <value>Toon geschutskoepel hoeken</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>L'angle de référence utilisé commence à 0° sur l'avant (en haut de l'image) et va dans le sens horaire</value>
+    <value>De referentiehoek die wordt gebruikt begint bij 0° vooraan (bovenkant van de afbeelding) en gaat met de klok mee</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Cacher tous les angles</value>
+    <value>Alle hoeken verbergen</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Ne jamais montrer les angles</value>
+    <value>Hoeken niet tonen</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Toujours afficher les angles</value>
+    <value>Hoeken altijd tonen</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Montrer tous les angles</value>
+    <value>Alle hoeken tonen</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Compétences de Commandant et Camouflage</value>
+    <value>Kapitein Vaardigheden en Camouflage</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Pavillons</value>
+    <value>Signalen</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Nom</value>
+    <value>Naam</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Appliquer les bonus de camouflage</value>
+    <value>Camouflage bonussen toepassen</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Distance d'armement</value>
+    <value>Bewapening afstand</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Peut toucher</value>
+    <value>Kan raken</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Dissimulation</value>
+    <value>Detecteerbaarheid</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Détectabilité par les airs</value>
+    <value>Detecteerbaarheid vanuit de lucht</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Quand en feu</value>
+    <value>Als het schip in brand staat</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Détectabilité par la mer</value>
+    <value>Detecteerbaarheid vanaf zee</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Quand en feu</value>
+    <value>Als het schip in brand staat</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Après avoir tiré depuis un écran de fumée</value>
+    <value>Na het schieten vanuit rookgordijn</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Nombre maximum d'incendies</value>
+    <value>Max branden</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Dégâts d'incendie totaux</value>
+    <value>Totale vuurschade</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Nombre maximum d'inondations</value>
+    <value>Max overstromingen</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Protection contre les torpilles</value>
+    <value>Torpedo bescherming</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Dégâts totaux des inondations</value>
+    <value>Totale overstromingsschade</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Aura longue portée</value>
+    <value>Lange bereik aura</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Vers l’arrière</value>
+    <value>Achteruit</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Vers l'avant</value>
+    <value>Vooruit</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Vitesse max</value>
+    <value>Maximumsnelheid</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Temps de basculement du gouvernail</value>
+    <value>Roer verschuivingstijd</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Rayon de giration</value>
+    <value>Draaicirkel</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Aura moyenne portée</value>
+    <value>Middellange bereik aura</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Aura courte portée</value>
+    <value>Korte bereik aura</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Espacement de torpilles</value>
+    <value>Torpedo spreiding</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Avions</value>
+    <value>Vliegtuigen</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Bombe</value>
+    <value>Bom</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Roquette</value>
+    <value>Raket</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Vitesse</value>
+    <value>Snelheid</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Type d'armement</value>
+    <value>Wapen type</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Bombe à ricochet</value>
+    <value>Kets bom</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpille</value>
+    <value>Torpedo</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Armes par avion</value>
+    <value>Wapens per vliegtuig</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Temps de recharge par attaque</value>
+    <value>Aanval Afkoeltijd</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Vitesse de croisière</value>
+    <value>Kruissnelheid</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bombe dans l'ellipse intérieure</value>
+    <value>Bom in binnenste ellips</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Avions max sur le pont</value>
+    <value>Max aantal vliegtuigen op het dek</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Vitesse max</value>
+    <value>Maximumsnelheid</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Vitesse min</value>
+    <value>Minimum snelheid</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Avions par attaque</value>
+    <value>Vliegtuigen per aanval</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Avions dans un escadron</value>
+    <value>Vliegtuigen per squadron</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>PS par avion</value>
+    <value>Levenspunten per vliegtuig</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Temps de restauration</value>
+    <value>Hersteltijd</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Avions de départ sur le pont</value>
+    <value>Vliegtuigen op vliegdek bij start</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Bombes par avion</value>
+    <value>Bommen per vliegtuig</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Temps de largage</value>
+    <value>Val tijd</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Temps pour arriver</value>
+    <value>Tijd tot arriveren</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Portée maximale</value>
+    <value>Maximum bereik</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Longueur de largage max</value>
+    <value>Maximaal bereik</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Portée minimale</value>
+    <value>Minimum bereik</value>
   </data>
-  
-  
+  <data name="ShipStats_NumberOfUses" xml:space="preserve">
+    <value>Aantal verbruiksartikelen</value>
+  </data>
+  <data name="ShipStats_AswAirstrike" xml:space="preserve">
+    <value>Dieptebommen luchtaanval</value>
+  </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Charges de profondeur</value>
+    <value>Dieptebommen</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Visualisation de la dispersion</value>
+    <value>Verspreiding visualisatie</value>
   </data>
-  
+  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
+    <value>Dieptebommen</value>
+  </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>Durée du premier ping</value>
+    <value>Eerste ping duur</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Durée du ping</value>
+    <value>Ping duur</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
     <value>Sonar</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Vitesse de ping</value>
+    <value>Ping snelheid</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Largeur du ping</value>
+    <value>Ping breedte</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Durée du deuxième ping</value>
+    <value>Tweede ping duur</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Obus</value>
+    <value>Granaten</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Rechargement</value>
+    <value>Afkoeltijd</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Temps d'action</value>
+    <value>Werkingsduur</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Annuleren</value>
   </data>
-  
-  
+  <data name="SettingsWindow_CustomPath" xml:space="preserve">
+    <value>Aangepast bestandspad</value>
+  </data>
+  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
+    <value>Aangepast bestandspad invullen</value>
+  </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Enregistrer &amp; quitter</value>
+    <value/>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>L'orientation de la tourelle est incorrecte. Les données de WG ne l'incluent pas, donc nous utilisons une solution qui fonctionne dans la plupart des cas. Si vous trouvez un cas d'orientation d'une tourelle et/ou d'angle erroné, signalez-le sur Github ou en rejoignant le serveur Discord ci-dessous.</value>
+    <value>Sommige geschutskoepel oriëntatie data is verkeerd. Dit komt omdat WG deze data niet ingevoegd heeft. Daarom hebben wij een omweg gebruikt waardoor de data voor de meeste gevallen correct is. Als je een geval vind waar deze data verkeerd is, rapporteer dit dan op onze Github of Discord server. Links naar deze vind je hieronder.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Composition sauvegardée</value>
+    <value>Build opgeslagen</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Chaîne de composition copiée dans le presse-papiers</value>
+    <value>Build string naar klembord gekopieerd</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Supprimer la composition</value>
+    <value>Build verwijderen</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Importer</value>
+    <value>Importeren</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Importer uniquement</value>
+    <value>Alleen importeren</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Importer et enregistrer</value>
+    <value>Importeren en opslaan</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Coller la chaîne de composition ici</value>
+    <value>Plak de build string hier</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Importer une composition</value>
+    <value>Importeer build</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Annuleren</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Erreur lors du chargement de la composition</value>
+    <value>Fout tijdens het laden van de build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Durée initiale du boost</value>
+    <value>Initiële boost duur</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Multiplicateur de vitesse de boost initiale</value>
+    <value>Initiële snelheid vermenigvuldiger</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Délai de changement de munitions</value>
+    <value>Tijd om van munitie te wisselen</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Mode de rafale d'artillerie</value>
+    <value>Hoofdgeschut burstvuur</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Durée</value>
+    <value>Duur</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Rechargement après rafale</value>
+    <value>Herlaadtijd na burst</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Rechargement pendant la rafale</value>
+    <value>Herlaadtijd tijdens burstvuur</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Coups nécessaires</value>
+    <value>Treffers benodigd</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Tirs en une rafale</value>
+    <value>Schoten in één burst</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Compétences spéciales</value>
+    <value>Speciale vaardigheden</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Téléchargement des données...</value>
+    <value>Data downloaden...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Temps de visée</value>
+    <value>Richttijd</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Dégâts reçus pendant l'attaque</value>
+    <value>Schade ontvangen tijdens de aanval</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Délai d'invulnérabilité après l'attaque</value>
+    <value>Onschendbaarheid tijd na aanval</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Temps de préparation</value>
+    <value>Voorbereidingstijd</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Délai jusqu'à pleine visée</value>
+    <value>Tijd tot volledig gericht</value>
   </data>
-  
+  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
+    <value>Torpedolanceerbuizen</value>
+  </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Pendant la visée</value>
+    <value>Tijdens het richten</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Taux de changement de zone de largage lors de la manœuvre</value>
+    <value>Verandering van richtgebied tijdens het manoeuvreren</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Pendant la préparation</value>
+    <value>Tijdens de richt voorbereiding</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Temps de pleine puissance</value>
+    <value>Tijd tot maximumsnelheid</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Version des données:</value>
+    <value>Data versie:</value>
   </data>
   <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>Temps de vol</value>
+    <value>Vlieg tijd</value>
   </data>
   <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>Angle d'impact</value>
+    <value>Impact Hoek</value>
   </data>
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>Vitesse d'impact</value>
+    <value>Impact snelheid</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Afficher le graphique de pénétration</value>
+    <value>Toon penetratie grafiek</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>Afficher le graphique de temps de vol</value>
+    <value>Vliegtijd grafiek weergeven</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Afficher le graphique de l'angle d'impact</value>
+    <value>Toon impact hoek grafiek</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>Afficher le graphique de la vitesse d'impact</value>
+    <value>Toon impact snelheid grafiek</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Afficher les graphes des balistiques</value>
+    <value>Open ballistische grafieken</value>
   </data>
-  
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>Het gekozen bestandslocatie is ongeldig.</value>
+  </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Sélectionnez un obus</value>
+    <value>Selecteer een granaattype</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>a plus d'un obus; Sélectionnez celui dont vous voulez savoir la balistique
-En assumant que c'est le même calibre, l'ordre des obus est ci-dessous:
-HE-&gt;SAP-&gt;AP.</value>
+    <value>heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
-    <value>Compte standard</value>
+    <value>Standaard account</value>
   </data>
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
-    <value>Compte premium WG</value>
+    <value>WG Premium account</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
-    <value>Compte Premium WoWs</value>
+    <value>WoWs Premium account</value>
   </data>
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
-    <value>Copier les versions</value>
+    <value>Versies kopiëren</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Détectabilité du sous-marin au niveau de profondeur du périscope</value>
+    <value>Detecteerbaarheid door duikboot op de periscoop diepte</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Détectabilité du sous-marin a profondeur de fonctionnement</value>
+    <value>Detecteerbaarheid door duikboot op de operationele diepte</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-    <value>Afficher les graphiques de dispersion et de balistique</value>
+    <value>Toon verspreiding en ballistische grafieken</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
-    <value>Vertical:</value>
+    <value>Verticaal:</value>
   </data>
   <data name="DispersionPlot_Horizontal" xml:space="preserve">
-    <value>Horizontale:</value>
+    <value>Horizontaal:</value>
   </data>
   <data name="DispersionPlot_InnerVertical" xml:space="preserve">
-    <value>Intérieur vertical:</value>
+    <value>Binnenste verticaal:</value>
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
-    <value>Intérieur Horizontale:</value>
+    <value>Binnenste Horizontaal:</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
-    <value>Dispersion</value>
+    <value>Verspreiding</value>
   </data>
   <data name="ShipStats_ShowDispGraph" xml:space="preserve">
-    <value>Afficher les graphes de dispersion</value>
+    <value>Toon verspreidingsgrafieken</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>Afficher le tracé de dispersion</value>
+    <value>Toon verspreidingsplot</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule à X portée (km)</value>
+    <value>Formule op afstand X(Km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
-    <value>Dispersion Horizontale[X]</value>
+    <value>Horizontale verspreiding[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Portée de visée (Km)</value>
+    <value>Richt afstand (km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
-    <value>Graphes balistiques</value>
+    <value>Ballistische grafieken</value>
   </data>
   <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
-    <value>Graphes de dispersion</value>
+    <value>Verspreidings Grafieken</value>
   </data>
   <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
-    <value>Tracé de dispersion</value>
+    <value>Verspreidings Plot</value>
   </data>
   <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
-    <value>Échelle de Tracé</value>
+    <value>Plot Schalen</value>
   </data>
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
-    <value>Nombre de tirs</value>
+    <value>Aantal Schoten</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
-    <value>Actualiser le tracé</value>
+    <value>Plot vernieuwen</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-    <value>Envoyer des données de télémétrie de base (version actuelle de l'application)</value>
+    <value>Verzend basis telemetrie data (huidige app versie)</value>
   </data>
   <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
-    <value>CE NAVIRE NE PEUT PAS ATTEINDRE LA PORTÉE DE VISÉE SÉLECTIONNÉE</value>
+    <value>DIT SCHIP KAN DE GESELECTEERDE AFSTAND NIET BEREIKEN</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Plan de Tracé</value>
+    <value>Plot oppervlak</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
-    <value>Horizontale (Eau)</value>
+    <value>Horizontaal (water)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Angle d'impact</value>
+    <value>Impact Hoek</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Verticaal</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Référence Fuso</value>
+    <value>Fuso Referentie</value>
   </data>
-  
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>De WITTE ellips toont het maximale dispersiegebied op de geselecteerde afstand.
+De RODE ellips laat zien waar gemiddeld 50% van de granaten terechtkomt.
+De ZWARTE ellips toont de grootte van een Fuso als referentie.
+
+Plot oppervlak:
+1) HORIZONTAAL: 
+    toont het impact punt van de granaten met het water;
+    door dit vlak te selecteren krijgt je een weergave van bovenaf;
+    dit is de plot waar je vooral naar wilt kijken als je de dispersie van schepen vergelijkt;
+    de ellips op dit oppervlak is verticaal uitgerekt vanwege de snelheid van granaten.
+2) VERTICAAL: 
+    toont het impact punt van de granaten met een verticaal oppervlak;
+    door dit vlak te selecteren krijg je een beeld vanaf de voorkant;
+    handig voor nauwkeurige verticale dispersie analyse.
+3) IMPACT HOEK: 
+     toont het impact punt van de granaten met een oppervlak onder een hoek van de inslaghoek van de granaten;
+    door dit vlak te selecteren krijg je een beeld vanuit de invalshoek van de granaten.
+    dit is het vlak waar het spel de dispersie ellips tekent tijdens gevechten;
+    de ellips op dit vlak is niet beïnvloed door de snelheid van granaten;
+    handig als je de dispersie van schepen wilt vergelijken zonder rekening te houden met de snelheid van de granaten.
+
+Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter lang schip neemt 400 m ruimte in.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
-    <value>Explication du tracé</value>
+    <value>Plot uitleg</value>
   </data>
   <data name="BowIn" xml:space="preserve">
-    <value>De proue</value>
+    <value>Van voren</value>
   </data>
   <data name="Broadside" xml:space="preserve">
-    <value>De flanc</value>
+    <value>Van zijkant</value>
   </data>
   <data name="DontShow" xml:space="preserve">
-    <value>Masquer</value>
+    <value>Verbergen</value>
   </data>
   <data name="ShipStats_AirDrag" xml:space="preserve">
-    <value>Glissement dans l'air</value>
+    <value>Lucht weerstand</value>
   </data>
   <data name="ShipStats_Mass" xml:space="preserve">
-    <value>Masse</value>
+    <value>Massa</value>
   </data>
-  
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potentiële branden per minuut </value>
+  </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Chance de mettre en feu un navire par salve</value>
+    <value>Vuurkans per salvo</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Radius d'explosion</value>
+    <value>Explosie radius</value>
   </data>
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Explosie penetratie</value>
+  </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions aux moteurs</value>
+    <value>Motor explosie bescherming</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions au gouvernail</value>
+    <value>Roer explosie bescherming</value>
   </data>
-  
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Als "module explosie bescherming" + "bewapening explosie penetratie" &gt; 0 
+     De module kan beschadigd worden.
+Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
+     De module kan niet beschadigd worden.</value>
+  </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-    <value>Redémarrage nécessaire</value>
+    <value>Herstart vereist</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-    <value>Un redémarrage de l'application est nécessaire pour que le changement de langue prenne effet. Ne pas redémarrer peut entraîner un comportement inattendu.</value>
+    <value>Een herstart van de applicatie is vereist om de taalwijziging door te voeren. Niet herstarten kan leiden tot onverwacht gedrag.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-    <value>Initialisation...</value>
+    <value>Initialiseren...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Met dank aan</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Met dank aan de volgende communityleden voor hun hulp bij de vertaling van dit project. Hieronder worden alle leden met ten minste 10 bijdragen vermeld.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Secondair geschut</value>
+  </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
-    <value>Horizontale</value>
+    <value>Horizontaal</value>
   </data>
-  
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Plot oriëntatie</value>
+  </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Verticale</value>
+    <value>Verticaal</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Granaat Traject</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Kapitein vaardigheden</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importeren uit afbeelding</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Open verkenner bij het opslaan van een build afbeelding</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value/>
+  </data>
   <data name="Dialog_Save" xml:space="preserve">
-    <value>Enregistrer</value>
+    <value>Opslaan</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
-    <value>Annuler</value>
+    <value>Annuleren</value>
   </data>
-  
-  
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Nee</value>
+  </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Signaal en verbruiksartikelen toevoegen aan afbeelding</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Build afbeelding naar klembord gekopieerd</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Aangepast bestandspad voor build afbeeldingen gebruiken</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Aangepaste bestandspad voor build afbeeldingen</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Het aangepaste bestandspad voor build afbeelding is ongeldig.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Met de volgende slider en toggles kunt je bepaalde conditionele vaardigheden en talenten aan of uit zetten. Indien mogelijk kun je ook selecteren hoe vaak je het talent effect wilt activeren. Let op dat niet alle vaardigheden/talenten van invloed zullen zijn op de scheepsstatistieken.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Standaard kapitein</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Kapitein:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bommen in de lading</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Huidige Schepen</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Te verwijderen schepen</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Er is een fout opgetreden tijdens het laden van de gegevens. Dit kan het gevolg zijn van het gegevensformaat dat niet compatibel is met een oudere versie van de app of beschadigde gegevens. Als u niet de laatste versie heeft, wacht dan tot u een melding krijgt over het opnieuw opstarten van de app om bij te werken, of werk handmatig bij als u automatische updates hebt uitgeschakelt. Als je de nieuwste versie hebt, gebruik dan het instellingenvenster om alle opgeslagen applicatiegegevens op te ruimen om problemen met gegevenscorruptie op te lossen.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Server-side Herlaad Tijd</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>De server update slechts elke 0.142857142857 seconden. Dit betekent dat het moment van herladen dat tussen deze ticks valt naar de volgende tick wordt verplaatst. De waarde die hier wordt voorgesteld toont de ware herlaadtijd, deze kan anders zijn dan de bovenstaande theoretische herlaadtijd.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>Server-side Schade/min</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Server-side Schiet ratio</value>
+  </data>
   
 </root>
