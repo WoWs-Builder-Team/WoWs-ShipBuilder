@@ -718,7 +718,7 @@
     <value>Aangepast bestandspad invullen</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Opslaan &ampersand; sluiten</value>
+    <value>Opslaan &amp; sluiten</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Sommige geschutskoepel oriëntatie data is verkeerd. Dit komt omdat WG deze data niet ingevoegd heeft. Daarom hebben wij een omweg gebruikt waardoor de data voor de meeste gevallen correct is. Als je een geval vind waar deze data verkeerd is, rapporteer dit dan op onze Github of Discord server. Links naar deze vind je hieronder.</value>
@@ -1051,7 +1051,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
     <value>Open verkenner bij het opslaan van een build afbeelding</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-    <value>Afbeelding opslaan &ampersand; kopiëren</value>
+    <value>Afbeelding opslaan &amp; kopiëren</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Opslaan</value>
@@ -1069,13 +1069,13 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
     <value>Ok</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
-    <value>Opslaan &ampersand; Afsluiten</value>
+    <value>Opslaan &amp; Afsluiten</value>
   </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
     <value>Signaal en verbruiksartikelen toevoegen aan afbeelding</value>
   </data>
   <data name="BuildCreationWindow_ExportString" xml:space="preserve">
-    <value>Opslaan &ampersand; kopiëren string</value>
+    <value>Opslaan &amp; kopiëren string</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
     <value>Build afbeelding naar klembord gekopieerd</value>
@@ -1090,7 +1090,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
     <value>Het aangepaste bestandspad voor build afbeelding is ongeldig.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Vaardigheid &ampersand; Talenten</value>
+    <value>Vaardigheid &amp; Talenten</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Met de volgende slider en toggles kunt je bepaalde conditionele vaardigheden en talenten aan of uit zetten. Indien mogelijk kun je ook selecteren hoe vaak je het talent effect wilt activeren. Let op dat niet alle vaardigheden/talenten van invloed zullen zijn op de scheepsstatistieken.</value>
