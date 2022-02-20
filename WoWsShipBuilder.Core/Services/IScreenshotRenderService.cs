@@ -6,7 +6,6 @@ namespace WoWsShipBuilder.Core.Services
 {
     public interface IScreenshotRenderService
     {
-        // TODO: get rid of output path
-        public Task CreateBuildImageAsync(Build build, Ship rawShipData, bool includeSignals, string outputPath, bool copyToClipboard);
+        public Task CreateBuildImageAsync(Build build, Ship rawShipData, bool includeSignals, bool copyToClipboard);
     }
 }

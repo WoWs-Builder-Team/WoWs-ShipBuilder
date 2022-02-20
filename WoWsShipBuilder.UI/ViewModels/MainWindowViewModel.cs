@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -286,7 +285,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             AppData.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
             currentBuildName = currentBuild.BuildName;
-            string outputPath = await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
+            await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
 
             string infoBoxContent;
             if (dialogResult.CopyImageToClipboard)
@@ -300,7 +299,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
 
             await BuildCreatedInteraction.Handle(infoBoxContent);
-            OpenExplorerForFile(outputPath);
         }
 
         // Handle(true) closes this window too
@@ -329,25 +327,15 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        private static void OpenExplorerForFile(string filePath)
-        {
-            if (AppData.Settings.OpenExplorerAfterImageSave)
-            {
-                Process.Start("explorer.exe", $"/select, \"{filePath}\"");
-            }
-        }
-
         private async Task LoadShipFromIndexExecute(string shipIndex)
         {
             var shipSummary = AppData.ShipSummaryList!.First(summary => summary.Index == shipIndex);
             await LoadNewShip(shipSummary);
         }
 
-        private async Task<string> CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
+        private async Task CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
         {
-            string outputPath = AppDataHelper.Instance.GetImageOutputPath(currentBuild.BuildName, Localizer.Instance[currentBuild.ShipIndex].Localization);
-            await screenshotRenderService.CreateBuildImageAsync(currentBuild, RawShipData, includeSignals, outputPath, copyToClipboard);
-            return outputPath;
+            await screenshotRenderService.CreateBuildImageAsync(currentBuild, RawShipData, includeSignals, copyToClipboard);
         }
 
         private async Task LoadNewShip(ShipSummary summary)
