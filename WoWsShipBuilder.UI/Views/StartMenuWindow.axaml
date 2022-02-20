@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.StartMenuWindow"
-        xmlns:p="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:utilities="clr-namespace:WoWsShipBuilder.UI.Utilities"
@@ -37,11 +37,11 @@
         <Grid RowDefinitions="30,1.35*,Auto,*,Auto, Auto">
             <userControls:AppHeader Grid.Row="0" ShowTitle="False" />
             <Image Source="/Assets/Art/logo_white_text.png" Grid.Row="0" Grid.RowSpan="2" Margin="0 10 0 0" Name="Image" />
-            <Button Command="{Binding NewBuild}" Content="{x:Static p:Translation.StartMenu_NewBuild}" Grid.Row="2"
+            <Button Command="{Binding NewBuild}" Content="{x:Static translations:Translation.StartMenu_NewBuild}" Grid.Row="2"
                     Margin="10" />
             <StackPanel Orientation="Vertical" Grid.Row="3" Width="250" Spacing="10" Margin="0,10,0,10">
                 <Button Command="{Binding LoadBuild}" Content="{Binding LoadBuildButtonText}" />
-                <Button Command="{Binding DeleteBuildCommand}" Content="{x:Static p:Translation.StartMenu_DeleteBuild}" />
+                <Button Command="{Binding DeleteBuildCommand}" Content="{x:Static translations:Translation.StartMenu_DeleteBuild}" />
                 <ListBox Items="{Binding BuildList}" HorizontalAlignment="Stretch" SelectedIndex="{Binding SelectedBuild}"
                          SelectionMode="Single" VirtualizationMode="None"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -58,9 +58,9 @@
                 </ListBox>
             </StackPanel>
             <Button Grid.Row="4" Command="{Binding OpenDispersionGraphWindow}" Margin="0,10,0,10">
-                <TextBlock Text="{x:Static p:Translation.StartMenu_OpenDispersionWindow}" TextWrapping="Wrap" TextAlignment="Center" />
+                <TextBlock Text="{x:Static translations:Translation.StartMenu_OpenDispersionWindow}" TextWrapping="Wrap" TextAlignment="Center" />
             </Button>
-            <Button Command="{Binding Setting}" Content="{x:Static p:Translation.StartMenu_Settings}" Grid.Row="5"
+            <Button Command="{Binding Setting}" Content="{x:Static translations:Translation.StartMenu_Settings}" Grid.Row="5"
                     Margin="0,10,0,20" />
         </Grid>
 

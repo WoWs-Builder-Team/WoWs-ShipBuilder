@@ -9,6 +9,7 @@
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
              x:Name="Control">
     <Design.DataContext>
         <viewModels:CaptainSkillSelectorViewModel />
@@ -25,7 +26,7 @@
         <DockPanel>
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
                 <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">                
-                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Static translations:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
@@ -41,17 +42,17 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Spacing="3" Margin="0 5" 
                             IsVisible="{Binding ScreenshotMode}">
-                    <TextBlock Text="{x:Static t:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
+                    <TextBlock Text="{x:Static translations:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
                     <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" FontSize="15" />
                 </StackPanel>
-                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" 
+                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}" 
                         Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"/>
                 
                 <!--Popup to manage skill activation-->
                 <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
                         <Grid Margin="10" RowDefinitions="Auto,*,Auto">
-                            <TextBlock Grid.Row="0" Text="{x:Static t:Translation.CaptainSkillSelector_SkillTalentDescription}" TextWrapping="Wrap" />
+                            <TextBlock Grid.Row="0" Text="{x:Static translations:Translation.CaptainSkillSelector_SkillTalentDescription}" TextWrapping="Wrap" />
                             <StackPanel Orientation="Vertical" Margin="5,0" Grid.Row="1">
                                 <Separator Margin="0,5"/>
                                 <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
@@ -105,7 +106,7 @@
                 </Popup>
                 
                 <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
-                          Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
+                          Content="{x:Static translations:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>

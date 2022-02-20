@@ -118,1005 +118,1016 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Menüye Dön</value>
+    <value>Вернуться в меню</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Konfigürasyonu sıfırla</value>
+    <value>Сбросить билд</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Konfigürasyonu paylaş</value>
+    <value>Поделиться билдом</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Otomatik güncellemeleri etkinleştir</value>
+    <value>Разрешить автоматические обновления</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Temizle</value>
+    <value>Очистить</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Uygulama verilerini temizle</value>
+    <value>Очистить сохраненные данные приложения</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Geliştiren:</value>
+    <value>Разработано:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Bilgi</value>
+    <value>Информация</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Dil</value>
+    <value>Язык</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Sıfırla</value>
+    <value>Сброс</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Ayarları varsayılana sıfırla</value>
+    <value>Сбросить настройки по умолчанию</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Ayarlar</value>
+    <value>Настройки</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Sürüm:</value>
+    <value>Версия:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Konfigürasyon yükle</value>
+    <value>Загрузить билд</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Yeni konfigürasyon oluştur</value>
+    <value>Создать новый билд</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Konfigürasyon Aktar...</value>
+    <value>Импортировать билд...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Ayarlar ve bilgi</value>
+    <value>Настройки и информация</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Durum:</value>
+    <value>Статус:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Bayraklar </value>
+    <value>Сигналы </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Konfigürasyon için bir ad girin. Geminin adı otomatik olarak eklenecektir.</value>
+    <value>Вставьте название для билда. Название корабля будет добавлено автоматически.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Yeni gemi seç</value>
+    <value>Выбрать новый корабль</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Arayüz:</value>
+    <value>Художник:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Geliştiriciler: </value>
+    <value>Разработчики: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Ekip Liderleri:</value>
+    <value>Ведущие Разработчики:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Veri Dönüşümü:</value>
+    <value>Конвертация данных:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Komutan Seviyesi:</value>
+    <value>Очки Командира:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Komutan Yetenekleri</value>
+    <value>Таланты Командира</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Kaydet</value>
+    <value>Сохранить</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Sunucu</value>
+    <value>Сервер</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>Temel DP</value>
+    <value>Чистый Опыт</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>Komutan DP'si:</value>
+    <value>Опыт Командира:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>Komutan DP'si Bonus %</value>
+    <value>Бонус к опыту командира в %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>Serbest DP:</value>
+    <value>Свободный Опыт:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Serbest DP Bonus %</value>
+    <value>Бонус к свободному опыту в %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>Nihai DP:</value>
+    <value>Окончательный опыт:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>DP Bonus %</value>
+    <value>Бонус к опыту в %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>DP Hesaplayıcı</value>
+    <value>Калькулятор Опыта</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Kamuflaj görselleri indiriliyor</value>
+    <value>Загрузка изображений камуфляжей</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Tamamlandı</value>
+    <value>Готово</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Veri indiriliyor</value>
+    <value>Загрузка данных</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Gemi görselleri indiriliyor</value>
+    <value>Загрузка изображений кораблей</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>Uçak Gemisi</value>
+    <value>Авианосец</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Savaş Gemisi</value>
+    <value>Линкор</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>İngilizMilletlerTopluluğu</value>
+    <value>Содружество</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Kruvazör</value>
+    <value>Крейсер</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Muhrip</value>
+    <value>Эсминец</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Avrupa</value>
+    <value>Европа</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>Fransa</value>
+    <value>Франция</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Almanya</value>
+    <value>Германия</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>İtalya</value>
+    <value>Италия</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Japonya</value>
+    <value>Япония</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Hollanda</value>
+    <value>Нидерланды</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan Amerika</value>
+    <value>Пан-Америка</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan Asya</value>
+    <value>Пан-Азия</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Premium</value>
+    <value>Премиум</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>S.S.C.B</value>
+    <value>СССР</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>İspanya</value>
+    <value>Испания</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Özel</value>
+    <value>Акционные</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Denizaltı</value>
+    <value>Подводная Лодка</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Teknik Ağaç</value>
+    <value>Древо развития</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Test Gemisi</value>
+    <value>Тестовый корабль</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>B.K.</value>
+    <value>Великобритания</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>A.B.D.</value>
+    <value>США</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Boş Yuva</value>
+    <value>Пустой слот</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Uyarının belirmesi için gereken minimum menzil aralığı</value>
+    <value>Минимальная дальность для отображения предупреждения</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Sınıf</value>
+    <value>Класс</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Onayla</value>
+    <value>Подтвердить</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Ülke</value>
+    <value>Нация</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Seviye</value>
+    <value>Уровень</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>Tür</value>
+    <value>Тип</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Eşleşmeye uyan gemi bulunamadı</value>
+    <value>Не найдено кораблей, соответствующих критериям фильтра</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Gemi Arayın</value>
+    <value>Поиск корабля</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>180° dönüş süresi</value>
+    <value>Время поворота на 180°</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Горизонтальный</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Menzil</value>
+    <value>Дальность Стрельбы</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Atış Hızı</value>
+    <value>Скорострельность</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Teorik Yeniden Doldurma Süresi</value>
+    <value>Перезарядка</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
-    <value>Sigma</value>
+    <value>Сигма</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Dönüş Hızı</value>
+    <value>Скорость Наведения</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Вертикальный</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Namlu Çıkış Hızı</value>
+    <value>Начальная скорость снаряда</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Merminin Ağırlığı</value>
+    <value>Масса снаряда</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Teorik SBH</value>
+    <value>Теоретический ДПМ</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Fünye Eşiği</value>
+    <value>Толщина брони для взведения взрывателя</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Sualtı Patlama Yarıçapı</value>
+    <value>Радиус глубинного взрыва</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Yangın Çıkma Şansı</value>
+    <value>Шанс пожара</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Fünye Tetiklenme Süresi</value>
+    <value>Таймер взрывателя</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>"Overmatch Kabiliyeti"</value>
+    <value>Пробитие по правилу 14.3</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Delme</value>
+    <value>Бронепробитие</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Sekme Açıları</value>
+    <value>Углы рикошета</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Hava Savunma</value>
+    <value>ПВО</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>Uçak CP'si</value>
+    <value>ХП Самолетов</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Hava saldırısı</value>
+    <value>Авиаудар</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Bomba Türü</value>
+    <value>Тип бомб</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Taşınan Bomba</value>
+    <value>Бомб в загрузке</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Sabit Hasar</value>
+    <value>Постоянный урон</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Hasar</value>
+    <value>Урон</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Gecikme</value>
+    <value>Задержка</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Tespit Edilme Mesafesi</value>
+    <value>Дальность обнаружения</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Uçaksavar Topu</value>
+    <value>Разрыв</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Uçaksavar Top Hasarı</value>
+    <value>Урон разрывов</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>İsabet Oranı</value>
+    <value>Шанс попадания</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Su Alma İhtimali</value>
+    <value>Шанс затопления</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Ana Batarya</value>
+    <value>Главный Калибр</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Reaksiyon Süresi</value>
+    <value>Время для реакции</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Torpido</value>
+    <value>Торпеды</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Gemi ekle</value>
+    <value>Добавить корабль</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Gemiyi kaldır</value>
+    <value>Удалить корабль</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Manevra kabiliyeti</value>
+    <value>Маневренность</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Yangın Başına Toplam Hasar</value>
+    <value>Общий урон за пожар</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>Yangın Başına SBH</value>
+    <value>УВС за пожар</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Yangın Süresi</value>
+    <value>Длительность пожара</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Yangın Çıkma Riski Düşürme</value>
+    <value>Снижение шанса пожара</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Su Alma Başına Toplam Hasar</value>
+    <value>Общий урон за затоп</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>Su Alma Başına SBH</value>
+    <value>УВС за затопление</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Su alma Süresi</value>
+    <value>Время затопления</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Su Alma Olasılığı</value>
+    <value>Вероятность затопления</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Can Puanı</value>
+    <value>Боеспособность</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Azami Yangın Sayısı</value>
+    <value>Макс. количество пожаров</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Azami Su Alma Sayısı</value>
+    <value>Макс. количество затопов</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Beka Kabiliyeti</value>
+    <value>Живучесть</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Torpido Koruması</value>
+    <value>ПТЗ</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Hata</value>
+    <value>Ошибка</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>ana bataryalara sahip değil</value>
+    <value>ГК отсутствует</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>Seçilen gemi zaten eklendi</value>
+    <value>уже был добавлен с этим снарядом</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>Tür</value>
+    <value>Тип</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Taret Açılarını Göster</value>
+    <value>Показать углы башен</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>Kullanılan Referans açısı, ön tarafta 0 dereceden başlar ( resmin üst kısmı) ve saat yönünde ilerler</value>
+    <value>Используемый угол отсчета начинается с 0° на передней панели (вверху изображения) и идет по часовой стрелке</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Tüm Açıları Kapat</value>
+    <value>Убрать все углы</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Açıları Asla Gösterme</value>
+    <value>Никогда не показывать углы</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Açıları Her zaman göster</value>
+    <value>Всегда показывать углы</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Tüm açıları Aç</value>
+    <value>Показать все углы</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Komutan Yetenekleri ve Kamuflaj</value>
+    <value>Перки командира и Камуфляж</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Sancaklar</value>
+    <value>Сигналы</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>İsim</value>
+    <value>Название</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Kamuflaj Bonuslarını Uygula</value>
+    <value>Бонусы камуфляжа</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Fünye Aktifleşme Mesafesi</value>
+    <value>Дальность взведения</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Sadece şunlara vurabilir</value>
+    <value>Подходящие цели</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Gizlilik</value>
+    <value>Маскировка</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Havadan tespit edilme mesafesi</value>
+    <value>Заметность с самолетов</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Yanarken</value>
+    <value>При пожаре</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Denizden Tespit Edilme Mesafesi</value>
+    <value>Заметность с кораблей</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Yanarken</value>
+    <value>При пожаре</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Sis İçerisinde ateş edince</value>
+    <value>После выстрела в дымах</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Azami Yangın Sayısı</value>
+    <value>Макс. пожаров</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Toplam Yangın Hasarı</value>
+    <value>Общий урон от пожара</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Azami Su Alma Sayısı</value>
+    <value>Макс. затопов</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Torpido koruması</value>
+    <value>ПТЗ</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Toplam Su Alma Hasarı</value>
+    <value>Общий урон от затопа</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Uzun Menzilli Silahlar</value>
+    <value>Дальняя Аура</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Geriye</value>
+    <value>Назад</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>İleriye</value>
+    <value>Вперед</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Azami Hız</value>
+    <value>Максимальная скорость</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Dümen Kırma Süresi</value>
+    <value>Время перекладки руля</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Dönüş Çemberi Yarıçapı</value>
+    <value>Радиус циркуляции</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Orta Menzilli Silahlar</value>
+    <value>Средняя Аура</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Kısa Menzilli Silahlar</value>
+    <value>Ближняя Аура</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Torpido Dağılımı</value>
+    <value>Разброс торпед</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Uçaklar</value>
+    <value>Самолеты</value>
   </data>
   <data name="Bomb" xml:space="preserve">
-    <value>Bomba</value>
+    <value>Бомба</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Roket</value>
+    <value>Ракета</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Hız</value>
+    <value>Скорость</value>
   </data>
   <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Silah Türü</value>
+    <value>Тип вооружения</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Sıçrayan Bomba</value>
+    <value>Топ-мачтовые бомбы</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpido</value>
+    <value>Торпеды</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Uçak başına yüklü silah</value>
+    <value>Вооружения на каждом самолете</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Saldırı için Bekleme Süresi</value>
+    <value>Перезарядка атаки</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Seyir hızı</value>
+    <value>Крейсерская скорость</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bombanın iç çembere düşme olasılığı</value>
+    <value>Бомб во внутреннем эллипсе</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Güvertedeki Maksimum Uçak Sayısı</value>
+    <value>Макс. самолетов на палубе</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Azami hız</value>
+    <value>Максимальная скорость</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Asgari Hız</value>
+    <value>Мин. Скорость</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Saldıran Uçuş Boyutu</value>
+    <value>Самолетов в сбросе</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Filodaki Uçak Sayısı</value>
+    <value>Самолетов в эскадрилье</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>Uçak Başına Cp</value>
+    <value>ХП каждого самолета</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Uçak Yenileme Süresi</value>
+    <value>Время восстановления</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Güvertedeki Uçak Sayısı</value>
+    <value>Стартовое кол-во самолетов на палубе</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Uçak Başına Yüklü Bomba</value>
+    <value>Бомб на каждом самолете</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Düşüş Süresi</value>
+    <value>Время сброса</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Hedefe Varış Süresi</value>
+    <value>Время до сброса</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Azami Menzil</value>
+    <value>Максимальная дальность</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Azami Bırakma Aralığı</value>
+    <value>Длина зоны авиаудара</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Asgari Menzil</value>
+    <value>Минимальная дальность</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Salvo Sayısı</value>
+    <value>Количество зарядов</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>DAH Sualtı Bombardımanı</value>
+    <value>Авиаудар ПЛО</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Sualtı Bombaları</value>
+    <value>Глубинные бомбы</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Dağılım Görselleştirme</value>
+    <value>Визуализация разброса</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>DAH Sualtı Bombaları</value>
+    <value>Глубинные бомбы</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>İlk Ping Süresi</value>
+    <value>Время действия первого импульса</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Ping Süresi</value>
+    <value>Время действия импульса</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>Sonar</value>
+    <value>Сонар</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Ping Hızı</value>
+    <value>Скорость импульса</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Ping Genişliği</value>
+    <value>Ширина импульса</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>İkinci Ping Süresi</value>
+    <value>Время действия второго импульса</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Mermiler</value>
+    <value>Снаряды</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Yükleme Süresi</value>
+    <value>Перезарядка</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Reaksiyon Süresi</value>
+    <value>Время действия</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>İptal</value>
+    <value>Отмена</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Dosya Konumunu değiştir</value>
+    <value>Включить пользовательский путь для сохранения данных</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Dosya konumunu seçiniz</value>
+    <value>Ввести пользовательский путь данных</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Kaydet &amp; Çık</value>
+    <value>Сохранить и выйти</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>Bazı Taretlere ait bilgiler yanlış olabilir. Çünkü Wargaming'den bu verileri alamıyoruz bu nedenle işe yaradığınız bildiğimiz bir çözümü kullanarak bu verileri tamamlıyoruz. Eğer Taretlere ait bilgilerde bir yanlışlık fark ederseniz yada belirtilen taret açılarında hata olduğunu düşünüyorsanız, Lütfen bunu Github üzerinden bize bildirin yada Discord sunucumuza aşağıdaki Linki kullanarak katılın.</value>
+    <value>Ориентация некоторых башен неверна. Данные от WG не включают в себя их, поэтому мы используем обход, который работает в большинстве случаев. Если вы нашли случай неправильной ориентации башни и/или угла, сообщите об этом на Github или присоединившись к серверу Discord ниже.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Konfigürasyon Kaydedildi</value>
+    <value>Билд сохранен</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>Konfigürasyon adı panoya kopyalandı</value>
+    <value>Ссылка на билд скопирована в буфер обмена</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Konfigürasyon Sil</value>
+    <value>Удалить билд</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>İçe aktar</value>
+    <value>Импорт</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Sadece içe aktar</value>
+    <value>Только импорт</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>İçe aktar ve kaydet</value>
+    <value>Импортировать и сохранить</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Konfigürasyon adını buraya yapıştırın</value>
+    <value>Вставьте ссылку на билд сюда</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Konfigürasyonu içe aktar</value>
+    <value>Импортировать билд</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>İptal</value>
+    <value>Отмена</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Tamam</value>
+    <value>Ок</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Konfigürasyon yüklenirken hata oluştu</value>
+    <value>Ошибка при загрузке билда</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Kalkış İtki Süresi</value>
+    <value>Начальная длительность ракетного ускорения</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Kalkış İtki Süresi Çarpanı</value>
+    <value>Коэффициент длительности ракетного ускорения</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Mermi Türü Değişikliği Süresi</value>
+    <value>Время для переключения боеприпасов</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Seri Top Atışı Modu</value>
+    <value>Альт. режим стрельбы</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Süre</value>
+    <value>Длительность</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Seri Atış Yükleme Süresi</value>
+    <value>Перезарядка после альт. залпа</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Seri Atış sırasında yükleme süresi</value>
+    <value>Перезарядка во время альт. залпа</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Gereken İsabetli Atış</value>
+    <value>Требуется попаданий</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Toplam Atış Hakkı</value>
+    <value>Выстрелов в альт. залпе</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Özel Yetenekler</value>
+    <value>Особые способности</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Veri indiriliyor...</value>
+    <value>Загрузка данных...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Nişan alma süresi</value>
+    <value>Время наведения</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Saldırı Sırasında Alınan hasar</value>
+    <value>Урон, полученный при сбросе</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Saldırı sonrası hasar almama süresi</value>
+    <value>Время неуязвимости после сброса</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Hazırlık Süresi</value>
+    <value>Время подготовки</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Tam Nişan alma süresi</value>
+    <value>Время для полного сведения</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Torpido Kovanları</value>
+    <value>Торпедные аппараты</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Saldırı Sırasında</value>
+    <value>В фазе наведения</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Manevra yaparken bomba bırakma alanının değişim oranı</value>
+    <value>Изменение зоны сброса при маневрировании</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Saldırı Hazırlığı</value>
+    <value>В фазе подготовки</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tam güce ulaşma süresi</value>
+    <value>Время до полной мощности</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Eklenti Sürümü:</value>
+    <value>Версия данных:</value>
   </data>
   <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>Uçuş süresi</value>
+    <value>Время полета</value>
   </data>
   <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>Çarpma Açısı</value>
+    <value>Угол при попадании</value>
   </data>
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>Çarpma Hızı</value>
+    <value>Скорость при попадании</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Delme Grafiğini Göster</value>
+    <value>Показать график бронепробития</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>Uçuş Süresi Grafiğini Göster</value>
+    <value>Показать график времени полета</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Çarpma Açısı Grafiğini Göster</value>
+    <value>Показать график угла при попадании</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>Çarpma Hızı Grafiğini Göster</value>
+    <value>Показать график скорости при попадании</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Balistik Grafiğini Göster</value>
+    <value>Открыть графики баллистики</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>Seçilen dosya konumu geçerli değil.</value>
+    <value>Выбранный пользовательский адрес недействителен.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Mermi türü seçin</value>
+    <value>Выберите снаряд</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>Seçilen gemi birden fazla mermi türüne sahip. Balistiğini görüntülemek istediğinizi seçin. Aynı kalibre olduğu göz önüne alınarak, aşağıdaki mermi sırası HE-&gt;SAP-&gt;AP şeklindedir.</value>
+    <value>имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
-    <value>Standart Hesap</value>
+    <value>Обычный аккаунт</value>
   </data>
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
-    <value>WG Premium Hesap</value>
+    <value>Общий Премиум аккаунт</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
-    <value>WoWs Premium Hesap</value>
+    <value>Корабельный Премиум аккаунт</value>
   </data>
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
-    <value>Sürümü Kopyala</value>
+    <value>Скопировать версии</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Periskop Derinliğindeki Denizaltıya Tespit Olma Mesafesi</value>
+    <value>Дальность обнаружения подлодкой с перископной глубины</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Operasyonel Derinliğindeki Denizaltıya Tespit Olma Mesafesi</value>
+    <value>Дальность обнаружения подлодкой с рабочей глубины</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-    <value>Dağılım ve Balistik Grafiklerini Görüntüle</value>
+    <value>Показать графики разброса и баллистики</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
-    <value>Yatay:</value>
+    <value>Вертикальный:</value>
   </data>
   <data name="DispersionPlot_Horizontal" xml:space="preserve">
-    <value>Dikey:</value>
+    <value>Горизонтальный:</value>
   </data>
   <data name="DispersionPlot_InnerVertical" xml:space="preserve">
-    <value>İç Dikey:</value>
+    <value>Внутренний вертикальный:</value>
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
-    <value>İç Yatay:</value>
+    <value>Внутренний горизонтальный:</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
-    <value>Dağılım</value>
+    <value>Разброс</value>
   </data>
   <data name="ShipStats_ShowDispGraph" xml:space="preserve">
-    <value>Dağılım Grafiklerini Görüntüle</value>
+    <value>Показать графики разброса</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>Dağılım Diyagramını Göster</value>
+    <value>Показать график разброса</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>X Menzili için Formül</value>
+    <value>Формула для расстояния Х(км)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
-    <value>Yatay Dağılım[X]</value>
+    <value>Горизонтальный разброс [X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Nişan Alma Menzili(Km)</value>
+    <value>Расстояние прицеливания (км)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
-    <value>Balistik Grafikleri</value>
+    <value>Графики баллистики</value>
   </data>
   <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
-    <value>Dağılım Grafikleri</value>
+    <value>Графики разброса</value>
   </data>
   <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
-    <value>Dağılım Diyagramı</value>
+    <value>График разброса</value>
   </data>
   <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
-    <value>Diyagram Ölçekleme</value>
+    <value>Масштаб графика</value>
   </data>
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
-    <value>Atış Sayısı</value>
+    <value>Количество выстрелов</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
-    <value>Diyagramı yenile</value>
+    <value>Обновить график</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-    <value>Temel telemetri verilerini gönder ( Mevcut Uygulama Sürümü)</value>
+    <value>Отправить базовые телеметрические данные (текущая версия приложения)</value>
   </data>
   <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
-    <value>GEMİNİN AZAMİ MENZİLİ SEÇİLEN MENZİLE ULAŞAMAZ</value>
+    <value>Этот корабль не может стрелять на выбранное расстояние прицеливания</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Diyagram Düzlemi</value>
+    <value>Плоскость графика</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
-    <value>Yatay (Deniz)</value>
+    <value>Горизонталь (вода)</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Çarpma Açısı</value>
+    <value>Угол при попадании</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Вертикальный</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Fuso Referansı</value>
+    <value>Fuso для справки</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>Beyaz Elips, seçilen hedef menzilindeki maksimum dağılımı gösterir.
-Kırmızı Elips, Mermilerin ortalama %50 ' sinin düşeceği alanı gösterir.
-Siyah Elips, Fuso gemisinin boyutunu referans olarak gösterir.
+    <value>БЕЛЫЙ эллипс показывает максимальный разброс на выбранной дистанции стрельбы.
+КРАСНЫЙ эллипс показывает зону, в которую, в среднем, попадает 50% снарядов на выбранной дистанции стрельбы.
+ЧЕРНЫЙ эллипс показывает размеры Фусо для наглядности
 
-Grafik Yüzeyleri:
-1) YATAY: 
-    mermilerin su üstünde çarpma noktalarını gösterir;
-    bu yüzeyi seçerek yukarıdan bir görünüm elde edersiniz;
-    gemi dağılımlarını karşılaştırırken bu grafiğe bakmalısınız;
-    bu düzlemdeki elips, mermilerin hızından dolayı dikey olarak gerilir.
-2) DİKEY: 
-    dikey düzlemde mermilerin çarpma noktasını gösterir;
-    bu yüzeyi seçerek önden bir görünüm elde edersiniz;
-    çok hassas dikey doğruluk analizi yapmakta kullanışlıdır.
-3) ÇARPMA AÇISI: 
-    merminin çarpma noktasını, açılı yüzeye çarpma açısı ile gösterir;
-    bu yüzeyi seçerek merminin çarpma açısından bir görünüm elde edersiniz;
-    bu yüzey, Oyunun savaş içerisinde çizdiği gerçek dağılım elipsini gösterir.;
-    bu düzlemdeki elips mermilerin hızından etkilenmez;
-    gemilerin mermi hızlarını dikkate almadan karşılaştırma yapmak için kullanışlıdır.
+1) Горизонтальный: 
+   показывает точку соприкосновения снаряда с водой;
+   выбирая данный режим, вы получаете вид сверху;
+   по данному графику удобнее всего сравнивать разброс разных кораблей;
+   эллипс растянут вертикально из-за скорости снаряда.
+2) Вертикальный: 
+    показывает точку соприкосновения снаряда с вертикальной плоскостью;
+    выбирая данный режим, вы получаете вид спереди;
+    удобен для точного анализа вертикальной точности.
+3) Угол входа:
+    показывает точку соприкосновения снаряда с поверхностью под углом входа; 
+    выбирая данный режим, вы получаете вид под углом входа снаряда;
+    это плоскость, на которой игра фактически рассчитывает эллипс разброса в бою;
+    эллипс на данном графике не зависит от скорости полета снаряда;
+    полезен, если вы хотите сравнить точность кораблей без учета скорости полета снаряда.
 
-Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metre uzunluğundaki bir gemi 400 metre yer kaplar.</value>
+Корабли в игре в два раза больше окружающей среды, поэтому корабль длиной 200 метров занимает пространство 400 метров.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
-    <value>Diyagram Açıklaması</value>
+    <value>Объяснение графика</value>
   </data>
   <data name="BowIn" xml:space="preserve">
-    <value>Pruva Durmak</value>
+    <value>Носом</value>
   </data>
   <data name="Broadside" xml:space="preserve">
-    <value>Borda</value>
+    <value>Бортом</value>
   </data>
   <data name="DontShow" xml:space="preserve">
-    <value>Gizle</value>
+    <value>Скрыть</value>
   </data>
   <data name="ShipStats_AirDrag" xml:space="preserve">
-    <value>Hava Direnci</value>
+    <value>Сопротивление воздуха</value>
   </data>
   <data name="ShipStats_Mass" xml:space="preserve">
-    <value>Kütle</value>
+    <value>Масса</value>
   </data>
   <data name="ShipStats_PotentialFPM" xml:space="preserve">
-    <value>Potansiyel DBY </value>
+    <value>Потенциальных пожаров/мин </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Salvo başına yangın çıkarma şansı</value>
+    <value>Шанс пожара за залп</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Patlama Yarıçapı</value>
+    <value>Радиус взрыва</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Patlama Delişi</value>
+    <value>Пробитие взрывом</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Motorun Patlayıcıya Koruması</value>
+    <value>Защита двигателя от взрывов</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Dümenin Patlayıcıya Koruması</value>
+    <value>Защита рулей от взрывов</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>If "modülün patlayıcıya koruması" + "cephanenin patlama delişi" &gt; 0 
-     Modül devre dışı kalmaz.
-If "module blast protection" + "armament blast penetration" &lt;= 0
-     Modül devre dışı kalır.</value>
+    <value>Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &gt; 0 
+     Модуль может быть выведен из строя.
+Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &lt;= 0
+     модуль не может быть выведен из строя.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-    <value>Yeniden Başlatma Gerekli</value>
+    <value>Требуется перезапуск</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-    <value>Dil değişikliğinin uygulanabilmesi için uygulamanın yeniden başlatılması gerekmektedir. Yeniden başlatılmaması beklenmeyen sorunlara neden olabilir.</value>
+    <value>Для смены языка необходим перезапуск приложения. В противном случае возможны неожиданные проблемы.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-    <value>Başlatılıyor...</value>
+    <value>Загрузка...</value>
   </data>
   <data name="SettingsWindow_Credits" xml:space="preserve">
-    <value>Hazırlayanlar</value>
+    <value>Благодарности</value>
   </data>
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
-    <value>Bu projenin çevirisine yardımcı oldukları için aşağıdaki Topluluk üyelerine teşekkür ederiz. Aşağıda, En az 10 katkısı olan tüm üyelerden bahsedilmiştir.</value>
+    <value>Благодарим следующих игроков за помощь в переводе приложения на разные языки. Ниже представлены те, кто перевел как минимум 10 реплик.</value>
   </data>
   <data name="ShipStats_SecondaryBattery" xml:space="preserve">
-    <value>İkincil Batarya</value>
+    <value>ПМК</value>
   </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Горизонтальный</value>
   </data>
   <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
-    <value>Grafik Oryantasyonu</value>
+    <value>Ориентация графика</value>
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Вертикальный</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Mermi Yolu</value>
+    <value>Траектория Снаряда</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
-    <value>Komutan Yetenekleri</value>
+    <value>Перки капитана</value>
   </data>
   <data name="BuildImport_ImportFromImage" xml:space="preserve">
-    <value>Resimden Aktar</value>
+    <value>Импортировать с изображения</value>
   </data>
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
-    <value>Konfigürasyon resmini kaydederken Windows Gezgini açın</value>
+    <value>Открыть Проводник при сохранении изображения билда</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-    <value>Resmi kaydet &amp; kopyala</value>
+    <value>Сохранить и копировать изображение</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
-    <value>Kaydet</value>
+    <value>Сохранить</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
-    <value>İptal</value>
+    <value>Отмена</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-    <value>Evet</value>
+    <value>Да</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
-    <value>Hayır</value>
+    <value>Нет</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
-    <value>Tamam</value>
+    <value>Ок</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
-    <value>Kaydet &amp; Çık</value>
+    <value>Сохранить и выйти</value>
   </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
-    <value>Sancak ve sarf malzemelerini resime dahil et</value>
+    <value>Добавить на изображение сигналы и расходники</value>
   </data>
   <data name="BuildCreationWindow_ExportString" xml:space="preserve">
-    <value>Metni kaydet &amp; kopyala</value>
+    <value>Сохранить и копировать строку</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
-    <value>Konfigürasyon resmi panoya kopyalandı</value>
+    <value>Изображение билда скопировано в буфер обмена</value>
   </data>
   <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
-    <value>Konfigürasyon resmi kayıt noktasını değiştir</value>
+    <value>Включить пользовательский путь для изображений билдов</value>
   </data>
   <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
-    <value>Konfigürasyon resmi kayıt noktası seçin</value>
+    <value>Пользовательский путь для изображений билдов</value>
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
-    <value>Seçilen konfigürasyon resminin konumu geçersiz.</value>
+    <value>Выбранный пользовательский путь для изображений недействителен.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Beceri &amp; Yetenekler</value>
+    <value>Перки и таланты</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
-    <value>Kaydırıcı ve seçenek geçişlerini kullanarak belirli koşullara bağlı beceri efektlerini etkinleştirebilir yada devre dışı bırakabilirsiniz. Eğer mümkünse, yetenek etkilerinin kaç kez tetiklenebileceği de seçebilirsiniz. Ancak beceri/yeteneklerin gemi istatistikleri üzerinde bir etkisi olmayacağını unutmayın.</value>
+    <value>С помощью данных переключателей, вы можете включить или выключить определенные активируемые при определенных условиях эффекты от перков. Вы также можете выбрать, сколько раз сработает эффект таланта, если это возможно. Обратите внимание, что не все перки/таланты оказывают влияние на ТТХ корабля.</value>
   </data>
   <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
-    <value>Standart Komutan</value>
+    <value>Обычный капитан</value>
   </data>
   <data name="ScreenshotWindow_Captain" xml:space="preserve">
-    <value>Komutan:</value>
+    <value>Командир:</value>
   </data>
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
-    <value>Salvodaki bomba sayısı</value>
+    <value>Бомб в сбросе</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-    <value>Mevcut Gemiler</value>
+    <value>Текущие Корабли</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-    <value>Silinecek Gemiler</value>
+    <value>Удаляемые Корабли</value>
   </data>
   <data name="MessageBox_LoadingError" xml:space="preserve">
-    <value>Veri yüklenirken bir hata oluştu. Söz konusu veri biçiminin uygulamanın eski bir sürümü ile uyumlu olmaması veya verinin bozuk olmasından kaynaklanıyor olabilir. Eğer son sürümde değil iseniz, güncellemek için uygulamayı yeniden başlatma ile ilgili bir istem alana kadar bekleyin, Eğer otomatik güncellemeleri devre dışı bıraktı iseniz manuel olarak güncelleme yapın. Eğer son sürüm kullanıyorsanız, veri bozulmasına ilişkin sorunları çözmek için ayarlar penceresinden depolanan uygulama verilerini temizleyin.</value>
+    <value>Произошла ошибка при загрузке данных. Это может быть вызвано тем, что данные были повреждены, либо же формат данных не совместим со старой версией приложения. Если вы не используете последнюю версию, подождите, пока вы не получите запрос о перезапуске приложения для обновления, или, если вы отключили автоматическое обновление, обновите вручную. Если вы используете последнюю версию, воспользуйтесь окном настроек для очистки всех сохраненных данных приложения для решения проблемы повреждения данных.</value>
   </data>
   <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>Gerçek Yeniden Doldurma Süresi</value>
+    <value>Серверная Перезарядка</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
+    <value>Сервер обновляется раз в 0.142857142857 секунды. Это значит, что перезарядки попадающие в период между обновлениями откладываются до следующего обновления. Значение указанное здесь - ваша истинная перезарядка, и она может отличаться от теоретической, указанной выше.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>Серверный ДПМ</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Серверная Скорострельность</value>
+  </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>Название билда содержит недопустимые символы. Допускаются только буквы, цифры, пробелы, дефисы и подчеркивания.</value>
+  </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Просто значение для тестирования</value>
   </data>
 </root>

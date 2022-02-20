@@ -39,7 +39,7 @@ namespace WoWsShipBuilder.UI.Translations {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWsShipBuilder.UI.Translations.Translation", typeof(Translation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WoWsShipBuilder.Core.Localization.Translation", typeof(Translation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -2976,6 +2976,15 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string TestShip {
             get {
                 return ResourceManager.GetString("TestShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Just a value for testing.
+        /// </summary>
+        public static string Teststring {
+            get {
+                return ResourceManager.GetString("Teststring", resourceCulture);
             }
         }
         

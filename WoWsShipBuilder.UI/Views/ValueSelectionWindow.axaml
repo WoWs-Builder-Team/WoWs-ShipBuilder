@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         mc:Ignorable="d" Width="400" SizeToContent="Height"
         x:Class="WoWsShipBuilder.UI.Views.ValueSelectionWindow"
@@ -24,8 +24,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
-                <Button Content="{x:Static t:Translation.Ok}" IsDefault="True" Command="{Binding OkCommand}"/>
-                <Button Content="{x:Static t:Translation.Cancel}" IsCancel="True" Command="{Binding Cancel}"/>
+                <Button Content="{x:Static translations:Translation.Ok}" IsDefault="True" Command="{Binding OkCommand}"/>
+                <Button Content="{x:Static translations:Translation.Cancel}" IsCancel="True" Command="{Binding Cancel}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
