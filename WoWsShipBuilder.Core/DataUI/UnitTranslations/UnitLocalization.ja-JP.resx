@@ -135,7 +135,9 @@
   <data name="Unit_S" xml:space="preserve">
     <value>秒</value>
   </data>
-  
+  <data name="Unit_KM" xml:space="preserve">
+    <value>km</value>
+  </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/秒</value>
   </data>
