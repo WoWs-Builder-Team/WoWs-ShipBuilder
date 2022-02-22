@@ -6,6 +6,7 @@ using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.ShipVm;
@@ -14,19 +15,19 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {
     public class MainWindowViewModel : MainWindowViewModelBase
     {
-        private readonly IScreenshotRenderService screenshotRenderService;
-
         private readonly IClipboardService clipboardService;
 
-        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
+        private readonly AvaloniaScreenshotRenderService screenshotRenderService;
+
+        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
             : base(navigationService, appDataService, viewModelParams)
         {
-            this.screenshotRenderService = screenshotRenderService;
             this.clipboardService = clipboardService;
+            screenshotRenderService = new();
         }
 
         public MainWindowViewModel()
-            : this(null!, null!, null!, DesktopAppDataService.PreviewInstance, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
+            : this(null!, null!, DesktopAppDataService.PreviewInstance, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 

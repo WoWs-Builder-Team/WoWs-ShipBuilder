@@ -6,7 +6,6 @@ using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
@@ -14,7 +13,7 @@ using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.Services
 {
-    public class AvaloniaScreenshotRenderService : IScreenshotRenderService
+    public class AvaloniaScreenshotRenderService
     {
         public async Task CreateBuildImageAsync(Build build, Ship rawShipData, bool includeSignals, bool copyToClipboard)
         {

@@ -94,7 +94,6 @@ namespace WoWsShipBuilder.UI
             builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
-            builder.RegisterType<AvaloniaScreenshotRenderService>().As<IScreenshotRenderService>();
             builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
             builder.RegisterType<LocalDataUpdater>().As<ILocalDataUpdater>();
 
