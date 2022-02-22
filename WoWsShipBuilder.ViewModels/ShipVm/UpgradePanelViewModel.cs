@@ -7,19 +7,17 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class UpgradePanelViewModel : ViewModelBase, IBuildStorable
+    public class UpgradePanelViewModelBase : ViewModelBase, IBuildStorable
     {
+        public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
+
         private List<List<Modernization>> availableModernizationList = null!;
 
-        public UpgradePanelViewModel()
-            : this(DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship)
-        {
-        }
-
-        public UpgradePanelViewModel(Ship ship)
+        public UpgradePanelViewModelBase(Ship ship)
         {
             Dictionary<string, Modernization> upgradeData = DesktopAppDataService.Instance.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ??
                                                             new Dictionary<string, Modernization>();
@@ -40,7 +38,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             foreach (List<Modernization> subList in groupedList)
             {
-                subList.Insert(0, DataHelper.PlaceholderModernization);
+                subList.Insert(0, PlaceholderModernization);
             }
 
             AvailableModernizationList = groupedList;

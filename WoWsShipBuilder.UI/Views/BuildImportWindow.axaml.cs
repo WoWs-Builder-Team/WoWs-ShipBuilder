@@ -7,7 +7,7 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.UserControls;
-using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.Dialog;
 
 namespace WoWsShipBuilder.UI.Views
 {

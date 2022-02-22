@@ -7,6 +7,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

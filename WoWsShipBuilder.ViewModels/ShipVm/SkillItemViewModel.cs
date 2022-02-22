@@ -2,6 +2,7 @@
 using System.Linq;
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

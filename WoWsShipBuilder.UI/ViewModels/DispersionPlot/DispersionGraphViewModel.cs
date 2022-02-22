@@ -18,9 +18,10 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilder.ViewModels.Base;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {
     public class DispersionGraphViewModel : ViewModelBase
     {

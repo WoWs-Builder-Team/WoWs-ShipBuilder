@@ -6,6 +6,8 @@ using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
+using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI.Services

@@ -24,6 +24,8 @@ using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
+using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 
 namespace WoWsShipBuilder.UI
@@ -41,7 +43,6 @@ namespace WoWsShipBuilder.UI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 container = SetupDependencyInjection();

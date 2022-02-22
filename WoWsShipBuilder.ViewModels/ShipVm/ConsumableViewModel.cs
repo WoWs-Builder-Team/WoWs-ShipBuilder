@@ -8,6 +8,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

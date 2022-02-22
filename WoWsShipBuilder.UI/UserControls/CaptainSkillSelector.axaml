@@ -3,16 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
+             xmlns:viewModels1="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
              x:Name="Control">
     <Design.DataContext>
-        <viewModels:CaptainSkillSelectorViewModel />
+        <viewModels1:CaptainSkillSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>

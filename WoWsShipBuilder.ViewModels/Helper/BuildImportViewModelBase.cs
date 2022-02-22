@@ -8,22 +8,17 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.UI.Utilities;
+using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.Helper
 {
-    public class BuildImportViewModel : ViewModelBase
+    public class BuildImportViewModelBase : ViewModelBase
     {
-        private readonly IFileSystem fileSystem;
+        protected readonly IFileSystem FileSystem;
 
-        public BuildImportViewModel()
-            : this(new FileSystem())
+        public BuildImportViewModelBase(IFileSystem fileSystem)
         {
-        }
-
-        public BuildImportViewModel(IFileSystem fileSystem)
-        {
-            this.fileSystem = fileSystem;
+            FileSystem = fileSystem;
 
             var canImportExecute = this.WhenAnyValue(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
             ImportCommand = ReactiveCommand.CreateFromTask(Import, canImportExecute);
@@ -59,39 +54,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             await CloseInteraction.Handle(null); // TODO: async?
         }
 
-        public async void LoadFromImage(object parameter)
-        {
-            string[]? result = await FileDialogInteraction.Handle(Unit.Default);
-            if (result is not { Length: > 0 })
-            {
-                return;
-            }
-
-            AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
-            string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
-
-            JsonSerializerSettings serializerSettings = new()
-            {
-                Error = (_, args) =>
-                {
-                    if (args.ErrorContext.Error is JsonReaderException)
-                    {
-                        Logging.Logger.Info("Tried to load an invalid build string from an image file. Message: {}", args.ErrorContext.Error.Message);
-                        args.ErrorContext.Handled = true;
-                    }
-                },
-            };
-            var build = JsonConvert.DeserializeObject<Build>(buildJson, serializerSettings);
-
-            if (build == null)
-            {
-                await MessageBoxInteraction.Handle(("Could not read build data from file. Has the file been compressed?", "Invalid file"));
-                return;
-            }
-
-            await ProcessLoadedBuild(build);
-        }
-
         private async Task Import()
         {
             Build build;
@@ -111,7 +73,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             await ProcessLoadedBuild(build);
         }
 
-        private async Task ProcessLoadedBuild(Build build)
+        protected async Task ProcessLoadedBuild(Build build)
         {
             if (!ImportOnly)
             {

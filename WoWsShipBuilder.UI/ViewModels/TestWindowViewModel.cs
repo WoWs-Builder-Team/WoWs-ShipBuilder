@@ -1,5 +1,6 @@
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {

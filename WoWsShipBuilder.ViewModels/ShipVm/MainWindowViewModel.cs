@@ -16,9 +16,12 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.Helper;
+using WoWsShipBuilder.ViewModels.Other;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
     // needed for binding to be outside of the class
     public enum Account
@@ -28,17 +31,13 @@ namespace WoWsShipBuilder.UI.ViewModels
         WGPremium,
     }
 
-    public class MainWindowViewModel : ViewModelBase
+    public abstract class MainWindowViewModelBase : ViewModelBase
     {
         private readonly SemaphoreSlim semaphore = new(1, 1);
 
         private readonly CompositeDisposable disposables = new();
 
         private readonly INavigationService navigationService;
-
-        private readonly IScreenshotRenderService screenshotRenderService;
-
-        private readonly IClipboardService clipboardService;
 
         private readonly IAppDataService appDataService;
 
@@ -58,7 +57,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private int? currentShipTier;
 
-        private Ship effectiveShipData = null!;
+        private DataStructures.Ship effectiveShipData = null!;
 
         private string freeXp = "0";
 
@@ -70,29 +69,27 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         private int? previousShipTier;
 
-        private Ship rawShipData = null!;
+        private DataStructures.Ship rawShipData = null!;
 
         private ShipModuleViewModel shipModuleViewModel = null!;
 
-        private ShipStatsControlViewModel? shipStatsControlViewModel;
+        private ShipStatsControlViewModelBase? shipStatsControlViewModel;
 
         private SignalSelectorViewModel? signalSelectorViewModel;
 
         private CancellationTokenSource tokenSource;
 
-        private UpgradePanelViewModel upgradePanelViewModel = null!;
+        private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
         private string xp = "0";
 
         private string xpBonus = "0";
 
-        private string? currentBuildName;
+        protected string? CurrentBuildName;
 
-        public MainWindowViewModel(INavigationService navigationService, IScreenshotRenderService screenshotRenderService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
+        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
-            this.screenshotRenderService = screenshotRenderService;
-            this.clipboardService = clipboardService;
             this.appDataService = appDataService;
             tokenSource = new();
             PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
@@ -100,11 +97,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
 
             InitializeData(viewModelParams.Ship, PreviousShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
-        }
-
-        public MainWindowViewModel()
-            : this(null!, null!, null!, DesktopAppDataService.PreviewInstance, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
-        {
         }
 
         public string? CurrentShipIndex
@@ -149,7 +141,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
         }
 
-        public ShipStatsControlViewModel? ShipStatsControlViewModel
+        public ShipStatsControlViewModelBase? ShipStatsControlViewModel
         {
             get => shipStatsControlViewModel;
             set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
@@ -235,19 +227,19 @@ namespace WoWsShipBuilder.UI.ViewModels
             set => this.RaiseAndSetIfChanged(ref consumableViewModel, value);
         }
 
-        public UpgradePanelViewModel UpgradePanelViewModel
+        public UpgradePanelViewModelBase UpgradePanelViewModel
         {
             get => upgradePanelViewModel;
             set => this.RaiseAndSetIfChanged(ref upgradePanelViewModel, value);
         }
 
-        public Ship EffectiveShipData
+        public DataStructures.Ship EffectiveShipData
         {
             get => effectiveShipData;
             set => this.RaiseAndSetIfChanged(ref effectiveShipData, value);
         }
 
-        private Ship RawShipData
+        protected DataStructures.Ship RawShipData
         {
             get => rawShipData;
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
@@ -263,44 +255,12 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
-        public async void OpenSaveBuild()
-        {
-            Logging.Logger.Info("Saving build");
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
-            if (currentBuildName != null)
-            {
-                currentBuild.BuildName = currentBuildName;
-            }
-
-            string shipName = Localizer.Instance[CurrentShipIndex!].Localization;
-            var dialogResult = await BuildCreationInteraction.Handle(new(currentBuild, shipName)) ?? BuildCreationResult.Canceled;
-            if (!dialogResult.Save)
-            {
-                return;
-            }
-
-            AppData.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
-            currentBuildName = currentBuild.BuildName;
-            await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
-
-            string infoBoxContent;
-            if (dialogResult.CopyImageToClipboard)
-            {
-                infoBoxContent = Translation.BuildCreationWindow_SavedImageToClipboard;
-            }
-            else
-            {
-                await clipboardService.SetTextAsync(currentBuild.CreateStringFromBuild());
-                infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
-            }
-
-            await BuildCreatedInteraction.Handle(infoBoxContent);
-        }
+        public abstract void OpenSaveBuild();
 
         // Handle(true) closes this window too
         public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
-        public Interaction<StartMenuViewModel, Unit> OpenStartMenuInteraction { get; } = new();
+        public Interaction<StartMenuViewModelBase, Unit> OpenStartMenuInteraction { get; } = new();
 
         public ICommand LoadShipFromIndexCommand { get; }
 
@@ -329,11 +289,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             await LoadNewShip(shipSummary);
         }
 
-        private async Task CreateBuildImage(Build currentBuild, bool includeSignals, bool copyToClipboard)
-        {
-            await screenshotRenderService.CreateBuildImageAsync(currentBuild, RawShipData, includeSignals, copyToClipboard);
-        }
-
         private async Task LoadNewShip(ShipSummary summary)
         {
             // only close child windows
@@ -346,9 +301,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
-        private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+        private void InitializeData(DataStructures.Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
-            Console.WriteLine("DATACACHE: " + (AppData.ShipDictionary?.Count ?? -1));
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
 
@@ -364,7 +318,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             SignalSelectorViewModel = new SignalSelectorViewModel();
             CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
             ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
-            UpgradePanelViewModel = new UpgradePanelViewModel(RawShipData);
+            UpgradePanelViewModel = new UpgradePanelViewModelBase(RawShipData);
             ConsumableViewModel = new ConsumableViewModel(RawShipData);
 
             if (build != null)
@@ -392,7 +346,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             UpdateStatsViewModel();
             if (build != null)
             {
-                currentBuildName = build.BuildName;
+                CurrentBuildName = build.BuildName;
             }
         }
 
@@ -452,7 +406,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             tokenSource.Dispose();
             tokenSource = new();
             CancellationToken token = tokenSource.Token;
-            currentBuildName = null;
+            CurrentBuildName = null;
             Task.Run(
                 async () =>
                 {

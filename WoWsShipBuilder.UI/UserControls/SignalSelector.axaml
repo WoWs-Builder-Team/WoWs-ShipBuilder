@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
-             xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="SignalSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
     
     <Design.DataContext>
-        <vm:SignalSelectorViewModel />
+        <viewModels:SignalSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>

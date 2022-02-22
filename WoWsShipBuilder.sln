@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.ReleaseTest", "WoWsShipBuilder.ReleaseTest\WoWsShipBuilder.ReleaseTest.csproj", "{282ECA58-2A33-40FC-9CD8-773E093BF8FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.ViewModels", "WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj", "{626F3A0B-EB77-437B-9760-2B34B113B301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,5 +65,11 @@ Global
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.ActiveCfg = Release|Any CPU
 		{282ECA58-2A33-40FC-9CD8-773E093BF8FD}.ReleaseTest|Any CPU.Build.0 = Release|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{626F3A0B-EB77-437B-9760-2B34B113B301}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -13,6 +13,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.Views
 {

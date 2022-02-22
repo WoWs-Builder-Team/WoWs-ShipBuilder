@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -8,8 +7,9 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {
     public class DispersionShipRemovalViewModel : ViewModelBase
     {

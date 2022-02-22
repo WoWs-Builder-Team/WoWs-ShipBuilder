@@ -7,9 +7,10 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:dispersionPlot="clr-namespace:WoWsShipBuilder.UI.ViewModels.DispersionPlot"
         WindowStartupLocation="CenterOwner" CanResize="False" Width="600" Height="270">
     <Design.DataContext>
-        <viewModels:DispersionShipRemovalViewModel />
+        <dispersionPlot:DispersionShipRemovalViewModel />
     </Design.DataContext>
     <Grid RowDefinitions="30,*, Auto">
         <userControls:AppHeader Grid.Row="0"/>

@@ -1,23 +1,15 @@
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class FiringAngleViewModel : ViewModelBase
+    public class FiringAngleViewModelBase : ViewModelBase
     {
-        public FiringAngleViewModel(TurretModule turrets)
+        public FiringAngleViewModelBase(TurretModule turrets)
         {
             Turrets = turrets;
-        }
-
-        public FiringAngleViewModel()
-        {
-            var testData = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Germany);
-            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance);
-            Turrets = currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
         }
 
         private TurretModule turret = null!;

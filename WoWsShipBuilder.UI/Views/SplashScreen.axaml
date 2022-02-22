@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="566"
         x:Class="WoWsShipBuilder.UI.Views.SplashScreen"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
         Title="SplashScreenWindow"
         Name="SplashScreenWindow"
         Height="566" Width="800" CanResize="False"

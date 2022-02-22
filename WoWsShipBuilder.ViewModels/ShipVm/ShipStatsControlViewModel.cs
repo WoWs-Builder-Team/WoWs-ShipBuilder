@@ -1,30 +1,22 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class ShipStatsControlViewModel : ViewModelBase
+    public class ShipStatsControlViewModelBase : ViewModelBase
     {
         private readonly IAppDataService appDataService;
 
-        public ShipStatsControlViewModel(Ship ship, List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public ShipStatsControlViewModelBase(Ship ship, List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             this.appDataService = appDataService;
             BaseShipStats = ship;
             currentShipStats = ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService);
-        }
-
-        public ShipStatsControlViewModel()
-        {
-            appDataService = DesktopAppDataService.PreviewInstance;
-            var testData = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany);
-            BaseShipStats = testData.Ship;
-            currentShipStats = ShipUI.FromShip(BaseShipStats, testData.Configuration, new(), appDataService);
         }
 
         private ShipUI? currentShipStats;

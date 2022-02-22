@@ -6,6 +6,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -25,14 +26,14 @@ namespace WoWsShipBuilder.UI.Converters
                     case "image":
                     {
                         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
-                        selectedMod ??= DataHelper.PlaceholderModernization;
+                        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
                         return ImagePathConverter.Convert(selectedMod, targetType, null!, culture);
                     }
 
                     case "data":
                     {
                         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
-                        selectedMod ??= DataHelper.PlaceholderModernization;
+                        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
                         return selectedMod;
                     }
                 }

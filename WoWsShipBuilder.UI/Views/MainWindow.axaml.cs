@@ -16,6 +16,8 @@ using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.ShipVm;
+using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.UI.Views
 {
