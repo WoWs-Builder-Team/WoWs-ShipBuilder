@@ -13,7 +13,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
-using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 

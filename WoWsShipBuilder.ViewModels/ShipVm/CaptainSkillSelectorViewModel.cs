@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
     public class CaptainSkillSelectorViewModel : ViewModelBase
     {

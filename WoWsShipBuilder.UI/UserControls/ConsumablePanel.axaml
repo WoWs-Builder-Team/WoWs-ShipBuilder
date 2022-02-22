@@ -5,11 +5,12 @@
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
              Name="ConsumablePanel">
     <Design.DataContext>
-        <viewModels:ConsumableViewModel />
+        <shipVm:ConsumableViewModel />
     </Design.DataContext>
     <UserControl.Resources>
         <converters:ConsumableUiConverter x:Key="ConsumableUiConverter" />

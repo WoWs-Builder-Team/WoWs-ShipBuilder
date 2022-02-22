@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.Views
 {

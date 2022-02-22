@@ -27,6 +27,7 @@ using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI
 {

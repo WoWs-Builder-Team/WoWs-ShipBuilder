@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
@@ -10,7 +9,7 @@ using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.ShipVm
 {
     public class ConsumableViewModel : ViewModelBase, IBuildStorable
     {

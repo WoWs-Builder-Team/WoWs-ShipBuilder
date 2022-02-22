@@ -9,9 +9,10 @@
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
              xmlns:viewModels1="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Name="Control">
     <Design.DataContext>
-        <viewModels1:CaptainSkillSelectorViewModel />
+        <shipVm:CaptainSkillSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>

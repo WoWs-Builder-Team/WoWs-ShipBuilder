@@ -19,6 +19,7 @@ using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.Helper;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot

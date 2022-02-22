@@ -9,10 +9,11 @@
              x:Name="SignalSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
     
     <Design.DataContext>
-        <viewModels:SignalSelectorViewModel />
+        <shipVm:SignalSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>

@@ -8,7 +8,7 @@ using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.Other
 {
     public class SplashScreenViewModel : ViewModelBase
     {

@@ -13,7 +13,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.Helper
 {
     public class ShipSelectionWindowViewModel : ViewModelBase
     {

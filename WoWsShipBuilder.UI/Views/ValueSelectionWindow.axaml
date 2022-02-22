@@ -5,11 +5,12 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+        xmlns:helper="clr-namespace:WoWsShipBuilder.ViewModels.Helper;assembly=WoWsShipBuilder.ViewModels"
         mc:Ignorable="d" Width="400" SizeToContent="Height"
         x:Class="WoWsShipBuilder.UI.Views.ValueSelectionWindow"
         Title="ValueSelectionWindow" WindowStartupLocation="CenterOwner">
     <Design.DataContext>
-        <viewModels:ValueSelectionViewModel />
+        <helper:ValueSelectionViewModel />
     </Design.DataContext>
     
     <Grid RowDefinitions="30,*">

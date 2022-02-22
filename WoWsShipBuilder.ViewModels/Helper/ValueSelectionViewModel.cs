@@ -7,7 +7,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.UI.ViewModels
+namespace WoWsShipBuilder.ViewModels.Helper
 {
     public class ValueSelectionViewModel : ViewModelBase
     {
@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ItemPlaceholderText = itemPlaceholderText;
             Items = items;
 
-            IObservable<bool>? canOkExecute = this.WhenAnyValue(x => x.SelectedItem, selector: selected => selected != null);
+            IObservable<bool> canOkExecute = this.WhenAnyValue(x => x.SelectedItem, selector: selected => selected != null);
             OkCommand = ReactiveCommand.CreateFromTask(Ok, canOkExecute);
         }
 

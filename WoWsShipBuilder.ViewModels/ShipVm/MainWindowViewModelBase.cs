@@ -16,21 +16,12 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    // needed for binding to be outside of the class
-    public enum Account
-    {
-        Normal,
-        WoWsPremium,
-        WGPremium,
-    }
-
     public abstract class MainWindowViewModelBase : ViewModelBase
     {
         private readonly SemaphoreSlim semaphore = new(1, 1);
@@ -41,15 +32,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private readonly IAppDataService appDataService;
 
-        private Account accountType = Account.Normal;
-
-        private string baseXp = "0";
-
         private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
-
-        private string commanderXp = "0";
-
-        private string commanderXpBonus = "0";
 
         private ConsumableViewModel consumableViewModel = null!;
 
@@ -57,11 +40,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private int? currentShipTier;
 
-        private DataStructures.Ship effectiveShipData = null!;
-
-        private string freeXp = "0";
-
-        private string freeXpBonus = "0";
+        private Ship effectiveShipData = null!;
 
         private Dictionary<string, int>? nextShips = new();
 
@@ -69,7 +48,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private int? previousShipTier;
 
-        private DataStructures.Ship rawShipData = null!;
+        private Ship rawShipData = null!;
 
         private ShipModuleViewModel shipModuleViewModel = null!;
 
@@ -80,10 +59,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private CancellationTokenSource tokenSource;
 
         private UpgradePanelViewModelBase upgradePanelViewModel = null!;
-
-        private string xp = "0";
-
-        private string xpBonus = "0";
 
         protected string? CurrentBuildName;
 
@@ -153,74 +128,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
         }
 
-        public string BaseXp
-        {
-            get => baseXp;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref baseXp, value);
-                CalculateXPValues();
-            }
-        }
-
-        public string XpBonus
-        {
-            get => xpBonus;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref xpBonus, value);
-                CalculateXPValues();
-            }
-        }
-
-        public string CommanderXpBonus
-        {
-            get => commanderXpBonus;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref commanderXpBonus, value);
-                CalculateXPValues();
-            }
-        }
-
-        public string FreeXpBonus
-        {
-            get => freeXpBonus;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref freeXpBonus, value);
-                CalculateXPValues();
-            }
-        }
-
-        public string Xp
-        {
-            get => xp;
-            set => this.RaiseAndSetIfChanged(ref xp, value);
-        }
-
-        public string CommanderXp
-        {
-            get => commanderXp;
-            set => this.RaiseAndSetIfChanged(ref commanderXp, value);
-        }
-
-        public string FreeXp
-        {
-            get => freeXp;
-            set => this.RaiseAndSetIfChanged(ref freeXp, value);
-        }
-
-        public Account AccountType
-        {
-            get => accountType;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref accountType, value);
-                CalculateXPValues();
-            }
-        }
-
         public ConsumableViewModel ConsumableViewModel
         {
             get => consumableViewModel;
@@ -233,13 +140,13 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref upgradePanelViewModel, value);
         }
 
-        public DataStructures.Ship EffectiveShipData
+        public Ship EffectiveShipData
         {
             get => effectiveShipData;
             set => this.RaiseAndSetIfChanged(ref effectiveShipData, value);
         }
 
-        protected DataStructures.Ship RawShipData
+        protected Ship RawShipData
         {
             get => rawShipData;
             set => this.RaiseAndSetIfChanged(ref rawShipData, value);
@@ -301,7 +208,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
-        private void InitializeData(DataStructures.Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+        private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
@@ -315,11 +222,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             Logging.Logger.Info("Initializing view models");
 
             // Viewmodel inits
-            SignalSelectorViewModel = new SignalSelectorViewModel();
-            CaptainSkillSelectorViewModel = new CaptainSkillSelectorViewModel(RawShipData.ShipClass, ship.ShipNation);
-            ShipModuleViewModel = new ShipModuleViewModel(RawShipData.ShipUpgradeInfo);
-            UpgradePanelViewModel = new UpgradePanelViewModelBase(RawShipData);
-            ConsumableViewModel = new ConsumableViewModel(RawShipData);
+            SignalSelectorViewModel = new();
+            CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, ship.ShipNation);
+            ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
+            UpgradePanelViewModel = new(RawShipData);
+            ConsumableViewModel = new(RawShipData);
 
             if (build != null)
             {
@@ -367,36 +274,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             if (!newValue)
             {
                 UpdateStatsViewModel();
-            }
-        }
-
-        private void CalculateXPValues()
-        {
-            if (!string.IsNullOrEmpty(BaseXp) && !string.IsNullOrEmpty(XpBonus) && !string.IsNullOrEmpty(CommanderXpBonus) && !string.IsNullOrEmpty(FreeXpBonus))
-            {
-                var baseXp = Convert.ToInt32(BaseXp);
-                var xpBonus = Convert.ToDouble(XpBonus);
-                var commanderXpBonus = Convert.ToDouble(CommanderXpBonus);
-                var freeXpBonus = Convert.ToDouble(FreeXpBonus);
-
-                double accountMultiplier = 1;
-                if (AccountType == Account.WGPremium)
-                {
-                    accountMultiplier = 1.5;
-                }
-                else if (AccountType == Account.WoWsPremium)
-                {
-                    accountMultiplier = 1.65;
-                }
-
-                // The 1 represent the account type modifier. For now, the math is done only for non premium account
-                int finalXp = (int)(baseXp * accountMultiplier * (1 + (xpBonus / 100)));
-                int commanderXp = (int)(finalXp + (baseXp * accountMultiplier * (commanderXpBonus / 100)));
-                int freeXp = (int)(finalXp * 0.05 * (1 + (freeXpBonus / 100)));
-
-                Xp = Convert.ToString(finalXp);
-                CommanderXp = Convert.ToString(commanderXp);
-                FreeXp = Convert.ToString(freeXp);
             }
         }
 

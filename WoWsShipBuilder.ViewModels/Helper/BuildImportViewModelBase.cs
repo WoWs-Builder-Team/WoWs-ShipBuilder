@@ -3,7 +3,6 @@ using System.IO.Abstractions;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
