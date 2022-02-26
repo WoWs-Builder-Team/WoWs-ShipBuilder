@@ -14,6 +14,14 @@
     <!--<Design.DataContext>
         <vm:CalculatorViewModel />
     </Design.DataContext>-->
+
+    <Window.Resources>
+        <conv:ImagePathConverter x:Key="ImagePathConverter" />
+        <conv:ClassToPathConverter x:Key="PathConverter" />
+        <conv:EnumConverter x:Key="EnumConverter" />
+        <conv:DecimalToRomanConverter x:Key="RomanConverter" />
+    </Window.Resources>
+    
     <Grid RowDefinitions="30, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <userControls:AppHeader ShowMaximizeButton="True" />
         
@@ -43,7 +51,52 @@
                 </Border>
                 <Border Classes="BorderPanel" Grid.Row="1" Margin="10">
                     <!-- Calculator-->
-                    
+                    <Grid ColumnDefinitions="2*,3*,3*,2*" RowDefinitions="*,*,*" Margin="5">
+                        <TextBlock Grid.Row="0" Grid.Column="0">Base XP</TextBlock>
+                        <TextBox Grid.Row="0" Grid.Column="1" MaxLength="4" Name="BaseXpInput" Margin="0,0,0,10">2500</TextBox>
+                        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="2">
+                            <RadioButton GroupName="AccountType"
+                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
+                                             Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
+                            </RadioButton>
+                            <RadioButton GroupName="AccountType"
+                                         IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
+                                         Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
+                            </RadioButton>
+                            <RadioButton GroupName="AccountType"
+                                         IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
+                                         Margin="0,0,0,5">
+                                <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
+                            </RadioButton>                            
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Grid.Column="0"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1">Flag/Camo Modifier %</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="2">Additional Modifier %</TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="3">Result</TextBlock>
+                        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2">
+                            <TextBlock>XP Bonus</TextBlock>
+                            <TextBlock>Captain XP</TextBlock>
+                            <TextBlock>Free XP</TextBlock>
+                            
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2">
+                            <TextBlock>100%</TextBlock>
+                            <TextBlock>100%</TextBlock>
+                            <TextBlock>100%</TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2">
+                            <TextBox Name="AdditionalXpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                            <TextBox Name="AdditionalCxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                            <TextBox Name="AdditionalFxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="2">
+                            <TextBlock>Result</TextBlock>
+                            <TextBlock>Result</TextBlock>
+                            <TextBlock>Result</TextBlock>
+                        </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>
