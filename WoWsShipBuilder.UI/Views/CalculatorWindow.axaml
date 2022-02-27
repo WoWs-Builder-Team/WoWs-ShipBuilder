@@ -51,10 +51,14 @@
                 </Border>
                 <Border Classes="BorderPanel" Grid.Row="1" Margin="10">
                     <!-- Calculator-->
-                    <Grid ColumnDefinitions="2*,3*,3*,2*" RowDefinitions="*,*,*" Margin="5">
-                        <TextBlock Grid.Row="0" Grid.Column="0">Base XP</TextBlock>
-                        <TextBox Grid.Row="0" Grid.Column="1" MaxLength="4" Name="BaseXpInput" Margin="0,0,0,10">2500</TextBox>
-                        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="2">
+                    <StackPanel Margin="5">
+                        <TextBlock TextAlignment="Center">Calculator</TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>Base XP:</TextBlock>
+                            <TextBox>2500</TextBox>
+                        </StackPanel>
+                        <Separator Margin="0,0,0,5"></Separator>
+                        <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="2">
                             <RadioButton GroupName="AccountType"
                                              IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
                                              Margin="0,0,0,5">
@@ -62,41 +66,35 @@
                             </RadioButton>
                             <RadioButton GroupName="AccountType"
                                          IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
-                                         Margin="0,0,0,5">
+                                         Margin="10,0,0,5">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
                             </RadioButton>
                             <RadioButton GroupName="AccountType"
                                          IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
-                                         Margin="0,0,0,5">
+                                         Margin="10,0,0,5">
                                 <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
-                            </RadioButton>                            
+                            </RadioButton>
                         </StackPanel>
-                        <TextBlock Grid.Row="1" Grid.Column="0"></TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="1">Flag/Camo Modifier %</TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="2">Additional Modifier %</TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="3">Result</TextBlock>
-                        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2">
-                            <TextBlock>XP Bonus</TextBlock>
-                            <TextBlock>Captain XP</TextBlock>
-                            <TextBlock>Free XP</TextBlock>
-                            
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2">
-                            <TextBlock>100%</TextBlock>
-                            <TextBlock>100%</TextBlock>
-                            <TextBlock>100%</TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2">
-                            <TextBox Name="AdditionalXpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
-                            <TextBox Name="AdditionalCxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
-                            <TextBox Name="AdditionalFxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="2">
-                            <TextBlock>Result</TextBlock>
-                            <TextBlock>Result</TextBlock>
-                            <TextBlock>Result</TextBlock>
-                        </StackPanel>
-                    </Grid>
+                        <Separator Margin="0,0,0,10"></Separator>
+                        <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="*,*,*,*" ShowGridLines="True" Margin="0,0,0,10">
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="1" TextWrapping="Wrap">Flag/Camo Modifier %</TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="2" TextWrapping="Wrap">Additional Modifier %</TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="3" TextWrapping="Wrap">Result</TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="0">XP Bonus</TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="0">Captain XP</TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="0">Free XP</TextBlock>
+                            <TextBlock Grid.Row="1" Grid.Column="1">100%</TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="1">100%</TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1">100%</TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="2" Name="AdditionalXpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                            <TextBox Grid.Row="2" Grid.Column="2" Name="AdditionalCxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                            <TextBox Grid.Row="3" Grid.Column="2" Name="AdditionalFxpInput" MaxLength="4" Margin="0,0,0,10">0</TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="3">Result</TextBlock>
+                            <TextBlock Grid.Row="2" Grid.Column="3">Result</TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="3">Result</TextBlock>
+                        </Grid>
+                    </StackPanel>
                 </Border>
             </Grid>
         </Grid>
