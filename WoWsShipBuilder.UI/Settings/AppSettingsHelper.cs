@@ -3,9 +3,11 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 
-namespace WoWsShipBuilder.Core.Settings
+namespace WoWsShipBuilder.UI.Settings
 {
     [SuppressMessage("System.IO.Abstractions", "IO0002", Justification = "This class is never tested.")]
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
