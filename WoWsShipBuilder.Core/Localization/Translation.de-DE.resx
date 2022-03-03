@@ -718,7 +718,7 @@
     <value>Benutzerdefinierten Datenpfad eingeben</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Speichern und Verlassen</value>
+    <value>Speichern &amp; Verlassen</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
     <value>Die Orientierung einiger Geschütztürme ist falsch. Die Daten von WG enthalten die Orientierung nicht, daher berechnen wir diese mithilfe eines Workarounds. Falls du einen fehlerhaften Turm oder falsche Winkel sehen solltest, melde diese bitte auf GitHub oder auf unserem Discord Server.</value>
