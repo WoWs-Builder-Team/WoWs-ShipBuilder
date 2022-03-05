@@ -4,13 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+        xmlns:helper="clr-namespace:WoWsShipBuilder.ViewModels.Helper;assembly=WoWsShipBuilder.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
         x:Class="WoWsShipBuilder.UI.Views.ShipSelectionWindow" Height="450" Width="500"
         GotFocus="InputElement_OnGotFocus"
         WindowStartupLocation="CenterOwner" CanResize="False" ShowInTaskbar="False" SizeToContent="Height">
     <Design.DataContext>
-        <viewModels:ShipSelectionWindowViewModel />
+        <helper:ShipSelectionWindowViewModel />
     </Design.DataContext>
     
     <Window.Styles>
@@ -64,6 +65,6 @@
                        TextAlignment="Center"
                        IsVisible="{Binding !!!SummaryList.Count}" VerticalAlignment="Center" FontSize="15"/>
         </Grid>
-        <Button Grid.Row="3" IsDefault="True" Command="{Binding Confirm}" Content="{x:Static translations:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
+        <Button Grid.Row="3" IsDefault="True" Command="{Binding ConfirmCommand}" Content="{x:Static translations:Translation.ShipSelectionWindow_ConfirmButton}" HorizontalAlignment="Right" Margin="10,5,10,5"/>
     </Grid>
 </Window>

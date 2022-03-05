@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Avalonia.Collections;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -23,7 +23,7 @@ namespace WoWsShipBuilder.UI.Converters
         /// <exception cref="NotSupportedException">Occurs if the content of the provided value list does not match the expected types.</exception>
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (values[0] is AvaloniaList<ShipUpgrade> shipUpgrades && values[1] is ShipUpgrade thisUpgrade)
+            if (values[0] is CustomObservableCollection<ShipUpgrade> shipUpgrades && values[1] is ShipUpgrade thisUpgrade)
             {
                 return shipUpgrades.Contains(thisUpgrade);
             }

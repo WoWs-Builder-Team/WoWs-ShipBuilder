@@ -8,8 +8,8 @@
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+        xmlns:dispersionPlot="clr-namespace:WoWsShipBuilder.UI.ViewModels.DispersionPlot"
         WindowStartupLocation="CenterScreen" CanResize="True"
         Width="1400" Height="900"
         MinWidth="1000" MinHeight="800">
@@ -46,7 +46,7 @@
     </Window.Styles>
     
     <Design.DataContext>
-        <viewModels:DispersionGraphViewModel />
+        <dispersionPlot:DispersionGraphViewModel />
     </Design.DataContext>
 
     <Window.Resources>

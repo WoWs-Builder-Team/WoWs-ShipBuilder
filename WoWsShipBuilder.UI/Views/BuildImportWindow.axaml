@@ -4,13 +4,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:dialog="clr-namespace:WoWsShipBuilder.UI.ViewModels.Dialog"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="180"
         CanResize="False" WindowStartupLocation="CenterOwner"
         Width="500" Height="180"
         x:Class="WoWsShipBuilder.UI.Views.BuildImportWindow">
     <Design.DataContext>
-        <viewModels:BuildImportViewModel />
+        <dialog:BuildImportViewModel />
     </Design.DataContext>
     <Grid RowDefinitions="30,Auto, Auto, Auto">
         <userControls:AppHeader Title="{x:Static translations:Translation.BuildImport_Title}" ShowMinimizeButton="False"/>
@@ -24,7 +24,7 @@
         </StackPanel>
         <StackPanel Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="10" Margin="10,0,10,10">
             <Button Content="{x:Static translations:Translation.BuildImport_ImportFromImage}" Command="{Binding LoadFromImage}"></Button>
-            <Button IsDefault="True" Content="{x:Static translations:Translation.BuildImport_Import}" Command="{Binding Import}"/>
+            <Button IsDefault="True" Content="{x:Static translations:Translation.BuildImport_Import}" Command="{Binding ImportCommand}"/>
             <Button IsCancel="True" Content="{x:Static translations:Translation.Cancel}" Command="{Binding Cancel}"/>
         </StackPanel>
     </Grid>

@@ -1,366 +1,67 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Reflection;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using Squirrel;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.UI.Translations;
+using WoWsShipBuilder.UI.Services;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
-using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
-    class SettingsWindowViewModel : ViewModelBase
+    public class SettingsWindowViewModel : SettingsWindowViewModelBase
     {
-        private readonly SettingsWindow? self;
-
-        private readonly IFileSystem fileSystem;
-
         public SettingsWindowViewModel()
-            : this(null, new FileSystem())
+            : this(new FileSystem(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
         {
-            if (!Design.IsDesignMode)
-            {
-                throw new InvalidOperationException("This constructor must not be used in the live application.");
-            }
         }
 
-        public SettingsWindowViewModel(SettingsWindow? win, IFileSystem? fileSystem = null)
+        public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
+            : base(fileSystem, clipboardService, appDataService)
         {
-            Logging.Logger.Info("Creating setting window view model");
-            self = win;
-            this.fileSystem = fileSystem ?? new FileSystem();
-            languagesList = AppDataHelper.Instance.SupportedLanguages.ToList(); // Copy existing list. Do not change!
-            SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
-                               ?? AppDataHelper.Instance.DefaultCultureDetails;
-#if DEBUG
-            Servers = Enum.GetNames<ServerType>().ToList();
-#else
-            Servers = new List<ServerType> { ServerType.Live, ServerType.Pts }.Select(serverType => Enum.GetName(serverType) ?? serverType.StringName()).ToList();
-#endif
-            SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
-            AutoUpdate = AppData.Settings.AutoUpdateEnabled;
-            CustomPath = AppData.Settings.CustomDataPath;
-            CustomBuildImagePath = AppData.Settings.CustomImagePath;
-            IsCustomPathEnabled = CustomPath is not null;
-            IsCustomBuildImagePathEnabled = CustomBuildImagePath is not null;
-            TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
-            OpenExplorerAfterImageSave = AppData.Settings.OpenExplorerAfterImageSave;
-
-            if (AppData.DataVersion is null)
-            {
-                Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
-
-                var localVersionInfo = AppDataHelper.Instance.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
-                if (localVersionInfo?.CurrentVersion?.MainVersion != null)
-                {
-                    AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
-                }
-                else
-                {
-                    AppData.DataVersion = "No VersionInfo found";
-                }
-            }
-
-            DataVersion = AppData.DataVersion;
         }
 
-        private string dataVersion = default!;
-
-        public string DataVersion
-        {
-            get => dataVersion;
-            set => this.RaiseAndSetIfChanged(ref dataVersion, value);
-        }
-
-        private string? customPath;
-
-        public string? CustomPath
-        {
-            get => customPath;
-            set => this.RaiseAndSetIfChanged(ref customPath, value);
-        }
-
-        private bool isCustomPathEnabled;
-
-        public bool IsCustomPathEnabled
-        {
-            get => isCustomPathEnabled;
-            set => this.RaiseAndSetIfChanged(ref isCustomPathEnabled, value);
-        }
-
-        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-
-        private bool isCustomBuildImagePathEnabled;
-
-        public bool IsCustomBuildImagePathEnabled
-        {
-            get => isCustomBuildImagePathEnabled;
-            set => this.RaiseAndSetIfChanged(ref isCustomBuildImagePathEnabled, value);
-        }
-
-        private string? customBuildImagePath;
-
-        public string? CustomBuildImagePath
-        {
-            get => customBuildImagePath;
-            set => this.RaiseAndSetIfChanged(ref customBuildImagePath, value);
-        }
-
-        public string Version
-        {
-            get => version;
-            set => this.RaiseAndSetIfChanged(ref version, value);
-        }
-
-        private List<CultureDetails> languagesList;
-
-        public List<CultureDetails> LanguagesList
-        {
-            get => languagesList;
-            set => this.RaiseAndSetIfChanged(ref languagesList, value);
-        }
-
-        private CultureDetails selectedLanguage = null!;
-
-        public CultureDetails SelectedLanguage
-        {
-            get => selectedLanguage;
-            set => this.RaiseAndSetIfChanged(ref selectedLanguage, value);
-        }
-
-        private string selectedServer = null!;
-
-        public string SelectedServer
-        {
-            get => selectedServer;
-            set => this.RaiseAndSetIfChanged(ref selectedServer, value);
-        }
-
-        private bool autoUpdate;
-
-        public bool AutoUpdate
-        {
-            get => autoUpdate;
-            set => this.RaiseAndSetIfChanged(ref autoUpdate, value);
-        }
-
-        private List<string> servers = null!;
-
-        public List<string> Servers
-        {
-            get => servers;
-            set => this.RaiseAndSetIfChanged(ref servers, value);
-        }
-
-        private bool telemetryDataEnabled;
-
-        public bool TelemetryDataEnabled
-        {
-            get => telemetryDataEnabled;
-            set => this.RaiseAndSetIfChanged(ref telemetryDataEnabled, value);
-        }
-
-        private bool openExplorerAfterImageSave;
-
-        public bool OpenExplorerAfterImageSave
-        {
-            get => openExplorerAfterImageSave;
-            set => this.RaiseAndSetIfChanged(ref openExplorerAfterImageSave, value);
-        }
-
-        public void ResetSettings()
-        {
-            var cleanSettings = new AppSettings();
-            AppData.Settings = cleanSettings;
-        }
+        public Interaction<(string title, string text), MessageBox.MessageBoxResult> ShowWarningInteraction { get; } = new();
 
         [SuppressMessage("System.IO.Abstractions", "IO0007", Justification = "Method just delete a folder.")]
-        public async void CleanAppData()
+        public override async void CleanAppData()
         {
-            var result = await MessageBox.Show(self, $"Do you want to delete all data?{Environment.NewLine}This will close the program.", "Warning", MessageBox.MessageBoxButtons.YesNo, MessageBox.MessageBoxIcon.Warning);
+            var result = await ShowWarningInteraction.Handle(("Warning", $"Do you want to delete all data?{Environment.NewLine}This will close the program."));
             if (result == MessageBox.MessageBoxResult.Yes)
             {
-                var appData = AppDataHelper.Instance.AppDataDirectory;
+                var appData = AppDataService.AppDataDirectory;
                 var appDataDir = new DirectoryInfo(appData);
                 if (appDataDir.Exists)
                 {
                     appDataDir.Delete(true);
-                    (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+                    await ShutdownInteraction.Handle(Unit.Default);
                 }
                 else
                 {
-                    await MessageBox.Show(self, $"Error in deleting data. Data folder does not exit", "Warning", MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    await ShowErrorInteraction.Handle(("Warning", "Error in deleting data. Data folder does not exit"));
                 }
             }
         }
 
-        public void Donate()
+        protected override async Task OnSelectedLocaleChangedAsync()
         {
-            string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
-
-            Process.Start(new ProcessStartInfo
+            bool result = await RestartAppMessageInteraction.Handle(Unit.Default);
+            if (result)
             {
-                FileName = url,
-                UseShellExecute = true,
-            });
-        }
-
-        public async void Save()
-        {
-            Logging.Logger.Info("Saving settings");
-            bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
-            bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
-            bool imagePathChanged = IsCustomBuildImagePathEnabled ? !(CustomBuildImagePath?.Equals(AppData.Settings.CustomImagePath) ?? false) : AppData.Settings.CustomImagePath != null;
-            bool cultureChanged = false;
-            if (IsCustomPathEnabled)
-            {
-                if (!IsValidPath(CustomPath!))
+                AppSettingsHelper.SaveSettings();
+                if (OperatingSystem.IsWindows())
                 {
-                    await MessageBox.Show(self, Translation.SettingsWindow_InvalidCustomPath, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                    return;
-                }
-                else
-                {
-                    pathChanged = !AppData.Settings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
-                    AppData.Settings.CustomDataPath = CustomPath;
+                    UpdateManager.RestartApp();
                 }
             }
-            else
-            {
-                AppData.Settings.CustomDataPath = null;
-            }
-
-            if (imagePathChanged)
-            {
-                if (!IsCustomBuildImagePathEnabled || string.IsNullOrWhiteSpace(CustomBuildImagePath))
-                {
-                    AppData.Settings.CustomImagePath = null;
-                }
-                else if (IsValidPath(CustomBuildImagePath ?? string.Empty))
-                {
-                    AppData.Settings.CustomImagePath = CustomBuildImagePath;
-                }
-                else
-                {
-                    await MessageBox.Show(self, Translation.SettingsWindow_BuildImagePathInvalid, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-            AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-            AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
-
-            // AppData.Settings.Locale = languages[SelectedLanguage];
-            if (!AppData.Settings.SelectedLanguage.Equals(SelectedLanguage))
-            {
-                AppData.Settings.SelectedLanguage = SelectedLanguage;
-                cultureChanged = true;
-            }
-
-            AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
-            AppData.Settings.OpenExplorerAfterImageSave = OpenExplorerAfterImageSave;
-
-            if (serverChanged || pathChanged)
-            {
-                AppData.ResetCaches();
-                await new DownloadWindow().ShowDialog(self);
-            }
-
-            if (cultureChanged)
-            {
-                var result = await MessageBox.Show(
-                    null,
-                    Translation.Settingswindow_LanguageChanged,
-                    Translation.SettingsWindow_LanguageChanged_Title,
-                    MessageBox.MessageBoxButtons.YesNo,
-                    MessageBox.MessageBoxIcon.Question,
-                    sizeToContent: SizeToContent.Height);
-                if (result == MessageBox.MessageBoxResult.Yes)
-                {
-                    AppSettingsHelper.SaveSettings();
-                    if (OperatingSystem.IsWindows())
-                    {
-                        UpdateManager.RestartApp();
-                    }
-                }
-            }
-
-            self?.Close();
-        }
-
-        private async Task<string?> SelectFolder()
-        {
-            var dialog = new OpenFolderDialog
-            {
-                Directory = AppDataHelper.Instance.AppDataDirectory,
-            };
-            return await dialog.ShowAsync(self!);
-        }
-
-        public async void SelectCachePath()
-        {
-            string? cachePath = await SelectFolder();
-            if (!string.IsNullOrWhiteSpace(cachePath))
-            {
-                CustomPath = cachePath;
-                IsCustomPathEnabled = true;
-            }
-        }
-
-        public async void SelectBuildImagePath()
-        {
-            string? imagePath = await SelectFolder();
-            if (!string.IsNullOrWhiteSpace(imagePath))
-            {
-                CustomBuildImagePath = imagePath;
-            }
-        }
-
-        public void Cancel()
-        {
-            self?.Close();
-        }
-
-        public async void CopyVersion()
-        {
-            var appVersion = $"App Version: {Version}{Environment.NewLine}Data Version: {DataVersion}";
-            await Application.Current.Clipboard.SetTextAsync(appVersion);
-        }
-
-        private bool IsValidPath(string path, bool exactPath = true)
-        {
-            bool isValid;
-            try
-            {
-                if (exactPath)
-                {
-                    string root = fileSystem.Path.GetPathRoot(path)!;
-                    isValid = string.IsNullOrEmpty(root.Trim('\\', '/')) == false;
-                }
-                else
-                {
-                    isValid = fileSystem.Path.IsPathRooted(path);
-                }
-            }
-            catch (Exception)
-            {
-                isValid = false;
-            }
-
-            return isValid;
         }
     }
 }

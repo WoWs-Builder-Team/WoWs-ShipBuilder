@@ -36,7 +36,6 @@
 <!--        </PropertyGroup>-->
 <!--    </Target>-->
     <ItemGroup>
-        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
         <None Remove="Assets\Art\logo_white_text.png" />
         <None Remove="Assets\Art\SplashArt.png" />
@@ -58,6 +57,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Splat.Autofac" Version="14.1.45" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -66,6 +66,7 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
+      <ProjectReference Include="..\WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj" />
     </ItemGroup>
     <ItemGroup>
       <AdditionalFiles Include="..\stylecop.json">
@@ -73,7 +74,7 @@
       </AdditionalFiles>
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\StartingMenuWindow.axaml.cs">
+      <Compile Update="Views\StartMenuWindow.axaml.cs">
         <DependentUpon>StartingMenuWindow.axaml</DependentUpon>
       </Compile>
       <Compile Update="Views\SettingsWindow.axaml.cs">

@@ -5,6 +5,8 @@ using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -45,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public ShipModuleViewModel ShipModuleViewModel { get; }
 
-        public UpgradePanelViewModel UpgradePanelViewModel { get; }
+        public UpgradePanelViewModelBase UpgradePanelViewModel { get; }
 
         public ConsumableViewModel ConsumableViewModel { get; }
 

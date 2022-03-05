@@ -145,7 +145,7 @@
                                     <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1" />
                                 </Grid>
                                 <Separator />
-                                <Button Content="Donate" Command="{Binding Donate}" Grid.Row="2" />
+                                <Button Content="Donate" Click="DonateButton_OnClick" Grid.Row="2" />
                                 <Image Source="/Assets/discord.png" Width="200" Cursor="Hand" PointerReleased="OpenDiscord" />
                             </StackPanel>
                         </Border>

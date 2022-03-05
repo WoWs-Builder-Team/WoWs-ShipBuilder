@@ -10,6 +10,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Converters;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -34,7 +35,7 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<UpgradeSelector, IImage>(
             nameof(SelectedImage),
-            (IImage)Converter.Convert(DataHelper.PlaceholderModernization, typeof(IImage), "Modernization", CultureInfo.InvariantCulture));
+            (IImage)Converter.Convert(UpgradePanelViewModelBase.PlaceholderModernization, typeof(IImage), "Modernization", CultureInfo.InvariantCulture));
 
         private static readonly StyledProperty<IReadOnlyList<Modernization>> EffectiveModernizationsListProperty =
             AvaloniaProperty.Register<UpgradeSelector, IReadOnlyList<Modernization>>(nameof(EffectiveModernizationsList));
@@ -107,7 +108,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var dropDown = (UpgradeSelector)sender;
                 Modernization? newSelection = dropDown.SelectedIndex > 0 ? dropDown.EffectiveModernizationsList[dropDown.SelectedIndex] : null;
-                var notifyData = newSelection ?? DataHelper.PlaceholderModernization;
+                var notifyData = newSelection ?? UpgradePanelViewModelBase.PlaceholderModernization;
                 dropDown.SelectedImage = (IImage)Converter.Convert(notifyData, typeof(IImage), null!, CultureInfo.InvariantCulture);
                 dropDown.UpgradePopup.IsOpen = false;
                 dropDown.SelectedModernizationChanged?.Invoke(newSelection, dropDown.AvailableModernizations);

@@ -1,14 +1,18 @@
+using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public class ShipSelectionWindow : Window
+    public class ShipSelectionWindow : ReactiveWindow<ShipSelectionWindowViewModel>
     {
         public ShipSelectionWindow()
             : this(false)
@@ -19,13 +23,24 @@ namespace WoWsShipBuilder.UI.Views
         {
             InitializeComponent();
             if (multiSelection)
-            {              
+            {
                 var list = this.FindControl<ListBox>("SelectionList");
                 list.SelectionMode = SelectionMode.Multiple;
             }
 #if DEBUG
             this.AttachDevTools();
 #endif
+            this.WhenActivated(disposables =>
+            {
+                if (ViewModel != null)
+                {
+                    disposables(ViewModel.CloseInteraction.RegisterHandler(interaction =>
+                    {
+                        interaction.SetOutput(Unit.Default);
+                        Close(interaction.Input);
+                    }));
+                }
+            });
         }
 
         private void InitializeComponent()
@@ -55,9 +70,9 @@ namespace WoWsShipBuilder.UI.Views
             if (DataContext is ShipSelectionWindowViewModel viewModel && sender is Panel panel)
             {
                 // viewModel.SelectedShipList.Add((KeyValuePair<string, ShipSummary>)panel.DataContext!);
-                if (viewModel.CanConfirm(null!))
+                if (viewModel.ConfirmCommand.CanExecute(null))
                 {
-                    viewModel.Confirm(null!);
+                    viewModel.ConfirmCommand.Execute(null);
                 }
             }
         }

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -93,7 +94,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> CVAircraftData { get; set; } = default!;
 
-        public static List<CVAircraftUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+        public static List<CVAircraftUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             if (ship.CvPlanes is null)
             {
@@ -135,8 +136,8 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 var index = value.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
                 var name = value.PlaneName.Substring(0, index);
-                var plane = AppDataHelper.Instance.GetAircraft(name);
-                var planeUI = ProcessCVPlane(plane, value.PlaneType, ship.Tier, modifiers);
+                var plane = appDataService.GetAircraft(name);
+                var planeUI = ProcessCVPlane(plane, value.PlaneType, ship.Tier, modifiers, appDataService);
                 list.Add(planeUI);
             }
 
@@ -144,7 +145,7 @@ namespace WoWsShipBuilder.Core.DataUI
             return list;
         }
 
-        private static CVAircraftUI ProcessCVPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers)
+        private static CVAircraftUI ProcessCVPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
             int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
@@ -244,25 +245,25 @@ namespace WoWsShipBuilder.Core.DataUI
                 jatoMultiplier = 0;
             }
 
-            var weaponType = AppDataHelper.Instance.GetProjectile(plane.BombName).ProjectileType;
+            var weaponType = appDataService.GetProjectile(plane.BombName).ProjectileType;
             int bombInnerEllipse = 0;
             ProjectileUI? weapon = null!;
             switch (weaponType)
             {
                 case ProjectileType.Bomb:
-                    weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                    weapon = BombUI.FromBombName(plane.BombName, modifiers, appDataService);
                     bombInnerEllipse = (int)plane.InnerBombsPercentage;
                     break;
                 case ProjectileType.SkipBomb:
-                    weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                    weapon = BombUI.FromBombName(plane.BombName, modifiers, appDataService);
                     break;
                 case ProjectileType.Torpedo:
                     var torpList = new List<string>();
                     torpList.Add(plane.BombName);
-                    weapon = TorpedoUI.FromTorpedoName(torpList, modifiers).First();
+                    weapon = TorpedoUI.FromTorpedoName(torpList, modifiers, appDataService).First();
                     break;
                 case ProjectileType.Rocket:
-                    weapon = RocketUI.FromRocketName(plane.BombName, modifiers);
+                    weapon = RocketUI.FromRocketName(plane.BombName, modifiers, appDataService);
                     break;
             }
 

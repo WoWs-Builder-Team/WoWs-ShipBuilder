@@ -3,16 +3,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations;assembly=WoWsShipBuilder.Core"
+             xmlns:viewModels1="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Name="Control">
     <Design.DataContext>
-        <viewModels:CaptainSkillSelectorViewModel />
+        <shipVm:CaptainSkillSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
@@ -122,18 +122,18 @@
                             </ToolTip.Tip>
                             <customControls:NumberedButton
                                 BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
-                                Command="{Binding $parent[UserControl].DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                IsSpecial="{Binding Value.IsEpic}">
+                                Command="{Binding $parent[UserControl].DataContext.AddSkill}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Skill}"
+                                IsSpecial="{Binding Value.Skill.IsEpic}">
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
-                                        <Binding Path="Value"/>
+                                        <Binding Path="Value.Skill"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.Number>
                                 <customControls:NumberedButton.IsChecked>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
-                                        <Binding Path="Value"/>
+                                        <Binding Path="Value.Skill"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.IsChecked>
                             </customControls:NumberedButton>
@@ -148,8 +148,8 @@
                         <Setter Property="Opacity" Value="1" />
                     </Style>
                     <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
-                        <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
-                        <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
+                        <Setter Property="Grid.Row" Value="{Binding Value.Skill.Tiers[0].Tier}"/>
+                        <Setter Property="Grid.Column" Value="{Binding Value.Skill.Tiers[0].XPosition}"/>
                     </Style>
                 </ItemsControl.Styles>
             </ItemsControl>

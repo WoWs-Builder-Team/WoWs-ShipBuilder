@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
