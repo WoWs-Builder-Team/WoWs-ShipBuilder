@@ -459,7 +459,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 // Custom handling for Furious skill. Needs to take into account the number of fires
                 var furiousSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is FuriousSkillNumber);
                 var furiousSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is FuriousSkillNumber);
-                if (furiousSkill is not null && furiousSkillModifier is not null)
+                if (furiousSkill is not null && furiousSkillModifier is not null && furiousSkillModifier.Status)
                 {
                     var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
                     modifiers.Add(("GMShotDelay", multiplier));
