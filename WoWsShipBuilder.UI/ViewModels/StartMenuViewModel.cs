@@ -3,6 +3,8 @@ using System.Reactive.Linq;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
+using WoWsShipBuilder.UI.ViewModels.Dialog;
+using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.ViewModels
@@ -23,5 +25,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             await ShowSettingsInteraction.Handle(new SettingsWindowViewModel(FileSystem, ClipboardService, AppDataService));
         }
+
+        protected override BuildImportViewModelBase CreateImportViewModel() => new BuildImportViewModel(FileSystem);
     }
 }

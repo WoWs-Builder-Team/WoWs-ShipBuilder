@@ -109,7 +109,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             }
             else
             {
-                build = await BuildImportInteraction.Handle(new(FileSystem));
+                build = await BuildImportInteraction.Handle(CreateImportViewModel());
                 if (build is null)
                 {
                     return;
@@ -143,6 +143,8 @@ namespace WoWsShipBuilder.ViewModels.Other
                 await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
             }
         }
+
+        protected abstract BuildImportViewModelBase CreateImportViewModel();
 
         private void DeleteBuild()
         {
