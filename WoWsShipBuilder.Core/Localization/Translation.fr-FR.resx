@@ -1017,4 +1017,47 @@ HE-&gt;SAP-&gt;AP.</value>
   
   
   
+  <data name="Unit_MPS" xml:space="preserve">
+    <value>m/s</value>
+  </data>
+  <data name="Unit_KG" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="Unit_MM" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="Unit_PerCent" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Unit_Degree" xml:space="preserve">
+    <value>°</value>
+  </data>
+  <data name="Unit_S" xml:space="preserve">
+    <value>s</value>
+  </data>
+  
+  <data name="Unit_DegreePerSecond" xml:space="preserve">
+    <value>°/s</value>
+  </data>
+  <data name="Unit_DPS" xml:space="preserve">
+    <value>dps</value>
+  </data>
+  <data name="Unit_HP" xml:space="preserve">
+    <value>PV</value>
+  </data>
+  <data name="Unit_Knots" xml:space="preserve">
+    <value>kts</value>
+  </data>
+  <data name="Unit_M" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="Unit_ShotsPerMinute" xml:space="preserve">
+    <value>obus tirés/min</value>
+  </data>
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>feux/min</value>
+  </data>
+  
+  
+  
 </root>

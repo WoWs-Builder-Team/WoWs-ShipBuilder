@@ -157,7 +157,7 @@
     <value>Versão:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Carregar uma Build</value>
+    <value>Carregar Build</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
     <value>Criar uma Build</value>
@@ -1129,4 +1129,55 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
       <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
   </data>
   
+  <data name="Unit_MPS" xml:space="preserve">
+    <value>m/s</value>
+  </data>
+  <data name="Unit_KG" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="Unit_MM" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="Unit_PerCent" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Unit_Degree" xml:space="preserve">
+    <value>°</value>
+  </data>
+  <data name="Unit_S" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Unit_KM" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="Unit_DegreePerSecond" xml:space="preserve">
+    <value>°/s</value>
+  </data>
+  <data name="Unit_DPS" xml:space="preserve">
+    <value>dps</value>
+  </data>
+  <data name="Unit_HP" xml:space="preserve">
+    <value>HP</value>
+  </data>
+  <data name="Unit_Knots" xml:space="preserve">
+    <value>nós</value>
+  </data>
+  <data name="Unit_M" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="Unit_ShotsPerMinute" xml:space="preserve">
+    <value>tiros/min</value>
+  </data>
+  <data name="Unit_FPM" xml:space="preserve">
+    <value>fogos/min</value>
+  </data>
+  <data name="ArmamentType_AP" xml:space="preserve">
+    <value>AP</value>
+  </data>
+  <data name="ArmamentType_HE" xml:space="preserve">
+    <value>HE</value>
+  </data>
+  <data name="ArmamentType_SAP" xml:space="preserve">
+    <value>SAP</value>
+  </data>
 </root>
