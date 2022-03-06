@@ -70,6 +70,33 @@ namespace WoWsShipBuilder.UI.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AP.
+        /// </summary>
+        public static string ArmamentType_AP {
+            get {
+                return ResourceManager.GetString("ArmamentType_AP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HE.
+        /// </summary>
+        public static string ArmamentType_HE {
+            get {
+                return ResourceManager.GetString("ArmamentType_HE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAP.
+        /// </summary>
+        public static string ArmamentType_SAP {
+            get {
+                return ResourceManager.GetString("ArmamentType_SAP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
@@ -3003,6 +3030,132 @@ namespace WoWsShipBuilder.UI.Translations {
         public static string Torpedo {
             get {
                 return ResourceManager.GetString("Torpedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to °.
+        /// </summary>
+        public static string Unit_Degree {
+            get {
+                return ResourceManager.GetString("Unit_Degree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to °/s.
+        /// </summary>
+        public static string Unit_DegreePerSecond {
+            get {
+                return ResourceManager.GetString("Unit_DegreePerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dps.
+        /// </summary>
+        public static string Unit_DPS {
+            get {
+                return ResourceManager.GetString("Unit_DPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to fires/min.
+        /// </summary>
+        public static string Unit_FPM {
+            get {
+                return ResourceManager.GetString("Unit_FPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HP.
+        /// </summary>
+        public static string Unit_HP {
+            get {
+                return ResourceManager.GetString("Unit_HP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kg.
+        /// </summary>
+        public static string Unit_KG {
+            get {
+                return ResourceManager.GetString("Unit_KG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to km.
+        /// </summary>
+        public static string Unit_KM {
+            get {
+                return ResourceManager.GetString("Unit_KM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kts.
+        /// </summary>
+        public static string Unit_Knots {
+            get {
+                return ResourceManager.GetString("Unit_Knots", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        public static string Unit_M {
+            get {
+                return ResourceManager.GetString("Unit_M", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm.
+        /// </summary>
+        public static string Unit_MM {
+            get {
+                return ResourceManager.GetString("Unit_MM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m/s.
+        /// </summary>
+        public static string Unit_MPS {
+            get {
+                return ResourceManager.GetString("Unit_MPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        public static string Unit_PerCent {
+            get {
+                return ResourceManager.GetString("Unit_PerCent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        public static string Unit_S {
+            get {
+                return ResourceManager.GetString("Unit_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shots/min.
+        /// </summary>
+        public static string Unit_ShotsPerMinute {
+            get {
+                return ResourceManager.GetString("Unit_ShotsPerMinute", resourceCulture);
             }
         }
         
