@@ -5,9 +5,9 @@ using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Services;
-using WoWsShipBuilder.UI.Translations;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.ShipVm;
 

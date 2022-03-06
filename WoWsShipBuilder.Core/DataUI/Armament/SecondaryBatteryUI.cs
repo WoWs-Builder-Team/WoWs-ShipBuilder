@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -83,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
-                    TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
+                    TrueReload = Math.Round(trueReload, 2) + " " + Translation.Unit_S,
                     TrueRoF = trueRateOfFire,
                     RoF = rof,
                     Sigma = secondary.Sigma,

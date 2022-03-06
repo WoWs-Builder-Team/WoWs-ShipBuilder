@@ -7,9 +7,9 @@ using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -113,7 +113,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         fuseTimer = 0;
                         overmatch = 0;
                         showBlastPenetration = true;
-                        shellType = UnitLocalization.ArmamentType_HE;
+                        shellType = Translation.ArmamentType_HE;
 
                         // IFHE fire chance malus
                         if (shell.Caliber > 0.139f)
@@ -160,7 +160,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         armingTreshold = 0;
                         fuseTimer = 0;
-                        shellType = UnitLocalization.ArmamentType_SAP;
+                        shellType = Translation.ArmamentType_SAP;
                         shellDamage = modifiers.FindModifiers("GMHECSDamageCoeff").Aggregate(shellDamage, (current, modifier) => current * modifier);
                         break;
                     }
@@ -169,7 +169,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         // TODO: check and fix modifier names and application
                         int index;
-                        shellType = UnitLocalization.ArmamentType_AP;
+                        shellType = Translation.ArmamentType_AP;
                         if (shell.Caliber >= 0.190f)
                         {
                             index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");

@@ -5,9 +5,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Extensions;
-using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {
@@ -328,7 +327,7 @@ namespace WoWsShipBuilder.UI.CustomControls
             double segmentEndHeight = 20;
             double plotMargin = 5;
 
-            string unit = UnitLocalization.Unit_M;
+            string unit = Translation.Unit_M;
 
             double xOuterRadius;
             double yOuterRadius;

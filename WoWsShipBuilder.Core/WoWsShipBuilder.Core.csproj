@@ -28,10 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="DataUI\UnitTranslations\UnitLocalization.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>UnitLocalization.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Localization\Translation.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Translation.Designer.cs</LastGenOutput>
@@ -39,11 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="DataUI\UnitTranslations\UnitLocalization.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>UnitLocalization.resx</DependentUpon>
-      </Compile>
       <Compile Update="Localization\Translation.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>

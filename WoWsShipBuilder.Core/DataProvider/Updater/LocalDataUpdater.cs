@@ -8,8 +8,8 @@ using NLog;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider.Updater
 {
