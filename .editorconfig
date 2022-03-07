@@ -3,6 +3,12 @@
 [*]
 indent_style = space
 
+[*.csproj]
+indent_size = 4
+
+[*.pubxml]
+indent_size = 2
+
 # noinspection EditorConfigKeyCorrectness
 [*.cs]
 max_line_length = 160

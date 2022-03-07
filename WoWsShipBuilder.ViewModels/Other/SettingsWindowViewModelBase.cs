@@ -48,14 +48,13 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private bool telemetryDataEnabled;
 
-        private string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-
         public SettingsWindowViewModelBase(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
         {
             Logging.Logger.Info("Creating setting window view model");
             this.fileSystem = fileSystem;
             this.clipboardService = clipboardService;
             this.AppDataService = appDataService;
+            Version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
             languagesList = AppConstants.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
                                ?? AppConstants.DefaultCultureDetails;
@@ -121,11 +120,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             set => this.RaiseAndSetIfChanged(ref customBuildImagePath, value);
         }
 
-        public string Version
-        {
-            get => version;
-            set => this.RaiseAndSetIfChanged(ref version, value);
-        }
+        public string Version { get; }
 
         public List<CultureDetails> LanguagesList
         {
