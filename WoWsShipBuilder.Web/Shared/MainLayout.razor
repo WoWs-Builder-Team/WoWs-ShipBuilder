@@ -1,17 +1,29 @@
 @inherits LayoutComponentBase
+<Layout>
+    <LayoutHeader Fixed>
+        <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Dark">
+            <BarMenu>
+                <BarStart>
+                    <BarItem>
+                        <BarLink To="">Home</BarLink>
+                    </BarItem>
+                    <BarItem>
+                        <BarLink To="counter">Counter</BarLink>
+                    </BarItem>
+                    <BarItem>
+                        <BarLink To="fetchdata">Fetch data</BarLink>
+                    </BarItem>
+                </BarStart>
+            </BarMenu>
+        </Bar>
+    </LayoutHeader>
+    <LayoutContent Padding="Padding.Is4.OnX">
+        @Body
+    </LayoutContent>
+</Layout>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@code
+{
+    [CascadingParameter]
+    protected Theme Theme { get; set; } = null!;
+}
