@@ -7,28 +7,33 @@
         <NotFound>
             <PageTitle>Not found</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+                <Container>
+                    <Heading Size="HeadingSize.Is3" TextAlignment="TextAlignment.Center" TextColor="TextColor.Danger">Sorry, this address does not exist.</Heading>
+                </Container>
             </LayoutView>
         </NotFound>
     </Router>
 </ThemeProvider>
+
 @code
 {
-    private Theme theme = new()
+    private readonly Theme theme = new()
     {
         BarOptions = new()
         {
-            HorizontalHeight = "72px"
+            HorizontalHeight = "72px",
         },
         BreakpointOptions = new()
         {
         },
+
     //SpacingOptions = new()
     //{
     //},
         ColorOptions = new()
         {
-            Primary = "#0288D1",
+            Primary = "#DEDEDE",
+
     //Secondary = "#A65529",
     //Success = "#23C02E",
     //Info = "#9BD8FE",
@@ -39,17 +44,21 @@
         },
         BackgroundOptions = new()
         {
-            Primary = "#0288D1",
+            Primary = "#1b1b1b",
+            Body = "#282828",
         },
         TextColorOptions = new()
         {
+            Primary = "#DEDEDE",
         },
+
     //ButtonOptions = new ThemeButtonOptions { },
     //DropdownOptions = new ThemeDropdownOptions { },
         InputOptions = new()
         {
             CheckColor = "#0288D1",
         },
+
     //CardOptions = new ThemeCardOptions { },
     //ModalOptions = new ThemeModalOptions { },
     //TabsOptions = new ThemeTabsOptions { },

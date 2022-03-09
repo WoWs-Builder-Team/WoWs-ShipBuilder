@@ -1,0 +1,21 @@
+﻿<Bar @bind-Visible="barVisible" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Dark">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="">WoWs ShipBuilder</BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarToggler />
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="ship">Ship stats</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="plots">Dispersion and ballistic plots</BarLink>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>
+@code {
+    private bool barVisible = false;
+}

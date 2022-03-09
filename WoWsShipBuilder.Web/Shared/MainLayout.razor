@@ -1,21 +1,8 @@
 @inherits LayoutComponentBase
-<Layout>
+
+<Layout Background="Background.Body">
     <LayoutHeader Fixed>
-        <Bar Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Dark">
-            <BarMenu>
-                <BarStart>
-                    <BarItem>
-                        <BarLink To="">Home</BarLink>
-                    </BarItem>
-                    <BarItem>
-                        <BarLink To="counter">Counter</BarLink>
-                    </BarItem>
-                    <BarItem>
-                        <BarLink To="fetchdata">Fetch data</BarLink>
-                    </BarItem>
-                </BarStart>
-            </BarMenu>
-        </Bar>
+        <TopMenu />
     </LayoutHeader>
     <LayoutContent Padding="Padding.Is4.OnX">
         @Body

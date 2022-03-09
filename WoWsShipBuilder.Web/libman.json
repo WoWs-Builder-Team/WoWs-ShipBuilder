@@ -1,0 +1,45 @@
+﻿{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "bootstrap@5.1.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "dist/js/bootstrap.bundle.min.js",
+        "dist/js/bootstrap.bundle.min.js.map",
+        "dist/css/bootstrap.min.css",
+        "dist/css/bootstrap.min.css.map"
+      ]
+    },
+    {
+      "library": "@fortawesome/fontawesome-free@5.15.4",
+      "destination": "wwwroot/lib/fortawesome/fontawesome-free/",
+      "files": [
+        "css/all.css"
+      ]
+    },
+    {
+      "library": "@fortawesome/fontawesome-free@5.15.4",
+      "destination": "wwwroot/lib/fortawesome/fontawesome-free/",
+      "files": [
+        "css/all.css",
+        "webfonts/fa-brands-400.eot",
+        "webfonts/fa-brands-400.svg",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-brands-400.woff",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.eot",
+        "webfonts/fa-regular-400.svg",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-regular-400.woff",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.eot",
+        "webfonts/fa-solid-900.svg",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-solid-900.woff",
+        "webfonts/fa-solid-900.woff2"
+      ]
+    }
+  ]
+}
