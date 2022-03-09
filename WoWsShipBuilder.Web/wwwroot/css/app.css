@@ -1,4 +1,19 @@
-﻿h1:focus {
+﻿/*noinspection CssUnknownTarget*/
+@font-face {
+    font-family: 'shipbuilder-icons';
+    src: url('/assets/font/shipbuilder-icons.eot');
+    src: url('/assets/font/shipbuilder-icons.eot#iefix') format('embedded-opentype'),
+    url('/assets/font/shipbuilder-icons.woff2') format('woff2'),
+    url('/assets/font/shipbuilder-icons.woff') format('woff'),
+    url('/assets/font/shipbuilder-icons.ttf') format('truetype'),
+    url('/assets/font/shipbuilder-icons.svg#shipbuilder-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon-ship-builder:before { content: '\e800'; }
+
+h1:focus {
     outline: none;
 }
 

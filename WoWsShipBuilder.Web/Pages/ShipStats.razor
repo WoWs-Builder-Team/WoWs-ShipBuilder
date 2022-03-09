@@ -1,6 +1,50 @@
 ﻿@page "/ship"
 <PageTitle>Ship stats</PageTitle>
 
+<Dropdown @ref="dropdown">
+    <DropdownToggle Color="Color.Primary" ToggleIconVisible="false">
+        <div style="overflow: hidden; width: 50px;">
+            <img style="object-fit: contain;height: 100%;width: 100%;" src="@selectedImage" alt="Dropdown"/>
+        </div>
+    </DropdownToggle>
+    <DropdownMenu Style="min-width: 1rem;">
+        @foreach (string item in items)
+        {
+            var background = item == selectedImage ? Background.Secondary : Background.Default;
+            <DropdownItem Clicked="() => OnItemClicked(item)" Background="background">
+                <div style="overflow: hidden; width: 50px;">
+                    <img style="object-fit: contain;height: 100%;width: 100%;" src="@item" alt="Dropdown"/>
+                </div>
+            </DropdownItem>
+        }
+    </DropdownMenu>
+</Dropdown>
+<Button Clicked="@ShowMenu" Color="Color.Secondary">
+    <div style="overflow: hidden; width: 50px;">
+        <img style="object-fit: contain;height: 100%;width: 100%;" src="favicon.ico" alt="Dropdown"/>
+    </div>
+</Button>
+
 @code {
-    
+    private Dropdown dropdown = null!;
+
+    private List<string> items = new() { "favicon.ico", "assets/app-logo.png" };
+
+    private string selectedImage;
+
+    public ShipStats()
+    {
+        selectedImage = items.First();
+    }
+
+    private async Task ShowMenu()
+    {
+        await dropdown.Show();
+    }
+
+    private void OnItemClicked(string imageName)
+    {
+        selectedImage = imageName;
+    }
+
 }
