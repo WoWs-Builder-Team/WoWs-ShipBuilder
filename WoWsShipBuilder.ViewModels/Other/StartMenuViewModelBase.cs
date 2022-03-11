@@ -20,8 +20,6 @@ namespace WoWsShipBuilder.ViewModels.Other
 {
     public abstract class StartMenuViewModelBase : ViewModelBase
     {
-        protected readonly IFileSystem FileSystem;
-
         protected readonly INavigationService NavigationService;
 
         protected readonly IClipboardService ClipboardService;
@@ -30,9 +28,8 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
         {
-            FileSystem = fileSystem;
             NavigationService = navigationService;
             ClipboardService = clipboardService;
             AppDataService = appDataService;

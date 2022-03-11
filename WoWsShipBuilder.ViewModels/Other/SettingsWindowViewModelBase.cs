@@ -22,8 +22,6 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private readonly IClipboardService clipboardService;
 
-        private readonly IFileSystem fileSystem;
-
         private bool autoUpdate;
 
         private string? customBuildImagePath;
@@ -48,10 +46,9 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private bool telemetryDataEnabled;
 
-        public SettingsWindowViewModelBase(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
+        public SettingsWindowViewModelBase(IClipboardService clipboardService, IAppDataService appDataService)
         {
             Logging.Logger.Info("Creating setting window view model");
-            this.fileSystem = fileSystem;
             this.clipboardService = clipboardService;
             this.AppDataService = appDataService;
             Version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
@@ -293,27 +290,6 @@ namespace WoWsShipBuilder.ViewModels.Other
             return await SelectFolderInteraction.Handle(AppDataService.AppDataDirectory);
         }
 
-        private bool IsValidPath(string path, bool exactPath = true)
-        {
-            bool isValid;
-            try
-            {
-                if (exactPath)
-                {
-                    string root = fileSystem.Path.GetPathRoot(path)!;
-                    isValid = string.IsNullOrEmpty(root.Trim('\\', '/')) == false;
-                }
-                else
-                {
-                    isValid = fileSystem.Path.IsPathRooted(path);
-                }
-            }
-            catch (Exception)
-            {
-                isValid = false;
-            }
-
-            return isValid;
-        }
+        protected abstract bool IsValidPath(string path, bool exactPath = true);
     }
 }

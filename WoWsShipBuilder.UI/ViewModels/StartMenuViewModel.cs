@@ -11,21 +11,24 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class StartMenuViewModel : StartMenuViewModelBase
     {
+        private readonly IFileSystem fileSystem;
+
         public StartMenuViewModel()
             : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
         {
         }
 
         public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
-            : base(fileSystem, navigationService, clipboardService, appDataService)
+            : base(navigationService, clipboardService, appDataService)
         {
+            this.fileSystem = fileSystem;
         }
 
         public override async void Setting()
         {
-            await ShowSettingsInteraction.Handle(new SettingsWindowViewModel(FileSystem, ClipboardService, AppDataService));
+            await ShowSettingsInteraction.Handle(new SettingsWindowViewModel(fileSystem, ClipboardService, AppDataService));
         }
 
-        protected override BuildImportViewModelBase CreateImportViewModel() => new BuildImportViewModel(FileSystem);
+        protected override BuildImportViewModelBase CreateImportViewModel() => new BuildImportViewModel(fileSystem);
     }
 }

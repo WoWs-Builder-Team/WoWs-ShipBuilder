@@ -12,14 +12,16 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
 {
     public class BuildImportViewModel : BuildImportViewModelBase
     {
+        private readonly IFileSystem fileSystem;
+
         public BuildImportViewModel()
             : this(new FileSystem())
         {
         }
 
         public BuildImportViewModel(IFileSystem fileSystem)
-            : base(fileSystem)
         {
+            this.fileSystem = fileSystem;
         }
 
         public async void LoadFromImage(object parameter)
@@ -30,7 +32,7 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
                 return;
             }
 
-            AppData.Settings.LastImageImportPath = FileSystem.Path.GetDirectoryName(result[0]);
+            AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
             string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
 
             JsonSerializerSettings serializerSettings = new()
