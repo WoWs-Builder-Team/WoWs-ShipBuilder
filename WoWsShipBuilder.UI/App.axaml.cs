@@ -18,7 +18,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
@@ -91,6 +90,7 @@ namespace WoWsShipBuilder.UI
             var builder = new ContainerBuilder();
 
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
+            builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
             builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();

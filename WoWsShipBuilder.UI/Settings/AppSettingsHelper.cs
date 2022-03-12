@@ -2,9 +2,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Newtonsoft.Json;
+using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 
 namespace WoWsShipBuilder.UI.Settings
@@ -15,19 +17,14 @@ namespace WoWsShipBuilder.UI.Settings
     {
         private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
 
-        public static void SaveSettings()
-        {
-            string settingString = JsonConvert.SerializeObject(AppData.Settings);
-            File.WriteAllText(SettingFile, settingString);
-        }
+        public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(AppData.Settings, SettingFile);
 
         public static void LoadSettings()
         {
             if (File.Exists(SettingFile))
             {
                 Logging.Logger.Info("Trying to load settings from settings file...");
-                string jsonSettings = File.ReadAllText(SettingFile);
-                var settings = JsonConvert.DeserializeObject<AppSettings>(jsonSettings);
+                var settings = Locator.Current.GetServiceSafe<IDataService>().Load<AppSettings>(SettingFile);
                 if (settings == null)
                 {
                     Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");

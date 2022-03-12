@@ -309,12 +309,12 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
                 progressTracker.Report((2, Translation.SplashScreen_ShipImages));
-                await awsClient.DownloadImages(ImageType.Ship);
+                await awsClient.DownloadImages(ImageType.Ship, fileSystem);
             }
             else
             {
                 progressTracker.Report((2, Translation.SplashScreen_ShipImages));
-                await awsClient.DownloadImages(ImageType.Ship, versionName);
+                await awsClient.DownloadImages(ImageType.Ship, fileSystem, versionName);
             }
 
             // var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));

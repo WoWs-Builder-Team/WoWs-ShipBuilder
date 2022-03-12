@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using Newtonsoft.Json;
 using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Extensions;
@@ -26,20 +24,18 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         private readonly IFileSystem fileSystem;
 
-        private DesktopAppDataService()
-            : this(new FileSystem())
-        {
-        }
+        private readonly IDataService dataService;
 
-        public DesktopAppDataService(IFileSystem fileSystem)
+        public DesktopAppDataService(IFileSystem fileSystem, IDataService dataService)
         {
             this.fileSystem = fileSystem;
+            this.dataService = dataService;
             DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
         }
 
         public static DesktopAppDataService Instance => InstanceValue.Value;
 
-        public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem());
+        public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem(), new DesktopDataService(new FileSystem()));
 
         public string DefaultAppDataDirectory { get; }
 
@@ -235,8 +231,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             var path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
             var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
-            string buildsString = JsonConvert.SerializeObject(builds);
-            fileSystem.File.WriteAllText(path, buildsString);
+            dataService.Store(builds, path);
         }
 
         public void LoadBuilds()
@@ -244,7 +239,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             string path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
             if (fileSystem.File.Exists(path))
             {
-                var rawBuildList = JsonConvert.DeserializeObject<List<string>>(fileSystem.File.ReadAllText(path));
+                var rawBuildList = dataService.Load<List<string>>(path);
                 AppData.Builds = rawBuildList?.Select(Build.CreateBuildFromString).ToList() ?? new List<Build>();
             }
         }
@@ -262,11 +257,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 return default;
             }
 
-            using Stream fs = fileSystem.File.OpenRead(filePath);
-            var streamReader = new StreamReader(fs);
-            var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<T>(jsonReader);
+            return dataService.Load<T>(filePath);
         }
     }
 }

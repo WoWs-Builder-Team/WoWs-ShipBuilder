@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.DataProvider;
@@ -18,8 +19,8 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
-        public AwsClient(IFileSystem fileSystem, IAppDataService appDataService, HttpMessageHandler? handler = null)
-            : base(fileSystem, appDataService)
+        public AwsClient(IDataService dataService, IAppDataService appDataService, HttpMessageHandler? handler = null)
+            : base(dataService, appDataService)
         {
             Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
@@ -30,11 +31,13 @@ namespace WoWsShipBuilder.Core.HttpClients
         /// Downloads all the images stored into a .zip file on the server and saves them into the local folder for images. Then deletes the .zip file.
         /// </summary>
         /// <param name="type">The type of images to download. Can be either Ship or Camo.</param>
+        /// <param name="fileSystem">An <see cref="IFileSystem"/> used to access local files.</param>
         /// <param name="fileName">The name of the zip archive to download, without .zip extension.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         /// <exception cref = "HttpRequestException" > Occurs if the server does not respond properly.</exception>
         /// <exception cref = "ArgumentNullException" > Occurs if the file is not available on the server.</exception>
-        public async Task DownloadImages(ImageType type, string? fileName = null)
+        [UnsupportedOSPlatform("browser")]
+        public async Task DownloadImages(ImageType type, IFileSystem fileSystem, string? fileName = null)
         {
             Logger.Debug("Downloading images for type {}.", type);
             string zipUrl;
@@ -54,19 +57,19 @@ namespace WoWsShipBuilder.Core.HttpClients
                 localFolder = "Camos";
             }
 
-            string directoryPath = FileSystem.Path.Combine(AppDataService.AppDataImageDirectory, localFolder);
+            string directoryPath = fileSystem.Path.Combine(AppDataService.AppDataImageDirectory, localFolder);
 
-            if (!FileSystem.Directory.Exists(directoryPath))
+            if (!fileSystem.Directory.Exists(directoryPath))
             {
-                FileSystem.Directory.CreateDirectory(directoryPath);
+                fileSystem.Directory.CreateDirectory(directoryPath);
             }
 
-            string zipPath = FileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
+            string zipPath = fileSystem.Path.Combine(directoryPath, $"{zipName}.zip");
             try
             {
                 await DownloadFileAsync(new(zipUrl), zipPath);
                 ZipFile.ExtractToDirectory(zipPath, directoryPath, true);
-                FileSystem.File.Delete(zipPath);
+                fileSystem.File.Delete(zipPath);
             }
             catch (HttpRequestException e)
             {
@@ -94,7 +97,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             });
             foreach ((string category, string fileName) in relativeFilePaths)
             {
-                string localFileName = FileSystem.Path.Combine(AppDataService.GetDataPath(serverType), category, fileName);
+                string localFileName = DataService.CombinePaths(AppDataService.GetDataPath(serverType), category, fileName);
                 Uri uri = string.IsNullOrWhiteSpace(category) ? new(baseUrl + fileName) : new(baseUrl + $"{category}/{fileName}");
                 var task = Task.Run(async () =>
                 {
