@@ -160,7 +160,7 @@
     <value>Carregar Build</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Criar uma Build</value>
+    <value>Criar Build</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
     <value>Importar build...</value>
@@ -193,10 +193,10 @@
     <value>Conversão de dados:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Pontos do Capitão:</value>
+    <value>Pontos do Comandante:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Talentos do Capitão</value>
+    <value>Talentos do Comandante</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
     <value>Salvar</value>
@@ -229,7 +229,7 @@
     <value>Calculador de XP</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Baixando imagens de camuflagem</value>
+    <value>Baixando imagens das camuflagens</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
     <value>Concluído</value>
@@ -328,7 +328,7 @@
     <value>Tipo</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Nenhum navio encontrado com os critérios atuais de filtragem</value>
+    <value>Nenhum navio foi encontrado com os critérios atuais de filtragem</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
     <value>Procurar navio</value>
@@ -343,7 +343,7 @@
     <value>Alcance</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Taxa de Fogo</value>
+    <value>Taxa de Disparo</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
     <value>Tempo de recarga</value>
@@ -373,7 +373,7 @@
     <value>Raio de explosão profunda</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Chance de incêndio</value>
+    <value>Chance de incendiar</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
     <value>Temporizador do fusível</value>
@@ -514,7 +514,7 @@
     <value>Expandir todos os ângulos</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Habilidades de Capitão e Camuflagem</value>
+    <value>Habilidades de Comandante e Camuflagem</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
     <value>Sinais</value>
@@ -547,7 +547,7 @@
     <value>Quando em chamas</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Após disparo em fumaça</value>
+    <value>Após disparar em fumaça</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
     <value>Número máximo de incêndios</value>
@@ -886,7 +886,7 @@
     <value>Vertical Interna:</value>
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
-    <value>Horizontal Interior:</value>
+    <value>Horizontal Interna:</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
     <value>Dispersão</value>
@@ -895,7 +895,7 @@
     <value>Mostrar gráficos de dispersão</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>Mostrar plotagem de dispersão</value>
+    <value>Mostrar gráfico de dispersão</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
     <value>Fórmula no alcance X(Km)</value>
@@ -922,7 +922,7 @@
     <value>Número de Tiros</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
-    <value>Atualizar Plot</value>
+    <value>Atualizar Gráfico</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
     <value>Enviar dados básicos de telemetria (versão atual do app)</value>
@@ -1128,7 +1128,9 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="Validation_BuildName" xml:space="preserve">
       <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
   </data>
-  
+  <data name="Teststring" xml:space="preserve">
+      <value>Apenas um valor para teste</value>
+  </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
