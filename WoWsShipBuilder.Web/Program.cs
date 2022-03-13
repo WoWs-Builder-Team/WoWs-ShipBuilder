@@ -1,3 +1,4 @@
+using System.Globalization;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
@@ -22,4 +23,7 @@ builder.Services.AddBlazorise(options => { options.Immediate = true; })
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons();
 
+var currentCulture = new CultureInfo("en-GB");
+CultureInfo.DefaultThreadCurrentCulture = currentCulture;
+CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
 await builder.Build().RunAsync();
