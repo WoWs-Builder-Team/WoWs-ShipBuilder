@@ -1,8 +1,8 @@
-﻿using WoWsShipBuilder.Core.Data;
+﻿namespace WoWsShipBuilder.Web.ViewModels;
+
+using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.ViewModels.ShipVm;
-
-namespace WoWsShipBuilder.Web.ViewModels;
 
 public class ShipViewModel : MainWindowViewModelBase
 {

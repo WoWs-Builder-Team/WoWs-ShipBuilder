@@ -1,16 +1,16 @@
-﻿using ReactiveUI;
-using WoWsShipBuilder.ViewModels.Base;
+﻿namespace WoWsShipBuilder.Web.ViewModels;
 
-namespace WoWsShipBuilder.Web.ViewModels;
+using ReactiveUI;
+using WoWsShipBuilder.ViewModels.Base;
 
 public class TestVm : ViewModelBase
 {
+    private string selectedItem;
+
     public TestVm(string initialSelect)
     {
         selectedItem = initialSelect;
     }
-
-    private string selectedItem;
 
     public string SelectedItem
     {
