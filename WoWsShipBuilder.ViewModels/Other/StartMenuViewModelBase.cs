@@ -73,16 +73,16 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void NewBuild()
         {
-            var dc = new ShipSelectionWindowViewModel(false);
+            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService));
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
                 try
                 {
-                    var ship = AppDataService.GetShipFromSummary(result)!;
-                    AppDataService.LoadNationFiles(result.Nation);
-                    NavigationService.OpenMainWindow(ship, result, closeMainWindow: true);
+                    var ship = await AppDataService.GetShipFromSummary(result);
+                    await AppDataService.LoadNationFiles(result.Nation);
+                    await NavigationService.OpenMainWindow(ship!, result, closeMainWindow: true);
                 }
                 catch (Exception e)
                 {
@@ -118,7 +118,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             if (AppData.ShipSummaryList == null)
             {
                 Logging.Logger.Info("Ship summary is null, loading it.");
-                AppData.ShipSummaryList = AppDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
+                AppData.ShipSummaryList = await AppDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
             }
 
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
@@ -130,9 +130,9 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             try
             {
-                var ship = AppDataService.GetShipFromSummary(summary)!;
-                AppDataService.LoadNationFiles(summary.Nation);
-                NavigationService.OpenMainWindow(ship, summary, build, true);
+                var ship = await AppDataService.GetShipFromSummary(summary);
+                await AppDataService.LoadNationFiles(summary.Nation);
+                await NavigationService.OpenMainWindow(ship!, summary, build, true);
             }
             catch (Exception e)
             {

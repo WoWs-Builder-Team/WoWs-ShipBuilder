@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -25,19 +26,19 @@ namespace WoWsShipBuilder.UI.UserControls
             AvaloniaXamlLoader.Load(this);
         }
 
-        public void OpenDispersionGraphWindow(object sender, PointerReleasedEventArgs e)
+        public async void OpenDispersionGraphWindow(object sender, PointerReleasedEventArgs e)
         {
-            OpenGraphsWindow(sender, e, Tabs.Dispersion);
+            await OpenGraphsWindow(sender, e, Tabs.Dispersion);
         }
 
-        public void OpenDispersionPlotWindow(object sender, PointerReleasedEventArgs e)
+        public async void OpenDispersionPlotWindow(object sender, PointerReleasedEventArgs e)
         {
-            OpenGraphsWindow(sender, e, Tabs.Plot);
+            await OpenGraphsWindow(sender, e, Tabs.Plot);
         }
 
-        public void OpenBallisticGraphWindow(object sender, PointerReleasedEventArgs e)
+        public async void OpenBallisticGraphWindow(object sender, PointerReleasedEventArgs e)
         {
-            OpenGraphsWindow(sender, e, Tabs.Ballistic);
+            await OpenGraphsWindow(sender, e, Tabs.Ballistic);
         }
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
@@ -51,14 +52,14 @@ namespace WoWsShipBuilder.UI.UserControls
             e.Handled = true;
         }
 
-        private void OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
+        private async Task OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
         {
             var dc = DataContext as ShipStatsControlViewModelBase;
             var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
             var shellIndex = ((ShellUI)textBlock.DataContext!).Index;
-            var shell = DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+            var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;

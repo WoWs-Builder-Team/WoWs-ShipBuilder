@@ -350,13 +350,13 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true));
+            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance)));
 
             if (resultList != null && resultList.Count > 0)
             {
                 foreach (var result in resultList)
                 {
-                    Ship? ship = result != null ? DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
+                    Ship? ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
                     if (ship != null)
                     {
                         var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
@@ -410,7 +410,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                                 VerticalModel!.Series.Add(vSeries);
 
                                 // create and add the ballistic series
-                                ArtilleryShell shell = DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+                                ArtilleryShell shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                                 var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 

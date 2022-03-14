@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -17,11 +19,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private List<List<Modernization>> availableModernizationList = null!;
 
-        public UpgradePanelViewModelBase(Ship ship)
+        public UpgradePanelViewModelBase(Ship ship, Dictionary<string, Modernization> upgradeData)
         {
-            Dictionary<string, Modernization> upgradeData = DesktopAppDataService.Instance.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ??
-                                                            new Dictionary<string, Modernization>();
-
             List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
                 .Where(m => !(m.BlacklistedShips?.Contains(ship.Name) ?? false))
                 .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
@@ -61,6 +60,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
                 this.RaisePropertyChanged(nameof(SelectedModernizationList));
             };
+        }
+
+        public static async Task<Dictionary<string, Modernization>> LoadParamsAsync(IAppDataService appDataService)
+        {
+            return await appDataService.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ?? new Dictionary<string, Modernization>();
         }
 
         public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }

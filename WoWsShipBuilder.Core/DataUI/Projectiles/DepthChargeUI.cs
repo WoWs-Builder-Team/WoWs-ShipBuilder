@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -25,9 +26,9 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
         [DataUiUnit("PerCent")]
         public decimal FloodingChance { get; set; }
 
-        public static DepthChargeUI FromChargesName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<DepthChargeUI> FromChargesName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            var depthCharge = appDataService.GetProjectile<DepthCharge>(name);
+            var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
             float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current *= modifier);
 
             var depthChargeUI = new DepthChargeUI

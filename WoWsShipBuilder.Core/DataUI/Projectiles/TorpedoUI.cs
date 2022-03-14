@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
@@ -47,12 +48,12 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public bool IsLast { get; set; } = false;
 
-        public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<List<TorpedoUI>> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var list = new List<TorpedoUI>();
             foreach (var name in torpedoNames)
             {
-                var torp = appDataService.GetProjectile<Torpedo>(name);
+                var torp = await appDataService.GetProjectile<Torpedo>(name);
 
                 var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
                 decimal torpedoDamage = Math.Round((decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier), 2);

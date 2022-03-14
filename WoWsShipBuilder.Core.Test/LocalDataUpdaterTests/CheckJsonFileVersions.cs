@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                 localVersionInfo.CurrentVersion);
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(localVersionInfo);
+            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
             // Act
             var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).CheckJsonFileVersions(ServerType.Live);
@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             var testVersionInfo = CreateTestVersionInfo(1);
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(testVersionInfo);
+            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
 
             // Act
             var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).CheckJsonFileVersions(ServerType.Live);

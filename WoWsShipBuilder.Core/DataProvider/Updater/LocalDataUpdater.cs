@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task RunDataUpdateCheck(ServerType serverType, IProgress<(int, string)> progressTracker, bool overrideDateCheck = false)
         {
             logger.Info("UpdateCheck triggered. Checking whether update should execute...");
-            if (!overrideDateCheck && !ShouldUpdaterRun(serverType))
+            if (!overrideDateCheck && !await ShouldUpdaterRun(serverType))
             {
                 logger.Info("Skipping update check.");
             }
@@ -62,12 +62,12 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             await CheckInstalledLocalizations(serverType);
             logger.Info("Starting data validation...");
             string dataBasePath = appDataService.GetDataPath(serverType);
-            if (!ValidateData(serverType, dataBasePath))
+            if (!await ValidateData(serverType, dataBasePath))
             {
                 logger.Info("Data validation failed. Clearing existing app data...");
                 fileSystem.Directory.Delete(dataBasePath, true);
                 await CheckFilesAndDownloadUpdates(serverType, progressTracker);
-                if (!ValidateData(serverType, dataBasePath))
+                if (!await ValidateData(serverType, dataBasePath))
                 {
                     logger.Error("Invalid application data after full reload detected.");
                 }
@@ -113,7 +113,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         {
             logger.Info("Checking json file versions for server type {0}...", serverType);
             VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-            VersionInfo? localVersionInfo = appDataService.ReadLocalVersionInfo(serverType);
+            VersionInfo? localVersionInfo = await appDataService.ReadLocalVersionInfo(serverType);
 
             List<(string, string)> filesToDownload;
             bool shouldImagesUpdate;
@@ -231,9 +231,9 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <param name="dataBasePath">The base file system path to the directory of the local VersionInfo file.</param>
         /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
-        public bool ValidateData(ServerType serverType, string dataBasePath)
+        public async Task<bool> ValidateData(ServerType serverType, string dataBasePath)
         {
-            var versionInfo = appDataService.ReadLocalVersionInfo(serverType);
+            var versionInfo = await appDataService.ReadLocalVersionInfo(serverType);
             if (versionInfo == null)
             {
                 logger.Error("VersionInfo does not exist. AppData validation failed.");
@@ -261,11 +261,11 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// </summary>
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <returns><see langword="true"/> if the updater should run, <see langword="false"/> otherwise.</returns>
-        public bool ShouldUpdaterRun(ServerType serverType)
+        public async Task<bool> ShouldUpdaterRun(ServerType serverType)
         {
             var today = DateTime.Today;
             return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
-                   appDataService.ReadLocalVersionInfo(serverType) == null;
+                   await appDataService.ReadLocalVersionInfo(serverType) == null;
         }
 
         /// <summary>

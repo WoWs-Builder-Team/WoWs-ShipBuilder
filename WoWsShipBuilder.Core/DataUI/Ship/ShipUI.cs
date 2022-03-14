@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
@@ -38,22 +39,22 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public SpecialAbilityUI? SpecialAbilityUI { get; set; }
 
-        public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public static async Task<ShipUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             var shipUI = new ShipUI(ship.Index)
             {
                 // Main weapons
-                MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                CVAircraftUI = DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                MainBatteryUI = await MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                TorpedoArmamentUI = await TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                CVAircraftUI = await DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUI = SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
-                AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
-                AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true, appDataService),
-                DepthChargeLauncherUI = DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                AirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
+                AswAirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, true, appDataService),
+                DepthChargeLauncherUI = await DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
 
                 // Misc
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),

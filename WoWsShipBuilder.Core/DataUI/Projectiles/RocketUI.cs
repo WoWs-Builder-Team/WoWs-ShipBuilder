@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
@@ -38,9 +39,9 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<RocketUI> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            var rocket = appDataService.GetProjectile<Rocket>(name);
+            var rocket = await appDataService.GetProjectile<Rocket>(name);
 
             decimal rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");

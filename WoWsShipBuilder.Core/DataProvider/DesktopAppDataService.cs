@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Threading.Tasks;
 using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Extensions;
@@ -102,12 +103,12 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <param name="serverType">The selected server type.</param>
         /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
         /// <returns>A dictionary containing the deserialized file content.</returns>
-        public Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType)
+        public async Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType)
         {
             string categoryString = IAppDataService.GetCategoryString<T>();
             string nationString = IAppDataService.GetNationString(nation);
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
-            return DeserializeFile<Dictionary<string, T>>(fileName);
+            return await DeserializeFile<Dictionary<string, T>>(fileName);
         }
 
         /// <summary>
@@ -115,29 +116,29 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        public VersionInfo? ReadLocalVersionInfo(ServerType serverType)
+        public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
         {
             string filePath = fileSystem.Path.Combine(GetDataPath(serverType), "VersionInfo.json");
-            return DeserializeFile<VersionInfo>(filePath);
+            return await DeserializeFile<VersionInfo>(filePath);
         }
 
-        public List<ShipSummary> GetShipSummaryList(ServerType serverType)
+        public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
-            return DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
+            return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
         }
 
-        public void LoadNationFiles(Nation nation)
+        public async Task LoadNationFiles(Nation nation)
         {
             var server = AppData.Settings.SelectedServerType;
             if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
             {
-                AppData.ShipDictionary = ReadLocalJsonData<Ship>(nation, server);
+                AppData.ShipDictionary = await ReadLocalJsonData<Ship>(nation, server);
             }
 
-            AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, server));
-            AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, server));
-            AppData.ConsumableList ??= ReadLocalJsonData<Consumable>(Nation.Common, server);
+            AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
+            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
+            AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
         }
 
         /// <summary>
@@ -147,12 +148,12 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
         /// <returns>The projectile for the specified name.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-        public Projectile GetProjectile(string projectileName)
+        public async Task<Projectile> GetProjectile(string projectileName)
         {
             var nation = IAppDataService.GetNationFromIndex(projectileName);
             if (!AppData.ProjectileCache.ContainsKey(nation))
             {
-                AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
+                AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
             }
 
             return AppData.ProjectileCache[nation][projectileName];
@@ -170,9 +171,9 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </typeparam>
         /// <returns>The requested projectile, cast to the specified type.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-        public T GetProjectile<T>(string projectileName) where T : Projectile
+        public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
         {
-            return (T)GetProjectile(projectileName);
+            return (T)(await GetProjectile(projectileName));
         }
 
         /// <summary>
@@ -182,24 +183,24 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
         /// <returns>The requested aircraft.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
-        public Aircraft GetAircraft(string aircraftName)
+        public async Task<Aircraft> GetAircraft(string aircraftName)
         {
             var nation = IAppDataService.GetNationFromIndex(aircraftName);
             if (!AppData.AircraftCache.ContainsKey(nation))
             {
-                AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
+                AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
             }
 
             return AppData.AircraftCache[nation][aircraftName];
         }
 
-        public Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language)
+        public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
         {
             string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Localization", $"{language}.json");
-            return fileSystem.File.Exists(fileName) ? DeserializeFile<Dictionary<string, string>>(fileName) : null;
+            return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
         }
 
-        public Ship? GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
+        public async Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
         {
             Ship? ship = null;
 
@@ -209,7 +210,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
             else
             {
-                var shipDict = ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+                var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
                 if (shipDict != null)
                 {
                     ship = shipDict[summary.Index];
@@ -244,7 +245,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
         }
 
-        internal T? DeserializeFile<T>(string filePath)
+        internal async Task<T?> DeserializeFile<T>(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
@@ -257,7 +258,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 return default;
             }
 
-            return dataService.Load<T>(filePath);
+            return await dataService.LoadAsync<T>(filePath);
         }
     }
 }

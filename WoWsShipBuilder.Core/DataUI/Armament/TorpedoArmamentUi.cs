@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
@@ -34,7 +35,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> TorpedoArmamentData { get; set; } = default!;
 
-        public static TorpedoArmamentUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<TorpedoArmamentUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Torpedoes);
             if (torpConfiguration == null)
@@ -66,7 +67,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var torpedoArea = $"{launcher.TorpedoAngles[0]}° - {launcher.TorpedoAngles[1]}°";
 
-            var torpedoes = TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers, appDataService);
+            var torpedoes = await TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers, appDataService);
 
             var torpedoUi = new TorpedoArmamentUI
             {

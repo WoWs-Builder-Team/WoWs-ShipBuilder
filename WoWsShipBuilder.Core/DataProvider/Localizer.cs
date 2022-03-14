@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using NLog;
+using Splat;
 using WoWsShipBuilder.Core.Services;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
-        private static readonly Lazy<Localizer> InstanceProducer = new(() => new());
+        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));
         private static readonly Logger Logger = Logging.GetLogger("Localization");
 
         private readonly IAppDataService appDataService;
 
         private Dictionary<string, string> languageData = new();
         private CultureDetails? locale;
-
-        public Localizer()
-            : this(DesktopAppDataService.Instance)
-        {
-        }
 
         public Localizer(IAppDataService appDataService)
         {
@@ -34,7 +30,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         public (bool IsLocalized, string Localization) this[string key] =>
             languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
 
-        public void UpdateLanguage(CultureDetails newLocale, bool forceLanguageUpdate)
+        public async void UpdateLanguage(CultureDetails newLocale, bool forceLanguageUpdate)
         {
             if (locale == newLocale && languageData.Count > 0 && !forceLanguageUpdate)
             {
@@ -43,7 +39,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
 
             var serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
-            Dictionary<string, string>? localLanguageData = appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
+            Dictionary<string, string>? localLanguageData = await appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
             if (localLanguageData == null)
             {
                 Logger.Warn("Unable to load localization data for locale {0}.", newLocale);

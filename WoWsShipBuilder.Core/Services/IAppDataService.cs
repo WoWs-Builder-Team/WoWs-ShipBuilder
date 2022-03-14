@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
@@ -48,18 +49,18 @@ namespace WoWsShipBuilder.Core.Services
         /// <param name="serverType">The selected server type.</param>
         /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
         /// <returns>A dictionary containing the deserialized file content.</returns>
-        Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType);
+        Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType);
 
         /// <summary>
         /// Read the current version info from the app data directory.
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        VersionInfo? ReadLocalVersionInfo(ServerType serverType);
+        Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType);
 
-        List<ShipSummary> GetShipSummaryList(ServerType serverType);
+        Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
-        void LoadNationFiles(Nation nation);
+        Task LoadNationFiles(Nation nation);
 
         /// <summary>
         /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
@@ -68,7 +69,7 @@ namespace WoWsShipBuilder.Core.Services
         /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
         /// <returns>The projectile for the specified name.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-        Projectile GetProjectile(string projectileName);
+        Task<Projectile> GetProjectile(string projectileName);
 
         /// <summary>
         /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result, cast to the requested type.
@@ -82,7 +83,7 @@ namespace WoWsShipBuilder.Core.Services
         /// </typeparam>
         /// <returns>The requested projectile, cast to the specified type.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-        T GetProjectile<T>(string projectileName) where T : Projectile;
+        Task<T> GetProjectile<T>(string projectileName) where T : Projectile;
 
         /// <summary>
         /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
@@ -91,11 +92,11 @@ namespace WoWsShipBuilder.Core.Services
         /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
         /// <returns>The requested aircraft.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
-        Aircraft GetAircraft(string aircraftName);
+        Task<Aircraft> GetAircraft(string aircraftName);
 
-        Dictionary<string, string>? ReadLocalizationData(ServerType serverType, string language);
+        Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
-        Ship? GetShipFromSummary(ShipSummary summary, bool changeDictionary = true);
+        Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true);
 
         /// <summary>
         /// Save string compressed <see cref="Build"/> to the disk.

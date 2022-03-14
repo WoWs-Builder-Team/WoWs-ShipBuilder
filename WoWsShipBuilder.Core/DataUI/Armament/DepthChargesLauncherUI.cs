@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
@@ -32,7 +33,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? DepthChargesLauncherData { get; set; }
 
-        public static DepthChargesLauncherUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers, IAppDataService appDataService)
+        public static async Task<DepthChargesLauncherUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers, IAppDataService appDataService)
         {
             Hull shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
@@ -48,7 +49,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var numberOfUses = modifiers.FindModifiers("dcNumPacksBonus").Aggregate(depthChargesArray.MaxPacks, (current, modifier) => current + (int)modifier);
 
-            var ammo = DepthChargeUI.FromChargesName(ammoName, modifiers, appDataService);
+            var ammo = await DepthChargeUI.FromChargesName(ammoName, modifiers, appDataService);
 
             var depthChargesLauncherUI = new DepthChargesLauncherUI
             {

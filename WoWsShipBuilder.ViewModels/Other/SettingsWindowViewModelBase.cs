@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -50,7 +51,7 @@ namespace WoWsShipBuilder.ViewModels.Other
         {
             Logging.Logger.Info("Creating setting window view model");
             this.clipboardService = clipboardService;
-            this.AppDataService = appDataService;
+            AppDataService = appDataService;
             Version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
             languagesList = AppConstants.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
@@ -69,11 +70,16 @@ namespace WoWsShipBuilder.ViewModels.Other
             TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
             OpenExplorerAfterImageSave = AppData.Settings.OpenExplorerAfterImageSave;
 
+            InitializeDataVersionAsync(appDataService);
+        }
+
+        private async void InitializeDataVersionAsync(IAppDataService appDataService)
+        {
             if (AppData.DataVersion is null)
             {
                 Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
 
-                var localVersionInfo = appDataService.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
+                var localVersionInfo = await appDataService.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
                 if (localVersionInfo?.CurrentVersion?.MainVersion != null)
                 {
                     AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -84,12 +85,12 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
+        public static async Task<List<ShellUI>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
         {
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
             {
-                var shell = appDataService.GetProjectile<ArtilleryShell>(shellName);
+                var shell = await appDataService.GetProjectile<ArtilleryShell>(shellName);
 
                 // Values that may be ignored depending on shell type
                 var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);
