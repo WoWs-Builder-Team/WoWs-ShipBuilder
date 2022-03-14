@@ -7,7 +7,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web;
+using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,7 +27,18 @@ builder.Services.AddBlazorise(options => { options.Immediate = true; })
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons();
 
-var currentCulture = new CultureInfo("en-GB");
-CultureInfo.DefaultThreadCurrentCulture = currentCulture;
-CultureInfo.DefaultThreadCurrentUICulture = currentCulture;
-await builder.Build().RunAsync();
+builder.Services.AddShipBuilderServices();
+
+var host = builder.Build();
+
+var settingsHelper = host.Services.GetRequiredService<AppSettingsHelper>();
+var settings = await settingsHelper.LoadSettings() ?? new AppSettings();
+
+AppData.Settings = settings;
+
+CultureInfo.DefaultThreadCurrentCulture = settings.SelectedLanguage.CultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = settings.SelectedLanguage.CultureInfo;
+
+await settingsHelper.SaveSettings(AppData.Settings);
+
+await host.RunAsync();

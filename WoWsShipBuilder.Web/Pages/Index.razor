@@ -1,10 +1,17 @@
 ﻿@page "/"
+@using WoWsShipBuilder.Web.Services
+@using Newtonsoft.Json
+@inject IAppSettingsService settingsService
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
 
 <Container Fluid>
     <Heading TextAlignment="TextAlignment.Center" TextColor="TextColor.Primary" Size="HeadingSize.Is1" Class="main-title">WoWs ShipBuilder</Heading>
     <Paragraph TextAlignment="TextAlignment.Center" TextColor="TextColor.Primary">
-    Welcome to the WoWs ShipBuilder web app.
+        Welcome to the WoWs ShipBuilder web app.
+    </Paragraph>
+    <Paragraph TextColor="TextColor.Primary" TextOverflow="TextOverflow.Wrap">
+        Settings:
+        @JsonConvert.SerializeObject(settingsService.CurrentSettings, Formatting.Indented)
     </Paragraph>
 </Container>
