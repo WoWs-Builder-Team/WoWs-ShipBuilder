@@ -1024,7 +1024,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
     <value>Créditos</value>
   </data>
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
-    <value>Obrigado aos seguintes membros da comunidade por ajudar com a tradução deste projeto. Abaixo, todos os membros com pelo menos 10 contribuições são mencionados.</value>
+    <value>Agradecemos aos seguintes membros da comunidade por ajudarem com a tradução deste projeto. Abaixo, todos os membros com pelo menos 10 contribuições são mencionados.</value>
   </data>
   <data name="ShipStats_SecondaryBattery" xml:space="preserve">
     <value>Bateria Secundária</value>
@@ -1123,7 +1123,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
     <value>DPM no Servidor</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
-    <value>Taxa de Fogo no Servidor</value>
+    <value>Taxa de Disparo no Servidor</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
       <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
