@@ -376,9 +376,7 @@
   <data name="ShipStats_FuseTimer" xml:space="preserve">
     <value>Temporizador de espoleta</value>
   </data>
-  <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Capacidad de ignorar el blindaje</value>
-  </data>
+  
   <data name="ShipStats_Penetration" xml:space="preserve">
     <value>Penetración</value>
   </data>
@@ -527,15 +525,11 @@
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
     <value>Avistamiento desde el aire</value>
   </data>
-  <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Cuando está incendiado</value>
-  </data>
+  
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
     <value>Avistamiento por mar</value>
   </data>
-  <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Cuando está incendiado</value>
-  </data>
+  
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Al disparar desde el humo</value>
   </data>
@@ -560,18 +554,14 @@
   <data name="ShipStats_Backward" xml:space="preserve">
     <value>Hacia atrás</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Adelante</value>
-  </data>
+  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Velocidad máxima</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
     <value>Tiempo para girar el timón</value>
   </data>
-  <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Radio de giro del circulo</value>
-  </data>
+  
   <data name="ShipStats_MediumAura" xml:space="preserve">
     <value>Aura de rango medio</value>
   </data>
