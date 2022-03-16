@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Sentry;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -14,6 +16,8 @@ namespace WoWsShipBuilder.Core.DataUI
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
+
+        public string Type { get; set; } = default!;
 
         [DataUiUnit("KM")]
         public decimal Range { get; set; }
@@ -76,6 +80,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpUI = new TorpedoUI
                 {
                     Name = name,
+                    Type = Translation.ShipStats_TorpedoStandard,
                     Damage = Math.Round(torpedoDamage),
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = torpedoSpeed,
@@ -86,9 +91,16 @@ namespace WoWsShipBuilder.Core.DataUI
                     ExplosionRadius = (decimal)torp.ExplosionRadius,
                     SplashCoeff = (decimal)torp.SplashCoeff,
                 };
+
+                if (name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
+                {
+                    torpUI.Type = Translation.ShipStats_TorpedoMagnetic;
+                }
+
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
                 {
                     torpUI.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
+                    torpUI.Type = Translation.ShipStats_TorpedoDeepWater;
                 }
 
                 torpUI.ProjectileData = torpUI.ToPropertyMapping();

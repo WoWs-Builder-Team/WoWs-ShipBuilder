@@ -603,8 +603,8 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Speed</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Weapon type</value>
+  <data name="ShipStats_Weapon" xml:space="preserve">
+      <value>Weapon</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Skip bomb</value>
@@ -1181,5 +1181,14 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
+  </data>
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Standard</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Magnetic</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Deepwater</value>
   </data>
 </root>

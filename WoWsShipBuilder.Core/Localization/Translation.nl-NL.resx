@@ -603,7 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Snelheid</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
+  <data name="ShipStats_Weapon" xml:space="preserve">
     <value>Wapen type</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">

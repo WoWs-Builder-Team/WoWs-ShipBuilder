@@ -250,7 +250,8 @@ namespace WoWsShipBuilder.UI.CustomControls
                 MinWidth = 0;
                 return;
             }
-            else if (FusoPosition == FusoPositions.Broadside)
+
+            if (FusoPosition == FusoPositions.Broadside)
             {
                 xRadius = width;
                 yRadius = length;
