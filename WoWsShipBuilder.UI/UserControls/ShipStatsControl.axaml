@@ -359,7 +359,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.DataTemplates>
-                    
+                        
                     <!-- Anti Air -->
                     <DataTemplate DataType="dataUi:AntiAirUI">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static translations:Translation.ShipStats_AADefense}"
