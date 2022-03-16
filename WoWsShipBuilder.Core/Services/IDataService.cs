@@ -15,7 +15,7 @@ public interface IDataService
 
     void Store(Stream stream, string path);
 
-    Task<string> LoadStringAsync(string path);
+    Task<string?> LoadStringAsync(string path);
 
     Task<T?> LoadAsync<T>(string path);
 

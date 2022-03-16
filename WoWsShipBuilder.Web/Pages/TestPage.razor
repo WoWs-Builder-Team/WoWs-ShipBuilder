@@ -1,0 +1,19 @@
+﻿@page "/test"
+@using WoWsShipBuilder.Core.Services
+@inject IDataService dataService
+<Heading TextColor="TextColor.Primary">Test Page</Heading>
+
+<Button Clicked="LoadNonExistentData" Color="Color.Secondary" TextColor="TextColor.Primary">Load non-existent data</Button>
+<Paragraph TextColor="TextColor.Primary">@nonExistentDataResult</Paragraph>
+
+@code {
+
+    private string nonExistentDataResult = string.Empty;
+
+    private async Task LoadNonExistentData()
+    {
+        var result = await dataService.LoadStringAsync("test.does.not.exist");
+        nonExistentDataResult = result is null ? "Returned null, success" : "Returned not null, something went wrong";
+    }
+
+}

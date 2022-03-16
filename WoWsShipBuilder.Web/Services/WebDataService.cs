@@ -60,17 +60,17 @@ public class WebDataService : IDataService
         throw new NotSupportedException();
     }
 
-    public async Task<string> LoadStringAsync(string path)
+    public async Task<string?> LoadStringAsync(string path)
     {
         await UpdateDbManager();
-        var dataRecord = await dbManager.GetRecordByIdAsync<string, GameDataRecord>(AppData.Settings.SelectedServerType.StringName(), path);
-        return dataRecord.Content;
+        var dataRecord = await dbManager.GetRecordByIdAsync<string, GameDataRecord?>(AppData.Settings.SelectedServerType.StringName(), path);
+        return dataRecord?.Content;
     }
 
     public async Task<T?> LoadAsync<T>(string path)
     {
-        string stringContent = await LoadStringAsync(path);
-        return JsonConvert.DeserializeObject<T>(stringContent);
+        string? stringContent = await LoadStringAsync(path);
+        return stringContent is not null ? JsonConvert.DeserializeObject<T>(stringContent) : default;
     }
 
     public T? Load<T>(string path)

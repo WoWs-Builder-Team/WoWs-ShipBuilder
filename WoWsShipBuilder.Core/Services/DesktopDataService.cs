@@ -49,7 +49,7 @@ public class DesktopDataService : IDataService
         stream.CopyTo(fileStream);
     }
 
-    public async Task<string> LoadStringAsync(string path)
+    public async Task<string?> LoadStringAsync(string path)
     {
         return await fileSystem.File.ReadAllTextAsync(path, Encoding.UTF8);
     }
