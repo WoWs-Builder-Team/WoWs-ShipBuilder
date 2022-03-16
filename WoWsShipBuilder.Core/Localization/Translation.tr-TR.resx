@@ -599,9 +599,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Hız</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Silah Türü</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Sıçrayan Bomba</value>
   </data>
@@ -1168,4 +1166,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
 </root>
