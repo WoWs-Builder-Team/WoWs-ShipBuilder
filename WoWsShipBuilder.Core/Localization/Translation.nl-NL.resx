@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Snelheid</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Wapen type</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Kets bom</value>
   </data>
@@ -1178,4 +1176,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SPD</value>
   </data>
+  
+  
+  
 </root>
