@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Velocità</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Tipo armamento</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Bomba al rimbalzo</value>
   </data>
@@ -1180,4 +1178,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
 </root>
