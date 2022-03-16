@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <AvaloniaResource Include="wwwroot\assets\app-logo.png" />
+      <AvaloniaResource Include="wwwroot\assets\discord.png" />
       <AvaloniaResource Include="wwwroot\favicon.ico" />
     </ItemGroup>
 
