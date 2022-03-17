@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
-        <Win32Resource/>
+        <Win32Resource />
         <SignAssembly>false</SignAssembly>
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
@@ -26,7 +26,7 @@
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     </PropertyGroup>
     <Target Name="PostBuildVersionDump" AfterTargets="Build">
-        <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true"/>
+        <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
     </Target>
     <!--  Target to add project release notes to nuget package for squirrel during package generation. Uncomment replacement token in nuspec too.  -->
     <!--    <Target Name="ConfigureReleaseNotes" BeforeTargets="GenerateNuspec">-->
@@ -38,37 +38,37 @@
     <!--        </PropertyGroup>-->
     <!--    </Target>-->
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
-        <None Remove="Assets\Art\logo_white_text.png"/>
-        <None Remove="Assets\Art\SplashArt.png"/>
-        <None Remove="Assets\discord.png"/>
-        <None Remove="Assets\Error_Full.png"/>
-        <None Remove="Assets\Github.png"/>
-        <None Remove="Assets\Information_Full.png"/>
-        <None Remove="Assets\Question_Full.png"/>
+        <AvaloniaResource Include="Assets\**" />
+        <None Remove="Assets\Art\logo_white_text.png" />
+        <None Remove="Assets\Art\SplashArt.png" />
+        <None Remove="Assets\discord.png" />
+        <None Remove="Assets\Error_Full.png" />
+        <None Remove="Assets\Github.png" />
+        <None Remove="Assets\Information_Full.png" />
+        <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.10"/>
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.10"/>
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10"/>
-        <PackageReference Include="Clowd.Squirrel" Version="2.7.98-pre"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4"/>
+        <PackageReference Include="Avalonia" Version="0.10.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+        <PackageReference Include="Clowd.Squirrel" Version="2.7.98-pre" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Splat.Autofac" Version="14.1.45"/>
+        <PackageReference Include="Splat.Autofac" Version="14.1.45" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="16.1.10"/>
+        <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj"/>
-        <ProjectReference Include="..\WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj"/>
+        <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
+        <ProjectReference Include="..\WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj" />
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json">
@@ -87,7 +87,7 @@
         </Compile>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Settings\ApplicationOptions.json"/>
+        <EmbeddedResource Include="Settings\ApplicationOptions.json" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="..\docs\Third-Party-Licenses.txt">
