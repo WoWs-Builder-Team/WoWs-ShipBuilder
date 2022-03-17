@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 
 namespace WoWsShipBuilder.Core.Settings
 {
@@ -9,7 +10,7 @@ namespace WoWsShipBuilder.Core.Settings
         [JsonConstructor]
         public AppSettings(CultureDetails? selectedLanguage = null)
         {
-            SelectedLanguage = selectedLanguage ?? AppDataHelper.Instance.DefaultCultureDetails;
+            SelectedLanguage = selectedLanguage ?? AppConstants.DefaultCultureDetails;
         }
 
         public bool AutoUpdateEnabled { get; set; } = true;
@@ -31,5 +32,7 @@ namespace WoWsShipBuilder.Core.Settings
         public bool IncludeSignalsForImageExport { get; set; }
 
         public string? CustomImagePath { get; set; }
+
+        public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
     }
 }

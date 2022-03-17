@@ -1,5 +1,5 @@
 using System;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
+using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
@@ -17,7 +17,7 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             get
             {
-                string? localization = UnitLocalization.ResourceManager.GetString($"Unit_{UnitKey}");
+                string? localization = Translation.ResourceManager.GetString($"Unit_{UnitKey}");
                 return localization != null ? $" {localization}" : string.Empty;
             }
         }

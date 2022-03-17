@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -17,16 +18,19 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("KM")]
         public decimal Range { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal Reload { get; set; }
-
         [JsonIgnore]
         public string TrueReload { get; set; } = default!;
 
         [DataUiUnit("ShotsPerMinute")]
         public decimal RoF { get; set; }
 
+        [DataUiUnit("ShotsPerMinute")]
+        public decimal TrueRoF { get; set; }
+
         public decimal Sigma { get; set; }
+
+        [DataUiUnit("S")]
+        public decimal Reload { get; set; }
 
         [JsonIgnore]
         public ShellUI? Shell { get; set; }
@@ -37,7 +41,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> SecondaryBatteryData { get; set; } = default!;
 
-        public static List<SecondaryBatteryUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+        public static List<SecondaryBatteryUI>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             TurretModule? secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()]
                 .SecondaryModule;
@@ -72,21 +76,22 @@ namespace WoWsShipBuilder.Core.DataUI
                 var rof = Math.Round(60 / (decimal)reload, 1);
 
                 var trueReload = Math.Ceiling((decimal)reload / Constants.TickRate) * Constants.TickRate;
-                decimal trueRateOfFire = 60 / trueReload;
+                decimal trueRateOfFire = Math.Round(60 / trueReload, 1);
 
                 var secondaryUI = new SecondaryBatteryUI
                 {
                     Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
-                    TrueReload = Math.Round(trueReload, 2) + " " + UnitLocalization.Unit_S,
+                    TrueReload = Math.Round(trueReload, 2) + " " + Translation.Unit_S,
+                    TrueRoF = trueRateOfFire,
                     RoF = rof,
                     Sigma = secondary.Sigma,
                 };
 
                 try
                 {
-                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, trueRateOfFire).First();
+                    secondaryUI.Shell = ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService).First();
                 }
                 catch (KeyNotFoundException e)
                 {

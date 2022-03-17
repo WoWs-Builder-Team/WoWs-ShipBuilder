@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Avalonia.Collections;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -14,7 +16,7 @@ namespace WoWsShipBuilder.UI.Converters
 
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (values[0] is List<Modernization> modernizations && values[1] is AvaloniaList<Modernization> selectedModernizations)
+            if (values[0] is List<Modernization> modernizations && values[1] is CustomObservableCollection<Modernization> selectedModernizations)
             {
                 switch (parameter)
                 {
@@ -24,20 +26,20 @@ namespace WoWsShipBuilder.UI.Converters
                     case "image":
                     {
                         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
-                        selectedMod ??= DataHelper.PlaceholderModernization;
+                        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
                         return ImagePathConverter.Convert(selectedMod, targetType, null!, culture);
                     }
 
                     case "data":
                     {
                         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
-                        selectedMod ??= DataHelper.PlaceholderModernization;
+                        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
                         return selectedMod;
                     }
                 }
             }
 
-            return 0;
+            return new BindingNotification(new NotSupportedException());
         }
     }
 }

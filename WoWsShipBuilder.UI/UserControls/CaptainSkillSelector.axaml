@@ -3,29 +3,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
+             xmlns:viewModels1="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Name="Control">
     <Design.DataContext>
-        <viewModels:CaptainSkillSelectorViewModel />
+        <shipVm:CaptainSkillSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
-        <conv:ImagePathConverter x:Key="ImagePathConverter" />
-        <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
-        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
+        <conv:ImagePathConverter x:Key="ImagePathConverter"/>
+        <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter"/>
+        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter"/>
+        <conv:BorderBrushConverter x:Key="BorderBrushConverter"/>
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="*">
-
         <DockPanel>
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
                 <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">                
-                    <TextBlock Text="{x:Static t:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Static translations:Translation.CaptainSkillSelector_Points}" FontSize="13" VerticalAlignment="Center"/>
                     <TextBlock Text="{Binding AssignedPoints}" Margin="5,0,0,0" FontSize="13" VerticalAlignment="Center" />
                     <TextBlock Text="/21" FontSize="13" VerticalAlignment="Center" />
                 </StackPanel>
@@ -41,17 +42,18 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Spacing="3" Margin="0 5" 
                             IsVisible="{Binding ScreenshotMode}">
-                    <TextBlock Text="{x:Static t:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
+                    <TextBlock Text="{x:Static translations:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
                     <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" FontSize="15" />
                 </StackPanel>
-                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static t:Translation.CaptainSkillSelector_SkillTalent}" 
-                        Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"/>
+                <Button Name="SkillActivationButton" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}"  
+                        Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"
+                        BorderBrush="{Binding TalentOrConditionalSkillEnabled, Converter={StaticResource BorderBrushConverter}}"/>
                 
                 <!--Popup to manage skill activation-->
                 <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
                     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderThickness="1" BorderBrush="Gray">
                         <Grid Margin="10" RowDefinitions="Auto,*,Auto">
-                            <TextBlock Grid.Row="0" Text="{x:Static t:Translation.CaptainSkillSelector_SkillTalentDescription}" TextWrapping="Wrap" />
+                            <TextBlock Grid.Row="0" Text="{x:Static translations:Translation.CaptainSkillSelector_SkillTalentDescription}" TextWrapping="Wrap" />
                             <StackPanel Orientation="Vertical" Margin="5,0" Grid.Row="1">
                                 <Separator Margin="0,5"/>
                                 <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
@@ -92,8 +94,8 @@
                                                     <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left"  Margin="0,0,10,0" Spacing="5">
-                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                                 </StackPanel>
                                             </DockPanel>
                                         </DataTemplate>
@@ -103,9 +105,8 @@
                         </Grid>
                     </Border>                  
                 </Popup>
-                
                 <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
-                          Content="{x:Static t:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
+                          Content="{x:Static translations:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>
@@ -120,19 +121,19 @@
                                 <userControls:SkillToolTip DataContext="{Binding}"/>
                             </ToolTip.Tip>
                             <customControls:NumberedButton
-                                BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
-                                Command="{Binding $parent[UserControl].DataContext.AddSkill}" CommandParameter="{Binding Value}"
-                                IsSpecial="{Binding Value.IsEpic}">
+                                            BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
+                                            Command="{Binding $parent[UserControl].DataContext.AddSkill}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Skill}"
+                                            IsSpecial="{Binding Value.Skill.IsEpic}">
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
-                                        <Binding Path="Value"/>
+                                        <Binding Path="Value.Skill"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.Number>
                                 <customControls:NumberedButton.IsChecked>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
-                                        <Binding Path="Value"/>
+                                        <Binding Path="Value.Skill"/>
                                     </MultiBinding>
                                 </customControls:NumberedButton.IsChecked>
                             </customControls:NumberedButton>
@@ -147,8 +148,8 @@
                         <Setter Property="Opacity" Value="1" />
                     </Style>
                     <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
-                        <Setter Property="Grid.Row" Value="{Binding Value.Tiers[0].Tier}"/>
-                        <Setter Property="Grid.Column" Value="{Binding Value.Tiers[0].XPosition}"/>
+                        <Setter Property="Grid.Row" Value="{Binding Value.Skill.Tiers[0].Tier}"/>
+                        <Setter Property="Grid.Column" Value="{Binding Value.Skill.Tiers[0].XPosition}"/>
                     </Style>
                 </ItemsControl.Styles>
             </ItemsControl>

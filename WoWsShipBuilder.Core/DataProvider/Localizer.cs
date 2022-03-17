@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NLog;
+using WoWsShipBuilder.Core.Services;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
@@ -9,22 +10,22 @@ namespace WoWsShipBuilder.Core.DataProvider
         private static readonly Lazy<Localizer> InstanceProducer = new(() => new());
         private static readonly Logger Logger = Logging.GetLogger("Localization");
 
-        private readonly AppDataHelper dataHelper;
+        private readonly IAppDataService appDataService;
 
         private Dictionary<string, string> languageData = new();
         private CultureDetails? locale;
 
         public Localizer()
-            : this(AppDataHelper.Instance)
+            : this(DesktopAppDataService.Instance)
         {
         }
 
-        public Localizer(AppDataHelper dataHelper)
+        public Localizer(IAppDataService appDataService)
         {
-            this.dataHelper = dataHelper;
+            this.appDataService = appDataService;
 
             // Prevent exception when using Avalonia previewer due to uninitialized settings.
-            var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : dataHelper.DefaultCultureDetails;
+            var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : AppConstants.DefaultCultureDetails;
             UpdateLanguage(updateLanguage, true);
         }
 
@@ -42,7 +43,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
 
             var serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
-            Dictionary<string, string>? localLanguageData = dataHelper.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
+            Dictionary<string, string>? localLanguageData = appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
             if (localLanguageData == null)
             {
                 Logger.Warn("Unable to load localization data for locale {0}.", newLocale);

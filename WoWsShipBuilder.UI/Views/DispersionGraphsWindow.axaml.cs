@@ -1,17 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public class DispersionGraphsWindow : ScalableWindow
+    public class DispersionGraphsWindow : ScalableReactiveWindow<DispersionGraphViewModel>
     {
         public DispersionGraphsWindow()
         {
@@ -19,6 +25,30 @@ namespace WoWsShipBuilder.UI.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+            this.WhenActivated(disposable =>
+            {
+                if (ViewModel != null)
+                {
+                    disposable(ViewModel.AddShipInteraction.RegisterHandler(async interaction =>
+                    {
+                        var selectionWindow = new ShipSelectionWindow(interaction.Input.MultiSelectionEnabled)
+                        {
+                            DataContext = interaction.Input,
+                        };
+                        var result = await selectionWindow.ShowDialog<List<ShipSummary>>(this);
+                        interaction.SetOutput(result);
+                    }));
+                    disposable(ViewModel.ShellSelectionInteraction.RegisterHandler(async interaction =>
+                    {
+                        var valueSelectionWindow = new ValueSelectionWindow
+                        {
+                            DataContext = interaction.Input,
+                        };
+                        var result = await valueSelectionWindow.ShowDialog<string>(this);
+                        interaction.SetOutput(result);
+                    }));
+                }
+            });
         }
 
         private void InitializeComponent()
@@ -41,28 +71,32 @@ namespace WoWsShipBuilder.UI.Views
 
         private void DispersionGraphsWindow_Closing(object? sender, EventArgs e)
         {
-            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (Owner is MainWindow mainWindow)
             {
-                mainWindowViewModel.ChildrenWindows.Remove(this);
+                mainWindow.ChildWindows.Remove(this);
             }
             else
             {
-                var startWindow = new StartingMenuWindow();
-                var startViewModel = new StartMenuViewModel(startWindow, Locator.Current.GetServiceSafe<IFileSystem>());
-                startWindow.DataContext = startViewModel;
-                startWindow.Show();
-                if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-                {
-                    desktop.MainWindow = startWindow;
-                }
+                Locator.Current.GetServiceSafe<INavigationService>().OpenStartMenu();
+
+                // var startViewModel = ;
+                // var startWindow = new StartMenuWindow
+                // {
+                //     DataContext = startViewModel,
+                // };
+                // startWindow.Show();
+                // if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                // {
+                //     desktop.MainWindow = startWindow;
+                // }
             }
         }
 
         private void DispersionGraphsWindow_Opened(object? sender, EventArgs e)
         {
-            if (Owner?.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (Owner is MainWindow mainWindow)
             {
-                mainWindowViewModel.ChildrenWindows.Add(this);
+                mainWindow.ChildWindows.Add(this);
             }
         }
     }

@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="750" d:DesignHeight="635"
         x:Class="WoWsShipBuilder.UI.Views.SettingsWindow"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
@@ -23,13 +23,13 @@
                 <TabControl>
 
                     <!-- Settings Tab -->
-                    <TabItem Header="{x:Static t:Translation.SettingsWindow_Settings}">
+                    <TabItem Header="{x:Static translations:Translation.SettingsWindow_Settings}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <!-- ReSharper disable Xaml.MissingGridIndex -->
                                 <customControls:AutoGrid ChildMargin="0,10,0,0" ColumnDefinitions="2*,*"
                                                          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Language}" VerticalAlignment="Center" Margin="0,0,0,0" />
                                     <ComboBox SelectedIndex="0" VerticalAlignment="Center" Items="{Binding LanguagesList}"
                                               SelectedItem="{Binding Path=SelectedLanguage}">
                                         <ComboBox.ItemTemplate>
@@ -39,32 +39,32 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Server}" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Server}" VerticalAlignment="Center" />
                                     <ComboBox VerticalAlignment="Center" Items="{Binding Servers}" SelectedItem="{Binding SelectedServer}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ResetSettings}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_ResetSettings}" TextWrapping="Wrap" VerticalAlignment="Center" />
                                     <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding ResetSettings}"
-                                            Content="{x:Static t:Translation.SettingsWindow_Reset}" />
+                                            Content="{x:Static translations:Translation.SettingsWindow_Reset}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_CleanAppData}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_CleanAppData}" TextWrapping="Wrap" VerticalAlignment="Center" />
                                     <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding CleanAppData}"
-                                            Content="{x:Static t:Translation.SettingsWindow_Clean}" />
+                                            Content="{x:Static translations:Translation.SettingsWindow_Clean}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_AutoUpdate}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_AutoUpdate}" TextWrapping="Wrap" VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding AutoUpdate}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap" VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding TelemetryDataEnabled}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_OpenExplorerAfterImageSave}" TextWrapping="Wrap"
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_OpenExplorerAfterImageSave}" TextWrapping="Wrap"
                                                VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding OpenExplorerAfterImageSave}" />
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_CustomPath}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_CustomPath}" TextWrapping="Wrap" />
                                     <CheckBox IsChecked="{Binding IsCustomPathEnabled}" />
 
                                     <TextBox IsEnabled="{Binding IsCustomPathEnabled}" Grid.ColumnSpan="2"
-                                             Watermark="{x:Static t:Translation.SettingsWindow_InsertCustomPath}" Text="{Binding CustomPath}">
+                                             Watermark="{x:Static translations:Translation.SettingsWindow_InsertCustomPath}" Text="{Binding CustomPath}">
                                         <TextBox.InnerRightContent>
                                             <Button Content="..." Command="{Binding SelectCachePath}" Margin="5,0,0,0" />
                                         </TextBox.InnerRightContent>
@@ -78,11 +78,11 @@
                                         </TextBox.Styles>
                                     </TextBox>
 
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_EnableBuildImagePath}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_EnableBuildImagePath}" TextWrapping="Wrap" />
                                     <CheckBox IsChecked="{Binding IsCustomBuildImagePathEnabled}" />
 
                                     <TextBox IsEnabled="{Binding IsCustomBuildImagePathEnabled}" Grid.ColumnSpan="2"
-                                             Watermark="{x:Static t:Translation.SettingsWindow_BuildImagePath}" Text="{Binding CustomBuildImagePath}">
+                                             Watermark="{x:Static translations:Translation.SettingsWindow_BuildImagePath}" Text="{Binding CustomBuildImagePath}">
                                         <TextBox.InnerRightContent>
                                             <Button Content="..." Command="{Binding SelectBuildImagePath}" Margin="5,0,0,0" />
                                         </TextBox.InnerRightContent>
@@ -97,8 +97,8 @@
                                     </TextBox>
 
                                     <StackPanel Spacing="10" Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Center">
-                                        <Button IsDefault="True" Content="{x:Static t:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}" />
-                                        <Button IsCancel="True" Content="{x:Static t:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}" />
+                                        <Button IsDefault="True" Content="{x:Static translations:Translation.SettingsWindow_SaveExit}" Command="{Binding Save}" />
+                                        <Button IsCancel="True" Content="{x:Static translations:Translation.SettingsWindow_Cancel}" Command="{Binding Cancel}" />
                                     </StackPanel>
                                 </customControls:AutoGrid>
                             </ScrollViewer>
@@ -107,7 +107,7 @@
                     </TabItem>
 
                     <!-- Info Tab -->
-                    <TabItem Header="{x:Static t:Translation.SettingsWindow_Info}">
+                    <TabItem Header="{x:Static translations:Translation.SettingsWindow_Info}">
                         <Border Classes="BorderPanel" Margin="10" Padding="10">
                             <StackPanel Spacing="10">
                                 <StackPanel.Styles>
@@ -118,41 +118,41 @@
                                 <DockPanel HorizontalAlignment="Stretch">
                                     <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_Version}" />
+                                            <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Version}" />
                                             <TextBlock Text="{Binding Version}" Padding="5,0,0,0" />
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_DataVersion}" />
+                                            <TextBlock Text="{x:Static translations:Translation.SettingsWindow_DataVersion}" />
                                             <TextBlock Text="{Binding DataVersion}" Padding="5,0,0,0" />
                                         </StackPanel>
                                     </StackPanel>
-                                    <Button Content="{x:Static t:Translation.SettingsWindow_CopyVersions}" Command="{Binding CopyVersion}"
+                                    <Button Content="{x:Static translations:Translation.SettingsWindow_CopyVersions}" Command="{Binding CopyVersion}"
                                             DockPanel.Dock="Right" />
                                 </DockPanel>
                                 <Separator />
-                                <TextBlock Text="{x:Static t:Translation.SettingsWindow_DevelopedBy}" />
+                                <TextBlock Text="{x:Static translations:Translation.SettingsWindow_DevelopedBy}" />
                                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" />
                                     <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1" />
                                     <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1" />
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" />
                                     <TextBlock Text="ephrs" Grid.Row="2" Grid.Column="1" />
                                     <TextBlock Text="iTTo" Grid.Row="3" Grid.Column="1" />
                                     <TextBlock Text="Shaticor" Grid.Row="4" Grid.Column="1" />
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_Data}" Grid.Row="5" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Data}" Grid.Row="5" Margin="0,0,10,0" />
                                     <TextBlock Text="notyourfather" Grid.Row="5" Grid.Column="1" />
-                                    <TextBlock Text="{x:Static t:Translation.SettingsWindow_ArtBy}" Grid.Row="6" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_ArtBy}" Grid.Row="6" Grid.Column="0" Margin="0,0,10,0" />
                                     <TextBlock Text="Yohane" Grid.Row="6" Grid.Column="1" />
                                 </Grid>
                                 <Separator />
-                                <Button Content="Donate" Command="{Binding Donate}" Grid.Row="2" />
+                                <Button Content="Donate" Click="DonateButton_OnClick" Grid.Row="2" />
                                 <Image Source="/Assets/discord.png" Width="200" Cursor="Hand" PointerReleased="OpenDiscord" />
                             </StackPanel>
                         </Border>
                     </TabItem>
 
                     <!-- Credits Tab -->
-                    <TabItem Header="{x:Static t:Translation.SettingsWindow_Credits}">
+                    <TabItem Header="{x:Static translations:Translation.SettingsWindow_Credits}">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Spacing="5" Margin="5">
                             <StackPanel.Styles>
                                 <Style Selector="TextBlock">
@@ -160,7 +160,7 @@
                                     <Setter Property="TextAlignment" Value="Center" />
                                 </Style>
                             </StackPanel.Styles>
-                            <TextBlock Text="{x:Static t:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap" />
+                            <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap" />
                             <TextBlock>Taro_</TextBlock>
                             <TextBlock>dmc531</TextBlock>
                             <TextBlock>caduzanon</TextBlock>

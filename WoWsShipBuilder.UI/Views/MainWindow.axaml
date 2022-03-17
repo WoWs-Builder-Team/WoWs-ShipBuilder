@@ -4,29 +4,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1700" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.MainWindow"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
+        xmlns:utilities="clr-namespace:WoWsShipBuilder.UI.Utilities"
+        xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
         Title="WoWs Ship Builder"
         Height="850" Width="1775" CanResize="True"
         MinHeight="850" MinWidth="1775"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        utilities:Scaling.ContentScaling="1"
+        Closed="MainWindow_OnClosed">
     <Design.DataContext>
-        <vm:MainWindowViewModel />
+        <shipVm:MainWindowViewModel />
     </Design.DataContext>
 
     <Window.Resources>
         <conv:ImagePathConverter x:Key="ImagePathConverter" />
         <conv:ClassToPathConverter x:Key="PathConverter" />
-        <conv:EnumConverter x:Key="EnumConverter" />
         <conv:DecimalToRomanConverter x:Key="RomanConverter" />
     </Window.Resources>
 
     <LayoutTransformControl>
         <LayoutTransformControl.LayoutTransform>
             <!-- Will trigger a binding notification for a null value, no way to suppress that. -->
-            <ScaleTransform ScaleX="{Binding ContentScaling, FallbackValue=1, TargetNullValue=1}" ScaleY="{Binding ContentScaling, FallbackValue=1, TargetNullValue=1}" />
+            <ScaleTransform ScaleX="{Binding $parent[Window].(utilities:Scaling.ContentScaling), FallbackValue=1, TargetNullValue=1}" ScaleY="{Binding $parent[Window].(utilities:Scaling.ContentScaling), FallbackValue=1, TargetNullValue=1}" />
         </LayoutTransformControl.LayoutTransform>
 
         <Grid RowDefinitions="30, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -38,10 +40,10 @@
                     <Grid ColumnDefinitions="*,3*,*">
                         <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="0" VerticalAlignment="Center"
                               HorizontalAlignment="Center">
-                            <Button Content="{x:Static t:Translation.MainWindow_BackToMenu}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_BackToMenu}"
                                     Command="{Binding BackToMenu}" Grid.Row="0" HorizontalAlignment="Stretch"
                                     Margin="0,0,0,10" />
-                            <Button Name="NewShip" Content="{x:Static t:Translation.MainWindow_NewShipSelection}"
+                            <Button Name="NewShip" Content="{x:Static translations:Translation.MainWindow_NewShipSelection}"
                                     Command="{Binding NewShipSelection}" Grid.Row="1" HorizontalAlignment="Stretch" />
                         </Grid>
                         <RelativePanel Grid.Column="1">
@@ -93,28 +95,28 @@
                         </RelativePanel>
                         <Grid RowDefinitions="*,*" ColumnDefinitions="Auto" Grid.Column="2" VerticalAlignment="Center"
                               HorizontalAlignment="Center">
-                            <Button Content="{x:Static t:Translation.MainWindow_ShareBuild}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_ShareBuild}"
                                     Command="{Binding OpenSaveBuild}" Grid.Row="0" HorizontalAlignment="Stretch"
                                     Margin="0,0,0,10" />
-                            <Button Content="{x:Static t:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
+                            <Button Content="{x:Static translations:Translation.MainWindow_ResetBuild}" Grid.Row="1" Command="{Binding ResetBuild}"
                                     HorizontalAlignment="Stretch" />
                         </Grid>
                     </Grid>
                 </Border>
 
                 <!--SecondRow-->
-                <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,4.5*,*" Margin="0,0,0,10">
+                <Grid Grid.Row="1" ColumnDefinitions="3*,Auto,5.5*" Margin="0,0,0,10">
                     <!--Captain and flag selector-->
                     <Grid RowDefinitions="Auto,*" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Stretch">
                         <Border Classes="BorderPanel" Grid.Row="0">
                             <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_CaptainSkills}" Margin="10,10,0,0" />
                                 <userControls:CaptainSkillSelector DataContext="{Binding CaptainSkillSelectorViewModel}" />
                             </StackPanel>
                         </Border>
                         <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
+                                <TextBlock Text="{x:Static translations:Translation.MainWindow_Signals}" Margin="10,5,0,0" />
                                 <userControls:SignalSelector DataContext="{Binding SignalSelectorViewModel}" />
                             </StackPanel>
                         </Border>
@@ -134,53 +136,6 @@
                     <Border Classes="BorderPanel" Grid.Column="2" Padding="5" Margin="0,0,10,0" CornerRadius="5">
                         <userControls:ShipStatsControl DataContext="{Binding ShipStatsControlViewModel}" />
                     </Border>
-                    <!--XP calculator-->
-                    <Grid Grid.Column="3" RowDefinitions="*, Auto" Margin="0,0,10,0">
-                        <Border Classes="BorderPanel" Grid.Row="0">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpCalculator}" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_BaseXp}" />
-                                <TextBox Text="{Binding BaseXp}" MaxLength="5" Name="BaseXpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_XpBonus}" />
-                                <TextBox Text="{Binding XpBonus}" MaxLength="4" Name="XpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXpBonus}" />
-                                <TextBox Text="{Binding CommanderXpBonus}" MaxLength="4" Name="CommanderXpInput" Margin="0,0,0,10" />
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXpBonus}" />
-                                <TextBox Text="{Binding FreeXpBonus}" MaxLength="4" Name="FreeXpInput" Margin="0,0,0,10" />
-                                <RadioButton GroupName="AccountType"
-                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
-                                             Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
-                                </RadioButton>
-                                <RadioButton GroupName="AccountType"
-                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
-                                             Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
-                                </RadioButton>
-                                <RadioButton GroupName="AccountType"
-                                             IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
-                                             Margin="0,0,0,5">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
-                                </RadioButton>
-                                <Separator Margin="0,0,0,5" />
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_Xp}" />
-                                    <TextBlock Text="{Binding Xp}" TextWrapping="Wrap" Margin="5,0,0,0" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_CommanderXp}" />
-                                    <TextBlock Text="{Binding CommanderXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.MainWindow_FreeXp}" />
-                                    <TextBlock Text="{Binding FreeXp}" TextWrapping="Wrap" Margin="5,0,0,0" />
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                        <Border Classes="BorderPanel" Grid.Row="1" Margin="0,10,0,0" Padding="10">
-                            <Image Source="/Assets/Art/logo_white_text.png" />
-                        </Border>
-                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

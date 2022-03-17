@@ -1,23 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="ReactiveUI" Version="17.1.50" />
       <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Sentry.NLog" Version="3.13.0" />
+      <PackageReference Include="Sentry.NLog" Version="3.14.0" />
       <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="System.IO.Abstractions" Version="16.1.4" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.0.0" />
+      <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,17 +29,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="DataUI\UnitTranslations\UnitLocalization.resx">
+      <EmbeddedResource Update="Localization\Translation.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>UnitLocalization.Designer.cs</LastGenOutput>
+        <LastGenOutput>Translation.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="DataUI\UnitTranslations\UnitLocalization.Designer.cs">
+      <Compile Update="Localization\Translation.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>UnitLocalization.resx</DependentUpon>
+        <DependentUpon>Translation.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

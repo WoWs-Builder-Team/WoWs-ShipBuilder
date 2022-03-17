@@ -60,17 +60,17 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         /// <summary>
         /// Gets the projectile cache, mapping a nation to the actual projectile dictionary for that nation.
-        /// This property should not be accessed directly, use <see cref="AppDataHelper.GetProjectile"/> instead.
+        /// This property should not be accessed directly, use <see cref="DesktopAppDataService.GetProjectile"/> instead.
         /// </summary>
-        /// <seealso cref="AppDataHelper.GetProjectile"/>
-        /// <seealso cref="AppDataHelper.GetProjectile{T}"/>
+        /// <seealso cref="DesktopAppDataService.GetProjectile"/>
+        /// <seealso cref="DesktopAppDataService.GetProjectile{T}"/>
         public static Dictionary<Nation, Dictionary<string, Projectile>> ProjectileCache { get; } = new();
 
         /// <summary>
         /// Gets the aircraft cache, mapping a nation to the actual aircraft dictionary for that nation.
-        /// This property should not be accessed directly, use <see cref="AppDataHelper.GetAircraft"/> instead.
+        /// This property should not be accessed directly, use <see cref="DesktopAppDataService.GetAircraft"/> instead.
         /// </summary>
-        /// <seealso cref="AppDataHelper.GetAircraft"/>
+        /// <seealso cref="DesktopAppDataService.GetAircraft"/>
         public static Dictionary<Nation, Dictionary<string, Aircraft>> AircraftCache { get; } = new();
 
         /// <summary>

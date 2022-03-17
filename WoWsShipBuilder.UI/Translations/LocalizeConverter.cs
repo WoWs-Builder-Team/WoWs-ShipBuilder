@@ -7,7 +7,7 @@ using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 
-namespace WoWsShipBuilder.UI.Translations
+namespace WoWsShipBuilder.Core.Translations
 {
     /// <summary>
     /// An <see cref="IValueConverter"/> that allows to convert a string to its localized version.
