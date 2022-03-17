@@ -8,6 +8,7 @@ using DynamicData;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels
 {
@@ -17,13 +18,20 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public CalculatorViewModel()
         {
-            Exterior = new((IEnumerable<ExteriorUI>)AppDataHelper.Instance.GetCommonExterior());
+            Exterior = new((IEnumerable<ExteriorUI>)DesktopAppDataService.Instance.GetCommonExterior());
         }
 
         private void GetShipPermoFlages(Ship ship)
         {
-            Exterior.AddRange((IEnumerable<ExteriorUI>)AppDataHelper.Instance.GetShipExterior(ship.Permaflages));
+            Exterior.AddRange((IEnumerable<ExteriorUI>)DesktopAppDataService.Instance.GetShipExterior(ship.Permoflages));
         }
+    }
+
+    public enum Account
+    {
+        Normal,
+        WGPremium,
+        WoWsPremium,
     }
 }
 

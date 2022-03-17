@@ -1,10 +1,10 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
         x:Class="WoWsShipBuilder.UI.Views.Calculator"
-        xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
@@ -62,17 +62,17 @@
                             <RadioButton GroupName="AccountType"
                                              IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.Normal}}"
                                              Margin="0,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_NormalAccount}" TextWrapping="Wrap" />
+                                <TextBlock Text="{x:Static translations:Translation.CalculatorWindow_NormalAccount}" TextWrapping="Wrap" />
                             </RadioButton>
                             <RadioButton GroupName="AccountType"
                                          IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WGPremium}}"
                                          Margin="10,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_WGPremiumAccount}" TextWrapping="Wrap" />
+                                <TextBlock Text="{x:Static translations:Translation.CalculatorWindow_WGPremiumAccount}" TextWrapping="Wrap" />
                             </RadioButton>
                             <RadioButton GroupName="AccountType"
                                          IsChecked="{Binding AccountType, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static vm:Account.WoWsPremium}}"
                                          Margin="10,0,0,5">
-                                <TextBlock Text="{x:Static t:Translation.MainWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
+                                <TextBlock Text="{x:Static translations:Translation.CalculatorWindow_WoWsPremiumAccount}" TextWrapping="Wrap" />
                             </RadioButton>
                         </StackPanel>
                         <Separator Margin="0,0,0,10"></Separator>

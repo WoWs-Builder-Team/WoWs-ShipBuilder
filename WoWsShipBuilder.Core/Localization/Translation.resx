@@ -604,7 +604,7 @@
     <value>Speed</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-      <value>Weapon</value>
+    <value>Weapon</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Skip bomb</value>
@@ -1126,10 +1126,10 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Server-side RoF</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed.</value>
+    <value>The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>Just a value for testing</value>
+    <value>Just a value for testing</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1183,12 +1183,21 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>SAP</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-      <value>Standard</value>
+    <value>Standard</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-      <value>Magnetic</value>
+    <value>Magnetic</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-      <value>Deepwater</value>
+    <value>Deepwater</value>
+  </data>
+  <data name="CalculatorWindow_NormalAccount" xml:space="preserve">
+    <value>Normal account</value>
+  </data>
+  <data name="CalculatorWindow_WGPremiumAccount" xml:space="preserve">
+    <value>WG premium account</value>
+  </data>
+  <data name="CalculatorWindow_WoWsPremiumAccount" xml:space="preserve">
+    <value>WoWs premium account</value>
   </data>
 </root>

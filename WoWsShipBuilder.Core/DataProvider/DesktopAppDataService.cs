@@ -209,7 +209,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public List<Exterior> GetShipExterior(List<string> camoIndexes)
         {
-            var nationGrouping = camoIndexes.GroupBy(camo => GetNationFromIndex(camo));
+            var nationGrouping = camoIndexes.GroupBy(camo => IAppDataService.GetNationFromIndex(camo));
             List<Exterior> camoList = new List<Exterior>();
             foreach (var camo in nationGrouping)
             {
