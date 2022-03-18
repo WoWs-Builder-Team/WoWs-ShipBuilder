@@ -20,6 +20,7 @@
         <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter"/>
         <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter"/>
         <conv:BorderBrushConverter x:Key="BorderBrushConverter"/>
+        <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="*">
@@ -96,6 +97,23 @@
                                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left"  Margin="0,0,10,0" Spacing="5">
                                                     <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
                                                     <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                    <ItemsControl Items="{Binding Modifiers}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal" Spacing="10"
+                                                                            IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                                    <TextBlock Name="ModifierDesc" Classes="ModifierBase">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                                                                <Binding Path="Key" />
+                                                                                <Binding Path="Value" />
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
                                             </DockPanel>
                                         </DataTemplate>
