@@ -1,25 +1,25 @@
-﻿using WoWsShipBuilder.Core.DataProvider;
+﻿using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.Extensions;
 
 namespace WoWsShipBuilder.Web.Services;
 
 public class WebAppDataService : IAppDataService
 {
-    public string DefaultAppDataDirectory { get; } = default!;
-
-    public string AppDataDirectory { get; } = default!;
-
-    public string AppDataImageDirectory { get; } = default!;
-
     private readonly IDataService dataService;
 
     public WebAppDataService(IDataService dataService)
     {
         this.dataService = dataService;
     }
+
+    public string DefaultAppDataDirectory { get; } = default!;
+
+    public string AppDataDirectory { get; } = default!;
+
+    public string AppDataImageDirectory { get; } = default!;
 
     public async Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType)
     {
@@ -67,7 +67,7 @@ public class WebAppDataService : IAppDataService
 
     public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
     {
-        return (T) (await GetProjectile(projectileName));
+        return (T)await GetProjectile(projectileName);
     }
 
     public async Task<Aircraft> GetAircraft(string aircraftName)
@@ -131,7 +131,7 @@ public class WebAppDataService : IAppDataService
 
     public List<string> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
     {
-        //TODO list of locale
+        // TODO list of locale
         throw new NotImplementedException();
     }
 

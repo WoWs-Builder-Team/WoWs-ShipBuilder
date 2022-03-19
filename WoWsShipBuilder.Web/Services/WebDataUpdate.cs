@@ -1,12 +1,10 @@
-﻿using System.IO.Abstractions;
-using System.Reflection;
+﻿using System.Reflection;
+using NLog;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
-
-using NLog;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
@@ -47,7 +45,7 @@ public class WebDataUpdate : ILocalDataUpdater
             logger.Info("Completed update check.");
         }
 
-        //TODO Data validation
+        // TODO Data validation
         // logger.Info("Checking installed localization files...");
         // await CheckInstalledLocalizations(serverType);
         // logger.Info("Starting data validation...");
@@ -70,7 +68,6 @@ public class WebDataUpdate : ILocalDataUpdater
         // {
         //     logger.Info("Data validation successful.");
         // }
-
         logger.Info("Completed update check run.");
     }
 
@@ -90,7 +87,7 @@ public class WebDataUpdate : ILocalDataUpdater
             await UpdateLocalization(serverType);
         }
 
-        //TODO images are not downloaded for the web version
+        // TODO images are not downloaded for the web version
         // if (checkResult.ShouldImagesUpdate)
         // {
         //     logger.Info("Updating images. Can delta update: {0}", checkResult.CanImagesDeltaUpdate);
@@ -101,115 +98,115 @@ public class WebDataUpdate : ILocalDataUpdater
     public async Task<UpdateCheckResult> CheckJsonFileVersions(ServerType serverType)
     {
         logger.Info("Checking json file versions for server type {0}...", serverType);
-            VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-            VersionInfo? localVersionInfo = await appDataService.ReadLocalVersionInfo(serverType);
+        VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
+        VersionInfo? localVersionInfo = await appDataService.ReadLocalVersionInfo(serverType);
 
-            List<(string, string)> filesToDownload;
-            bool shouldImagesUpdate;
-            bool canImagesDeltaUpdate;
-            bool shouldLocalizationUpdate;
+        List<(string, string)> filesToDownload;
+        bool shouldImagesUpdate;
+        bool canImagesDeltaUpdate;
+        bool shouldLocalizationUpdate;
 
-            if (localVersionInfo == null)
+        if (localVersionInfo == null)
+        {
+            // Local version info file being null means it does not exist or could not be found. Always requires a full data download.
+            logger.Info("No local version info found. Downloading full data and flagging images for full update.");
+            filesToDownload = onlineVersionInfo.Categories
+                .SelectMany(category => category.Value.Select(file => (category.Key, file.FileName)))
+                .ToList();
+            shouldImagesUpdate = true;
+            canImagesDeltaUpdate = false;
+            shouldLocalizationUpdate = true;
+        }
+        else if (localVersionInfo.CurrentVersionCode < onlineVersionInfo.CurrentVersionCode)
+        {
+            logger.Info(
+                "Local data version ({0}) is older than online data version ({1}). Selecting files for update...",
+                localVersionInfo.CurrentVersionCode,
+                onlineVersionInfo.CurrentVersionCode);
+            filesToDownload = new List<(string, string)>();
+
+            foreach ((string category, var fileVersions) in onlineVersionInfo.Categories)
             {
-                // Local version info file being null means it does not exist or could not be found. Always requires a full data download.
-                logger.Info("No local version info found. Downloading full data and flagging images for full update.");
-                filesToDownload = onlineVersionInfo.Categories
-                    .SelectMany(category => category.Value.Select(file => (category.Key, file.FileName)))
-                    .ToList();
-                shouldImagesUpdate = true;
-                canImagesDeltaUpdate = false;
-                shouldLocalizationUpdate = true;
-            }
-            else if (localVersionInfo.CurrentVersionCode < onlineVersionInfo.CurrentVersionCode)
-            {
-                logger.Info(
-                    "Local data version ({0}) is older than online data version ({1}). Selecting files for update...",
-                    localVersionInfo.CurrentVersionCode,
-                    onlineVersionInfo.CurrentVersionCode);
-                filesToDownload = new List<(string, string)>();
-
-                foreach ((string category, var fileVersions) in onlineVersionInfo.Categories)
+                localVersionInfo.Categories.TryGetValue(category, out var localCategoryFiles);
+                if (localCategoryFiles == null)
                 {
-                    localVersionInfo.Categories.TryGetValue(category, out var localCategoryFiles);
-                    if (localCategoryFiles == null)
+                    logger.Info("Category {0} not found in local version info file. Adding category to download list.", category);
+                    filesToDownload.AddRange(fileVersions.Select(file => (category, file.FileName)));
+                    continue;
+                }
+
+                foreach (FileVersion onlineFile in fileVersions)
+                {
+                    FileVersion? localFile = localCategoryFiles.Find(file =>
+                        file.FileName.Equals(onlineFile.FileName, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (localFile == null || localFile.Version < onlineFile.Version)
                     {
-                        logger.Info("Category {0} not found in local version info file. Adding category to download list.", category);
-                        filesToDownload.AddRange(fileVersions.Select(file => (category, file.FileName)));
-                        continue;
+                        filesToDownload.Add((category, onlineFile.FileName));
                     }
-
-                    foreach (FileVersion onlineFile in fileVersions)
-                    {
-                        FileVersion? localFile = localCategoryFiles.Find(file =>
-                            file.FileName.Equals(onlineFile.FileName, StringComparison.InvariantCultureIgnoreCase));
-
-                        if (localFile == null || localFile.Version < onlineFile.Version)
-                        {
-                            filesToDownload.Add((category, onlineFile.FileName));
-                        }
-                    }
-                }
-
-                shouldImagesUpdate = true;
-                shouldLocalizationUpdate = true;
-                try
-                {
-                    canImagesDeltaUpdate = onlineVersionInfo.LastVersion != null && onlineVersionInfo.LastVersion.MainVersion == localVersionInfo.CurrentVersion?.MainVersion;
-                }
-                catch (Exception)
-                {
-                    logger.Error(
-                        "Unable to strip suffix from a version name. Local version name: {LocalVersion}, Online version name: {OnlineVersion}.",
-                        localVersionInfo.CurrentVersion,
-                        onlineVersionInfo.CurrentVersion);
-                    canImagesDeltaUpdate = false;
                 }
             }
-            else
+
+            shouldImagesUpdate = true;
+            shouldLocalizationUpdate = true;
+            try
             {
-                // Default case if there is no update available.
-                filesToDownload = new();
-                shouldImagesUpdate = false;
+                canImagesDeltaUpdate = onlineVersionInfo.LastVersion != null && onlineVersionInfo.LastVersion.MainVersion == localVersionInfo.CurrentVersion?.MainVersion;
+            }
+            catch (Exception)
+            {
+                logger.Error(
+                    "Unable to strip suffix from a version name. Local version name: {LocalVersion}, Online version name: {OnlineVersion}.",
+                    localVersionInfo.CurrentVersion,
+                    onlineVersionInfo.CurrentVersion);
                 canImagesDeltaUpdate = false;
-                shouldLocalizationUpdate = false;
             }
+        }
+        else
+        {
+            // Default case if there is no update available.
+            filesToDownload = new();
+            shouldImagesUpdate = false;
+            canImagesDeltaUpdate = false;
+            shouldLocalizationUpdate = false;
+        }
 
-            if (filesToDownload.Any())
-            {
-                filesToDownload.Add((string.Empty, "VersionInfo.json"));
-            }
+        if (filesToDownload.Any())
+        {
+            filesToDownload.Add((string.Empty, "VersionInfo.json"));
+        }
 
-            string versionName;
-            if (onlineVersionInfo.CurrentVersion != null)
+        string versionName;
+        if (onlineVersionInfo.CurrentVersion != null)
+        {
+            versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
+        }
+        else
+        {
+            // TODO: remove legacy compatibility code with update 1.5.0
+            try
             {
-                versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
-            }
-            else
-            {
-                // TODO: remove legacy compatibility code with update 1.5.0
-                try
-                {
 #pragma warning disable CS0618
-                    versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
+                versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
 #pragma warning restore CS0618
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
-                    versionName = "0.11.0"; // Fallback value for now.
-                }
             }
-
-            var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
-            if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
+            catch (Exception e)
             {
-                logger.Warn(
-                    "Data structures version of online data not supported yet. Highest supported version: {}, online version: {}",
-                    currentDataStructureVersion,
-                    onlineVersionInfo.DataStructuresVersion);
+                logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
+                versionName = "0.11.0"; // Fallback value for now.
             }
+        }
 
-            return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
+        var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
+        if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
+        {
+            logger.Warn(
+                "Data structures version of online data not supported yet. Highest supported version: {}, online version: {}",
+                currentDataStructureVersion,
+                onlineVersionInfo.DataStructuresVersion);
+        }
+
+        return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
     }
 
     public async Task UpdateLocalization(ServerType serverType)
@@ -225,7 +222,7 @@ public class WebDataUpdate : ILocalDataUpdater
         await awsClient.DownloadFiles(serverType, downloadList);
     }
 
-    //TODO data validation
+    // TODO data validation
     public async Task<bool> ValidateData(ServerType serverType, string dataBasePath)
     {
         throw new NotImplementedException();
@@ -245,7 +242,7 @@ public class WebDataUpdate : ILocalDataUpdater
         {
             logger.Info("Selected localization is not installed. Downloading file...");
             string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
-            await awsClient.DownloadFiles(serverType, new() {("Localization", localizationFile)});
+            await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
             logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
         }
         else
