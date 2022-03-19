@@ -1,7 +1,5 @@
 ﻿namespace WoWsShipBuilder.Web.Services;
 
-using System.Diagnostics.CodeAnalysis;
-using BlazorDB;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
@@ -9,32 +7,21 @@ using WoWsShipBuilder.Web.Data;
 
 public class WebDataService : IDataService
 {
-    private readonly IBlazorDbFactory dbFactory;
+    private readonly GameDataDb gameDataDb;
 
-    private IndexedDbManager? dbManager;
+    private bool initialized = false;
 
-    public WebDataService(IBlazorDbFactory dbFactory)
+    public WebDataService(GameDataDb gameDataDb)
     {
-        this.dbFactory = dbFactory;
+        this.gameDataDb = gameDataDb;
     }
+
+    private string CurrentStoreName => AppData.Settings.SelectedServerType.StringName();
 
     public async Task StoreStringAsync(string content, string path)
     {
-        await UpdateDbManager();
-        var addResult = await dbManager.AddRecordAsync(new StoreRecord<GameDataRecord>
-        {
-            StoreName = AppData.Settings.SelectedServerType.StringName(),
-            Record = new(path, content),
-        });
-        if (addResult.Failed)
-        {
-            await dbManager.UpdateRecord(new UpdateRecord<GameDataRecord>
-            {
-                StoreName = AppData.Settings.SelectedServerType.StringName(),
-                Record = new(path, content),
-                Key = path,
-            });
-        }
+        await OpenDb();
+        await gameDataDb.UpdateItems<GameDataDto>(CurrentStoreName, new() { new(path, content) });
     }
 
     public async Task StoreAsync(object content, string path)
@@ -62,8 +49,8 @@ public class WebDataService : IDataService
 
     public async Task<string?> LoadStringAsync(string path)
     {
-        await UpdateDbManager();
-        var dataRecord = await dbManager.GetRecordByIdAsync<string, GameDataRecord?>(AppData.Settings.SelectedServerType.StringName(), path);
+        await OpenDb();
+        var dataRecord = await gameDataDb.GetByKey<string, GameDataDto>(CurrentStoreName, path);
         return dataRecord?.Content;
     }
 
@@ -84,12 +71,14 @@ public class WebDataService : IDataService
         return string.Join('.', cleanPaths);
     }
 
-    [MemberNotNull(nameof(dbManager))]
-    private async Task UpdateDbManager()
+    private async Task OpenDb()
     {
-        // dbManager is not null after this method but apparently, Roslyn does not want to recognize that.
-#pragma warning disable CS8774
-        dbManager ??= await dbFactory.GetDbManager("data");
-#pragma warning restore CS8774
+        if (initialized)
+        {
+            return;
+        }
+
+        initialized = true;
+        await gameDataDb.OpenIndexedDb();
     }
 }

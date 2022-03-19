@@ -1,61 +1,34 @@
-﻿using WoWsShipBuilder.Core.DataProvider.Updater;
+using DnetIndexedDb;
+using DnetIndexedDb.Fluent;
+using DnetIndexedDb.Models;
+using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;
-
-using BlazorDB;
-using WoWsShipBuilder.Core.Services;
-using Data;
 
 public static class SetupExtensions
 {
     public static IServiceCollection AddShipBuilderServices(this IServiceCollection services)
     {
-        services.AddBlazorDB(options =>
-        {
-            options.Name = "data";
-            options.Version = 1;
-            options.StoreSchemas = new()
-            {
-                new()
-                {
-                    Name = "live",
-                    PrimaryKey = "path",
-                    PrimaryKeyAuto = false,
-                },
-                new()
-                {
-                    Name = "pts",
-                    PrimaryKey = "path",
-                    PrimaryKeyAuto = false,
-                },
+        var gameDataDbModel = new IndexedDbDatabaseModel().WithName("data").WithVersion(1);
+        gameDataDbModel.AddStore<GameDataDto>("live");
+        gameDataDbModel.AddStore<GameDataDto>("pts");
 #if DEBUG
-                new()
-                {
-                    Name = "dev1",
-                    PrimaryKey = "path",
-                    PrimaryKeyAuto = false,
-                },
-                new()
-                {
-                    Name = "dev2",
-                    PrimaryKey = "path",
-                    PrimaryKeyAuto = false,
-                },
-                new()
-                {
-                    Name = "dev3",
-                    PrimaryKey = "path",
-                    PrimaryKeyAuto = false,
-                },
+        gameDataDbModel.AddStore<GameDataDto>("dev1");
+        gameDataDbModel.AddStore<GameDataDto>("dev2");
+        gameDataDbModel.AddStore<GameDataDto>("dev3");
 #endif
-            };
+        services.AddIndexedDbDatabase<GameDataDb>(options =>
+        {
+            options.UseDatabase(gameDataDbModel);
         });
 
-        services.AddSingleton<AppSettingsHelper>();
-        services.AddSingleton<IAppSettingsService>(new AppSettingsService());
-        services.AddSingleton<IDataService, WebDataService>();
-        services.AddSingleton<IAppDataService, WebAppDataService>();
-        services.AddSingleton<ILocalDataUpdater, WebDataUpdate>();
+        services.AddScoped<AppSettingsHelper>();
+        services.AddScoped<IAppSettingsService>(_ => new AppSettingsService());
+        services.AddScoped<IDataService, WebDataService>();
+        services.AddScoped<IAppDataService, WebAppDataService>();
+        services.AddScoped<ILocalDataUpdater, WebDataUpdate>();
         return services;
     }
 }

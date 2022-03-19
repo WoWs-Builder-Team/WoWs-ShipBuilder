@@ -6,14 +6,32 @@
 <Button Clicked="LoadNonExistentData" Color="Color.Secondary" TextColor="TextColor.Primary">Load non-existent data</Button>
 <Paragraph TextColor="TextColor.Primary">@nonExistentDataResult</Paragraph>
 
+<Button Clicked="AddData" Color="Color.Secondary" TextColor="TextColor.Primary">Add data</Button>
+<Button Clicked="GetData" Color="Color.Secondary" TextColor="TextColor.Primary">Get data</Button>
+<Paragraph TextColor="TextColor.Primary">@dataResult</Paragraph>
+
 @code {
 
     private string nonExistentDataResult = string.Empty;
+
+    private string dataResult = string.Empty;
+
+    private int count;
 
     private async Task LoadNonExistentData()
     {
         var result = await dataService.LoadStringAsync("test.does.not.exist");
         nonExistentDataResult = result is null ? "Returned null, success" : "Returned not null, something went wrong";
+    }
+
+    private async Task AddData()
+    {
+        await dataService.StoreStringAsync("Teststring123-" + count++, "testing.teststring");
+    }
+
+    private async Task GetData()
+    {
+        dataResult = await dataService.LoadStringAsync("testing.teststring") ?? "err: not found";
     }
 
 }
