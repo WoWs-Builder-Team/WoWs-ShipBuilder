@@ -31,7 +31,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             this.fileSystem = fileSystem;
             this.dataService = dataService;
-            DefaultAppDataDirectory = fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
+            DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
         }
 
         public static DesktopAppDataService Instance => InstanceValue.Value;
@@ -53,14 +53,14 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
         }
 
-        public string AppDataImageDirectory => fileSystem.Path.Combine(AppDataDirectory, "Images");
+        public string AppDataImageDirectory => dataService.CombinePaths(AppDataDirectory, "Images");
 
-        public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? fileSystem.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
+        public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public string GetDataPath(ServerType serverType)
         {
             string serverName = serverType.StringName();
-            return fileSystem.Path.Combine(AppDataDirectory, "json", serverName);
+            return dataService.CombinePaths(AppDataDirectory, "json", serverName);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The directory path of the current localization directory.</returns>
-        public string GetLocalizationPath(ServerType serverType) => fileSystem.Path.Combine(GetDataPath(serverType), "Localization");
+        public string GetLocalizationPath(ServerType serverType) => dataService.CombinePaths(GetDataPath(serverType), "Localization");
 
         /// <summary>
         /// Find the list of currently installed localizations.
@@ -93,7 +93,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             string directory = BuildImageOutputDirectory;
             fileSystem.Directory.CreateDirectory(directory);
-            return fileSystem.Path.Combine(directory, shipName + " - " + buildName + ".png");
+            return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             string categoryString = IAppDataService.GetCategoryString<T>();
             string nationString = IAppDataService.GetNationString(nation);
-            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), categoryString, $"{nationString}.json");
+            string fileName = dataService.CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}.json");
             return await DeserializeFile<Dictionary<string, T>>(fileName);
         }
 
@@ -118,13 +118,13 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <returns>The local VersionInfo or null if none was found.</returns>
         public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
         {
-            string filePath = fileSystem.Path.Combine(GetDataPath(serverType), "VersionInfo.json");
+            string filePath = dataService.CombinePaths(GetDataPath(serverType), "VersionInfo.json");
             return await DeserializeFile<VersionInfo>(filePath);
         }
 
         public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
         {
-            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Summary", "Common.json");
+            string fileName = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common.json");
             return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
         }
 
@@ -196,7 +196,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
         {
-            string fileName = fileSystem.Path.Combine(GetDataPath(serverType), "Localization", $"{language}.json");
+            string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
             return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
         }
 
@@ -230,14 +230,14 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         public void SaveBuilds()
         {
-            var path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
+            var path = dataService.CombinePaths(DefaultAppDataDirectory, "builds.json");
             var builds = AppData.Builds.Select(build => build.CreateStringFromBuild()).ToList();
             dataService.Store(builds, path);
         }
 
         public void LoadBuilds()
         {
-            string path = fileSystem.Path.Combine(DefaultAppDataDirectory, "builds.json");
+            string path = dataService.CombinePaths(DefaultAppDataDirectory, "builds.json");
             if (fileSystem.File.Exists(path))
             {
                 var rawBuildList = dataService.Load<List<string>>(path);

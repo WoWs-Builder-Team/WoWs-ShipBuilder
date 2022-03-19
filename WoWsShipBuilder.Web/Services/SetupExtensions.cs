@@ -1,8 +1,10 @@
-﻿namespace WoWsShipBuilder.Web.Services;
+﻿using WoWsShipBuilder.Core.DataProvider.Updater;
+
+namespace WoWsShipBuilder.Web.Services;
 
 using BlazorDB;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Web.Data;
+using Data;
 
 public static class SetupExtensions
 {
@@ -52,7 +54,8 @@ public static class SetupExtensions
         services.AddSingleton<AppSettingsHelper>();
         services.AddSingleton<IAppSettingsService>(new AppSettingsService());
         services.AddSingleton<IDataService, WebDataService>();
-
+        services.AddSingleton<IAppDataService, WebAppDataService>();
+        services.AddSingleton<ILocalDataUpdater, WebDataUpdate>();
         return services;
     }
 }
