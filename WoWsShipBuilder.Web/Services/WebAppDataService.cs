@@ -3,6 +3,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -10,9 +11,12 @@ public class WebAppDataService : IAppDataService
 {
     private readonly IDataService dataService;
 
-    public WebAppDataService(IDataService dataService)
+    private readonly GameDataDb gameDataDb;
+
+    public WebAppDataService(IDataService dataService, GameDataDb gameDataDb)
     {
         this.dataService = dataService;
+        this.gameDataDb = gameDataDb;
     }
 
     public string DefaultAppDataDirectory { get; } = default!;
@@ -129,10 +133,13 @@ public class WebAppDataService : IAppDataService
 
     public string GetLocalizationPath(ServerType serverType) => dataService.CombinePaths(GetDataPath(serverType), "Localization");
 
-    public List<string> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
+    public async Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
     {
-        // TODO list of locale
-        throw new NotImplementedException();
+        await gameDataDb.OpenIndexedDb();
+        var basePath = serverType.StringName() + ".Localization";
+        return (await gameDataDb.GetRange<string, GameDataDto>(serverType.StringName(), basePath, basePath + "\uffff"))
+            .Select(dto => dto.Path.Split('.').Last())
+            .ToList();
     }
 
     internal async Task<T?> DeserializeFromDb<T>(string dataLocation)

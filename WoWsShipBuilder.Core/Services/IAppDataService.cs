@@ -120,7 +120,7 @@ namespace WoWsShipBuilder.Core.Services
         /// <param name="serverType">The selected server type.</param>
         /// <param name="includeFileType">Specifies whether the list of installed locales should contain the file extensions for each file.</param>
         /// <returns>A possibly empty list of installed locales.</returns>
-        List<string> GetInstalledLocales(ServerType serverType, bool includeFileType = true);
+        Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true);
 
         protected static string GetNationString(Nation nation)
         {

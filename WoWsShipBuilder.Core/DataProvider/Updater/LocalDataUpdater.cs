@@ -92,7 +92,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UpdateLocalization(ServerType serverType)
         {
-            var installedLocales = appDataService.GetInstalledLocales(serverType);
+            var installedLocales = await appDataService.GetInstalledLocales(serverType);
 
             if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json"))
             {
@@ -332,7 +332,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
 
         public async Task CheckInstalledLocalizations(ServerType serverType)
         {
-            List<string> installedLocales = appDataService.GetInstalledLocales(serverType, false);
+            List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
             if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
             {
                 logger.Info("Selected localization is not installed. Downloading file...");

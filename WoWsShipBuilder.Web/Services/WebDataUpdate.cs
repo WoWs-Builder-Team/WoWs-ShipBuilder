@@ -211,14 +211,14 @@ public class WebDataUpdate : ILocalDataUpdater
 
     public async Task UpdateLocalization(ServerType serverType)
     {
-        var installedLocales = appDataService.GetInstalledLocales(serverType);
+        var installedLocales = await appDataService.GetInstalledLocales(serverType);
 
         if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
         {
             installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName);
         }
 
-        var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
+        List<(string, string)> downloadList = installedLocales.Select(locale => ("Localization", locale + ".json")).ToList();
         await awsClient.DownloadFiles(serverType, downloadList);
     }
 
@@ -237,7 +237,7 @@ public class WebDataUpdate : ILocalDataUpdater
 
     public async Task CheckInstalledLocalizations(ServerType serverType)
     {
-        List<string> installedLocales = appDataService.GetInstalledLocales(serverType, false);
+        List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
         if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
         {
             logger.Info("Selected localization is not installed. Downloading file...");

@@ -6,19 +6,16 @@
                 Developed by the WoWsShipbuilder team.
                 All copyright materials provided by Wargaming.net are owned by Wargaming.net.
             </Paragraph>
-            <Figure Source="" Size="FigureSize.Is128x128" Position="Position.Absolute.Start.Is50.Translate.MiddleX" @onclick="OnDiscordClicked" style="cursor: pointer">
-                <FigureImage Source="assets/discord.png"/>
-            </Figure>
+            <Div TextAlignment="TextAlignment.Center">
+                <a href="https://discord.gg/C8EaepZJDY" target="_blank">
+                    <img src="assets/discord.png" style="width: 128px; height: auto;" alt="ShipBuilder discord"/>
+                </a>
+            </Div>
         </Column>
     </Row>
 </Container>
 
 
 @code {
-
-    async Task OnDiscordClicked()
-    {
-        await jsRuntime.InvokeAsync<object>("open", "https://discord.gg/C8EaepZJDY", "_blank");
-    }
 
 }

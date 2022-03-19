@@ -1,6 +1,10 @@
 ﻿@page "/test"
 @using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider.Updater
+@using WoWsShipBuilder.Core.DataProvider
 @inject IDataService dataService
+@inject ILocalDataUpdater dataUpdater
+@inject IAppDataService appDataService
 <Heading TextColor="TextColor.Primary">Test Page</Heading>
 
 <Button Clicked="LoadNonExistentData" Color="Color.Secondary" TextColor="TextColor.Primary">Load non-existent data</Button>
@@ -9,6 +13,10 @@
 <Button Clicked="AddData" Color="Color.Secondary" TextColor="TextColor.Primary">Add data</Button>
 <Button Clicked="GetData" Color="Color.Secondary" TextColor="TextColor.Primary">Get data</Button>
 <Paragraph TextColor="TextColor.Primary">@dataResult</Paragraph>
+
+<Button Clicked="StartUpdate" Color="Color.Secondary" TextColor="TextColor.Primary">Start localization update</Button>
+<Button Clicked="CheckLocales" Color="Color.Secondary" TextColor="TextColor.Primary">Check installed locales</Button>
+<Button Clicked="StartFullUpdate" Color="Color.Secondary" TextColor="TextColor.Primary">Start full update</Button>
 
 @code {
 
@@ -32,6 +40,21 @@
     private async Task GetData()
     {
         dataResult = await dataService.LoadStringAsync("testing.teststring") ?? "err: not found";
+    }
+
+    private async Task StartUpdate()
+    {
+        await dataUpdater.UpdateLocalization(ServerType.Live);
+    }
+
+    private async Task CheckLocales()
+    {
+        Console.WriteLine(string.Join(", ", await appDataService.GetInstalledLocales(ServerType.Live)));
+    }
+
+    private async Task StartFullUpdate()
+    {
+        await dataUpdater.RunDataUpdateCheck(ServerType.Live, new Progress<(int, string)>());
     }
 
 }

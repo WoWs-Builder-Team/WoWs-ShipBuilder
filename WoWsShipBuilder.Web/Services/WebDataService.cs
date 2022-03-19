@@ -9,7 +9,7 @@ public class WebDataService : IDataService
 {
     private readonly GameDataDb gameDataDb;
 
-    private bool initialized = false;
+    private bool initialized;
 
     public WebDataService(GameDataDb gameDataDb)
     {
@@ -20,6 +20,7 @@ public class WebDataService : IDataService
 
     public async Task StoreStringAsync(string content, string path)
     {
+        path = path.Replace(".json", string.Empty);
         await OpenDb();
         await gameDataDb.UpdateItems<GameDataDto>(CurrentStoreName, new() { new(path, content) });
     }

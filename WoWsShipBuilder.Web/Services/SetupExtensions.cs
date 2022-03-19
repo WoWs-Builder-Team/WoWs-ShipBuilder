@@ -2,6 +2,7 @@ using DnetIndexedDb;
 using DnetIndexedDb.Fluent;
 using DnetIndexedDb.Models;
 using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Data;
 
@@ -29,6 +30,7 @@ public static class SetupExtensions
         services.AddScoped<IDataService, WebDataService>();
         services.AddScoped<IAppDataService, WebAppDataService>();
         services.AddScoped<ILocalDataUpdater, WebDataUpdate>();
+        services.AddScoped<IAwsClient, AwsClient>();
         return services;
     }
 }

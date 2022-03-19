@@ -76,8 +76,10 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <param name="serverType">The selected server type.</param>
         /// <param name="includeFileType">Specifies whether the list of installed locales should contain the file extensions for each file.</param>
         /// <returns>A possibly empty list of installed locales.</returns>
-        public List<string> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
+        public async Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
         {
+            // TODO: return Task.FromResult
+            await Task.CompletedTask;
             fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
             var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
             return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
