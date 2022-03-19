@@ -91,7 +91,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // This is for IFHE. At the start because of DE sharing similar modifier name
                     case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
-                                             str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
+                                             str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase) :
                         value = $"-{(int)Math.Round(modifier * 100)}%";
                         break;
 
@@ -134,9 +134,10 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
                     // Also applies to repair party bonus.
+                    // UPDATE: remember what i said about similar names? Wanna take a guess how they did captain talents?
                     case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
-                                      (str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)) ||
+                                      str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                                       (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
                     {
                         value = $"+{Math.Round(modifier * 100, 1)}%";
@@ -240,6 +241,16 @@ namespace WoWsShipBuilder.UI.Converters
                     localizerKey = $"{localizerKey}_DESTROYER";
                 }
 
+                if (localizerKey.Equals("talentMaxDistGM", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    localizerKey = "GMMAXDIST";
+                }
+
+                if (localizerKey.Equals("talentConsumablesWorkTime", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    localizerKey = "ConsumablesWorkTime";
+                }
+
                 localizerKey = $"{prefix}{localizerKey}";
 
                 bool found;
@@ -285,6 +296,16 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description += "/s";
+                }
+
+                if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+                }
+
+                if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
                 }
 
                 if (returnFilter == ReturnFilter.Description)
