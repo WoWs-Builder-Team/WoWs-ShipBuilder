@@ -1,21 +1,15 @@
-﻿@inject IJSRuntime jsRuntime
-<Container>
-    <Row>
-        <Column ColumnSize="ColumnSize.Is4" Position="Position.Absolute.Top.Is50.Start.Is50.Translate.Middle">
-            <Paragraph TextAlignment="TextAlignment.Center" TextColor="TextColor.Primary">
+﻿<MudContainer >
+    <MudGrid Justify="Justify.Center">
+        <MudItem >
+            <MudText Align="Align.Center">
                 Developed by the WoWsShipbuilder team.
                 All copyright materials provided by Wargaming.net are owned by Wargaming.net.
-            </Paragraph>
-            <Div TextAlignment="TextAlignment.Center">
+            </MudText>
+            <div style="text-align: center">
                 <a href="https://discord.gg/C8EaepZJDY" target="_blank">
                     <img src="assets/discord.png" style="width: 128px; height: auto;" alt="ShipBuilder discord"/>
                 </a>
-            </Div>
-        </Column>
-    </Row>
-</Container>
-
-
-@code {
-
-}
+            </div>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

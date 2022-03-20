@@ -1,46 +1,14 @@
-﻿<ThemeProvider Theme="@theme">
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <Container>
-                    <Heading Size="HeadingSize.Is3" TextAlignment="TextAlignment.Center" TextColor="TextColor.Danger">Sorry, this address does not exist.</Heading>
-                </Container>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</ThemeProvider>
-
-@code
-{
-    private readonly Theme theme = new()
-    {
-        BarOptions = new()
-        {
-            HorizontalHeight = "72px",
-        },
-        BreakpointOptions = new(),
-
-        ColorOptions = new()
-        {
-            Primary = "#DEDEDE",
-        },
-        BackgroundOptions = new()
-        {
-            Primary = "#1b1b1b",
-            Body = "#282828",
-        },
-        TextColorOptions = new()
-        {
-            Primary = "#DEDEDE",
-        },
-        InputOptions = new()
-        {
-            CheckColor = "#0288D1",
-        },
-    };
-}
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <MudContainer>
+                <MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Error">Sorry, this address does not exist.</MudText>
+            </MudContainer>
+        </LayoutView>
+    </NotFound>
+</Router>

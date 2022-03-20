@@ -4,48 +4,75 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Helper
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
 @inject IAppSettingsService settingsService
+@inject IAppDataService appDataService
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
 
-<Container Fluid>
-    <Heading TextAlignment="TextAlignment.Center" TextColor="TextColor.Primary" Size="HeadingSize.Is1" Class="main-title">WoWs ShipBuilder</Heading>
-    <Paragraph TextAlignment="TextAlignment.Center" TextColor="TextColor.Primary">
+<MudContainer>
+    <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">WoWs ShipBuilder</MudText>
+    <MudText Align="Align.Center" >
         Welcome to the WoWs ShipBuilder web app.
-    </Paragraph>
-    <Paragraph TextColor="TextColor.Primary" TextOverflow="TextOverflow.Wrap">
+    </MudText>
+    <MudText>
         Settings:
         @JsonConvert.SerializeObject(settingsService.CurrentSettings, Formatting.Indented)
-    </Paragraph>
+    </MudText>
     
-    <Paragraph TextColor="TextColor.Primary">
+    <MudText >
             Select a ship using the following filters.
-    </Paragraph>
-    <Row>
-        <Column ColumnSize="ColumnSize.Is3">
-            <Check TValue="bool">Tier</Check>
-            <SelectList @bind-SelectedValue="@shipSelectionVm.SelectedTier" DefaultItemText="All" DefaultItemValue="null" TItem="string" TValue="string" ValueField="(item => item)" TextField="(item => item)" Data="@shipSelectionVm.TierList"></SelectList>
-        </Column>
+    </MudText>
+    <MudGrid>
+        <MudItem xs="3">
+            <MudCheckBox @bind-Checked="@shipSelectionVm.TierFilterChecked" Label="Tier" Placeholder="I~XI"/>
+            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedTier">
+                @foreach (var item in shipSelectionVm.TierList)
+                {
+                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                }
+            </MudSelect>
+         
+        </MudItem>
             
-        <Column ColumnSize="ColumnSize.Is3">
-            <Check TValue="bool">Class</Check>
-            <SelectList @bind-SelectedValue="@shipSelectionVm.SelectedClass" DefaultItemText="All" DefaultItemValue="null" TItem="ShipClass" TValue="ShipClass?" ValueField="(item => item)" TextField="(item => item.ToString())" Data="@shipSelectionVm.ClassList"></SelectList>
-        </Column>
+        <MudItem xs="3">
+            <MudCheckBox @bind-Checked="@shipSelectionVm.ClassFilterChecked" Label="Class" Placeholder="All"/>
+            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedClass" Strict="true">
+                @foreach (ShipClass? item in shipSelectionVm.ClassList)
+                {
+                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                }
+            </MudSelect>
+         
+        </MudItem>
             
-        <Column ColumnSize="ColumnSize.Is3">
-            <Check TValue="bool">Nation</Check>
-            <SelectList @bind-SelectedValue="@shipSelectionVm.SelectedNation" DefaultItemText="All" DefaultItemValue="null" TItem="Nation" TValue="Nation?" ValueField="(item => item)" TextField="(item => item.ToString())" Data="@shipSelectionVm.NationList"></SelectList>
-        </Column>
+        <MudItem xs="3">
+            <MudCheckBox @bind-Checked="@shipSelectionVm.NationFilterChecked" Label="Nation" Placeholder="All"/>
+            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedNation">
+                @foreach (Nation? item in shipSelectionVm.NationList)
+                {
+                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                }
+            </MudSelect>
+          
+        </MudItem>
             
-        <Column ColumnSize="ColumnSize.Is3">
-            <Check TValue="bool">Type</Check>
-            <SelectList @bind-SelectedValue="@shipSelectionVm.SelectedType" DefaultItemText="All" DefaultItemValue="null" TItem="ShipCategory" TValue="ShipCategory?" ValueField="(item => item)" TextField="(item => item.ToString())" Data="@shipSelectionVm.TypeList"></SelectList>
-        </Column>
-    </Row>
-    <Button Margin="Margin.Is1" Background="Background.Light" Clicked="@Test">Test</Button>
-    <Text TextColor="TextColor.Primary">@data</Text>
+        <MudItem xs="3">
+            <MudCheckBox @bind-Checked="@shipSelectionVm.TypeFilterChecked" Label="Type"/>
+            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedType" Placeholder="All">
+                @foreach (ShipCategory? item in shipSelectionVm.TypeList)
+                {
+                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                }
+            </MudSelect>            
+          
+        </MudItem>
+    </MudGrid>
+    <MudButton OnClick="@Test">Test</MudButton>
+    <MudText>@data</MudText>
 
-</Container>
+</MudContainer>
 
 @code
 {
@@ -55,12 +82,13 @@
     
     public Index()
     {
-        shipSelectionVm = new(false, new());
-        //this.WhenAnyValue(x => x.ViewModel).Where(vm => vm is not null).Do(OnViewModelUpdated!).Subscribe();
+        shipSelectionVm = new(false,  new());
     }
 
     void Test()
     {
+        Console.WriteLine(shipSelectionVm.SelectedClass.Equals(null));
+        Console.WriteLine(shipSelectionVm.SelectedClass);
        data = string.Join(" - ", shipSelectionVm.SelectedTier, shipSelectionVm.SelectedClass, shipSelectionVm.SelectedNation, shipSelectionVm.SelectedType);
     }
 }

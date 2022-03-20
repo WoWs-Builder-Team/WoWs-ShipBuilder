@@ -5,18 +5,18 @@
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
-<Heading TextColor="TextColor.Primary">Test Page</Heading>
+<MudText Typo="Typo.h2">Test Page</MudText>
 
-<Button Clicked="LoadNonExistentData" Color="Color.Secondary" TextColor="TextColor.Primary">Load non-existent data</Button>
-<Paragraph TextColor="TextColor.Primary">@nonExistentDataResult</Paragraph>
+<MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
+<MudText >@nonExistentDataResult</MudText>
 
-<Button Clicked="AddData" Color="Color.Secondary" TextColor="TextColor.Primary">Add data</Button>
-<Button Clicked="GetData" Color="Color.Secondary" TextColor="TextColor.Primary">Get data</Button>
-<Paragraph TextColor="TextColor.Primary">@dataResult</Paragraph>
+<MudButton OnClick="AddData" Color="Color.Secondary">Add data</MudButton>
+<MudButton OnClick="GetData" Color="Color.Secondary" >Get data</MudButton>
+<MudText>@dataResult</MudText>
 
-<Button Clicked="StartUpdate" Color="Color.Secondary" TextColor="TextColor.Primary">Start localization update</Button>
-<Button Clicked="CheckLocales" Color="Color.Secondary" TextColor="TextColor.Primary">Check installed locales</Button>
-<Button Clicked="StartFullUpdate" Color="Color.Secondary" TextColor="TextColor.Primary">Start full update</Button>
+<MudButton OnClick="StartUpdate" Color="Color.Secondary" >Start localization update</MudButton>
+<MudButton OnClick="CheckLocales" Color="Color.Secondary" >Check installed locales</MudButton>
+<MudButton OnClick="StartFullUpdate" Color="Color.Secondary" >Start full update</MudButton>
 
 @code {
 

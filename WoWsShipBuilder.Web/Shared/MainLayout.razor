@@ -1,19 +1,27 @@
 @inherits LayoutComponentBase
 
-<Layout Background="Background.Body">
-    <LayoutHeader Fixed>
-        <TopMenu />
-    </LayoutHeader>
-    <LayoutContent Padding="Padding.Is4.OnX">
-        @Body
-    </LayoutContent>
-    <LayoutFooter>
-        <ShipBuilderFooter/>
-    </LayoutFooter>
-</Layout>
+<MudThemeProvider IsDarkMode="true"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
-@code
-{
-    [CascadingParameter]
-    protected Theme Theme { get; set; } = null!;
-}
+<MudLayout>
+    <TopMenu />
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+    <footer>
+        <ShipBuilderFooter/>
+    </footer>
+</MudLayout>
+
+@* <Layout Background="Background.Body"> *@
+@*     <LayoutHeader Fixed> *@
+@*         <TopMenu /> *@
+@*     </LayoutHeader> *@
+@*     <LayoutContent Padding="Padding.Is4.OnX"> *@
+@*         @Body *@
+@*     </LayoutContent> *@
+@*     <LayoutFooter> *@
+@*         <ShipBuilderFooter/> *@
+@*     </LayoutFooter> *@
+@* </Layout> *@

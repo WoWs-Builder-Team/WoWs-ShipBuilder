@@ -1,28 +1,7 @@
-﻿<Bar @bind-Visible="barVisible" Breakpoint="Breakpoint.Desktop" Background="Background.Primary" ThemeContrast="ThemeContrast.Dark">
-    <BarBrand>
-        <BarItem>
-            <BarLink To="" Style="display: flex;align-items: center;">
-                <ShipBuilderBarIcon IconSize="IconSize.x2" />
-                WoWs ShipBuilder
-            </BarLink>
-        </BarItem>
-    </BarBrand>
-    <BarToggler/>
-    <BarMenu>
-        <BarStart>
-            <BarItem>
-                <BarLink To="ship">Ship stats</BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="plots">Dispersion and ballistic plots</BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="/test">Test page</BarLink>
-            </BarItem>
-        </BarStart>
-    </BarMenu>
-</Bar>
-
-@code {
-    private bool barVisible = false;
-}
+﻿<MudAppBar>
+    <MudIcon Icon="@Icons.Material.Filled.Favorite"/>
+    WoWs Shipbuilder
+    <MudNavLink Href="/ship">Ship stats</MudNavLink>
+    <MudNavLink Href="/plots">Dispersion and ballistic plots</MudNavLink>
+    <MudNavLink Href="/test">Test page</MudNavLink>
+</MudAppBar>

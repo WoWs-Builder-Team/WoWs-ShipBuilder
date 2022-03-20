@@ -3,54 +3,54 @@
 @inherits ReactiveComponentBase<ShipViewModel>
 <PageTitle>Ship stats</PageTitle>
 
-<TemplatedDropdown @ref="dropdown" Items="items" @bind-SelectedItem="testVm.SelectedItem">
-    <ItemTemplate>
-        <div style="overflow: hidden; width: 60px; height: 60px;">
-            <img style="object-fit: contain;height: 100%;width: 100%;" src="@context" alt="Dropdown"/>
-        </div>
-    </ItemTemplate>
-</TemplatedDropdown>
-<Button Clicked="@ShowMenu" Color="Color.Secondary">
-    <div style="overflow: hidden; width: 50px;">
-        <img style="object-fit: contain;height: 100%;width: 100%;" src="favicon.ico" alt="Dropdown"/>
-    </div>
-</Button>
+@* <TemplatedDropdown @ref="dropdown" Items="items" @bind-SelectedItem="testVm.SelectedItem"> *@
+@*     <ItemTemplate> *@
+@*         <div style="overflow: hidden; width: 60px; height: 60px;"> *@
+@*             <img style="object-fit: contain;height: 100%;width: 100%;" src="@context" alt="Dropdown"/> *@
+@*         </div> *@
+@*     </ItemTemplate> *@
+@* </TemplatedDropdown> *@
+@* <Button Clicked="@ShowMenu" Color="Color.Secondary"> *@
+@*     <div style="overflow: hidden; width: 50px;"> *@
+@*         <img style="object-fit: contain;height: 100%;width: 100%;" src="favicon.ico" alt="Dropdown"/> *@
+@*     </div> *@
+@* </Button> *@
 
 @code {
-    private TemplatedDropdown<string> dropdown = null!;
-
-    private readonly List<string> items = new() { "favicon.ico", "assets/app-logo.png" };
-
-    private string selectedImage;
-
-    private TestVm testVm;
-
-    public ShipStats()
-    {
-        selectedImage = items.First();
-        testVm = new(selectedImage);
-        this.WhenAnyValue(x => x.ViewModel).Where(vm => vm is not null).Do(OnViewModelUpdated!).Subscribe();
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        Console.WriteLine("On Initialized");
-    }
-
-    private async Task ShowMenu()
-    {
-        await dropdown.ShowDropdown();
-    }
-
-    private void OnItemClicked(string imageName)
-    {
-        selectedImage = imageName;
-    }
-
-    private void OnViewModelUpdated(ShipViewModel vm)
-    {
-        Console.WriteLine("Viewmodel updated");
-    }
+    // private TemplatedDropdown<string> dropdown = null!;
+    //
+    // private readonly List<string> items = new() { "favicon.ico", "assets/app-logo.png" };
+    //
+    // private string selectedImage;
+    //
+    // private TestVm testVm;
+    //
+    // public ShipStats()
+    // {
+    //     selectedImage = items.First();
+    //     testVm = new(selectedImage);
+    //     this.WhenAnyValue(x => x.ViewModel).Where(vm => vm is not null).Do(OnViewModelUpdated!).Subscribe();
+    // }
+    //
+    // protected override void OnInitialized()
+    // {
+    //     base.OnInitialized();
+    //     Console.WriteLine("On Initialized");
+    // }
+    //
+    // private async Task ShowMenu()
+    // {
+    //     await dropdown.ShowDropdown();
+    // }
+    //
+    // private void OnItemClicked(string imageName)
+    // {
+    //     selectedImage = imageName;
+    // }
+    //
+    // private void OnViewModelUpdated(ShipViewModel vm)
+    // {
+    //     Console.WriteLine("Viewmodel updated");
+    // }
 
 }
