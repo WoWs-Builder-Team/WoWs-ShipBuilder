@@ -41,7 +41,7 @@ public class WebAppDataService : IAppDataService
 
     public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
     {
-        string dataLocation = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common.json");
+        string dataLocation = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common");
         return await DeserializeFromDb<List<ShipSummary>>(dataLocation) ?? new List<ShipSummary>();
     }
 

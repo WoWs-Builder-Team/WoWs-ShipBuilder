@@ -24,7 +24,7 @@
     <MudText >
             Select a ship using the following filters.
     </MudText>
-    <MudGrid>
+    <MudGrid Justify="Justify.Center">
         <MudItem xs="3">
             <MudCheckBox @bind-Checked="@shipSelectionVm.TierFilterChecked" Label="Tier" Placeholder="I~XI"/>
             <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedTier">
@@ -68,8 +68,18 @@
             </MudSelect>            
           
         </MudItem>
+        <MudItem xs="4">
+            <MudCard  Style="max-height: 300px; overflow: scroll " Outlined="true">
+                <MudList Clickable="true">
+                    @foreach (KeyValuePair<string, ShipSummary> item in shipSelectionVm.SummaryList)
+                    {
+                        <MudListItem Style="text-align: center" Value="@item" >@item.Key</MudListItem>
+                    }
+                </MudList>
+            </MudCard>
+        </MudItem>
     </MudGrid>
-    <MudButton OnClick="@Test">Test</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="@Test">Test</MudButton>
     <MudText>@data</MudText>
 
 </MudContainer>
@@ -80,15 +90,16 @@
 
     private string data = default!;
     
-    public Index()
+    protected override void OnInitialized()
     {
-        shipSelectionVm = new(false,  new());
+        base.OnInitialized();
+        var dict = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
+        Console.WriteLine(dict.First());
+        shipSelectionVm = new(false, dict);
     }
 
     void Test()
     {
-        Console.WriteLine(shipSelectionVm.SelectedClass.Equals(null));
-        Console.WriteLine(shipSelectionVm.SelectedClass);
-       data = string.Join(" - ", shipSelectionVm.SelectedTier, shipSelectionVm.SelectedClass, shipSelectionVm.SelectedNation, shipSelectionVm.SelectedType);
+        data = string.Join(" - ", shipSelectionVm.SelectedTier, shipSelectionVm.SelectedClass, shipSelectionVm.SelectedNation, shipSelectionVm.SelectedType);
     }
 }

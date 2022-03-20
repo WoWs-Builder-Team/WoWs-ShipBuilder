@@ -6,6 +6,7 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web;
 using WoWsShipBuilder.Web.Data;
@@ -36,5 +37,11 @@ CultureInfo.DefaultThreadCurrentCulture = settings.SelectedLanguage.CultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = settings.SelectedLanguage.CultureInfo;
 
 await settingsHelper.SaveSettings(AppData.Settings);
+
+SetupExtensions.SetupLogging();
+
+AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
+
+await Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, true);
 
 await host.RunAsync();
