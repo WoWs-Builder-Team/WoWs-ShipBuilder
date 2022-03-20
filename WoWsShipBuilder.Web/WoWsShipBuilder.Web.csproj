@@ -43,6 +43,26 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\css\all.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.woff2" />
     </ItemGroup>
 
 </Project>

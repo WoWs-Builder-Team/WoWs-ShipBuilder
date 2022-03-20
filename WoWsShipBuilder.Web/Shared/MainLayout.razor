@@ -1,15 +1,15 @@
 @inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="true"/>
+<MudThemeProvider Theme="theme" IsDarkMode="true"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <TopMenu />
+    <TopMenu/>
     <MudMainContent>
         @Body
     </MudMainContent>
-    <footer>
+    <footer style="margin-top: 16px;">
         <ShipBuilderFooter/>
     </footer>
 </MudLayout>
@@ -25,3 +25,15 @@
 @*         <ShipBuilderFooter/> *@
 @*     </LayoutFooter> *@
 @* </Layout> *@
+
+@code
+{
+    private readonly MudTheme theme = new()
+    {
+        PaletteDark =
+        {
+            Primary = "#DEDEDE",
+            Background = "#282828",
+        },
+    };
+}

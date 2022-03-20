@@ -66,3 +66,16 @@ h1:focus {
 .main-title {
     font-size: 3.5rem;
 }
+
+.loading-title {
+    font-family: Roboto, sans-serif;
+}
+
+.nav-link-active {
+    font-weight: bolder;
+}
+
+.main-nav-link {
+    padding-left: 4px;
+    padding-right: 8px;
+}
