@@ -8,6 +8,7 @@
 @using WoWsShipBuilder.Core.Services
 @inject IAppSettingsService settingsService
 @inject IAppDataService appDataService
+@inject Localizer localizer
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
 
@@ -93,7 +94,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var dict = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
+        var dict = AppData.ShipSummaryList.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship);
         Console.WriteLine(dict.First());
         shipSelectionVm = new(false, dict);
     }

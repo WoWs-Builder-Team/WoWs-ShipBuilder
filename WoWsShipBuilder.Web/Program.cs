@@ -27,6 +27,7 @@ builder.Services.AddMudServices();
 builder.Services.AddShipBuilderServices();
 
 var host = builder.Build();
+host.Services.UseMicrosoftDependencyResolver();
 
 var settingsHelper = host.Services.GetRequiredService<AppSettingsHelper>();
 var settings = await settingsHelper.LoadSettings() ?? new AppSettings();
@@ -42,6 +43,6 @@ SetupExtensions.SetupLogging();
 
 AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
 
-await Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, true);
+await host.Services.GetRequiredService<Localizer>().UpdateLanguage(AppData.Settings.SelectedLanguage, true);
 
 await host.RunAsync();
