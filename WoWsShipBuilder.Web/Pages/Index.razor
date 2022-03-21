@@ -11,6 +11,7 @@
 @using WoWsShipBuilder.Core.Services
 @inject IAppSettingsService settingsService
 @inject IAppDataService appDataService
+@inject Localizer localizer
 @inherits ReactiveComponentBase<ShipSelectionWindowViewModel>
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
@@ -119,7 +120,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var dict = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
+        var dict = AppData.ShipSummaryList.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship);
         Console.WriteLine(dict.First());
         ViewModel = new(false, dict);
         ViewModel?.SummaryList.ToObservableChangeSet().Do(_ => OnPropertyChanged(nameof(ViewModel))).Subscribe().DisposeWith(compositeDisposable);
