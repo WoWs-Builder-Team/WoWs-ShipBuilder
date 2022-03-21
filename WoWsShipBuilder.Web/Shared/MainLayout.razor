@@ -14,26 +14,24 @@
     </footer>
 </MudLayout>
 
-@* <Layout Background="Background.Body"> *@
-@*     <LayoutHeader Fixed> *@
-@*         <TopMenu /> *@
-@*     </LayoutHeader> *@
-@*     <LayoutContent Padding="Padding.Is4.OnX"> *@
-@*         @Body *@
-@*     </LayoutContent> *@
-@*     <LayoutFooter> *@
-@*         <ShipBuilderFooter/> *@
-@*     </LayoutFooter> *@
-@* </Layout> *@
-
 @code
 {
     private readonly MudTheme theme = new()
     {
         PaletteDark =
         {
-            Primary = "#DEDEDE",
+            Primary = "#505050",
+            Secondary = "#DEDEDE",
+            AppbarBackground = "#121212",
             Background = "#282828",
+            TextSecondary = "#DEDEDE", // used for enabled svg icons too, with the addition of some opacity
+            TextPrimary = "#DEDEDE", // used for disabled svg icons too
+            TextDisabled = "#999999",
+            ActionDefault = "#808080",
+            Surface = "#282828",
+            ActionDisabled = "#545454",
+            ActionDisabledBackground = "#0016FF",
+    
         },
     };
 }

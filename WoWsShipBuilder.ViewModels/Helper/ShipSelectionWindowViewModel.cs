@@ -176,7 +176,7 @@ namespace WoWsShipBuilder.ViewModels.Helper
             }
         }
 
-        private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
+        public SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
         public CustomObservableCollection<KeyValuePair<string, ShipSummary>> SelectedShipList { get; } = new();
 
@@ -234,7 +234,7 @@ namespace WoWsShipBuilder.ViewModels.Helper
                 token);
         }
 
-        private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+        public bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
         {
             var shipSummary = valuePair.Value;
             bool result = !(TierFilterChecked && !string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);

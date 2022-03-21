@@ -4,10 +4,14 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Helper
 @using System.Diagnostics
+@using System.Reactive.Disposables
+@using System.Reactive.Linq
+@using DynamicData.Binding
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @inject IAppSettingsService settingsService
 @inject IAppDataService appDataService
+@inherits ReactiveComponentBase<ShipSelectionWindowViewModel>
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
 
@@ -26,9 +30,9 @@
     </MudText>
     <MudGrid Justify="Justify.Center">
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@shipSelectionVm.TierFilterChecked" Label="Tier" Placeholder="I~XI"/>
-            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedTier">
-                @foreach (var item in shipSelectionVm.TierList)
+            <MudCheckBox @bind-Checked="@ViewModel.TierFilterChecked" Label="Tier" />
+            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedTier" Placeholder="I~XI" Disabled="@(!ViewModel.TierFilterChecked)">
+                @foreach (var item in ViewModel.TierList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -37,9 +41,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@shipSelectionVm.ClassFilterChecked" Label="Class" Placeholder="All"/>
-            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedClass" Strict="true">
-                @foreach (ShipClass? item in shipSelectionVm.ClassList)
+            <MudCheckBox @bind-Checked="@ViewModel.ClassFilterChecked" Label="Class" />
+            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedClass" Placeholder="All" Disabled="@(!ViewModel.ClassFilterChecked)">
+                @foreach (ShipClass? item in ViewModel.ClassList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -48,9 +52,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@shipSelectionVm.NationFilterChecked" Label="Nation" Placeholder="All"/>
-            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedNation">
-                @foreach (Nation? item in shipSelectionVm.NationList)
+            <MudCheckBox @bind-Checked="@ViewModel.NationFilterChecked" Label="Nation" />
+            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedNation" Placeholder="All" Disabled="@(!ViewModel.NationFilterChecked)">
+                @foreach (Nation? item in ViewModel.NationList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -59,9 +63,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@shipSelectionVm.TypeFilterChecked" Label="Type"/>
-            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@shipSelectionVm.SelectedType" Placeholder="All">
-                @foreach (ShipCategory? item in shipSelectionVm.TypeList)
+            <MudCheckBox @bind-Checked="@ViewModel.TypeFilterChecked" Label="Type"/>
+            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedType" Placeholder="All" Disabled="@(!ViewModel.TypeFilterChecked)">
+                @foreach (ShipCategory? item in ViewModel.TypeList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -69,37 +73,66 @@
           
         </MudItem>
         <MudItem xs="4">
-            <MudCard  Style="max-height: 300px; overflow: scroll " Outlined="true">
-                <MudList Clickable="true">
-                    @foreach (KeyValuePair<string, ShipSummary> item in shipSelectionVm.SummaryList)
-                    {
-                        <MudListItem Style="text-align: center" Value="@item" >@item.Key</MudListItem>
-                    }
-                </MudList>
-            </MudCard>
+            <MudAutocomplete T="KeyValuePair<string, ShipSummary>" ToStringFunc="@(pair => pair.Key)" SearchFunc="@Search" ResetValueOnEmptyText="true" Clearable="true" Placeholder="Select a ship..." Variant="Variant.Outlined" >
+                <ItemTemplate Context="pair">
+                    <MudText>@pair.Key</MudText>
+                </ItemTemplate>
+                <ItemSelectedTemplate Context="pair">
+                                    <MudText Color="Color.Secondary">@pair.Key</MudText>
+                </ItemSelectedTemplate>
+            </MudAutocomplete>
+                
+            
+            @* <MudTextField T="string" Variant="Variant.Outlined" Placeholder="Search ship..." @bind-Text="@ViewModel.InputText" Margin="Margin.Normal"/> *@
+            
+            @* <MudCard Style="max-height: 300px; overflow:auto" Outlined="true"> *@
+            @*     <MudList Clickable="true"> *@
+            @*         <MudVirtualize IsEnabled="true" Items="@ViewModel.SummaryList" Context="pair"> *@
+            @*             <MudListItem Style="text-align: center" Value="@pair">@pair.Key</MudListItem> *@
+            @*         </MudVirtualize> *@
+            @*     </MudList> *@
+            @* </MudCard> *@
         </MudItem>
     </MudGrid>
-    <MudButton Variant="Variant.Filled" OnClick="@Test">Test</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Test">Test</MudButton>
     <MudText>@data</MudText>
 
 </MudContainer>
 
 @code
 {
-    private ShipSelectionWindowViewModel shipSelectionVm;
 
     private string data = default!;
+
+    private CompositeDisposable compositeDisposable = new();
+
+    public Index()
+    {
+        this.WhenActivated(disposables =>
+        {
+            Console.WriteLine(ViewModel);
+            compositeDisposable.DisposeWith(disposables);
+           
+        });
+    }
     
     protected override void OnInitialized()
     {
         base.OnInitialized();
         var dict = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
         Console.WriteLine(dict.First());
-        shipSelectionVm = new(false, dict);
+        ViewModel = new(false, dict);
+        ViewModel?.SummaryList.ToObservableChangeSet().Do(_ => OnPropertyChanged(nameof(ViewModel))).Subscribe().DisposeWith(compositeDisposable);
     }
 
     void Test()
     {
-        data = string.Join(" - ", shipSelectionVm.SelectedTier, shipSelectionVm.SelectedClass, shipSelectionVm.SelectedNation, shipSelectionVm.SelectedType);
+        data = string.Join(" - ", ViewModel.SelectedTier, ViewModel.SelectedClass, ViewModel.SelectedNation, ViewModel.SelectedType, ViewModel.InputText);
+    }
+
+    private async Task<IEnumerable<KeyValuePair<string,ShipSummary>>> Search(string arg)
+    {
+        var items = ViewModel.FilteredShipNameDictionary.Where(pair => ViewModel.SummaryFilter(pair, arg)).ToList();
+        return items;
     }
 }
