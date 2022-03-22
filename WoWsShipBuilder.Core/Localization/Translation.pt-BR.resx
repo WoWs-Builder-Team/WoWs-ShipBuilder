@@ -1180,7 +1180,13 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Padrão</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Magnético</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Águas Profundas</value>
+  </data>
 </root>
