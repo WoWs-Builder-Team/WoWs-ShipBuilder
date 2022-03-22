@@ -432,14 +432,15 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Weapon}" Margin="0 10 0 0"/>
-                                <DockPanel HorizontalAlignment="Stretch" Margin="10 0 0 0">
+                                <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_Type}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                    <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                    <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" 
+                                               TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                 </DockPanel>
                                 <ItemsControl Items="{Binding Weapon.ProjectileData}" Classes="Stagger">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel LastChildFill="True">
+                                            <DockPanel LastChildFill="True" Margin="0 4 0 0">
                                                 <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="3 0 0 0"/>
                                                 <TextBlock Classes="Key"/>
                                             </DockPanel>
