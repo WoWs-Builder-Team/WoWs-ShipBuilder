@@ -2,17 +2,13 @@
 @using WoWsShipBuilder.Web.Services
 @using Newtonsoft.Json
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.ViewModels.Helper
-@using System.Diagnostics
-@using System.Reactive.Disposables
-@using System.Reactive.Linq
-@using DynamicData.Binding
+@using System.Globalization
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @inject IAppSettingsService settingsService
 @inject IAppDataService appDataService
 @inject Localizer localizer
-@inherits ReactiveComponentBase<ShipSelectionWindowViewModel>
+@inject NavigationManager NavManager
 
 <PageTitle>WoWs ShipBuilder</PageTitle>
 
@@ -31,9 +27,9 @@
     </MudText>
     <MudGrid Justify="Justify.Center">
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@ViewModel.TierFilterChecked" Label="Tier" />
-            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedTier" Placeholder="I~XI" Disabled="@(!ViewModel.TierFilterChecked)">
-                @foreach (var item in ViewModel.TierList)
+            <MudCheckBox @bind-Checked="@TierFilterChecked" Label="Tier" />
+            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="I~XI" Disabled="@(!TierFilterChecked)">
+                @foreach (var item in TierList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -42,9 +38,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@ViewModel.ClassFilterChecked" Label="Class" />
-            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedClass" Placeholder="All" Disabled="@(!ViewModel.ClassFilterChecked)">
-                @foreach (ShipClass? item in ViewModel.ClassList)
+            <MudCheckBox @bind-Checked="@ClassFilterChecked" Label="Class" />
+            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="All" Disabled="@(!ClassFilterChecked)">
+                @foreach (ShipClass? item in ClassList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -53,9 +49,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@ViewModel.NationFilterChecked" Label="Nation" />
-            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedNation" Placeholder="All" Disabled="@(!ViewModel.NationFilterChecked)">
-                @foreach (Nation? item in ViewModel.NationList)
+            <MudCheckBox @bind-Checked="@NationFilterChecked" Label="Nation" />
+            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="All" Disabled="@(!NationFilterChecked)">
+                @foreach (Nation? item in NationList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -64,9 +60,9 @@
         </MudItem>
             
         <MudItem xs="3">
-            <MudCheckBox @bind-Checked="@ViewModel.TypeFilterChecked" Label="Type"/>
-            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@ViewModel.SelectedType" Placeholder="All" Disabled="@(!ViewModel.TypeFilterChecked)">
-                @foreach (ShipCategory? item in ViewModel.TypeList)
+            <MudCheckBox @bind-Checked="@TypeFilterChecked" Label="Type"/>
+            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="All" Disabled="@(!TypeFilterChecked)">
+                @foreach (ShipCategory? item in TypeList)
                 {
                     <MudSelectItem Value="@item">@item</MudSelectItem>
                 }
@@ -74,30 +70,22 @@
           
         </MudItem>
         <MudItem xs="4">
-            <MudAutocomplete T="KeyValuePair<string, ShipSummary>" ToStringFunc="@(pair => pair.Key)" SearchFunc="@Search" ResetValueOnEmptyText="true" Clearable="true" Placeholder="Select a ship..." Variant="Variant.Outlined" >
-                <ItemTemplate Context="pair">
-                    <MudText>@pair.Key</MudText>
-                </ItemTemplate>
-                <ItemSelectedTemplate Context="pair">
-                                    <MudText Color="Color.Secondary">@pair.Key</MudText>
-                </ItemSelectedTemplate>
-            </MudAutocomplete>
-                
-            
-            @* <MudTextField T="string" Variant="Variant.Outlined" Placeholder="Search ship..." @bind-Text="@ViewModel.InputText" Margin="Margin.Normal"/> *@
-            
-            @* <MudCard Style="max-height: 300px; overflow:auto" Outlined="true"> *@
-            @*     <MudList Clickable="true"> *@
-            @*         <MudVirtualize IsEnabled="true" Items="@ViewModel.SummaryList" Context="pair"> *@
-            @*             <MudListItem Style="text-align: center" Value="@pair">@pair.Key</MudListItem> *@
-            @*         </MudVirtualize> *@
-            @*     </MudList> *@
-            @* </MudCard> *@
+            <MudTextField T="string" Variant="Variant.Outlined" Placeholder="Search ship..." @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+
+            <MudCard Style="max-height: 300px; overflow:auto" Outlined="true">
+                <MudList Clickable="true" @bind-SelectedValue="SelectedValue">
+                    <MudVirtualize IsEnabled="true" Items="@SummaryList" Context="pair">
+                        <MudListItem Style="text-align: center" Value="@pair.ToString()">
+                            <MudText Color="Color.Secondary">@pair.ToString()</MudText>
+                        </MudListItem>
+                    </MudVirtualize>
+                </MudList>
+            </MudCard>
         </MudItem>
     </MudGrid>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Test">Test</MudButton>
     <MudText>@data</MudText>
-
+    <MudButton Disabled="@(string.IsNullOrEmpty(selectedValue as string))" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">Go to ship page</MudButton>
 </MudContainer>
 
 @code
@@ -105,35 +93,225 @@
 
     private string data = default!;
 
-    private CompositeDisposable compositeDisposable = new();
+    private List<string> SummaryList = new();
 
-    public Index()
+    private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
+
+    private string inputText = string.Empty;
+    
+    private string InputText
     {
-        this.WhenActivated(disposables =>
+        get => inputText;
+        set
         {
-            Console.WriteLine(ViewModel);
-            compositeDisposable.DisposeWith(disposables);
-           
-        });
+            inputText = value;
+            if (string.IsNullOrEmpty(inputText))
+            {
+                // direct access to avoid a loop. If the user delete the entire text, reset the ship selection
+                selectedValue = string.Empty;
+            }
+            ApplyFilter();
+        }
     }
+
+    private object selectedValue = string.Empty;
+
+    private object SelectedValue
+    {
+        get => selectedValue;
+        set
+        {
+            selectedValue = value;
+            InputText = selectedValue.ToString();
+            ApplyFilter();
+        }
+    }
+    
+    #region Checkboxes
+
+    private bool tierFilterChecked;
+
+    public bool TierFilterChecked
+    {
+        get => tierFilterChecked;
+        set
+        {
+            tierFilterChecked = value;
+            if (!value)
+            {
+                SelectedTier = "";
+                ApplyFilter();
+            }
+        }
+    }
+
+    private bool classFilterChecked;
+
+    public bool ClassFilterChecked
+    {
+        get => classFilterChecked;
+        set
+        {
+            classFilterChecked = value;
+            if (!value)
+            {
+                SelectedClass = null;
+                ApplyFilter();
+            }
+        }
+    }
+
+    private bool nationFilterChecked;
+
+    public bool NationFilterChecked
+    {
+        get => nationFilterChecked;
+        set
+        {
+            nationFilterChecked = value;
+            if (!value)
+            {
+                SelectedNation = null;
+                ApplyFilter();
+            }
+        }
+    }
+
+    private bool typeFilterChecked;
+
+    public bool TypeFilterChecked
+    {
+        get => typeFilterChecked;
+        set
+        {
+            typeFilterChecked = value;
+            if (!value)
+            {
+                SelectedType = null;
+                ApplyFilter();
+            }
+        }
+    }
+    
+
+    #endregion
+
+    #region Selects
+    
+    private List<string> TierList = new() {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"};
+    
+    public List<ShipClass> ClassList { get; } = Enum.GetValues<ShipClass>().Except(new List<ShipClass> {ShipClass.Auxiliary}).ToList();
+
+    public List<Nation> NationList { get; } = Enum.GetValues<Nation>().Except(new List<Nation> {Nation.Common}).ToList();
+
+    public List<ShipCategory> TypeList { get; } =
+        Enum.GetValues<ShipCategory>().Except(new List<ShipCategory> {ShipCategory.Disabled, ShipCategory.Clan}).ToList();
+
+    private string? selectedTier;
+
+    private string? SelectedTier
+    {
+        get => selectedTier;
+        set
+        {
+            selectedTier = value;
+            ApplyFilter();
+        }
+    }
+
+    private ShipClass? selectedClass;
+
+    private ShipClass? SelectedClass
+    {
+        get => selectedClass;
+        set
+        {
+            selectedClass = value;
+            ApplyFilter();
+        }
+    }
+
+    private Nation? selectedNation;
+
+    private Nation? SelectedNation
+    {
+        get => selectedNation;
+        set
+        {
+            selectedNation = value;
+            ApplyFilter();
+        }
+    }
+
+    private ShipCategory? selectedType;
+
+    private ShipCategory? SelectedType
+    {
+        get => selectedType;
+        set
+        {
+            selectedType = value;
+            ApplyFilter();
+        }
+    }
+
+    #endregion
     
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var dict = AppData.ShipSummaryList.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship);
-        Console.WriteLine(dict.First());
-        ViewModel = new(false, dict);
-        ViewModel?.SummaryList.ToObservableChangeSet().Do(_ => OnPropertyChanged(nameof(ViewModel))).Subscribe().DisposeWith(compositeDisposable);
+        totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship));
+        SummaryList = totalShipNameDictionary.Select(x => x.Key).ToList();
+        SummaryList.Sort();
     }
 
-    void Test()
+    private void ApplyFilter()
     {
-        data = string.Join(" - ", ViewModel.SelectedTier, ViewModel.SelectedClass, ViewModel.SelectedNation, ViewModel.SelectedType, ViewModel.InputText);
+        string searchText = InputText;
+
+        var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).Select(pair => pair.Key).ToList();
+        items.Sort();
+        SummaryList.Clear();
+        SummaryList.AddRange(items);
+        StateHasChanged();
     }
 
-    private async Task<IEnumerable<KeyValuePair<string,ShipSummary>>> Search(string arg)
+    private void Test()
     {
-        var items = ViewModel.FilteredShipNameDictionary.Where(pair => ViewModel.SummaryFilter(pair, arg)).ToList();
-        return items;
+        data = string.Join("-", SelectedTier, selectedClass, selectedNation, selectedType, selectedValue.ToString());
+    }
+    
+    private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+    {
+        var shipSummary = valuePair.Value;
+        bool result = !(TierFilterChecked && !string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);
+
+        if (result && ClassFilterChecked && SelectedClass != null && shipSummary.ShipClass != SelectedClass)
+        {
+            result = false;
+        }
+
+        if (result && NationFilterChecked && SelectedNation != null && shipSummary.Nation != SelectedNation)
+        {
+            result = false;
+        }
+
+        if (result && TypeFilterChecked && SelectedType != null && shipSummary.Category != SelectedType)
+        {
+            return false;
+        }
+
+        if (result && !string.IsNullOrWhiteSpace(textSearch))
+        {
+            result = CultureInfo.CurrentCulture.CompareInfo.IndexOf(valuePair.Key, textSearch, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+        }
+
+        return result;
+    }
+
+    private void GoToShipPage()
+    {
+        var index = totalShipNameDictionary[SelectedValue.ToString()].Index;
+        NavManager.NavigateTo("/ship?shipIndex=" + index);
     }
 }
