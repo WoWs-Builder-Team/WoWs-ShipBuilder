@@ -91,7 +91,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // This is for IFHE. At the start because of DE sharing similar modifier name
                     case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
-                                             str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase) :
+                                             str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
                         value = $"-{(int)Math.Round(modifier * 100)}%";
                         break;
 
@@ -231,7 +231,7 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey!.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
