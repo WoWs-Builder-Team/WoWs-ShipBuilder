@@ -1,18 +1,23 @@
 ﻿@page "/"
-@using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.DataStructures
 @using System.Globalization
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @inject IAppDataService appDataService
 @inject Localizer localizer
-@inject NavigationManager NavManager
+@inject NavigationManager navManager
 
-<PageTitle>WoWs ShipBuilder</PageTitle>
+<PageTitle>
+    WoWs ShipBuilder
+</PageTitle>
 
 <MudContainer Class="mt-3">
-    <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">WoWs ShipBuilder</MudText>
-    <MudText Align="Align.Center" Typo="Typo.h4">Welcome to the WoWs ShipBuilder web app.</MudText>
+    <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
+        WoWs ShipBuilder
+    </MudText>
+    <MudText Align="Align.Center" Typo="Typo.h4">
+        Welcome to the WoWs ShipBuilder web app.
+    </MudText>
     
     <MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
         <MudItem xs="12">
@@ -20,15 +25,17 @@
                 Select a ship using the following filters.
             </MudText>
         </MudItem>
-        <MudItem xs="6" md="3" >
+        
+        <MudItem xs="6" md="3">
             <MudCheckBox Dense="true" @bind-Checked="@TierFilterChecked" Label="Tier"/>
             <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="I~XI" Disabled="@(!TierFilterChecked)">
                 @foreach (var item in TierList)
                 {
-                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                    <MudSelectItem Value="@item">
+                        @item
+                    </MudSelectItem>
                 }
             </MudSelect>
-
         </MudItem>
 
         <MudItem xs="6" md="3">
@@ -36,10 +43,11 @@
             <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="All" Disabled="@(!ClassFilterChecked)">
                 @foreach (ShipClass? item in ClassList)
                 {
-                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                    <MudSelectItem Value="@item">
+                        @item
+                    </MudSelectItem>
                 }
             </MudSelect>
-
         </MudItem>
 
         <MudItem xs="6" md="3">
@@ -47,10 +55,11 @@
             <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="All" Disabled="@(!NationFilterChecked)">
                 @foreach (Nation? item in NationList)
                 {
-                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                    <MudSelectItem Value="@item">
+                        @item
+                    </MudSelectItem>
                 }
             </MudSelect>
-
         </MudItem>
 
         <MudItem xs="6" md="3">
@@ -58,11 +67,13 @@
             <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="All" Disabled="@(!TypeFilterChecked)">
                 @foreach (ShipCategory? item in TypeList)
                 {
-                    <MudSelectItem Value="@item">@item</MudSelectItem>
+                    <MudSelectItem Value="@item">
+                        @item
+                    </MudSelectItem>
                 }
             </MudSelect>
-
         </MudItem>
+        
         <MudItem xs="12" md="4">
             @foreach (var ship in SelectedShips)
             {
@@ -73,16 +84,27 @@
                 <MudList @ref="mudList" Clickable="true"  SelectedValueChanged="AddShip">
                     <MudVirtualize IsEnabled="true" Items="@SummaryList" Context="pair">
                         <MudListItem Style="text-align: center" Value="@pair.ToString()">
-                            <MudText Color="Color.Secondary">@pair.ToString()</MudText>
+                            <MudText Color="Color.Secondary">
+                                @pair.ToString()
+                            </MudText>
                         </MudListItem>
                     </MudVirtualize>
                 </MudList>
             </MudCard>
         </MudItem>
     </MudGrid>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Test">Test</MudButton>
-    <MudText>@data</MudText>
-    <MudButton Disabled="@(SelectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">Go to ship page</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Test">
+        Test
+    </MudButton>
+    <MudText>
+        @data
+    </MudText>
+    <MudButton Disabled="@(SelectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
+        Go to ship page
+    </MudButton>
+    <MudButton Disabled="@(SelectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToPlotPage">
+        Make Plot 
+    </MudButton>
 </MudContainer>
 
 @code
@@ -252,7 +274,6 @@
     private void ApplyFilter()
     {
         string searchText = InputText;
-
         var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).Select(pair => pair.Key).ToList();
         items.Sort();
         SummaryList.Clear();
@@ -297,7 +318,7 @@
     private void GoToShipPage()
     {
         var index = totalShipNameDictionary[SelectedShips.First()].Index;
-        NavManager.NavigateTo("/ship?shipIndex=" + index);
+        navManager.NavigateTo("/ship?shipIndex=" + index);
     }
 
     private void RemoveShip(string ship)
@@ -306,12 +327,17 @@
         mudList.SelectedValue = null;
     }
 
-    private void AddShip(object obj)
+    private void AddShip(object? obj)
     {
         if (obj != null && !SelectedShips.Contains(obj))
         {
-            SelectedShips.Add(obj.ToString());
+            SelectedShips.Add(obj.ToString()!);
         }
     }
-    
+
+    private void GoToPlotPage()
+    {
+        var indexes = SelectedShips.Aggregate(string.Empty, (current, selectedShip) => current + $"{totalShipNameDictionary[selectedShip].Index},").TrimEnd(',');
+        navManager.NavigateTo($"/plots?shipsIndex={indexes}");
+    }
 }

@@ -1,10 +1,8 @@
 ﻿@page "/ship"
-@using System.Reactive.Linq
-@using Microsoft.AspNetCore.WebUtilities
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Utility
 @inherits ReactiveComponentBase<ShipViewModel>
-@inject NavigationManager NavManager
+@inject NavigationManager navManager
 @inject Localizer localizer
 <PageTitle>Ship stats</PageTitle>
 
@@ -12,18 +10,18 @@
 
 @code {
 
-    private string shipName = String.Empty;
+    private string shipName = string.Empty;
 
     protected override void OnInitialized()
     {
-        NavManager.TryGetQueryString("shipIndex", out shipName);
+        navManager.TryGetQueryString("shipIndex", out shipName);
         shipName += " - " +localizer[$"{shipName}_FULL"].Localization;
-        NavManager.LocationChanged += HandleLocationChanged;
+        navManager.LocationChanged += HandleLocationChanged;
     }
 
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        NavManager.TryGetQueryString("shipIndex", out shipName);
+        navManager.TryGetQueryString("shipIndex", out shipName);
         StateHasChanged();
     }
 }

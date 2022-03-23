@@ -1,8 +1,50 @@
 ﻿@page "/plots"
+@using WoWsShipBuilder.Web.Utility
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+@inject NavigationManager navManager
+@inject Localizer localizer
+@inject IAppDataService webAppDataService
+
 <PageTitle>Plots</PageTitle>
 
+<MudText Align="Align.Center">
+    Selected ship is: @shipNames.TrimEnd().TrimEnd(',')
+</MudText>
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+    <MudTabPanel Text="Dispersion Graph">
+
+    </MudTabPanel>
+    <MudTabPanel Text="Dispersion Plot">
+        <MudText>Content Two</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Ballistic Graph">
+        <MudText>Content Three</MudText>
+    </MudTabPanel>
+</MudTabs>
+
 @code {
-
     
+    private string shipNames = string.Empty;
+    private List<Ship> selectedShips = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        navManager.LocationChanged += HandleLocationChanged;
+        navManager.TryGetQueryString("shipIndex", out string shipIndexes);
+        foreach (string shipIndex in shipIndexes.Split(","))
+        {
+            shipNames += $"{shipIndex} - {localizer[$"{shipIndex}_FULL"].Localization}, ";
+            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+            selectedShips.Add((await webAppDataService.GetShipFromSummary(shipSummary))!);
+        }
+    }
+
+    void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        navManager.TryGetQueryString("shipIndex", out shipNames);
+        StateHasChanged();
+    }
 }
