@@ -8,6 +8,7 @@
 @using ChartJs.Blazor.Common.Axes
 @using ChartJs.Blazor.Common.Enums
 @using WoWsShipBuilder.Web.Dialogs
+@using System.Collections
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService webAppDataService
@@ -17,10 +18,10 @@
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
     <MudTabPanel Text="Dispersion Graph">
-        <Chart Config="_config" @ref="_chart"></Chart>
+        <Chart Config="config" @ref="chart"></Chart>
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot">
-        <MudButton @onclick="OpenDialog" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton @onclick="GetShipDispersionData" Variant="Variant.Filled" Color="Color.Primary">
             Open Simple Dialog
         </MudButton>
     </MudTabPanel>
@@ -31,19 +32,18 @@
 
 @code 
 {
-    private LineConfig _config;
-    private Chart _chart;
+    private LineConfig config = default!;
+    private Chart chart = default!;
     
     private string[] shipIndexList = default!;
-    private Dictionary<string, (List<double>, List<double>)> shipsDispSeries = new();
+    private Dictionary<string, (List<double>, List<double>)> shipDispSeriesList = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         CreateLineChartConfig();
         navManager.LocationChanged += HandleLocationChanged;
         navManager.TryGetQueryString("shipIndexes", out string shipIndexes);
         shipIndexList = shipIndexes.Split(",");
-        //await GetShipDispersionData(shipIndexList);
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -52,40 +52,51 @@
         shipIndexList = shipIndexes.Split(",");
         StateHasChanged();
     }
-
-    private async Task GetShipDispersionData(IEnumerable<string> shipIndexesList)
+    
+    private async Task GetShipDispersionData()
     {
-        foreach (string shipIndex in shipIndexesList)
-        {
-            //shipNames += $"{shipIndex} - {localizer[$"{shipIndex}_FULL"].Localization}, ";
-            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-            var selectedShip = await webAppDataService.GetShipFromSummary(shipSummary);
-            string shipName = Localizer.Instance[$"{selectedShip!.Index}_FULL"].Localization;
-            //selectedShipsDispSeries.Add(shipName, (CreateHorizontalDispersionSeries(selectedShip), CreateVerticalDispersionSeries()));
-        }
-    }
-    private async Task OpenDialog()
-    {
-        //var options = new DialogOptions { CloseOnEscapeKey = true };
         List<ShellSelectionWrapper> shipList = new();
+        List<Ship> ships = new();
         foreach (string shipIndex in shipIndexList)
         {
             var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
             var ship = await webAppDataService.GetShipFromSummary(shipSummary);
-            var shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
-            var wrapper = new ShellSelectionWrapper(shipIndex, shellIndexes);
+            ships.Add(ship!);
+            IEnumerable<string> shellIndexes;
+            if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+            {
+                shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
+            }
+            else
+            {
+                shellIndexes = new List<string>();
+            }
+            ShellSelectionWrapper wrapper = new (shipIndex, shellIndexes);
             shipList.Add(wrapper);
         }
         var parameters = new DialogParameters
         {
             ["shipList"] = shipList,
         };
-        DialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters);
+        var dialog = DialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters);
+        var selectedShipList = await dialog.Result;
+        foreach (var selectedShip in (IEnumerable<ShellSelectionWrapper>)selectedShipList.Data)
+        {
+            string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            var ship = ships.Single(x => x.Index.Equals(selectedShip.ShipIndex));
+            foreach ((string shellIndex, bool value) in selectedShip.ShellDictionary)
+            {
+                if (!value) continue;
+                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                var gun = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
+                shipDispSeriesList.Add($"{shipName} - {shellName}", (CreateHorizontalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), CreateVerticalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange)));
+            }
+        }
     }
 
     private void CreateLineChartConfig()
     {
-        _config = new()
+        config = new()
         {
             Options = new()
             {

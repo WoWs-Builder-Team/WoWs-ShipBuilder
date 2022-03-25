@@ -4,40 +4,52 @@
 
 <MudDialog>
     <TitleContent>
-        <MudText Typo="Typo.h6" Class="d-flex justify-space-between">
+        <MudContainer Class="d-inline-flex align-center">
             <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
-            Select Shell Type
-            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
-        </MudText>
+                <MudText Typo="Typo.h6" Class="ma-auto">
+                    Select Shell Type
+                </MudText>
+        </MudContainer>
     </TitleContent>
     <DialogContent>
         <MudContainer Style="max-height: 400px; overflow-y: scroll">
             @foreach (var ship in ShipList)
             {
                 <MudField Label="@localizer[ship.ShipIndex + "_FULL"].Localization" Variant="Variant.Text" FullWidth="true">
-                    <MudButtonGroup OverrideStyles="false" Size="Size.Small" Class="align-self-stretch gap-1">
+                    @if (ship.ShellDictionary.Count > 0)
+                    {
+                        <MudButtonGroup OverrideStyles="false" Size="Size.Small" Class="d-flex gap-1" Style="flex-direction: column">
                         @foreach ((string shell, bool selected) in ship.ShellDictionary)
                         {
                             <MudButton Color="Color.Primary" Variant="GetVariantFromBool(selected)" OnClick="@(() => ToggleSelection(ship, shell))">
                                 @localizer[shell].Localization
                             </MudButton>
                         }
-                    </MudButtonGroup>
+                        </MudButtonGroup>
+                    }
+                    else
+                    {
+                        <MudText Color="Color.Primary">
+                            Ship has no main guns.
+                        </MudText>
+                    }
                 </MudField>
             }
         </MudContainer>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Error" OnClick="ReturnSelectedShells">
-            Confirm
-        </MudButton>
+            <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+                <MudButton Color="Color.Info" OnClick="ReturnSelectedShells">
+                    Confirm
+                </MudButton>
+            </MudFocusTrap>
     </DialogActions>
 </MudDialog>
 
 @code 
 {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter] public List<ShellSelectionWrapper> ShipList { get; set; } = new();
 
@@ -48,7 +60,7 @@
 
     private void ReturnSelectedShells()
     {
-        MudDialog.Close(DialogResult.Ok(ShipList));
+        MudDialog.Close(DialogResult.Ok(ShipList.Where(x => x.ShellDictionary.ContainsValue(true))));
     }
 
     private static Variant GetVariantFromBool(bool active)
