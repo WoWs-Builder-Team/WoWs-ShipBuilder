@@ -322,6 +322,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hp per heal.
+        /// </summary>
+        public static string Consumable_HpPerHeal {
+            get {
+                return ResourceManager.GetString("Consumable_HpPerHeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cruiser.
         /// </summary>
         public static string Cruiser {
@@ -412,7 +421,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aiming Range (Km).
+        ///   Looks up a localized string similar to Aiming Range (km).
         /// </summary>
         public static string DispersionGraphWindow_AimingRange {
             get {
@@ -1846,7 +1855,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Formula at range X(Km).
+        ///   Looks up a localized string similar to Formula at range X(km).
         /// </summary>
         public static string ShipStats_DispFormulaTooltip {
             get {
@@ -2791,7 +2800,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above..
+        ///   Looks up a localized string similar to The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value represented here shows the true reload you are getting, that can be different than the theoretical reload above..
         /// </summary>
         public static string ShipStats_TrueReloadTooltip {
             get {

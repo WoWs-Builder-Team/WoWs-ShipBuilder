@@ -898,13 +898,13 @@
     <value>Show dispersion plot</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formula at range X(Km)</value>
+      <value>Formula at range X(km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>HorizontalDispersion[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Aiming Range (Km)</value>
+      <value>Aiming Range (km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistic Graphs</value>
@@ -1117,7 +1117,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Server-side Reload Time</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value rapresented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
+      <value>The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value represented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Server-side DPM</value>
@@ -1190,5 +1190,8 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Deepwater</value>
+  </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>Hp per heal</value>
   </data>
 </root>

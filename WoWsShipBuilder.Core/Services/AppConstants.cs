@@ -19,6 +19,7 @@ namespace WoWsShipBuilder.Core.Services
             new(new("ru-RU"), "ru"),
             new(new("es-ES"), "es"),
             new(new("tr-TR"), "tr"),
+            new(new("hu-HU"), "en"),
         };
     }
 }
