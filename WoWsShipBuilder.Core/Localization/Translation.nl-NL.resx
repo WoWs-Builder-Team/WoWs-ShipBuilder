@@ -604,7 +604,7 @@
     <value>Snelheid</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Wapen type</value>
+      <value>Wapen</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Kets bom</value>
@@ -1125,8 +1125,12 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Server-side Schiet ratio</value>
   </data>
-  
-  
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>De naam van de build bevat ongeldige tekens. Alleen letters, cijfers, witruimte, koppeltekens en onderstrepingstekens zijn toegestaan.</value>
+  </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Gewoon een waarde voor het testen</value>
+  </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
@@ -1177,5 +1181,14 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   </data>
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SPD</value>
+  </data>
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Standaard</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Magnetisch</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Diepwater</value>
   </data>
 </root>
