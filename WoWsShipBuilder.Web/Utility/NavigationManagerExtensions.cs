@@ -16,7 +16,6 @@ public static class NavigationManagerExtensions
     public static bool TryGetQueryString<T>(this NavigationManager navManager, string key, out T value)
     {
         var uri = navManager.ToAbsoluteUri(navManager.Uri);
-        Console.WriteLine(uri);
 
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue(key, out var valueFromQueryString))
         {

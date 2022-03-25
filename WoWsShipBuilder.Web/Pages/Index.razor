@@ -338,6 +338,6 @@
     private void GoToPlotPage()
     {
         var indexes = SelectedShips.Aggregate(string.Empty, (current, selectedShip) => current + $"{totalShipNameDictionary[selectedShip].Index},").TrimEnd(',');
-        navManager.NavigateTo($"/plots?shipsIndex={indexes}");
+        navManager.NavigateTo($"/plots?shipIndexes={indexes}");
     }
 }
