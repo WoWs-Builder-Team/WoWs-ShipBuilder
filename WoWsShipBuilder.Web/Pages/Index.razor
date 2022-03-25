@@ -11,28 +11,32 @@
     WoWs ShipBuilder
 </PageTitle>
 
-<MudContainer Class="mt-3">
-    <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
-        WoWs ShipBuilder
-    </MudText>
-    <MudText Align="Align.Center" Typo="Typo.h4">
-        Welcome to the WoWs ShipBuilder web app.
-    </MudText>
-    
-    <ShipSelector SelectedShips="@selectedShips"/>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Test">
-        Test
-    </MudButton>
-    <MudText>
-        @data
-    </MudText>
-    <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
-        Go to ship page
-    </MudButton>
-    <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToPlotPage">
-        Make Plot 
-    </MudButton>
+<MudContainer>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudText Align="Align.Center" Typo="Typo.h1" Class="main-title">
+                WoWs ShipBuilder
+            </MudText>
+            <MudText Align="Align.Center" Typo="Typo.h4">
+                Welcome to the WoWs ShipBuilder web app.
+            </MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <ShipSelector SelectedShips="@selectedShips"/>
+        </MudItem>
+        <MudItem xs="4">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
+                Go to ship page
+            </MudButton>
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToPlotPage">
+                Make Plot
+            </MudButton>
+        </MudItem>
+    </MudGrid>
 </MudContainer>
+
+
+
 
 @code
 {

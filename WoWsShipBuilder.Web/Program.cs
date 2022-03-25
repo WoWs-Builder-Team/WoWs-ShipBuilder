@@ -1,6 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 using ReactiveUI;
 using Splat;
@@ -22,7 +23,10 @@ resolver.InitializeSplat();
 resolver.InitializeReactiveUI();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+});
 
 builder.Services.AddShipBuilderServices();
 

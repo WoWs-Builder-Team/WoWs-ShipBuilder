@@ -5,51 +5,45 @@
 @inject Localizer localizer
 
 <MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
-        <MudItem xs="12">
-            <MudText >
-                Select a ship using the following filters.
-            </MudText>
-        </MudItem>
-        
-        <MudItem xs="6" md="3">
-            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="Tier..." Clearable="true" AnchorOrigin="Origin.BottomCenter">
+    <MudItem xs="6" md="3">
+            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Translation.ShipSelectionWindow_TierFilter + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
                 @foreach (var item in tierList)
                 {
                     <MudSelectItem Value="@item">
-                        @item
+                        <MudText Color="Color.Secondary">@item</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
         </MudItem>
 
         <MudItem xs="6" md="3">
-            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="Class..." Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="@(Translation.ShipSelectionWindow_ClassFilter + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
                 @foreach (ShipClass? item in classList)
                 {
                     <MudSelectItem Value="@item">
-                        @item
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
         </MudItem>
 
         <MudItem xs="6" md="3">
-            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="Nation..." Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="@(Translation.ShipSelectionWindow_NationFilter + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
                 @foreach (Nation? item in nationList)
                 {
                     <MudSelectItem Value="@item">
-                        @item
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
         </MudItem>
 
         <MudItem xs="6" md="3">
-            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="Type..." Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="@(Translation.ShipSelectionWindow_TypeFilter + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
                 @foreach (ShipCategory? item in typeList)
                 {
                     <MudSelectItem Value="@item">
-                        @item
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -63,9 +57,9 @@
                 <MudChip Text="@ship" Label="true" OnClose="@(() => RemoveShip(ship))"/>
             }
         }
-        <MudTextField T="string" Variant="Variant.Outlined" Placeholder="Search ship..." @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-        <MudCard Style="max-height: 300px; overflow:auto" Outlined="true">
-            <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip" >
+        <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Translation.ShipSelectionWindow_SearchShip" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+        <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
+            <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.ToString()">
                         <MudText Color="Color.Secondary">
@@ -74,7 +68,7 @@
                     </MudListItem>
                 </MudVirtualize>
             </MudList>
-        </MudCard>
+        </MudPaper>
     </MudItem>
     </MudGrid>
 
