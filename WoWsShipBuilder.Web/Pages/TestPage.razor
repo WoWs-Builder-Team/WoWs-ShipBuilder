@@ -2,9 +2,12 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Core.DataProvider.Updater
 @using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Web.Data
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
+@inject AppSettingsHelper appSettingsHelper
+@inject NavigationManager navigationManager
 <MudText Typo="Typo.h2">Test Page</MudText>
 
 <MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
@@ -18,6 +21,14 @@
 <MudButton OnClick="CheckLocales" Color="Color.Secondary" >Check installed locales</MudButton>
 <MudButton OnClick="StartFullUpdate" Color="Color.Secondary" >Start full update</MudButton>
 
+<MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;">
+    @foreach (var culture in AppConstants.SupportedLanguages)
+    {
+        <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+    }
+</MudSelect>
+<MudButton OnClick="SaveCultureChange" Disabled="AppData.Settings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+
 @code {
 
     private string nonExistentDataResult = string.Empty;
@@ -26,6 +37,8 @@
 
     private int count;
 
+    private CultureDetails selectedCulture = AppData.Settings.SelectedLanguage;
+    
     private async Task LoadNonExistentData()
     {
         var result = await dataService.LoadStringAsync("test.does.not.exist");
@@ -55,6 +68,14 @@
     private async Task StartFullUpdate()
     {
         await dataUpdater.RunDataUpdateCheck(ServerType.Live, new Progress<(int, string)>());
+    }
+
+    private async Task SaveCultureChange()
+    {
+        AppData.Settings.SelectedLanguage = selectedCulture;
+        await appSettingsHelper.SaveSettings(AppData.Settings);
+        await StartUpdate();
+        navigationManager.NavigateTo(navigationManager.Uri, true, false);
     }
 
 }
