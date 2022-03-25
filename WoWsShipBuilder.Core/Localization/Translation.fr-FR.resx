@@ -345,7 +345,9 @@
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>Cadence de Tir</value>
   </data>
-  
+  <data name="ShipStats_Reload" xml:space="preserve">
+    <value>Temps De Recharge</value>
+  </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
@@ -385,7 +387,9 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Angles de Ricochet</value>
   </data>
-  
+  <data name="ShipStats_AADefense" xml:space="preserve">
+    <value>Défense anti-aérienne</value>
+  </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>PV de l'avion</value>
   </data>
@@ -425,7 +429,9 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Batterie Principale</value>
   </data>
-  
+  <data name="ShipStats_ReactionTime" xml:space="preserve">
+    <value>Temps de réaction</value>
+  </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpille</value>
   </data>
@@ -658,15 +664,21 @@
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
     <value>Portée minimale</value>
   </data>
-  
-  
+  <data name="ShipStats_NumberOfUses" xml:space="preserve">
+    <value>Nombre de charges</value>
+  </data>
+  <data name="ShipStats_AswAirstrike" xml:space="preserve">
+    <value>Attaque aérienne à Armement Anti-sous marin</value>
+  </data>
   <data name="DepthCharge" xml:space="preserve">
     <value>Charges de profondeur</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>Visualisation de la dispersion</value>
   </data>
-  
+  <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
+    <value>Charges de profondeur de l'armement anti-sous marin</value>
+  </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>Durée du premier ping</value>
   </data>
@@ -697,8 +709,13 @@
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  
-  
+  <data name="SettingsWindow_CustomPath" xml:space="preserve">
+    <value>Activer le chemin de données personnalisé</value>
+  </data>
+  <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
+    <value>Insérer une donnée de chemin personnalisé
+</value>
+  </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Enregistrer &amp; quitter</value>
   </data>
@@ -786,7 +803,9 @@
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
     <value>Délai jusqu'à pleine visée</value>
   </data>
-  
+  <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
+    <value>Tubes lance-torpilles</value>
+  </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
     <value>Pendant la visée</value>
   </data>
@@ -826,7 +845,9 @@
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
     <value>Afficher les graphes des balistiques</value>
   </data>
-  
+  <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
+    <value>Les données du chemin personnalisé sont invalides.</value>
+  </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
     <value>Sélectionnez un obus</value>
   </data>
@@ -925,7 +946,30 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Référence Fuso</value>
   </data>
-  
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>L'ellipse BLANCHE montre la zone de dispersion maximale dans la portée de tir choisie.
+L'ellipse ROUGE montre la zone où le 50% des obus atterrissent en moyenne.
+L'ellipse NOIRE montre la taille d'un Fuso comme référence.
+
+Tracer des plans :
+1) HORIZONTAL : 
+    montre le point d'impact des obus sur l'eau ;
+    en sélectionnant ce plan, vous obtenez une vue d'en haut ;
+    c'est le plan que vous voulez principalement regarder lorsque vous comparez les dispersions de vaisseaux ;
+    L'ellipse de ce plan est étirée verticalement en raison de la vitesse des obus.
+2) VERTICAL : 
+    montre le point d'impact des obus avec une surface verticale ;
+    en sélectionnant ce plan, vous obtenez une vue depuis l'avant;
+    utile pour une analyse de précision verticale très minucieuse.
+3) ANGLE D'IMPACT : 
+    montre le point d'impact des obus avec une surface inclinée à l'angle d'impact des obus ;
+    en sélectionnant ce plan, vous obtenez une vue à partir de l'angle d'impact des obus ;
+    c'est le plan sur lequel le jeu dessine en fait l'ellipse de dispersion pendant les batailles ;
+    l'ellipse de ce plan n'est pas affecté par la vitesse des obus ;
+    utile si vous voulez comparer la dispersion de vaisseaux sans prendre en compte la vitesse des obus.
+
+Les navires dans le jeu sont deux fois plus gros que l'environnement qui les entoure donc un navire de 200m de long prend la place de 400m.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Explication du tracé</value>
   </data>
@@ -944,21 +988,30 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masse</value>
   </data>
-  
+  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+    <value>Potentiel de Feu par minute </value>
+  </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
     <value>Chance de mettre en feu un navire par salve</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
     <value>Radius d'explosion</value>
   </data>
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+    <value>Pénétration explosive</value>
+  </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
     <value>Protection contre les explosions aux moteurs</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
     <value>Protection contre les explosions au gouvernail</value>
   </data>
-  
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Si « protection de projection de module » + « pénétration de projection d'armement » &gt; 0 
+     Le module peut être incapacité.
+Si "module de protection de projection de module" + "pénétration de projection d'armement" &lt;= 0
+     Le module ne peut pas être mis hors-service.</value>
+  </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Redémarrage nécessaire</value>
   </data>
@@ -968,53 +1021,117 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="SplashScreen_Init" xml:space="preserve">
     <value>Initialisation...</value>
   </data>
-  
-  
-  
+  <data name="SettingsWindow_Credits" xml:space="preserve">
+    <value>Crédits</value>
+  </data>
+  <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
+    <value>Merci aux membres de la communauté suivants pour avoir aidé à la traduction de ce projet. Ci-dessous, tous les membres avec au moins 10 contributions sont mentionnés.</value>
+  </data>
+  <data name="ShipStats_SecondaryBattery" xml:space="preserve">
+    <value>Armement Secondaire</value>
+  </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
     <value>Horizontale</value>
   </data>
-  
+  <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
+    <value>Orientation du tracé</value>
+  </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
     <value>Verticale</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
+    <value>Trajectoire de l'obus</value>
+  </data>
+  <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
+    <value>Compétences du Capitaine</value>
+  </data>
+  <data name="BuildImport_ImportFromImage" xml:space="preserve">
+    <value>Importer depuis une image</value>
+  </data>
+  <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
+    <value>Ouvrir l'explorateur lors de la sauvegarde d'une composition d'image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
+    <value>Enregistrer et copier l'image</value>
+  </data>
   <data name="Dialog_Save" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  
-  
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Dialog_SaveExit" xml:space="preserve">
+    <value>Sauvegarder et quitter</value>
+  </data>
+  <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
+    <value>Inclure les signaux et consommables dans l'image</value>
+  </data>
+  <data name="BuildCreationWindow_ExportString" xml:space="preserve">
+    <value>Enregistrer et copier la chaîne de caractères</value>
+  </data>
+  <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
+    <value>Chaîne de composition copiée dans le presse-papiers</value>
+  </data>
+  <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
+    <value>Activer le chemin d'accès personnalisé de l'image de composition</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
+    <value>Chemin d'accès personalisé d'images de composition</value>
+  </data>
+  <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
+    <value>Les données du chemin personnalisé sont invalides.</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+    <value>Compétences &amp; Talents</value>
+  </data>
+  <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
+    <value>Avec le curseur et les boutons suivants, vous pouvez activer ou désactiver certains effets de compétences conditionnelles. Vous pouvez aussi choisir le nombre de fois pour déclencher l'effet de talent, si possible. Notez que toutes les compétences/talents n'auront pas d'effet sur les statistiques du navire.</value>
+  </data>
+  <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
+    <value>Capitaine standard</value>
+  </data>
+  <data name="ScreenshotWindow_Captain" xml:space="preserve">
+    <value>Capitaine:</value>
+  </data>
+  <data name="ShipStats_BombsPerCharge" xml:space="preserve">
+    <value>Bombes dans une charge</value>
+  </data>
+  <data name="DispersionWindow_CurrentShips" xml:space="preserve">
+    <value>Navires actuels</value>
+  </data>
+  <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
+    <value>Navires à supprimer</value>
+  </data>
+  <data name="MessageBox_LoadingError" xml:space="preserve">
+    <value>Il y a eu une erreur lors du chargement des données. Cela peut être dû au fait que le format de données n'est pas compatible avec une ancienne version de l'application ou des données corrompues. Si vous n'êtes pas sur la dernière version, attendez que vous ayez une demande de redémarrage de l'application pour la mettre à jour, ou mettez à jour manuellement si vous avez désactivé les mises à jour automatiques. Si vous êtes sur la dernière version, utilisez la fenêtre de configuration pour effacer toutes les données stockées pour résoudre les problèmes de corruption des données.</value>
+  </data>
+  <data name="ShipStats_TrueReload" xml:space="preserve">
+    <value>Temps de recharge côté serveur</value>
+  </data>
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+    <value>Le serveur ne se met à jour que toutes les 0.142857142857 secondes. Cela signifie que les recharges qui tombent entre les multiples de ce nombre seront déplacées vers le tick suivant. La valeur représentée ici montre le vrai rechargement que vous obtenez, qui peut être différent de la recharge théorique ci-dessus.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+    <value>DPM côté serveur</value>
+  </data>
+  <data name="ShipStats_TrueRoF" xml:space="preserve">
+    <value>Cadence de tir côté serveur</value>
+  </data>
+  <data name="Validation_BuildName" xml:space="preserve">
+      <value>Le nom de la composition contient des caractères invalides. Seuls les lettres, chiffres, espaces, tirets et tirets bas sont autorisés.</value>
+  </data>
+  <data name="Teststring" xml:space="preserve">
+      <value>Juste une valeur pour le test</value>
+  </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
@@ -1033,7 +1150,9 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="Unit_S" xml:space="preserve">
     <value>s</value>
   </data>
-  
+  <data name="Unit_KM" xml:space="preserve">
+    <value>km</value>
+  </data>
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
@@ -1055,9 +1174,15 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="Unit_FPM" xml:space="preserve">
     <value>feux/min</value>
   </data>
-  
-  
-  
+  <data name="ArmamentType_AP" xml:space="preserve">
+    <value>AP</value>
+  </data>
+  <data name="ArmamentType_HE" xml:space="preserve">
+    <value>HE</value>
+  </data>
+  <data name="ArmamentType_SAP" xml:space="preserve">
+    <value>SAP</value>
+  </data>
   
   
   
