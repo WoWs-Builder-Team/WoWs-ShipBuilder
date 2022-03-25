@@ -27,7 +27,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipModuleViewModel.LoadBuild(build.Modules);
             UpgradePanelViewModel = new(ship);
             UpgradePanelViewModel.LoadBuild(build.Upgrades);
-            ConsumableViewModel = new(ship);
+            ConsumableViewModel = new(ship, 0);
             ConsumableViewModel.LoadBuild(build.Consumables);
             BuildName = build.BuildName;
             ShipData = ship;

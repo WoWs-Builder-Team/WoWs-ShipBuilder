@@ -74,6 +74,10 @@ namespace WoWsShipBuilder.UI.Converters
 
                 switch (localizerKey)
                 {
+                    // custom modifier to show hp per heal
+                    case {} str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{(int) modifier}";
+                        break;
                     // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                     case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";
@@ -121,7 +125,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // this is for aiming time of CV planes
                     case { } str when str.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase):
-                        value = modifier > 0 ? $"+{modifier}s" : $"{modifier}s";
+                        value = modifier > 0 ? $"+{modifier}{Translation.Unit_S}" : $"{modifier}{Translation.Unit_S}";
                         break;
 
                     // This is the anti detonation stuff
@@ -143,7 +147,7 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"+{Math.Round(modifier * 100, 1)}%";
                         if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                         {
-                                value += "/s";
+                                value += $"/{Translation.Unit_S}";
                         }
 
                         break;
@@ -161,13 +165,13 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // Incoming fire alert. Range is in BigWorld Unit
                     case { } str when str.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{(modifier * 30) / 1000} Km";
+                        value = $"{(modifier * 30) / 1000} {Translation.Unit_KM}";
                         break;
 
                     // Radar and hydro spotting distances
                     case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{Math.Round(modifier * 30) / 1000} Km";
+                        value = $"{Math.Round(modifier * 30) / 1000} {Translation.Unit_KM}";
                         break;
 
                     // Speed boost modifier
@@ -186,16 +190,16 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // this is the actual value
                     case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{modifier} s";
+                        value = $"{modifier} {Translation.Unit_S}";
                         prefix += "CALLFIGHTERS";
                         break;
                     case { } str when str.Contains("radius"):
-                        value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
+                        value = $"{Math.Round(modifier * 30 / 1000, 1)} {Translation.Unit_KM}";
                         break;
 
                     case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
                                              str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"{modifier} s";
+                        value = $"{modifier} {Translation.Unit_S}";
                         break;
 
                     case { } str when Math.Abs(modifier % 1) > (double.Epsilon * 100) ||
@@ -217,7 +221,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     default:
                         // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
-                        value = modifier > 1000 ? $"+{modifier / 1000} Km" : $"+{(int)modifier}";
+                        value = modifier > 1000 ? $"+{modifier / 1000} {Translation.Unit_KM}" : $"+{(int)modifier}";
                         break;
                 }
 
@@ -306,6 +310,11 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
+                }
+
+                if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.Consumable_HpPerHeal;
                 }
 
                 if (returnFilter == ReturnFilter.Description)

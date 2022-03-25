@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> ConsumableData { get; set; } = default!;
 
-        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes)
+        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp)
         {
             var consumableIdentifier = $"{name} {variant}";
             Consumable consumable = new ();
@@ -168,6 +168,9 @@ namespace WoWsShipBuilder.Core.DataUI
                     var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed");
                     var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
                     consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
+
+                    var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
+                    consumableModifiers.Add("hpPerHeal", hpPerHeal);
                 }
                 else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
                 {
