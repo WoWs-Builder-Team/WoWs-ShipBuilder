@@ -40,8 +40,6 @@
 
 @code
 {
-    private string data = default!;
-    
     private readonly ObservableCollection<string> selectedShips = new();
     
     protected override void OnInitialized()
@@ -55,11 +53,6 @@
         StateHasChanged();
     }
 
-    private void Test()
-    {
-        data = string.Join("-", selectedShips);
-    }
-    
     private void GoToShipPage()
     {
         var index = selectedShips.First();

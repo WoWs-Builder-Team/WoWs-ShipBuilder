@@ -4,15 +4,14 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @using ChartJs.Blazor.LineChart
-@using ChartJs.Blazor.Common
 @using ChartJs.Blazor.Common.Axes
 @using ChartJs.Blazor.Common.Enums
+@using WoWsShipBuilder.Core.DataUI
 @using WoWsShipBuilder.Web.Dialogs
-@using System.Collections
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService webAppDataService
-@inject IDialogService DialogService
+@inject IDialogService dialogService
 
 <PageTitle>Plots</PageTitle>
 
@@ -36,7 +35,7 @@
     private Chart chart = default!;
     
     private string[] shipIndexList = default!;
-    private Dictionary<string, (List<double>, List<double>)> shipDispSeriesList = new();
+    private Dictionary<string, (List<double> horizontalDispSeries, List<double> verticalDispSeries, Dictionary<double, Ballistic> ballisticSeries)> shipDispSeriesList = new();
 
     protected override void OnInitialized()
     {
@@ -78,8 +77,12 @@
         {
             ["shipList"] = shipList,
         };
-        var dialog = DialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters);
+        var dialog = dialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters);
         var selectedShipList = await dialog.Result;
+        if (selectedShipList is null)
+        {
+            return;
+        }
         foreach (var selectedShip in (IEnumerable<ShellSelectionWrapper>)selectedShipList.Data)
         {
             string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
@@ -89,7 +92,18 @@
                 if (!value) continue;
                 string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
                 var gun = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
-                shipDispSeriesList.Add($"{shipName} - {shellName}", (CreateHorizontalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), CreateVerticalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange)));
+
+                var shell = await webAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
+                if (shell.ShellType == ShellType.AP)
+                {
+                    //createBallisticSeries
+                }
+                else
+                {
+                    //createFixedPenBallisticSeries
+                }
+                
+                shipDispSeriesList.Add($"{shipName} - {shellName}", (CreateHorizontalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), CreateVerticalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), BallisticHelper.CalculateBallistic(shell, (double)gun.MaxRange)));
             }
         }
     }
