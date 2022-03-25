@@ -603,7 +603,9 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Geschwindigkeit</value>
   </data>
-  
+  <data name="ShipStats_Weapon" xml:space="preserve">
+    <value>Waffentyp</value>
+  </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Springbombe</value>
   </data>

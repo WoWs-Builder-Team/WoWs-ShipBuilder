@@ -134,9 +134,10 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
                     // Also applies to repair party bonus.
+                    // UPDATE: remember what i said about similar names? Wanna take a guess how they did captain talents?
                     case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
-                                      (str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)) ||
+                                      str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                                       (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
                     {
                         value = $"+{Math.Round(modifier * 100, 1)}%";
@@ -230,7 +231,7 @@ namespace WoWsShipBuilder.UI.Converters
                 #region Description Localization
 
                 // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-                if (localizerKey!.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
+                if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
                     localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
@@ -238,6 +239,16 @@ namespace WoWsShipBuilder.UI.Converters
                     localizerKey.ToUpper().Equals("ConsumableReloadTime", StringComparison.InvariantCultureIgnoreCase))
                 {
                     localizerKey = $"{localizerKey}_DESTROYER";
+                }
+
+                if (localizerKey.Equals("talentMaxDistGM", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    localizerKey = "GMMAXDIST";
+                }
+
+                if (localizerKey.Equals("talentConsumablesWorkTime", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    localizerKey = "ConsumablesWorkTime";
                 }
 
                 localizerKey = $"{prefix}{localizerKey}";
@@ -285,6 +296,16 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description += "/s";
+                }
+
+                if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+                }
+
+                if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
                 }
 
                 if (returnFilter == ReturnFilter.Description)
