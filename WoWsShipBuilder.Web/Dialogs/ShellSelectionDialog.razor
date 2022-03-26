@@ -12,37 +12,37 @@
         </MudContainer>
     </TitleContent>
     <DialogContent>
-        <MudContainer Style="overflow-y: auto">
-            <MudGrid>
-            @foreach (var ship in ShipList)
-            {
-                <MudItem xs="12" md="6" Class="d-flex" Style="flex-direction: column">
-                    <MudText Typo="Typo.caption">@localizer[ship.ShipIndex + "_FULL"].Localization</MudText>
-                    @if (ship.ShellDictionary.Count > 0)
-                    {
-                        <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
-                            @foreach ((string shell, bool selected) in ship.ShellDictionary)
-                            {
-                                <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shell))">
-                                    @localizer[shell].Localization
-                                </MudButton>
-                            }
-                        </MudButtonGroup>
-                    }
-                    else
-                    {
-                        <MudText Color="Color.Primary">
-                            @Translation.MessageBox_ShipNoGun
-                        </MudText>
-                    }
-                    <MudDivider Light="true" Class="mt-2"/>
-                </MudItem>
-            }
-            </MudGrid>
+        <MudContainer Style="max-height: 500px; overflow-y: auto">
+             @foreach (var ship in ShipList)
+                {
+                    <MudItem Class="d-flex" Style="flex-direction: column">
+                        <MudText Typo="Typo.caption">@localizer[ship.ShipIndex + "_FULL"].Localization</MudText>
+                        @if (ship.ShellDictionary.Count > 0)
+                        {
+                            <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
+                                @foreach ((string shell, bool selected) in ship.ShellDictionary)
+                                {
+                                    <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shell))" Style="text-align: justify-all">
+                                        @localizer[shell].Localization
+                                    </MudButton>
+                                }
+                            </MudButtonGroup>
+                        }
+                        else
+                        {
+                            <MudText Color="Color.Primary">
+                                @Translation.MessageBox_ShipNoGun
+                            </MudText>
+                        }
+                        <MudDivider Light="true" Class="mt-2"/>
+                    </MudItem>
+                }
         </MudContainer>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled">Cancel</MudButton>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+            Cancel
+        </MudButton>
             <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
                 <MudButton Color="Color.Info" OnClick="ReturnSelectedShells" Variant="Variant.Filled">
                     Confirm

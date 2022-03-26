@@ -216,18 +216,16 @@
 
     private void AddShip(object? obj)
     {
-        if (obj != null && !SelectedShips.Contains(obj))
+        if (obj == null || SelectedShips.Contains(obj)) return;
+        if (MultiSelect)
         {
-            if (MultiSelect)
-            {
-                SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
-                selectedTranslatedShips.Add(obj.ToString()!);
-            }
-            else if (!MultiSelect && SelectedShips.Count == 0)
-            {
-                SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
-                selectedTranslatedShips.Add(obj.ToString()!);
-            }            
+            SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
+            selectedTranslatedShips.Add(obj.ToString()!);
+        }
+        else if (!MultiSelect && SelectedShips.Count == 0)
+        {
+            SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
+            selectedTranslatedShips.Add(obj.ToString()!);
         }
     }
 }

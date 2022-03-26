@@ -8,6 +8,10 @@
 @using ChartJs.Blazor.Common.Enums
 @using WoWsShipBuilder.Core.DataUI
 @using WoWsShipBuilder.Web.Dialogs
+@using System.Collections
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Util
+@using DynamicData
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService webAppDataService
@@ -15,14 +19,16 @@
 
 <PageTitle>Plots</PageTitle>
 
-<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary">
     <MudTabPanel Text="Dispersion Graph">
-        <Chart Config="config" @ref="chart"></Chart>
-    </MudTabPanel>
-    <MudTabPanel Text="Dispersion Plot">
-        <MudButton @onclick="GetShipDispersionData" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton @onclick="GetShipDispAndBallisticData" Variant="Variant.Filled" Color="Color.Primary">
             Open Simple Dialog
         </MudButton>
+        <Chart Config="config">
+
+        </Chart>
+    </MudTabPanel>
+    <MudTabPanel Text="Dispersion Plot">
     </MudTabPanel>
     <MudTabPanel Text="Ballistic Graph">
         <MudText>Content Three</MudText>
@@ -31,15 +37,13 @@
 
 @code 
 {
-    private LineConfig config = default!;
-    private Chart chart = default!;
-    
+    private LineConfig config = new();
+
     private string[] shipIndexList = default!;
-    private Dictionary<string, (List<double> horizontalDispSeries, List<double> verticalDispSeries, Dictionary<double, Ballistic> ballisticSeries)> shipDispSeriesList = new();
+    private readonly Dictionary<string, (Dictionary<string, double> horizontalDispSeries, Dictionary<string, double> verticalDispSeries, Dictionary<double, Ballistic> ballisticSeries)> shipDispAndBallisticSeries = new();
 
     protected override void OnInitialized()
     {
-        CreateLineChartConfig();
         navManager.LocationChanged += HandleLocationChanged;
         navManager.TryGetQueryString("shipIndexes", out string shipIndexes);
         shipIndexList = shipIndexes.Split(",");
@@ -51,8 +55,8 @@
         shipIndexList = shipIndexes.Split(",");
         StateHasChanged();
     }
-    
-    private async Task GetShipDispersionData()
+
+    private async Task GetShipDispAndBallisticData()
     {
         List<ShellSelectionWrapper> shipList = new();
         List<Ship> ships = new();
@@ -70,7 +74,7 @@
             {
                 shellIndexes = new List<string>();
             }
-            ShellSelectionWrapper wrapper = new (shipIndex, shellIndexes);
+            ShellSelectionWrapper wrapper = new(shipIndex, shellIndexes);
             shipList.Add(wrapper);
         }
         var parameters = new DialogParameters
@@ -79,11 +83,9 @@
         };
         var dialog = dialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters);
         var selectedShipList = await dialog.Result;
-        if (selectedShipList is null)
-        {
-            return;
-        }
-        foreach (var selectedShip in (IEnumerable<ShellSelectionWrapper>)selectedShipList.Data)
+        if (selectedShipList is null || selectedShipList.Cancelled) return;
+
+        foreach (var selectedShip in (IEnumerable<ShellSelectionWrapper>) selectedShipList.Data)
         {
             string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
             var ship = ships.Single(x => x.Index.Equals(selectedShip.ShipIndex));
@@ -94,17 +96,11 @@
                 var gun = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
 
                 var shell = await webAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
-                if (shell.ShellType == ShellType.AP)
-                {
-                    //createBallisticSeries
-                }
-                else
-                {
-                    //createFixedPenBallisticSeries
-                }
-                
-                shipDispSeriesList.Add($"{shipName} - {shellName}", (CreateHorizontalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), CreateVerticalDispersionSeries(gun.DispersionValues, (double)gun.MaxRange), BallisticHelper.CalculateBallistic(shell, (double)gun.MaxRange)));
+                Dictionary<double, Ballistic> ballisticSeries = shell.ShellType == ShellType.AP ? BallisticHelper.CalculateBallistic(shell, (double) gun.MaxRange) : new();
+
+                shipDispAndBallisticSeries.Add($"{shipName} - {shellName}", (CreateHorizontalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange), CreateVerticalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange), ballisticSeries));
             }
+            CreateChartDataset();
         }
     }
 
@@ -157,19 +153,36 @@
         };
     }
 
+    private void CreateChartDataset()
+    {
+        CreateLineChartConfig();
+        foreach ((string key, var value) in shipDispAndBallisticSeries)
+        {
+            IDataset<double> dataset = new LineDataset<double>(value.horizontalDispSeries.Values)
+            {
+                Label = key,
+                BackgroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.Firebrick),
+                BorderColor = ColorUtil.FromDrawingColor(System.Drawing.Color.Firebrick),
+                Fill = FillingMode.Disabled,
+            };
+            config.Data.Labels.AddRange<string>(value.horizontalDispSeries.Keys);
+            config.Data.Datasets.Add(dataset);
+        }
+    }
+
     /// <summary>
     /// Create the series for the horizontal dispersion.
     /// </summary>
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
-    private List<double> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
+    private static Dictionary<string, double> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
     {
         maxRange *= 1.5 / 1000;
-        List<double> dispSeries = new();
+        Dictionary<string, double> dispSeries = new();
         for (double range = 0; range <= maxRange; range += 0.01)
         {
-            dispSeries.Add(dispersion.CalculateHorizontalDispersion(range * 1000));
+            dispSeries.Add($"{range}", dispersion.CalculateHorizontalDispersion(range * 1000));
         }
         return dispSeries;
     }
@@ -180,13 +193,13 @@
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    private List<double> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
+    private static Dictionary<string, double> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
     {
         maxRange *= 1.5 / 1000;
-        List<double> dispSeries = new();
+        Dictionary<string, double> dispSeries = new();
         for (double range = 0; range <= maxRange; range += 0.01)
         {
-            dispSeries.Add(dispersion.CalculateVerticalDispersion(maxRange, range * 1000));
+            dispSeries.Add($"{range}", dispersion.CalculateVerticalDispersion(maxRange, range * 1000));
         }
         return dispSeries;
     }
