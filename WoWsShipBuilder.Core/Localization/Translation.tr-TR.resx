@@ -897,15 +897,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Dağılım Diyagramını Göster</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>X Menzili için Formül</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Yatay Dağılım[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Nişan Alma Menzili(Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Balistik Grafikleri</value>
   </data>
@@ -1116,9 +1112,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Sunucu-Tarafı Yükleme Süresi</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Sunucu-Tarafı DBH</value>
   </data>
@@ -1191,4 +1185,5 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Derin su</value>
   </data>
+  
 </root>
