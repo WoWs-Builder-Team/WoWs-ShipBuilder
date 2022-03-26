@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Geschwindigkeit</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Waffentyp</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Springbombe</value>
   </data>
@@ -897,15 +895,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Zeige Streuungsdiagramm</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formel bei Reichweite X(km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale Streuung [X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Zielreichweite (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistische Graphen</value>
   </data>
@@ -1116,9 +1110,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Serverseitige Nachladezeit</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Serverseitige DPM</value>
   </data>
@@ -1182,6 +1174,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
   
   
   
