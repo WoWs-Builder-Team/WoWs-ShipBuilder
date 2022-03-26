@@ -25,7 +25,7 @@ resolver.InitializeReactiveUI();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddMudServices(config =>
 {
-    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
 });
 
 builder.Services.AddShipBuilderServices();
