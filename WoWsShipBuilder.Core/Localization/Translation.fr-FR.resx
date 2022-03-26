@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Vitesse</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Type d'armement</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Bombe à ricochet</value>
   </data>
@@ -900,15 +898,11 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Afficher le tracé de dispersion</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule à X portée (km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersion Horizontale[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Portée de visée (Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Graphes balistiques</value>
   </data>
@@ -1119,9 +1113,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Temps de recharge côté serveur</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Le serveur ne se met à jour que toutes les 0.142857142857 secondes. Cela signifie que les recharges qui tombent entre les multiples de ce nombre seront déplacées vers le tick suivant. La valeur représentée ici montre le vrai rechargement que vous obtenez, qui peut être différent de la recharge théorique ci-dessus.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>DPM côté serveur</value>
   </data>
@@ -1185,6 +1177,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
   
   
   
