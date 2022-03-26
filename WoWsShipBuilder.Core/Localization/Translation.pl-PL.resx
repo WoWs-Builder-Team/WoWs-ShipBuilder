@@ -683,9 +683,7 @@
   
   
   
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Zasięg celowania (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Wykresy balistyczne</value>
   </data>
@@ -802,6 +800,7 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>strzały/min</value>
   </data>
+  
   
   
   
