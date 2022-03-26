@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>速度</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>兵装の種類</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>反跳爆弾</value>
   </data>
@@ -898,14 +896,12 @@
     <value>散布界のグラフを表示</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>距離X(km)における式</value>
+      <value>距離X(km)における式</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>水平散布界[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>射撃距離 (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>弾道のグラフ</value>
   </data>
@@ -1116,9 +1112,7 @@
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>サーバー上の装填時間</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>サーバー側の状態は0.142857142857秒ごとに更新されます。つまり、この数の倍数にならない装填時間はその後ティックへ移動されます。 ここで表示される値は、実際のリロードを示しています。これは、上記の理論上の装填時間とは異なる場合があります。</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>サーバー上のDPM</value>
   </data>
@@ -1182,6 +1176,7 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
   
   
   
