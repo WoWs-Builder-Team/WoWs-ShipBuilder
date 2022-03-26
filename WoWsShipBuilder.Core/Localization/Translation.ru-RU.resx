@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Скорость</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Тип вооружения</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Топ-мачтовые бомбы</value>
   </data>
@@ -897,15 +895,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Показать график разброса</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Формула для расстояния Х(км)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Горизонтальный разброс [X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Расстояние прицеливания (км)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Графики баллистики</value>
   </data>
@@ -1115,9 +1109,7 @@
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Серверная Перезарядка</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Сервер обновляется раз в 0.142857142857 секунды. Это значит, что перезарядки попадающие в период между обновлениями откладываются до следующего обновления. Значение указанное здесь - ваша истинная перезарядка, и она может отличаться от теоретической, указанной выше.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Серверный ДПМ</value>
   </data>
@@ -1181,6 +1173,7 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>ПББ</value>
   </data>
+  
   
   
   
