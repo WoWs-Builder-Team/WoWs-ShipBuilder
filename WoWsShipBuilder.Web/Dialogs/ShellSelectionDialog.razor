@@ -22,7 +22,7 @@
                             <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
                                 @foreach ((string shell, bool selected) in ship.ShellDictionary)
                                 {
-                                    <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shell))" Style="text-align: justify-all">
+                                    <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shell))">
                                         @localizer[shell].Localization
                                     </MudButton>
                                 }
