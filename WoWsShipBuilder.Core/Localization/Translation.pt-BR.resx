@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Velocidade</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Armamento</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Skip bomb</value>
   </data>
@@ -897,15 +895,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Mostrar gráfico de dispersão</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Fórmula no alcance X(Km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersão Horizontal[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Alcance de Mira (Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Gráficos de Balística</value>
   </data>
@@ -1116,9 +1110,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Tempo de Recarga no Servidor</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>DPM no Servidor</value>
   </data>
@@ -1191,4 +1183,5 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Águas Profundas</value>
   </data>
+  
 </root>
