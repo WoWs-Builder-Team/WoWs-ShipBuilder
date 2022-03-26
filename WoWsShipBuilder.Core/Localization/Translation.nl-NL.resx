@@ -897,15 +897,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Toon verspreidingsplot</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule op afstand X(Km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale verspreiding[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Richt afstand (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistische grafieken</value>
   </data>
@@ -1116,9 +1112,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Server-side Herlaad Tijd</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>De server update slechts elke 0.142857142857 seconden. Dit betekent dat het moment van herladen dat tussen deze ticks valt naar de volgende tick wordt verplaatst. De waarde die hier wordt voorgesteld toont de ware herlaadtijd, deze kan anders zijn dan de bovenstaande theoretische herlaadtijd.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Server-side Schade/min</value>
   </data>
@@ -1191,4 +1185,5 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Diepwater</value>
   </data>
+  
 </root>
