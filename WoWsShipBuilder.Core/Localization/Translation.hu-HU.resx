@@ -897,15 +897,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Szóráskép mutatása</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Szóráskép X(km) távolságon</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Vízszintes szórás [X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Célzástávolság (Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballisztikus ábrák</value>
   </data>
@@ -1116,9 +1112,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Szerver-oldali újratöltési idő</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>A szerver csak 0,142857142857 másodpercenként frissül. Ez azt jelenti, hogy az e szám többszörösei közé eső újratöltések átkerülnek az utána lévő pipára. Az itt bemutatott érték a kapott valós újratöltést mutatja, amely eltérhet a fenti elméleti újratöltéstől.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Szerver-oldali percenkénti sebzés</value>
   </data>
@@ -1191,4 +1185,5 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Mélyvizi</value>
   </data>
+  
 </root>
