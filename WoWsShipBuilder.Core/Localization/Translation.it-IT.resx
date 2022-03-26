@@ -897,15 +897,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Mostra simulazione dispersione</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formula a range X(km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>DispersioneOrizzontale[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Distanza di mira (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Grafici ballistici</value>
   </data>
@@ -1116,9 +1112,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Tempo di ricarica lato server</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Il server aggiorna solo ogni 0.142857142857 secondi. Ciò significa che le ricariche che cadono tra i multipli di questo numero verranno spostati dopo il tick. Il valore qui indicato mostra la vera ricarica ottenuta, che può essere diversa dalla ricarica teorica sopra.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>DPM lato server</value>
   </data>
@@ -1191,4 +1185,5 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Di profondità</value>
   </data>
+  
 </root>
