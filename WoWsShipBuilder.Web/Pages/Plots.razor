@@ -8,11 +8,8 @@
 @using ChartJs.Blazor.Common.Enums
 @using WoWsShipBuilder.Core.DataUI
 @using WoWsShipBuilder.Web.Dialogs
-@using System.Collections
 @using ChartJs.Blazor.Common
 @using ChartJs.Blazor.Util
-@using DynamicData
-@using Position = ChartJs.Blazor.Common.Enums.Position
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService webAppDataService
@@ -25,9 +22,10 @@
         <MudButton @onclick="GetShipDispAndBallisticData" Variant="Variant.Filled" Color="Color.Primary">
             Open Simple Dialog
         </MudButton>
-        <Chart Config="config" @ref="chart">
-
-        </Chart>
+        <MudContainer>
+            <Chart Config="horizontalDispConfig" @ref="chart"></Chart>
+            <Chart Config="verticalDispConfig" @ref="chart"></Chart>
+        </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot">
     </MudTabPanel>
@@ -38,20 +36,21 @@
 
 @code 
 {
-    private LineConfig config = new();
+    private LineConfig horizontalDispConfig = new();
+    private LineConfig verticalDispConfig = new();
     private Chart chart = new();
 
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
     private string[] shipIndexList = default!;
-    private readonly Dictionary<string, (Dictionary<double, double> horizontalDispSeries, Dictionary<double, double> verticalDispSeries, Dictionary<double, Ballistic> ballisticSeries)> shipDispAndBallisticSeries = new();
+    private readonly Dictionary<string, (List<Point> horizontalDispSeries, List<Point> verticalDispSeries, Dictionary<double, Ballistic> ballisticSeries)> shipDispAndBallisticSeries = new();
 
     protected override void OnInitialized()
     {
         navManager.LocationChanged += HandleLocationChanged;
         navManager.TryGetQueryString("shipIndexes", out string shipIndexes);
         shipIndexList = shipIndexes.Split(",");
-        CreateLineChartConfig();
+        CreateDispChartConfig();
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -102,21 +101,30 @@
                 var shell = await webAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
                 
                 Dictionary<double, Ballistic> ballisticSeries = shell.ShellType == ShellType.AP ? BallisticHelper.CalculateBallistic(shell, (double) gun.MaxRange) : new();
-                var horizontalDispSeries = CreateHorizontalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
-                var verticalDispSeries = CreateVerticalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
+                List<Point> horizontalDispSeries = CreateHorizontalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
+                List<Point> verticalDispSeries = CreateVerticalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
 
                 var name = $"{shipName} - {shellName}";
                 shipDispAndBallisticSeries.Add(name, (horizontalDispSeries, verticalDispSeries, ballisticSeries));
 
                 var lineColor = GetColor();
-                CreateDispChartDataset(name, horizontalDispSeries, lineColor);
+                CreateDispChartDataset(name, horizontalDispSeries, lineColor, horizontalDispConfig);
+                CreateDispChartDataset(name, verticalDispSeries, lineColor, verticalDispConfig);
             }
         }
     }
 
-    private void CreateLineChartConfig()
+    private void CreateDispChartConfig()
     {
-        config = new()
+        horizontalDispConfig = SetChartConfig("Horizontal Dispersion", "Range [km]", "Dispersion [m]");
+        verticalDispConfig = SetChartConfig("Vertical Dispersion", "Range [km]", "Dispersion [m]");
+    }
+
+    private static LineConfig SetChartConfig(string title, string xLabel, string yLabel)
+    {
+        string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
+        string? gridColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DimGray);
+        return new()
         {
             Options = new()
             {
@@ -125,7 +133,9 @@
                 Title = new()
                 {
                     Display = true,
-                    Text = "ChartJs.Blazor Line Chart",
+                    Text = title,
+                    FontColor = foregroundColor,
+                    FontSize = 30,
                 },
                 Tooltips = new()
                 {
@@ -137,6 +147,13 @@
                     Mode = InteractionMode.Nearest,
                     Intersect = true,
                 },
+                Legend = new()
+                {
+                    Labels = new()
+                    {
+                        FontColor = foregroundColor,
+                    },
+                },
                 Scales = new()
                 {
                     XAxes = new List<CartesianAxis>
@@ -146,15 +163,26 @@
                             Ticks = new()
                             {
                                 StepSize = 5,
+                                Display = true,
+                                FontColor = foregroundColor,
                             },
                             ScaleLabel = new()
                             {
-                                LabelString = "Range [km]",
+                                LabelString = xLabel,
+                                FontColor = foregroundColor,
+                                Display = true,
                             },
                             GridLines = new()
                             {
-                                ZeroLineColor = Color.Secondary.ToString(),
+                                ZeroLineColor = foregroundColor,
+                                Display = true,
                                 DrawTicks = true,
+                                TickMarkLength = 5,
+                                DrawBorder = true,
+                                ZeroLineWidth = 3,
+                                DrawOnChartArea = true,
+                                Color = gridColor,
+                                BorderDash = new double[]{5, 5},
                             },
                         },
                     },
@@ -162,14 +190,29 @@
                     {
                         new LinearCartesianAxis
                         {
+                            Ticks = new()
+                            {
+                                StepSize = 25,
+                                Display = true,
+                                FontColor = foregroundColor,
+                            },
                             ScaleLabel = new()
                             {
-                                LabelString = "Dispersion [m]",
+                                LabelString = yLabel,
+                                FontColor = foregroundColor,
+                                Display = true,
                             },
                             GridLines = new()
                             {
-                                
+                                ZeroLineColor = foregroundColor,
+                                Display = true,
                                 DrawTicks = true,
+                                TickMarkLength = 5,
+                                DrawBorder = true,
+                                ZeroLineWidth = 3,
+                                DrawOnChartArea = true,
+                                Color = gridColor,
+                                BorderDash = new double[]{5, 5},
                             },
                         },
                     },
@@ -178,10 +221,9 @@
         };
     }
 
-    private void CreateDispChartDataset(string name, Dictionary<double, double> data, System.Drawing.Color chartLineColor)
+    private static void CreateDispChartDataset(string name, IEnumerable<Point> data, System.Drawing.Color chartLineColor, LineConfig chartConfig)
     {
-        var points = data.Select(x => new Point(x.Key, x.Value));
-        IDataset<Point> dataset = new LineDataset<Point>(points)
+        IDataset<Point> dataset = new LineDataset<Point>(data)
         {
             Label = name,
             BackgroundColor = ColorUtil.FromDrawingColor(chartLineColor),
@@ -190,7 +232,7 @@
             PointRadius = 0,
             CubicInterpolationMode = CubicInterpolationMode.Monotone,
         };
-        config.Data.Datasets.Add(dataset);
+        chartConfig.Data.Datasets.Add(dataset);
     }
 
     /// <summary>
@@ -199,15 +241,9 @@
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
-    private static Dictionary<double, double> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
+    private static List<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        maxRange *= 1.5 / 1000;
-        Dictionary<double, double> dispSeries = new();
-        for (double range = 0; range <= maxRange; range += 0.01)
-        {
-            dispSeries.Add(range, dispersion.CalculateHorizontalDispersion(range * 1000));
-        }
-        return dispSeries;
+        return CreateFunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
     }
 
     /// <summary>
@@ -216,15 +252,9 @@
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    private static Dictionary<double, double> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
+    private static List<Point> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        maxRange *= 1.5 / 1000;
-        Dictionary<double, double> dispSeries = new();
-        for (double range = 0; range <= maxRange; range += 0.01)
-        {
-            dispSeries.Add(range, dispersion.CalculateVerticalDispersion(maxRange, range * 1000));
-        }
-        return dispSeries;
+        return CreateFunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
     }
 
     private System.Drawing.Color GetColor()
@@ -258,5 +288,21 @@
             System.Drawing.ColorTranslator.FromHtml("#a45dff"),
         };
         return colors;
+    }
+    
+    /// <summary>
+    /// Create data series using a function <code>f(x)</code>.
+    /// </summary>
+    /// <param name="f">The function <code>f(x)</code>.</param>
+    /// <param name="x0">The start x value.</param>
+    /// <param name="x1">The end x value.</param>
+    /// <param name="dx">The increment in x.</param>
+    /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
+    private static List<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
+    {
+        List<Point> dispSeries = new();
+        for (double x = x0; x <= x1 + dx * 0.5; x += dx)
+            dispSeries.Add(new(x, f(x)));
+        return dispSeries;
     }
 }
