@@ -49,7 +49,7 @@
             </MudSelect>
         </MudItem>
         
-    <MudItem xs="12" md="4">
+    <MudItem xs="12" md="@(LargerList ? 6 : 4)">
         @if (MultiSelect)
         {
             @foreach (var ship in selectedTranslatedShips)
@@ -80,6 +80,9 @@
     
     [Parameter]
     public bool MultiSelect { get; set; } = true;
+
+    [Parameter]
+    public bool LargerList { get; set; } = false;
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
