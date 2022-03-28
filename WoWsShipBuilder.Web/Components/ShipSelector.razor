@@ -54,16 +54,16 @@
         {
             @foreach (var ship in SelectedShips)
             {
-                <MudChip Text="@localizer[ship].Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                <MudChip Text="@localizer[ship + "_FULL"].Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
             }
         }
         <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Translation.ShipSelectionWindow_SearchShip" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
         <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
-                    <MudListItem Style="text-align: center" Value="@pair.ToString()">
+                    <MudListItem Style="text-align: center" Value="@pair.Value.Index">
                         <MudText Color="Color.Secondary">
-                            @pair.ToString()
+                            @(pair.Key)
                         </MudText>
                     </MudListItem>
                 </MudVirtualize>
@@ -88,7 +88,7 @@
 
     private MudList mudList = default!;
     
-    private List<string> filteredSummaryList = new();
+    private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
     
     private string inputText = string.Empty;
     
@@ -166,15 +166,14 @@
     {
         base.OnInitialized();
         totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship));
-        filteredSummaryList = totalShipNameDictionary.Select(x => x.Key).ToList();
-        filteredSummaryList.Sort();
+        filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
     
     private void ApplyFilter()
     {
         string searchText = InputText;
-        var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).Select(pair => pair.Key).ToList();
-        items.Sort();
+        var items = totalShipNameDictionary.Where(pair => SummaryFilter(pair, searchText)).ToList();
+        items = items.OrderBy(x => x.Key).ToList();
         filteredSummaryList.Clear();
         filteredSummaryList.AddRange(items);
         StateHasChanged();
