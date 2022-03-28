@@ -1,27 +1,49 @@
 ﻿@page "/ship"
 @using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Web.Utility
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager navManager
 @inject Localizer localizer
+@inject IAppDataService appDataService
 <PageTitle>Ship stats</PageTitle>
 
 <MudText Align="Align.Center">Selected ship is: @shipName</MudText>
+
+<MudGrid Justify="Justify.Center" Class="pa-4">
+    <MudItem xs="4">
+        <CaptainSkillSelector ShipClass="@shipClass" CaptainData="@captainData"/>
+    </MudItem>
+    <MudItem xs="8"></MudItem>
+</MudGrid>
 
 @code {
 
     private string shipName = string.Empty;
 
-    protected override void OnInitialized()
+    private ShipClass shipClass;
+
+    private (Captain, Dictionary<string, Captain>?) captainData;
+
+    protected override async Task OnInitializedAsync()
     {
-        navManager.TryGetQueryString("shipIndex", out shipName);
-        shipName += " - " +localizer[$"{shipName}_FULL"].Localization;
+        await base.OnInitializedAsync();
+        navManager.TryGetQueryString("shipIndex", out string shipIndex);
+        shipName = localizer[$"{shipIndex}_FULL"].Localization;
         navManager.LocationChanged += HandleLocationChanged;
+        
+        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+
+        shipClass = shipSummary.ShipClass;
+        captainData = await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, shipSummary.Nation);
     }
 
     void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        navManager.TryGetQueryString("shipIndex", out shipName);
+        navManager.TryGetQueryString("shipIndex", out string shipIndex);
+        shipName = localizer[$"{shipIndex}_FULL"].Localization;
         StateHasChanged();
     }
 }
