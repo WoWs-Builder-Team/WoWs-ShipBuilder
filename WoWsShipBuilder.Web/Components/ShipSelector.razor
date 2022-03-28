@@ -52,9 +52,9 @@
     <MudItem xs="12" md="@(LargerList ? 6 : 4)">
         @if (MultiSelect)
         {
-            @foreach (var ship in selectedTranslatedShips)
+            @foreach (var ship in SelectedShips)
             {
-                <MudChip Text="@ship" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                <MudChip Text="@localizer[ship].Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
             }
         }
         <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Translation.ShipSelectionWindow_SearchShip" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
@@ -76,7 +76,7 @@
 {
     
     [Parameter]
-    public ObservableCollection<string> SelectedShips { get; set; } = default!;
+    public IList<string> SelectedShips { get; set; } = default!;
     
     [Parameter]
     public bool MultiSelect { get; set; } = true;
@@ -86,8 +86,6 @@
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
-    private List<string> selectedTranslatedShips = new();
-    
     private MudList mudList = default!;
     
     private List<string> filteredSummaryList = new();
@@ -210,25 +208,22 @@
         return result;
     }
     
-    private void RemoveShip(string ship)
+    private void RemoveShip(string shipIndex)
     {
-        SelectedShips.Remove(totalShipNameDictionary[ship].Index);
-        selectedTranslatedShips.Remove(ship);
+        SelectedShips.Remove(shipIndex);
         mudList.SelectedValue = null;
     }
 
     private void AddShip(object? obj)
     {
-        if (obj == null || SelectedShips.Contains(obj)) return;
+        if (obj is not string shipIndex || SelectedShips.Contains(shipIndex)) return;
         if (MultiSelect)
         {
-            SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
-            selectedTranslatedShips.Add(obj.ToString()!);
+            SelectedShips.Add(shipIndex);
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
-            SelectedShips.Add(totalShipNameDictionary[obj.ToString()!].Index);
-            selectedTranslatedShips.Add(obj.ToString()!);
+            SelectedShips.Add(shipIndex);
         }
     }
 }

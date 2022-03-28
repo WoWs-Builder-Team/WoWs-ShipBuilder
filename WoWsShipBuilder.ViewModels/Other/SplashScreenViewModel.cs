@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             try
             {
                 await localDataUpdater.RunDataUpdateCheck(AppData.Settings.SelectedServerType, progressTracker, forceVersionCheck);
-                Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
+                await Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
                 logger.Debug("Version check and update tasks completed. Launching main window.");
             }
             catch (Exception e)

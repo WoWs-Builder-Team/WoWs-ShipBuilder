@@ -25,7 +25,6 @@ namespace WoWsShipBuilder.Core.DataProvider
 
             // Prevent exception when using Avalonia previewer due to uninitialized settings.
             var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : AppConstants.DefaultCultureDetails;
-            // UpdateLanguage(updateLanguage, true);
         }
 
         public static Localizer Instance => InstanceProducer.Value;
