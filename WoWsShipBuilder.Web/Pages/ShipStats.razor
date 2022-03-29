@@ -12,12 +12,15 @@
 
 <MudText Align="Align.Center">Selected ship is: @shipName</MudText>
 
-<MudGrid Justify="Justify.Center" Class="pa-4">
-    <MudItem xs="4">
-        <CaptainSkillSelector ShipClass="@shipClass" CaptainData="@captainData"/>
-    </MudItem>
-    <MudItem xs="8"></MudItem>
-</MudGrid>
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudGrid>
+        <MudItem xs="4">
+            <CaptainSkillSelector ShipClass="@shipClass" CaptainData="@captainData"/>
+        </MudItem>
+        <MudItem xs="8"></MudItem>
+    </MudGrid>
+</MudContainer>
+
 
 @code {
 
