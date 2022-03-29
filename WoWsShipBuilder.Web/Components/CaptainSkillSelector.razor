@@ -1,0 +1,149 @@
+﻿@using WoWsShipBuilder.ViewModels.ShipVm
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider
+@using System.Text
+@using System.Collections.Specialized
+@using ChartJs.Blazor.Util
+@using NLog.LayoutRenderers
+@inherits ReactiveComponentBase<CaptainSkillSelectorViewModel>
+@inject IAppDataService appDataService
+@inject Localizer localizer
+
+@if (ViewModel is not null)
+{
+    <MudPaper Outlined="true" Class="pa-2">
+        <MudGrid Class="align-center">
+            <MudItem xs="12">
+                <MudText Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
+            </MudItem>
+            <MudItem xs="5">
+                <MudSelect T="Captain" Variant="Variant.Outlined" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
+                    @foreach (var captain in ViewModel.CaptainList)
+                    {
+                        <MudSelectItem Value="captain">
+                            <MudText Color="Color.Secondary">@localizer[captain.Name].Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="4" Style="text-align: center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" >@Translation.CaptainSkillSelector_SkillTalent</MudButton>
+            </MudItem>
+            <MudItem xs="3">
+                <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
+            </MudItem>
+            @foreach (var (skillName, skill) in ViewModel.SkillList)
+            {
+                <MudItem xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
+                    <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon"  Overlap="true" Visible="@skill.Skill.IsEpic">
+                        <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
+                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
+                                <MudImage Style="@GetImageStyle(skill)" Src="@("/assets/Skills/" + GetSkillImageId(skillName) + ".png")"/>
+                            </MudButton>
+                        </MudBadge>
+                    </MudBadge>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudPaper>
+}
+
+@code {
+
+    [Parameter, EditorRequired]
+    public ShipClass ShipClass { get; set; }
+    
+    [Parameter, EditorRequired]
+    public (Captain, Dictionary<string, Captain>?) CaptainData { get; set; }
+    
+    private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
+    
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (CaptainData.Item1 != null && ShipClass != null)
+        {
+            ViewModel = new(ShipClass, CaptainData);
+            // ViewModel.SkillOrderList.CollectionChanged += UpdateVisual;
+        }
+    }
+
+    // private void UpdateVisual(object? sender, NotifyCollectionChangedEventArgs e)
+    // {
+    //    StateHasChanged();
+    // }
+
+    private static string GetSkillImageId(string skillName)
+    {
+        if (skillName == null)
+        {
+            throw new ArgumentNullException(nameof(skillName));
+        }
+
+        if (skillName.Length < 2)
+        {
+            return skillName;
+        }
+
+        var sb = new StringBuilder();
+        sb.Append(char.ToLowerInvariant(skillName[0]));
+        for (var i = 1; i < skillName.Length; ++i)
+        {
+            char c = skillName[i];
+            if (char.IsUpper(c))
+            {
+                sb.Append('_');
+                sb.Append(char.ToLowerInvariant(c));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private string GetOrder(SkillPosition single)
+    {
+        return $"order: {single.Tier * 10 + single.XPosition};";
+    }
+
+    private bool ShouldShowBadge(Skill skill)
+    {
+        return ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skill.SkillNumber));
+    }
+
+    private Color GetColorFromState(SkillItemViewModel skillItem)
+    {
+        if (ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            return Color.Error;
+        }
+        else if (!skillItem.CanExecute)
+        {
+            return Color.Primary;
+        }
+        else
+        {
+            return Color.Secondary;
+        }
+    }
+    
+    private void OnSkillClick(SkillItemViewModel skillItem)
+    {
+        if (!skillItem.CanExecute) return;
+        ViewModel.AddSkill(skillItem.Skill);
+    }
+
+    private string GetImageStyle(SkillItemViewModel skillItem)
+    {
+        if (!skillItem.CanExecute && !ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            return @"opacity: 0.4";
+        }
+        return String.Empty;
+    }
+
+}
