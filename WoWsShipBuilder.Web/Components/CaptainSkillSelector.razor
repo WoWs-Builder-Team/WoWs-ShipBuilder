@@ -36,13 +36,41 @@
             @foreach (var (skillName, skill) in ViewModel.SkillList)
             {
                 <MudItem xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
-                    <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon"  Overlap="true" Visible="@skill.Skill.IsEpic">
-                        <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
-                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
-                                <MudImage Style="@GetImageStyle(skill)" Src="@("/assets/Skills/" + GetSkillImageId(skillName) + ".png")"/>
-                            </MudButton>
-                        </MudBadge>
-                    </MudBadge>
+                    <MudTooltip Placement="Placement.Right">
+                        <ChildContent>
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic">
+                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
+                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
+                                        <MudImage Width="50" Height="50" ObjectFit="ObjectFit.ScaleDown" Style="@GetImageStyle(skill)" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                    </MudButton>
+                                </MudBadge>
+                            </MudBadge>
+                        </ChildContent>
+                        <TooltipContent>
+                            <MudPaper Outlined="true" Class="pa-2">
+                                 <MudStack>
+                                    <MudText Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
+                                    <MudText Typo="Typo.body1" Style="text-wrap: normal">@localizer["SKILL_DESC_" + ToSnakeCase(skillName)].Localization</MudText>
+                                    @if (skill.Skill.Modifiers != null && skill.Skill.Modifiers.Count > 0)
+                                    {
+                                        <MudDivider Light="true"/>
+                                        @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
+                                        {
+                                            <MudText Typo="Typo.body1">@(modifierName + " - " + modifierValue)</MudText>
+                                        }
+                                    }
+                                    @if (skill.Skill.ConditionalModifiers != null && skill.Skill.ConditionalModifiers.Count > 0)
+                                    {
+                                        <MudDivider Light="true"/>
+                                        @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
+                                        {
+                                            <MudText Typo="Typo.body1">@(modifierName + " - " + modifierValue)</MudText>
+                                        }
+                                    }
+                                </MudStack>
+                            </MudPaper>
+                        </TooltipContent>
+                    </MudTooltip>
                 </MudItem>
             }
         </MudGrid>
@@ -65,32 +93,26 @@
         if (CaptainData.Item1 != null && ShipClass != null)
         {
             ViewModel = new(ShipClass, CaptainData);
-            // ViewModel.SkillOrderList.CollectionChanged += UpdateVisual;
         }
     }
-
-    // private void UpdateVisual(object? sender, NotifyCollectionChangedEventArgs e)
-    // {
-    //    StateHasChanged();
-    // }
-
-    private static string GetSkillImageId(string skillName)
+    
+    private static string ToSnakeCase(string camelCaseString)
     {
-        if (skillName == null)
+        if (camelCaseString == null)
         {
-            throw new ArgumentNullException(nameof(skillName));
+            throw new ArgumentNullException(nameof(camelCaseString));
         }
 
-        if (skillName.Length < 2)
+        if (camelCaseString.Length < 2)
         {
-            return skillName;
+            return camelCaseString;
         }
 
         var sb = new StringBuilder();
-        sb.Append(char.ToLowerInvariant(skillName[0]));
-        for (var i = 1; i < skillName.Length; ++i)
+        sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+        for (var i = 1; i < camelCaseString.Length; ++i)
         {
-            char c = skillName[i];
+            char c = camelCaseString[i];
             if (char.IsUpper(c))
             {
                 sb.Append('_');
