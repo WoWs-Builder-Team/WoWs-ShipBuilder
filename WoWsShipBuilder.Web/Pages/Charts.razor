@@ -26,8 +26,8 @@
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
         <MudContainer>
-            <Chart Config="horizontalDispConfig" @ref="chart"></Chart>
-            <Chart Config="verticalDispConfig" @ref="chart"></Chart>
+            <Chart Config="horizontalDispConfig"></Chart>
+            <Chart Config="verticalDispConfig"></Chart>
         </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot (WIP)">
@@ -37,10 +37,10 @@
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
         <MudContainer>
-            <Chart Config="penetrationConfig" @ref="chart"></Chart>
-            <Chart Config="flightTimeConfig" @ref="chart"></Chart>
-            <Chart Config="impactVelocityConfig" @ref="chart"></Chart>
-            <Chart Config="impactAngleConfig" @ref="chart"></Chart>
+            <Chart Config="penetrationConfig"/>
+            <Chart Config="flightTimeConfig"/>
+            <Chart Config="impactVelocityConfig"/>
+            <Chart Config="impactAngleConfig"/>
         </MudContainer>
     </MudTabPanel>
 </MudTabs>
@@ -53,7 +53,6 @@
     private LineConfig flightTimeConfig = new();
     private LineConfig impactVelocityConfig = new();
     private LineConfig impactAngleConfig = new();
-    private Chart chart = new();
 
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
@@ -82,7 +81,7 @@
     {
         var selectedShipList = await GetSelectedShips();
         if (selectedShipList is null || selectedShipList.Cancelled) return;
-        UpdateCharts(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
+        await UpdateCharts(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
     }
 
     private async Task<DialogResult?> GetSelectedShips()
@@ -99,7 +98,7 @@
         return await dialog.Result;
     }
 
-    private void UpdateCharts(List<ShellSelectionWrapper> selectedShips)
+    private async Task UpdateCharts(List<ShellSelectionWrapper> selectedShips)
     {
         List<string> labelNames = new();
         foreach (var selectedShip in selectedShips)
@@ -108,6 +107,7 @@
             foreach (((var shell, var dispersionValues, string shellIndex, double maxRange), bool value) in selectedShip.ArtilleryDictionary)
             {
                 if (!value) continue;
+                Task.Yield();
                 
                 string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
                 var labelName = $"{shipName} - {shellName}";
@@ -124,6 +124,7 @@
                 var lineColor = GetColor();
                 AddChartDataset(labelName, horizontalDispSeries, horizontalDispConfig, lineColor);
                 AddChartDataset(labelName, verticalDispSeries, verticalDispConfig, lineColor);
+                await Task.Yield();
                 AddBallisticChartDataset(labelName, ballisticSeries, lineColor);
             }
         }
@@ -133,7 +134,8 @@
         {
             RemoveChartDataset(labelName);
         }
-        chart.Update();
+        
+        StateHasChanged();
     }
 
     private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
@@ -229,13 +231,13 @@
                 },
                 Tooltips = new()
                 {
-                    Mode = InteractionMode.Point,
-                    Intersect = false,
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true,
                     DisplayColors = true,
                 },
                 Hover = new()
                 {
-                    Mode = InteractionMode.Point,
+                    Mode = InteractionMode.Nearest,
                     Intersect = true,
                 },
                 Legend = new()
@@ -324,7 +326,7 @@
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
     private static IEnumerable<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        return CreateFunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
+        return CreateFunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
     }
 
     /// <summary>
