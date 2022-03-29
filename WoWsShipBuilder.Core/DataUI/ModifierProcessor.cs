@@ -279,21 +279,20 @@ public static class ModifierProcessor
 
     public static string GetUiModifierString(string localizerKey, float modifier, ReturnFilter returnFilter)
     {
-        var value = GetUiModifierValue(modifier, localizerKey, returnFilter);
+        string value = string.Empty;
+        string description = string.Empty;
 
-        if (returnFilter == ReturnFilter.Value)
+        if (returnFilter is ReturnFilter.Value or ReturnFilter.All)
         {
-            return value;
+            value = GetUiModifierValue(modifier, localizerKey, returnFilter);
         }
 
-        var description = GetUiModifierDescription(localizerKey);
-
-        if (returnFilter == ReturnFilter.Description)
+        if (returnFilter is ReturnFilter.Description or ReturnFilter.All)
         {
-            return description;
+            description = GetUiModifierDescription(localizerKey);
         }
 
-        if (string.IsNullOrEmpty(description.Trim()))
+        if (string.IsNullOrEmpty(description.Trim()) && returnFilter != ReturnFilter.Value)
         {
             return "";
         }
