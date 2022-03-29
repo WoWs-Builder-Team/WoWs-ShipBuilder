@@ -14,13 +14,13 @@
 @if (ViewModel is not null)
 {
     <MudPaper Outlined="true" Class="pa-2">
-        <MudGrid Class="align-center">
+        <MudGrid Class="align-center" Justify="Justify.Center">
             <MudItem xs="12">
                 <MudText Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
             </MudItem>
             <MudItem xs="5">
-                <MudSelect T="Captain" Variant="Variant.Outlined" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
-                    @foreach (var captain in ViewModel.CaptainList)
+                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
+                    @foreach (var captain in ViewModel!.CaptainList)
                     {
                         <MudSelectItem Value="captain">
                             <MudText Color="Color.Secondary">@localizer[captain.Name].Localization</MudText>
@@ -34,9 +34,9 @@
             <MudItem xs="3">
                 <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
             </MudItem>
-            @foreach (var (skillName, skill) in ViewModel.SkillList)
+            @foreach (var (skillName, skill) in ViewModel!.SkillList)
             {
-                <MudItem xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
+                <MudItem Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
@@ -49,38 +49,41 @@
                         </ChildContent>
                         <TooltipContent>
                             <MudPaper Outlined="true">
-                                 <MudStack Class="pa-2">
-                                     <MudText Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
+                                 <MudStack Spacing="0" Class="pa-2">
+                                     <MudText Align="Align.Center" Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
                                      
                                      @{
+                                         // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
                                          var localization = @localizer["SKILL_DESC_" + ToSnakeCase(skillName)].Localization;
                                          if (!string.IsNullOrEmpty(localization))
                                          {
-                                             <MudText Typo="Typo.body2">@localization</MudText>
+                                             <MudText Align="Align.Left" Typo="Typo.body2">@localization</MudText>
                                          }
                                      }
                                      
                                     @if (skill.Skill.Modifiers != null && skill.Skill.Modifiers.Count > 0)
                                     {
-                                        <MudDivider Light="true"/>
+                                        <MudDivider Light="true" Class="ma-1"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
                                         {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
                                             @if (!string.IsNullOrEmpty(modifierString))
                                             {
-                                                <MudText Typo="Typo.body2">@ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All)</MudText>
+                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }
                                         }
                                     }
                                     @if (skill.Skill.ConditionalModifiers != null && skill.Skill.ConditionalModifiers.Count > 0)
                                     {
-                                        <MudDivider Light="true"/>
+                                        <MudDivider Light="true" Class="ma-1"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
                                         {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
                                             @if (!string.IsNullOrEmpty(modifierString))
                                             {
-                                                <MudText Typo="Typo.body2">@ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All)</MudText>
+                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }
                                         }
                                     }
@@ -107,7 +110,11 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+    
+    // ReSharper disable ConditionIsAlwaysTrueOrFalse
+        // it's actually not true that is always true or false
         if (CaptainData.Item1 != null && ShipClass != null)
+    // ReSharper restore ConditionIsAlwaysTrueOrFalse
         {
             ViewModel = new(ShipClass, CaptainData);
         }
@@ -151,12 +158,12 @@
 
     private bool ShouldShowBadge(Skill skill)
     {
-        return ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skill.SkillNumber));
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skill.SkillNumber));
     }
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        if (ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
         {
             return Color.Error;
         }
@@ -173,16 +180,16 @@
     private void OnSkillClick(SkillItemViewModel skillItem)
     {
         if (!skillItem.CanExecute) return;
-        ViewModel.AddSkill(skillItem.Skill);
+        ViewModel!.AddSkill(skillItem.Skill);
     }
 
     private string GetImageStyle(SkillItemViewModel skillItem)
     {
-        if (!skillItem.CanExecute && !ViewModel.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        if (!skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
         {
             return @"opacity: 0.4";
         }
-        return String.Empty;
+        return string.Empty;
     }
 
 }
