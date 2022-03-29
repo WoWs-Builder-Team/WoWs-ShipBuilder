@@ -6,6 +6,7 @@
 @using System.Collections.Specialized
 @using ChartJs.Blazor.Util
 @using NLog.LayoutRenderers
+@using WoWsShipBuilder.Core.DataUI
 @inherits ReactiveComponentBase<CaptainSkillSelectorViewModel>
 @inject IAppDataService appDataService
 @inject Localizer localizer
@@ -36,27 +37,39 @@
             @foreach (var (skillName, skill) in ViewModel.SkillList)
             {
                 <MudItem xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
-                    <MudTooltip Placement="Placement.Right">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
-                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic">
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
                                     <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
-                                        <MudImage Width="50" Height="50" ObjectFit="ObjectFit.ScaleDown" Style="@GetImageStyle(skill)" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                        <MudImage Width="50" Height="50" ObjectFit="ObjectFit.ScaleDown" Style="" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
                                     </MudButton>
                                 </MudBadge>
                             </MudBadge>
                         </ChildContent>
                         <TooltipContent>
-                            <MudPaper Outlined="true" Class="pa-2">
-                                 <MudStack>
-                                    <MudText Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
-                                    <MudText Typo="Typo.body1" Style="text-wrap: normal">@localizer["SKILL_DESC_" + ToSnakeCase(skillName)].Localization</MudText>
+                            <MudPaper Outlined="true">
+                                 <MudStack Class="pa-2">
+                                     <MudText Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
+                                     
+                                     @{
+                                         var localization = @localizer["SKILL_DESC_" + ToSnakeCase(skillName)].Localization;
+                                         if (!string.IsNullOrEmpty(localization))
+                                         {
+                                             <MudText Typo="Typo.body2">@localization</MudText>
+                                         }
+                                     }
+                                     
                                     @if (skill.Skill.Modifiers != null && skill.Skill.Modifiers.Count > 0)
                                     {
                                         <MudDivider Light="true"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
                                         {
-                                            <MudText Typo="Typo.body1">@(modifierName + " - " + modifierValue)</MudText>
+                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
+                                            @if (!string.IsNullOrEmpty(modifierString))
+                                            {
+                                                <MudText Typo="Typo.body2">@ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All)</MudText>
+                                            }
                                         }
                                     }
                                     @if (skill.Skill.ConditionalModifiers != null && skill.Skill.ConditionalModifiers.Count > 0)
@@ -64,11 +77,15 @@
                                         <MudDivider Light="true"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
                                         {
-                                            <MudText Typo="Typo.body1">@(modifierName + " - " + modifierValue)</MudText>
+                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
+                                            @if (!string.IsNullOrEmpty(modifierString))
+                                            {
+                                                <MudText Typo="Typo.body2">@ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All)</MudText>
+                                            }
                                         }
                                     }
                                 </MudStack>
-                            </MudPaper>
+                            </MudPaper >
                         </TooltipContent>
                     </MudTooltip>
                 </MudItem>
