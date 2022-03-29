@@ -28,9 +28,6 @@
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
                 Go to ship page
             </MudButton>
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToPlotPage">
-                Make Plot
-            </MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -58,11 +55,4 @@
         var index = selectedShips.First();
         navManager.NavigateTo("/ship?shipIndex=" + index);
     }
-    
-    private void GoToPlotPage()
-    {
-        var indexes = string.Join(",", selectedShips);
-        navManager.NavigateTo($"/plots?shipIndexes={indexes}");
-    }
-    
 }
