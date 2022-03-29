@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> ConsumableData { get; set; } = default!;
 
-        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes)
+        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp)
         {
             var consumableIdentifier = $"{name} {variant}";
             Consumable consumable = new ();
@@ -127,7 +127,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 uses = usesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
                 var talentUsesModifiers = modifiers.FindModifiers("numConsumables", true);
-                uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));              
+                uses = talentUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));
 
                 var allCooldownModifiers = modifiers.FindModifiers("ConsumableReloadTime");
                 cooldown = allCooldownModifiers.Aggregate(cooldown, (current, modifier) => (current * modifier));
@@ -168,6 +168,9 @@ namespace WoWsShipBuilder.Core.DataUI
                     var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed");
                     var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
                     consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
+
+                    var hpPerHeal = (float)Math.Round(workTime * (regenerationSpeed * shipHp));
+                    consumableModifiers.Add("hpPerHeal", hpPerHeal);
                 }
                 else if (name.Contains("PCY016", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -183,7 +186,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     var workTimeModifiers = modifiers.FindModifiers("rlsWorkTimeCoeff");
                     workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
                 }
-                else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase))
+                else if (name.Contains("PCY009", StringComparison.InvariantCultureIgnoreCase) || name.Contains("PCY037", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var crashCrewUsesModifiers = modifiers.FindModifiers("crashCrewAdditionalConsumables", true);
                     uses = crashCrewUsesModifiers.Aggregate(uses, (current, modifier) => (int)(current + modifier));

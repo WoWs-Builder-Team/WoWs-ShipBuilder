@@ -603,7 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Скорость</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
+  <data name="ShipStats_Weapon" xml:space="preserve">
     <value>Тип вооружения</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
@@ -1181,4 +1181,7 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>ПББ</value>
   </data>
+  
+  
+  
 </root>

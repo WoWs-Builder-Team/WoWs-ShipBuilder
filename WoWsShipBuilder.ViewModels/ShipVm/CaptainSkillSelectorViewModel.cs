@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -53,6 +54,18 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             SelectedCaptain = CaptainList.First();
 
             this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
+
+            CaptainTalentsList.CollectionChanged += CaptainTalentsListOnCollectionChanged;
+            ConditionalModifiersList.CollectionChanged += ConditionalModifiersListOnCollectionChanged;
+        }
+
+        private void CaptainTalentsListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
+        }
+        private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
         }
 
         private Captain? selectedCaptain;
@@ -165,7 +178,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public bool ShowArHpSelection
         {
             get => showArHpSelection;
-            set => this.RaiseAndSetIfChanged(ref showArHpSelection, value);
+            set
+            {
+                this. RaiseAndSetIfChanged(ref showArHpSelection, value);
+                TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            }
         }
 
         private int arHpPercentage = 100;
@@ -197,7 +214,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public bool SkillActivationPopupOpen
         {
             get => skillActivationPopupOpen;
-            set => this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref skillActivationPopupOpen, value);
+                TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
+            }
         }
 
         private bool skillActivationButtonEnabled = false;
@@ -209,6 +230,17 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             get => skillActivationButtonEnabled;
             set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
+        }
+
+        private bool talentOrConditionalSkillEnabled = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a talent or a conditional skill are enabled.
+        /// </summary>
+        public bool TalentOrConditionalSkillEnabled
+        {
+            get => talentOrConditionalSkillEnabled;
+            set => this.RaiseAndSetIfChanged(ref talentOrConditionalSkillEnabled, value);
         }
 
         private bool captainWithTalents = false;
@@ -444,9 +476,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             var modifiers = SkillOrderList.ToList()
                 .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
-               .SelectMany(m => m.Modifiers)
+                .SelectMany(m => m.Modifiers)
                 .Select(effect => (effect.Key, effect.Value))
-               .ToList();
+                .ToList();
 
             if (CamoEnabled)
             {

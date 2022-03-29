@@ -603,8 +603,8 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Velocità</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
-    <value>Tipo armamento</value>
+  <data name="ShipStats_Weapon" xml:space="preserve">
+      <value>Arma</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Bomba al rimbalzo</value>
@@ -1128,7 +1128,9 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="Validation_BuildName" xml:space="preserve">
       <value>Il nome della build contiene caratteri non validi. Sono ammessi solo lettere, numeri, spazi, trattini e trattini bassi.</value>
   </data>
-  
+  <data name="Teststring" xml:space="preserve">
+      <value>Solo un valore per testare</value>
+  </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
@@ -1179,5 +1181,14 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   </data>
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
+  </data>
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Standard</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Magnetico</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Di profondità</value>
   </data>
 </root>

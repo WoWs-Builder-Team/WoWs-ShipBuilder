@@ -17,6 +17,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record ShellUI : IDataUi
     {
+        [JsonIgnore]
         public string Name { get; set; } = default!;
 
         [JsonIgnore]

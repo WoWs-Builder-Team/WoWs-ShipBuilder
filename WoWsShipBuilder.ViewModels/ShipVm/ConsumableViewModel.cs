@@ -18,15 +18,20 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private List<List<ConsumableUI>> shipConsumables = null!;
 
         public ConsumableViewModel()
-            : this(new())
+            : this(new(), 0)
         {
         }
 
         public ConsumableViewModel(Ship ship)
+            : this(ship, 0)
+        {
+        }
+
+        public ConsumableViewModel(Ship ship, int shipHp)
         {
             this.ship = ship;
             SelectedConsumables = new();
-            UpdateShipConsumables(new(), true);
+            UpdateShipConsumables(new(), 0, true );
             OnConsumableSelected = newConsumable =>
             {
                 var removeList = SelectedConsumables.Where(consumable => consumable.Slot == newConsumable.Slot).ToList();
@@ -36,12 +41,12 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             };
         }
 
-        public void UpdateShipConsumables(List<(string, float)> modifiers, bool isFirstTry = false)
+        public void UpdateShipConsumables(List<(string, float)> modifiers, int shipHp, bool isFirstTry = false)
         {
             ShipConsumables = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
                 .OrderBy(group => group.Key)
                 .Select(group => group.OrderBy(c => c.ConsumableName).Select(c =>
-                        ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false))
+                        ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, shipHp))
                     .ToList())
                 .ToList();
 

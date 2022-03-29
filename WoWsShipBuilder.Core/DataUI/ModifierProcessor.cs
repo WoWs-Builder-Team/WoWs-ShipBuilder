@@ -28,6 +28,10 @@ public static class ModifierProcessor
 
         switch (localizerKey)
         {
+            // custom modifier to show hp per heal
+            case {} str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
+                value = $"+{(int) modifier}";
+                break;
             // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
             case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                 value = $"+{(int)modifier}";
@@ -75,7 +79,7 @@ public static class ModifierProcessor
 
             // this is for aiming time of CV planes
             case { } str when str.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase):
-                value = modifier > 0 ? $"+{modifier}s" : $"{modifier}s";
+                value = modifier > 0 ? $"+{modifier}{Translation.Unit_S}" : $"{modifier}{Translation.Unit_S}";
                 break;
 
             // This is the anti detonation stuff
@@ -88,15 +92,16 @@ public static class ModifierProcessor
 
             // This is Demolition Expert. And also flags. Imagine having similar name for a modifier doing the same thing.
             // Also applies to repair party bonus.
+            // UPDATE: remember what i said about similar names? Wanna take a guess how they did captain talents?
             case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
-                              (str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)) ||
+                              str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                               (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
             {
                 value = $"+{Math.Round(modifier * 100, 1)}%";
                 if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
-                        value += "/s";
+                        value += $"/{Translation.Unit_S}";
                 }
 
                 break;
@@ -114,13 +119,13 @@ public static class ModifierProcessor
 
             // Incoming fire alert. Range is in BigWorld Unit
             case { } str when str.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{(modifier * 30) / 1000} Km";
+                value = $"{(modifier * 30) / 1000} {Translation.Unit_KM}";
                 break;
 
             // Radar and hydro spotting distances
             case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{Math.Round(modifier * 30) / 1000} Km";
+                value = $"{Math.Round(modifier * 30) / 1000} {Translation.Unit_KM}";
                 break;
 
             // Speed boost modifier
@@ -139,16 +144,16 @@ public static class ModifierProcessor
 
             // this is the actual value
             case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{modifier} s";
+                value = $"{modifier} {Translation.Unit_S}";
                 prefix += "CALLFIGHTERS";
                 break;
             case { } str when str.Contains("radius"):
-                value = $"{Math.Round(modifier * 30 / 1000, 1)} Km";
+                value = $"{Math.Round(modifier * 30 / 1000, 1)} {Translation.Unit_KM}";
                 break;
 
             case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
                                      str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{modifier} s";
+                value = $"{modifier} {Translation.Unit_S}";
                 break;
 
             case { } str when Math.Abs(modifier % 1) > (double.Epsilon * 100) ||
@@ -170,7 +175,7 @@ public static class ModifierProcessor
 
             default:
                 // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
-                value = modifier > 1000 ? $"+{modifier / 1000} Km" : $"+{(int)modifier}";
+                value = modifier > 1000 ? $"+{modifier / 1000} {Translation.Unit_KM}" : $"+{(int)modifier}";
                 break;
         }
 
@@ -181,8 +186,13 @@ public static class ModifierProcessor
     {
         string description;
 
+        if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase))
+        {
+            return "";
+        }
+
         // There is one translation per class, but all values are equal, so we can just choose a random one. I like DDs.
-        if (localizerKey!.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
+        if (localizerKey.ToUpper().Equals("VISIBILITYDISTCOEFF", StringComparison.InvariantCultureIgnoreCase) ||
             localizerKey.ToUpper().Equals("AABubbleDamage", StringComparison.InvariantCultureIgnoreCase) ||
             localizerKey.ToUpper().Equals("AAAuraDamage", StringComparison.InvariantCultureIgnoreCase) ||
             localizerKey.ToUpper().Equals("GMROTATIONSPEED", StringComparison.InvariantCultureIgnoreCase) ||
@@ -190,6 +200,16 @@ public static class ModifierProcessor
             localizerKey.ToUpper().Equals("ConsumableReloadTime", StringComparison.InvariantCultureIgnoreCase))
         {
             localizerKey = $"{localizerKey}_DESTROYER";
+        }
+
+        if (localizerKey.Equals("talentMaxDistGM", StringComparison.InvariantCultureIgnoreCase))
+        {
+            localizerKey = "GMMAXDIST";
+        }
+
+        if (localizerKey.Equals("talentConsumablesWorkTime", StringComparison.InvariantCultureIgnoreCase))
+        {
+            localizerKey = "ConsumablesWorkTime";
         }
 
         localizerKey = $"{prefix}{localizerKey}";
@@ -237,6 +257,21 @@ public static class ModifierProcessor
         if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
         {
             description += "/s";
+        }
+
+        if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
+        {
+            description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+        }
+
+        if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
+        {
+            description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
+        }
+
+        if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
+        {
+           description = Translation.Consumable_HpPerHeal;
         }
 
         return description;

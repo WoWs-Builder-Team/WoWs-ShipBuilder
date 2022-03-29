@@ -229,6 +229,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, ship.ShipNation));
             ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService));
+
+            ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
+
             ConsumableViewModel = new(RawShipData);
 
             if (build != null)
@@ -241,7 +244,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 ConsumableViewModel.LoadBuild(build.Consumables);
             }
 
-            ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
 
             CurrentShipIndex = ship.Index;
             CurrentShipTier = ship.Tier;
@@ -302,8 +304,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                                 Logging.Logger.Info("Updating ship stats");
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
-
-                            ConsumableViewModel.UpdateShipConsumables(modifiers);
+                            var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityUI.HitPoints;
+                            ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
                             semaphore.Release();
                         }
                     }

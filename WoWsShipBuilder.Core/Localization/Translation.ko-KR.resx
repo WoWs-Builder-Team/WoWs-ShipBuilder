@@ -589,7 +589,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>속도</value>
   </data>
-  <data name="ShipStats_WeaponType" xml:space="preserve">
+  <data name="ShipStats_Weapon" xml:space="preserve">
     <value>무기 유형</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
@@ -961,6 +961,9 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
+  
+  
+  
   
   
   

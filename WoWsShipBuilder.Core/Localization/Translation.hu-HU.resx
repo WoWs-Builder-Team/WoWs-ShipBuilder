@@ -118,1018 +118,1018 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_BackToMenu" xml:space="preserve">
-    <value>Voltar ao Menu</value>
+    <value>Vissza a menübe</value>
   </data>
   <data name="MainWindow_ResetBuild" xml:space="preserve">
-    <value>Redefinir build</value>
+    <value>Felépítés törlése</value>
   </data>
   <data name="MainWindow_ShareBuild" xml:space="preserve">
-    <value>Compartilhar build</value>
+    <value>Felépítés megosztása</value>
   </data>
   <data name="SettingsWindow_AutoUpdate" xml:space="preserve">
-    <value>Habilitar atualizações automáticas</value>
+    <value>Automatikus frissítés engedélyezése</value>
   </data>
   <data name="SettingsWindow_Clean" xml:space="preserve">
-    <value>Limpar</value>
+    <value>Törlés</value>
   </data>
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
-    <value>Redefinir dados do aplicativo</value>
+    <value>Alkalmazás adatainak törlése</value>
   </data>
   <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Desenvolvido por:</value>
+    <value>Készítette:</value>
   </data>
   <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Informações</value>
+    <value>Információ</value>
   </data>
   <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Idioma</value>
+    <value>Nyelv</value>
   </data>
   <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Redefinir</value>
+    <value>Alaphelyzet</value>
   </data>
   <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Redefinir configurações para o padrão</value>
+    <value>Beállítások visszaállítása alapértelmezettre</value>
   </data>
   <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Configurações</value>
+    <value>Beállítások</value>
   </data>
   <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Versão:</value>
+    <value>Verzió:</value>
   </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
-    <value>Carregar Build</value>
+    <value>Felépítés betöltése</value>
   </data>
   <data name="StartMenu_NewBuild" xml:space="preserve">
-    <value>Criar Build</value>
+    <value>Új felépítés létrehozása</value>
   </data>
   <data name="StartMenu_ImportBuild" xml:space="preserve">
-    <value>Importar build...</value>
+    <value>Felépítés importálása...</value>
   </data>
   <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Configurações &amp; Info</value>
+    <value>Beállítások és információ</value>
   </data>
   <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>Status:</value>
+    <value>Státusz:</value>
   </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
-    <value>Bandeiras </value>
+    <value>Zászlók </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
-    <value>Insira o nome da build. O nome do navio é incluído automaticamente.</value>
+    <value>A felépítés nevének megadása. A hajónév automatikusan hozzá lesz adva.</value>
   </data>
   <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Selecionar novo navio</value>
+    <value>Új hajó kiválasztása</value>
   </data>
   <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Arte por:</value>
+    <value>Rajzot készítette:</value>
   </data>
   <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Desenvolvedores: </value>
+    <value>Fejlesztők: </value>
   </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
-    <value>Desenvolvedores líderes:</value>
+    <value>Fő fejelsztők:</value>
   </data>
   <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Conversão de dados:</value>
+    <value>Adatátalakítás:</value>
   </data>
   <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Pontos do Comandante:</value>
+    <value>Kapitánypontok:</value>
   </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
-    <value>Talentos do Comandante</value>
+    <value>Kapitány képességek</value>
   </data>
   <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Salvar</value>
+    <value>Mentés</value>
   </data>
   <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Servidor</value>
+    <value>Szerver</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
-    <value>XP Base</value>
+    <value>Alap XP</value>
   </data>
   <data name="MainWindow_CommanderXp" xml:space="preserve">
-    <value>XP de Comandante:</value>
+    <value>Kapitány XP:</value>
   </data>
   <data name="MainWindow_CommanderXpBonus" xml:space="preserve">
-    <value>Bônus de XP de Comandante %</value>
+    <value>Kapitány XP Bónusz %</value>
   </data>
   <data name="MainWindow_FreeXp" xml:space="preserve">
-    <value>XP Livre:</value>
+    <value>Szabad XP:</value>
   </data>
   <data name="MainWindow_FreeXpBonus" xml:space="preserve">
-    <value>Bônus de XP Livre %</value>
+    <value>Szabad-XP bónusz %</value>
   </data>
   <data name="MainWindow_Xp" xml:space="preserve">
-    <value>XP Final:</value>
+    <value>Végső XP:</value>
   </data>
   <data name="MainWindow_XpBonus" xml:space="preserve">
-    <value>Bônus de XP %</value>
+    <value>XP bónusz %</value>
   </data>
   <data name="MainWindow_XpCalculator" xml:space="preserve">
-    <value>Calculador de XP</value>
+    <value>XP számoló</value>
   </data>
   <data name="SplashScreen_CamoImages" xml:space="preserve">
-    <value>Baixando imagens das camuflagens</value>
+    <value>Álcaképek letöltése</value>
   </data>
   <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Concluído</value>
+    <value>Kész</value>
   </data>
   <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Baixando dados</value>
+    <value>Adatok letöltése</value>
   </data>
   <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Baixando imagens dos navios</value>
+    <value>Hajóképek letöltése</value>
   </data>
   <data name="AirCarrier" xml:space="preserve">
-    <value>Porta Aviões</value>
+    <value>Repülőgép-hordozó</value>
   </data>
   <data name="Battleship" xml:space="preserve">
-    <value>Encouraçado</value>
+    <value>Csatahajó</value>
   </data>
   <data name="Commonwealth" xml:space="preserve">
-    <value>Comunidade das Nações</value>
+    <value>Nemzetközösség</value>
   </data>
   <data name="Cruiser" xml:space="preserve">
-    <value>Cruzador</value>
+    <value>Cirkáló</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
-    <value>Contratorpedeiro</value>
+    <value>Romboló</value>
   </data>
   <data name="Europe" xml:space="preserve">
-    <value>Europa</value>
+    <value>Európa</value>
   </data>
   <data name="France" xml:space="preserve">
-    <value>França</value>
+    <value>Franciaország</value>
   </data>
   <data name="Germany" xml:space="preserve">
-    <value>Alemanha</value>
+    <value>Németország</value>
   </data>
   <data name="Italy" xml:space="preserve">
-    <value>Itália</value>
+    <value>Olaszország</value>
   </data>
   <data name="Japan" xml:space="preserve">
-    <value>Japão</value>
+    <value>Japán</value>
   </data>
   <data name="Netherlands" xml:space="preserve">
-    <value>Os Países Baixos</value>
+    <value>Hollandia</value>
   </data>
   <data name="PanAmerica" xml:space="preserve">
-    <value>Pan-América</value>
+    <value>Pán-Amerika</value>
   </data>
   <data name="PanAsia" xml:space="preserve">
-    <value>Pan-Ásia</value>
+    <value>Pán-Ázsia</value>
   </data>
   <data name="Premium" xml:space="preserve">
-    <value>Premium</value>
+    <value>Prémium</value>
   </data>
   <data name="Russia" xml:space="preserve">
-    <value>U.R.S.S.</value>
+    <value>Szovjetúnió</value>
   </data>
   <data name="Spain" xml:space="preserve">
-    <value>Espanha</value>
+    <value>Spanyolország</value>
   </data>
   <data name="Special" xml:space="preserve">
-    <value>Especial</value>
+    <value>Speciális</value>
   </data>
   <data name="Submarine" xml:space="preserve">
-    <value>Submarino</value>
+    <value>Tengeralattjáró</value>
   </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Árvore Tecnológica</value>
+    <value>Tech Fa</value>
   </data>
   <data name="TestShip" xml:space="preserve">
-    <value>Navio de teste</value>
+    <value>Teszthajó</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
-    <value>Reino Unido</value>
+    <value>Egyesült Királyság</value>
   </data>
   <data name="Usa" xml:space="preserve">
-    <value>E.U.A.</value>
+    <value>USA</value>
   </data>
   <data name="TITLE_PlaceholderMod" xml:space="preserve">
-    <value>Espaço vazio</value>
+    <value>Üres hely</value>
   </data>
   <data name="IncomingFireAlertDesc" xml:space="preserve">
-    <value>Alcance mínimo para o aviso aparecer</value>
+    <value>Bejövő tűz riasztás A figyelmeztetés megjelenésének minimális távolsága</value>
   </data>
   <data name="ShipSelectionWindow_ClassFilter" xml:space="preserve">
-    <value>Classe</value>
+    <value>Osztály</value>
   </data>
   <data name="ShipSelectionWindow_ConfirmButton" xml:space="preserve">
-    <value>Confirmar</value>
+    <value>Megerősítés</value>
   </data>
   <data name="ShipSelectionWindow_NationFilter" xml:space="preserve">
-    <value>Nação</value>
+    <value>Nemzet</value>
   </data>
   <data name="ShipSelectionWindow_TierFilter" xml:space="preserve">
-    <value>Nível</value>
+    <value>Szint</value>
   </data>
   <data name="ShipSelectionWindow_TypeFilter" xml:space="preserve">
-    <value>Tipo</value>
+    <value>Típus</value>
   </data>
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
-    <value>Nenhum navio foi encontrado com os critérios atuais de filtragem</value>
+    <value>Ilyen keresési feltételeknek egyik hajó sem felel meg</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Procurar navio</value>
+    <value>Hajókereső</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
-    <value>Tempo para virar 180°</value>
+    <value>180°-os fordulási idő</value>
   </data>
   <data name="ShipStats_HorizontalDisp" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>Vízszintes</value>
   </data>
   <data name="ShipStats_Range" xml:space="preserve">
-    <value>Alcance</value>
+    <value>Hatótáv</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
-    <value>Taxa de Disparo</value>
+    <value>Tüzelési gyorsaság</value>
   </data>
   <data name="ShipStats_Reload" xml:space="preserve">
-    <value>Tempo de recarga</value>
+    <value>Újratöltési idő</value>
   </data>
   <data name="ShipStats_Sigma" xml:space="preserve">
-    <value>Sigma</value>
+    <value>Szigma</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
-    <value>Velocidade de rotação</value>
+    <value>Forgási sebesség</value>
   </data>
   <data name="ShipStats_VerticalDisp" xml:space="preserve">
-    <value>Vertical</value>
+    <value>Függőleges</value>
   </data>
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
-    <value>Velocidade inicial do projétil</value>
+    <value>Csőtorkolati sebesség</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
-    <value>Peso do projétil</value>
+    <value>Lőszertömeg</value>
   </data>
   <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>DPM Teórico</value>
+    <value>Elméleti percenkénti sebzés</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
-    <value>Limite para Armar</value>
+    <value>Élesedési küszöb</value>
   </data>
   <data name="ShipStats_DepthExplosion" xml:space="preserve">
-    <value>Raio de explosão profunda</value>
+    <value>Robbanási mélység</value>
   </data>
   <data name="ShipStats_FireChance" xml:space="preserve">
-    <value>Chance de incendiar</value>
+    <value>Gyulladási valószínűség</value>
   </data>
   <data name="ShipStats_FuseTimer" xml:space="preserve">
-    <value>Temporizador do fusível</value>
+    <value>Gyújtó késleltetés</value>
   </data>
   <data name="ShipStats_Overmatch" xml:space="preserve">
-    <value>Capacidade de overmatch</value>
+    <value>Átütési képesség</value>
   </data>
   <data name="ShipStats_Penetration" xml:space="preserve">
-    <value>Penetração</value>
+    <value>Átütés</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ângulos de ricochete</value>
+    <value>Lepattanási szögek</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
-    <value>Defesa AA</value>
+    <value>Légvédelem</value>
   </data>
   <data name="ShipStats_AircraftHP" xml:space="preserve">
-    <value>HP da Aeronave</value>
+    <value>Repülőgép HP</value>
   </data>
   <data name="ShipStats_Airstrike" xml:space="preserve">
-    <value>Ataque Aéreo</value>
+    <value>Légi csapás</value>
   </data>
   <data name="ShipStats_BombType" xml:space="preserve">
-    <value>Tipo de Bomba</value>
+    <value>Bomba típus</value>
   </data>
   <data name="ShipStats_BompPayload" xml:space="preserve">
-    <value>Bombas na Carga</value>
+    <value>Támadásonkénti bombák száma</value>
   </data>
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
-    <value>Dano constante</value>
+    <value>Folyamatos sebzés</value>
   </data>
   <data name="ShipStats_Damage" xml:space="preserve">
-    <value>Dano</value>
+    <value>Sebzés</value>
   </data>
   <data name="ShipStats_Delay" xml:space="preserve">
-    <value>Delay</value>
+    <value>Késleltetés</value>
   </data>
   <data name="ShipStats_Detectability" xml:space="preserve">
-    <value>Alcance de Detecção</value>
+    <value>Felderítési távolság</value>
   </data>
   <data name="ShipStats_Flak" xml:space="preserve">
-    <value>Flak</value>
+    <value>Légvédelmi tűz</value>
   </data>
   <data name="ShipStats_FlakDamage" xml:space="preserve">
-    <value>Dano de Flak</value>
+    <value>Légvédelmi sebzés</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
-    <value>Chance de acerto</value>
+    <value>Találati valószínűség</value>
   </data>
   <data name="ShipStats_FloodingChance" xml:space="preserve">
-    <value>Chance de inundação</value>
+    <value>Elárasztási valószínűség</value>
   </data>
   <data name="ShipStats_MainBattery" xml:space="preserve">
-    <value>Bateria Principal</value>
+    <value>Főlöveg</value>
   </data>
   <data name="ShipStats_ReactionTime" xml:space="preserve">
-    <value>Tempo de reação</value>
+    <value>Reakció Idő</value>
   </data>
   <data name="ShipStats_Torpedo" xml:space="preserve">
-    <value>Torpedos</value>
+    <value>Torpedó</value>
   </data>
   <data name="DispersionGraphWindow_AddShip" xml:space="preserve">
-    <value>Adicionar navio</value>
+    <value>Hajó hozzáadása</value>
   </data>
   <data name="DispersionGraphWindow_RemoveShip" xml:space="preserve">
-    <value>Remover navio</value>
+    <value>Hajó eltávolítása</value>
   </data>
   <data name="ShipStats_Maneuverability" xml:space="preserve">
-    <value>Manobrabilidade</value>
+    <value>Mozgékonyság</value>
   </data>
   <data name="ShipStats_FireDamageTotal" xml:space="preserve">
-    <value>Dano total por incêndio</value>
+    <value>Teljes tűz általi sebzés</value>
   </data>
   <data name="ShipStats_FireDPS" xml:space="preserve">
-    <value>DPS por incêndio</value>
+    <value>Tűz általi másodpercenkénti sebzés</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Duração do incêndio</value>
+    <value>Égési idő</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
-    <value>Redução de chance de incêndio</value>
+    <value>Tűzvédelem</value>
   </data>
   <data name="ShipStats_FloodDamageTotal" xml:space="preserve">
-    <value>Dano total por inundação</value>
+    <value>Teljes vízbetörés általi sebzés</value>
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
-    <value>DPS por inundação</value>
+    <value>Vízbetörés általi másodpercenkénti sebzés</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Duração da inundação</value>
+    <value>Vízbetörés időtartalma</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
-    <value>Probabilidade de inundação</value>
+    <value>Vízbetörés valószínűsége</value>
   </data>
   <data name="ShipStats_HitPoints" xml:space="preserve">
-    <value>Pontos de Vida</value>
+    <value>Életerő</value>
   </data>
   <data name="ShipStats_MaxFireAmount" xml:space="preserve">
-    <value>Número máximo de incêndios</value>
+    <value>Max. lehetséges tüzek száma</value>
   </data>
   <data name="ShipStats_MaxFloodAmount" xml:space="preserve">
-    <value>Número máximo de inundações</value>
+    <value>Max. vízbetörések száma</value>
   </data>
   <data name="ShipStats_Survivability" xml:space="preserve">
-    <value>Sobrevivência</value>
+    <value>Túlélőképesség</value>
   </data>
   <data name="ShipStats_TorpedoProtection" xml:space="preserve">
-    <value>Proteção de torpedo</value>
+    <value>Torpedóvédelem</value>
   </data>
   <data name="MessageBox_Error" xml:space="preserve">
-    <value>Erro</value>
+    <value>Hiba</value>
   </data>
   <data name="MessageBox_ShipNoGun" xml:space="preserve">
-    <value>não possui armas principais</value>
+    <value>nincs főlövege</value>
   </data>
   <data name="MessageBox_DuplicateShip" xml:space="preserve">
-    <value>já foi adicionado com esse projétil</value>
+    <value>már hozzá van adva ezzel a lőszertípussal</value>
   </data>
   <data name="ShipStats_Type" xml:space="preserve">
-    <value>Tipo</value>
+    <value>Típus</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
-    <value>Mostrar ângulos das torres</value>
+    <value>Ágyúfogathatóság szögei</value>
   </data>
   <data name="FiringAngleWindow_AngleExplanation" xml:space="preserve">
-    <value>O ângulo de referência usado começa em 0° na frente (parte superior da imagem) e vai na direção do sentido horário</value>
+    <value>A használt referenciaszög, az orrból indul, (a kép tetején) 0°-tól kezdődik, és az óramutató járásával megegyező irányban halad</value>
   </data>
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
-    <value>Ocultar todos os ângulos</value>
+    <value>Minden szög összecsukása</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOff" xml:space="preserve">
-    <value>Nunca mostrar ângulos</value>
+    <value>Soha ne mutassa a szögeket</value>
   </data>
   <data name="FiringAngleWindow_PermaTextOn" xml:space="preserve">
-    <value>Sempre mostrar ângulos</value>
+    <value>Mindig mutassa a szögeket</value>
   </data>
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
-    <value>Expandir todos os ângulos</value>
+    <value>Minden szög mutatása</value>
   </data>
   <data name="MainWindow_CaptainSkills" xml:space="preserve">
-    <value>Habilidades de Comandante e Camuflagem</value>
+    <value>Kapitány-képességek és álca</value>
   </data>
   <data name="MainWindow_Signals" xml:space="preserve">
-    <value>Sinais</value>
+    <value>Zászlók</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
-    <value>Nome</value>
+    <value>Név</value>
   </data>
   <data name="CaptainSkillSelector_Camo" xml:space="preserve">
-    <value>Aplicar bônus da camuflagem</value>
+    <value>Álcabónuszok alkalmazása</value>
   </data>
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
-    <value>Distância de armamento</value>
+    <value>Élesedési távolság</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
-    <value>Pode acertar</value>
+    <value>Eltalálhatja</value>
   </data>
   <data name="ShipStats_Concealment" xml:space="preserve">
-    <value>Ocultamento</value>
+    <value>Felderítési távolság</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Ocultamento por ar</value>
+    <value>Felderítési távolság, levegőből</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
-    <value>Quando em chamas</value>
+    <value>Felderítési távolság, lángolva, levegőből</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Ocultamento por mar</value>
+    <value>Felderítési távolság, vizen</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
-    <value>Quando em chamas</value>
+    <value>Felderítési távolság, lángolva, vizen</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
-    <value>Após disparar em fumaça</value>
+    <value>Felderítési távolság, füstből lövés után</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Número máximo de incêndios</value>
+    <value>Max. tűzesetek száma</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Dano total por incêndio</value>
+    <value>Tűz általi sebzés összesen</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Número máximo de inundações</value>
+    <value>Maximális vízbetörés</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
-    <value>Proteção de torpedo</value>
+    <value>Torpedóvédelem</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Dano total por inundação</value>
+    <value>Vízbetöréses sebzés összesen</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
-    <value>Aura de longo alcance</value>
+    <value>Nagy hatótávolságú légvédelmi aura</value>
   </data>
   <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Para trás</value>
+    <value>Hátrafelé</value>
   </data>
   <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Para a frente</value>
+    <value>Előre</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
-    <value>Velocidade máxima</value>
+    <value>Maximális sebesség</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
-    <value>Tempo de virada do leme</value>
+    <value>Kormánylapát fordulási ideje</value>
   </data>
   <data name="ShipStats_ManeuverabilityTurningCircle" xml:space="preserve">
-    <value>Raio da curva</value>
+    <value>Fordulókör</value>
   </data>
   <data name="ShipStats_MediumAura" xml:space="preserve">
-    <value>Aura de alcance médio</value>
+    <value>Közepes hatótávolságú légvédelmi aura</value>
   </data>
   <data name="ShipStats_ShortAura" xml:space="preserve">
-    <value>Aura de curto alcance</value>
+    <value>Rövid hatótávolságú légvédelmi aura</value>
   </data>
   <data name="ShipStats_TorpedoArea" xml:space="preserve">
-    <value>Dispersão do torpedo</value>
+    <value>Torpedó szórás</value>
   </data>
   <data name="ShipStats_Aircraft" xml:space="preserve">
-    <value>Aeronaves</value>
+    <value>Repülőgépek</value>
   </data>
   <data name="Bomb" xml:space="preserve">
     <value>Bomba</value>
   </data>
   <data name="Rocket" xml:space="preserve">
-    <value>Foguete</value>
+    <value>Rakéta</value>
   </data>
   <data name="ShipStats_Speed" xml:space="preserve">
-    <value>Velocidade</value>
+    <value>Sebesség</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Armamento</value>
+      <value>Fegyver</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
-    <value>Skip bomb</value>
+    <value>Pattogóbomba</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
-    <value>Torpedos</value>
+    <value>Torpedó</value>
   </data>
   <data name="ShipStats_AmmoPerAttack" xml:space="preserve">
-    <value>Armas por avião</value>
+    <value>Fegyverek repülőgépenként</value>
   </data>
   <data name="ShipStats_AttackCd" xml:space="preserve">
-    <value>Tempo de recarga do ataque</value>
+    <value>Támadási utáni pihenőidő</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Velocidade de cruzeiro</value>
+    <value>Utazósebesség</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
-    <value>Bombas na elipse interna</value>
+    <value>Bombák a belső körben</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Número máximo de aeronaves no convés</value>
+    <value>Max. gépek a fedélzeten</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
-    <value>Velocidade máxima</value>
+    <value>Maximális sebesség</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
-    <value>Velocidade mínima</value>
+    <value>Minimális sebesség</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aeronaves por ataque</value>
+    <value>Gépek egy támadásban</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aeronaves em um esquadrão</value>
+    <value>Repülőgép a században</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>HP por avião</value>
+    <value>Repülőgép HP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
-    <value>Tempo de restauração</value>
+    <value>Helyreállítási idő</value>
   </data>
   <data name="ShipStats_StartingNumberOnDeck" xml:space="preserve">
-    <value>Aeronaves iniciais no convés</value>
+    <value>Kezdő repülőgépek a fedélzeten</value>
   </data>
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
-    <value>Bombas por aeronave</value>
+    <value>Bombák gépenként</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Tempo de drop</value>
+    <value>Dobási idő</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Tempo para chegada</value>
+    <value>Érkezési Idő</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Alcance máximo</value>
+    <value>Maximális hatótáv</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Comprimento máximo do drop</value>
+    <value>Max. vetőtávolság</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Alcance mínimo</value>
+    <value>Minimális távolság</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
-    <value>Número de cargas</value>
+    <value>Töltetek száma</value>
   </data>
   <data name="ShipStats_AswAirstrike" xml:space="preserve">
-    <value>Ataque Aéreo ASW</value>
+    <value>Tengeralattjárók elleni légicsapás</value>
   </data>
   <data name="DepthCharge" xml:space="preserve">
-    <value>Cargas de profundidade</value>
+    <value>Mélyvizi bombák</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
-    <value>Visualização da dispersão</value>
+    <value>Szórás megjelenítése</value>
   </data>
   <data name="ShipStats_DepthChargesLauncher" xml:space="preserve">
-    <value>Cargas de Profundidade ASW</value>
+    <value>Mélyvizi bombák</value>
   </data>
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
-    <value>Duração do primeiro ping</value>
+    <value>Első ping időtartama</value>
   </data>
   <data name="ShipStats_PingDuration" xml:space="preserve">
-    <value>Duração do ping</value>
+    <value>Ping élettartama</value>
   </data>
   <data name="ShipStats_PingerGun" xml:space="preserve">
-    <value>Sonar</value>
+    <value>Szonár</value>
   </data>
   <data name="ShipStats_PingSpeed" xml:space="preserve">
-    <value>Velocidade do ping</value>
+    <value>Minimális ping sebesség</value>
   </data>
   <data name="ShipStats_PingWidth" xml:space="preserve">
-    <value>Largura do ping</value>
+    <value>Ping szélesség</value>
   </data>
   <data name="ShipStats_SecondPingDuration" xml:space="preserve">
-    <value>Duração do segundo ping</value>
+    <value>Masodik ping időtartama</value>
   </data>
   <data name="ShipStats_Shells" xml:space="preserve">
-    <value>Projéteis</value>
+    <value>Lőszerek</value>
   </data>
   <data name="ShipStats_Cooldown" xml:space="preserve">
-    <value>Recarga</value>
+    <value>Pihenőidő</value>
   </data>
   <data name="ShipStats_WorkTime" xml:space="preserve">
-    <value>Tempo de ação</value>
+    <value>Akció aktivitása</value>
   </data>
   <data name="SettingsWindow_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Mégse</value>
   </data>
   <data name="SettingsWindow_CustomPath" xml:space="preserve">
-    <value>Habilitar caminho customizado para os dados</value>
+    <value>Egyéni elérési útvonal engedélyezése</value>
   </data>
   <data name="SettingsWindow_InsertCustomPath" xml:space="preserve">
-    <value>Inserir caminho customizado para os dados</value>
+    <value>Egyéni elérési útvonal beszúrása</value>
   </data>
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
-    <value>Salvar e Sair</value>
+    <value>Mentés és kilépés</value>
   </data>
   <data name="FiringAngleWindow_Disclaimer" xml:space="preserve">
-    <value>Alguma orientação de torre está errada. Os dados da WG não as incluem, então nós usamos uma solução alternativa para a maioria dos casos. Se você encontrar um caso de orientação de torre e/ou ângulo errado, reporte-o no Github ou entre no servidor do Discord abaixo.</value>
+    <value>Néhány torony tájolása hibás. A WG adatai nem tartalmazzák ezeket, ezért olyan megoldást alkalmazunk, amely a legtöbb esetben működik. Ha úgy találja, hogy a torony tájolása és/vagy szöge hibás, jelentse a Githubon vagy az alábbi Discord szerveren.</value>
   </data>
   <data name="BuildCreationWindow_BuildSaved" xml:space="preserve">
-    <value>Build salva</value>
+    <value>Felépítés elmentve</value>
   </data>
   <data name="BuildCreationWindow_SavedClipboard" xml:space="preserve">
-    <value>String da Build copiada para a área de transferência</value>
+    <value>A build karakterlánc a vágólapra van másolva</value>
   </data>
   <data name="StartMenu_DeleteBuild" xml:space="preserve">
-    <value>Excluir build</value>
+    <value>Felépítés törlése</value>
   </data>
   <data name="BuildImport_Import" xml:space="preserve">
-    <value>Importar</value>
+    <value>Importálás</value>
   </data>
   <data name="BuildImport_ImportOnly" xml:space="preserve">
-    <value>Apenas importar</value>
+    <value>Csak importálás</value>
   </data>
   <data name="BuildImport_ImportSave" xml:space="preserve">
-    <value>Importar e salvar</value>
+    <value>Importálás és mentés</value>
   </data>
   <data name="BuildImport_InsertBuild" xml:space="preserve">
-    <value>Colar a string da Build aqui</value>
+    <value>Build karakterlánc beillesztés ide</value>
   </data>
   <data name="BuildImport_Title" xml:space="preserve">
-    <value>Importar Build</value>
+    <value>Felépítés importálása</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Mégse</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
-    <value>Erro durante o carregamento da build</value>
+    <value>Hiba a felépítés betöltése közben</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Duração do boost inicial</value>
+    <value>Kezdeti boost időtartama</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Multiplicador de velocidade do boost inicial</value>
+    <value>Kezdeti boost sebességszorzója</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
-    <value>Tempo para mudar munição</value>
+    <value>Lőszercsere időtartama</value>
   </data>
   <data name="ShipStats_BurstMode" xml:space="preserve">
-    <value>Disparo em Rajada</value>
+    <value>Gyorstüzelő mód</value>
   </data>
   <data name="ShipStats_Duration" xml:space="preserve">
-    <value>Duração</value>
+    <value>Időtartam</value>
   </data>
   <data name="ShipStats_ReloadAfterBurst" xml:space="preserve">
-    <value>Recarga após rajada</value>
+    <value>Gyorstüzelő mód újratöltés</value>
   </data>
   <data name="ShipStats_ReloadDuringBurst" xml:space="preserve">
-    <value>Recarga durante rajada</value>
+    <value>Újratöltés gyorstüzelő módban</value>
   </data>
   <data name="ShipStats_RequiredHits" xml:space="preserve">
-    <value>Acertos necessários</value>
+    <value>Szükséges találatok száma</value>
   </data>
   <data name="ShipStats_ShotInBurst" xml:space="preserve">
-    <value>Tiros em uma rajada</value>
+    <value>Lövések a gyorstüzelő módban</value>
   </data>
   <data name="ShipStats_SpecialAbility" xml:space="preserve">
-    <value>Habilidades especiais</value>
+    <value>Különleges képességek</value>
   </data>
   <data name="DownloadWindow_Downloading" xml:space="preserve">
-    <value>Baixando dados...</value>
+    <value>Adatok letöltése...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
-    <value>Tempo de mira</value>
+    <value>Célzási idő</value>
   </data>
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
-    <value>Dano recebido durante o ataque</value>
+    <value>Támadás során elszenvedett sebzés</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Tempo de invulnerabilidade após ataque</value>
+    <value>Támadás utáni sebezhetetlenségi idő</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
-    <value>Tempo de preparação</value>
+    <value>Felkészítési idő</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Tempo para mirar completamente</value>
+    <value>Teljes célzási idő</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
-    <value>Lançadores de Torpedo</value>
+    <value>Torpedóvetők</value>
   </data>
   <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Durante a mira</value>
+    <value>Célzás közben</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
-    <value>Taxa de mudança da área do drop enquanto manobra</value>
+    <value>Pontosságváltozás manőverezés miatt</value>
   </data>
   <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Durante a preparação</value>
+    <value>Felkészítés alatt</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tempo para potência total</value>
+    <value>Idő a teljes teljesítményig</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
-    <value>Versão dos dados:</value>
+    <value>Adatok verziója:</value>
   </data>
   <data name="DispersionGraphWindow_FlightTime" xml:space="preserve">
-    <value>Tempo de voo</value>
+    <value>Repülési idő</value>
   </data>
   <data name="DispersionGraphWindow_ImpactAngle" xml:space="preserve">
-    <value>Ângulo de Impacto</value>
+    <value>Becsapódási szög</value>
   </data>
   <data name="DispersionGraphWindow_ImpactVelocity" xml:space="preserve">
-    <value>Velocidade de Impacto</value>
+    <value>Becsapódási sebesség</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Mostrar gráfico de penetração</value>
+    <value>Átütési ábra mutatása</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
-    <value>Mostrar gráfico de tempo de voo</value>
+    <value>"Repülési idő" ábra mutatása</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Mostrar gráfico de ângulo de impacto</value>
+    <value>"Becsapódási szög" ábra mutatása</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
-    <value>Mostrar gráfico de velocidade de impacto</value>
+    <value>"Becsapódási sebesség" ábra mutatása</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Mostrar gráficos de balística</value>
+    <value>Ballisztikus ábrák mutatása</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
-    <value>O caminho customizado para os dados não é válido.</value>
+    <value>A kiválasztott útvonal nem érvényes.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Selecione um projétil</value>
+    <value>Lőszer kiválasztása</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>possui mais de um projétil. Selecione o projétil do qual você quer o gráfico de balística. Assumindo como padrão o calibre, a ordem dos projéteis abaixo é HE-&gt;SAP-&gt;AP.</value>
+    <value>egynél több lőszertípusa van. Válassza ki azt, amelyiket elemezni szeretné. Ugyanazt a kalibert feltételezve az alábbi a sorrend: HE-&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
-    <value>Conta normal</value>
+    <value>Nornális fiók</value>
   </data>
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
-    <value>Conta Premium WG</value>
+    <value>WG Prémium fiók</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
-    <value>Conta Premium WoWs</value>
+    <value>WoWs Prémium fiók</value>
   </data>
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
-    <value>Copiar versões</value>
+    <value>Verziók másolása</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Ocultamento do submarino na profundidade de periscópio</value>
+    <value>Felderítési távolság, periszkóp mélységben</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Ocultamento do submarino na profundidade de operação</value>
+    <value>Felderítési távolság, mélymerülésben</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-    <value>Mostrar gráficos de dispersão e balística</value>
+    <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
-    <value>Vertical:</value>
+    <value>Függőleges:</value>
   </data>
   <data name="DispersionPlot_Horizontal" xml:space="preserve">
-    <value>Horizontal:</value>
+    <value>Vízszintes:</value>
   </data>
   <data name="DispersionPlot_InnerVertical" xml:space="preserve">
-    <value>Vertical Interna:</value>
+    <value>Belső függőleges:</value>
   </data>
   <data name="DispersionPlot_InnerHorizontal" xml:space="preserve">
-    <value>Horizontal Interna:</value>
+    <value>Külső függőleges:</value>
   </data>
   <data name="ShipStats_Dispersion" xml:space="preserve">
-    <value>Dispersão</value>
+    <value>Szórás</value>
   </data>
   <data name="ShipStats_ShowDispGraph" xml:space="preserve">
-    <value>Mostrar gráficos de dispersão</value>
+    <value>Szóráskép mutatása</value>
   </data>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
-    <value>Mostrar gráfico de dispersão</value>
+    <value>Szóráskép mutatása</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Fórmula no alcance X(Km)</value>
+    <value>Szóráskép X(km) távolságon</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
-    <value>Dispersão Horizontal[X]</value>
+    <value>Vízszintes szórás [X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Alcance de Mira (Km)</value>
+    <value>Célzástávolság (Km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
-    <value>Gráficos de Balística</value>
+    <value>Ballisztikus ábrák</value>
   </data>
   <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
-    <value>Gráficos de Dispersão</value>
+    <value>Szórás ábrák</value>
   </data>
   <data name="DispersionGraphWindow_DispersionPlot" xml:space="preserve">
-    <value>Gráfico de Dispersão</value>
+    <value>Szórási ábra</value>
   </data>
   <data name="DispersionGraphWindow_PlotScaling" xml:space="preserve">
-    <value>Escala do Gráfico</value>
+    <value>Ábra méretezése</value>
   </data>
   <data name="DispersionGraphWindow_ShotsNumber" xml:space="preserve">
-    <value>Número de Tiros</value>
+    <value>Lövések száma</value>
   </data>
   <data name="DispersionGraphWindow_RefreshDispPlot" xml:space="preserve">
-    <value>Atualizar Gráfico</value>
+    <value>Táblázat frissítése</value>
   </data>
   <data name="SettingsWindow_TelemetryEnabled" xml:space="preserve">
-    <value>Enviar dados básicos de telemetria (versão atual do app)</value>
+    <value>Alapvető telemetriai adatok küldése (az alkalmazás jelenlegi verziója)</value>
   </data>
   <data name="DispersionGraphWindow_NoRange" xml:space="preserve">
-    <value>ESTE NAVIO NÃO CONSEGUE ALCANÇAR A DISTÂNCIA DE MIRA SELECIONADA</value>
+    <value>Ez a hajó nem tud ilyen messze lőni</value>
   </data>
   <data name="DispersionGraphWindow_PlotPlane" xml:space="preserve">
-    <value>Plano de Plotagem</value>
+    <value>Vezérgép</value>
   </data>
   <data name="HorizontalPlane" xml:space="preserve">
-    <value>Horizontal (Água)</value>
+    <value>Vízszintes nézet</value>
   </data>
   <data name="RealPlane" xml:space="preserve">
-    <value>Ângulo de Impacto</value>
+    <value>Becsapódási szög</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Vertical</value>
+    <value>Függőleges</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
-    <value>Referência do Fuso</value>
+    <value>Fusō mint hivatkozás</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>A elipse BRANCA mostra a área máxima de dispersão no alcance de mira selecionado.
-A elipse VERMELHA mostra a área onde 50% dos projéteis caem, em média.
-A elipse PRETA mostra o tamanho de um Fuso como referência.
+    <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott célzási távolságban.
+A PIROS ellipszis azt a területet mutatja, ahol a lövedékek 50%-a landol.
+A FEKETE ellipszis a Fuso méretét mutatja, referenciaként.
 
-Planos de plotagem:
-1) HORIZONTAL: 
-    mostra o ponto de impacto dos projéteis com a água;
-    selecionando este plano você obtém uma visão vinda de cima;
-    este é o plano que você quer dar mais atenção ao comparar as dispersões dos navios;
-    a elipse neste plano está verticalmente esticada devido à velocidade dos projéteis.
-2) VERTICAL: 
-    mostra o ponto de impacto dos projéteis com uma superfície vertical;
-    selecionando este plano você obtém uma visão vinda da frente;
-    útil para uma análise precisa da precisão vertical.
-3) ÂNGULO DE IMPACTO: 
-    mostra o ponto de impacto dos projéteis com uma superfície inclinada no ângulo de impacto dos projéteis;
-    selecionando este plano você obtém uma visão vinda do ângulo de impacto dos projéteis;
-    é o plano no qual o jogo realmente desenha a elipse de dispersão durante as batalhas;
-    a elipse neste plano não é afetada pela velocidade dos projéteis;
-    útil se você quiser comparar a dispersão dos navios sem levar em consideração a velocidade dos projéteis.
+Ábranézetek:
+1) VÍZSZINTES:
+     megmutatja a lövedékek becsapódási pontját a vízzel;
+     ennek a síknak a kiválasztásával a szórást felülről látod;
+     ez az a nézet, amelyet elsősorban a hajók szórásának összehasonlításakor ajánlott használni;
+     az ellipszis ezen a síkon függőlegesen meg van feszítve a lövedékek sebessége miatt.
+2) FÜGGŐLEGES:
+     ezzel a nézettel mutatja a lövedékek becsapódási pontját egy függőleges felülettel;
+     ennek a síknak a kiválasztásával szemből látod a szórást;
+     nagyon precíz függőleges pontosság elemzéshez hasznos.
+3) BECSAPÓDÁSI SZÖG:
+     a lövedék becsapódási pontját a lövedék becsapódási szögével megegyező szögben elhelyezett felülettel mutatja;
+     ennek a síknak a kiválasztásával képet kapunk a lövedék becsapódási szögéből;
+     ez az a sík, ahol a játék ténylegesen megrajzolja a szórási ellipszist a csaták során;
+     az ellipszist ezen a síkon nem befolyásolja a lövedék sebessége;
+     hasznos, ha összehasonlítani szeretné a hajók diszperzióját anélkül, hogy figyelembe venné a lövedékek sebességét.
 
-Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200m de comprimento ocupa o espaço de 400m.</value>
+A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 méter hosszú hajó 400 métert foglal el.</value>
   </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
-    <value>Explicação da plotagem</value>
+    <value>Szóráskép magyarázat</value>
   </data>
   <data name="BowIn" xml:space="preserve">
-    <value>Proa para a frente</value>
+    <value>Orral előre</value>
   </data>
   <data name="Broadside" xml:space="preserve">
-    <value>"De lado"</value>
+    <value>Oldalsortűzhez beállva</value>
   </data>
   <data name="DontShow" xml:space="preserve">
-    <value>Ocultar</value>
+    <value>Elrejtés</value>
   </data>
   <data name="ShipStats_AirDrag" xml:space="preserve">
-    <value>Arrasto pelo Ar</value>
+    <value>Légellenállás</value>
   </data>
   <data name="ShipStats_Mass" xml:space="preserve">
-    <value>Massa</value>
+    <value>Tömeg</value>
   </data>
   <data name="ShipStats_PotentialFPM" xml:space="preserve">
-    <value>FPM Potencial </value>
+    <value>Lehetséges FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Chance de incêndio por salva</value>
+    <value>Szalvónkénti gyújtási valószínűség</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Raio de explosão</value>
+    <value>Robbanás hatósugara</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Penetração da explosão</value>
+    <value>Robbanás átütése</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Proteção do motor contra explosões</value>
+    <value>Motorvédelem</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Proteção do leme contra explosões</value>
+    <value>Kormányvédelem</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &gt; 0 
-     O módulo pode ser incapacitado.
-Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &lt;= 0
-     O módulo não pode ser incapacitado.</value>
+    <value>Ha a "modul robbanás elleni védelem" + "fegyverzet átütése" &gt; 0
+      A modul működésképtelenné válhat.
+Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
+      A modul nem tehető működésképtelenné.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
-    <value>Reinicialização necessária</value>
+    <value>Újraindítás szükséges</value>
   </data>
   <data name="Settingswindow_LanguageChanged" xml:space="preserve">
-    <value>Uma reinicialização do aplicativo é necessária para que a troca de idioma tenha efeito. Não reiniciar pode resultar em um comportamento inesperado.</value>
+    <value>Az alkalmazás újraindítása szükséges ahhoz, hogy a nyelvi módosítás életbe lépjen. Ha nem indítja újra, az váratlan viselkedéshez vezethet.</value>
   </data>
   <data name="SplashScreen_Init" xml:space="preserve">
-    <value>Inicializando...</value>
+    <value>Inicializálás...</value>
   </data>
   <data name="SettingsWindow_Credits" xml:space="preserve">
-    <value>Créditos</value>
+    <value>Közreműködők</value>
   </data>
   <data name="SettingsWindow_TranslationCredits" xml:space="preserve">
-    <value>Agradecemos aos seguintes membros da comunidade por ajudarem com a tradução deste projeto. Abaixo, todos os membros com pelo menos 10 contribuições são mencionados.</value>
+    <value>Köszönjük a közösség következő tagjainak, hogy segítettek a projekt fordításában. Az alábbiakban minden olyan tagot említünk, aki legalább 10 hozzászólással rendelkezik.</value>
   </data>
   <data name="ShipStats_SecondaryBattery" xml:space="preserve">
-    <value>Bateria Secundária</value>
+    <value>Másodlagos lövegek</value>
   </data>
   <data name="DispersionGraphWindow_Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
+    <value>Vízszintes</value>
   </data>
   <data name="DispersionGraphWindow_PlotOrientation" xml:space="preserve">
-    <value>Orientação da Plotagem</value>
+    <value>Ábra orientációja</value>
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Vertical</value>
+    <value>Függőleges</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
-    <value>Trajetória do Projétil</value>
+    <value>Lövedék röppályája</value>
   </data>
   <data name="ScreenshotWindow_CaptainSkills" xml:space="preserve">
-    <value>Habilidades do Comandante</value>
+    <value>Kapitánypontok</value>
   </data>
   <data name="BuildImport_ImportFromImage" xml:space="preserve">
-    <value>Importar de imagem</value>
+    <value>Importálás képről</value>
   </data>
   <data name="SettingsWindow_OpenExplorerAfterImageSave" xml:space="preserve">
-    <value>Abrir o Explorador de Arquivos ao salvar uma imagem de build</value>
+    <value>Böngésző megnyitása a felépítési kép mentése után</value>
   </data>
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
-    <value>Salvar e copiar imagem</value>
+    <value>Kép mentése és másolása</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
-    <value>Salvar</value>
+    <value>Mentés</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Mégse</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-    <value>Sim</value>
+    <value>Igen</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
-    <value>Não</value>
+    <value>Nem</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
-    <value>Salvar e Sair</value>
+    <value>Mentés és kilépés</value>
   </data>
   <data name="BuildCreationWindow_IncludeSignals" xml:space="preserve">
-    <value>Incluir sinais e consumíveis na imagem</value>
+    <value>Zászlók és fogyócikkek mutatása a képen</value>
   </data>
   <data name="BuildCreationWindow_ExportString" xml:space="preserve">
-    <value>Salvar &amp; copiar texto</value>
+    <value>Karakterlánc elmentése és másolása</value>
   </data>
   <data name="BuildCreationWindow_SavedImageToClipboard" xml:space="preserve">
-    <value>Imagem da build copiada para área de transferência</value>
+    <value>Felépítés képe a vágólapra lett másolva</value>
   </data>
   <data name="SettingsWindow_EnableBuildImagePath" xml:space="preserve">
-    <value>Habilitar caminho personalizado para imagem de build</value>
+    <value>Egyéni elérési útvonal engedélyezése</value>
   </data>
   <data name="SettingsWindow_BuildImagePath" xml:space="preserve">
-    <value>Caminho personalizado para imagem de build</value>
+    <value>Egyéni elérési útvonal</value>
   </data>
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
-    <value>O caminho personalizado selecionado para imagem de build é inválido.</value>
+    <value>A kiválasztott képútvonal hibás.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Habilidades &amp; Talentos</value>
+    <value>Készségek és képességek</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
-    <value>Com o seguinte controle deslizante e botões, você pode ativar ou desativar certos efeitos condicionais das habilidades. Você também pode selecionar quantas vezes ativar o efeito do talento, se possível. Note que nem todas as habilidades/talentos terão efeito nas estatísticas do navio.</value>
+    <value>A következő csúszkákkal és kapcsolókkal engedélyezhet vagy letilthat bizonyos feltételes képességeffektusokat. Kiválaszthatja azt is, hogy hányszor aktiválja a tehetségeffektust, ha lehetséges. Vegye figyelembe, hogy nem minden képesség/tehetség lesz hatással a hajóstatisztikákra.</value>
   </data>
   <data name="CaptainSkillSelector_StandardCaptain" xml:space="preserve">
-    <value>Comandante padrão</value>
+    <value>Standard kapitány</value>
   </data>
   <data name="ScreenshotWindow_Captain" xml:space="preserve">
-    <value>Comandante:</value>
+    <value>Kapitány:</value>
   </data>
   <data name="ShipStats_BombsPerCharge" xml:space="preserve">
-    <value>Bombas em uma carga</value>
+    <value>Bombák száma egy szalvóban</value>
   </data>
   <data name="DispersionWindow_CurrentShips" xml:space="preserve">
-    <value>Navios atuais</value>
+    <value>Jelenlegi hajó</value>
   </data>
   <data name="DispersionWindow_ShipsToDelete" xml:space="preserve">
-    <value>Navios para Excluir</value>
+    <value>Törlendő hajók</value>
   </data>
   <data name="MessageBox_LoadingError" xml:space="preserve">
-    <value>Ocorreu um erro durante o carregamento dos dados. Isso pode ser devido ao formato de dados não ser compatível com uma versão mais antiga do programa ou dados corrompidos. Se você não estiver na versão mais recente, espere até que você receba uma mensagem pedindo para reiniciar o aplicativo e atualizar, ou atualize manualmente caso as atualizações automáticas estejam desativadas. Se você estiver na última versão, use a janela de configuração para limpar todos os dados armazenados do aplicativo para resolver problemas de dados corrompidos.</value>
+    <value>Hiba történt az adatok betöltése közben. Ennek oka lehet, hogy az adatformátum nem kompatibilis az alkalmazás régebbi verziójával, vagy sérültek az adatok. Ha nem a legfrissebb verziót használja, várja meg, amíg a frissítéshez felszólítást kap az alkalmazás újraindításáról, vagy frissítsen manuálisan, ha letiltotta az automatikus frissítéseket. Ha a legújabb verziót használja, használja a beállítási ablakot az összes tárolt alkalmazásadat megtisztításához az adatsérülési problémák megoldása érdekében.</value>
   </data>
   <data name="ShipStats_TrueReload" xml:space="preserve">
-    <value>Tempo de Recarga no Servidor</value>
+    <value>Szerver-oldali újratöltési idő</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
+    <value>A szerver csak 0,142857142857 másodpercenként frissül. Ez azt jelenti, hogy az e szám többszörösei közé eső újratöltések átkerülnek az utána lévő pipára. Az itt bemutatott érték a kapott valós újratöltést mutatja, amely eltérhet a fenti elméleti újratöltéstől.</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
-    <value>DPM no Servidor</value>
+    <value>Szerver-oldali percenkénti sebzés</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
-    <value>Taxa de Disparo no Servidor</value>
+    <value>Szerver-oldali tűzgyorsaság</value>
   </data>
   <data name="Validation_BuildName" xml:space="preserve">
-      <value>O nome da build contém caracteres inválidos. Apenas letras, números, espaços em branco, hífens e 'underlines' são permitidos.</value>
+      <value>A felépítés neve nem engedélyezett karaktereket tartalmaz. Csak betű, számok, szóközök és kötőjelek engedélyezettek.</value>
   </data>
   <data name="Teststring" xml:space="preserve">
-      <value>Apenas um valor para teste</value>
+      <value>Csak egy tesztérték</value>
   </data>
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
@@ -1156,39 +1156,39 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
     <value>°/s</value>
   </data>
   <data name="Unit_DPS" xml:space="preserve">
-    <value>dps</value>
+    <value>percenkénti sebzés</value>
   </data>
   <data name="Unit_HP" xml:space="preserve">
-    <value>HP</value>
+    <value>Életerő</value>
   </data>
   <data name="Unit_Knots" xml:space="preserve">
-    <value>nós</value>
+    <value>csomó</value>
   </data>
   <data name="Unit_M" xml:space="preserve">
-    <value>m</value>
+    <value>méter</value>
   </data>
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
-    <value>tiros/min</value>
+    <value>lövés / perc</value>
   </data>
   <data name="Unit_FPM" xml:space="preserve">
-    <value>fogos/min</value>
+    <value>Tüzek / perc</value>
   </data>
   <data name="ArmamentType_AP" xml:space="preserve">
-    <value>AP</value>
+    <value>Páncéltörő</value>
   </data>
   <data name="ArmamentType_HE" xml:space="preserve">
-    <value>HE</value>
+    <value>Repeszromboló</value>
   </data>
   <data name="ArmamentType_SAP" xml:space="preserve">
-    <value>SAP</value>
+    <value>Félig páncéltörő</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
-      <value>Padrão</value>
+      <value>Standard</value>
   </data>
   <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
-      <value>Magnético</value>
+      <value>Mágneses</value>
   </data>
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
-      <value>Águas Profundas</value>
+      <value>Mélyvizi</value>
   </data>
 </root>

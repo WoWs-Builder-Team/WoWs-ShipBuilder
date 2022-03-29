@@ -35,7 +35,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             ShipModuleViewModel = new(ship.ShipUpgradeInfo);
 
             UpgradePanelViewModel = null!;
-            ConsumableViewModel = new(ship);
+            ConsumableViewModel = new(ship, 0);
             BuildName = build.BuildName;
             ShipData = ship;
             IncludeSignals = includeSignals;

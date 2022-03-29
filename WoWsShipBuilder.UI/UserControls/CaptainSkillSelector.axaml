@@ -16,13 +16,14 @@
     </Design.DataContext>
 
     <UserControl.Resources>
-        <conv:ImagePathConverter x:Key="ImagePathConverter" />
-        <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter" />
-        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter" />
+        <conv:ImagePathConverter x:Key="ImagePathConverter"/>
+        <conv:CaptainSkillOrderConverter x:Key="CaptainSkillOrderConverter"/>
+        <conv:ListContainsToBoolConverter x:Key="ListContainsToBoolConverter"/>
+        <conv:BorderBrushConverter x:Key="BorderBrushConverter"/>
+        <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
     
     <Grid ColumnDefinitions="*">
-
         <DockPanel>
             <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*" DockPanel.Dock="Top">
                 <StackPanel Name="CaptainPoints" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" Margin="0,5,0,5">                
@@ -45,8 +46,9 @@
                     <TextBlock Text="{x:Static translations:Translation.ScreenshotWindow_Captain}" FontSize="15"/>
                     <TextBlock Text="{Binding SelectedCaptain.Name, Converter={StaticResource Localizer}, FallbackValue=Default}" FontSize="15" />
                 </StackPanel>
-                <Button Name="SkillActivationButton" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}" 
-                        Grid.Column="1" Grid.Row="1" Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"/>
+                <Button Name="SkillActivationButton" Grid.Column="1" Grid.Row="1" IsEnabled="{Binding SkillActivationButtonEnabled}" Content="{x:Static translations:Translation.CaptainSkillSelector_SkillTalent}"  
+                        Click="OnSkillActiation_Click" VerticalAlignment="Center" IsVisible="{Binding !ScreenshotMode}"
+                        BorderBrush="{Binding TalentOrConditionalSkillEnabled, Converter={StaticResource BorderBrushConverter}}"/>
                 
                 <!--Popup to manage skill activation-->
                 <Popup Grid.Row="1" Grid.Column="1" IsOpen="{Binding SkillActivationPopupOpen, Mode=TwoWay}" PlacementTarget="SkillActivationButton" PlacementAnchor="Bottom" VerticalOffset="5" IsLightDismissEnabled="True" Width="500">
@@ -93,8 +95,25 @@
                                                     <ToggleSwitch IsChecked="{Binding Status}" VerticalAlignment="Center"/>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left"  Margin="0,0,10,0" Spacing="5">
-                                                <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding SkillName, Converter={StaticResource Localizer}}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                                    <ItemsControl Items="{Binding Modifiers}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal" Spacing="10"
+                                                                            IsVisible="{Binding #ModifierDesc.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                                    <TextBlock Name="ModifierDesc" Classes="ModifierBase">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding Converter="{StaticResource ModifierConverter}">
+                                                                                <Binding Path="Key" />
+                                                                                <Binding Path="Value" />
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
                                             </DockPanel>
                                         </DataTemplate>
@@ -104,7 +123,6 @@
                         </Grid>
                     </Border>                  
                 </Popup>
-                
                 <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
                           Content="{x:Static translations:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
             </Grid>
@@ -121,9 +139,9 @@
                                 <userControls:SkillToolTip DataContext="{Binding}"/>
                             </ToolTip.Tip>
                             <customControls:NumberedButton
-                                BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
-                                Command="{Binding $parent[UserControl].DataContext.AddSkill}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Skill}"
-                                IsSpecial="{Binding Value.Skill.IsEpic}">
+                                            BackgroundImage="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Skill}"
+                                            Command="{Binding $parent[UserControl].DataContext.AddSkill}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Skill}"
+                                            IsSpecial="{Binding Value.Skill.IsEpic}">
                                 <customControls:NumberedButton.Number>
                                     <MultiBinding Mode="OneWay" Converter="{StaticResource CaptainSkillOrderConverter}">
                                         <Binding Path="$parent[UserControl].DataContext.SkillOrderList"/>
