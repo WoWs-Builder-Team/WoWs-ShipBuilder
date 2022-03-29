@@ -21,7 +21,7 @@
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary">
-    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts">
+    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts" OnClick="ReloadCharts">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto">
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
@@ -32,8 +32,8 @@
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot (WIP)">
     </MudTabPanel>
-    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts" OnClick="CreateChartConfig">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EditCharts" Class="d-flex mx-auto">
+    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts" OnClick="ReloadCharts">
+        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto">
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
         <MudContainer>
@@ -105,7 +105,7 @@
         foreach (var selectedShip in selectedShips)
         {
             string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
-            foreach (((var shell, var dispersionValues, string shellIndex, double maxRange), bool value) in selectedShip.ArtilleryDictionary)
+            foreach (((var shell, var dispersionValues, string shellIndex, double maxRange), bool value) in selectedShip.ArtilleryDataDictionary)
             {
                 if (!value) continue;
                 Task.Yield();
@@ -198,6 +198,28 @@
         impactAngleConfig.Data.Datasets.RemoveMany(impactAngleConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
 
         displayedShips.Remove(name);
+    }
+    
+    private void ReloadCharts()
+    {
+        Dictionary<ChartDatasets, IList<IDataset>> datasets = new()
+        {
+            {ChartDatasets.HorizontalDispersion, horizontalDispConfig.Data.Datasets},
+            {ChartDatasets.VerticalDispersion, verticalDispConfig.Data.Datasets},
+            {ChartDatasets.Penetration, penetrationConfig.Data.Datasets},
+            {ChartDatasets.FlightTime, flightTimeConfig.Data.Datasets},
+            {ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
+            {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
+        };
+        
+        CreateChartConfig();
+        
+        horizontalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.HorizontalDispersion]);
+        verticalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.VerticalDispersion]);
+        penetrationConfig.Data.Datasets.Add(datasets[ChartDatasets.Penetration]);
+        flightTimeConfig.Data.Datasets.Add(datasets[ChartDatasets.FlightTime]);
+        impactVelocityConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactVelocity]);
+        impactAngleConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactAngle]);
     }
     
     private void CreateChartConfig()
@@ -318,12 +340,6 @@
         };
     }
 
-    private void SaveChartDataset()
-    {
-        //Dictionary<LineDataset> datasets = new();
-        //datasets.Add()
-    }
-
     /// <summary>
     /// Create the series for the horizontal dispersion.
     /// </summary>
@@ -405,7 +421,12 @@
     
     private enum ChartDatasets
     { 
-        
+        HorizontalDispersion,
+        VerticalDispersion,
+        Penetration,
+        FlightTime,
+        ImpactVelocity,
+        ImpactAngle,
     }
     
     //TODO The following code works and has much better performance but we lose chart tooltips on interpolated points so commented until a solution is found

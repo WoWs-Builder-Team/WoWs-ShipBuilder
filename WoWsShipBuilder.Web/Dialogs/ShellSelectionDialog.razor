@@ -24,10 +24,10 @@
                             </MudText>
                             <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(ship))"/>
                         </MudItem>
-                        @if (ship.ArtilleryDictionary.Count > 0)
+                        @if (ship.ArtilleryDataDictionary.Count > 0)
                         {
                             <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
-                                @foreach ((var artilleryData, bool selected) in ship.ArtilleryDictionary)
+                                @foreach ((var artilleryData, bool selected) in ship.ArtilleryDataDictionary)
                                 {
                                     <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, artilleryData))">
                                         @localizer[artilleryData.ShellIndex].Localization
@@ -72,7 +72,7 @@
 
     private void ReturnSelectedShells()
     {
-        MudDialog.Close(DialogResult.Ok(ShipList.Where(x => x.ArtilleryDictionary.ContainsValue(true))));
+        MudDialog.Close(DialogResult.Ok(ShipList.Where(x => x.ArtilleryDataDictionary.ContainsValue(true))));
     }
 
     private static Variant GetVariantFromBool(bool active)
@@ -87,7 +87,7 @@
 
     private void ToggleSelection(ShellSelectionWrapper ship, ArtilleryData artilleryData)
     {
-        ship.ArtilleryDictionary[artilleryData] = !ship.ArtilleryDictionary[artilleryData];
+        ship.ArtilleryDataDictionary[artilleryData] = !ship.ArtilleryDataDictionary[artilleryData];
         StateHasChanged();
     }
 
