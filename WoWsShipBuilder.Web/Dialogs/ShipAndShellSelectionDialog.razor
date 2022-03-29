@@ -164,7 +164,9 @@
     private async Task AddWrapper(string shipIndex)
     {
         var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
+        Console.WriteLine(shipSummary);
         var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+        Console.WriteLine(ship);
         if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         List<ArtilleryData> artilleryData = new();
         if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)

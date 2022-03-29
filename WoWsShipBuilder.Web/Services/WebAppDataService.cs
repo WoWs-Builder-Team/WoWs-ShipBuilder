@@ -93,23 +93,22 @@ public class WebAppDataService : IAppDataService
 
     public async Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
     {
-        Ship? ship = null;
-
-        if (summary.Nation.Equals(AppData.CurrentLoadedNation))
+        if (AppData.ShipDictionary!.TryGetValue(summary.Index, out var ship))
         {
-            ship = AppData.ShipDictionary![summary.Index];
+            Console.WriteLine("#found");
+            return ship;
         }
-        else
+
+        Console.WriteLine("#not found");
+        var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+        if (shipDict != null)
         {
-            var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
-            if (shipDict != null)
+            ship = shipDict[summary.Index];
+            if (changeDictionary)
             {
-                ship = shipDict[summary.Index];
-                if (changeDictionary)
-                {
-                    AppData.ShipDictionary = shipDict;
-                    AppData.CurrentLoadedNation = summary.Nation;
-                }
+                AppData.ShipDictionary = AppData.ShipDictionary.Union(shipDict)
+                    .DistinctBy(x => x.Key)
+                    .ToDictionary(x => x.Key, x => x.Value);
             }
         }
 
