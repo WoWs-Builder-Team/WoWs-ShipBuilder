@@ -4,7 +4,6 @@
             <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
-        <NavLink href="/ship" class="main-nav-link" ActiveClass="nav-link-active">Ship stats</NavLink>
         <NavLink href="/plots" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and ballistic plots</NavLink>
         <NavLink href="/test" class="main-nav-link" ActiveClass="nav-link-active">Test page</NavLink>
         <MudSpacer/>
@@ -13,21 +12,23 @@
     <MudHidden Invert="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" OnClick="@ToggleDrawer" />
         <NavLink class="d-flex me-4" href="/">
-                    <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
-                    <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
+            <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
+            <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
     </MudHidden>
 </MudAppBar>
-<MudDrawer @bind-Open="@open" Elevation="1">
-    <MudDrawerHeader>
-        <MudText Typo="Typo.h6">WoWs&#x2011;ShipBuilder</MudText>
-    </MudDrawerHeader>
-    <MudNavMenu>
-        <MudNavLink Href="/ship" >Ship stat</MudNavLink>
-        <MudNavLink Href="/plots" >Dispersion and ballistic plots</MudNavLink>
-        <MudNavLink Href="/test" >Test page</MudNavLink>
-    </MudNavMenu>
-</MudDrawer>
+<MudHidden Invert="true">
+    <MudDrawer @bind-Open="@open" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">WoWs&#x2011;ShipBuilder</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Href="/plots" >Dispersion and ballistic plots</MudNavLink>
+            <MudNavLink Href="/test" >Test page</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+</MudHidden>
+
 
 @code
 {
