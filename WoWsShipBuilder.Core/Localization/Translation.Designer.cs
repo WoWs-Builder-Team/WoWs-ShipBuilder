@@ -313,7 +313,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add/Remove Ships.
+        ///   Looks up a localized string similar to Add/Remove.
         /// </summary>
         public static string ChartsWeb_AddRemoveShips {
             get {

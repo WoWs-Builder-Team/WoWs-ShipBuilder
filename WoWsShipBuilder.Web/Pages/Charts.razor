@@ -22,18 +22,18 @@
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary">
     <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts">
-        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto">
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
         <MudContainer>
-            <Chart Config="horizontalDispConfig"></Chart>
+            <Chart Config="horizontalDispConfig" @ref="chart"></Chart>
             <Chart Config="verticalDispConfig"></Chart>
         </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot (WIP)">
     </MudTabPanel>
-    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EditCharts">
+    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts" OnClick="CreateChartConfig">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EditCharts" Class="d-flex mx-auto">
             @Translation.ChartsWeb_AddRemoveShips
         </MudButton>
         <MudContainer>
@@ -53,6 +53,7 @@
     private LineConfig flightTimeConfig = new();
     private LineConfig impactVelocityConfig = new();
     private LineConfig impactAngleConfig = new();
+    private Chart chart = new();
 
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
@@ -71,7 +72,7 @@
         }
         if (navManager.TryGetQueryString("shellIndex", out string shellIndex))
         {
-            shellIndexesFromUrl = shipIndex.Split(',');
+            shellIndexesFromUrl = shellIndex.Split(',');
         }
         
         CreateChartConfig();
@@ -134,7 +135,6 @@
         {
             RemoveChartDataset(labelName);
         }
-        
         StateHasChanged();
     }
 
@@ -318,6 +318,12 @@
         };
     }
 
+    private void SaveChartDataset()
+    {
+        //Dictionary<LineDataset> datasets = new();
+        //datasets.Add()
+    }
+
     /// <summary>
     /// Create the series for the horizontal dispersion.
     /// </summary>
@@ -337,7 +343,7 @@
     /// <returns>The vertical dispersion series for the given parameter.</returns>
     private static IEnumerable<Point> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        return CreateFunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
+        return CreateFunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
     }
     
     /// <summary>
@@ -395,6 +401,11 @@
         FlightTime,
         ImpactVelocity,
         ImpactAngle,
+    }
+    
+    private enum ChartDatasets
+    { 
+        
     }
     
     //TODO The following code works and has much better performance but we lose chart tooltips on interpolated points so commented until a solution is found

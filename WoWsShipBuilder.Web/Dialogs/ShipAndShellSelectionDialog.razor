@@ -32,7 +32,7 @@
                                 <MudText Typo="Typo.caption" Class="my-auto">
                                     @localizer[ship.ShipIndex + "_FULL"].Localization
                                 </MudText>
-                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small"/>
+                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(ship))"/>
                             </MudItem>
                             @if (ship.ArtilleryDictionary.Count > 0)
                             {
@@ -147,5 +147,11 @@
         if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         ShellSelectionWrapper wrapper = new(shipIndex, artilleryData);
         ShipList.Add(wrapper);
+    }
+
+    private void RemoveShip(ShellSelectionWrapper ship)
+    {
+        ShipList.Remove(ship);
+        selectedShips.Remove(ship.ShipIndex);
     }
 }
