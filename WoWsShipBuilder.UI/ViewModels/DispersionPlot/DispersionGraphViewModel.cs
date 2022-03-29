@@ -89,15 +89,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 hModel.Series.Add(hDisp);
                 vModel.Series.Add(vDisp);
 
-                if (shell.ShellType == ShellType.AP)
-                {
-                    penModel.Series.Add(ballisticSeries.Penetration);
-                }
-                else
-                {
-                    penModel.Series.Add(CreateSeriesForFixedPen(shell, maxRange, name));
-                }
-
+                penModel.Series.Add(ballisticSeries.Penetration);
                 flightTimeModel.Series.Add(ballisticSeries.FlightTime);
                 impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
                 impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
@@ -424,20 +416,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                                 var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
                                 DispersionPlotList.Add(new(newPlot));
 
-                                // If shell is he, make it a line. This way all graphs have the same color for the same shell too.
-                                if (shell.ShellType == ShellType.AP)
-                                {
-                                    logger.Info("Shell is AP, adding normal pen series");
-
-                                    PenetrationModel!.Series.Add(ballisticSeries.Penetration);
-                                }
-                                else
-                                {
-                                    logger.Info("Shell is HE or SAP, adding fixed pen series");
-
-                                    PenetrationModel!.Series.Add(CreateSeriesForFixedPen(shell, (double)guns.MaxRange, name));
-                                }
-
+                                PenetrationModel!.Series.Add(ballisticSeries.Penetration);
                                 FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
                                 ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
                                 ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);

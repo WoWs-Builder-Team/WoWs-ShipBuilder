@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var dict = new Dictionary<double, Ballistic>();
 
-            // Increase max range toa ccount for modifiers
+            // Increase max range to account for modifiers
             maxRange *= 1.5;
 
             // Initialize the angle list. This way we calculate it only once, if it's needed.
@@ -102,14 +102,14 @@ namespace WoWsShipBuilder.Core.DataUI
 
             // Insert pen at 0 distance
             var initialSpeed = shell.MuzzleVelocity;
-            var initialPen = CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp);
+            var initialPen = shell.ShellType == ShellType.AP ? CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
             var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0);
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
 
             foreach (var angle in calculationAngles)
             {
-                // Various variable inizialitazion
+                // Various variable initialization
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
@@ -138,7 +138,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
                 var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
-                var pen = CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
+                var pen = shell.ShellType == ShellType.AP ? CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
 
                 if (x > maxRange || x < lastRange)
                 {

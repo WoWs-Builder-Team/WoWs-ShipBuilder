@@ -1,29 +1,36 @@
 ﻿@using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.DataProvider
+@using System.Collections.ObjectModel
 @inject Localizer localizer
 
 <MudDialog>
     <TitleContent>
-        <MudContainer Class="d-inline-flex align-center">
+        <MudItem Class="d-flex align-center">
             <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
-                <MudText Typo="Typo.h6" Class="ma-auto">
-                    Select Shell Type
-                </MudText>
-        </MudContainer>
+            <MudText Typo="Typo.h6" Class="mx-auto">
+                @Translation.DispersionGraphWindow_SelectShell
+            </MudText>
+        </MudItem>
     </TitleContent>
     <DialogContent>
         <MudContainer Style="max-height: 500px; overflow-y: auto">
-             @foreach (var ship in ShipList)
+            <MudGrid Justify="Justify.Center">
+                @foreach (var ship in ShipList)
                 {
-                    <MudItem Class="d-flex" Style="flex-direction: column">
-                        <MudText Typo="Typo.caption">@localizer[ship.ShipIndex + "_FULL"].Localization</MudText>
-                        @if (ship.ShellDictionary.Count > 0)
+                    <MudItem xs="12" md="6" Class="d-flex" Style="flex-direction: column">
+                        <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
+                            <MudText Typo="Typo.caption" Class="my-auto">
+                                @localizer[ship.ShipIndex + "_FULL"].Localization
+                            </MudText>
+                            <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small"/>
+                        </MudItem>
+                        @if (ship.ArtilleryDictionary.Count > 0)
                         {
                             <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
-                                @foreach ((string shell, bool selected) in ship.ShellDictionary)
+                                @foreach ((var artilleryData, bool selected) in ship.ArtilleryDictionary)
                                 {
-                                    <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shell))">
-                                        @localizer[shell].Localization
+                                    <MudButton Color="GetColorFromBool(selected)" Variant="GetVariantFromBool(selected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, artilleryData))">
+                                        @localizer[artilleryData.ShellIndex].Localization
                                     </MudButton>
                                 }
                             </MudButtonGroup>
@@ -37,15 +44,16 @@
                         <MudDivider Light="true" Class="mt-2"/>
                     </MudItem>
                 }
+            </MudGrid>
         </MudContainer>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
-            Cancel
+            @Translation.Cancel
         </MudButton>
             <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
                 <MudButton Color="Color.Info" OnClick="ReturnSelectedShells" Variant="Variant.Filled">
-                    Confirm
+                    @Translation.ShipSelectionWindow_ConfirmButton
                 </MudButton>
             </MudFocusTrap>
     </DialogActions>
@@ -55,8 +63,8 @@
 {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = new();
 
-    [Parameter] public List<ShellSelectionWrapper> ShipList { get; set; } = new();
-
+    [Parameter] public ObservableCollection<ShellSelectionWrapper> ShipList { get; set; } = new();
+    
     private void Cancel()
     {
         MudDialog.Cancel();
@@ -64,7 +72,7 @@
 
     private void ReturnSelectedShells()
     {
-        MudDialog.Close(DialogResult.Ok(ShipList.Where(x => x.ShellDictionary.ContainsValue(true))));
+        MudDialog.Close(DialogResult.Ok(ShipList.Where(x => x.ArtilleryDictionary.ContainsValue(true))));
     }
 
     private static Variant GetVariantFromBool(bool active)
@@ -77,9 +85,9 @@
         return active ? Color.Primary : Color.Secondary;
     }
 
-    private void ToggleSelection(ShellSelectionWrapper ship, string shellIndex)
+    private void ToggleSelection(ShellSelectionWrapper ship, ArtilleryData artilleryData)
     {
-        ship.ShellDictionary[shellIndex] = !ship.ShellDictionary[shellIndex];
+        ship.ArtilleryDictionary[artilleryData] = !ship.ArtilleryDictionary[artilleryData];
         StateHasChanged();
     }
 }

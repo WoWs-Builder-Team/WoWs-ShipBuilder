@@ -1,0 +1,454 @@
+﻿@page "/charts"
+@using WoWsShipBuilder.Web.Utility
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+@using ChartJs.Blazor.LineChart
+@using ChartJs.Blazor.Common.Axes
+@using ChartJs.Blazor.Common.Enums
+@using WoWsShipBuilder.Core.DataUI
+@using WoWsShipBuilder.Web.Dialogs
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Util
+@using System.ComponentModel
+@using System.Linq
+@using DynamicData
+@inject NavigationManager navManager
+@inject Localizer localizer
+@inject IAppDataService webAppDataService
+@inject IDialogService dialogService
+
+<PageTitle>WoWs ShipBuilder: Charts</PageTitle>
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary">
+    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts">
+        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary">
+            @Translation.ChartsWeb_AddRemoveShips
+        </MudButton>
+        <MudContainer>
+            <Chart Config="horizontalDispConfig" @ref="chart"></Chart>
+            <Chart Config="verticalDispConfig" @ref="chart"></Chart>
+        </MudContainer>
+    </MudTabPanel>
+    <MudTabPanel Text="Dispersion Plot (WIP)">
+    </MudTabPanel>
+    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="EditCharts">
+            @Translation.ChartsWeb_AddRemoveShips
+        </MudButton>
+        <MudContainer>
+            <Chart Config="penetrationConfig" @ref="chart"></Chart>
+            <Chart Config="flightTimeConfig" @ref="chart"></Chart>
+            <Chart Config="impactVelocityConfig" @ref="chart"></Chart>
+            <Chart Config="impactAngleConfig" @ref="chart"></Chart>
+        </MudContainer>
+    </MudTabPanel>
+</MudTabs>
+
+@code 
+{
+    private LineConfig horizontalDispConfig = new();
+    private LineConfig verticalDispConfig = new();
+    private LineConfig penetrationConfig = new();
+    private LineConfig flightTimeConfig = new();
+    private LineConfig impactVelocityConfig = new();
+    private LineConfig impactAngleConfig = new();
+    private Chart chart = new();
+
+    private int colorCounter;
+    private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
+
+    private string[] shipIndexesFromUrl = {};
+    private string[] shellIndexesFromUrl = {};
+    private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        if (navManager.TryGetQueryString("shipIndex", out string shipIndex))
+        {
+            shipIndexesFromUrl = shipIndex.Split(',');
+        }
+        if (navManager.TryGetQueryString("shellIndex", out string shellIndex))
+        {
+            shellIndexesFromUrl = shipIndex.Split(',');
+        }
+        
+        CreateChartConfig();
+    }
+
+    private async Task EditCharts()
+    {
+        var selectedShipList = await GetSelectedShips();
+        if (selectedShipList is null || selectedShipList.Cancelled) return;
+        UpdateCharts(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
+    }
+
+    private async Task<DialogResult?> GetSelectedShips()
+    {
+        DialogOptions options = new()
+        {
+            MaxWidth = MaxWidth.ExtraLarge,
+        };
+        var parameters = new DialogParameters
+        {
+            ["shipList"] = displayedShips.Values.ToList(),
+        };
+        var dialog = dialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
+        return await dialog.Result;
+    }
+
+    private void UpdateCharts(List<ShellSelectionWrapper> selectedShips)
+    {
+        List<string> labelNames = new();
+        foreach (var selectedShip in selectedShips)
+        {
+            string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            foreach (((var shell, var dispersionValues, string shellIndex, double maxRange), bool value) in selectedShip.ArtilleryDictionary)
+            {
+                if (!value) continue;
+                
+                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                var labelName = $"{shipName} - {shellName}";
+                labelNames.Add(labelName);
+                
+                if (displayedShips.ContainsKey(labelName)) continue;
+                
+                displayedShips.Add(labelName, selectedShip);
+                
+                Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
+                IEnumerable<Point> horizontalDispSeries = CreateHorizontalDispersionSeries(dispersionValues, maxRange);
+                IEnumerable<Point> verticalDispSeries = CreateVerticalDispersionSeries(dispersionValues, maxRange);
+
+                var lineColor = GetColor();
+                AddChartDataset(labelName, horizontalDispSeries, horizontalDispConfig, lineColor);
+                AddChartDataset(labelName, verticalDispSeries, verticalDispConfig, lineColor);
+                AddBallisticChartDataset(labelName, ballisticSeries, lineColor);
+            }
+        }
+        
+        var removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key));
+        foreach ((string labelName, _) in removedShips)
+        {
+            RemoveChartDataset(labelName);
+        }
+        chart.Update();
+    }
+
+    private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
+    {
+        CreateBallisticChartDataset(name, data, BallisticParameter.Penetration, chartLineColor);
+        CreateBallisticChartDataset(name, data, BallisticParameter.FlightTime, chartLineColor);
+        CreateBallisticChartDataset(name, data, BallisticParameter.ImpactVelocity, chartLineColor);
+        CreateBallisticChartDataset(name, data, BallisticParameter.ImpactAngle, chartLineColor);
+    }
+
+    private void CreateBallisticChartDataset(string name, Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter, System.Drawing.Color chartLineColor)
+    {
+        LineConfig chartConfig;
+        IEnumerable<Point> pointsList;
+        switch (ballisticParameter)
+        {
+            case BallisticParameter.Penetration:
+                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.Penetration));
+                chartConfig = penetrationConfig;
+                break;
+            case BallisticParameter.ImpactVelocity:
+                pointsList = data.Select(x => new Point(x.Key  / 1000, x.Value.Velocity));
+                chartConfig = impactVelocityConfig;
+                break;
+            case BallisticParameter.FlightTime:
+                pointsList = data.Select(x => new Point(x.Key  / 1000, x.Value.FlightTime));
+                chartConfig = flightTimeConfig;
+                break;
+            case BallisticParameter.ImpactAngle:
+                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.ImpactAngle));
+                chartConfig = impactAngleConfig;
+                break;
+            default:
+                throw new InvalidEnumArgumentException();
+        }
+        AddChartDataset(name, pointsList, chartConfig, chartLineColor);
+    }
+    
+    private static void AddChartDataset(string name, IEnumerable<Point> data, LineConfig chartConfig, System.Drawing.Color chartLineColor)
+    {
+        var dataset = new LineDataset<Point>(data)
+        {
+            Label = name,
+            BackgroundColor = ColorUtil.FromDrawingColor(chartLineColor),
+            BorderColor = ColorUtil.FromDrawingColor(chartLineColor),
+            Fill = FillingMode.Disabled,
+            PointRadius = 0,
+            CubicInterpolationMode = CubicInterpolationMode.Monotone,
+        };
+        chartConfig.Data.Datasets.Add(dataset);
+    }
+    
+    private void RemoveChartDataset(string name)
+    {
+        horizontalDispConfig.Data.Datasets.RemoveMany(horizontalDispConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        verticalDispConfig.Data.Datasets.RemoveMany(verticalDispConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        penetrationConfig.Data.Datasets.RemoveMany(penetrationConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name))); 
+        flightTimeConfig.Data.Datasets.RemoveMany(flightTimeConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        impactVelocityConfig.Data.Datasets.RemoveMany(impactVelocityConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        impactAngleConfig.Data.Datasets.RemoveMany(impactAngleConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+
+        displayedShips.Remove(name);
+    }
+    
+    private void CreateChartConfig()
+    {
+        horizontalDispConfig = SetChartConfig($"{Translation.DispersionGraphWindow_Horizontal} {Translation.ShipStats_Dispersion}",  $"{Translation.ShipStats_Dispersion} [{Translation.Unit_M}]");
+        verticalDispConfig = SetChartConfig($"{Translation.DispersionGraphWindow_Vertical} {Translation.ShipStats_Dispersion}", $"{Translation.ShipStats_Dispersion} [{Translation.Unit_M}]");
+        penetrationConfig = SetChartConfig($"{Translation.ShipStats_Penetration}", $"{Translation.ShipStats_Penetration} [{Translation.Unit_MM}]");
+        flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
+        impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
+        impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
+    }
+    
+    private static LineConfig SetChartConfig(string title, string yLabel)
+    {
+        var xLabel = $"{Translation.ShipStats_Range} [{Translation.Unit_KM}]";
+        string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
+        string? gridColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DimGray);
+        var gridDash = new double[] {5, 5};
+        return new()
+        {
+            Options = new()
+            {
+                Responsive = true,
+                SpanGaps = true,
+                Title = new()
+                {
+                    Display = true,
+                    Text = title,
+                    FontColor = foregroundColor,
+                    FontSize = 30,
+                },
+                Tooltips = new()
+                {
+                    Mode = InteractionMode.Point,
+                    Intersect = false,
+                    DisplayColors = true,
+                },
+                Hover = new()
+                {
+                    Mode = InteractionMode.Point,
+                    Intersect = true,
+                },
+                Legend = new()
+                {
+                    Labels = new()
+                    {
+                        FontColor = foregroundColor,
+                    },
+                },
+                Scales = new()
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new()
+                            {
+                                Display = true,
+                                FontColor = foregroundColor,
+                                MaxTicksLimit = 10,
+                                BeginAtZero = true,
+                            },
+                            ScaleLabel = new()
+                            {
+                                LabelString = xLabel,
+                                FontColor = foregroundColor,
+                                Display = true,
+                                FontSize = 15,
+                            },
+                            GridLines = new()
+                            {
+                                ZeroLineColor = foregroundColor,
+                                Display = true,
+                                DrawTicks = true,
+                                TickMarkLength = 5,
+                                DrawBorder = true,
+                                ZeroLineWidth = 3,
+                                DrawOnChartArea = true,
+                                Color = gridColor,
+                                BorderDash = gridDash,
+                            },
+                        },
+                    },
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new()
+                            {
+                                Display = true,
+                                FontColor = foregroundColor,
+                                MaxTicksLimit = 10,
+                                BeginAtZero = true,
+                            },
+                            ScaleLabel = new()
+                            {
+                                LabelString = yLabel,
+                                FontColor = foregroundColor,
+                                Display = true,
+                                FontSize = 15,
+                            },
+                            GridLines = new()
+                            {
+                                ZeroLineColor = foregroundColor,
+                                Display = true,
+                                DrawTicks = true,
+                                TickMarkLength = 5,
+                                DrawBorder = true,
+                                ZeroLineWidth = 3,
+                                DrawOnChartArea = true,
+                                Color = gridColor,
+                                BorderDash = gridDash,
+                            },
+                        },
+                    },
+                },
+            },
+        };
+    }
+
+    /// <summary>
+    /// Create the series for the horizontal dispersion.
+    /// </summary>
+    /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
+    /// <param name="maxRange">Max range of the gun.</param>
+    /// <returns>The horizontal dispersion series for the given parameter.</returns>
+    private static IEnumerable<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
+    {
+        return CreateFunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
+    }
+
+    /// <summary>
+    /// Create the series for the vertical dispersion.
+    /// </summary>
+    /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
+    /// <param name="maxRange">Max range of the gun.</param>
+    /// <returns>The vertical dispersion series for the given parameter.</returns>
+    private static IEnumerable<Point> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
+    {
+        return CreateFunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01);
+    }
+    
+    /// <summary>
+    /// Create data series using a function <code>f(x)</code>.
+    /// </summary>
+    /// <param name="f">The function <code>f(x)</code>.</param>
+    /// <param name="x0">The start x value.</param>
+    /// <param name="x1">The end x value.</param>
+    /// <param name="dx">The increment in x.</param>
+    /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
+    private static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
+    {
+        List<Point> dispSeries = new();
+        for (double x = x0; x <= x1 + dx * 0.5; x += dx)
+            dispSeries.Add(new(x, f(x)));
+        return dispSeries;
+    }
+
+    private System.Drawing.Color GetColor()
+    {
+        if (colorCounter > 14)
+        {
+            colorCounter = 0;
+        }
+        var color = ChartColors[colorCounter];
+        colorCounter++;
+        return color;
+    }
+
+    private static System.Drawing.Color[] GenerateColors()
+    {
+        var colors = new[]
+        {
+            System.Drawing.ColorTranslator.FromHtml("#ef6fcc"),
+            System.Drawing.ColorTranslator.FromHtml("#62ce75"),
+            System.Drawing.ColorTranslator.FromHtml("#f53a4c"),
+            System.Drawing.ColorTranslator.FromHtml("#11ccdc"),
+            System.Drawing.ColorTranslator.FromHtml("#9166aa"),
+            System.Drawing.ColorTranslator.FromHtml("#a4c28a"),
+            System.Drawing.ColorTranslator.FromHtml("#c15734"),
+            System.Drawing.ColorTranslator.FromHtml("#faa566"),
+            System.Drawing.ColorTranslator.FromHtml("#6c7b66"),
+            System.Drawing.ColorTranslator.FromHtml("#eda4ba"),
+            System.Drawing.ColorTranslator.FromHtml("#2d6df9"),
+            System.Drawing.ColorTranslator.FromHtml("#f62ef3"),
+            System.Drawing.ColorTranslator.FromHtml("#957206"),
+            System.Drawing.ColorTranslator.FromHtml("#a45dff"),
+        };
+        return colors;
+    }
+
+    private enum BallisticParameter
+    { 
+        Penetration,
+        FlightTime,
+        ImpactVelocity,
+        ImpactAngle,
+    }
+    
+    //TODO The following code works and has much better performance but we lose chart tooltips on interpolated points so commented until a solution is found
+    // private static List<Point> TestCreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
+    // {
+    //     double[] points = {0, dispersion.TaperDist, maxRange * 1.5};
+    //     return points.Select(point => new Point(point / 1000, dispersion.CalculateHorizontalDispersion((point)))).ToList();
+    // }
+    
+    /*private async Task MakeCharts()
+    {
+        ObservableCollection<ShellSelectionWrapper> shipList = new();
+        List<Ship> ships = new();
+        foreach (var shipIndex in shipIndexList)
+        {
+            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+            var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+            ships.Add(ship!);
+        }
+
+        DialogOptions options = new()
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+        };
+        var parameters = new DialogParameters
+        {
+            ["shipList"] = shipList,
+        };
+        var dialog = dialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters, options);
+        var selectedShipList = await dialog.Result;
+        if (selectedShipList is null || selectedShipList.Cancelled) return;
+
+        foreach (var selectedShip in (IEnumerable<ShellSelectionWrapper>) selectedShipList.Data)
+        {
+            string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            var ship = ships.First(x => x.Index.Equals(selectedShip.ShipIndex));
+            foreach ((var (artilleryShell, _, shellIndex), bool value) in selectedShip.ArtilleryDictionary)
+            {
+                if (!value) continue;
+                var gun = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(artilleryShell.Index));
+                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                var shell = await webAppDataService.GetProjectile<ArtilleryShell>(artilleryShell.Index);
+
+                Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, (double) gun.MaxRange);
+                IEnumerable<Point> horizontalDispSeries = CreateHorizontalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
+                IEnumerable<Point> verticalDispSeries = CreateVerticalDispersionSeries(gun.DispersionValues, (double) gun.MaxRange);
+
+                var labelName = $"{shipName} - {shellName}";
+                displayedShips.Add(labelName, selectedShip);
+
+                var lineColor = GetColor();
+                AddChartDataset(labelName, horizontalDispSeries, horizontalDispConfig, lineColor);
+                AddChartDataset(labelName, verticalDispSeries, verticalDispConfig, lineColor);
+                AddBallisticChartDataset(labelName, ballisticSeries, lineColor);
+            }
+        }
+    }*/
+}
