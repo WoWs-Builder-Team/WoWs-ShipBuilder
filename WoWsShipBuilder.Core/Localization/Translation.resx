@@ -1206,4 +1206,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="Consumable_HpPerHeal" xml:space="preserve">
       <value>Hp per heal</value>
   </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>Adrenaline Rush HP: </value>
+  </data>
 </root>
