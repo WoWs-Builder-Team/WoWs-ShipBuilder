@@ -24,9 +24,12 @@
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips"/>
         </MudItem>
-        <MudItem xs="4">
+        <MudItem xs="4" Style="justify-content: space-between">
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
                 Go to ship page
+            </MudButton>
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToChartPage">
+                Go to charts page
             </MudButton>
         </MudItem>
     </MudGrid>
@@ -52,7 +55,13 @@
 
     private void GoToShipPage()
     {
-        var index = selectedShips.First();
+        string index = selectedShips.First();
         navManager.NavigateTo("/ship?shipIndex=" + index);
+    }
+    
+    private void GoToChartPage()
+    {
+        string indexes = string.Join(",", selectedShips);
+        navManager.NavigateTo("/charts?shipIndex=" + indexes);
     }
 }
