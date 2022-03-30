@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -6,7 +7,9 @@ using MudBlazor.Services;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web;
@@ -44,9 +47,14 @@ CultureInfo.DefaultThreadCurrentUICulture = settings.SelectedLanguage.CultureInf
 await settingsHelper.SaveSettings(AppData.Settings);
 
 SetupExtensions.SetupLogging();
+var logger = Logging.GetLogger("ShipBuilderInit");
 
-AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
-
+await host.Services.GetRequiredService<ILocalDataUpdater>().RunDataUpdateCheck(settings.SelectedServerType, new Progress<(int, string)>());
 await host.Services.GetRequiredService<Localizer>().UpdateLanguage(AppData.Settings.SelectedLanguage, true);
+
+AppData.ShipDictionary = new();
+logger.Debug("Initializing summary list...");
+AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
+logger.Debug("Summary list initialized. Preparation finished.");
 
 await host.RunAsync();

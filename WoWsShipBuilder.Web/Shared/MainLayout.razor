@@ -1,8 +1,21 @@
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Core.DataProvider
+@using System.Diagnostics
 @inherits LayoutComponentBase
+@inject IDataService dataService
 
 <MudThemeProvider Theme="theme" IsDarkMode="true"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
+
+@if (!isInitialized)
+{
+    <MudOverlay Visible="!isInitialized" DarkBackground="true">
+        <MudProgressCircular Color="Color.Success" Indeterminate="true" Size="Size.Large"/>
+        <MudText Typo="Typo.h3">Content is loading...</MudText>
+    </MudOverlay>
+}
 
 <MudLayout>
     <TopMenu/>
@@ -16,6 +29,24 @@
 
 @code
 {
+    bool isInitialized = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (dataService is WebDataService webDataService)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await Task.Delay(20);
+            await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
+            stopwatch.Stop();
+            Console.WriteLine(stopwatch.Elapsed);
+            isInitialized = true;
+            StateHasChanged();
+        }
+    }
+
     private readonly MudTheme theme = new()
     {
         LayoutProperties =

@@ -1183,7 +1183,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>SAP</value>
   </data>
   <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
-      <value>Add/Remove</value>
+      <value>Add/Remove Ships/Shells</value>
   </data>
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
       <value>Dispersion Charts</value>
@@ -1193,6 +1193,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
       <value>Select Ships and Shells</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Loading...</value>
   </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>

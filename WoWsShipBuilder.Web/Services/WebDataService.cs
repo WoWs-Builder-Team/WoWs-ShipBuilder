@@ -1,4 +1,6 @@
-﻿namespace WoWsShipBuilder.Web.Services;
+﻿using WoWsShipBuilder.DataStructures;
+
+namespace WoWsShipBuilder.Web.Services;
 
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
@@ -20,7 +22,7 @@ public class WebDataService : IDataService
 
     public async Task StoreStringAsync(string content, string path)
     {
-        path = path.Replace(".json", string.Empty);
+        path = path.Replace(".json", string.Empty).Replace("..", ".");
         await OpenDb();
         await gameDataDb.UpdateItems<GameDataDto>(CurrentStoreName, new() { new(path, content) });
     }
@@ -70,6 +72,21 @@ public class WebDataService : IDataService
     {
         IEnumerable<string> cleanPaths = paths.Select(path => path.Replace('/', '.').Trim('.'));
         return string.Join('.', cleanPaths);
+    }
+
+    public async Task LoadAllShipsAsync(ServerType serverType)
+    {
+        await OpenDb();
+        var keyBase = $"{serverType.StringName()}.Ship";
+        List<GameDataDto>? dataList = await gameDataDb.GetRange<string, GameDataDto>(serverType.StringName(), keyBase, keyBase + '\uffff');
+        var combinedData = new List<KeyValuePair<string, Ship>>();
+        foreach (var dto in dataList)
+        {
+            combinedData.AddRange(JsonConvert.DeserializeObject<Dictionary<string, Ship>>(dto.Content) ?? new Dictionary<string, Ship>());
+            await Task.Yield();
+        }
+
+        AppData.ShipDictionary = combinedData.ToDictionary(x => x.Key, x => x.Value);
     }
 
     private async Task OpenDb()
