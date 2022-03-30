@@ -4,18 +4,26 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Web.Utility
+@using WoWsShipBuilder.Core.Data
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService appDataService
 <PageTitle>Ship stats</PageTitle>
 
-<MudText Align="Align.Center">Selected ship is: @shipName</MudText>
+<MudPaper Outlined="true" Class="d-flex justify-center align-center ma-5">
+    <MudImage Src="@(baseAddress + "_default.png")"/>
+    <MudImage Src="@(baseAddress + "_default.png")"/>
+    <MudImage Src="@(baseAddress + "_default.png")"/>
+</MudPaper>
 
 <MudContainer MaxWidth="MaxWidth.False">
     <MudGrid>
         <MudItem xs="4">
-            <CaptainSkillSelector ShipClass="@shipClass" CaptainData="@captainData"/>
+            <MudStack>
+                <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel"/>
+                <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
+            </MudStack>
         </MudItem>
         <MudItem xs="8"></MudItem>
     </MudGrid>
@@ -24,29 +32,33 @@
 
 @code {
 
-    private string shipName = string.Empty;
-
-    private ShipClass shipClass;
-
-    private (Captain, Dictionary<string, Captain>?) captainData;
-
+    private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         navManager.TryGetQueryString("shipIndex", out string shipIndex);
-        shipName = localizer[$"{shipIndex}_FULL"].Localization;
         navManager.LocationChanged += HandleLocationChanged;
-        
-        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-
-        shipClass = shipSummary.ShipClass;
-        captainData = await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, shipSummary.Nation);
+        await LoadShipVieModel(shipIndex);
     }
 
-    void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        navManager.TryGetQueryString("shipIndex", out string shipIndex);
-        shipName = localizer[$"{shipIndex}_FULL"].Localization;
-        StateHasChanged();
+        var uri = navManager.Uri;
+        if (uri.Contains("/ship"))
+        {
+            navManager.TryGetQueryString("shipIndex", out string shipIndex);
+            await LoadShipVieModel(shipIndex);
+            StateHasChanged();
+        }
+    }
+    
+    private async Task LoadShipVieModel(string shipIndex)
+    {
+        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+        var ship = await appDataService.GetShipFromSummary(shipSummary);
+        var vmParams = new MainViewModelParams(ship, shipSummary, null);
+        ViewModel = new(null, appDataService, vmParams);
+        await ViewModel.InitializeData(vmParams);
     }
 }

@@ -10,7 +10,6 @@
 @using NLog.LayoutRenderers
 @using WoWsShipBuilder.Core.DataUI
 @inherits ReactiveComponentBase<CaptainSkillSelectorViewModel>
-@inject IAppDataService appDataService
 @inject Localizer localizer
 
 @if (ViewModel is not null)
@@ -177,12 +176,6 @@
 }
 
 @code {
-
-    [Parameter, EditorRequired]
-    public ShipClass ShipClass { get; set; }
-    
-    [Parameter, EditorRequired]
-    public (Captain, Dictionary<string, Captain>?) CaptainData { get; set; }
     
     private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
 
@@ -190,19 +183,6 @@
     {
         FullWidth = true,
     };
-    
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-    
-    // ReSharper disable ConditionIsAlwaysTrueOrFalse
-        // it's actually not true that is always true or false
-        if (CaptainData.Item1 != null && ShipClass != null)
-    // ReSharper restore ConditionIsAlwaysTrueOrFalse
-        {
-            ViewModel = new(ShipClass, CaptainData);
-        }
-    }
     
     private static string ToSnakeCase(string camelCaseString)
     {

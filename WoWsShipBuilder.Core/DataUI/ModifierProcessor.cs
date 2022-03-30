@@ -17,7 +17,7 @@ public static class ModifierProcessor
 
     private static string GetUiModifierValue(float modifier, string localizerKey, ReturnFilter returnFilter)
     {
-        string value = string.Empty;
+        string value;
 
         // Because removing unused things is too hard, right WG?
         if (localizerKey.Contains("[UNUSED]", StringComparison.InvariantCultureIgnoreCase) ||
@@ -29,9 +29,10 @@ public static class ModifierProcessor
         switch (localizerKey)
         {
             // custom modifier to show hp per heal
-            case {} str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
-                value = $"+{(int) modifier}";
+            case { } str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
+                value = $"+{(int)modifier}";
                 break;
+
             // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
             case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                 value = $"+{(int)modifier}";
@@ -302,5 +303,10 @@ public static class ModifierProcessor
             description = description.Replace("[HIDDEN]", "");
             return value + " " + description.Trim();
         }
+    }
+
+    public static string GetUiModifierString(string localizerKey, double modifier, ReturnFilter returnFilter)
+    {
+        return GetUiModifierString(localizerKey, (float)modifier, returnFilter);
     }
 }

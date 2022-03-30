@@ -1,0 +1,87 @@
+﻿@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.DataUI
+@using WoWsShipBuilder.ViewModels.ShipVm;
+@inherits ReactiveComponentBase<SignalSelectorViewModel>
+@inject Localizer localizer
+
+@if (ViewModel is not null)
+{
+    <MudPaper Outlined="true" Class="pa-2">
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12">
+                <MudText Align="Align.Center">@(Translation.SignalSelector_Flags + ViewModel.SignalsNumber + "/8")</MudText>
+            </MudItem>
+            @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
+            {
+
+                <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                        <ChildContent>
+                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@GetImageStyle(signal)">
+                                <MudImage Width="50" Height="50" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
+                            </MudButton>
+                        </ChildContent>
+                        <TooltipContent>
+                            <MudPaper Outlined="true">
+                                <MudStack Spacing="0" Class="pa-2">
+                                    <MudText Align="Align.Center" Typo="Typo.h6">@localizer[signal.Signal.Name].Localization</MudText>
+                                    <MudDivider Light="true" DividerType="DividerType.Inset" Class="ma-1"/>
+                                    @foreach (var (modifierName, modifierValue) in signal.Signal.Modifiers)
+                                    {
+                                        // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                        var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
+                                        @if (!string.IsNullOrEmpty(modifierString))
+                                        {
+                                            <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                        }
+                                    }
+                                </MudStack>
+                            </MudPaper>
+                        </TooltipContent>
+                    </MudTooltip>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudPaper>    
+}
+
+
+@code {
+
+    private Color GetColorFromState(SignalItemViewModel signalItem)
+    {
+        if (ViewModel!.SelectedSignals.Any(x => x.Name.Equals(signalItem.Signal.Name)))
+        {
+            return Color.Error;
+        }
+        else if (!signalItem.CanExecute)
+        {
+            return Color.Primary;
+        }
+        else
+        {
+            return Color.Secondary;
+        }
+    }
+
+    private void OnSignalClick(SignalItemViewModel signal)
+    {
+        if (!signal.CanExecute) return;
+        ViewModel!.SignalCommandExecute(signal.Signal);
+    }
+
+    private string GetOrder(int signalSortOrder)
+    {
+        return $"order: {signalSortOrder};";
+    }
+
+    private string GetImageStyle(SignalItemViewModel signal)
+    {
+        if (!signal.CanExecute && !ViewModel!.SelectedSignals.Any(x => x.Name.Equals(signal.Signal.Name)))
+        {
+            return @"opacity: 0.4";
+        }
+        return string.Empty;
+    }
+
+}
