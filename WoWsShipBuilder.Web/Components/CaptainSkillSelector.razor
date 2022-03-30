@@ -21,7 +21,7 @@
             </MudItem>
             <MudItem xs="5">
                 <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
-                    @foreach (var captain in ViewModel!.CaptainList)
+                    @foreach (var captain in ViewModel.CaptainList!)
                     {
                         <MudSelectItem Value="captain">
                             <MudText Color="Color.Secondary">@localizer[captain.Name].Localization</MudText>
@@ -35,7 +35,7 @@
             <MudItem xs="3">
                 <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
             </MudItem>
-            @foreach (var (skillName, skill) in ViewModel!.SkillList)
+            @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {
                 <MudItem Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
@@ -51,38 +51,36 @@
                         <TooltipContent>
                             <MudPaper Outlined="true">
                                 <MudStack Spacing="0" Class="pa-2">
-                                    <MudText Align="Align.Center" Typo="Typo.h6">@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
-                                     
+                                    <MudText Align="Align.Center" Typo="Typo.h6" >@localizer["SKILL_" + ToSnakeCase(skillName)].Localization</MudText>
                                     @{
                                         // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
                                         var localization = @localizer["SKILL_DESC_" + ToSnakeCase(skillName)].Localization;
-                                        if (!string.IsNullOrEmpty(localization))
+                                        if (!string.IsNullOrWhiteSpace(localization))
                                         {
-                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: pre-wrap;">@localization</MudText>
+                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
                                         }
                                     }
-                                     
-                                    @if (skill.Skill.Modifiers != null && skill.Skill.Modifiers.Count > 0)
+                                    @if (skill.Skill.Modifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
-                                            @if (!string.IsNullOrEmpty(modifierString))
+                                            @if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2" >@modifierString</MudText>
                                             }
                                         }
                                     }
-                                    @if (skill.Skill.ConditionalModifiers != null && skill.Skill.ConditionalModifiers.Count > 0)
+                                    @if (skill.Skill.ConditionalModifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
-                                            @if (!string.IsNullOrEmpty(modifierString))
+                                            @if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }

@@ -25,12 +25,12 @@
                             <MudPaper Outlined="true">
                                 <MudStack Spacing="0" Class="pa-2">
                                     <MudText Align="Align.Center" Typo="Typo.h6">@localizer[signal.Signal.Name].Localization</MudText>
-                                    <MudDivider Light="true" DividerType="DividerType.Inset" Class="ma-1"/>
+                                    <MudDivider Light="true" Class="ma-1"/>
                                     @foreach (var (modifierName, modifierValue) in signal.Signal.Modifiers)
                                     {
                                         // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                         var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All);
-                                        @if (!string.IsNullOrEmpty(modifierString))
+                                        @if (!string.IsNullOrWhiteSpace(modifierString))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                         }
