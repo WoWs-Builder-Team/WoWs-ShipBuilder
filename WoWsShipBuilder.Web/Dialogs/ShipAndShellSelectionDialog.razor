@@ -91,14 +91,19 @@
     public List<ShellSelectionWrapper> ShipList { get; set; } = new();
 
     private readonly ObservableCollection<string> selectedShips = new();
-    private List<ShellSelectionWrapper> alreadyDisplayedShips = new();
+    private readonly List<KeyValuePair<string, string>> alreadyDisplayedShips = new();
     private bool processing;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        alreadyDisplayedShips = ShipList.DistinctBy(x => x.ShipIndex).ToList();
-        ShipList = alreadyDisplayedShips;
+        foreach (var ship in ShipList)
+        {
+            foreach ((string shellIndex, _) in ship.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected))
+            {
+                alreadyDisplayedShips.Add(new(ship.ShipIndex, shellIndex));
+            }
+        }
         selectedShips.AddRange(ShipList.Select(x => x.ShipIndex));
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }
@@ -144,17 +149,12 @@
     {
         processing = true;
         List<ShellSelectionWrapper> selections = ShipList.Where(x => x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
-        
-        foreach (var alreadyDisplayedShip in alreadyDisplayedShips)
-        {
-            Dictionary<string, ArtilleryData> oldData = alreadyDisplayedShip.ArtilleryDataDictionary;
-            foreach ((string shellIndex, (_, _, bool shellSelected)) in oldData)
-            {
-                //selections.AddRange(from w in ShipList where w.ArtilleryDataDictionary[shellIndex].ShellSelected != shellSelected select alreadyDisplayedShip);
-                selections.AddRange(ShipList.Where(x => x.ArtilleryDataDictionary[shellIndex].ShellSelected != shellSelected).Select(_ => alreadyDisplayedShip));
-            }
-        }
-        
+        List<KeyValuePair<string, string>> oldStillSelected = (from selection in ShipList.Where(x => !x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
+            from t in selection.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected)
+            select new KeyValuePair<string, string>(selection.ShipIndex, t.Key)).ToList();
+        List<KeyValuePair<string, string>> oldStillSelectedUnchanged = alreadyDisplayedShips.Intersect(oldStillSelected).ToList();
+        oldStillSelected.RemoveMany(oldStillSelectedUnchanged);
+        selections.AddRange(ShipList.Where(x => oldStillSelected.Select(y => y.Key).Contains(x.ShipIndex)));
         foreach (var data in selections)
         {
             var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(data.ShipIndex));
@@ -171,6 +171,7 @@
                 data.MaxRange = (double) gun.MaxRange;
             }
         }
+        selections.AddRange(ShipList.Where(x => oldStillSelectedUnchanged.Select(y => y.Key).Contains(x.ShipIndex)));
         processing = false;
         MudDialog.Close(DialogResult.Ok(selections));
     }
@@ -191,7 +192,7 @@
     {
         return active ? Variant.Filled : Variant.Outlined;
     }
-    
+
     private static Color GetColorFromBool(bool active)
     {
         return active ? Color.Primary : Color.Secondary;
