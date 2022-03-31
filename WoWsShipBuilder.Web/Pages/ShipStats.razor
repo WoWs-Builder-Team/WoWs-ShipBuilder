@@ -25,7 +25,18 @@
                 <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
             </MudStack>
         </MudItem>
-        <MudItem xs="8"></MudItem>
+        <MudItem xs="8">
+            @if (ViewModel.ShipStatsControlViewModel?.CurrentShipStats is not null)
+            {
+                @foreach (var (name, value) in ViewModel.ShipStatsControlViewModel.CurrentShipStats.MainBatteryUI.PropertyValueMapper)
+                {
+                    <MudStack Row="true">
+                        <MudText>@Translation.ResourceManager.GetString(name)</MudText>
+                        <MudText>@value</MudText>
+                    </MudStack>
+                }
+            }
+        </MudItem>
     </MudGrid>
 </MudContainer>
 
@@ -40,6 +51,17 @@
         navManager.TryGetQueryString("shipIndex", out string shipIndex);
         navManager.LocationChanged += HandleLocationChanged;
         await LoadShipVieModel(shipIndex);
+        await ViewModel.ShipStatsControlViewModel.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+        this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
+    }
+    
+    private async Task LoadShipVieModel(string shipIndex)
+    {
+        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+        var ship = await appDataService.GetShipFromSummary(shipSummary);
+        var vmParams = new MainViewModelParams(ship, shipSummary, null);
+        ViewModel = new(null, appDataService, vmParams);
+        await ViewModel.InitializeData(vmParams);
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -51,14 +73,5 @@
             await LoadShipVieModel(shipIndex);
             StateHasChanged();
         }
-    }
-    
-    private async Task LoadShipVieModel(string shipIndex)
-    {
-        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-        var ship = await appDataService.GetShipFromSummary(shipSummary);
-        var vmParams = new MainViewModelParams(ship, shipSummary, null);
-        ViewModel = new(null, appDataService, vmParams);
-        await ViewModel.InitializeData(vmParams);
     }
 }

@@ -3,11 +3,20 @@
 @using WoWsShipBuilder.Core.DataProvider.Updater
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Data
+@using BlazorWorker.Core
+@using BlazorWorker.BackgroundServiceFactory
+@using BlazorWorker.Extensions.JSRuntime
+@using BlazorWorker.WorkerBackgroundService
+@using DnetIndexedDb
+@using Newtonsoft.Json
+@using WoWsShipBuilder.Web.Services
+@using System.Diagnostics
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
 @inject AppSettingsHelper appSettingsHelper
 @inject NavigationManager navigationManager
+@inject IWorkerFactory workerFactory
 <MudText Typo="Typo.h2">Test Page</MudText>
 
 <MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
@@ -28,6 +37,14 @@
     }
 </MudSelect>
 <MudButton OnClick="SaveCultureChange" Disabled="AppData.Settings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="TestWorker" >Test worker</MudButton>
+
+    @if (loading)
+    {
+        <MudProgressCircular Color="Color.Success" Size="Size.Large" Indeterminate="true"/>
+    }
+
+<MudText>@output</MudText>
 
 @code {
 
@@ -38,6 +55,10 @@
     private int count;
 
     private CultureDetails selectedCulture = AppData.Settings.SelectedLanguage;
+
+    private string output;
+
+    bool loading;
     
     private async Task LoadNonExistentData()
     {
@@ -76,6 +97,57 @@
         await appSettingsHelper.SaveSettings(AppData.Settings);
         await StartUpdate();
         navigationManager.NavigateTo(navigationManager.Uri, true, false);
+    }
+
+    IWorkerBackgroundService<StartupWebWorkerService> startupService;
+    IWorkerBackgroundService<WebWorkerTestService> service;
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var serviceCollectionDependencies = new string[]
+        {
+            "Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+            , "Microsoft.Extensions.DependencyInjection.dll",
+            "WoWsShipBuilder.Core.dll",
+            "System.Diagnostics.Tracing.dll",
+            "WoWsShipBuilder.DataStructures.dll",
+            "NLog.dll",
+            "JsonSubTypes.dll",
+        };
+
+
+        var worker = await workerFactory.CreateAsync();
+        startupService = await worker.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().AddAssemblies(serviceCollectionDependencies).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
+        
+    }
+
+    private async Task TestWorker()
+    {
+        loading = true;
+        StateHasChanged();
+        Stopwatch s = new();
+        s.Start();
+        if (service is null)
+        {
+            service = await startupService.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerTestService>());
+
+        }
+        
+        var shell = await service.RunAsync(s => s.GetShip());
+        s.Stop();
+        if (shell is null)
+        {
+            output = "Error";
+        }
+        else
+        {
+            //var text = JsonConvert.SerializeObject(shell);
+            output = s.Elapsed.ToString();
+        }
+        loading = false;
+        StateHasChanged();
     }
 
 }
