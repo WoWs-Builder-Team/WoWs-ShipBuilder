@@ -100,8 +100,13 @@
         if (navManager.TryGetQueryString("shipIndex", out string shipIndex))
         {
             shipIndexesFromUrl = shipIndex.Split(',');
-            await MakeChartsFromUrl();
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender) await MakeChartsFromUrl();
     }
 
     private async Task EditCharts()
@@ -379,7 +384,7 @@
         };
     }
     
-    private async Task MakeChartsFromUrl() //The dialog in this method gets created and disposed immediately without even showing on the screens
+    private async Task MakeChartsFromUrl()
     {
         processing = true;
         List<ShellSelectionWrapper> selectedShipList = new();
