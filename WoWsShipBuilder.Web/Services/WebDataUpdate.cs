@@ -99,6 +99,7 @@ public class WebDataUpdate : ILocalDataUpdater
     {
         logger.Info("Checking json file versions for server type {0}...", serverType);
         VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
+
         VersionInfo? localVersionInfo = await appDataService.ReadLocalVersionInfo(serverType);
 
         List<(string, string)> filesToDownload;

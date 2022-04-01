@@ -3,6 +3,15 @@
 @using WoWsShipBuilder.Core.DataProvider.Updater
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Data
+@using BlazorWorker.Core
+@using BlazorWorker.BackgroundServiceFactory
+@using BlazorWorker.Extensions.JSRuntime
+@using BlazorWorker.WorkerBackgroundService
+@using DnetIndexedDb
+@using Newtonsoft.Json
+@using WoWsShipBuilder.Web.Services
+@using System.Diagnostics
+@using WoWsShipBuilder.Web.WebWorkers
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
@@ -28,6 +37,14 @@
     }
 </MudSelect>
 <MudButton OnClick="SaveCultureChange" Disabled="AppData.Settings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="TestWorker" >Test worker</MudButton>
+
+    @if (loading)
+    {
+        <MudProgressCircular Color="Color.Success" Size="Size.Large" Indeterminate="true"/>
+    }
+
+<MudText>@output</MudText>
 
 @code {
 
@@ -38,6 +55,10 @@
     private int count;
 
     private CultureDetails selectedCulture = AppData.Settings.SelectedLanguage;
+
+    private string output;
+
+    bool loading;
     
     private async Task LoadNonExistentData()
     {
@@ -77,5 +98,27 @@
         await StartUpdate();
         navigationManager.NavigateTo(navigationManager.Uri, true, false);
     }
-
+    
+    private async Task TestWorker()
+    {
+        loading = true;
+        StateHasChanged();
+        Stopwatch s = new();
+        s.Start();
+        var summary = (await appDataService.GetShipSummaryList(ServerType.Live)).First();
+        var ship = await appDataService.GetShipFromSummary(summary);
+        s.Stop();
+        if (ship is null)
+        {
+            output = "Error";
+        }
+        else
+        {
+            //var text = JsonConvert.SerializeObject(shell);
+            output = s.Elapsed.ToString();
+        }
+        loading = false;
+        StateHasChanged();
+    }
+    
 }

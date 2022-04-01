@@ -106,7 +106,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender) await MakeChartsFromUrl();
+        if (firstRender && shipIndexesFromUrl.Any()) await MakeChartsFromUrl();
     }
 
     private async Task EditCharts()

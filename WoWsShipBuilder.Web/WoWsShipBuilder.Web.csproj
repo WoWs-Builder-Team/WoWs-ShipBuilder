@@ -6,6 +6,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <TrimmerRootAssembly Include="System.Private.CoreLib" />
+        <TrimmerRootAssembly Include="System.Security.Cryptography.X509Certificates" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
@@ -22,164 +27,12 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="3.1.0" />
+        <PackageReference Include="Tewr.BlazorWorker.Extensions.JSRuntime" Version="3.1.0-preview" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
       <ProjectReference Include="..\WoWsShipBuilder.ViewModels\WoWsShipBuilder.ViewModels.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <AvaloniaResource Include="wwwroot\assets\app-logo.png" />
-      <AvaloniaResource Include="wwwroot\assets\discord.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF001_Zulu_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF002_PP_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF003_EqualSpeed_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF004_ZH_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF005_SM_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF006_HY_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF007_ID_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF008_IY_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF009_JY2_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF010_JC_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF011_IB3_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF012_MY6_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF013_PP_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF014_NF_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF015_ZH_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF016_NE7_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF017_VL_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF018_IX_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF019_JW1_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF020_Blue_Dragon_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF021_Wyvern_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF022_Red_Dragon_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF023_Ouroboros_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF024_Hydra_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF025_Basilisk_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF026_Scylla_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF027_Leviathan_Flag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF028_Smoke_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\signal_flags\PCEF029_Sonar_AirDef_SignalFlag.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\aa_damage_bubbles_additional.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\aa_damage_constant_bubbles.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\aa_damage_constant_bubbles_cv.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\aa_prioritysector_damage_constant.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\ap_damage_bb.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\ap_damage_ca.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\ap_damage_dd.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\armament_reload_aa_damage.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\armament_reload_submarine.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\atba_accuracy.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\atba_range.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\atba_upgrade.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_additional.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_crashcrew_regencrew_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_crashcrew_regencrew_upgrade.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_crashcrew_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_duration.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_fighter_additional.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\consumables_spotter_upgrade.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\defence_crit_fire_flooding.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\defence_fire_probability.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\defence_uw.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\defense_crit_probability.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\defense_hp.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_aiming.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_alert.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_direction.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_torpedo_range.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_visibility_crashcrew.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\detection_visibility_range.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\gm_range_aa_damage_bubbles.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\gm_reload_aa_damage_constant.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\gm_shell_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\gm_turn.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\he_fire_probability.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\he_fire_probability_cv.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\he_penetration.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\he_sap_damage.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\maneuverability.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_aiming_boost.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_ap_damage.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_callfighters_additional.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_callfighters_preparationtime.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_callfighters_range.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_callfighters_upgrade.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_regeneratehealth_upgrade.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_consumables_speedbooster_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_defense_damage_bubbles.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_defense_damage_constant.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_divebomber_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_forsage_duration.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_forsage_renewal.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_hp.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_torpedo_armingrange.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_torpedo_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\planes_torpedo_uw_reduced.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_battery_burn_down.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_battery_capacity.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_consumables_duration.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_consumables_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_danger_alert.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_hold_sectors.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\submarine_torpedo_ping_damage.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\torpedo_damage.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\torpedo_flooding_probability.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\torpedo_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\torpedo_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_burn_gm_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_cons_rudder_time_coeff.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_cons_sonar_time_coeff.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_gm_accuracy.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_gm_atba_reload_bb.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_gm_atba_reload_ca.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_gm_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_pinger_reload_buff.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_pinger_speed_buff.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_seen_torpedo_reload.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_speed.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_speed_accuracy.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_speed_bb.png" />
-      <AvaloniaResource Include="wwwroot\assets\Skills\trigger_spreading.png" />
-      <AvaloniaResource Include="wwwroot\favicon.ico" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\FONT-LICENSE" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\css\all.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.eot" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.ttf" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-brands-400.woff2" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.eot" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.ttf" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-regular-400.woff2" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.eot" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.svg" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.ttf" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.woff" />
-      <_ContentIncludedByDefault Remove="wwwroot\lib\fortawesome\fontawesome-free\webfonts\fa-solid-900.woff2" />
-    </ItemGroup>
-
+    
 </Project>

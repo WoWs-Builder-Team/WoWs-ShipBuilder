@@ -1,22 +1,36 @@
-﻿using WoWsShipBuilder.Core;
+﻿using System.Linq.Expressions;
+using BlazorWorker.BackgroundServiceFactory;
+using BlazorWorker.Core;
+using BlazorWorker.Extensions.JSRuntime;
+using BlazorWorker.WorkerBackgroundService;
+using DnetIndexedDb;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.WebWorkers;
 
 namespace WoWsShipBuilder.Web.Services;
 
 public class WebAppDataService : IAppDataService
 {
-    private readonly IDataService dataService;
-
     private readonly GameDataDb gameDataDb;
 
-    public WebAppDataService(IDataService dataService, GameDataDb gameDataDb)
+    private readonly IWorkerFactory workerFactory;
+
+    private readonly IDataService dataService;
+
+    private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
+
+    private IWorkerBackgroundService<WebWorkerDataService>? worker;
+
+    public WebAppDataService(IWorkerFactory workerFactory, IDataService dataService, GameDataDb gameDataDb)
     {
-        this.dataService = dataService;
         this.gameDataDb = gameDataDb;
+        this.workerFactory = workerFactory;
+        this.dataService = dataService;
     }
 
     public string DefaultAppDataDirectory { get; } = default!;
@@ -29,19 +43,20 @@ public class WebAppDataService : IAppDataService
     {
         string categoryString = IAppDataService.GetCategoryString<T>();
         string nationString = IAppDataService.GetNationString(nation);
-        string dataLocation = dataService.CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}");
+        string dataLocation = CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}");
         return await DeserializeFromDb<Dictionary<string, T>>(dataLocation);
     }
 
+    // This doesn't use the worker cause VersionInfo is a record, so not serializable by the library. #BlameFloribe.
     public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
     {
-        string dataLocation = dataService.CombinePaths(GetDataPath(serverType), "VersionInfo");
-        return await DeserializeFromDb<VersionInfo>(dataLocation);
+        string dataLocation = dataService.CombinePaths(serverType.StringName(), "VersionInfo");
+        return await dataService.LoadAsync<VersionInfo?>(dataLocation);
     }
 
     public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
     {
-        string dataLocation = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common");
+        string dataLocation = CombinePaths(GetDataPath(serverType), "Summary", "Common");
         return await DeserializeFromDb<List<ShipSummary>>(dataLocation) ?? new List<ShipSummary>();
     }
 
@@ -87,7 +102,7 @@ public class WebAppDataService : IAppDataService
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}");
+        string fileName = CombinePaths(GetDataPath(serverType), "Localization", $"{language}");
         return await DeserializeFromDb<Dictionary<string, string>>(fileName);
     }
 
@@ -95,11 +110,9 @@ public class WebAppDataService : IAppDataService
     {
         if (AppData.ShipDictionary!.TryGetValue(summary.Index, out var ship))
         {
-            Console.WriteLine("#found");
             return ship;
         }
 
-        Console.WriteLine("#not found");
         var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
         if (shipDict != null)
         {
@@ -130,7 +143,7 @@ public class WebAppDataService : IAppDataService
         return serverType.StringName();
     }
 
-    public string GetLocalizationPath(ServerType serverType) => dataService.CombinePaths(GetDataPath(serverType), "Localization");
+    public string GetLocalizationPath(ServerType serverType) => CombinePaths(GetDataPath(serverType), "Localization");
 
     public async Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
     {
@@ -141,14 +154,15 @@ public class WebAppDataService : IAppDataService
             .ToList();
     }
 
-    internal async Task<T?> DeserializeFromDb<T>(string dataLocation)
+    private async Task<T?> DeserializeFromDb<T>(string dataLocation)
     {
         if (string.IsNullOrWhiteSpace(dataLocation))
         {
             throw new ArgumentException("The provided data location must not be empty.");
         }
 
-        var returnValue = await dataService.LoadAsync<T>(dataLocation);
+        await InitializeWorker();
+        var returnValue = await worker!.RunAsync(w => w.LoadAsync<T>(dataLocation));
 
         if (returnValue == null)
         {
@@ -157,4 +171,36 @@ public class WebAppDataService : IAppDataService
 
         return returnValue;
     }
+
+    private async Task InitializeWorker()
+    {
+        if (startupWorker is null)
+        {
+            var factory = await workerFactory.CreateAsync();
+            startupWorker = await factory.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().
+                AddAssemblies(GetAssembliesForWorker()).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
+        }
+
+        worker ??= await startupWorker.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerDataService>());
+    }
+
+    private static string[] GetAssembliesForWorker()
+    {
+        return new string[]
+        {
+            "Microsoft.Extensions.DependencyInjection.Abstractions.dll", "Microsoft.Extensions.DependencyInjection.dll",
+            "WoWsShipBuilder.Core.dll",
+            "System.Diagnostics.Tracing.dll",
+            "WoWsShipBuilder.DataStructures.dll",
+            "NLog.dll",
+            "JsonSubTypes.dll",
+        };
+    }
+
+    private string CombinePaths(params string[] paths)
+    {
+        IEnumerable<string> cleanPaths = paths.Select(path => path.Replace('/', '.').Trim('.'));
+        return string.Join('.', cleanPaths);
+    }
+
 }
