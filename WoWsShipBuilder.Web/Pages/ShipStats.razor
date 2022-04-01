@@ -18,7 +18,23 @@
 </MudPaper>
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <MudGrid>
+    @if (!initialized)
+    {
+        <MudGrid>
+            <MudItem xs="4">
+                <MudStack>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="8">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid>
         <MudItem xs="4">
             <MudStack>
                 <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel"/>
@@ -38,12 +54,15 @@
             }
         </MudItem>
     </MudGrid>
+    }
 </MudContainer>
 
 
 @code {
 
     private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
+
+    private bool initialized = false;
     
     protected override async Task OnInitializedAsync()
     {
@@ -53,6 +72,7 @@
         await LoadShipVieModel(shipIndex);
         await ViewModel.ShipStatsControlViewModel.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
+        initialized = true;
     }
     
     private async Task LoadShipVieModel(string shipIndex)
@@ -62,6 +82,7 @@
         var vmParams = new MainViewModelParams(ship, shipSummary, null);
         ViewModel = new(null, appDataService, vmParams);
         await ViewModel.InitializeData(vmParams);
+
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
