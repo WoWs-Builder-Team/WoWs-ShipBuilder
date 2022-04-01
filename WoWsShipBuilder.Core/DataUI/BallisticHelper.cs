@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -103,12 +105,17 @@ namespace WoWsShipBuilder.Core.DataUI
             // Insert pen at 0 distance
             var initialSpeed = shell.MuzzleVelocity;
             var initialPen = shell.ShellType == ShellType.AP ? CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
-            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0);
+            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0, new());
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
 
-            foreach (var angle in calculationAngles)
+            foreach (double angle in calculationAngles)
             {
+                var coordinates = new List<Coordinates>
+                {
+                    new(0, 0),
+                };
+
                 // Various variable initialization
                 var y = 0d;
                 var x = 0d;
@@ -134,6 +141,11 @@ namespace WoWsShipBuilder.Core.DataUI
                     vY = vY - (Dt * G) - (Dt * k * rhoG * vY * speed);
 
                     t += Dt;
+
+                    if (y >= 0)
+                    {
+                        coordinates.Add(new(x, Math.Log(y + 1)));
+                    }
                 }
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
@@ -145,7 +157,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     break;
                 }
 
-                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle);
+                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle, coordinates);
                 dict.Add(x, ballistic);
                 lastRange = x;
             }
@@ -154,5 +166,7 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public sealed record Ballistic(double Penetration, double Velocity, double FlightTime, double ImpactAngle);
+    public sealed record Ballistic(double Penetration, double Velocity, double FlightTime, double ImpactAngle, List<Coordinates> Coordinates);
+
+    public sealed record Coordinates(double X, double Y);
 }

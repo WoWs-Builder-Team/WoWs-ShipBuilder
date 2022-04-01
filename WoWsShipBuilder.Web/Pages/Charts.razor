@@ -38,11 +38,29 @@
             }
         </MudButton>
         <MudContainer>
-            <Chart Config="horizontalDispConfig" @ref="chart"></Chart>
-            <Chart Config="verticalDispConfig"></Chart>
+            <Chart Config="horizontalDispConfig"/>
+            <Chart Config="verticalDispConfig"/>
         </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot (WIP)">
+        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Translation.ShipAndShellSelectionDialogWeb_Loading
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Translation.ChartsWeb_AddRemoveShips
+                </MudText>
+            }
+        </MudButton>
+        <MudContainer>
+            <Chart Config="coordinatesConfig"/>
+        </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
@@ -77,12 +95,13 @@
     private LineConfig flightTimeConfig = new();
     private LineConfig impactVelocityConfig = new();
     private LineConfig impactAngleConfig = new();
-    private Chart chart = new();
+    private LineConfig coordinatesConfig = new();
 
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
     private bool processing;
     private bool isFirstRendering = true;
+    private double range = 15;
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
@@ -161,8 +180,9 @@
                 IEnumerable<Point> verticalDispSeries = CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange);
 
                 var lineColor = GetColor();
-                AddChartDataset(labelName, horizontalDispSeries, horizontalDispConfig, lineColor);
-                AddChartDataset(labelName, verticalDispSeries, verticalDispConfig, lineColor);
+
+                AddDispersionChartDataset(labelName, (horizontalDispSeries, verticalDispSeries), lineColor);
+                AddTrajectoryChartDataset(labelName, ballisticSeries, lineColor);
                 await Task.Yield();
                 AddBallisticChartDataset(labelName, ballisticSeries, lineColor);
             }
@@ -174,6 +194,19 @@
             RemoveChartDataset(labelName);
         }
         StateHasChanged();
+    }
+    
+    private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) data, System.Drawing.Color chartLineColor)
+    {
+        (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) = data;
+        AddChartDataset(name, horizontalDisp, horizontalDispConfig, chartLineColor);
+        AddChartDataset(name, verticalDisp, verticalDispConfig, chartLineColor);
+    }
+
+    private void AddTrajectoryChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
+    {
+        IEnumerable<Point> pointsList = data.First(x => x.Key / 1000 > range).Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
+        AddChartDataset(name, pointsList, coordinatesConfig, chartLineColor);
     }
 
     private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
@@ -234,6 +267,7 @@
         flightTimeConfig.Data.Datasets.RemoveMany(flightTimeConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
         impactVelocityConfig.Data.Datasets.RemoveMany(impactVelocityConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
         impactAngleConfig.Data.Datasets.RemoveMany(impactAngleConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        coordinatesConfig.Data.Datasets.RemoveMany(coordinatesConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
 
         displayedShips.Remove(name);
     }
@@ -254,6 +288,7 @@
             {ChartDatasets.FlightTime, flightTimeConfig.Data.Datasets},
             {ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
             {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
+            {ChartDatasets.TrajectoryCoordinates, coordinatesConfig.Data.Datasets},
         };
         
         CreateChartConfig();
@@ -264,6 +299,7 @@
         flightTimeConfig.Data.Datasets.Add(datasets[ChartDatasets.FlightTime]);
         impactVelocityConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactVelocity]);
         impactAngleConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactAngle]);
+        coordinatesConfig.Data.Datasets.Add(datasets[ChartDatasets.TrajectoryCoordinates]);
     }
 
     private void CreateChartConfig()
@@ -274,6 +310,7 @@
         flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
         impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
         impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
+        coordinatesConfig = SetChartConfig("Shell Trajectory", "Height");
     }
 
     private static LineConfig SetChartConfig(string title, string yLabel)
@@ -533,5 +570,6 @@
         FlightTime,
         ImpactVelocity,
         ImpactAngle,
+        TrajectoryCoordinates,
     }
 }
