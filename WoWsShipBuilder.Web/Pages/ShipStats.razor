@@ -18,21 +18,41 @@
 </MudPaper>
 
 <MudContainer MaxWidth="MaxWidth.False">
-    <MudGrid>
-        <MudItem xs="4">
-            <MudStack>
-                <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel"/>
-                <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
-            </MudStack>
-        </MudItem>
-        <MudItem xs="8"></MudItem>
-    </MudGrid>
+    @if (!initialized)
+    {
+        <MudGrid>
+            <MudItem xs="4">
+                <MudStack>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="8">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+            </MudItem>
+        </MudGrid>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="4">
+                <MudStack>
+                    <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel"/>
+                    <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="8"></MudItem>
+        </MudGrid>
+    }
+
 </MudContainer>
 
 
 @code {
 
     private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
+
+    private bool initialized = false;
     
     protected override async Task OnInitializedAsync()
     {
@@ -40,6 +60,8 @@
         navManager.TryGetQueryString("shipIndex", out string shipIndex);
         navManager.LocationChanged += HandleLocationChanged;
         await LoadShipVieModel(shipIndex);
+        await Task.Delay(1000);
+        initialized = true;
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
