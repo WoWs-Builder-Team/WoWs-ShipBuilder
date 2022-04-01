@@ -358,7 +358,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shell Trajectory.
+        ///   Looks up a localized string similar to Shell Trajectory Chart.
         /// </summary>
         public static string ChartsWeb_ShellTrajectoryChart {
             get {

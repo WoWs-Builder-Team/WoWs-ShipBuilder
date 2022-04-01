@@ -1216,6 +1216,6 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>Height </value>
   </data>
   <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
-      <value>Shell Trajectory</value>
+      <value>Shell Trajectory Chart</value>
   </data>
 </root>
