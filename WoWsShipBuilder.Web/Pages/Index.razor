@@ -24,11 +24,12 @@
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips"/>
         </MudItem>
-        <MudItem xs="4" Style="justify-content: space-between">
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage">
-                Go to ship page
+        <MudItem xs="4" Class="d-flex" Style="justify-content: space-between">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage" FullWidth="true">
+                Go to ships page
             </MudButton>
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToChartPage">
+            <MudDivider Vertical="true" DividerType="DividerType.Middle"/>
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToChartPage" FullWidth="true">
                 Go to charts page
             </MudButton>
         </MudItem>

@@ -20,8 +20,8 @@
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
-<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary">
-    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts" OnClick="ReloadCharts">
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary" ActivePanelIndexChanged="ReloadCharts" Outlined="true" Border="true">
+    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -44,7 +44,7 @@
     </MudTabPanel>
     <MudTabPanel Text="Dispersion Plot (WIP)">
     </MudTabPanel>
-    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts" OnClick="ReloadCharts">
+    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -100,8 +100,13 @@
         if (navManager.TryGetQueryString("shipIndex", out string shipIndex))
         {
             shipIndexesFromUrl = shipIndex.Split(',');
-            await MakeChartsFromUrl();
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender) await MakeChartsFromUrl();
     }
 
     private async Task EditCharts()
@@ -125,7 +130,7 @@
         };
         var parameters = new DialogParameters
         {
-            ["shipList"] = displayedShips.Values.ToList(),
+            ["shipList"] = displayedShips.Values.DistinctBy(x => x.ShipIndex).ToList(),
         };
         var dialog = dialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
@@ -240,7 +245,7 @@
             isFirstRendering = false;
             return;
         }
-
+        
         Dictionary<ChartDatasets, IList<IDataset>> datasets = new()
         {
             {ChartDatasets.HorizontalDispersion, horizontalDispConfig.Data.Datasets},
@@ -250,7 +255,7 @@
             {ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
             {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
         };
-
+        
         CreateChartConfig();
 
         horizontalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.HorizontalDispersion]);
@@ -383,7 +388,7 @@
     {
         processing = true;
         List<ShellSelectionWrapper> selectedShipList = new();
-        if (shellIndexFromUrl.Length > 0 && shipIndexesFromUrl.Length == 1)
+        if (shellIndexFromUrl.Length > 0)
         {
             var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shellIndexFromUrl));
             var ship = await webAppDataService.GetShipFromSummary(shipSummary);
@@ -481,7 +486,7 @@
 
     private System.Drawing.Color GetColor()
     {
-        if (colorCounter > 14)
+        if (colorCounter > ChartColors.Length - 1)
         {
             colorCounter = 0;
         }

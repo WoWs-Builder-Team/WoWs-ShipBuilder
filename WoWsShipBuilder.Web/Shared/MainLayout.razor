@@ -4,6 +4,7 @@
 @using System.Diagnostics
 @inherits LayoutComponentBase
 @inject IDataService dataService
+@inject ISnackbar snackbar
 
 <MudThemeProvider Theme="theme" IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -11,10 +12,7 @@
 
 @if (!isInitialized)
 {
-    <MudOverlay Visible="!isInitialized" DarkBackground="true">
-        <MudProgressCircular Color="Color.Success" Indeterminate="true" Size="Size.Large"/>
-        <MudText Typo="Typo.h3">Content is loading...</MudText>
-    </MudOverlay>
+    <MudOverlay Visible="!isInitialized" DarkBackground="true"/>
 }
 
 <MudLayout>
@@ -29,10 +27,11 @@
 
 @code
 {
-    bool isInitialized = false;
-    
+    bool isInitialized;
+
     protected override async Task OnInitializedAsync()
     {
+        await ContentIsLoading(true);
         await base.OnInitializedAsync();
         if (dataService is WebDataService webDataService)
         {
@@ -42,7 +41,7 @@
             await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
             stopwatch.Stop();
             Console.WriteLine(stopwatch.Elapsed);
-            isInitialized = true;
+            await ContentIsLoading(false);
             StateHasChanged();
         }
     }
@@ -53,7 +52,7 @@
         {
             DefaultBorderRadius = "0",
         },
-        PaletteDark = 
+        PaletteDark =
         {
             Black = "#121212FF",
             White = "#FDFDFDFF",
@@ -75,7 +74,7 @@
             TextDisabled = "#FFFFFF60",
             ActionDefault = "#FFFFFF89",
             ActionDisabled = "#FFFFFF42",
-            ActionDisabledBackground =" #FFFFFF1E",
+            ActionDisabledBackground = " #FFFFFF1E",
             Surface = "#282828FF",
             LinesDefault = "#FFFFFF4D",
             LinesInputs = "#808080",
@@ -85,4 +84,22 @@
             DividerLight = "#FFFFFFCC",
         },
     };
+
+    private async Task ContentIsLoading(bool isLoading)
+    {
+        if (isLoading)
+        {
+            snackbar.Add("Loading Data...", Severity.Info);
+        }
+        else
+        {
+            snackbar.Add("Data Loading Completed", Severity.Success);
+            isInitialized = true;
+            StateHasChanged();
+            await Task.Delay(5000);
+            snackbar.Clear();
+            snackbar.Dispose();
+        }
+
+    }
 }
