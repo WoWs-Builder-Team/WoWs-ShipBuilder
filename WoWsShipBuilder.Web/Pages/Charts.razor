@@ -42,7 +42,7 @@
             <Chart Config="verticalDispConfig"/>
         </MudContainer>
     </MudTabPanel>
-    <MudTabPanel Text="Dispersion Plot (WIP)">
+    <MudTabPanel Text="@Translation.ChartsWeb_ShellTrajectoryChart">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -59,7 +59,8 @@
             }
         </MudButton>
         <MudContainer>
-            <Chart Config="coordinatesConfig"/>
+            <MudNumericField Value="range" Label="@Translation.ShipStats_Range" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250"/>
+            <Chart Config="trajectoryConfig"/>
         </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
@@ -95,13 +96,13 @@
     private LineConfig flightTimeConfig = new();
     private LineConfig impactVelocityConfig = new();
     private LineConfig impactAngleConfig = new();
-    private LineConfig coordinatesConfig = new();
+    private LineConfig trajectoryConfig = new();
 
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
     private bool processing;
     private bool isFirstRendering = true;
-    private double range = 15;
+    private double range = 10;
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
@@ -125,7 +126,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender) await MakeChartsFromUrl();
+        if (firstRender && shipIndexesFromUrl.Length > 0) await MakeChartsFromUrl();
     }
 
     private async Task EditCharts()
@@ -205,8 +206,16 @@
 
     private void AddTrajectoryChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
     {
-        IEnumerable<Point> pointsList = data.First(x => x.Key / 1000 > range).Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
-        AddChartDataset(name, pointsList, coordinatesConfig, chartLineColor);
+        var validData = new List<KeyValuePair<double, Ballistic>>
+        {
+            data.Where(x => x.Key / 1000 > range),
+        };
+        if (validData.Count == 0)
+        {
+            validData.Add(data.Last());
+        }
+        IEnumerable<Point> pointsList = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y / 1000));
+        AddChartDataset(name, pointsList, trajectoryConfig, chartLineColor);
     }
 
     private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
@@ -267,7 +276,7 @@
         flightTimeConfig.Data.Datasets.RemoveMany(flightTimeConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
         impactVelocityConfig.Data.Datasets.RemoveMany(impactVelocityConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
         impactAngleConfig.Data.Datasets.RemoveMany(impactAngleConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
-        coordinatesConfig.Data.Datasets.RemoveMany(coordinatesConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
+        trajectoryConfig.Data.Datasets.RemoveMany(trajectoryConfig.Data.Datasets.Where(x => (x as LineDataset<Point>)!.Label.Equals(name)));
 
         displayedShips.Remove(name);
     }
@@ -288,7 +297,7 @@
             {ChartDatasets.FlightTime, flightTimeConfig.Data.Datasets},
             {ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
             {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
-            {ChartDatasets.TrajectoryCoordinates, coordinatesConfig.Data.Datasets},
+            {ChartDatasets.Trajectory, trajectoryConfig.Data.Datasets},
         };
         
         CreateChartConfig();
@@ -299,7 +308,7 @@
         flightTimeConfig.Data.Datasets.Add(datasets[ChartDatasets.FlightTime]);
         impactVelocityConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactVelocity]);
         impactAngleConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactAngle]);
-        coordinatesConfig.Data.Datasets.Add(datasets[ChartDatasets.TrajectoryCoordinates]);
+        trajectoryConfig.Data.Datasets.Add(datasets[ChartDatasets.Trajectory]);
     }
 
     private void CreateChartConfig()
@@ -310,7 +319,7 @@
         flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
         impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
         impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
-        coordinatesConfig = SetChartConfig("Shell Trajectory", "Height");
+        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_KM}]");
     }
 
     private static LineConfig SetChartConfig(string title, string yLabel)
@@ -394,6 +403,7 @@
                                 FontColor = foregroundColor,
                                 MaxTicksLimit = 10,
                                 BeginAtZero = true,
+                                SuggestedMax = 1,
                             },
                             ScaleLabel = new()
                             {
@@ -420,7 +430,25 @@
             },
         };
     }
-    
+
+    private void UpdateTrajectory(double aimingRange)
+    {
+        range = aimingRange;
+        trajectoryConfig.Data.Datasets.Clear();
+        List<string> ships = new();
+        foreach ((var ship, var wrapper) in displayedShips)
+        {
+            if (ships.Contains(ship)) continue;
+            ships.Add(ship);
+            foreach ((_, (var shell, _, bool value)) in wrapper.ArtilleryDataDictionary)
+            {
+                if (!value) continue;
+                Dictionary<double, Ballistic> trajectory = BallisticHelper.CalculateBallistic(shell, wrapper.MaxRange);
+                AddTrajectoryChartDataset(ship, trajectory, GetColor());
+            }
+        }
+    }
+
     private async Task MakeChartsFromUrl()
     {
         processing = true;
@@ -475,7 +503,11 @@
             };
             var dialog = dialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters, options);
             var result = await dialog.Result;
-            if (result is null || result.Cancelled) return;
+            if (result is null || result.Cancelled)
+            {
+                processing = false;
+                return;
+            }
             selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();
         }
         
@@ -570,6 +602,6 @@
         FlightTime,
         ImpactVelocity,
         ImpactAngle,
-        TrajectoryCoordinates,
+        Trajectory,
     }
 }

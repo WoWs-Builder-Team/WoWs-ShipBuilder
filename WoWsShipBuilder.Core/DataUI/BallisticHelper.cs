@@ -144,7 +144,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     if (y >= 0)
                     {
-                        coordinates.Add(new(x, Math.Log(y + 1)));
+                        coordinates.Add(new(x, y));
                     }
                 }
 
