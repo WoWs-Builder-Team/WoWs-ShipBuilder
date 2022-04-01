@@ -3,7 +3,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Web.WebWorkers;
 
 public class WebWorkerTestService
 {

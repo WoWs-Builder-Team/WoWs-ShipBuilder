@@ -1,6 +1,6 @@
-﻿namespace WoWsShipBuilder.Web.Services;
+﻿namespace WoWsShipBuilder.Web.WebWorkers;
 
-public static class ServiceCollectionHelper
+public static class WebWorkerServiceCollectionHelper
 {
     public delegate void Configure(IServiceCollection services);
 
