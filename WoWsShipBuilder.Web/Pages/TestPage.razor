@@ -17,7 +17,6 @@
 @inject IAppDataService appDataService
 @inject AppSettingsHelper appSettingsHelper
 @inject NavigationManager navigationManager
-@inject IWorkerFactory workerFactory
 <MudText Typo="Typo.h2">Test Page</MudText>
 
 <MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
@@ -99,46 +98,17 @@
         await StartUpdate();
         navigationManager.NavigateTo(navigationManager.Uri, true, false);
     }
-
-    IWorkerBackgroundService<StartupWebWorkerService> startupService;
-    IWorkerBackgroundService<WebWorkerTestService> service;
-
     
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        var serviceCollectionDependencies = new string[]
-        {
-            "Microsoft.Extensions.DependencyInjection.Abstractions.dll"
-            , "Microsoft.Extensions.DependencyInjection.dll",
-            "WoWsShipBuilder.Core.dll",
-            "System.Diagnostics.Tracing.dll",
-            "WoWsShipBuilder.DataStructures.dll",
-            "NLog.dll",
-            "JsonSubTypes.dll",
-        };
-
-
-        var worker = await workerFactory.CreateAsync();
-        startupService = await worker.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().AddAssemblies(serviceCollectionDependencies).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
-        
-    }
-
     private async Task TestWorker()
     {
         loading = true;
         StateHasChanged();
         Stopwatch s = new();
         s.Start();
-        if (service is null)
-        {
-            service = await startupService.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerTestService>());
-
-        }
-        
-        var shell = await service.RunAsync(s => s.GetShip());
+        var summary = (await appDataService.GetShipSummaryList(ServerType.Live)).First();
+        var ship = await appDataService.GetShipFromSummary(summary);
         s.Stop();
-        if (shell is null)
+        if (ship is null)
         {
             output = "Error";
         }
@@ -150,5 +120,5 @@
         loading = false;
         StateHasChanged();
     }
-
+    
 }

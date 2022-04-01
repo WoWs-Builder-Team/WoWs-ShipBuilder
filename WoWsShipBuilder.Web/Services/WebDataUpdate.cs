@@ -99,7 +99,9 @@ public class WebDataUpdate : ILocalDataUpdater
     {
         logger.Info("Checking json file versions for server type {0}...", serverType);
         VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-        VersionInfo? localVersionInfo = await appDataService.ReadLocalVersionInfo(serverType);
+
+        string dataLocation = dataService.CombinePaths(serverType.StringName(), "VersionInfo");
+        VersionInfo? localVersionInfo = await dataService.LoadAsync<VersionInfo>(dataLocation);
 
         List<(string, string)> filesToDownload;
         bool shouldImagesUpdate;
@@ -231,8 +233,10 @@ public class WebDataUpdate : ILocalDataUpdater
     public async Task<bool> ShouldUpdaterRun(ServerType serverType)
     {
         var today = DateTime.Today;
+        string dataLocation = dataService.CombinePaths(serverType.StringName(), "VersionInfo");
+        VersionInfo? localVersionInfo = await dataService.LoadAsync<VersionInfo>(dataLocation);
         return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
-               await appDataService.ReadLocalVersionInfo(serverType) == null;
+               localVersionInfo == null;
     }
 
     public async Task CheckInstalledLocalizations(ServerType serverType)
