@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using BlazorWorker.BackgroundServiceFactory;
+﻿using BlazorWorker.BackgroundServiceFactory;
 using BlazorWorker.Core;
 using BlazorWorker.Extensions.JSRuntime;
 using BlazorWorker.WorkerBackgroundService;
@@ -41,10 +40,15 @@ public class WebAppDataService : IAppDataService
 
     public async Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType)
     {
+        string dataLocation = FindDataPath<T>(nation, serverType);
+        return await DeserializeFromDb<Dictionary<string, T>>(dataLocation);
+    }
+
+    private string FindDataPath<T>(Nation nation, ServerType serverType)
+    {
         string categoryString = IAppDataService.GetCategoryString<T>();
         string nationString = IAppDataService.GetNationString(nation);
-        string dataLocation = CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}");
-        return await DeserializeFromDb<Dictionary<string, T>>(dataLocation);
+        return CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}");
     }
 
     // This doesn't use the worker cause VersionInfo is a record, so not serializable by the library. #BlameFloribe.
@@ -63,11 +67,6 @@ public class WebAppDataService : IAppDataService
     public async Task LoadNationFiles(Nation nation)
     {
         var server = AppData.Settings.SelectedServerType;
-        if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
-        {
-            AppData.ShipDictionary = await ReadLocalJsonData<Ship>(nation, server);
-        }
-
         AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
         AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
         AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
@@ -110,19 +109,27 @@ public class WebAppDataService : IAppDataService
     {
         if (AppData.ShipDictionary!.TryGetValue(summary.Index, out var ship))
         {
+            Console.WriteLine("cache hit");
             return ship;
         }
 
-        var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
-        if (shipDict != null)
+        var dataPath = FindDataPath<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+        ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
+
+        // var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+        // if (shipDict != null)
+        // {
+        //     ship = shipDict[summary.Index];
+        //     if (changeDictionary)
+        //     {
+        //         AppData.ShipDictionary = AppData.ShipDictionary.Union(shipDict)
+        //             .DistinctBy(x => x.Key)
+        //             .ToDictionary(x => x.Key, x => x.Value);
+        //     }
+        // }
+        if (ship is not null)
         {
-            ship = shipDict[summary.Index];
-            if (changeDictionary)
-            {
-                AppData.ShipDictionary = AppData.ShipDictionary.Union(shipDict)
-                    .DistinctBy(x => x.Key)
-                    .ToDictionary(x => x.Key, x => x.Value);
-            }
+            AppData.ShipDictionary[ship.Index] = ship;
         }
 
         return ship;

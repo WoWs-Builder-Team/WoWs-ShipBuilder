@@ -1,8 +1,6 @@
 ﻿@page "/ship"
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
 @inherits ReactiveComponentBase<ShipViewModel>
@@ -69,20 +67,20 @@
         await base.OnInitializedAsync();
         navManager.TryGetQueryString("shipIndex", out string shipIndex);
         navManager.LocationChanged += HandleLocationChanged;
-        await LoadShipVieModel(shipIndex);
+        await LoadShipViewModel(shipIndex);
         await ViewModel.ShipStatsControlViewModel.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
-        this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
+        // this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
         initialized = true;
     }
     
-    private async Task LoadShipVieModel(string shipIndex)
+    private async Task LoadShipViewModel(string shipIndex)
     {
         var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+        await appDataService.LoadNationFiles(shipSummary.Nation);
         var ship = await appDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship, shipSummary, null);
         ViewModel = new(null, appDataService, vmParams);
         await ViewModel.InitializeData(vmParams);
-
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -91,7 +89,7 @@
         if (uri.Contains("/ship"))
         {
             navManager.TryGetQueryString("shipIndex", out string shipIndex);
-            await LoadShipVieModel(shipIndex);
+            await LoadShipViewModel(shipIndex);
             StateHasChanged();
         }
     }

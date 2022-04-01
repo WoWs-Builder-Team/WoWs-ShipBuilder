@@ -3,9 +3,7 @@ using BlazorWorker.WorkerCore;
 using DnetIndexedDb;
 using DnetIndexedDb.Fluent;
 using DnetIndexedDb.Models;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Services;
 
 namespace WoWsShipBuilder.Web.WebWorkers;
 
@@ -20,7 +18,7 @@ public class StartupWebWorkerService
         serviceProvider = WebWorkerServiceCollectionHelper.BuildServiceProviderFromMethod(Configure);
     }
 
-    public T Resolve<T>() => serviceProvider.GetService<T>()!;
+    public T Resolve<T>() where T : notnull => serviceProvider.GetRequiredService<T>();
 
     public void Configure(IServiceCollection services)
     {

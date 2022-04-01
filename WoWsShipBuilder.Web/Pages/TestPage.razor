@@ -3,15 +3,8 @@
 @using WoWsShipBuilder.Core.DataProvider.Updater
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Data
-@using BlazorWorker.Core
-@using BlazorWorker.BackgroundServiceFactory
-@using BlazorWorker.Extensions.JSRuntime
-@using BlazorWorker.WorkerBackgroundService
-@using DnetIndexedDb
-@using Newtonsoft.Json
-@using WoWsShipBuilder.Web.Services
 @using System.Diagnostics
-@using WoWsShipBuilder.Web.WebWorkers
+@using WoWsShipBuilder.DataStructures
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
@@ -59,7 +52,7 @@
     private string output;
 
     bool loading;
-    
+
     private async Task LoadNonExistentData()
     {
         var result = await dataService.LoadStringAsync("test.does.not.exist");
@@ -105,7 +98,7 @@
         StateHasChanged();
         Stopwatch s = new();
         s.Start();
-        var summary = (await appDataService.GetShipSummaryList(ServerType.Live)).First();
+        var summary = (await appDataService.GetShipSummaryList(ServerType.Live)).First(x => x.Nation == Nation.Usa);
         var ship = await appDataService.GetShipFromSummary(summary);
         s.Stop();
         if (ship is null)

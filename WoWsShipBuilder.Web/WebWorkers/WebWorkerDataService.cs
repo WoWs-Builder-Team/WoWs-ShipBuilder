@@ -4,7 +4,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Services;
 
 namespace WoWsShipBuilder.Web.WebWorkers;
 
@@ -68,7 +67,7 @@ public class WebWorkerDataService : IDataService
 
     public T? Load<T>(string path)
     {
-     throw new NotSupportedException();
+        throw new NotSupportedException();
     }
 
     public string CombinePaths(params string[] paths)

@@ -37,8 +37,8 @@
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            await Task.Delay(20);
-            await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
+            await Task.Delay(20); 
+    // await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
             stopwatch.Stop();
             Console.WriteLine(stopwatch.Elapsed);
             await ContentIsLoading(false);

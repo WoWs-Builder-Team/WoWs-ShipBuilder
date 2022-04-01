@@ -250,10 +250,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             PreviousShipIndex = previousIndex;
             if (previousIndex != null)
             {
-                PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
+                PreviousShipTier = AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex).Tier;
             }
 
-            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
+            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipSummaryList!.First(sum => sum.Index == x).Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
             if (build != null)
