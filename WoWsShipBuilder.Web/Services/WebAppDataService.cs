@@ -20,14 +20,17 @@ public class WebAppDataService : IAppDataService
 
     private readonly IWorkerFactory workerFactory;
 
+    private readonly IDataService dataService;
+
     private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
 
     private IWorkerBackgroundService<WebWorkerDataService>? worker;
 
-    public WebAppDataService(IWorkerFactory workerFactory, GameDataDb gameDataDb)
+    public WebAppDataService(IWorkerFactory workerFactory, IDataService dataService, GameDataDb gameDataDb)
     {
         this.gameDataDb = gameDataDb;
         this.workerFactory = workerFactory;
+        this.dataService = dataService;
     }
 
     public string DefaultAppDataDirectory { get; } = default!;
@@ -44,11 +47,11 @@ public class WebAppDataService : IAppDataService
         return await DeserializeFromDb<Dictionary<string, T>>(dataLocation);
     }
 
-    public Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
+    // This doesn't use the worker cause VersionInfo is a record, so not serializable by the library. #BlameFloribe.
+    public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
     {
-        // string dataLocation = CombinePaths(GetDataPath(serverType), "VersionInfo");
-        // return await DeserializeFromDb<VersionInfo>(dataLocation);
-        throw new NotImplementedException();
+        string dataLocation = dataService.CombinePaths(serverType.StringName(), "VersionInfo");
+        return await dataService.LoadAsync<VersionInfo?>(dataLocation);
     }
 
     public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
