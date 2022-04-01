@@ -59,8 +59,14 @@
             }
         </MudButton>
         <MudContainer>
-            <MudNumericField Value="range" Label="@Translation.ShipStats_Range" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250"/>
-            <Chart Config="trajectoryConfig"/>
+            <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+                <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
+                    <MudNumericField Value="range" Label="@Translation.ShipStats_Range" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
+                </MudItem>
+                <MudItem Class="z-10" xs="12">
+                    <Chart Config="trajectoryConfig"/>
+                </MudItem>
+            </MudGrid>
         </MudContainer>
     </MudTabPanel>
     <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
@@ -102,7 +108,7 @@
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
     private bool processing;
     private bool isFirstRendering = true;
-    private double range = 10;
+    private static double range = 10;
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
@@ -112,7 +118,7 @@
     {
         await base.OnInitializedAsync();
         CreateChartConfig();
-        
+
         if (navManager.TryGetQueryString("shellIndex", out string shellIndex))
         {
             shellIndexFromUrl = shellIndex;
@@ -196,7 +202,7 @@
         }
         StateHasChanged();
     }
-    
+
     private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) data, System.Drawing.Color chartLineColor)
     {
         (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) = data;
@@ -283,12 +289,12 @@
 
     private void ReloadCharts()
     {
-        if (isFirstRendering) 
+        if (isFirstRendering)
         {
             isFirstRendering = false;
             return;
         }
-        
+
         Dictionary<ChartDatasets, IList<IDataset>> datasets = new()
         {
             {ChartDatasets.HorizontalDispersion, horizontalDispConfig.Data.Datasets},
@@ -299,7 +305,7 @@
             {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
             {ChartDatasets.Trajectory, trajectoryConfig.Data.Datasets},
         };
-        
+
         CreateChartConfig();
 
         horizontalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.HorizontalDispersion]);
@@ -433,20 +439,22 @@
 
     private void UpdateTrajectory(double aimingRange)
     {
+        processing = true;
         range = aimingRange;
         trajectoryConfig.Data.Datasets.Clear();
-        List<string> ships = new();
-        foreach ((var ship, var wrapper) in displayedShips)
+        foreach (var wrapper in displayedShips.Values.DistinctBy(x => x.ShipIndex))
         {
-            if (ships.Contains(ship)) continue;
-            ships.Add(ship);
-            foreach ((_, (var shell, _, bool value)) in wrapper.ArtilleryDataDictionary)
+            foreach ((string shellIndex, (var shell, _, bool value)) in wrapper.ArtilleryDataDictionary)
             {
                 if (!value) continue;
                 Dictionary<double, Ballistic> trajectory = BallisticHelper.CalculateBallistic(shell, wrapper.MaxRange);
-                AddTrajectoryChartDataset(ship, trajectory, GetColor());
+                string shipName = Localizer.Instance[$"{wrapper.ShipIndex}_FULL"].Localization;
+                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                var labelName = $"{shipName} - {shellName}";
+                AddTrajectoryChartDataset(labelName, trajectory, GetColor());
             }
         }
+        processing = false;
     }
 
     private async Task MakeChartsFromUrl()
@@ -464,7 +472,7 @@
 
             ArtilleryData data = new(shell, gun.DispersionValues, true);
             artilleryData.Add(shellIndexFromUrl, data);
-            ShellSelectionWrapper wrapper = new (shellIndexFromUrl, artilleryData)
+            ShellSelectionWrapper wrapper = new(shellIndexFromUrl, artilleryData)
             {
                 MaxRange = (double) gun.MaxRange,
             };
@@ -477,7 +485,7 @@
             {
                 var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
                 var ship = await webAppDataService.GetShipFromSummary(shipSummary);
-                
+
                 Dictionary<string, ArtilleryData> artilleryData = new();
                 if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
                 {
@@ -487,11 +495,11 @@
                         artilleryData.Add(shellIndex, new());
                     }
                 }
-                
+
                 ShellSelectionWrapper wrapper = new(shipIndex, artilleryData);
                 shipList.Add(wrapper);
             }
-            
+
             DialogOptions options = new()
             {
                 MaxWidth = MaxWidth.Small,
@@ -510,7 +518,7 @@
             }
             selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();
         }
-        
+
         await UpdateCharts(selectedShipList);
         processing = false;
     }
@@ -523,7 +531,7 @@
     /// <returns>The horizontal dispersion series for the given parameter.</returns>
     private static IEnumerable<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        return CreateFunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
+        return CreateFunctionSeries(x => dispersion.CalculateHorizontalDispersion(x * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
     }
 
     /// <summary>
@@ -534,7 +542,7 @@
     /// <returns>The vertical dispersion series for the given parameter.</returns>
     private static IEnumerable<Point> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
     {
-        return CreateFunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
+        return CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
     }
 
     /// <summary>
