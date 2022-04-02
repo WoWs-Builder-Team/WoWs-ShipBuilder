@@ -113,6 +113,7 @@
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
+    private readonly Dictionary<string, Dictionary<double, Ballistic>> displayedTrajectory = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -182,12 +183,11 @@
 
                 displayedShips.Add(labelName, selectedShip);
 
-                Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, selectedShip.MaxRange);
+                Dictionary<double, Ballistic> ballisticSeries = displayedTrajectory.ContainsKey(labelName) ? displayedTrajectory[labelName] : BallisticHelper.CalculateBallistic(shell, selectedShip.MaxRange);
                 IEnumerable<Point> horizontalDispSeries = CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange);
                 IEnumerable<Point> verticalDispSeries = CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange);
 
                 var lineColor = GetColor();
-
                 AddDispersionChartDataset(labelName, (horizontalDispSeries, verticalDispSeries), lineColor);
                 AddTrajectoryChartDataset(labelName, ballisticSeries, lineColor);
                 await Task.Yield();
@@ -219,6 +219,10 @@
         if (validData.Count == 0)
         {
             validData.Add(data.Last());
+        }
+        if (!displayedTrajectory.ContainsKey(name))
+        {
+            displayedTrajectory.Add(name, data);
         }
         IEnumerable<Point> pointsList = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y / 1000));
         AddChartDataset(name, pointsList, trajectoryConfig, chartLineColor);
@@ -442,18 +446,15 @@
         processing = true;
         range = aimingRange;
         trajectoryConfig.Data.Datasets.Clear();
-        foreach (var wrapper in displayedShips.Values.DistinctBy(x => x.ShipIndex))
+
+        foreach ((string name, Dictionary<double, Ballistic> data) in displayedTrajectory)
         {
-            foreach ((string shellIndex, (var shell, _, bool value)) in wrapper.ArtilleryDataDictionary)
+            if (displayedShips.ContainsKey(name))
             {
-                if (!value) continue;
-                Dictionary<double, Ballistic> trajectory = BallisticHelper.CalculateBallistic(shell, wrapper.MaxRange);
-                string shipName = Localizer.Instance[$"{wrapper.ShipIndex}_FULL"].Localization;
-                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
-                var labelName = $"{shipName} - {shellName}";
-                AddTrajectoryChartDataset(labelName, trajectory, GetColor());
+                AddTrajectoryChartDataset(name, data, GetColor());
             }
         }
+
         processing = false;
     }
 
