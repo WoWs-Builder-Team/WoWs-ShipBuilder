@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
