@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -53,27 +55,14 @@ namespace WoWsShipBuilder.Core.DataUI
 
         private static double GetNormalization(double caliber)
         {
-            double norm;
-            if (caliber <= 0.139)
+            double norm = caliber switch
             {
-                norm = 10 * Math.PI / 180;
-            }
-            else if (caliber <= 0.152)
-            {
-                norm = 8.5 * Math.PI / 180;
-            }
-            else if (caliber <= 0.24)
-            {
-                norm = 7 * Math.PI / 180;
-            }
-            else if (caliber < 0.51)
-            {
-                norm = 6 * Math.PI / 180;
-            }
-            else
-            {
-                norm = 15 * Math.PI / 180;
-            }
+                <= 0.139 => 10 * Math.PI / 180,
+                <= 0.152 => 8.5 * Math.PI / 180,
+                <= 0.24 => 7 * Math.PI / 180,
+                < 0.51 => 6 * Math.PI / 180,
+                _ => 15 * Math.PI / 180,
+            };
 
             return norm;
         }
@@ -88,7 +77,7 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var dict = new Dictionary<double, Ballistic>();
 
-            // Increase max range toa ccount for modifiers
+            // Increase max range to account for modifiers
             maxRange *= 1.5;
 
             // Initialize the angle list. This way we calculate it only once, if it's needed.
@@ -102,14 +91,19 @@ namespace WoWsShipBuilder.Core.DataUI
 
             // Insert pen at 0 distance
             var initialSpeed = shell.MuzzleVelocity;
-            var initialPen = CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp);
-            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0);
+            var initialPen = shell.ShellType == ShellType.AP ? CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
+            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0, new());
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
 
-            foreach (var angle in calculationAngles)
+            foreach (double angle in calculationAngles)
             {
-                // Various variable inizialitazion
+                var coordinates = new List<Coordinates>
+                {
+                    new(0, 0),
+                };
+
+                // Various variable initialization
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
@@ -134,18 +128,23 @@ namespace WoWsShipBuilder.Core.DataUI
                     vY = vY - (Dt * G) - (Dt * k * rhoG * vY * speed);
 
                     t += Dt;
+
+                    if (y >= 0)
+                    {
+                        coordinates.Add(new(x, y));
+                    }
                 }
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
                 var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
-                var pen = CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
+                var pen = shell.ShellType == ShellType.AP ? CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
 
                 if (x > maxRange || x < lastRange)
                 {
                     break;
                 }
 
-                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle);
+                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle, coordinates);
                 dict.Add(x, ballistic);
                 lastRange = x;
             }
@@ -154,5 +153,7 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public sealed record Ballistic(double Penetration, double Velocity, double FlightTime, double ImpactAngle);
+    public sealed record Ballistic(double Penetration, double Velocity, double FlightTime, double ImpactAngle, List<Coordinates> Coordinates);
+
+    public sealed record Coordinates(double X, double Y);
 }
