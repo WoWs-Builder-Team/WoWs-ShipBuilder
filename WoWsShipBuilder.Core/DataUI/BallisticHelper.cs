@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
