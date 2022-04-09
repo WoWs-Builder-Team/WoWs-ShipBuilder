@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,10 +9,6 @@
         Title="TestWindow">
     <Grid RowDefinitions="30,auto,*">
         <userControls:AppHeader Grid.Row="0"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Spacing="10">
-            <TextBox Text="{Binding Shots}"/>
-            <Button Content="Apply" Command="{Binding Apply}"/>
-        </StackPanel>
-        <customControls:DispersionPlot Grid.Row="2" DispersionPlotParameters="{Binding DispersionPlotParameters}" PlotScaling="{Binding PlotScaling}"/>
+        <customControls:DpmAnglesChart Grid.Row="2"/>
     </Grid>
 </Window>
