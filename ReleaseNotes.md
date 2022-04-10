@@ -5,6 +5,7 @@
 - Added an indicator to show if there is any talent or conditional modifier active
 - Added Hungarian translation. Thanks to StaK_1980!
 - Added amount of HP restored per heal on ship consumables.
+- Added shell trajectory chart.
 
 ## Changes
 - Increased spacing between rows in the ship statistic for better readability.

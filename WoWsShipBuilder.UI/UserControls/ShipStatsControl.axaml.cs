@@ -40,6 +40,11 @@ namespace WoWsShipBuilder.UI.UserControls
             OpenGraphsWindow(sender, e, Tabs.Ballistic);
         }
 
+        public void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
+        {
+            OpenGraphsWindow(sender, e, Tabs.Trajectory);
+        }
+
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
         {
             var dc = (ShipStatsControlViewModelBase)DataContext!;
