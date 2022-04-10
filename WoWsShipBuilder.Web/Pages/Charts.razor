@@ -213,7 +213,7 @@
         StateHasChanged();
     }
 
-    private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) data, System.Drawing.Color chartLineColor)
+    private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) data, string chartLineColor)
     {
         if (!dispersionsCache.ContainsKey(name))
         {
@@ -224,7 +224,7 @@
         AddChartDataset(name, verticalDisp, verticalDispConfig, chartLineColor);
     }
 
-    private void AddTrajectoryChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
+    private void AddTrajectoryChartDataset(string name, Dictionary<double, Ballistic> data, string chartLineColor)
     {
         var validData = new List<KeyValuePair<double, Ballistic>>
         {
@@ -238,11 +238,11 @@
         {
             trajectoriesCache.Add(name, data);
         }
-        IEnumerable<Point> pointsList = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y / 1000));
+        IEnumerable<Point> pointsList = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
         AddChartDataset(name, pointsList, trajectoryConfig, chartLineColor);
     }
 
-    private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, System.Drawing.Color chartLineColor)
+    private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, string chartLineColor)
     {
         CreateBallisticChartDataset(name, data, BallisticParameter.Penetration, chartLineColor);
         CreateBallisticChartDataset(name, data, BallisticParameter.FlightTime, chartLineColor);
@@ -250,7 +250,7 @@
         CreateBallisticChartDataset(name, data, BallisticParameter.ImpactAngle, chartLineColor);
     }
 
-    private void CreateBallisticChartDataset(string name, Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter, System.Drawing.Color chartLineColor)
+    private void CreateBallisticChartDataset(string name, Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter, string chartLineColor)
     {
         LineConfig chartConfig;
         IEnumerable<Point> pointsList;
@@ -278,13 +278,13 @@
         AddChartDataset(name, pointsList, chartConfig, chartLineColor);
     }
 
-    private static void AddChartDataset(string name, IEnumerable<Point> data, LineConfig chartConfig, System.Drawing.Color chartLineColor)
+    private static void AddChartDataset(string name, IEnumerable<Point> data, LineConfig chartConfig, string chartLineColor)
     {
         var dataset = new LineDataset<Point>(data)
         {
             Label = name,
-            BackgroundColor = ColorUtil.FromDrawingColor(chartLineColor),
-            BorderColor = ColorUtil.FromDrawingColor(chartLineColor),
+            BackgroundColor = chartLineColor,
+            BorderColor = chartLineColor,
             Fill = FillingMode.Disabled,
             PointRadius = 0,
             CubicInterpolationMode = CubicInterpolationMode.Monotone,
@@ -343,10 +343,10 @@
         flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
         impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
         impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
-        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_KM}]");
+        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_KM}]", true);
     }
 
-    private static LineConfig SetChartConfig(string title, string yLabel)
+    private LineConfig SetChartConfig(string title, string yLabel, bool isShellTrajectoryChart = false)
     {
         var xLabel = $"{Translation.ShipStats_Range} [{Translation.Unit_KM}]";
         string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
@@ -427,7 +427,7 @@
                                 FontColor = foregroundColor,
                                 MaxTicksLimit = 10,
                                 BeginAtZero = true,
-                                SuggestedMax = 1,
+                                SuggestedMax = isShellTrajectoryChart ? (int)(range / 4 * 1000) : 0,
                             },
                             ScaleLabel = new()
                             {
@@ -459,14 +459,14 @@
     {
         processing = true;
         range = aimingRange;
-        trajectoryConfig.Data.Datasets.Clear();
-
+        ((LinearCartesianAxis) trajectoryConfig.Options.Scales.YAxes.First()).Ticks.SuggestedMax = (int)(aimingRange / 4 * 1000);
         foreach ((string name, Dictionary<double, Ballistic> data) in trajectoriesCache)
         {
-            if (displayedShips.ContainsKey(name))
-            {
-                AddTrajectoryChartDataset(name, data, GetColor());
-            }
+            if (!displayedShips.ContainsKey(name)) continue;
+            var dataset = trajectoryConfig.Data.Datasets.First(x => (x as LineDataset<Point>)!.Label.Equals(name)) as LineDataset<Point>;
+            string color = dataset!.BackgroundColor;
+            trajectoryConfig.Data.Datasets.Remove(dataset);
+            AddTrajectoryChartDataset(name, data, color);
         }
 
         processing = false;
@@ -576,7 +576,7 @@
         return dispSeries;
     }
 
-    private System.Drawing.Color GetColor()
+    private string GetColor()
     {
         if (colorCounter > ChartColors.Length - 1)
         {
@@ -584,7 +584,7 @@
         }
         var color = ChartColors[colorCounter];
         colorCounter++;
-        return color;
+        return ColorUtil.FromDrawingColor(color);
     }
 
     private static System.Drawing.Color[] GenerateColors()
