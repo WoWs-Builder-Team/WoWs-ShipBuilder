@@ -603,7 +603,9 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>速度</value>
   </data>
-  
+  <data name="ShipStats_Weapon" xml:space="preserve">
+      <value>兵装</value>
+  </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>反跳爆弾</value>
   </data>
@@ -1176,11 +1178,25 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>標準</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>磁気</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>深度</value>
+  </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>1回あたりの回復量</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>射程 [km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>高さ</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>砲弾の軌道グラフを表示</value>
+  </data>
 </root>
