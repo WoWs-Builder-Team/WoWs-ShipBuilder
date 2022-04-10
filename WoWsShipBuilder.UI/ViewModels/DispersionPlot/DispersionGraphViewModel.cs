@@ -68,21 +68,24 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             ShootingRange = AppData.Settings.DispersionPlotSettings.ShootingRange;
 
             logger.Info("Creating base plot models");
-            var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
-            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
-            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, Translation.Unit_MM, LegendPosition.TopRight, 0.7);
-            var fTModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, Translation.Unit_S, LegendPosition.TopLeft, 0.2);
-            var iVModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, Translation.Unit_MPS, LegendPosition.TopRight, 0.2);
-            var iAModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, Translation.Unit_Degree, LegendPosition.TopLeft, 0.2);
-            var tModel = InitializeTrajectoryBaseModel(Translation.DispersionGraphWindow_ShellsPath);
+
+            var hModel = InitializePlotBaseModel(Translation.ShipStats_HorizontalDisp, Translation.Unit_M, LegendPosition.TopLeft);
+            var vModel = InitializePlotBaseModel(Translation.ShipStats_VerticalDisp, Translation.Unit_M, LegendPosition.TopLeft);
+            var penModel = InitializePlotBaseModel(Translation.ShipStats_Penetration, Translation.Unit_MM, LegendPosition.TopRight, 0.7);
+            var fTModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_FlightTime, Translation.Unit_S, LegendPosition.TopLeft, 0.2);
+            var iVModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, Translation.Unit_MPS, LegendPosition.TopRight, 0.2);
+            var iAModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ImpactAngle, Translation.Unit_Degree, LegendPosition.TopLeft, 0.2);
+            var tModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ShellsPath, Translation.Unit_M, LegendPosition.TopLeft);
 
             if (maxRange > 0 && disp != null && shell != null)
             {
                 string shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
                 string shellName = Localizer.Instance[$"{shell.Name}"].Localization;
                 var name = $"{shipName} - {shellName}";
+
                 logger.Info("Creating series for {0}", name);
                 logger.Info("Creating series");
+
                 var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
                 var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
                 var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
@@ -97,6 +100,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 iVModel.Series.Add(ballisticSeries.ImpactVelocity);
                 iAModel.Series.Add(ballisticSeries.ImpactAngle);
                 tModel.Series.Add(ballisticSeries.Trajectory);
+
                 shipNames.Add(name);
 
                 var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
@@ -294,23 +298,24 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set
             {
                 this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
-                if (value == EllipsePlanes.HorizontalPlane)
+                switch (value)
                 {
-                    IsHorizontalPlane = true;
-                    IsVerticalPlane = false;
-                    IsRealPlane = false;
-                }
-                else if (value == EllipsePlanes.VerticalPlane)
-                {
-                    IsHorizontalPlane = false;
-                    IsVerticalPlane = true;
-                    IsRealPlane = false;
-                }
-                else
-                {
-                    IsHorizontalPlane = false;
-                    IsVerticalPlane = false;
-                    IsRealPlane = true;
+                    case EllipsePlanes.HorizontalPlane:
+                        IsHorizontalPlane = true;
+                        IsVerticalPlane = false;
+                        IsRealPlane = false;
+                        break;
+                    case EllipsePlanes.VerticalPlane:
+                        IsHorizontalPlane = false;
+                        IsVerticalPlane = true;
+                        IsRealPlane = false;
+                        break;
+                    case EllipsePlanes.RealPlane:
+                    default:
+                        IsHorizontalPlane = false;
+                        IsVerticalPlane = false;
+                        IsRealPlane = true;
+                        break;
                 }
             }
         }
@@ -516,8 +521,10 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 ImpactAngleModel!.Series.RemoveAt(index);
                 ImpactVelocityModel!.Series.RemoveAt(index);
                 ShellTrajectoryModel!.Series.RemoveAt(index);
+
                 DispersionPlotList.RemoveAt(index);
                 ShellTrajectoryCache.RemoveAt(index);
+
                 if (DispersionPlotList.Count > 0)
                 {
                     DispersionPlotList.Last().UpdateIsLast(true);
@@ -533,6 +540,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             ImpactVelocityModel!.InvalidatePlot(true);
             ImpactAngleModel!.InvalidatePlot(true);
             ShellTrajectoryModel!.InvalidatePlot(true);
+
             this.RaisePropertyChanged(nameof(ShipNames));
         }
 
@@ -591,73 +599,14 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public bool CanRemoveShip(object parameter) => shipNames.Count > 0;
 
         /// <summary>
-        /// Initialize the model for the dispersions plot with common settings.
-        /// </summary>
-        /// <param name="name">Title of the plot and of the Y axis.</param>
-        /// <returns>The dispersion model.</returns>
-        private PlotModel InitializeDispersionBaseModel(string name)
-        {
-            var foreground = ConvertColorFromResource("ThemeForegroundColor");
-            var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
-            var background = ConvertColorFromResource("ThemeBackgroundColor");
-
-            PlotModel model = new()
-            {
-                Title = name,
-                TextColor = foreground,
-                PlotAreaBorderColor = foreground,
-                LegendPosition = LegendPosition.TopLeft,
-                LegendBorder = foreground,
-                LegendBorderThickness = 1,
-                LegendBackground = background,
-                LegendFontSize = 13,
-            };
-
-            var xAxis = new LinearAxis
-            {
-                Position = AxisPosition.Bottom,
-                Title = Translation.ShipStats_Range,
-                IsPanEnabled = false,
-                Unit = Translation.Unit_KM,
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foregroundLow,
-            };
-
-            var yAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                Title = name,
-                IsPanEnabled = false,
-                Unit = Translation.Unit_M,
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foregroundLow,
-            };
-            model.Axes.Add(xAxis);
-            model.Axes.Add(yAxis);
-            model.DefaultColors = GenerateColors();
-
-            return model;
-        }
-
-        /// <summary>
-        /// Initialize the model for the ballistic plot with common settings.
+        /// Initialize the model for plots with common settings.
         /// </summary>
         /// <param name="name">Title of the plot and of the Y axis.</param>
         /// <param name="yUnit">Unit of the Y axis.</param>
         /// <param name="legendPosition">Position of the legend inside the graph.</param>
         /// <param name="yMaximumMargin">Max margin value for y.</param>
-        /// <returns>The ballistic model.</returns>
-        private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin)
+        /// <returns>The plot model.</returns>
+        private PlotModel InitializePlotBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin = 0.01)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
@@ -688,12 +637,13 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 MajorGridlineThickness = 1,
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
+                MajorStep = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 1 : double.NaN,
             };
 
             var yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Title = name,
+                Title = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? Translation.DispersionGrapghWindow_Height : name,
                 IsPanEnabled = false,
                 Unit = yUnit,
                 Minimum = 0,
@@ -704,69 +654,10 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
                 MaximumPadding = yMaximumMargin,
-            };
-            model.Axes.Add(xAxis);
-            model.Axes.Add(yAxis);
-            model.DefaultColors = GenerateColors();
-
-            return model;
-        }
-
-        /// <summary>
-        /// Initialize the model for the trajectory plot with common settings.
-        /// </summary>
-        /// <param name="name">Title of the plot and of the Y axis.</param>
-        /// <returns>The trajectory model.</returns>
-        private PlotModel InitializeTrajectoryBaseModel(string name)
-        {
-            var foreground = ConvertColorFromResource("ThemeForegroundColor");
-            var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
-            var background = ConvertColorFromResource("ThemeBackgroundColor");
-
-            PlotModel model = new()
-            {
-                Title = name,
-                TextColor = foreground,
-                PlotAreaBorderColor = foreground,
-                LegendPosition = LegendPosition.TopLeft,
-                LegendBorder = foreground,
-                LegendBorderThickness = 1,
-                LegendBackground = background,
-                LegendFontSize = 13,
+                MinimumRange = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? ShootingRange * 1000 / 4 : 0,
+                AbsoluteMinimum = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 0 : double.MinValue,
             };
 
-            var xAxis = new LinearAxis
-            {
-                Position = AxisPosition.Bottom,
-                Title = Translation.ShipStats_Range,
-                IsPanEnabled = false,
-                Unit = Translation.Unit_KM,
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foregroundLow,
-                MajorStep = 1,
-            };
-
-            var yAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                Title = Translation.DispersionGrapghWindow_Height,
-                IsPanEnabled = false,
-                Unit = Translation.Unit_M,
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foreground,
-                AbsoluteMinimum = 0,
-                MinimumRange = ShootingRange * 1000 / 4,
-            };
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
             model.DefaultColors = GenerateColors();
