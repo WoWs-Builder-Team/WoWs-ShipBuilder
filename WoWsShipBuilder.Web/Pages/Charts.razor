@@ -343,7 +343,7 @@
         flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
         impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
         impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
-        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_KM}]", true);
+        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_M}]", true);
     }
 
     private LineConfig SetChartConfig(string title, string yLabel, bool isShellTrajectoryChart = false)
@@ -468,7 +468,6 @@
             trajectoryConfig.Data.Datasets.Remove(dataset);
             AddTrajectoryChartDataset(name, data, color);
         }
-
         processing = false;
     }
 
@@ -492,6 +491,7 @@
                 MaxRange = (double) gun.MaxRange,
             };
             selectedShipList.Add(wrapper);
+            processing = false;
         }
         else
         {
