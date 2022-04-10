@@ -1,3 +1,4 @@
+using System.IO.Abstractions;
 using BlazorWorker.Core;
 using DnetIndexedDb;
 using DnetIndexedDb.Fluent;
@@ -38,7 +39,19 @@ public static class SetupExtensions
         services.AddScoped<ILocalDataUpdater, WebDataUpdate>();
         services.AddScoped<IAwsClient, AwsClient>();
         services.AddScoped<Localizer>();
-        services.AddWorkerFactory();
+        // services.AddWorkerFactory();
+        return services;
+    }
+
+    public static IServiceCollection AddShipBuilderServerServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IFileSystem, FileSystem>();
+        services.AddSingleton<Localizer>();
+        services.AddSingleton<IDataService, DesktopDataService>();
+
+        services.AddScoped<AppSettingsHelper>();
+        services.AddScoped<IAppSettingsService, AppSettingsService>();
+
         return services;
     }
 

@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Splat;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
         private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));
+
         private static readonly Logger Logger = Logging.GetLogger("Localization");
+
+        private static Localizer? instance;
 
         private readonly IAppDataService appDataService;
 
@@ -27,10 +29,20 @@ namespace WoWsShipBuilder.Core.DataProvider
             var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : AppConstants.DefaultCultureDetails;
         }
 
-        public static Localizer Instance => InstanceProducer.Value;
+        public static Localizer Instance => instance ?? InstanceProducer.Value;
 
         public (bool IsLocalized, string Localization) this[string key] =>
             languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
+
+        public static void SetInstance(Localizer newInstance)
+        {
+            instance = newInstance;
+        }
+
+        public string GetAppLocalization(string translationKey)
+        {
+            return Translation.ResourceManager.GetString(translationKey, locale!.CultureInfo) ?? translationKey;
+        }
 
         public async Task UpdateLanguage(CultureDetails newLocale, bool forceLanguageUpdate)
         {

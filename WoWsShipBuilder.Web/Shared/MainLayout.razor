@@ -10,10 +10,10 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-@if (!isInitialized)
-{
-    <MudOverlay Visible="!isInitialized" DarkBackground="true"/>
-}
+@* @if (!isInitialized) *@
+@* { *@
+@*     <MudOverlay Visible="!isInitialized" DarkBackground="true"/> *@
+@* } *@
 
 <MudLayout>
     <TopMenu/>
@@ -29,22 +29,22 @@
 {
     bool isInitialized;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await ContentIsLoading(true);
-        await base.OnInitializedAsync();
-        if (dataService is WebDataService webDataService)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            await Task.Delay(20); 
-    // await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed);
-            await ContentIsLoading(false);
-            StateHasChanged();
-        }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     await ContentIsLoading(true);
+    //     await base.OnInitializedAsync();
+    //     if (dataService is WebDataService webDataService)
+    //     {
+    //         var stopwatch = new Stopwatch();
+    //         stopwatch.Start();
+    //         await Task.Delay(20); 
+    // // await webDataService.LoadAllShipsAsync(AppData.Settings.SelectedServerType);
+    //         stopwatch.Stop();
+    //         Console.WriteLine(stopwatch.Elapsed);
+    //         await ContentIsLoading(false);
+    //         StateHasChanged();
+    //     }
+    // }
 
     private readonly MudTheme theme = new()
     {

@@ -1,0 +1,31 @@
+﻿@page "/test"
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Web.Data
+@inject IDataService dataService
+@inject IAppDataService appDataService
+@inject AppSettingsHelper appSettingsHelper
+@inject NavigationManager navigationManager
+<MudText Typo="Typo.h2">Test Page</MudText>
+
+<MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;">
+    @foreach (var culture in AppConstants.SupportedLanguages)
+    {
+        <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+    }
+</MudSelect>
+<MudButton OnClick="SaveCultureChange" Disabled="AppData.Settings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+
+
+@code {
+
+    private CultureDetails selectedCulture = AppData.Settings.SelectedLanguage;
+
+    private async Task SaveCultureChange()
+    {
+        AppData.Settings.SelectedLanguage = selectedCulture;
+        await appSettingsHelper.SaveSettings(AppData.Settings);
+        navigationManager.NavigateTo(navigationManager.Uri, true, false);
+    }
+
+}

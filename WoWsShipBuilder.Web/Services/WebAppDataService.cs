@@ -17,18 +17,18 @@ public class WebAppDataService : IAppDataService
 {
     private readonly GameDataDb gameDataDb;
 
-    private readonly IWorkerFactory workerFactory;
+    // private readonly IWorkerFactory workerFactory;
 
     private readonly IDataService dataService;
 
-    private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
+    // private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
 
-    private IWorkerBackgroundService<WebWorkerDataService>? worker;
+    // private IWorkerBackgroundService<WebWorkerDataService>? worker;
 
-    public WebAppDataService(IWorkerFactory workerFactory, IDataService dataService, GameDataDb gameDataDb)
+    public WebAppDataService(IDataService dataService, GameDataDb gameDataDb)
     {
         this.gameDataDb = gameDataDb;
-        this.workerFactory = workerFactory;
+        // this.workerFactory = workerFactory;
         this.dataService = dataService;
     }
 
@@ -114,7 +114,7 @@ public class WebAppDataService : IAppDataService
         }
 
         var dataPath = FindDataPath<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
-        ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
+        // ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
 
         // var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
         // if (shipDict != null)
@@ -168,8 +168,9 @@ public class WebAppDataService : IAppDataService
             throw new ArgumentException("The provided data location must not be empty.");
         }
 
-        await InitializeWorker();
-        var returnValue = await worker!.RunAsync(w => w.LoadAsync<T>(dataLocation));
+        // await InitializeWorker();
+        // var returnValue = await worker!.RunAsync(w => w.LoadAsync<T>(dataLocation));
+        var returnValue = default(T);
 
         if (returnValue == null)
         {
@@ -179,17 +180,17 @@ public class WebAppDataService : IAppDataService
         return returnValue;
     }
 
-    private async Task InitializeWorker()
-    {
-        if (startupWorker is null)
-        {
-            var factory = await workerFactory.CreateAsync();
-            startupWorker = await factory.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().
-                AddAssemblies(GetAssembliesForWorker()).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
-        }
-
-        worker ??= await startupWorker.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerDataService>());
-    }
+    // private async Task InitializeWorker()
+    // {
+    //     if (startupWorker is null)
+    //     {
+    //         var factory = await workerFactory.CreateAsync();
+    //         startupWorker = await factory.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().
+    //             AddAssemblies(GetAssembliesForWorker()).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
+    //     }
+    //
+    //     worker ??= await startupWorker.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerDataService>());
+    // }
 
     private static string[] GetAssembliesForWorker()
     {
