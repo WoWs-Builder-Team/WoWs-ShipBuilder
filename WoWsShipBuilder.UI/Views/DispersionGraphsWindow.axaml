@@ -280,6 +280,17 @@
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
+                <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_ShellsPath}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <StackPanel>
+                            <StackPanel ZIndex="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 7 0">
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Range}" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                <NumericUpDown Minimum="0" HorizontalAlignment="Stretch" Value="{Binding ShootingRange}" VerticalAlignment="Center" Padding="0 0 0 0"/>
+                            </StackPanel>
+                            <oxy:PlotView ZIndex="1" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ShellTrajectoryModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
             </TabControl>
         </Border>   
     </Grid>

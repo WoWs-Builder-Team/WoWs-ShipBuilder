@@ -172,6 +172,7 @@
                                             <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDispGraph}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 5"/>
                                             <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDispPlot}" PointerReleased="OpenDispersionPlotWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
                                             <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 0 0 5" TextDecorations="Underline" Text="{x:Static translations:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
+                                            <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowShellTrajectoryGraph}" PointerReleased="OpenShellTrajectoryWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
                                         </StackPanel>
                                     </Expander>
                                 </DataTemplate>

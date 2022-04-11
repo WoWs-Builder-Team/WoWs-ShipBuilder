@@ -75,9 +75,10 @@ namespace WoWsShipBuilder.UI.Converters
                 switch (localizerKey)
                 {
                     // custom modifier to show hp per heal
-                    case {} str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{(int) modifier}";
+                    case { } str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{(int)modifier}";
                         break;
+
                     // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                     case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";

@@ -4,8 +4,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.DataStructures;
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record ConsumableUI : IDataUi
@@ -39,9 +39,8 @@ namespace WoWsShipBuilder.Core.DataUI
         public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int shipHp)
         {
             var consumableIdentifier = $"{name} {variant}";
-            Consumable consumable = new ();
             var usingFallback = false;
-            if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out consumable!) ?? false))
+            if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
             {
                 Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
                 usingFallback = true;
@@ -53,29 +52,13 @@ namespace WoWsShipBuilder.Core.DataUI
                     Group = "error",
                     IconId = "error",
                     ConsumableVariantName = "error",
-                    Modifiers = new(),
+                    Modifiers = new() { { "error", 1 } },
                 };
-                consumable.Modifiers.Add("error", 1);
             }
 
-            var iconName = consumable!.IconId;
-            if (string.IsNullOrEmpty(iconName))
-            {
-                iconName = name;
-            }
-
-            var localizationKey = consumable.DescId;
-            if (string.IsNullOrEmpty(localizationKey))
-            {
-                localizationKey = consumable.Name;
-            }
-
-            Dictionary<string, float> consumableModifiers = new();
-            if (consumable.Modifiers is not null)
-            {
-                consumableModifiers = consumable.Modifiers.ToDictionary(x => x.Key, x => x.Value);
-            }
-
+            var iconName = string.IsNullOrEmpty(consumable.IconId) ? name : consumable.IconId;
+            var localizationKey = string.IsNullOrEmpty(consumable.DescId) ? consumable.Name : consumable.DescId;
+            Dictionary<string, float> consumableModifiers = consumable.Modifiers is not null ? consumable.Modifiers.ToDictionary(x => x.Key, x => x.Value) : new();
             int uses = consumable.NumConsumables;
             float cooldown = consumable.ReloadTime;
             float workTime = consumable.WorkTime;
@@ -242,16 +225,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
             }
 
-            var numberOfUses = uses.ToString();
-            if (consumable.NumConsumables == -1)
-            {
-                numberOfUses = "∞";
-            }
-
             var consumableUI = new ConsumableUI
             {
                 Name = localizationKey,
-                NumberOfUses = numberOfUses,
+                NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString() : "∞",
                 IconName = iconName,
                 Slot = slot,
                 Desc = "",
@@ -259,9 +236,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 WorkTime = Math.Round((decimal)workTime, 1),
                 Modifiers = consumableModifiers,
             };
-
             consumableUI.ConsumableData = consumableUI.ToPropertyMapping();
-
             return consumableUI;
         }
     }

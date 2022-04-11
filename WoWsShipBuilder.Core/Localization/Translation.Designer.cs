@@ -412,6 +412,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string DispersionGrapghWindow_Height {
+            get {
+                return ResourceManager.GetString("DispersionGrapghWindow_Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add ship.
         /// </summary>
         public static string DispersionGraphWindow_AddShip {
@@ -561,6 +570,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string DispersionGraphWindow_PlotScaling {
             get {
                 return ResourceManager.GetString("DispersionGraphWindow_PlotScaling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range [km]:.
+        /// </summary>
+        public static string DispersionGraphWindow_Range {
+            get {
+                return ResourceManager.GetString("DispersionGraphWindow_Range", resourceCulture);
             }
         }
         
@@ -2625,6 +2643,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_ShowDispPlot {
             get {
                 return ResourceManager.GetString("ShipStats_ShowDispPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show shell trajectory graph.
+        /// </summary>
+        public static string ShipStats_ShowShellTrajectoryGraph {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowShellTrajectoryGraph", resourceCulture);
             }
         }
         
