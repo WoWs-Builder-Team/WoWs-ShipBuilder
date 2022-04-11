@@ -263,8 +263,10 @@ namespace WoWsShipBuilder.UI.Converters
                 // We need this to deal with the consumable mod of slot 5
                 var moduleFallback = "";
 
-                if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") ||
-                    description.Equals("Number of Shell Explosions"))
+                if (localizerKey.Contains("ReloadCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("AAEXTRABUBBLES", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("callFightersAdditionalConsumables", StringComparison.InvariantCultureIgnoreCase))
                 {
                     moduleFallback = description;
                     (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
