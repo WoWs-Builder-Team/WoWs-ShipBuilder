@@ -616,15 +616,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Перезарядка атаки</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Крейсерская скорость</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Бомб во внутреннем эллипсе</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Макс. самолетов на палубе</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Максимальная скорость</value>
   </data>
@@ -634,9 +630,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Самолетов в сбросе</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Самолетов в эскадрилье</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>ХП каждого самолета</value>
   </data>
@@ -793,27 +787,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Урон, полученный при сбросе</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Время неуязвимости после сброса</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Время подготовки</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Время для полного сведения</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Торпедные аппараты</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>В фазе наведения</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Изменение зоны сброса при маневрировании</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>В фазе подготовки</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Время до полной мощности</value>
   </data>
@@ -895,11 +881,15 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Показать график разброса</value>
   </data>
-  
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+      <value>Формула для расстояния Х(км)</value>
+  </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Горизонтальный разброс [X]</value>
   </data>
-  
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+      <value>Расстояние прицеливания (км)</value>
+  </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Графики баллистики</value>
   </data>
@@ -1109,7 +1099,9 @@
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Серверная Перезарядка</value>
   </data>
-  
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+      <value>Сервер обновляется раз в 0.142857142857 секунды. Это значит, что перезарядки попадающие в период между обновлениями откладываются до следующего обновления. Значение указанное здесь - ваша истинная перезарядка, и она может отличаться от теоретической, указанной выше.</value>
+  </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Серверный ДПМ</value>
   </data>
@@ -1173,6 +1165,28 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>ПББ</value>
   </data>
+  
+  
+  
+  
+  
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>Высота</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>Показать график траектории снаряда</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
