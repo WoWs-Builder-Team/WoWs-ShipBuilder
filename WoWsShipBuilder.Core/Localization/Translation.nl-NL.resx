@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Aanval Afkoeltijd</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Kruissnelheid</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bom in binnenste ellips</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max aantal vliegtuigen op het dek</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximumsnelheid</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Vliegtuigen per aanval</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Vliegtuigen per squadron</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Levenspunten per vliegtuig</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Schade ontvangen tijdens de aanval</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Onschendbaarheid tijd na aanval</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Voorbereidingstijd</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Tijd tot volledig gericht</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedolanceerbuizen</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Tijdens het richten</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Verandering van richtgebied tijdens het manoeuvreren</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Tijdens de richt voorbereiding</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tijd tot maximumsnelheid</value>
   </data>
@@ -897,7 +883,9 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Toon verspreidingsplot</value>
   </data>
-  
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+      <value>Formule op afstand X(km)</value>
+  </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale verspreiding[X]</value>
   </data>
@@ -1185,6 +1173,24 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Diepwater</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
