@@ -260,7 +260,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 case ProjectileType.Torpedo:
                     var torpList = new List<string>();
                     torpList.Add(plane.BombName);
-                    weapon = TorpedoUI.FromTorpedoName(torpList, modifiers, appDataService).First();
+                    weapon = TorpedoUI.FromTorpedoName(torpList, modifiers, true, appDataService).First();
                     break;
                 case ProjectileType.Rocket:
                     weapon = RocketUI.FromRocketName(plane.BombName, modifiers, appDataService);

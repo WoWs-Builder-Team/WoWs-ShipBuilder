@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public bool IsLast { get; set; } = false;
 
-        public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static List<TorpedoUI> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane, IAppDataService appDataService)
         {
             var list = new List<TorpedoUI>();
             foreach (var name in torpedoNames)
@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpedoArmingTimeModifiers = modifiers.FindModifiers("planeTorpedoArmingTimeCoeff");
                 decimal torpedoArmingTime = (decimal)torpedoArmingTimeModifiers.Aggregate(torp.ArmingTime, (current, modifier) => current * modifier);
 
-                var torpedoFloodingModifiers = modifiers.FindModifiers("floodChanceFactor");
+                var torpedoFloodingModifiers = fromPlane ? modifiers.FindModifiers("floodChanceFactorPlane", true) : modifiers.FindModifiers("floodChanceFactor", true);
                 decimal torpedoFlooding = (decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier);
 
                 var allClasses = new List<ShipClass> { ShipClass.Destroyer, ShipClass.Cruiser, ShipClass.Battleship, ShipClass.AirCarrier };

@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var torpedoArea = $"{launcher.TorpedoAngles[0]}° - {launcher.TorpedoAngles[1]}°";
 
-            var torpedoes = TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers, appDataService);
+            var torpedoes = TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers, false, appDataService);
 
             var torpedoUi = new TorpedoArmamentUI
             {
