@@ -616,15 +616,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Temps de recharge par attaque</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Vitesse de croisière</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombe dans l'ellipse intérieure</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Avions max sur le pont</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Vitesse max</value>
   </data>
@@ -634,9 +630,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Avions par attaque</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Avions dans un escadron</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>PS par avion</value>
   </data>
@@ -794,27 +788,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Dégâts reçus pendant l'attaque</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Délai d'invulnérabilité après l'attaque</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Temps de préparation</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Délai jusqu'à pleine visée</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Tubes lance-torpilles</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Pendant la visée</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Taux de changement de zone de largage lors de la manœuvre</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Pendant la préparation</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Temps de pleine puissance</value>
   </data>
@@ -1177,6 +1163,24 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
