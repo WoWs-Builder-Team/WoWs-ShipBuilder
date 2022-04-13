@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Tempo di recupero dell'attacco</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Velocità di crociera</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomba nell'ellisse interna</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Aerei massimi sul ponte</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Velocità massima</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Aerei per attacco</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aerei in squadrone</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>HP per aereo</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Danni subiti durante l'attacco</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Tempo di invulnerabilità post attacco</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Tempo di preparazione</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Tempo per puntamento completo</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Lancia Siluri</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Durante il puntamento</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Rateo di cambiamento dell'area di caduta durante la manovra</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Durante la preparazione</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tempo di piena potenza</value>
   </data>
@@ -1185,6 +1171,26 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Di profondità</value>
   </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>HP per cura</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
