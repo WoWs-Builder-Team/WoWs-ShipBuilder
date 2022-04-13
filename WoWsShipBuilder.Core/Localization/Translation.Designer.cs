@@ -1078,6 +1078,24 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max engagement duration.
+        /// </summary>
+        public static string ModifierConverter_MaxEngagementDuration {
+            get {
+                return ResourceManager.GetString("ModifierConverter_MaxEngagementDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max kills amount.
+        /// </summary>
+        public static string ModifierConverter_MaxKillsAmount {
+            get {
+                return ResourceManager.GetString("ModifierConverter_MaxKillsAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Netherlands.
         /// </summary>
         public static string Netherlands {
@@ -2404,6 +2422,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max view distance.
+        /// </summary>
+        public static string ShipStats_MaxViewDistance {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxViewDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Medium range aura.
         /// </summary>
         public static string ShipStats_MediumAura {
@@ -2805,15 +2832,6 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_SplashCoeff {
             get {
                 return ResourceManager.GetString("ShipStats_SplashCoeff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Spotting.
-        /// </summary>
-        public static string ShipStats_Spotting {
-            get {
-                return ResourceManager.GetString("ShipStats_Spotting", resourceCulture);
             }
         }
         

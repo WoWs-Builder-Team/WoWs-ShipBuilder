@@ -79,11 +79,6 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"+{(int)modifier}";
                         break;
 
-                    // custom modifier to show hp per heal on planes
-                    case { } str when str.Contains("planeHpPerHeal", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{(int)modifier}";
-                        break;
-
                     // Bonus from Depth Charge upgrade. Needs to be put as first entry because it contains the word "bonus".
                     case { } str when str.Contains("dcNumPacksBonus", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";
@@ -186,6 +181,26 @@ namespace WoWsShipBuilder.UI.Converters
                         break;
 
                     case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier}";
+                        break;
+
+                    case { } str when str.Contains("cruisingSpeed", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_Knots}";
+                        break;
+
+                    case { } str when str.Contains("maxViewDistance", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_KM}";
+                        break;
+
+                    case { } str when str.Contains("concealment", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_KM}";
+                        break;
+
+                    case { } str when str.Contains("dogFightTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_S}";
+                        break;
+
+                    case { } str when str.Contains("maxKills", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{modifier}";
                         break;
 
@@ -316,6 +331,31 @@ namespace WoWsShipBuilder.UI.Converters
                 if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Translation.Consumable_HpPerHeal;
+                }
+
+                if (localizerKey.Contains("dogFightTime", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ModifierConverter_MaxEngagementDuration;
+                }
+
+                if (localizerKey.Contains("maxKills", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ModifierConverter_MaxKillsAmount;
+                }
+
+                if (localizerKey.Contains("cruisingSpeed", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_Speed;
+                }
+
+                if (localizerKey.Contains("maxViewDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_MaxViewDistance;
+                }
+
+                if (localizerKey.Contains("concealment", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_Concealment;
                 }
 
                 if (returnFilter == ReturnFilter.Description)

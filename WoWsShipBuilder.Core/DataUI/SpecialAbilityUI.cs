@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataStructures;
-// ReSharper disable InconsistentNaming
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record SpecialAbilityUI : IDataUi

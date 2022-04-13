@@ -1218,8 +1218,8 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
       <value>On torpedoes</value>
   </data>
-  <data name="ShipStats_Spotting" xml:space="preserve">
-      <value>Spotting</value>
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>Max view distance</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>Consumables</value>
@@ -1256,5 +1256,11 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_SpeedBoost" xml:space="preserve">
       <value>Speed boost</value>
+  </data>
+  <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
+      <value>Max engagement duration</value>
+  </data>
+  <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
+      <value>Max kills amount</value>
   </data>
 </root>

@@ -7,6 +7,7 @@
 - Added amount of HP restored per heal on ship consumables.
 - Added shell trajectory chart.
 - Added concealment and spotting values for planes.
+- Added additional data to fighter planes.
 
 ## Changes
 - Increased spacing between rows in the ship statistic for better readability.

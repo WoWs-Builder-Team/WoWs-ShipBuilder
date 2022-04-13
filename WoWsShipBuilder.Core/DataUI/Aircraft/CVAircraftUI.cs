@@ -97,7 +97,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public string ConcealmentFromPlanes { get; set; }
 
         [JsonIgnore]
-        public string SpottingOnShips { get; set; }
+        public string MaxViewDistance { get; set; }
 
         [JsonIgnore]
         public string SpottingOnPlanes { get; set; }
@@ -341,9 +341,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 TimeToFullyAimed = $"{Math.Round(fullAimTime, 1)} {Translation.Unit_S}",
                 ConcealmentFromShips = $"{plane.ConcealmentFromShips} {Translation.Unit_KM}",
                 ConcealmentFromPlanes = $"{plane.ConcealmentFromPlanes} {Translation.Unit_KM}",
-                SpottingOnShips = $"{plane.SpottingOnShips} {Translation.Unit_KM}",
-                SpottingOnPlanes = $"{plane.SpottingOnPlanes} {Translation.Unit_KM}",
-                SpottingOnTorps = $"{plane.SpottingOnTorps} {Translation.Unit_KM}",
+                MaxViewDistance = $"{plane.SpottingOnShips} {Translation.Unit_KM}",
             };
 
             cvAircraft.CVAircraftData = cvAircraft.ToPropertyMapping();

@@ -97,6 +97,16 @@ namespace WoWsShipBuilder.Core.DataUI
                     var timeFromHeavenModifiers = modifiers.FindModifiers("callFightersAppearDelay");
                     var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
                     consumableModifiers["timeFromHeaven"] = timeFromHeaven;
+
+                    var plane = DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                    consumableModifiers.Add("cruisingSpeed", plane.Speed);
+                    consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
+                    consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
+                    consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
+
+                    var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected");
+                    var maxViewDistance = maxViewDistanceModifiers.Aggregate(consumableModifiers["maxViewDistance"], (current, modifier) => current * modifier);
+                    consumableModifiers["maxViewDistance"] = maxViewDistance;
                 }
                 else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -207,6 +217,12 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
+
+                    var plane = DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                    consumableModifiers.Add("cruisingSpeed", plane.Speed);
+                    consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
+                    consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
+                    consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
                 }
                 else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
                 {

@@ -480,6 +480,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 modifiers.Add(("fireResistanceEnabled", 1));
             }
 
+            if (SkillOrderList.Any(skill => skill.SkillNumber == 22))
+            {
+                modifiers.Add(("interceptorSelected", 0));
+            }
+
             if (ConditionalModifiersList.Count > 0)
             {
                 var conditionalModifiers = ConditionalModifiersList.Where(skill => skill.Status && skill.SkillId != FuriousSkillNumber)

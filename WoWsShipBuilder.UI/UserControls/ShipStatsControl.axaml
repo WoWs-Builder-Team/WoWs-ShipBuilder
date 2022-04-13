@@ -373,18 +373,9 @@
                                                 <TextBlock Text="{Binding ConcealmentFromPlanes}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
                                             
-                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Spotting}" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
-                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnShips}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding SpottingOnShips}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                            </DockPanel>
-                                            <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
-                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnPlanes}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding SpottingOnPlanes}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                            </DockPanel>
-                                            <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 4">
-                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnTorps}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding SpottingOnTorps}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="0,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_MaxViewDistance}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxViewDistance}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
                                             
                                             <TextBlock Text="{x:Static translations:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,4,0,0"/>
