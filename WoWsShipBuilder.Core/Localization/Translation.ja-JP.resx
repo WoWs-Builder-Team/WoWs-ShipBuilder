@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>攻撃後クールダウン</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>巡航速度</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>内部楕円への着弾率</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>甲板上の航空機数</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>最高速度</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>攻撃中隊のサイズ</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>中隊の機数</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>1機あたりのHP</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>攻撃態勢中の被ダメージ</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>攻撃後の無敵時間</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>攻撃準備時間</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>照準収縮までの時間</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷発射管</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>攻撃態勢中</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>回避機動中の照準変化率</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>攻撃準備中</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>最大出力到達時間</value>
   </data>
@@ -1199,4 +1185,22 @@
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>砲弾の軌道グラフを表示</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
