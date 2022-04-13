@@ -603,7 +603,9 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Geschwindigkeit</value>
   </data>
-  
+  <data name="ShipStats_Weapon" xml:space="preserve">
+      <value>Waffe</value>
+  </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Springbombe</value>
   </data>
@@ -616,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Angriffsabklingzeit</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Reisegeschwindigkeit</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomben in innerer Ellipse</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Maximale Flugzeuge an Deck</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -634,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Flugzeuge pro Angriff</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Flugzeuge pro Staffel</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Flugzeug Hp</value>
   </data>
@@ -659,7 +655,7 @@
     <value>Maximale reichweite</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
-    <value>Maximale drop distanz</value>
+    <value>Maximaler Abwurfbereich</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
     <value>Minimale reichweite</value>
@@ -793,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Schaden während des Angriffs</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Unverwundbarkeit nach Angriff</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Zeit bis zur maximalen Genauigkeit</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Während des Angriffs</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Während der Vorbereitungszeit</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Zeit bis zur maximalen Leistung</value>
   </data>
@@ -895,11 +883,15 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Zeige Streuungsdiagramm</value>
   </data>
-  
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+      <value>Formel bei Reichweite X(km)</value>
+  </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale Streuung [X]</value>
   </data>
-  
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+      <value>Zielreichweite (km)</value>
+  </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistische Graphen</value>
   </data>
@@ -1110,7 +1102,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Serverseitige Nachladezeit</value>
   </data>
-  
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+      <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
+  </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Serverseitige DPM</value>
   </data>
@@ -1174,6 +1168,38 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Standard</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Magnetisch</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Tiefwasser</value>
+  </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>TP pro Heilung</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>Reichweite [km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>Höhe</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>Zeige Granatenflugbahngraph</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
