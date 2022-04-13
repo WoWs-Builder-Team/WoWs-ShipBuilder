@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Recuperacion de ataque</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Velocidad de crucero</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomba en elípse interior</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Máximo de aviones en cubierta</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Velocidad máxima</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Aviones por ataque</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aviones en un escuadrón</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Pv por avión</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Daño recibido durante el ataque</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Tiempo de invulnerabilidad post ataque</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Tiempo de preparación</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Tiempo para apuntar totalmente</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Lanzadores de torpedos</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Durante el apuntamiento</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Desviacion del area prevista de caida por maniobrar</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Durante la preparación</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tiempo plena potencia</value>
   </data>
@@ -1185,6 +1171,24 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Aguas profundas</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
