@@ -278,6 +278,20 @@
                                               Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                               IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                         <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AircraftAmount}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_NumberInSquad}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding NumberInSquad}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_AircraftInAttackGroup}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding NumberDuringAttack}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,8">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_MaxNumberOnDeck}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxNumberOnDeck}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
                                             <ItemsControl Items="{Binding CVAircraftData}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
@@ -288,15 +302,101 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,10,0,0"/>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.Unit_HP}" Margin="0,8,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Aircraft}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding PlaneHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Squadron}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SquadronHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_AttackGroup}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AttackGroupHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Speed}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_CruisingSpeed}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding CruisingSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Max}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Min}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MinSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AttackTimings}" Margin="0,4,0,0"/>
                                             <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Preparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding AimingRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <TextBlock Text="{Binding PreparationTime}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
                                             <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Aiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding AimingPreparationRateMoving}"  TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <TextBlock Text="{Binding AimingTime}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ToFullyAimed}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding TimeToFullyAimed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_PostAttackInvulnerabilityDuration}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding PostAttackInvulnerabilityDuration}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Cooldown}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AttackCd}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_InitialBoost}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Duration}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding JatoDuration}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpeedBoost}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding JatoSpeedMultiplier}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Concealment}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ConcealmentFromShips}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding ConcealmentFromShips}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ConcealmentFromPlanes}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding ConcealmentFromPlanes}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Spotting}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnShips}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SpottingOnShips}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnPlanes}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SpottingOnPlanes}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpottingOnTorps}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SpottingOnTorps}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_DuringPreparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AimingRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_DuringAiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AimingPreparationRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
                                             <TextBlock Text="{x:Static translations:Translation.ShipStats_Weapon}" TextWrapping="Wrap" Margin="0,10,0,0"/>
                                             <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Type}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
@@ -323,7 +423,7 @@
                                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
                                                 </ToolTip.Tip>
                                             </DockPanel>
-                                            <TextBlock Text="Consumables" Margin="0,10,0,5" IsVisible="{Binding !!PlaneConsumables.Count}"/>
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Consumables}" Margin="0,10,0,5" IsVisible="{Binding !!PlaneConsumables.Count}"/>
                                             <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>

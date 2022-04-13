@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Tempo di preparazione</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
     <value>Tempo per puntamento completo</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Lancia Siluri</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>Durante il puntamento</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Rateo di cambiamento dell'area di caduta durante la manovra</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>Durante la preparazione</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">

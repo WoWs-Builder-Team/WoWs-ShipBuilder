@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>攻撃準備時間</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
     <value>照準収縮までの時間</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷発射管</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>攻撃態勢中</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>回避機動中の照準変化率</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>攻撃準備中</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
