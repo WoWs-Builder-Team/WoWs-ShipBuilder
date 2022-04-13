@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Время подготовки</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
     <value>Время для полного сведения</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Торпедные аппараты</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>В фазе наведения</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Изменение зоны сброса при маневрировании</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>В фазе подготовки</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">

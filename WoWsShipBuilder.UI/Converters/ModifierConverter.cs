@@ -23,8 +23,8 @@ namespace WoWsShipBuilder.UI.Converters
             Justification = "<The code is a fucking mess otherwise>")]
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            string value = "";
-            string description = "";
+            var value = "";
+            var description = "";
             var prefix = "PARAMS_MODIFIER_";
 
             var returnFilter = ReturnFilter.All;
@@ -76,6 +76,11 @@ namespace WoWsShipBuilder.UI.Converters
                 {
                     // custom modifier to show hp per heal
                     case { } str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"+{(int)modifier}";
+                        break;
+
+                    // custom modifier to show hp per heal on planes
+                    case { } str when str.Contains("planeHpPerHeal", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";
                         break;
 
@@ -280,14 +285,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (!found)
                 {
-                    if (!string.IsNullOrEmpty(moduleFallback))
-                    {
-                        description = moduleFallback;
-                    }
-                    else
-                    {
-                        description = "";
-                    }
+                    description = !string.IsNullOrEmpty(moduleFallback) ? moduleFallback : "";
                 }
 
                 if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
@@ -302,7 +300,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description += "/s";
+                    description += $"/{Translation.Unit_S}";
                 }
 
                 if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
@@ -332,12 +330,10 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 return "";
             }
-            else
-            {
-                // Remove [HIDDEN] text from some skills modifiers.
-                description = description.Replace("[HIDDEN]", "");
-                return value + " " + description.Trim();
-            }
+
+            // Remove [HIDDEN] text from some skills modifiers.
+            description = description.Replace("[HIDDEN]", "");
+            return value + " " + description.Trim();
         }
     }
 }

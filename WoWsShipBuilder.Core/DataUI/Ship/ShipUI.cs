@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
-                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, modifiers),
+                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, shipConfiguration, modifiers),
             };
 
             shipUI.SecondColumnContent = new List<object?>

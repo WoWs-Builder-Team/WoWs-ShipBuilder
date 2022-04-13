@@ -639,11 +639,11 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Czas przygotowania</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
     <value>Czas do pełnego wycelowania</value>
   </data>
   
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>Podczas celowania</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">

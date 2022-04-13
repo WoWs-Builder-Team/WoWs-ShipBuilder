@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
     <value>Zeit bis zur maximalen Genauigkeit</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>Während des Angriffs</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>Während der Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">

@@ -6,6 +6,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -15,28 +16,37 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string Name { get; set; } = default!;
 
+        [JsonIgnore]
         public int NumberInSquad { get; set; }
 
+        [JsonIgnore]
         public int NumberDuringAttack { get; set; }
 
         public int AmmoPerAttack { get; set; }
 
+        [JsonIgnore]
         public int MaxNumberOnDeck { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal RestorationTime { get; set; }
+        [JsonIgnore]
+        public string RestorationTime { get; set; }
 
-        [DataUiUnit("HP")]
-        public int PlaneHP { get; set; }
+        [JsonIgnore]
+        public string PlaneHP { get; set; }
 
-        [DataUiUnit("Knots")]
-        public decimal CruisingSpeed { get; set; }
+        [JsonIgnore]
+        public string SquadronHP { get; set; }
 
-        [DataUiUnit("Knots")]
-        public decimal MaxSpeed { get; set; }
+        [JsonIgnore]
+        public string AttackGroupHP { get; set; }
 
-        [DataUiUnit("Knots")]
-        public decimal MinSpeed { get; set; }
+        [JsonIgnore]
+        public string CruisingSpeed { get; set; }
+
+        [JsonIgnore]
+        public string MaxSpeed { get; set; }
+
+        [JsonIgnore]
+        public string MinSpeed { get; set; }
 
         [DataUiUnit("S")]
         public decimal BoostDurationTime { get; set; }
@@ -47,20 +57,20 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public string AimingPreparationRateMoving { get; set; } = default!;
 
-        [DataUiUnit("S")]
-        public decimal PreparationTime { get; set; }
+        [JsonIgnore]
+        public string PreparationTime { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal AimingTime { get; set; }
+        [JsonIgnore]
+        public string AimingTime { get; set; }
 
         [JsonIgnore]
         public string AimingRateMoving { get; set; } = default!;
 
-        [DataUiUnit("S")]
-        public decimal PostAttackInvulnerabilityDuration { get; set; }
+        [JsonIgnore]
+        public string PostAttackInvulnerabilityDuration { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal TimeToFullyAimed { get; set; }
+        [JsonIgnore]
+        public string TimeToFullyAimed { get; set; }
 
         [DataUiUnit("PerCent")]
         public int DamageTakenDuringAttack { get; set; }
@@ -71,13 +81,29 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public int InnerBombPercentage { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal AttackCd { get; set; }
+        [JsonIgnore]
+        public string AttackCd { get; set; }
 
-        [DataUiUnit("S")]
-        public decimal JatoDuration { get; set; }
+        [JsonIgnore]
+        public string JatoDuration { get; set; }
 
-        public decimal JatoSpeedMultiplier { get; set; }
+        [JsonIgnore]
+        public string JatoSpeedMultiplier { get; set; }
+
+        [JsonIgnore]
+        public string ConcealmentFromShips { get; set; }
+
+        [JsonIgnore]
+        public string ConcealmentFromPlanes { get; set; }
+
+        [JsonIgnore]
+        public string SpottingOnShips { get; set; }
+
+        [JsonIgnore]
+        public string SpottingOnPlanes { get; set; }
+
+        [JsonIgnore]
+        public string SpottingOnTorps { get; set; }
 
         [JsonIgnore]
         public string WeaponType { get; set; } = default!;
@@ -104,38 +130,38 @@ namespace WoWsShipBuilder.Core.DataUI
             var list = new List<CVAircraftUI>();
             var planes = new List<PlaneData>();
 
-            ShipUpgrade? rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
+            var rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
             if (rocketConfiguration != null)
             {
-                var skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
+                List<PlaneData>? skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
                 planes.AddRange(skipModule);
             }
 
-            ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
+            var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
             if (torpConfiguration != null)
             {
-                var skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
+                List<PlaneData>? skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
                 planes.AddRange(skipModule);
             }
 
-            ShipUpgrade? diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
+            var diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
             if (diveConfiguration != null)
             {
-                var diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
+                List<PlaneData>? diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
                 planes.AddRange(diveModule);
             }
 
-            ShipUpgrade? skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
+            var skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
             if (skipConfiguration != null)
             {
-                var skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
+                List<PlaneData>? skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
                 planes.AddRange(skipModule);
             }
 
             foreach (var value in planes)
             {
-                var index = value.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
-                var name = value.PlaneName.Substring(0, index);
+                int index = value.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
+                string name = value.PlaneName.Substring(0, index);
                 var plane = appDataService.GetAircraft(name);
                 var planeUI = ProcessCVPlane(plane, value.PlaneType, ship.Tier, modifiers, appDataService);
                 list.Add(planeUI);
@@ -220,12 +246,12 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var allPlaneHpModifiers = modifiers.FindModifiers("planeHealth", true);
-            int finalplaneHP = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHP, (current, modifier) => current * modifier), 2);
+            var finalplaneHP = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHP, (current, modifier) => current * modifier), 2);
 
-            var planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");
+            int planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");
             if (planeHpPerTierIndex > 0)
             {
-                var additionalHP = (int)modifiers[planeHpPerTierIndex].value * shipTier;
+                int additionalHP = (int)modifiers[planeHpPerTierIndex].value * shipTier;
                 finalplaneHP += additionalHP;
             }
 
@@ -246,7 +272,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var weaponType = appDataService.GetProjectile(plane.BombName).ProjectileType;
-            int bombInnerEllipse = 0;
+            var bombInnerEllipse = 0;
             ProjectileUI? weapon = null!;
             switch (weaponType)
             {
@@ -270,7 +296,7 @@ namespace WoWsShipBuilder.Core.DataUI
             List<ConsumableUI> consumables = new();
             foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
             {
-                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, 0);
+                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalplaneHP, 0);
                 consumables.Add(consumableUI);
             }
 
@@ -281,34 +307,43 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var fullAimTime = plane.PreparationTime + ((1 - (plane.PreparationTime * plane.PreparationAccuracyIncreaseRate * aimRateModifier)) / (plane.AimingAccuracyIncreaseRate * aimRateModifier));
 
-            var stringFormat = "+#0.0%;-#0.0%;0%";
+            var jatoSpeedMultiplier = jatoMultiplier > 1 ? Math.Round((jatoMultiplier - 1) * 100, 0) : 0;
+
+            const string stringFormat = "+#0.0 %;-#0.0 %;0 %";
 
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
-                PlaneHP = finalplaneHP,
+                PlaneHP = $"{finalplaneHP} {Translation.Unit_HP}",
+                SquadronHP = $"{finalplaneHP * plane.NumPlanesInSquadron} {Translation.Unit_HP}",
+                AttackGroupHP = $"{finalplaneHP * plane.AttackData.AttackerSize} {Translation.Unit_HP}",
                 NumberInSquad = plane.NumPlanesInSquadron,
                 MaxNumberOnDeck = maxOnDeck,
-                RestorationTime = restorationTime,
-                CruisingSpeed = finalCruisingSpeed,
-                MaxSpeed = Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0),
-                MinSpeed = Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0),
+                RestorationTime = $"{restorationTime} {Translation.Unit_S}",
+                CruisingSpeed = $"{finalCruisingSpeed} {Translation.Unit_Knots}",
+                MaxSpeed = $"{Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0)} {Translation.Unit_Knots}",
+                MinSpeed = $"{Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0)} {Translation.Unit_Knots}",
                 InnerBombPercentage = bombInnerEllipse,
                 NumberDuringAttack = plane.AttackData.AttackerSize,
                 AmmoPerAttack = plane.AttackData.AttackCount,
-                AttackCd = Math.Round((decimal)plane.AttackData.AttackCooldown, 1),
-                JatoDuration = jatoDuration,
-                JatoSpeedMultiplier = jatoMultiplier,
+                AttackCd = $"{Math.Round((decimal)plane.AttackData.AttackCooldown, 1)} {Translation.Unit_S}",
+                JatoDuration = $"{jatoDuration} {Translation.Unit_S}",
+                JatoSpeedMultiplier = $"+{jatoSpeedMultiplier} {Translation.Unit_PerCent}",
                 WeaponType = weaponType.ToString(),
                 Weapon = weapon,
                 PlaneConsumables = consumables,
-                AimingTime = aimingTime,
-                PreparationTime = plane.PreparationTime,
-                PostAttackInvulnerabilityDuration = plane.PostAttackInvulnerabilityDuration,
+                AimingTime = $"{aimingTime} {Translation.Unit_S}",
+                PreparationTime = $"{plane.PreparationTime} {Translation.Unit_S}",
+                PostAttackInvulnerabilityDuration = $"{plane.PostAttackInvulnerabilityDuration} {Translation.Unit_S}",
                 DamageTakenDuringAttack = (int)Math.Round(plane.DamageTakenMultiplier * 100),
                 AimingRateMoving = aimingRateMoving.ToString(stringFormat),
                 AimingPreparationRateMoving = preparationAimingRateMoving.ToString(stringFormat),
-                TimeToFullyAimed = Math.Round(fullAimTime, 1),
+                TimeToFullyAimed = $"{Math.Round(fullAimTime, 1)} {Translation.Unit_S}",
+                ConcealmentFromShips = $"{plane.ConcealmentFromShips} {Translation.Unit_KM}",
+                ConcealmentFromPlanes = $"{plane.ConcealmentFromPlanes} {Translation.Unit_KM}",
+                SpottingOnShips = $"{plane.SpottingOnShips} {Translation.Unit_KM}",
+                SpottingOnPlanes = $"{plane.SpottingOnPlanes} {Translation.Unit_KM}",
+                SpottingOnTorps = $"{plane.SpottingOnTorps} {Translation.Unit_KM}",
             };
 
             cvAircraft.CVAircraftData = cvAircraft.ToPropertyMapping();

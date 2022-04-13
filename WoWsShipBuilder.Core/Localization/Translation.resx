@@ -619,13 +619,13 @@
     <value>Attack cooldown</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Cruising speed</value>
+      <value>Cruising</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomb in inner ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max planes on deck</value>
+      <value>On deck (max)</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -637,7 +637,7 @@
     <value>Aircraft per attack</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aircraft in a squadron</value>
+      <value>In squadron</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Hp per plane</value>
@@ -796,24 +796,24 @@
     <value>Damage taken during attack</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Post attack invulnerability time</value>
+      <value>Post attack invulnerability</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Preparation time</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Time to fully aimed</value>
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+      <value>To fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedo Launchers</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>During aiming</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Drop area change rate while manoeuvring</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>During preparation</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -1202,5 +1202,59 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>Show shell trajectory graph</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
+      <value>From ships</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
+      <value>From planes</value>
+  </data>
+  <data name="ShipStats_SpottingOnShips" xml:space="preserve">
+      <value>On ships</value>
+  </data>
+  <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
+      <value>On planes</value>
+  </data>
+  <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
+      <value>On torpedoes</value>
+  </data>
+  <data name="ShipStats_Spotting" xml:space="preserve">
+      <value>Spotting</value>
+  </data>
+  <data name="ShipStats_Consumables" xml:space="preserve">
+      <value>Consumables</value>
+  </data>
+  <data name="ShipStats_AircraftAmount" xml:space="preserve">
+      <value>Aircraft amount</value>
+  </data>
+  <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
+      <value>In attack group</value>
+  </data>
+  <data name="ShipStats_Squadron" xml:space="preserve">
+      <value>Squadron</value>
+  </data>
+  <data name="ShipStats_AttackGroup" xml:space="preserve">
+      <value>Attack group</value>
+  </data>
+  <data name="ShipStats_Max" xml:space="preserve">
+      <value>Max</value>
+  </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>Min</value>
+  </data>
+  <data name="ShipStats_AttackTimings" xml:space="preserve">
+      <value>Attack timings</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+      <value>Aiming</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+      <value>Preparation</value>
+  </data>
+  <data name="ShipStats_InitialBoost" xml:space="preserve">
+      <value>Initial boost</value>
+  </data>
+  <data name="ShipStats_SpeedBoost" xml:space="preserve">
+      <value>Speed boost</value>
   </data>
 </root>
