@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -15,9 +16,9 @@ namespace WoWsShipBuilder.Core.DataUI
             set => ShipUI.ExpanderStateMapper[expanderKey] = value;
         }
 
-        public static SecondaryBatteryUiContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+        public static SecondaryBatteryUiContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
-            var uiContainer = new SecondaryBatteryUiContainer(SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers));
+            var uiContainer = new SecondaryBatteryUiContainer(SecondaryBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService));
             uiContainer.expanderKey = $"{ship.Index}_SEC";
             if (!ShipUI.ExpanderStateMapper.ContainsKey(uiContainer.expanderKey))
             {

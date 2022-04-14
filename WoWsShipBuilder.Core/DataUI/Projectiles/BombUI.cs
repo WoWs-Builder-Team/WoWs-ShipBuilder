@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -37,40 +37,40 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public static BombUI FromBombName(string name, List<(string name, float value)> modifiers)
+        public static BombUI FromBombName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            var bomb = AppDataHelper.Instance.GetProjectile<Bomb>(name);
+            var bomb = appDataService.GetProjectile<Bomb>(name);
 
             decimal bombDamage = 0;
             string ricochetAngle = "";
-            int armingTreshold = 0;
+            int armingThreshold = 0;
             decimal fuseTimer = 0;
             if (bomb.BombType.Equals(BombType.AP))
             {
                 var bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
-                bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+                bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
                 ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
-                armingTreshold = (int)bomb.ArmingThreshold;
+                armingThreshold = (int)bomb.ArmingThreshold;
                 fuseTimer = (decimal)bomb.FuseTimer;
             }
             else
             {
                 var bombDamageModifiers = modifiers.FindModifiers("bombAlphaDamageMultiplier").ToList();
-                bombDamage = Math.Round((decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier), 2);
+                bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
             }
 
             var fireChanceModifiers = modifiers.FindModifiers("bombBurnChanceBonus");
-            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier), 3);
+            decimal fireChance = (decimal)fireChanceModifiers.Aggregate(bomb.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersBombs = modifiers.FindModifiers("burnChanceFactorBig");
             fireChance = fireChanceModifiersBombs.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
             var bombUI = new BombUI
             {
                 Name = bomb.Name,
-                Damage = bombDamage,
+                Damage = Math.Round(bombDamage, 2),
                 Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = fuseTimer,
-                ArmingThreshold = armingTreshold,
+                ArmingThreshold = armingThreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
                 ExplosionRadius = (decimal)bomb.ExplosionRadius,

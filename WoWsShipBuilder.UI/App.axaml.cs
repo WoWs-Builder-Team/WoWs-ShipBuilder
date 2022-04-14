@@ -4,18 +4,30 @@ using System.IO.Abstractions;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using Autofac;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using ReactiveUI;
 using Splat;
+using Splat.Autofac;
 using Squirrel;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Extensions;
+using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
+using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
+using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
+using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI
 {
@@ -23,6 +35,8 @@ namespace WoWsShipBuilder.UI
     [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
     public class App : Application
     {
+        private IContainer container = null!;
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -30,14 +44,14 @@ namespace WoWsShipBuilder.UI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Version versionDetails = Assembly.GetExecutingAssembly().GetName().Version!;
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                Locator.CurrentMutable.RegisterConstant(new FileSystem(), typeof(IFileSystem));
+                container = SetupDependencyInjection();
+
                 AppSettingsHelper.LoadSettings();
                 Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
                 desktop.Exit += OnExit;
-                desktop.MainWindow = new SplashScreen(versionDetails);
+                desktop.MainWindow = new SplashScreen();
                 Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
 
                 if (AppData.Settings.AutoUpdateEnabled)
@@ -64,11 +78,42 @@ namespace WoWsShipBuilder.UI
 
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
+            using var scope = container.BeginLifetimeScope();
             Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
-            AppDataHelper.Instance.SaveBuilds();
+            scope.Resolve<IAppDataService>().SaveBuilds();
             Logging.Logger.Info("Exiting...");
             Logging.Logger.Info(new string('-', 30));
+        }
+
+        private IContainer SetupDependencyInjection()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
+            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
+            builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
+            builder.RegisterType<LocalDataUpdater>().As<ILocalDataUpdater>();
+
+            builder.RegisterType<StartMenuViewModel>();
+            builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterType<DispersionGraphViewModel>();
+            builder.RegisterType<SplashScreenViewModel>();
+
+            var resolver = builder.UseAutofacDependencyResolver();
+            Locator.SetLocator(resolver);
+
+            PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Avalonia);
+            resolver.InitializeSplat();
+            resolver.InitializeReactiveUI(RegistrationNamespace.Avalonia);
+            resolver.InitializeAvalonia();
+
+            var diContainer = builder.Build();
+            resolver.SetLifetimeScope(diContainer);
+
+            return diContainer;
         }
 
         [SupportedOSPlatform("windows")]

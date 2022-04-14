@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -39,7 +40,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             if (sender is Image image)
             {
-                if (DataContext is UpgradePanelViewModel viewModel && image.DataContext is Modernization modernization)
+                if (DataContext is UpgradePanelViewModelBase viewModel && image.DataContext is Modernization modernization)
                 {
                     var parent = image.Parent;
                     List<Modernization>? itemList = null;

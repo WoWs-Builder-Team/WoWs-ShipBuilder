@@ -7,14 +7,16 @@ using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI.UnitTranslations;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record ShellUI : IDataUi
     {
+        [JsonIgnore]
         public string Name { get; set; } = default!;
 
         [JsonIgnore]
@@ -83,12 +85,12 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof)
+        public static List<ShellUI> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
         {
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
             {
-                var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
+                var shell = appDataService.GetProjectile<ArtilleryShell>(shellName);
 
                 // Values that may be ignored depending on shell type
                 var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);
@@ -112,7 +114,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         fuseTimer = 0;
                         overmatch = 0;
                         showBlastPenetration = true;
-                        shellType = UnitLocalization.ArmamentType_HE;
+                        shellType = Translation.ArmamentType_HE;
 
                         // IFHE fire chance malus
                         if (shell.Caliber > 0.139f)
@@ -159,7 +161,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         armingTreshold = 0;
                         fuseTimer = 0;
-                        shellType = UnitLocalization.ArmamentType_SAP;
+                        shellType = Translation.ArmamentType_SAP;
                         shellDamage = modifiers.FindModifiers("GMHECSDamageCoeff").Aggregate(shellDamage, (current, modifier) => current * modifier);
                         break;
                     }
@@ -168,7 +170,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         // TODO: check and fix modifier names and application
                         int index;
-                        shellType = UnitLocalization.ArmamentType_AP;
+                        shellType = Translation.ArmamentType_AP;
                         if (shell.Caliber >= 0.190f)
                         {
                             index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");

@@ -128,22 +128,20 @@
                 <Name/>
             </Entry.SortBy>
         </Entry>
-        <Region Name="Static Fields and Constants">
-            <Entry DisplayName="Static Fields and Constants">
-                <Entry.Match>
-                    <Or>
-                        <Kind Is="Constant"/>
-                        <And>
-                            <Kind Is="Field"/>
-                            <Static/>
-                        </And>
-                    </Or>
-                </Entry.Match>
-                <Entry.SortBy>
-                    <Kind Order="Constant Field"/>
-                </Entry.SortBy>
-            </Entry>
-        </Region>
+        <Entry DisplayName="Static Fields and Constants">
+            <Entry.Match>
+                <Or>
+                    <Kind Is="Constant"/>
+                    <And>
+                        <Kind Is="Field"/>
+                        <Static/>
+                    </And>
+                </Or>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Kind Order="Constant Field"/>
+            </Entry.SortBy>
+        </Entry>
         <Entry DisplayName="Fields">
             <Entry.Match>
                 <And>
@@ -187,7 +185,7 @@
         </Entry>
         <Entry DisplayName="Operators">
             <Entry.Match>
-                <Kind Is="Operator" />
+                <Kind Is="Operator"/>
             </Entry.Match>
         </Entry>
         <Entry Priority="100" DisplayName="Interface Implementations">

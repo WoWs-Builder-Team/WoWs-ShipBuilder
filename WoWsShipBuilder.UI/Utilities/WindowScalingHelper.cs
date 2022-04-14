@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.UI.Extensions;
 
 namespace WoWsShipBuilder.UI.Utilities
 {
@@ -14,29 +15,23 @@ namespace WoWsShipBuilder.UI.Utilities
     {
         public static void HandleAndCheckScaling(this ScalableWindow window)
         {
-            if (window.DataContext is IScalableViewModel viewModel)
-            {
-                InternalScalingHandler(window, viewModel);
-            }
+            InternalScalingHandler(window);
         }
 
         public static void HandleAndCheckScaling<T>(this ScalableReactiveWindow<T> window) where T : class
         {
-            if (window.DataContext is IScalableViewModel viewModel)
-            {
-                InternalScalingHandler(window, viewModel);
-            }
+            InternalScalingHandler(window);
         }
 
-        private static void InternalScalingHandler(Window window, IScalableViewModel viewModel)
+        private static void InternalScalingHandler(Window window)
         {
             var currentScreen = window.Screens.ScreenFromVisual(window);
 
             (bool shouldScale, double scaling) = CheckScaling(currentScreen, window);
             if (shouldScale)
             {
-                viewModel.ContentScaling = scaling;
-                RepositionWindow(window, viewModel.ContentScaling, currentScreen);
+                window.SetValue(Scaling.ContentScalingProperty, scaling);
+                RepositionWindow(window, scaling, currentScreen);
             }
         }
 

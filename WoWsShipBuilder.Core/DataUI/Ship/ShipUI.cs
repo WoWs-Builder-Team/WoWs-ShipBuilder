@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming
@@ -37,28 +38,28 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public SpecialAbilityUI? SpecialAbilityUI { get; set; }
 
-        public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+        public static ShipUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             var shipUI = new ShipUI(ship.Index)
             {
                 // Main weapons
-                MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers),
-                TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers),
-                CVAircraftUI = DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers),
+                MainBatteryUI = MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                TorpedoArmamentUI = TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                CVAircraftUI = DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUI = SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers),
+                SecondaryBatteryUI = SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
-                AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false),
-                AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true),
-                DepthChargeLauncherUI = DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers),
+                AirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
+                AswAirstrikeUI = AirstrikeUI.FromShip(ship, modifiers, true, appDataService),
+                DepthChargeLauncherUI = DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
 
                 // Misc
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
-                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, modifiers),
+                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, shipConfiguration, modifiers),
             };
 
             shipUI.SecondColumnContent = new List<object?>

@@ -2,17 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="1000"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
-             xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
              xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls">
+             xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm">
     <Design.DataContext>
-        <vm:ShipStatsControlViewModel/>
+        <shipVm:ShipStatsControlViewModel/>
     </Design.DataContext>
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter"/>
@@ -26,6 +26,7 @@
         </Style>
         <Style Selector="DockPanel">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0 2"/>
         </Style>
         <Style Selector="DockPanel.NameValuePanel">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -41,7 +42,7 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
         <Style Selector="ItemsControl.Stagger">
-            <Setter Property="Margin" Value="5,0,0,0"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
         </Style>
     </UserControl.Styles>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
@@ -59,11 +60,11 @@
             <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch">
                
                 <!--Main guns-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_MainBattery}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_MainBattery}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.MainBatteryUI}"
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
-                        <DockPanel Classes="NameValuePanel">
+                        <DockPanel Classes="NameValuePanel" Margin="0 0 0 5">
                             <TextBlock Text="{Binding Name}"/>
                         </DockPanel>
                         <ItemsControl Items="{Binding PropertyValueMapper}">
@@ -77,28 +78,28 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <DockPanel HorizontalAlignment="Stretch">
-                            <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static t:Translation.ShipStats_TrueReload}">
+                            <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static translations:Translation.ShipStats_TrueReload}">
                                 <ToolTip.Tip>
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
                                 </ToolTip.Tip>
                             </TextBlock>
                             <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TrueReload}"/>
                         </DockPanel>
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Dispersion}" Margin="0 5 0 0"/>
+                        <TextBlock Text="{x:Static translations:Translation.ShipStats_Dispersion}" Margin="0 5 0 0"/>
                         <DockPanel HorizontalAlignment="Stretch">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDisp}" DockPanel.Dock="Left" Margin="10 0 0 0"/>
                             <TextBlock Text="{Binding HorizontalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                             <ToolTip.Tip>
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
                                         <TextBlock Text=" &lt;= "/>
                                         <TextBlock Text="{Binding TaperDist}"/>
                                         <TextBlock Text=":"/>
                                     </StackPanel>
                                     <TextBlock Text="{Binding HorizontalDispFormulaAtShortRange}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
                                         <TextBlock Text=" &gt; "/>
                                         <TextBlock Text="{Binding TaperDist}"/>
                                         <TextBlock Text=":"/>
@@ -108,12 +109,12 @@
                             </ToolTip.Tip>
                         </DockPanel>
                         <DockPanel HorizontalAlignment="Stretch">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_VerticalDisp}" DockPanel.Dock="Left" Margin="5 0 0 0"/>
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_VerticalDisp}" DockPanel.Dock="Left" Margin="10 0 0 0"/>
                             <TextBlock Text="{Binding VerticalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                             <ToolTip.Tip>
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
                                     <TextBlock Text=" &lt; "/>
                                     <TextBlock Text="{Binding DelimDist}"/>
                                     <TextBlock Text=":"/>
@@ -121,10 +122,10 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding VerticalCoeffFormulaAtShortRange}"/>
                                     <TextBlock Text=" * "/>
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDispersionX}"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_DispFormulaTooltip}"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
                                     <TextBlock Text=" &gt;= "/>
                                     <TextBlock Text="{Binding DelimDist}"/>
                                     <TextBlock Text=":"/>
@@ -132,15 +133,14 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding VerticalCoeffFormula}"/>
                                     <TextBlock Text=" * "/>
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_HorizontalDispersionX}"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
                                 </StackPanel>
                             </StackPanel>
                             </ToolTip.Tip>
                         </DockPanel>
-                        <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_TurretAngles}" PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" Margin="0 5" />                        
-                        <Separator Margin="0,5" Height="5"/>
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Shells}" Margin="0 0 0 5"/>
-                        <ItemsControl Items="{Binding ShellData}" Classes="Stagger">
+                        <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_TurretAngles}" PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" Margin="0 5" />                        
+                        <TextBlock Text="{x:Static translations:Translation.ShipStats_Shells}" Margin="0 5 0 0"/>
+                        <ItemsControl Items="{Binding ShellData}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Vertical"/>
@@ -148,29 +148,33 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="dataUi:ShellUI">
-                                    <StackPanel Orientation="Vertical">
-                                        <ItemsControl Items="{Binding PropertyValueMapper}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel Classes="NameValuePanel">
-                                                        <TextBlock Classes="Key"/>
-                                                        <TextBlock Classes="Value"/>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" IsVisible="{Binding ShowBlastPenetration}">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                            <ToolTip.Tip>
-                                                <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
-                                            </ToolTip.Tip>
-                                        </DockPanel>
-                                        <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_ShowDispGraph}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 5"/>
-                                        <TextBlock Classes="Clickable" Text="{x:Static t:Translation.ShipStats_ShowDispPlot}" PointerReleased="OpenDispersionPlotWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
-                                        <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 0 0 5" TextDecorations="Underline" Text="{x:Static t:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
-                                        <Separator IsVisible="{Binding !IsLastEntry}" Margin="0 5" />
-                                    </StackPanel>
+                                    <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name}"
+                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                        <StackPanel Orientation="Vertical">
+                                            <ItemsControl Items="{Binding PropertyValueMapper}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel Classes="NameValuePanel">
+                                                            <TextBlock Classes="Key"/>
+                                                            <TextBlock Classes="Value"/>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <DockPanel HorizontalAlignment="Stretch" Background="Transparent" IsVisible="{Binding ShowBlastPenetration}">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <ToolTip.Tip>
+                                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
+                                                </ToolTip.Tip>
+                                            </DockPanel>
+                                            <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDispGraph}" PointerReleased="OpenDispersionGraphWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 5"/>
+                                            <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDispPlot}" PointerReleased="OpenDispersionPlotWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
+                                            <TextBlock DataContext="{Binding}" Classes="Clickable" Margin="0 0 0 5" TextDecorations="Underline" Text="{x:Static translations:Translation.ShipStats_OpenBallistic}" PointerReleased="OpenBallisticGraphWindow"/>
+                                            <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowShellTrajectoryGraph}" PointerReleased="OpenShellTrajectoryWindow" TextDecorations="Underline" HorizontalAlignment="Left" Margin="0 0 0 5"/>
+                                        </StackPanel>
+                                    </Expander>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -178,9 +182,9 @@
                 </Expander>
 
                 <!--Pinger Gun-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_PingerGun}"
-                        Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.PingerGunUI}"
-                         IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_PingerGun}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.PingerGunUI}"
+                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding PingerGunData}">
                             <ItemsControl.ItemTemplate>
@@ -196,14 +200,14 @@
                 </Expander>
                 
                 <!--Torpedoes-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_TorpedoLaunchers}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_TorpedoLaunchers}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"  DataContext="{Binding CurrentShipStats.TorpedoArmamentUI}"
-                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <DockPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="{Binding Name}" TextWrapping="Wrap"/>
                         </DockPanel>
-                        <ItemsControl Items="{Binding TorpedoArmamentData}" Margin="0 5">
+                        <ItemsControl Items="{Binding TorpedoArmamentData}" Margin="0 5 0 0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
@@ -213,51 +217,49 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Separator Margin="0,5" Height="5"/>
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_Torpedo}" Margin="0 0 0 5"/>
-                        <ItemsControl Items="{Binding Torpedoes}" Classes="Stagger">
+                        <TextBlock Text="{x:Static translations:Translation.ShipStats_Torpedo}" Margin="0 10 0 0"/>
+                        <ItemsControl Items="{Binding Torpedoes}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Vertical">
-                                        <DockPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
-                                        </DockPanel>
-                                        <ItemsControl Items="{Binding ProjectileData}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel HorizontalAlignment="Stretch">
-                                                        <TextBlock Classes="Key"/>
-                                                        <TextBlock Classes="Value"/>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                            <ToolTip.Tip>
-                                                <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
-                                            </ToolTip.Tip>
-                                        </DockPanel>
-                                        <DockPanel HorizontalAlignment="Stretch" IsVisible="{Binding !!CanHitClasses.Count, FallbackValue=false}">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_CanHitClasses}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <ItemsControl Items="{Binding CanHitClasses}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel Spacing="5" Orientation="Horizontal"/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
+                                    <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name, Converter={StaticResource Localizer}}"
+                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                        <StackPanel Orientation="Vertical">
+                                            <ItemsControl Items="{Binding ProjectileData}">
                                                 <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="data:ShipClass">
-                                                        <Path Data="{Binding Converter={StaticResource PathConverter}}" 
-                                                              Fill="White" Stroke="White" StrokeThickness="1" />
+                                                    <DataTemplate>
+                                                        <DockPanel HorizontalAlignment="Stretch">
+                                                            <TextBlock Classes="Key"/>
+                                                            <TextBlock Classes="Value"/>
+                                                        </DockPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                        </DockPanel>
-                                        <Separator IsVisible="{Binding !IsLast}" Margin="0,5"/>
-                                    </StackPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Background="Transparent">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <ToolTip.Tip>
+                                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
+                                                </ToolTip.Tip>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" IsVisible="{Binding !!CanHitClasses.Count, FallbackValue=false}">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_CanHitClasses}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <ItemsControl Items="{Binding CanHitClasses}" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Spacing="5" Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate DataType="data:ShipClass">
+                                                            <Path Data="{Binding Converter={StaticResource PathConverter}}" 
+                                                                  Fill="White" Stroke="White" StrokeThickness="1" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </Expander>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -265,83 +267,175 @@
                 </Expander>
 
                 <!--CV planes-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Aircraft}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_Aircraft}"
+                          Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats.CVAircraftUI}"  IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Vertical">
-                                        <DockPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                        </DockPanel>
-                                        <ItemsControl Items="{Binding CVAircraftData}" >
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel>
-                                                        <TextBlock Classes="Key" />
-                                                        <TextBlock Classes="Value"/>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <TextBlock Text="{x:Static t:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,5,0,0"/>
-                                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Preparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding AimingRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                        </DockPanel>
-                                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Aiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding AimingPreparationRateMoving}"  TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                        </DockPanel>
-                                        <DockPanel HorizontalAlignment="Stretch" Margin="0,5,0,0">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                        </DockPanel>
-                                        <DockPanel HorizontalAlignment="Stretch" Classes="Stagger">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Weapon.Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                        </DockPanel>
-                                        <ItemsControl Items="{Binding Weapon.ProjectileData}" Classes="Stagger">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel>
-                                                        <TextBlock Classes="Key"/>
-                                                        <TextBlock Classes="Value"/>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0">
-                                            <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
-                                            <TextBlock Text="{Binding Weapon.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                            <ToolTip.Tip>
-                                                <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
-                                            </ToolTip.Tip>
-                                        </DockPanel>
-                                        <TextBlock Text="Consumables" Margin="0,5,0,5" IsVisible="{Binding !!PlaneConsumables.Count}" />
-                                        <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal" Spacing="5"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border Background="{DynamicResource ThemeControlMidBrush}" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                                                        <Image Source="{Binding Converter={StaticResource ImageConverter}}" ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
-                                                            <ToolTip.Tip>
-                                                                <userControls:ModifierToolTip/>
-                                                            </ToolTip.Tip>
-                                                        </Image>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                        <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
-                                    </StackPanel>                                  
+                                    <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name, Converter={StaticResource Localizer}}"
+                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AircraftAmount}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_NumberInSquad}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding NumberInSquad}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_AircraftInAttackGroup}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding NumberDuringAttack}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,8">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_MaxNumberOnDeck}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxNumberOnDeck}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <ItemsControl Items="{Binding CVAircraftData}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel>
+                                                            <TextBlock Classes="Key"/>
+                                                            <TextBlock Classes="Value"/>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.Unit_HP}" Margin="0,8,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Aircraft}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding PlaneHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Squadron}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding SquadronHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_AttackGroup}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AttackGroupHP}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Speed}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_CruisingSpeed}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding CruisingSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Max}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Min}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MinSpeed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AttackTimings}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Preparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding PreparationTime}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Aiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AimingTime}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ToFullyAimed}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding TimeToFullyAimed}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_PostAttackInvulnerabilityDuration}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding PostAttackInvulnerabilityDuration}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Cooldown}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AttackCd}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_InitialBoost}" Margin="0,4,0,0" 
+                                                       IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0" IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Duration}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding JatoDuration, TargetNullValue=0}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4" IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SpeedBoost}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding JatoSpeedMultiplier}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Concealment}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ConcealmentFromShips}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding ConcealmentFromShips}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_ConcealmentFromPlanes}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding ConcealmentFromPlanes}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="0,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_MaxViewDistance}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding MaxViewDistance}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_AimPenaltyPlanes}" Margin="0,4,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_DuringPreparation}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AimingRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_DuringAiming}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding AimingPreparationRateMoving}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Weapon}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Type}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding Weapon.Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                            </DockPanel>
+                                            <ItemsControl Items="{Binding Weapon.ProjectileData}" Classes="Stagger">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel>
+                                                            <TextBlock Classes="Key"/>
+                                                            <TextBlock Classes="Value"/>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="10 0 0 0">
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
+                                                <TextBlock Text="{Binding Weapon.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <ToolTip.Tip>
+                                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
+                                                </ToolTip.Tip>
+                                            </DockPanel>
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Consumables}" Margin="0,10,0,5" IsVisible="{Binding !!PlaneConsumables.Count}"/>
+                                            <ItemsControl Items="{Binding PlaneConsumables}" HorizontalAlignment="Center">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" Spacing="5"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource ThemeControlMidBrush}" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+                                                            <Image Source="{Binding Converter={StaticResource ImageConverter}}" ToolTip.Placement="Right" ToolTip.HorizontalOffset="5">
+                                                                <ToolTip.Tip>
+                                                                    <userControls:ModifierToolTip/>
+                                                                </ToolTip.Tip>
+                                                            </Image>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>  
+                                    </Expander>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -354,20 +448,20 @@
             <ItemsControl Items="{Binding CurrentShipStats.SecondColumnContent}" HorizontalAlignment="Stretch" IsVisible="{Binding !!CurrentShipStats.SecondColumnContent.Count}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Vertical" Spacing="10"></VirtualizingStackPanel>
+                        <VirtualizingStackPanel Orientation="Vertical" Spacing="10"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.DataTemplates>
-                    
+                        
                     <!-- Anti Air -->
                     <DataTemplate DataType="dataUi:AntiAirUI">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static t:Translation.ShipStats_AADefense}"
+                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static translations:Translation.ShipStats_AADefense}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical" Spacing="5">
                                 <StackPanel IsVisible="{Binding LongRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_LongAura}" Margin="0,0,0,5"/>
-                                    <ItemsControl Items="{Binding LongRangeAura.AntiAirData}">
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_LongAura}" Margin="0,0,0,5"/>
+                                    <ItemsControl Items="{Binding LongRangeAura.AntiAirData}" Classes="Stagger">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <DockPanel LastChildFill="True">
@@ -378,10 +472,10 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
-                                <Separator IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                <Separator IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="0,5,0,0"/>
                                 <StackPanel IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_MediumAura}" Margin="0,0,0,5"/>
-                                    <ItemsControl Items="{Binding MediumRangeAura.AntiAirData}">
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_MediumAura}" Margin="0,0,0,5"/>
+                                    <ItemsControl Items="{Binding MediumRangeAura.AntiAirData}" Classes="Stagger">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <DockPanel LastChildFill="True">
@@ -392,10 +486,10 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
-                                <Separator IsVisible="{Binding ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                <Separator IsVisible="{Binding ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="0,5,0,0"/>
                                 <StackPanel IsVisible="{Binding ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_ShortAura}" Margin="0,0,0,5"/>
-                                    <ItemsControl Items="{Binding ShortRangeAura.AntiAirData}">
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_ShortAura}" Margin="0,0,0,5"/>
+                                    <ItemsControl Items="{Binding ShortRangeAura.AntiAirData}" Classes="Stagger">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <DockPanel LastChildFill="True">
@@ -417,7 +511,7 @@
                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical">
                                 <DockPanel HorizontalAlignment="Stretch">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                     <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                 </DockPanel>
                                 <ItemsControl Items="{Binding AirstrikeData}">
@@ -430,25 +524,27 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <DockPanel HorizontalAlignment="Stretch" Margin="0 5 0 0">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_WeaponType}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                    <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Weapon}" Margin="0 10 0 0"/>
+                                <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_Type}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                                    <TextBlock Text="{Binding WeaponType, Converter={StaticResource Localizer}, ConverterParameter=resx}" 
+                                               TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                 </DockPanel>
                                 <ItemsControl Items="{Binding Weapon.ProjectileData}" Classes="Stagger">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <DockPanel LastChildFill="True">
+                                            <DockPanel LastChildFill="True" Margin="0 4 0 0">
                                                 <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="3 0 0 0"/>
                                                 <TextBlock Classes="Key"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                                <DockPanel HorizontalAlignment="Stretch" Margin="5 0 0 0" Background="Transparent" IsVisible="{Binding Weapon.SplashCoeff, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
-                                    <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
+                                <DockPanel HorizontalAlignment="Stretch" Margin="10 0 0 0" Background="Transparent" IsVisible="{Binding Weapon.SplashCoeff, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_SplashCoeff}" DockPanel.Dock="Left"/>
                                     <TextBlock Text="{Binding Weapon.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                     <ToolTip.Tip>
-                                        <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
                                     </ToolTip.Tip>
                                 </DockPanel>
                             </StackPanel>
@@ -457,7 +553,7 @@
                     
                     <!-- Depth charge launcher -->
                     <DataTemplate DataType="dataUi:DepthChargesLauncherUI">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static t:Translation.ShipStats_DepthChargesLauncher}"
+                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static translations:Translation.ShipStats_DepthChargesLauncher}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical">
@@ -487,9 +583,9 @@
                     
                     <!-- Secondaries -->
                     <DataTemplate DataType="dataUi:SecondaryBatteryUiContainer">
-                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static t:Translation.ShipStats_SecondaryBattery}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" 
-                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                        <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{x:Static translations:Translation.ShipStats_SecondaryBattery}"
+                                  Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" 
+                                  IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                             <StackPanel Orientation="Vertical">
                                 <ItemsControl Items="{Binding Secondaries}">
                                     <ItemsControl.ItemTemplate>
@@ -509,33 +605,38 @@
                                                     </ItemsControl.ItemTemplate>
                                                 </ItemsControl>
                                                 <DockPanel HorizontalAlignment="Stretch">
-                                                    <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static t:Translation.ShipStats_TrueReload}">
+                                                    <TextBlock DockPanel.Dock="Left" TextWrapping="Wrap" Text="{x:Static translations:Translation.ShipStats_TrueReload}">
                                                         <ToolTip.Tip>
-                                                            <TextBlock Text="{x:Static t:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
+                                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_TrueReloadTooltip}" MaxWidth="300" TextWrapping="Wrap"/>
                                                         </ToolTip.Tip>
                                                     </TextBlock>
                                                     <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TrueReload}"/>
                                                 </DockPanel>
-                                                <Separator Margin="0,5"/>
-                                                <TextBlock Text="{x:Static t:Translation.ShipStats_Shells}" Margin="0 0 0 5"/>
-                                                <ItemsControl Items="{Binding Shell.PropertyValueMapper}" Classes="Stagger">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <DockPanel LastChildFill="True">
-                                                                <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="2 0 0 0"/>
-                                                                <TextBlock Classes="Key"/>
-                                                            </DockPanel>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" Margin="5 0 0 0" LastChildFill="True">
-                                                    <TextBlock Text="{Binding Shell.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                                                    <TextBlock Text="{x:Static t:Translation.ShipStats_SplashCoeff}" TextWrapping="Wrap"/>
-                                                    <ToolTip.Tip>
-                                                        <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
-                                                    </ToolTip.Tip>
-                                                </DockPanel>
-                                                <Separator Margin="0,10" Height="5" IsVisible="{Binding !IsLast}"/>
+                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_Shells}" Margin="0 10 0 0"/>
+                                                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Shell.Name}"
+                                                          Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                                          IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
+                                                    <StackPanel>
+                                                        <ItemsControl Items="{Binding Shell.PropertyValueMapper}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <DockPanel LastChildFill="True">
+                                                                        <TextBlock Classes="Value" DockPanel.Dock="Right" TextWrapping="NoWrap" Margin="2 0 0 0"/>
+                                                                        <TextBlock Classes="Key"/>
+                                                                    </DockPanel>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
+                                                            <TextBlock Text="{Binding Shell.SplashCoeff}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_SplashCoeff}" TextWrapping="Wrap"/>
+                                                            <ToolTip.Tip>
+                                                                <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
+                                                            </ToolTip.Tip>
+                                                        </DockPanel>
+                                                    </StackPanel>
+                                                </Expander>
+                                                <Separator Margin="0,10" Height="3" IsVisible="{Binding !IsLast}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -549,20 +650,20 @@
             <GridSplitter Background="Transparent" ResizeDirection="Columns" Width="5"/>
             
             <!--Misc-->
-            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="0 0 0 5">
+            <StackPanel Orientation="Vertical" Spacing="10" HorizontalAlignment="Stretch" Margin="0 0 5 0">
                 
                 <!--Maneuverability-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Maneuverability}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_Maneuverability}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{x:Static t:Translation.ShipStats_FullPowerTime}"/>
-                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_Forward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                        <TextBlock Text="{x:Static translations:Translation.ShipStats_FullPowerTime}"/>
+                        <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Forward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                             <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerForward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                         </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch" Margin="5,0,0,0">
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_Backward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
+                        <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Backward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                             <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerBackward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                         </DockPanel>
                         <ItemsControl Items="{Binding ManeuverabilityUI.ManeuverabilityData}">
@@ -577,23 +678,23 @@
                         </ItemsControl>
                         <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
                             <TextBlock Text="{Binding ManeuverabilityUI.RudderBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_RudderBlastProtection}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_RudderBlastProtection}" TextWrapping="Wrap"/>
                             <ToolTip.Tip>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
+                                <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
                             </ToolTip.Tip>
                         </DockPanel>
                         <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
                             <TextBlock Text="{Binding ManeuverabilityUI.EngineBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                            <TextBlock Text="{x:Static t:Translation.ShipStats_EngineBlastProtection}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{x:Static translations:Translation.ShipStats_EngineBlastProtection}" TextWrapping="Wrap"/>
                             <ToolTip.Tip>
-                                <TextBlock Text="{x:Static t:Translation.ShipStats_BlastExplanation}"/>
+                                <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
                             </ToolTip.Tip>
                         </DockPanel>
                     </StackPanel>
                 </Expander>
                 
                 <!--Concealment-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Concealment}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_Concealment}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
@@ -611,7 +712,7 @@
                 </Expander>
                 
                 <!--Survivability-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_Survivability}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_Survivability}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
@@ -629,7 +730,7 @@
                 </Expander>
                 
                 <!--Special ability-->
-                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static t:Translation.ShipStats_SpecialAbility}"
+                <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_SpecialAbility}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats.SpecialAbilityUI}"
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">

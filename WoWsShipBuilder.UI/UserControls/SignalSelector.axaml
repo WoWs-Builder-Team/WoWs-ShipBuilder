@@ -3,16 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-             xmlns:t="clr-namespace:WoWsShipBuilder.UI.Translations"
-             xmlns:vm="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="SignalSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Class="WoWsShipBuilder.UI.UserControls.SignalSelector">
     
     <Design.DataContext>
-        <vm:SignalSelectorViewModel />
+        <shipVm:SignalSelectorViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
@@ -22,7 +23,7 @@
 
     <DockPanel>  
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
-            <TextBlock Text="{x:Static t:Translation.SignalSelector_Flags}" FontSize="13" />
+            <TextBlock Text="{x:Static translations:Translation.SignalSelector_Flags}" FontSize="13" />
             <TextBlock Text="{Binding SignalsNumber}" FontSize="13" />
             <TextBlock Text="/8" FontSize="13" />
         </StackPanel>
@@ -36,15 +37,15 @@
                 <DataTemplate>
                     <Panel Background="Transparent" Margin="5" ToolTip.Placement="Right" ToolTip.HorizontalOffset="10" IsVisible="{Binding Key, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                         <ToolTip.Tip>
-                            <userControls:FlagToolTip DataContext="{Binding Value}"/>
+                            <userControls:FlagToolTip DataContext="{Binding Value.Signal}"/>
                         </ToolTip.Tip>
                         <customControls:NumberedButton
-                            BackgroundImage="{Binding Value, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
-                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" CommandParameter="{Binding Value}">
+                            BackgroundImage="{Binding Value.Signal, Converter={StaticResource ImagePathConverter}, ConverterParameter=Flags}"
+                            Command="{Binding $parent[UserControl].DataContext.SignalCommandExecute}" IsEnabled="{Binding Value.CanExecute}" CommandParameter="{Binding Value.Signal}">
                             <customControls:NumberedButton.IsChecked>
                                 <MultiBinding Mode="OneWay" Converter="{StaticResource ListContainsToBoolConverter}">
                                     <Binding Path="$parent[UserControl].DataContext.SelectedSignals"/>
-                                    <Binding Path="Value"/>
+                                    <Binding Path="Value.Signal"/>
                                 </MultiBinding>
                             </customControls:NumberedButton.IsChecked>
                         </customControls:NumberedButton>

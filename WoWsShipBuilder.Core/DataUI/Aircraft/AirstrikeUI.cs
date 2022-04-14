@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -62,7 +62,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> AirstrikeData { get; set; } = default!;
 
-        public static AirstrikeUI? FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw)
+        public static AirstrikeUI? FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw, IAppDataService appDataService)
         {
             var header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
             var airstrikes = ship.AirStrikes;
@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var airstrike = airstrikes.FirstOrDefault().Value;
-            var plane = AppDataHelper.Instance.GetAircraft(airstrike.PlaneName[..airstrike.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase)]);
+            var plane = appDataService.GetAircraft(airstrike.PlaneName[..airstrike.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase)]);
 
             if (isAsw != plane.PlaneCategory.Equals(PlaneCategory.Asw))
             {
@@ -93,12 +93,12 @@ namespace WoWsShipBuilder.Core.DataUI
             string weaponType;
             if (isAsw)
             {
-                weapon = DepthChargeUI.FromChargesName(plane.BombName, modifiers);
+                weapon = DepthChargeUI.FromChargesName(plane.BombName, modifiers, appDataService);
                 weaponType = ProjectileType.DepthCharge.ToString();
             }
             else
             {
-                weapon = BombUI.FromBombName(plane.BombName, modifiers);
+                weapon = BombUI.FromBombName(plane.BombName, modifiers, appDataService);
                 weaponType = ProjectileType.Bomb.ToString();
             }
 

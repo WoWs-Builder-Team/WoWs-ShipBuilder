@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -37,13 +37,13 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers)
+        public static RocketUI FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            var rocket = AppDataHelper.Instance.GetProjectile<Rocket>(name);
+            var rocket = appDataService.GetProjectile<Rocket>(name);
 
             decimal rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier), 3);
+            decimal fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
             fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
@@ -53,7 +53,7 @@ namespace WoWsShipBuilder.Core.DataUI
             if (rocket.RocketType.Equals(RocketType.AP))
             {
                 var rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
-                rocketDamage = Math.Round(rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
+                rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
                 ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingTreshold = (int)rocket.ArmingThreshold;
@@ -63,7 +63,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var rocketUI = new RocketUI
             {
                 Name = rocket.Name,
-                Damage = rocketDamage,
+                Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
                 ArmingTreshold = armingTreshold,

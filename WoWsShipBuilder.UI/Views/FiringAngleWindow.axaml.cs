@@ -25,12 +25,15 @@ namespace WoWsShipBuilder.UI.Views
 
         private void FiringAngleWindow_Closing(object? sender, System.EventArgs e)
         {
-            ((MainWindowViewModel)Owner.DataContext!).ChildrenWindows.Remove(this);
+            if (Owner is MainWindow mainWindow)
+            {
+                mainWindow.ChildWindows.Remove(this);
+            }
         }
 
         private void FiringAngleWindow_Opened(object? sender, System.EventArgs e)
         {
-            ((MainWindowViewModel)Owner.DataContext!).ChildrenWindows.Add(this);
+            ((MainWindow)Owner).ChildWindows.Add(this);
         }
 
         private void OpenDiscord(object? sender, Avalonia.Input.PointerReleasedEventArgs e)

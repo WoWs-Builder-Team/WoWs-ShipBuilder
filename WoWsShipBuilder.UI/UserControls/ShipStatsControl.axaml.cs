@@ -6,8 +6,10 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
-using static WoWsShipBuilder.UI.ViewModels.DispersionGraphViewModel;
+using WoWsShipBuilder.ViewModels.ShipVm;
+using static WoWsShipBuilder.UI.ViewModels.DispersionPlot.DispersionGraphViewModel;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
@@ -38,23 +40,30 @@ namespace WoWsShipBuilder.UI.UserControls
             OpenGraphsWindow(sender, e, Tabs.Ballistic);
         }
 
+        public void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
+        {
+            OpenGraphsWindow(sender, e, Tabs.Trajectory);
+        }
+
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
         {
-            var dc = (ShipStatsControlViewModel)DataContext!;
-            var win = new FiringAngleWindow();
-            win.DataContext = new FiringAngleViewModel(dc.CurrentShipStats!.MainBatteryUI!.OriginalMainBatteryData);
+            var dc = (ShipStatsControlViewModelBase)DataContext!;
+            var win = new FiringAngleWindow
+            {
+                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryUI!.OriginalMainBatteryData),
+            };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
 
         private void OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
         {
-            var dc = DataContext as ShipStatsControlViewModel;
+            var dc = DataContext as ShipStatsControlViewModelBase;
             var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
             var shellIndex = ((ShellUI)textBlock.DataContext!).Index;
-            var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+            var shell = DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;

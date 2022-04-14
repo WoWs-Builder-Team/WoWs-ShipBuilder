@@ -6,36 +6,23 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpResponses;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {
     public class AwsClient : ClientBase, IAwsClient
     {
-        #region Static Fields and Constants
-
         private const string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
-
-        private static readonly Lazy<AwsClient> InstanceValue = new(() => new AwsClient());
 
         private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
-        #endregion
-
-        private AwsClient()
-            : this(new FileSystem(), AppDataHelper.Instance, null)
-        {
-        }
-
-        internal AwsClient(IFileSystem fileSystem, AppDataHelper appDataHelper, HttpMessageHandler? handler)
-            : base(fileSystem, appDataHelper)
+        public AwsClient(IFileSystem fileSystem, IAppDataService appDataService, HttpMessageHandler? handler = null)
+            : base(fileSystem, appDataService)
         {
             Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
         }
-
-        public static AwsClient Instance => InstanceValue.Value;
 
         protected override HttpClient Client { get; }
 
@@ -67,7 +54,7 @@ namespace WoWsShipBuilder.Core.HttpClients
                 localFolder = "Camos";
             }
 
-            string directoryPath = FileSystem.Path.Combine(AppDataHelper.Instance.AppDataImageDirectory, localFolder);
+            string directoryPath = FileSystem.Path.Combine(AppDataService.AppDataImageDirectory, localFolder);
 
             if (!FileSystem.Directory.Exists(directoryPath))
             {
@@ -107,7 +94,7 @@ namespace WoWsShipBuilder.Core.HttpClients
             });
             foreach ((string category, string fileName) in relativeFilePaths)
             {
-                string localFileName = FileSystem.Path.Combine(AppDataHelper.GetDataPath(serverType), category, fileName);
+                string localFileName = FileSystem.Path.Combine(AppDataService.GetDataPath(serverType), category, fileName);
                 Uri uri = string.IsNullOrWhiteSpace(category) ? new(baseUrl + fileName) : new(baseUrl + $"{category}/{fileName}");
                 var task = Task.Run(async () =>
                 {
