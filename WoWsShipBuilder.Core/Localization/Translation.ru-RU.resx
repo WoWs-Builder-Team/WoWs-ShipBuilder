@@ -603,7 +603,9 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Скорость</value>
   </data>
-  
+  <data name="ShipStats_Weapon" xml:space="preserve">
+      <value>Оружие</value>
+  </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Топ-мачтовые бомбы</value>
   </data>
@@ -1165,17 +1167,29 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>ПББ</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>Стандартные</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>Магнитные</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>Глубоководные</value>
+  </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>ХП за хилку</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>Дальность [км]:</value>
+  </data>
   <data name="DispersionGrapghWindow_Height" xml:space="preserve">
       <value>Высота</value>
   </data>
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>Показать график траектории снаряда</value>
   </data>
+  
+  
   
   
   
