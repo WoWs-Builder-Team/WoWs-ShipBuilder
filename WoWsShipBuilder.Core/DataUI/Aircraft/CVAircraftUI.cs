@@ -85,7 +85,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public string AttackCd { get; set; } = default!;
 
         [JsonIgnore]
-        public string JatoDuration { get; set; } = default!;
+        public string? JatoDuration { get; set; } = default!;
 
         [JsonIgnore]
         public string JatoSpeedMultiplier { get; set; } = default!;
@@ -305,6 +305,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
             const string stringFormat = "+#0.0 %;-#0.0 %;0 %";
 
+            string? jatoDurationString = jatoDuration != 0 ? $"{jatoDuration} {Translation.Unit_S}" : null;
+
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
@@ -321,7 +323,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 NumberDuringAttack = plane.AttackData.AttackerSize,
                 AmmoPerAttack = plane.AttackData.AttackCount,
                 AttackCd = $"{Math.Round((decimal)plane.AttackData.AttackCooldown, 1)} {Translation.Unit_S}",
-                JatoDuration = $"{jatoDuration} {Translation.Unit_S}",
+                JatoDuration = jatoDurationString,
                 JatoSpeedMultiplier = $"+{jatoSpeedMultiplier} {Translation.Unit_PerCent}",
                 WeaponType = weaponType.ToString(),
                 Weapon = weapon,

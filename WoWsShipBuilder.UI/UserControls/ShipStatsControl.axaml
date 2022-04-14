@@ -353,12 +353,13 @@
                                                 <TextBlock Text="{Binding AttackCd}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
                                             
-                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_InitialBoost}" Margin="0,4,0,0"/>
-                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0">
+                                            <TextBlock Text="{x:Static translations:Translation.ShipStats_InitialBoost}" Margin="0,4,0,0" 
+                                                       IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,0" IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Duration}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                                                <TextBlock Text="{Binding JatoDuration}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
+                                                <TextBlock Text="{Binding JatoDuration, TargetNullValue=0}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
-                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4">
+                                            <DockPanel HorizontalAlignment="Stretch" Margin="10,4,0,4" IsVisible="{Binding JatoDuration, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_SpeedBoost}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                                 <TextBlock Text="{Binding JatoSpeedMultiplier}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                             </DockPanel>
