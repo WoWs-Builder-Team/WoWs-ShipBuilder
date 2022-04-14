@@ -618,11 +618,15 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Angriffsabklingzeit</value>
   </data>
-  
+  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
+      <value>Reisegeschwindigkeit</value>
+  </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomben in innerer Ellipse</value>
   </data>
-  
+  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
+      <value>Maximale Flugzeuge an Deck</value>
+  </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -632,7 +636,9 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Flugzeuge pro Angriff</value>
   </data>
-  
+  <data name="ShipStats_NumberInSquad" xml:space="preserve">
+      <value>Flugzeuge pro Staffel</value>
+  </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Flugzeug Hp</value>
   </data>
@@ -789,19 +795,27 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Schaden während des Angriffs</value>
   </data>
-  
+  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
+      <value>Unverwundbarkeit nach Angriff</value>
+  </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
-  
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+      <value>Bis zur maximalen Genauigkeit</value>
+  </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
   </data>
-  
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
+    <value>Während des Angriffs</value>
+  </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
-  
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
+    <value>Während der Vorbereitungszeit</value>
+  </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Zeit bis zur maximalen Leistung</value>
   </data>
@@ -1189,24 +1203,64 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>Zeige Granatenflugbahngraph</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
+      <value>Durch Schiffe</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
+      <value>Durch Flugzeuge</value>
+  </data>
+  <data name="ShipStats_SpottingOnShips" xml:space="preserve">
+      <value>Von Schiffen</value>
+  </data>
+  <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
+      <value>Von Flugzeugen</value>
+  </data>
+  <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
+      <value>Von Torpedos</value>
+  </data>
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>Maximale Sichtweite</value>
+  </data>
+  <data name="ShipStats_Consumables" xml:space="preserve">
+      <value>Verbrauchsmaterialien</value>
+  </data>
+  <data name="ShipStats_AircraftAmount" xml:space="preserve">
+      <value>Anzahl Flugzeuge</value>
+  </data>
+  <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
+      <value>In der Angriffsgruppe</value>
+  </data>
+  <data name="ShipStats_Squadron" xml:space="preserve">
+      <value>Staffel</value>
+  </data>
+  <data name="ShipStats_AttackGroup" xml:space="preserve">
+      <value>Angriffsgruppe</value>
+  </data>
+  <data name="ShipStats_Max" xml:space="preserve">
+      <value>Max.</value>
+  </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>Min.</value>
+  </data>
+  <data name="ShipStats_AttackTimings" xml:space="preserve">
+      <value>Angriffszeiten</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+      <value>Während des Angriffs</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+      <value>Während der Vorbereitungszeit</value>
+  </data>
+  <data name="ShipStats_InitialBoost" xml:space="preserve">
+      <value>Start-Boost</value>
+  </data>
+  <data name="ShipStats_SpeedBoost" xml:space="preserve">
+      <value>Geschwindigkeitsboost</value>
+  </data>
+  <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
+      <value>Maximale Kampfdauer</value>
+  </data>
+  <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
+      <value>Maximale Abschüsse</value>
+  </data>
 </root>
