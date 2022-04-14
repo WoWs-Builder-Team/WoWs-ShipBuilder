@@ -604,7 +604,7 @@
     <value>Velocidade</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Armamento</value>
+      <value>Armamento</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>Skip bomb</value>
@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Tempo de recarga do ataque</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Velocidade de cruzeiro</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombas na elipse interna</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Número máximo de aeronaves no convés</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Velocidade máxima</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Aeronaves por ataque</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aeronaves em um esquadrão</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>HP por avião</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Dano recebido durante o ataque</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Tempo de invulnerabilidade após ataque</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Tempo de preparação</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
-    <value>Tempo para mirar completamente</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Lançadores de Torpedo</value>
   </data>
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
-    <value>Durante a mira</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Taxa de mudança da área do drop enquanto manobra</value>
   </data>
-  <data name="ShipStats_DuringPreparation" xml:space="preserve">
-    <value>Durante a preparação</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tempo para potência total</value>
   </data>
@@ -898,13 +884,13 @@
     <value>Mostrar gráfico de dispersão</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Fórmula no alcance X(Km)</value>
+      <value>Fórmula no alcance X(Km)</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersão Horizontal[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Alcance de Mira (Km)</value>
+      <value>Alcance de Mira (Km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Gráficos de Balística</value>
@@ -1117,7 +1103,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
     <value>Tempo de Recarga no Servidor</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
+      <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>DPM no Servidor</value>
@@ -1191,4 +1177,36 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Águas Profundas</value>
   </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>HP por Cura</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>Alcance [km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>Altura</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>Mostrar gráfico da trajetória dos projéteis</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
