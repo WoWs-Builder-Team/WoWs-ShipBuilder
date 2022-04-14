@@ -540,9 +540,7 @@
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomba w wewnętrznej elipsie</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Maks. liczba samolotów na pokładzie</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maks. Prędkość</value>
   </data>
@@ -639,13 +637,9 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Czas przygotowania</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
-    <value>Czas do pełnego wycelowania</value>
-  </data>
   
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
-    <value>Podczas celowania</value>
-  </data>
+  
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Współczynnik zmiany obszaru zrzutu podczas manewrowania</value>
   </data>
@@ -683,9 +677,7 @@
   
   
   
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Zasięg celowania (km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Wykresy balistyczne</value>
   </data>
@@ -802,6 +794,30 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>strzały/min</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
