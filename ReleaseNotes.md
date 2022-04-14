@@ -1,4 +1,4 @@
-# Update 1.4.3 - pre
+# Update 1.4.3
 
 ## Additions
 - Added captain talents modifiers in their talent description.
