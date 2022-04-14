@@ -637,6 +637,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 MajorGridlineThickness = 1,
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
+                AbsoluteMaximum = 50,
                 MajorStep = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 1 : double.NaN,
             };
 
