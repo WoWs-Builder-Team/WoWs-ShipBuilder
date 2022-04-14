@@ -28,25 +28,25 @@ namespace WoWsShipBuilder.Core.DataUI
         public int MaxNumberOnDeck { get; set; }
 
         [JsonIgnore]
-        public string RestorationTime { get; set; }
+        public string RestorationTime { get; set; } = default!;
 
         [JsonIgnore]
-        public string PlaneHP { get; set; }
+        public string PlaneHP { get; set; } = default!;
 
         [JsonIgnore]
-        public string SquadronHP { get; set; }
+        public string SquadronHP { get; set; } = default!;
 
         [JsonIgnore]
-        public string AttackGroupHP { get; set; }
+        public string AttackGroupHP { get; set; } = default!;
 
         [JsonIgnore]
-        public string CruisingSpeed { get; set; }
+        public string CruisingSpeed { get; set; } = default!;
 
         [JsonIgnore]
-        public string MaxSpeed { get; set; }
+        public string MaxSpeed { get; set; } = default!;
 
         [JsonIgnore]
-        public string MinSpeed { get; set; }
+        public string MinSpeed { get; set; } = default!;
 
         [DataUiUnit("S")]
         public decimal BoostDurationTime { get; set; }
@@ -58,19 +58,19 @@ namespace WoWsShipBuilder.Core.DataUI
         public string AimingPreparationRateMoving { get; set; } = default!;
 
         [JsonIgnore]
-        public string PreparationTime { get; set; }
+        public string PreparationTime { get; set; } = default!;
 
         [JsonIgnore]
-        public string AimingTime { get; set; }
+        public string AimingTime { get; set; } = default!;
 
         [JsonIgnore]
         public string AimingRateMoving { get; set; } = default!;
 
         [JsonIgnore]
-        public string PostAttackInvulnerabilityDuration { get; set; }
+        public string PostAttackInvulnerabilityDuration { get; set; } = default!;
 
         [JsonIgnore]
-        public string TimeToFullyAimed { get; set; }
+        public string TimeToFullyAimed { get; set; } = default!;
 
         [DataUiUnit("PerCent")]
         public int DamageTakenDuringAttack { get; set; }
@@ -82,28 +82,22 @@ namespace WoWsShipBuilder.Core.DataUI
         public int InnerBombPercentage { get; set; }
 
         [JsonIgnore]
-        public string AttackCd { get; set; }
+        public string AttackCd { get; set; } = default!;
 
         [JsonIgnore]
-        public string JatoDuration { get; set; }
+        public string JatoDuration { get; set; } = default!;
 
         [JsonIgnore]
-        public string JatoSpeedMultiplier { get; set; }
+        public string JatoSpeedMultiplier { get; set; } = default!;
 
         [JsonIgnore]
-        public string ConcealmentFromShips { get; set; }
+        public string ConcealmentFromShips { get; set; } = default!;
 
         [JsonIgnore]
-        public string ConcealmentFromPlanes { get; set; }
+        public string ConcealmentFromPlanes { get; set; } = default!;
 
         [JsonIgnore]
-        public string MaxViewDistance { get; set; }
-
-        [JsonIgnore]
-        public string SpottingOnPlanes { get; set; }
-
-        [JsonIgnore]
-        public string SpottingOnTorps { get; set; }
+        public string MaxViewDistance { get; set; } = default!;
 
         [JsonIgnore]
         public string WeaponType { get; set; } = default!;
