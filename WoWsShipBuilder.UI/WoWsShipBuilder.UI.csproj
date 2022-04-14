@@ -14,6 +14,7 @@
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
+        <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     </PropertyGroup>
     <PropertyGroup>
         <NuspecFile>WoWsShipBuilder.nuspec</NuspecFile>
@@ -23,7 +24,6 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
-        <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     </PropertyGroup>
     <Target Name="PostBuildVersionDump" AfterTargets="Build">
         <WriteLinesToFile File="buildInfo.txt" Lines="$(Version)" Overwrite="true" />
