@@ -589,9 +589,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>속도</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>무기 유형</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>물수제비 폭탄</value>
   </data>
@@ -604,15 +602,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>공격 대기 시간</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>순항 속도</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>내부 조준원 명중 확률</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>갑판 위 최대 함재기 수</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>최고 속도</value>
   </data>
@@ -622,9 +616,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>공격시 항공기 수</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>각 편대의 항공기 수</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>각 항공기의 내구도</value>
   </data>
@@ -771,25 +763,17 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>공격 중 입은 피해</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>공격 후 무적 시간</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>준비 시간</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
-    <value>최대 조준 시간</value>
-  </data>
   
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
-    <value>조준 중</value>
-  </data>
+  
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>기동 중 투하 면적 변동률</value>
   </data>
-  <data name="ShipStats_DuringPreparation" xml:space="preserve">
-    <value>준비 중</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>최대 마력 도달 시간</value>
   </data>
@@ -961,6 +945,30 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
