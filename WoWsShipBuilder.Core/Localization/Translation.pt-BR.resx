@@ -1177,9 +1177,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Águas Profundas</value>
   </data>
-  <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>HP por Cura</value>
-  </data>
+  
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>Alcance [km]:</value>
   </data>
