@@ -1176,9 +1176,7 @@
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Глубоководные</value>
   </data>
-  <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>ХП за хилку</value>
-  </data>
+  
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>Дальность [км]:</value>
   </data>
