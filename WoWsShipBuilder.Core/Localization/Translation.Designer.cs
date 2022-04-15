@@ -322,7 +322,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hp per heal.
+        ///   Looks up a localized string similar to Max HP per heal.
         /// </summary>
         public static string Consumable_HpPerHeal {
             get {
