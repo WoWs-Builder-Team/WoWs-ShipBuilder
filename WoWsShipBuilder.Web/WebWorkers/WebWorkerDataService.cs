@@ -21,7 +21,7 @@ public class WebWorkerDataService : IDataService
         this.jsRuntime = jsRuntime;
     }
 
-    public static AppSettings Settings { get; set; }
+    public static AppSettings Settings { get; set; } = default!;
 
     private string CurrentStoreName => Settings.SelectedServerType.StringName();
 

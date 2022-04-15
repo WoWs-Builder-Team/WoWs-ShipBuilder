@@ -18,20 +18,13 @@ public class WebAppDataService : IAppDataService
 {
     private readonly GameDataDb gameDataDb;
 
-    // private readonly IWorkerFactory workerFactory;
-
     private readonly IDataService dataService;
 
     private readonly AppSettings appSettings;
 
-    // private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
-
-    // private IWorkerBackgroundService<WebWorkerDataService>? worker;
-
     public WebAppDataService(IDataService dataService, GameDataDb gameDataDb, AppSettings appSettings)
     {
         this.gameDataDb = gameDataDb;
-        // this.workerFactory = workerFactory;
         this.dataService = dataService;
         this.appSettings = appSettings;
     }
@@ -111,6 +104,7 @@ public class WebAppDataService : IAppDataService
 
     public async Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
     {
+        await Task.CompletedTask;
         if (AppData.ShipDictionary!.TryGetValue(summary.Index, out var ship))
         {
             Console.WriteLine("cache hit");
@@ -118,8 +112,8 @@ public class WebAppDataService : IAppDataService
         }
 
         var dataPath = FindDataPath<Ship>(summary.Nation, appSettings.SelectedServerType);
-        // ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
 
+        // ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
         // var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, appSettings.SelectedServerType);
         // if (shipDict != null)
         // {
@@ -165,8 +159,22 @@ public class WebAppDataService : IAppDataService
             .ToList();
     }
 
+    private static string[] GetAssembliesForWorker()
+    {
+        return new string[]
+        {
+            "Microsoft.Extensions.DependencyInjection.Abstractions.dll", "Microsoft.Extensions.DependencyInjection.dll",
+            "WoWsShipBuilder.Core.dll",
+            "System.Diagnostics.Tracing.dll",
+            "WoWsShipBuilder.DataStructures.dll",
+            "NLog.dll",
+            "JsonSubTypes.dll",
+        };
+    }
+
     private async Task<T?> DeserializeFromDb<T>(string dataLocation)
     {
+        await Task.CompletedTask;
         if (string.IsNullOrWhiteSpace(dataLocation))
         {
             throw new ArgumentException("The provided data location must not be empty.");
@@ -184,35 +192,9 @@ public class WebAppDataService : IAppDataService
         return returnValue;
     }
 
-    // private async Task InitializeWorker()
-    // {
-    //     if (startupWorker is null)
-    //     {
-    //         var factory = await workerFactory.CreateAsync();
-    //         startupWorker = await factory.CreateBackgroundServiceAsync<StartupWebWorkerService>(wo => wo.AddConventionalAssemblyOfService().AddAssemblyOf<ServiceCollection>().
-    //             AddAssemblies(GetAssembliesForWorker()).AddBlazorWorkerJsRuntime().AddAssemblyOf<IndexedDbInterop>());
-    //     }
-    //
-    //     worker ??= await startupWorker.CreateBackgroundServiceAsync(startup => startup.Resolve<WebWorkerDataService>());
-    // }
-
-    private static string[] GetAssembliesForWorker()
-    {
-        return new string[]
-        {
-            "Microsoft.Extensions.DependencyInjection.Abstractions.dll", "Microsoft.Extensions.DependencyInjection.dll",
-            "WoWsShipBuilder.Core.dll",
-            "System.Diagnostics.Tracing.dll",
-            "WoWsShipBuilder.DataStructures.dll",
-            "NLog.dll",
-            "JsonSubTypes.dll",
-        };
-    }
-
     private string CombinePaths(params string[] paths)
     {
         IEnumerable<string> cleanPaths = paths.Select(path => path.Replace('/', '.').Trim('.'));
         return string.Join('.', cleanPaths);
     }
-
 }

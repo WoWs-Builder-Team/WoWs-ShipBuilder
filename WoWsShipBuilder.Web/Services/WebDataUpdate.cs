@@ -227,7 +227,7 @@ public class WebDataUpdate : ILocalDataUpdater
     }
 
     // TODO data validation
-    public async Task<bool> ValidateData(ServerType serverType, string dataBasePath)
+    public Task<bool> ValidateData(ServerType serverType, string dataBasePath)
     {
         throw new NotImplementedException();
     }

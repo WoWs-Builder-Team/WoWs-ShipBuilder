@@ -39,7 +39,6 @@ public static class SetupExtensions
         services.AddScoped<ILocalDataUpdater, WebDataUpdate>();
         services.AddScoped<IAwsClient, AwsClient>();
         services.AddScoped<Localizer>();
-        // services.AddWorkerFactory();
         return services;
     }
 

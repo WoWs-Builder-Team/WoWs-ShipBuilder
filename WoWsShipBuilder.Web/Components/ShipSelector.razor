@@ -21,7 +21,7 @@
                 @foreach (ShipClass? item in classList)
                 {
                     <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString()!)</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -32,7 +32,7 @@
                 @foreach (Nation? item in nationList)
                 {
                     <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString()!)</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -43,7 +43,7 @@
                 @foreach (ShipCategory? item in typeList)
                 {
                     <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString())</MudText>
+                        <MudText Color="Color.Secondary">@Translation.ResourceManager.GetString(item.ToString()!)</MudText>
                     </MudSelectItem>
                 }
             </MudSelect>
@@ -210,7 +210,9 @@
     private void RemoveShip(string shipIndex)
     {
         SelectedShips.Remove(shipIndex);
+#pragma warning disable BL0005
         mudList.SelectedValue = null;
+#pragma warning restore BL0005
     }
 
     private void AddShip(object? obj)
