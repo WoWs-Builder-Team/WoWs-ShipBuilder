@@ -1,5 +1,7 @@
-﻿using System.IO.Abstractions;
+﻿using System.Collections.Concurrent;
+using System.IO.Abstractions;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -18,6 +20,12 @@ public class ServerAppDataService : IAppDataService
     private readonly IAwsClient awsClient;
 
     private readonly string devDataSource;
+
+    private readonly ConcurrentBag<Nation> loadedNations = new();
+
+    private readonly SemaphoreSlim semaphoreSlim = new(1);
+
+    private VersionInfo? versionInfo;
 
     public string DefaultAppDataDirectory { get; }
 
@@ -58,34 +66,70 @@ public class ServerAppDataService : IAppDataService
         return null;
     }
 
-    public Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
+    public async Task<VersionInfo?> GetLocalVersionInfo(ServerType serverType)
     {
-        throw new NotImplementedException();
+        versionInfo ??= await awsClient.DownloadVersionInfo(serverType);
+        return versionInfo;
     }
 
-    public Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
+    public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
     {
-        throw new NotImplementedException();
+        if (AppData.ShipSummaryList is null)
+        {
+            string fileName = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common.json");
+            AppData.ShipSummaryList = await dataService.LoadAsync<List<ShipSummary>>(fileName) ?? throw new InvalidOperationException();
+        }
+
+        return AppData.ShipSummaryList;
     }
 
-    public Task LoadNationFiles(Nation nation)
+    public async Task LoadNationFiles(Nation nation)
     {
-        throw new NotImplementedException();
+        if (loadedNations.Contains(nation))
+        {
+            return;
+        }
+
+        await semaphoreSlim.WaitAsync();
+        if (!loadedNations.Contains(nation))
+        {
+            var server = ServerType.Live;
+
+            AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
+            AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
+            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
+            AppData.ExteriorCache.SetIfNotNull(nation, await ReadLocalJsonData<Exterior>(nation, server));
+            AppData.CaptainCache.SetIfNotNull(nation, await ReadLocalJsonData<Captain>(nation, server));
+
+            if (nation == Nation.Common)
+            {
+                var modernizations = await ReadLocalJsonData<Modernization>(nation, server);
+                foreach ((string? key, var value) in modernizations!)
+                {
+                    AppData.ModernizationCache.Add(key, value);
+                }
+            }
+        }
+
+        loadedNations.Add(nation);
+        semaphoreSlim.Release();
     }
 
     public Task<Projectile> GetProjectile(string projectileName)
     {
-        throw new NotImplementedException();
+        var nation = IAppDataService.GetNationFromIndex(projectileName);
+        return Task.FromResult(AppData.ProjectileCache[nation][projectileName]);
     }
 
-    public Task<T> GetProjectile<T>(string projectileName) where T : Projectile
+    public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
     {
-        throw new NotImplementedException();
+        return (T)await GetProjectile(projectileName);
     }
 
     public Task<Aircraft> GetAircraft(string aircraftName)
     {
-        throw new NotImplementedException();
+        var nation = IAppDataService.GetNationFromIndex(aircraftName);
+        return Task.FromResult(AppData.AircraftCache[nation][aircraftName]);
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
@@ -100,17 +144,7 @@ public class ServerAppDataService : IAppDataService
 
     public Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
     {
-        throw new NotImplementedException();
-    }
-
-    public void SaveBuilds()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void LoadBuilds()
-    {
-        throw new NotImplementedException();
+        return Task.FromResult<Ship?>(AppData.ShipDictionary![summary.Index]);
     }
 
     public string GetDataPath(ServerType serverType)
@@ -118,13 +152,12 @@ public class ServerAppDataService : IAppDataService
         return dataService.CombinePaths(devDataSource, "json", serverType.StringName());
     }
 
-    public string GetLocalizationPath(ServerType serverType)
-    {
-        throw new NotImplementedException();
-    }
+    public string GetLocalizationPath(ServerType serverType) => dataService.CombinePaths(GetDataPath(serverType), "Localization");
 
     public Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true)
     {
-        throw new NotImplementedException();
+        fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
+        var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
+        return Task.FromResult(includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList());
     }
 }

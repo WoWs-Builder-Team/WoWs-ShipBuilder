@@ -32,11 +32,8 @@ builder.Services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
     AutomaticDecompression = DecompressionMethods.All,
 }));
 builder.Services.AddSingleton<IAwsClient, ServerAwsClient>();
-#if DEBUG
-builder.Services.AddSingleton<IAppDataService, DesktopAppDataService>();
-#else
+
 builder.Services.AddSingleton<IAppDataService, ServerAppDataService>();
-#endif
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();

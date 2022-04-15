@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -31,7 +30,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, AppSettings appSettings)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, AppSettings appSettings)
         {
             NavigationService = navigationService;
             ClipboardService = clipboardService;
@@ -39,7 +38,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             AppSettings = appSettings;
             if (!AppData.Builds.Any())
             {
-                appDataService.LoadBuilds();
+                userDataService.LoadBuilds();
             }
 
             var builds = new List<Build> { new(Translation.StartMenu_ImportBuild) };

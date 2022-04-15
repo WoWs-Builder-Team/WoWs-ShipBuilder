@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,8 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public record ShipUI(string Index) : IDataUi
     {
-        public static readonly Dictionary<string, bool> ExpanderStateMapper = new();
+        // TODO: check if really necessary
+        public static readonly ConcurrentDictionary<string, bool> ExpanderStateMapper = new();
 
         public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
 

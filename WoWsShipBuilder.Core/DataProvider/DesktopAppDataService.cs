@@ -12,7 +12,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    public class DesktopAppDataService : IAppDataService
+    public class DesktopAppDataService : IAppDataService, IUserDataService
     {
         #region Static Fields and Constants
 
@@ -122,7 +122,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
+        public async Task<VersionInfo?> GetLocalVersionInfo(ServerType serverType)
         {
             string filePath = dataService.CombinePaths(GetDataPath(serverType), "VersionInfo.json");
             return await DeserializeFile<VersionInfo>(filePath);

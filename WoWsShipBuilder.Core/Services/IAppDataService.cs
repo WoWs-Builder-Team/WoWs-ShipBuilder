@@ -56,7 +56,7 @@ namespace WoWsShipBuilder.Core.Services
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType);
+        Task<VersionInfo?> GetLocalVersionInfo(ServerType serverType);
 
         Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
@@ -97,13 +97,6 @@ namespace WoWsShipBuilder.Core.Services
         Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
         Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true);
-
-        /// <summary>
-        /// Save string compressed <see cref="Build"/> to the disk.
-        /// </summary>
-        void SaveBuilds();
-
-        void LoadBuilds();
 
         string GetDataPath(ServerType serverType);
 

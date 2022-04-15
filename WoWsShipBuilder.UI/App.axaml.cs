@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.UI
             using var scope = container.BeginLifetimeScope();
             Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
-            scope.Resolve<IAppDataService>().SaveBuilds();
+            scope.Resolve<IUserDataService>().SaveBuilds();
             Logging.Logger.Info("Exiting...");
             Logging.Logger.Info(new string('-', 30));
         }
@@ -93,7 +93,7 @@ namespace WoWsShipBuilder.UI
             builder.RegisterType<AppSettings>().SingleInstance();
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
             builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
-            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
+            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().As<IUserDataService>().SingleInstance();
             builder.RegisterType<Localizer>().AsSelf().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();

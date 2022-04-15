@@ -82,7 +82,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             {
                 Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
 
-                var localVersionInfo = await appDataService.ReadLocalVersionInfo(appSettings.SelectedServerType);
+                var localVersionInfo = await appDataService.GetLocalVersionInfo(appSettings.SelectedServerType);
                 if (localVersionInfo?.CurrentVersion?.MainVersion != null)
                 {
                     AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;

@@ -15,12 +15,12 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly IFileSystem fileSystem;
 
         public StartMenuViewModel()
-            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
+            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance, DesktopAppDataService.PreviewInstance)
         {
         }
 
-        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
-            : base(navigationService, clipboardService, appDataService, AppSettingsHelper.Settings)
+        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService)
+            : base(navigationService, clipboardService, appDataService, userDataService, AppSettingsHelper.Settings)
         {
             this.fileSystem = fileSystem;
         }

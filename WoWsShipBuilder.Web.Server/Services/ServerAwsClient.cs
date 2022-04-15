@@ -6,7 +6,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Web.Server.Services;
@@ -18,6 +17,8 @@ public class ServerAwsClient : IAwsClient
     private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
     private readonly HttpClient httpClient;
+
+    private readonly SemaphoreSlim semaphore = new(1);
 
     public ServerAwsClient(HttpClient httpClient)
     {
@@ -99,6 +100,7 @@ public class ServerAwsClient : IAwsClient
         var str = await httpClient.GetStringAsync(uri);
         var jsonObject = JsonConvert.DeserializeObject(str, type);
 
+        await semaphore.WaitAsync();
         switch (category.ToLowerInvariant())
         {
             case "ability":
@@ -150,6 +152,8 @@ public class ServerAwsClient : IAwsClient
 
                 break;
         }
+
+        semaphore.Release();
     }
 
     public Task DownloadImages(ImageType type, IFileSystem fileSystem, string? fileName = null)

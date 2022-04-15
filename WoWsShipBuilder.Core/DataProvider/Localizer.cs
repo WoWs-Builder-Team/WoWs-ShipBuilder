@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
-        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance, new()));
+        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));
 
         private static readonly Logger Logger = Logging.GetLogger("Localization");
 
@@ -24,10 +24,10 @@ namespace WoWsShipBuilder.Core.DataProvider
         private Dictionary<string, string> languageData = new();
         private CultureDetails? locale;
 
-        public Localizer(IAppDataService appDataService, AppSettings appSettings)
+        public Localizer(IAppDataService appDataService)
         {
             this.appDataService = appDataService;
-            this.appSettings = appSettings;
+            this.appSettings = new();
         }
 
         public static Localizer Instance => instance ?? InstanceProducer.Value;

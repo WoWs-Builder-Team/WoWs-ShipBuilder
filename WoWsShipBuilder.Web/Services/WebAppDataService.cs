@@ -56,7 +56,7 @@ public class WebAppDataService : IAppDataService
     }
 
     // This doesn't use the worker cause VersionInfo is a record, so not serializable by the library. #BlameFloribe.
-    public async Task<VersionInfo?> ReadLocalVersionInfo(ServerType serverType)
+    public async Task<VersionInfo?> GetLocalVersionInfo(ServerType serverType)
     {
         string dataLocation = dataService.CombinePaths(serverType.StringName(), "VersionInfo");
         return await dataService.LoadAsync<VersionInfo?>(dataLocation);

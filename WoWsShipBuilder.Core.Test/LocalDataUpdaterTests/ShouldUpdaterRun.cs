@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             {
                 LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
             };
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).ReturnsAsync(CreateTestVersionInfo(1));
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(CreateTestVersionInfo(1));
 
             // Act
             bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
@@ -53,7 +53,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             {
                 LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
             };
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
 
             // Act
             bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
