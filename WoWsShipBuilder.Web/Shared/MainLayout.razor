@@ -32,7 +32,12 @@
     {
         await base.OnInitializedAsync();
         var settings = await settingsHelper.LoadSettings();
-        appSettings.UpdateFromSettings(settings!);
+        if (settings == null)
+        {
+            settings = new();
+            await settingsHelper.SaveSettings(settings);
+        }
+        appSettings.UpdateFromSettings(settings);
     }
 
     private readonly MudTheme theme = new()
