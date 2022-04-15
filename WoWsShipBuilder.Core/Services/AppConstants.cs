@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.Core.Services
                     new(new("hu-HU"), "en"),
                 };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 DefaultCultureDetails = new(CultureInfo.InvariantCulture, "en");
                 SupportedLanguages = new List<CultureDetails>
@@ -36,20 +36,10 @@ namespace WoWsShipBuilder.Core.Services
                     DefaultCultureDetails,
                 };
             }
-
         }
 
         public static CultureDetails DefaultCultureDetails { get; }
 
         public static IEnumerable<CultureDetails> SupportedLanguages { get; }
-
-
-
-        // public static CultureDetails DefaultCultureDetails { get; } = new(CultureInfo.InvariantCulture, "en");
-        //
-        // public static IEnumerable<CultureDetails> SupportedLanguages { get; } = new List<CultureDetails>
-        // {
-        //     DefaultCultureDetails,
-        // };
     }
 }

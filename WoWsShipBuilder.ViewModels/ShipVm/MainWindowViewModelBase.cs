@@ -236,7 +236,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
 
-            ConsumableViewModel = new(RawShipData);
+            ConsumableViewModel = await ConsumableViewModel.CreateAsync(RawShipData, 0);
 
             if (build != null)
             {
@@ -309,7 +309,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
                             var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityUI.HitPoints;
-                            ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
+                            await ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
                             semaphore.Release();
                         }
                     }

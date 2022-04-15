@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -15,23 +16,20 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
     {
         private readonly Ship ship;
 
-        private List<List<ConsumableUI>> shipConsumables = null!;
+        private List<List<ConsumableUI>> shipConsumables;
 
         public ConsumableViewModel()
-            : this(new(), 0)
+            : this(new())
         {
         }
 
-        public ConsumableViewModel(Ship ship)
-            : this(ship, 0)
-        {
-        }
-
-        public ConsumableViewModel(Ship ship, int shipHp)
+        private ConsumableViewModel(Ship ship)
         {
             this.ship = ship;
+            shipConsumables = new();
             SelectedConsumables = new();
-            UpdateShipConsumables(new(), 0, true );
+
+            // TODO: get rid of callback property
             OnConsumableSelected = newConsumable =>
             {
                 var removeList = SelectedConsumables.Where(consumable => consumable.Slot == newConsumable.Slot).ToList();
@@ -41,13 +39,20 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             };
         }
 
-        public void UpdateShipConsumables(List<(string, float)> modifiers, int shipHp, bool isFirstTry = false)
+        public static async Task<ConsumableViewModel> CreateAsync(Ship ship, int shipHp)
         {
-            ShipConsumables = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
-                .OrderBy(group => group.Key)
-                .Select(group => group.OrderBy(c => c.ConsumableName).Select(c =>
-                        ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))
-                    .ToList())
+            var vm = new ConsumableViewModel(ship);
+            await vm.UpdateShipConsumables(new(), shipHp, true);
+            return vm;
+        }
+
+        public async Task UpdateShipConsumables(List<(string, float)> modifiers, int shipHp, bool isFirstTry = false)
+        {
+            ShipConsumables = (await Task.WhenAll(ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
+                    .OrderBy(group => group.Key)
+                    .Select(async group => (await Task.WhenAll(group.OrderBy(c => c.ConsumableName).Select(async c =>
+                            await ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))))
+                        .ToList())))
                 .ToList();
 
             List<ConsumableUI> newSelection = new();

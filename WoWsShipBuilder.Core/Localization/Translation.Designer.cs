@@ -10,8 +10,8 @@
 
 namespace WoWsShipBuilder.Core.Translations {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace WoWsShipBuilder.Core.Translations {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translation {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Translation() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aircraft Carrier.
         /// </summary>
@@ -68,7 +68,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("AirCarrier", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to AP.
         /// </summary>
@@ -77,7 +77,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ArmamentType_AP", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to HE.
         /// </summary>
@@ -86,7 +86,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ArmamentType_HE", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to SAP.
         /// </summary>
@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ArmamentType_SAP", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
@@ -104,7 +104,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Battleship", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bomb.
         /// </summary>
@@ -113,7 +113,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Bomb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bow in.
         /// </summary>
@@ -122,7 +122,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BowIn", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Broadside.
         /// </summary>
@@ -131,7 +131,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Broadside", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Build saved.
         /// </summary>
@@ -140,7 +140,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_BuildSaved", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save &amp; copy image.
         /// </summary>
@@ -149,7 +149,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_ExportImage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save &amp; copy string.
         /// </summary>
@@ -158,7 +158,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_ExportString", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Include signals and consumables in image.
         /// </summary>
@@ -167,7 +167,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_IncludeSignals", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Insert the build name. The ship name is automatically included..
         /// </summary>
@@ -176,7 +176,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_InsertBuildName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Build string copied to clipboard.
         /// </summary>
@@ -185,7 +185,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_SavedClipboard", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Build image copied to clipboard.
         /// </summary>
@@ -194,7 +194,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildCreationWindow_SavedImageToClipboard", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
@@ -203,7 +203,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_Import", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import from Image.
         /// </summary>
@@ -212,7 +212,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_ImportFromImage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import only.
         /// </summary>
@@ -221,7 +221,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_ImportOnly", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import and save.
         /// </summary>
@@ -230,7 +230,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_ImportSave", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Paste the build string here.
         /// </summary>
@@ -239,7 +239,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_InsertBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import build.
         /// </summary>
@@ -248,7 +248,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("BuildImport_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -257,7 +257,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Apply camo bonuses.
         /// </summary>
@@ -266,7 +266,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_Camo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Adrenaline Rush HP: .
         /// </summary>
@@ -275,7 +275,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_CurrentArBonus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Captain points:.
         /// </summary>
@@ -284,7 +284,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_Points", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Skills &amp; Talents.
         /// </summary>
@@ -293,7 +293,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_SkillTalent", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics..
         /// </summary>
@@ -302,7 +302,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_SkillTalentDescription", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Standard captain.
         /// </summary>
@@ -311,7 +311,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_StandardCaptain", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Captain talents.
         /// </summary>
@@ -320,7 +320,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("CaptainSkillSelector_Talents", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add/Remove Ships/Shells.
         /// </summary>
@@ -329,7 +329,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ChartsWeb_AddRemoveShips", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ballistic Charts.
         /// </summary>
@@ -338,7 +338,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ChartsWeb_BallisticCharts", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dispersion Charts.
         /// </summary>
@@ -347,7 +347,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ChartsWeb_DispersionCharts", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Commonwealth.
         /// </summary>
@@ -356,7 +356,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Commonwealth", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hp per heal.
         /// </summary>
@@ -365,7 +365,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Consumable_HpPerHeal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cruiser.
         /// </summary>
@@ -374,7 +374,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Cruiser", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Depth charges.
         /// </summary>
@@ -383,7 +383,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DepthCharge", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Destroyer.
         /// </summary>
@@ -392,7 +392,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Destroyer", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -401,7 +401,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
@@ -410,7 +410,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_No", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
@@ -419,7 +419,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_Ok", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -428,7 +428,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save &amp; Exit.
         /// </summary>
@@ -437,7 +437,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_SaveExit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
@@ -446,7 +446,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Dialog_Yes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
@@ -464,7 +464,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_AddShip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aiming Range (km).
         /// </summary>
@@ -473,7 +473,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_AimingRange", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ballistic Graphs.
         /// </summary>
@@ -482,7 +482,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_BallisticGraphs", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dispersion Graphs.
         /// </summary>
@@ -491,7 +491,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_DispersionGraphs", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dispersion Plot.
         /// </summary>
@@ -500,14 +500,14 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_DispersionPlot", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The WHITE ellipse shows the maximum dispersion area at the selected aiming range.
         ///The RED ellipse shows the area where 50% of the shells lands on average.
         ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
         ///Plot planes:
-        ///1) HORIZONTAL:
+        ///1) HORIZONTAL: 
         ///    shows the shells impact point with the water;
         ///    by selecting this plane you get a view from above;
         ///    this is the plot you mainly want to look at when comparing ships dispersions;
@@ -518,7 +518,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_DispPlotDescription", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Plot explanation.
         /// </summary>
@@ -527,7 +527,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_DispPlotExplanation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fuso Reference.
         /// </summary>
@@ -536,7 +536,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_DrawFusoReference", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flight time.
         /// </summary>
@@ -545,7 +545,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_FlightTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Horizontal.
         /// </summary>
@@ -554,7 +554,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_Horizontal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Impact Angle.
         /// </summary>
@@ -563,7 +563,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ImpactAngle", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Impact velocity.
         /// </summary>
@@ -572,7 +572,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ImpactVelocity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to THIS SHIP CAN&apos;T REACH THE SELECTED AIMING RANGE.
         /// </summary>
@@ -581,7 +581,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_NoRange", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Plot Orientation.
         /// </summary>
@@ -590,7 +590,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_PlotOrientation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Plot Plane.
         /// </summary>
@@ -599,7 +599,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_PlotPlane", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Plot Scaling.
         /// </summary>
@@ -608,7 +608,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_PlotScaling", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Range [km]:.
         /// </summary>
@@ -626,7 +626,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_RefreshDispPlot", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Remove ship.
         /// </summary>
@@ -635,7 +635,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_RemoveShip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select shells type.
         /// </summary>
@@ -644,7 +644,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_SelectShell", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP..
         /// </summary>
@@ -653,7 +653,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_SelectShellDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shell Trajectory.
         /// </summary>
@@ -662,7 +662,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShellsPath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shots Number.
         /// </summary>
@@ -671,7 +671,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShotsNumber", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show flight time graph.
         /// </summary>
@@ -680,7 +680,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShowFlightTimeGraph", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show impact angle graph.
         /// </summary>
@@ -689,7 +689,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShowImpactAngleGraph", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show impact velocity graph.
         /// </summary>
@@ -698,7 +698,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShowImpactVelocityGraph", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show penetration graph.
         /// </summary>
@@ -707,7 +707,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_ShowPenetrationGraph", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Vertical.
         /// </summary>
@@ -716,7 +716,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionGraphWindow_Vertical", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Horizontal:.
         /// </summary>
@@ -725,7 +725,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionPlot_Horizontal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Inner Horizontal:.
         /// </summary>
@@ -734,7 +734,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionPlot_InnerHorizontal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Inner Vertical:.
         /// </summary>
@@ -743,7 +743,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionPlot_InnerVertical", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Vertical:.
         /// </summary>
@@ -752,7 +752,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionPlot_Vertical", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Current Ships.
         /// </summary>
@@ -761,7 +761,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionWindow_CurrentShips", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ships to Delete.
         /// </summary>
@@ -770,7 +770,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionWindow_ShipsToDelete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dispersion visualization.
         /// </summary>
@@ -779,7 +779,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DispersionWindow_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hide.
         /// </summary>
@@ -788,7 +788,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DontShow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Downloading data....
         /// </summary>
@@ -797,7 +797,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DownloadWindow_Downloading", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Status:.
         /// </summary>
@@ -806,7 +806,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("DownloadWindow_Status", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Europe.
         /// </summary>
@@ -815,7 +815,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Europe", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The reference angle used start at 0° on the front (top of the image) and goes in a clockwise direction.
         /// </summary>
@@ -824,7 +824,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_AngleExplanation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Some turret orientation is wrong. The data from WG doesn&apos;t include it, so we use a workaround that work for most cases. If you find a case of a turret orientation and/or angle being wrong, report it on Github or by joining the Discord server below..
         /// </summary>
@@ -833,7 +833,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_Disclaimer", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fold all angles.
         /// </summary>
@@ -842,7 +842,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_HideAll", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Never show angles.
         /// </summary>
@@ -851,7 +851,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_PermaTextOff", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Always show angles.
         /// </summary>
@@ -860,7 +860,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_PermaTextOn", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Expand all angles.
         /// </summary>
@@ -869,7 +869,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("FiringAngleWindow_ShowAll", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to France.
         /// </summary>
@@ -878,7 +878,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("France", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Germany.
         /// </summary>
@@ -887,7 +887,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Germany", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Horizontal (Water).
         /// </summary>
@@ -896,7 +896,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("HorizontalPlane", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Minimum range for the warning to appear.
         /// </summary>
@@ -905,7 +905,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("IncomingFireAlertDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Italy.
         /// </summary>
@@ -914,7 +914,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Italy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Japan.
         /// </summary>
@@ -923,7 +923,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Japan", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Back to menu.
         /// </summary>
@@ -932,7 +932,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_BackToMenu", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Base XP.
         /// </summary>
@@ -941,7 +941,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_BaseXp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Captain Skills and Camo.
         /// </summary>
@@ -950,7 +950,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_CaptainSkills", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Commander XP:.
         /// </summary>
@@ -959,7 +959,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_CommanderXp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Commander XP bonus %.
         /// </summary>
@@ -968,7 +968,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_CommanderXpBonus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Free XP:.
         /// </summary>
@@ -977,7 +977,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_FreeXp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Free XP bonus %.
         /// </summary>
@@ -986,7 +986,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_FreeXpBonus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select new ship.
         /// </summary>
@@ -995,7 +995,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_NewShipSelection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Normal account.
         /// </summary>
@@ -1004,7 +1004,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_NormalAccount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reset build.
         /// </summary>
@@ -1013,7 +1013,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_ResetBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Share build.
         /// </summary>
@@ -1022,7 +1022,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_ShareBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Signals.
         /// </summary>
@@ -1031,7 +1031,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_Signals", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to WG premium account.
         /// </summary>
@@ -1040,7 +1040,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_WGPremiumAccount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to WoWs premium account.
         /// </summary>
@@ -1049,7 +1049,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_WoWsPremiumAccount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Final XP:.
         /// </summary>
@@ -1058,7 +1058,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_Xp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to XP bonus %.
         /// </summary>
@@ -1067,7 +1067,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_XpBonus", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to XP calculator.
         /// </summary>
@@ -1076,7 +1076,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MainWindow_XpCalculator", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to has already been added with that shell.
         /// </summary>
@@ -1085,7 +1085,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MessageBox_DuplicateShip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
@@ -1094,7 +1094,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MessageBox_Error", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to There was an error during the loading of the data. This may be due to the data format not being compatible with an older version of the app or corrupted data. If you are not on the latest version, wait until you get a prompt about restarting the app to update, or update manually if you disabled automatic updates. If you are on the latest version, use the setting window to clean all the stored application data to solve data corruption issues..
         /// </summary>
@@ -1103,7 +1103,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MessageBox_LoadingError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to has no main guns.
         /// </summary>
@@ -1112,7 +1112,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("MessageBox_ShipNoGun", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max engagement duration.
         /// </summary>
@@ -1139,7 +1139,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Netherlands", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
@@ -1148,7 +1148,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Pan America.
         /// </summary>
@@ -1157,7 +1157,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("PanAmerica", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Pan Asia.
         /// </summary>
@@ -1166,7 +1166,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("PanAsia", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Premium.
         /// </summary>
@@ -1175,7 +1175,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Premium", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Impact Angle.
         /// </summary>
@@ -1184,7 +1184,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("RealPlane", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rocket.
         /// </summary>
@@ -1193,7 +1193,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Rocket", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to U.S.S.R.
         /// </summary>
@@ -1202,7 +1202,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Russia", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Captain:.
         /// </summary>
@@ -1211,7 +1211,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ScreenshotWindow_Captain", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Captain skills.
         /// </summary>
@@ -1220,7 +1220,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ScreenshotWindow_CaptainSkills", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Art by:.
         /// </summary>
@@ -1229,7 +1229,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_ArtBy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enable automatic updates.
         /// </summary>
@@ -1238,7 +1238,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_AutoUpdate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Custom build image path.
         /// </summary>
@@ -1247,7 +1247,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_BuildImagePath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The selected custom build image path is invalid..
         /// </summary>
@@ -1256,7 +1256,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_BuildImagePathInvalid", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -1265,7 +1265,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Clean.
         /// </summary>
@@ -1274,7 +1274,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Clean", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Clean stored application data.
         /// </summary>
@@ -1283,7 +1283,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_CleanAppData", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Copy versions.
         /// </summary>
@@ -1292,7 +1292,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_CopyVersions", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Credits.
         /// </summary>
@@ -1301,7 +1301,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Credits", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enable custom data path.
         /// </summary>
@@ -1310,7 +1310,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_CustomPath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Data conversion:.
         /// </summary>
@@ -1319,7 +1319,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Data", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Data version:.
         /// </summary>
@@ -1328,7 +1328,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_DataVersion", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Developed by:.
         /// </summary>
@@ -1337,7 +1337,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_DevelopedBy", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Devs: .
         /// </summary>
@@ -1346,7 +1346,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Devs", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Enable custom build image path.
         /// </summary>
@@ -1355,7 +1355,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_EnableBuildImagePath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
@@ -1364,7 +1364,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Info", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Insert custom data path.
         /// </summary>
@@ -1373,7 +1373,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_InsertCustomPath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The selected custom data path is not valid..
         /// </summary>
@@ -1382,7 +1382,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_InvalidCustomPath", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
@@ -1391,7 +1391,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Language", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to A restart of the application is required for the language-change to take effect. Not restarting can result in unexpected behaviour..
         /// </summary>
@@ -1400,7 +1400,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Settingswindow_LanguageChanged", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Restart required.
         /// </summary>
@@ -1409,7 +1409,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_LanguageChanged_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Lead devs:.
         /// </summary>
@@ -1418,7 +1418,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_LeadDevs", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Open explorer when saving a build image.
         /// </summary>
@@ -1427,7 +1427,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_OpenExplorerAfterImageSave", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
@@ -1436,7 +1436,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Reset", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reset settings to default.
         /// </summary>
@@ -1445,7 +1445,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_ResetSettings", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -1454,7 +1454,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save &amp; exit.
         /// </summary>
@@ -1463,7 +1463,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_SaveExit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Server.
         /// </summary>
@@ -1472,7 +1472,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Server", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
@@ -1481,7 +1481,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Settings", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Send basic telemetry data (current app version).
         /// </summary>
@@ -1490,7 +1490,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_TelemetryEnabled", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Thanks to the following community members for helping with the translation of this project. Below, all members with at least 10 contributions are mentioned..
         /// </summary>
@@ -1499,7 +1499,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_TranslationCredits", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Version:.
         /// </summary>
@@ -1508,6 +1508,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SettingsWindow_Version", resourceCulture);
             }
         }
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
@@ -1516,7 +1517,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_Loading", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Select Ships and Shells.
         /// </summary>
@@ -1525,7 +1526,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_SelectShipsAndShells", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
@@ -1534,7 +1535,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_ClassFilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
@@ -1543,7 +1544,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_ConfirmButton", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Nation.
         /// </summary>
@@ -1552,7 +1553,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_NationFilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to No ships matching the filtering criteria found.
         /// </summary>
@@ -1561,7 +1562,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_NoResultsFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search ship....
         /// </summary>
@@ -1570,7 +1571,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_SearchShip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tier.
         /// </summary>
@@ -1579,7 +1580,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_TierFilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
@@ -1588,7 +1589,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipSelectionWindow_TypeFilter", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to AA Defense.
         /// </summary>
@@ -1597,7 +1598,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AADefense", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aiming.
         /// </summary>
@@ -1606,7 +1607,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Aiming", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aiming time.
         /// </summary>
@@ -1615,7 +1616,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AimingTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Drop area change rate while manoeuvring.
         /// </summary>
@@ -1624,7 +1625,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AimPenaltyPlanes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aircrafts.
         /// </summary>
@@ -1633,7 +1634,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Aircraft", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aircraft amount.
         /// </summary>
@@ -1651,7 +1652,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AircraftHP", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to In attack group.
         /// </summary>
@@ -1669,7 +1670,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AirDrag", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Airstrike.
         /// </summary>
@@ -1678,7 +1679,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Airstrike", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weapons per plane.
         /// </summary>
@@ -1687,7 +1688,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AmmoPerAttack", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Arming distance.
         /// </summary>
@@ -1696,7 +1697,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ArmingDistance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Arming Threshold.
         /// </summary>
@@ -1705,7 +1706,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ArmingThreshold", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ASW Airstrike.
         /// </summary>
@@ -1714,7 +1715,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AswAirstrike", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Attack cooldown.
         /// </summary>
@@ -1723,7 +1724,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_AttackCd", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Attack group.
         /// </summary>
@@ -1750,9 +1751,9 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Backward", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0
+        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
         ///     The module can not be incapacitated..
@@ -1762,7 +1763,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BlastExplanation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bombs in a charge.
         /// </summary>
@@ -1771,7 +1772,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BombsPerCharge", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bombs per plane.
         /// </summary>
@@ -1780,7 +1781,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BombsPerPlane", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bomb type.
         /// </summary>
@@ -1789,7 +1790,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BombType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bombs in payload.
         /// </summary>
@@ -1798,7 +1799,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BompPayload", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Artillery burst mode.
         /// </summary>
@@ -1807,7 +1808,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_BurstMode", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Can hit.
         /// </summary>
@@ -1816,7 +1817,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_CanHitClasses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Concealment.
         /// </summary>
@@ -1825,7 +1826,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Concealment", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Concealment by air.
         /// </summary>
@@ -1834,7 +1835,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentByAir", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to When on fire.
         /// </summary>
@@ -1843,7 +1844,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentByAirFire", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Concealment by sea.
         /// </summary>
@@ -1852,7 +1853,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentBySea", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to When on fire.
         /// </summary>
@@ -1861,7 +1862,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentBySeaFire", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to After firing in smoke.
         /// </summary>
@@ -1870,7 +1871,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentBySeaFiringSmoke", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Concealment by sub at operating depth.
         /// </summary>
@@ -1879,7 +1880,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentBySubOperating", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Concealment by sub at periscope depth.
         /// </summary>
@@ -1888,7 +1889,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConcealmentBySubPeriscope", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to From planes.
         /// </summary>
@@ -1915,7 +1916,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ConstantDamage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Consumables.
         /// </summary>
@@ -1933,7 +1934,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Cooldown", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cruising.
         /// </summary>
@@ -1942,7 +1943,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_CruisingSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Damage.
         /// </summary>
@@ -1951,7 +1952,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Damage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Damage taken during attack.
         /// </summary>
@@ -1960,7 +1961,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_DamageTakenDuringAttack", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delay.
         /// </summary>
@@ -1969,7 +1970,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Delay", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ASW Depth Charges.
         /// </summary>
@@ -1978,7 +1979,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_DepthChargesLauncher", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Depth explosion radius.
         /// </summary>
@@ -1987,7 +1988,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_DepthExplosion", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Detectability range.
         /// </summary>
@@ -1996,7 +1997,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Detectability", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Dispersion.
         /// </summary>
@@ -2005,7 +2006,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Dispersion", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Formula at range X(km).
         /// </summary>
@@ -2014,7 +2015,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_DispFormulaTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Drop time.
         /// </summary>
@@ -2023,7 +2024,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_DropTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
@@ -2032,7 +2033,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Duration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to During aiming.
         /// </summary>
@@ -2059,7 +2060,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_EngineBlastProtection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Explosion radius.
         /// </summary>
@@ -2068,7 +2069,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ExplosionRadius", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max fires.
         /// </summary>
@@ -2077,7 +2078,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireAmount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fire chance.
         /// </summary>
@@ -2086,7 +2087,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireChance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fire chance per salvo.
         /// </summary>
@@ -2095,7 +2096,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireChancePerSalvo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Total damage per fire.
         /// </summary>
@@ -2104,7 +2105,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireDamageTotal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to DPS per fire.
         /// </summary>
@@ -2113,7 +2114,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireDPS", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fire duration.
         /// </summary>
@@ -2122,7 +2123,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fire chance reduction.
         /// </summary>
@@ -2131,7 +2132,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireReduction", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Total fire damage.
         /// </summary>
@@ -2140,7 +2141,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FireTotalDamage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to First ping duration.
         /// </summary>
@@ -2149,7 +2150,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FirstPingDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flak.
         /// </summary>
@@ -2158,7 +2159,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Flak", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flak damage.
         /// </summary>
@@ -2167,7 +2168,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FlakDamage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max floods.
         /// </summary>
@@ -2176,7 +2177,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodAmount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Total damage per flood.
         /// </summary>
@@ -2185,7 +2186,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodDamageTotal", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to DPS per flooding.
         /// </summary>
@@ -2194,7 +2195,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodDPS", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flooding duration.
         /// </summary>
@@ -2203,7 +2204,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flooding chance.
         /// </summary>
@@ -2212,7 +2213,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodingChance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flooding probability.
         /// </summary>
@@ -2221,7 +2222,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodProbability", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo protection.
         /// </summary>
@@ -2230,7 +2231,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodTorpedoProtection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Total flood damage.
         /// </summary>
@@ -2239,7 +2240,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FloodTotalDamage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Time to arrive.
         /// </summary>
@@ -2248,7 +2249,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FlyAwayTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Forward.
         /// </summary>
@@ -2257,7 +2258,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Forward", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Full power time.
         /// </summary>
@@ -2266,7 +2267,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Fuse timer.
         /// </summary>
@@ -2275,7 +2276,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hit chance.
         /// </summary>
@@ -2284,7 +2285,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_HitChance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hit points.
         /// </summary>
@@ -2293,7 +2294,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_HitPoints", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Horizontal.
         /// </summary>
@@ -2302,7 +2303,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_HorizontalDisp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to HorizontalDispersion[X].
         /// </summary>
@@ -2311,7 +2312,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_HorizontalDispersionX", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Initial boost.
         /// </summary>
@@ -2329,7 +2330,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_InnerBombPercentage", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Initial boost duration.
         /// </summary>
@@ -2338,7 +2339,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_JatoDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Initial boost speed multiplier.
         /// </summary>
@@ -2347,7 +2348,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_JatoSpeedMultiplier", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Long range aura.
         /// </summary>
@@ -2356,7 +2357,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_LongAura", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Main Battery.
         /// </summary>
@@ -2365,7 +2366,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MainBattery", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Maneuverability.
         /// </summary>
@@ -2374,7 +2375,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Maneuverability", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max speed.
         /// </summary>
@@ -2383,7 +2384,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityMaxSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rudder shift time.
         /// </summary>
@@ -2392,7 +2393,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityRudderShiftTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Turning circle.
         /// </summary>
@@ -2401,7 +2402,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityTurningCircle", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Mass.
         /// </summary>
@@ -2410,7 +2411,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Mass", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max.
         /// </summary>
@@ -2428,7 +2429,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaxFireAmount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max number of floodings.
         /// </summary>
@@ -2437,7 +2438,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaxFloodAmount", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Maximum range.
         /// </summary>
@@ -2446,7 +2447,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaximumDistance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max drop length.
         /// </summary>
@@ -2455,7 +2456,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaximumFlightDistance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to On deck (max).
         /// </summary>
@@ -2464,7 +2465,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaxNumberOnDeck", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max speed.
         /// </summary>
@@ -2473,7 +2474,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MaxSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Max view distance.
         /// </summary>
@@ -2491,7 +2492,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MediumAura", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Min.
         /// </summary>
@@ -2509,7 +2510,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MinimumDistance", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Min speed.
         /// </summary>
@@ -2518,7 +2519,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_MinSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
@@ -2527,7 +2528,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Aircraft per attack.
         /// </summary>
@@ -2536,7 +2537,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_NumberDuringAttack", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to In squadron.
         /// </summary>
@@ -2545,7 +2546,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_NumberInSquad", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Number of charges.
         /// </summary>
@@ -2554,7 +2555,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_NumberOfUses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show ballistic graphs.
         /// </summary>
@@ -2563,7 +2564,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_OpenBallistic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Overmatch capability.
         /// </summary>
@@ -2572,7 +2573,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Overmatch", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Penetration.
         /// </summary>
@@ -2581,7 +2582,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Penetration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ping duration.
         /// </summary>
@@ -2590,7 +2591,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PingDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Sonar.
         /// </summary>
@@ -2599,7 +2600,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PingerGun", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ping speed.
         /// </summary>
@@ -2608,7 +2609,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PingSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ping width.
         /// </summary>
@@ -2617,7 +2618,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PingWidth", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hp per plane.
         /// </summary>
@@ -2626,7 +2627,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PlaneHP", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Post attack invulnerability.
         /// </summary>
@@ -2635,7 +2636,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PostAttackInvulnerabilityDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Potential FPM .
         /// </summary>
@@ -2644,7 +2645,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PotentialFPM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Preparation.
         /// </summary>
@@ -2653,7 +2654,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Preparation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Preparation time.
         /// </summary>
@@ -2662,7 +2663,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_PreparationTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Range.
         /// </summary>
@@ -2671,7 +2672,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Range", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reaction Time.
         /// </summary>
@@ -2680,7 +2681,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ReactionTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reload Time.
         /// </summary>
@@ -2689,7 +2690,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Reload", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reload after burst.
         /// </summary>
@@ -2698,7 +2699,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ReloadAfterBurst", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Reload during burst.
         /// </summary>
@@ -2707,7 +2708,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ReloadDuringBurst", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Hits required.
         /// </summary>
@@ -2716,7 +2717,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_RequiredHits", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Restoration time.
         /// </summary>
@@ -2725,7 +2726,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_RestorationTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Ricochet angles.
         /// </summary>
@@ -2734,7 +2735,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_RicochetAngles", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rate of fire.
         /// </summary>
@@ -2743,7 +2744,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_RoF", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rudder blast protection.
         /// </summary>
@@ -2752,7 +2753,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Secondary Battery.
         /// </summary>
@@ -2761,7 +2762,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_SecondaryBattery", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Second ping duration.
         /// </summary>
@@ -2770,7 +2771,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_SecondPingDuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shells.
         /// </summary>
@@ -2779,7 +2780,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Shells", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Initial shell velocity.
         /// </summary>
@@ -2788,7 +2789,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShellVelocity", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shell weight.
         /// </summary>
@@ -2797,7 +2798,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShellWeight", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Short range aura.
         /// </summary>
@@ -2806,7 +2807,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShortAura", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shots in one burst.
         /// </summary>
@@ -2815,7 +2816,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShotInBurst", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show dispersion graphs.
         /// </summary>
@@ -2824,7 +2825,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShowDispGraph", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show dispersion plot.
         /// </summary>
@@ -2833,7 +2834,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ShowDispPlot", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show shell trajectory graph.
         /// </summary>
@@ -2851,7 +2852,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Sigma", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Special abilities.
         /// </summary>
@@ -2860,7 +2861,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_SpecialAbility", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Speed.
         /// </summary>
@@ -2869,7 +2870,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Speed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Speed boost.
         /// </summary>
@@ -2887,7 +2888,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_SplashCoeff", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to On planes.
         /// </summary>
@@ -2932,7 +2933,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_StartingNumberOnDeck", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Survivability.
         /// </summary>
@@ -2941,7 +2942,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Survivability", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Theoretical DPM.
         /// </summary>
@@ -2950,7 +2951,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TheoreticalDPM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Server-side DPM.
         /// </summary>
@@ -2959,7 +2960,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TheoreticalTrueDPM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Time to switch ammo.
         /// </summary>
@@ -2968,7 +2969,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TimeToSwitch", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to To fully aimed.
         /// </summary>
@@ -2977,7 +2978,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_ToFullyAimed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo.
         /// </summary>
@@ -2986,7 +2987,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Torpedo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo spread.
         /// </summary>
@@ -2995,7 +2996,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoArea", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Deepwater.
         /// </summary>
@@ -3004,7 +3005,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoDeepWater", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo Launchers.
         /// </summary>
@@ -3013,7 +3014,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoLaunchers", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Magnetic.
         /// </summary>
@@ -3022,7 +3023,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoMagnetic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo protection.
         /// </summary>
@@ -3031,7 +3032,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoProtection", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Standard.
         /// </summary>
@@ -3040,7 +3041,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TorpedoStandard", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Traverse speed.
         /// </summary>
@@ -3049,7 +3050,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TraverseSpeed", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Server-side Reload Time.
         /// </summary>
@@ -3058,7 +3059,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TrueReload", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value represented here shows the true reload you are getting, that can be different than the theoretical reload above..
         /// </summary>
@@ -3067,7 +3068,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TrueReloadTooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Server-side RoF.
         /// </summary>
@@ -3076,7 +3077,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TrueRoF", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to 180° turn time.
         /// </summary>
@@ -3085,7 +3086,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TurnTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show turret angles.
         /// </summary>
@@ -3094,7 +3095,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_TurretAngles", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
@@ -3103,7 +3104,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Vertical.
         /// </summary>
@@ -3112,7 +3113,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_VerticalDisp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Weapon.
         /// </summary>
@@ -3121,7 +3122,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_Weapon", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Action time.
         /// </summary>
@@ -3130,7 +3131,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("ShipStats_WorkTime", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Flags .
         /// </summary>
@@ -3139,7 +3140,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SignalSelector_Flags", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Skip bomb.
         /// </summary>
@@ -3148,7 +3149,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SkipBomb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Spain.
         /// </summary>
@@ -3157,7 +3158,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Spain", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Special.
         /// </summary>
@@ -3166,7 +3167,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Special", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Downloading camo images.
         /// </summary>
@@ -3175,7 +3176,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SplashScreen_CamoImages", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Done.
         /// </summary>
@@ -3184,7 +3185,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SplashScreen_Done", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Initializing....
         /// </summary>
@@ -3193,7 +3194,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SplashScreen_Init", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Downloading data.
         /// </summary>
@@ -3202,7 +3203,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SplashScreen_Json", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Downloading ship images.
         /// </summary>
@@ -3211,7 +3212,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("SplashScreen_ShipImages", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Error during the loading of the build.
         /// </summary>
@@ -3220,7 +3221,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_BuildLoadingError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete build.
         /// </summary>
@@ -3229,7 +3230,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_DeleteBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import build....
         /// </summary>
@@ -3238,7 +3239,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_ImportBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Load a build.
         /// </summary>
@@ -3247,7 +3248,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_LoadBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Create a new build.
         /// </summary>
@@ -3256,7 +3257,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_NewBuild", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show dispersion and ballistics graphs.
         /// </summary>
@@ -3265,7 +3266,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_OpenDispersionWindow", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Settings and info.
         /// </summary>
@@ -3274,7 +3275,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("StartMenu_Settings", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Submarine.
         /// </summary>
@@ -3283,7 +3284,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Submarine", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Tech tree.
         /// </summary>
@@ -3292,7 +3293,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("TechTree", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Test ship.
         /// </summary>
@@ -3301,7 +3302,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("TestShip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Just a value for testing.
         /// </summary>
@@ -3310,7 +3311,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Teststring", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Empty slot.
         /// </summary>
@@ -3319,7 +3320,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("TITLE_PlaceholderMod", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Torpedo.
         /// </summary>
@@ -3328,7 +3329,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Torpedo", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to °.
         /// </summary>
@@ -3337,7 +3338,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_Degree", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to °/s.
         /// </summary>
@@ -3346,7 +3347,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_DegreePerSecond", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to dps.
         /// </summary>
@@ -3355,7 +3356,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_DPS", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to fires/min.
         /// </summary>
@@ -3364,7 +3365,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_FPM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to HP.
         /// </summary>
@@ -3373,7 +3374,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_HP", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to kg.
         /// </summary>
@@ -3382,7 +3383,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_KG", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to km.
         /// </summary>
@@ -3391,7 +3392,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_KM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to kts.
         /// </summary>
@@ -3400,7 +3401,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_Knots", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
@@ -3409,7 +3410,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_M", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to mm.
         /// </summary>
@@ -3418,7 +3419,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_MM", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to m/s.
         /// </summary>
@@ -3427,7 +3428,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_MPS", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
@@ -3436,7 +3437,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_PerCent", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to s.
         /// </summary>
@@ -3445,7 +3446,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_S", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to shots/min.
         /// </summary>
@@ -3454,7 +3455,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Unit_ShotsPerMinute", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to U.K..
         /// </summary>
@@ -3463,7 +3464,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("UnitedKingdom", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to U.S.A..
         /// </summary>
@@ -3472,7 +3473,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Usa", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The build name contains invalid characters. Only letters, numbers, whitespace, hyphens and underscores are allowed..
         /// </summary>
@@ -3481,7 +3482,7 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("Validation_BuildName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Vertical.
         /// </summary>

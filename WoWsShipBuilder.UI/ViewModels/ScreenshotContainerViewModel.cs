@@ -33,10 +33,10 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             CaptainSkillSelectorViewModel = null!;
             SignalSelectorViewModel = null!;
+            ConsumableViewModel = null!;
             ShipModuleViewModel = new(ship.ShipUpgradeInfo);
 
             UpgradePanelViewModel = null!;
-            ConsumableViewModel = new(ship, 0);
             BuildName = build.BuildName;
             ShipData = ship;
             IncludeSignals = includeSignals;
@@ -57,7 +57,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
         public UpgradePanelViewModelBase UpgradePanelViewModel { get; private init; }
 
-        public ConsumableViewModel ConsumableViewModel { get; }
+        public ConsumableViewModel ConsumableViewModel { get; private init; }
 
         public int Width { get; }
 
@@ -77,6 +77,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
                 SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings)),
                 UpgradePanelViewModel = new UpgradePanelViewModel(ship, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings)),
+                ConsumableViewModel = await ConsumableViewModel.CreateAsync(ship, 0),
             };
             vm.LoadBuilds(build);
             return vm;

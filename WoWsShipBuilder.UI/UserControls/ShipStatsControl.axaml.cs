@@ -41,9 +41,9 @@ namespace WoWsShipBuilder.UI.UserControls
             await OpenGraphsWindow(sender, e, Tabs.Ballistic);
         }
 
-        public void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
+        public async void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
         {
-            OpenGraphsWindow(sender, e, Tabs.Trajectory);
+            await OpenGraphsWindow(sender, e, Tabs.Trajectory);
         }
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)

@@ -464,9 +464,10 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         DispersionPlotList.Add(new(newPlot));
 
                         PenetrationModel!.Series.Add(ballisticSeries.Penetration);
-                                FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
-                                ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
-                                ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);ShellTrajectoryModel!.Series.Add(ballisticSeries.Trajectory);
+                        FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
+                        ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
+                        ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);
+                        ShellTrajectoryModel!.Series.Add(ballisticSeries.Trajectory);
 
                         // Add the new ship to the list
                         shipNames.Add(name);
@@ -570,7 +571,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             AppSettingsHelper.Settings.DispersionPlotSettings.ShootingRange = ShootingRange;
 
-            if(shellTrajectoryModel is null)
+            if (shellTrajectoryModel is null)
             {
                 return;
             }

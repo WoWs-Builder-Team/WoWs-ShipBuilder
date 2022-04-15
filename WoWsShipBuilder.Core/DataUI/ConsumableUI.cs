@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -36,7 +37,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> ConsumableData { get; set; } = default!;
 
-        public static ConsumableUI FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+        public static async Task<ConsumableUI> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
         {
             var consumableIdentifier = $"{name} {variant}";
             var usingFallback = false;
@@ -98,7 +99,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
                     consumableModifiers["timeFromHeaven"] = timeFromHeaven;
 
-                    var plane = DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                    var plane = await DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                     consumableModifiers.Add("cruisingSpeed", plane.Speed);
                     consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                     consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
@@ -218,7 +219,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                     cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
-                    var plane = DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                    var plane = await DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                     consumableModifiers.Add("cruisingSpeed", plane.Speed);
                     consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                     consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);

@@ -291,7 +291,7 @@ namespace WoWsShipBuilder.Core.DataUI
             List<ConsumableUI> consumables = new();
             foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
             {
-                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalplaneHP, 0);
+                var consumableUI = await ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalplaneHP, 0);
                 consumables.Add(consumableUI);
             }
 
