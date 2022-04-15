@@ -1191,9 +1191,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Tiefwasser</value>
   </data>
-  <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>TP pro Heilung</value>
-  </data>
+  
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>Reichweite [km]:</value>
   </data>
