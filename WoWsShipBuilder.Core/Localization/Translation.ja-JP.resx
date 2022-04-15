@@ -604,7 +604,7 @@
     <value>速度</value>
   </data>
   <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>兵装の種類</value>
+      <value>兵装</value>
   </data>
   <data name="SkipBomb" xml:space="preserve">
     <value>反跳爆弾</value>
@@ -619,13 +619,13 @@
     <value>攻撃後クールダウン</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>巡航速度</value>
+      <value>巡航速度</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>内部楕円への着弾率</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>甲板上の航空機数</value>
+      <value>甲板上の航空機数(最大)</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>最高速度</value>
@@ -637,7 +637,7 @@
     <value>攻撃中隊のサイズ</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>中隊の機数</value>
+      <value>中隊の機数</value>
   </data>
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>1機あたりのHP</value>
@@ -796,24 +796,24 @@
     <value>攻撃態勢中の被ダメージ</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>攻撃後の無敵時間</value>
+      <value>攻撃後の無敵時間</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>攻撃準備時間</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>照準収縮までの時間</value>
+  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+      <value>照準収縮までの時間</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷発射管</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_DuringAiming" xml:space="preserve">
     <value>攻撃態勢中</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>回避機動中の照準変化率</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_DuringPreparation" xml:space="preserve">
     <value>攻撃準備中</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -898,13 +898,13 @@
     <value>散布界のグラフを表示</value>
   </data>
   <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>距離X(km)における式</value>
+      <value>距離X(km)における式</value>
   </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>水平散布界[X]</value>
   </data>
   <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>射撃距離 (km)</value>
+      <value>射撃距離 (km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>弾道のグラフ</value>
@@ -1117,7 +1117,7 @@
     <value>サーバー上の装填時間</value>
   </data>
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>サーバー側の状態は0.142857142857秒ごとに更新されます。つまり、この数の倍数にならない装填時間はその後ティックへ移動されます。 ここで表示される値は、実際のリロードを示しています。これは、上記の理論上の装填時間とは異なる場合があります。</value>
+      <value>サーバー側の状態は0.142857142857秒ごとに更新されます。つまり、この数の倍数にならない装填時間はその後ティックへ移動されます。 ここで表示される値は実際の(サーバーの)装填時間を示しており、理論上の装填時間とは異なる場合があります。</value>
   </data>
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>サーバー上のDPM</value>
@@ -1182,7 +1182,85 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_TorpedoStandard" xml:space="preserve">
+      <value>標準</value>
+  </data>
+  <data name="ShipStats_TorpedoMagnetic" xml:space="preserve">
+      <value>磁気</value>
+  </data>
+  <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
+      <value>深度</value>
+  </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>1回あたりの回復量</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>射程 [km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>高さ</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>砲弾の軌道グラフを表示</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
+      <value>艦艇から</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
+      <value>航空機から</value>
+  </data>
+  <data name="ShipStats_SpottingOnShips" xml:space="preserve">
+      <value>艦艇に対して</value>
+  </data>
+  <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
+      <value>航空機に対して</value>
+  </data>
+  <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
+      <value>魚雷に対して</value>
+  </data>
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>最大視程</value>
+  </data>
+  <data name="ShipStats_Consumables" xml:space="preserve">
+      <value>消耗品</value>
+  </data>
+  <data name="ShipStats_AircraftAmount" xml:space="preserve">
+      <value>航空機数</value>
+  </data>
+  <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
+      <value>攻撃中隊内</value>
+  </data>
+  <data name="ShipStats_Squadron" xml:space="preserve">
+      <value>中隊</value>
+  </data>
+  <data name="ShipStats_AttackGroup" xml:space="preserve">
+      <value>攻撃中隊</value>
+  </data>
+  <data name="ShipStats_Max" xml:space="preserve">
+      <value>最大</value>
+  </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>最小</value>
+  </data>
+  <data name="ShipStats_AttackTimings" xml:space="preserve">
+      <value>攻撃タイミング</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+      <value>攻撃態勢中</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+      <value>攻撃準備中</value>
+  </data>
+  <data name="ShipStats_InitialBoost" xml:space="preserve">
+      <value>初期ブースト</value>
+  </data>
+  <data name="ShipStats_SpeedBoost" xml:space="preserve">
+      <value>速度ブースト</value>
+  </data>
+  <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
+      <value>最大交戦時間</value>
+  </data>
+  <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
+      <value>最大キル数</value>
+  </data>
 </root>

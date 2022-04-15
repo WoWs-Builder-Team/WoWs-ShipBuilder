@@ -618,15 +618,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Támadási utáni pihenőidő</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Utazósebesség</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombák a belső körben</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max. gépek a fedélzeten</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximális sebesség</value>
   </data>
@@ -636,9 +632,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Gépek egy támadásban</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Repülőgép a században</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>Repülőgép HP</value>
   </data>
@@ -795,27 +789,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Támadás során elszenvedett sebzés</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Támadás utáni sebezhetetlenségi idő</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Felkészítési idő</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Teljes célzási idő</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedóvetők</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Célzás közben</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Pontosságváltozás manőverezés miatt</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Felkészítés alatt</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Idő a teljes teljesítményig</value>
   </data>
@@ -897,15 +883,11 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Szóráskép mutatása</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Szóráskép X(km) távolságon</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Vízszintes szórás [X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Célzástávolság (Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballisztikus ábrák</value>
   </data>
@@ -1116,9 +1098,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Szerver-oldali újratöltési idő</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>A szerver csak 0,142857142857 másodpercenként frissül. Ez azt jelenti, hogy az e szám többszörösei közé eső újratöltések átkerülnek az utána lévő pipára. Az itt bemutatott érték a kapott valós újratöltést mutatja, amely eltérhet a fenti elméleti újratöltéstől.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>Szerver-oldali percenkénti sebzés</value>
   </data>
@@ -1191,4 +1171,28 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Mélyvizi</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>

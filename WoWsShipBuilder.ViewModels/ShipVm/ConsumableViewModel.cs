@@ -46,7 +46,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             ShipConsumables = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
                 .OrderBy(group => group.Key)
                 .Select(group => group.OrderBy(c => c.ConsumableName).Select(c =>
-                        ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, shipHp))
+                        ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))
                     .ToList())
                 .ToList();
 

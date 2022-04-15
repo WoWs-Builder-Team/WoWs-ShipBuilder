@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataStructures;
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record SpecialAbilityUI : IDataUi
@@ -38,20 +40,15 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> SpecialData { get; set; } = default!;
 
-        public static SpecialAbilityUI? FromShip(Ship ship, List<(string name, float value)> modifiers)
+        public static SpecialAbilityUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            if (ship.SpecialAbility is null && ship.BurstModeAbility is null)
-            {
-                return null;
-            }
-
             SpecialAbilityUI specialUI;
 
             if (ship.SpecialAbility is not null)
             {
                 var specialAbility = ship.SpecialAbility;
 
-                specialUI = new SpecialAbilityUI
+                specialUI = new()
                 {
                     Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
                     Description = $"DOCK_RAGE_MODE_DESCRIPTION_{specialAbility.Name}",
@@ -64,9 +61,34 @@ namespace WoWsShipBuilder.Core.DataUI
             }
             else
             {
-                var burstMode = ship.BurstModeAbility;
+                var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+                if (artilleryConfiguration == null)
+                {
+                    return null;
+                }
 
-                specialUI = new SpecialAbilityUI
+                string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+                string[]? supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+
+                TurretModule? mainBattery;
+                if (artilleryOptions.Length == 1)
+                {
+                    mainBattery = ship.MainBatteryModuleList[supportedModules.First()];
+                }
+                else
+                {
+                    string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
+                    mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
+                }
+
+                var burstMode = mainBattery.BurstModeAbility;
+
+                if (burstMode is null)
+                {
+                    return null;
+                }
+
+                specialUI = new()
                 {
                     Name = "ShipStats_BurstMode",
                     ReloadDuringBurst = burstMode.ReloadDuringBurst,

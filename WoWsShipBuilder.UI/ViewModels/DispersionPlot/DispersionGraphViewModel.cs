@@ -38,6 +38,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             Dispersion,
             Plot,
             Ballistic,
+            Trajectory,
         }
 
         public DispersionGraphViewModel()
@@ -56,7 +57,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
         public DispersionGraphViewModel(DispersionGraphsWindow? win, Dispersion? disp, double maxRange, string shipIndex, ArtilleryShell? shell, Tabs initialTab, decimal sigma)
         {
-            logger = Logging.GetLogger("DispersiongGraphVM");
+            logger = Logging.GetLogger("DispersionGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
 
             self = win;
@@ -65,22 +66,27 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             AimingRange = AppSettingsHelper.Settings.DispersionPlotSettings.AimingRange;
             ShotsNumber = AppSettingsHelper.Settings.DispersionPlotSettings.ShotsNumber;
             IsVertical = AppSettingsHelper.Settings.DispersionPlotSettings.IsVertical;
+            ShootingRange = AppSettingsHelper.Settings.DispersionPlotSettings.ShootingRange;
 
             logger.Info("Creating base plot models");
-            var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
-            var vModel = InitializeDispersionBaseModel(Translation.ShipStats_VerticalDisp);
-            var penModel = InitializeBallisticBaseModel(Translation.ShipStats_Penetration, "mm", LegendPosition.TopRight, 0.7);
-            var flightTimeModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_FlightTime, "s", LegendPosition.TopLeft, 0.2);
-            var impactVelocityModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, "m/s", LegendPosition.TopRight, 0.2);
-            var impactAngleModel = InitializeBallisticBaseModel(Translation.DispersionGraphWindow_ImpactAngle, "°", LegendPosition.TopLeft, 0.2);
+
+            var hModel = InitializePlotBaseModel(Translation.ShipStats_HorizontalDisp, Translation.Unit_M, LegendPosition.TopLeft);
+            var vModel = InitializePlotBaseModel(Translation.ShipStats_VerticalDisp, Translation.Unit_M, LegendPosition.TopLeft);
+            var penModel = InitializePlotBaseModel(Translation.ShipStats_Penetration, Translation.Unit_MM, LegendPosition.TopRight, 0.7);
+            var fTModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_FlightTime, Translation.Unit_S, LegendPosition.TopLeft, 0.2);
+            var iVModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ImpactVelocity, Translation.Unit_MPS, LegendPosition.TopRight, 0.2);
+            var iAModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ImpactAngle, Translation.Unit_Degree, LegendPosition.TopLeft, 0.2);
+            var tModel = InitializePlotBaseModel(Translation.DispersionGraphWindow_ShellsPath, Translation.Unit_M, LegendPosition.TopLeft);
 
             if (maxRange > 0 && disp != null && shell != null)
             {
-                var shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
-                var shellName = Localizer.Instance[$"{shell.Name}"].Localization;
+                string shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
+                string shellName = Localizer.Instance[$"{shell.Name}"].Localization;
                 var name = $"{shipName} - {shellName}";
+
                 logger.Info("Creating series for {0}", name);
                 logger.Info("Creating series");
+
                 var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
                 var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
                 var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
@@ -91,27 +97,38 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 vModel.Series.Add(vDisp);
 
                 penModel.Series.Add(ballisticSeries.Penetration);
-                flightTimeModel.Series.Add(ballisticSeries.FlightTime);
-                impactVelocityModel.Series.Add(ballisticSeries.ImpactVelocity);
-                impactAngleModel.Series.Add(ballisticSeries.ImpactAngle);
+                fTModel.Series.Add(ballisticSeries.FlightTime);
+                iVModel.Series.Add(ballisticSeries.ImpactVelocity);
+                iAModel.Series.Add(ballisticSeries.ImpactAngle);
+                tModel.Series.Add(ballisticSeries.Trajectory);
+
                 shipNames.Add(name);
 
                 var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
                 DispersionPlotList.Add(plotItemViewModel);
             }
 
-            FlightTimeModel = flightTimeModel;
-            ImpactVelocityModel = impactVelocityModel;
-            ImpactAngleModel = impactAngleModel;
+            FlightTimeModel = fTModel;
+            ImpactVelocityModel = iVModel;
+            ImpactAngleModel = iAModel;
             PenetrationModel = penModel;
             HorizontalModel = hModel;
             VerticalModel = vModel;
+            ShellTrajectoryModel = tModel;
             InitialTab = (int)initialTab;
+
+            DispersionPlotList.CollectionChanged += DispersionPlotList_CollectionChanged;
+            ShellTrajectoryCache.CollectionChanged += ShellTrajectoryCache_CollectionChanged;
         }
 
         private void DispersionPlotList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.RaisePropertyChanged(nameof(DispersionPlotList));
+        }
+
+        private void ShellTrajectoryCache_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(nameof(ShellTrajectoryCache));
         }
 
         private int initialTab;
@@ -210,6 +227,28 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set => this.RaiseAndSetIfChanged(ref impactAngleModel, value);
         }
 
+        private PlotModel? shellTrajectoryModel;
+
+        public PlotModel? ShellTrajectoryModel
+        {
+            get => shellTrajectoryModel;
+            set => this.RaiseAndSetIfChanged(ref shellTrajectoryModel, value);
+        }
+
+        private double shootingRange = 10;
+
+        public double ShootingRange
+        {
+            get => shootingRange;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref shootingRange, value);
+                this.UpdateTrajectoryChart();
+            }
+        }
+
+        private AvaloniaList<Dictionary<double, Ballistic>> ShellTrajectoryCache { get; } = new();
+
         public AvaloniaList<DispersionPlotItemViewModel> DispersionPlotList { get; } = new();
 
         private int shotsNumber = 100;
@@ -260,23 +299,24 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set
             {
                 this.RaiseAndSetIfChanged(ref selectedEllipsePlane, value);
-                if (value == EllipsePlanes.HorizontalPlane)
+                switch (value)
                 {
-                    IsHorizontalPlane = true;
-                    IsVerticalPlane = false;
-                    IsRealPlane = false;
-                }
-                else if (value == EllipsePlanes.VerticalPlane)
-                {
-                    IsHorizontalPlane = false;
-                    IsVerticalPlane = true;
-                    IsRealPlane = false;
-                }
-                else
-                {
-                    IsHorizontalPlane = false;
-                    IsVerticalPlane = false;
-                    IsRealPlane = true;
+                    case EllipsePlanes.HorizontalPlane:
+                        IsHorizontalPlane = true;
+                        IsVerticalPlane = false;
+                        IsRealPlane = false;
+                        break;
+                    case EllipsePlanes.VerticalPlane:
+                        IsHorizontalPlane = false;
+                        IsVerticalPlane = true;
+                        IsRealPlane = false;
+                        break;
+                    case EllipsePlanes.RealPlane:
+                    default:
+                        IsHorizontalPlane = false;
+                        IsVerticalPlane = false;
+                        IsRealPlane = true;
+                        break;
                 }
             }
         }
@@ -309,7 +349,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             }
         }
 
-        private bool isVerticalPlane = false;
+        private bool isVerticalPlane;
 
         public bool IsVerticalPlane
         {
@@ -325,7 +365,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set => this.RaiseAndSetIfChanged(ref isHorizontalPlane, value);
         }
 
-        private bool isRealPlane = false;
+        private bool isRealPlane;
 
         public bool IsRealPlane
         {
@@ -343,110 +383,115 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings)));
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings))))!;
 
-            if (resultList != null && resultList.Count > 0)
+            if (resultList is not { Count: > 0 })
             {
-                foreach (var result in resultList)
+                return;
+            }
+
+            foreach (var result in resultList)
+            {
+                var ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
+                if (ship == null)
                 {
-                    Ship? ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
-                    if (ship != null)
+                    continue;
+                }
+
+                string shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
+                logger.Info("Trying to add ship: {0} - {1}", ship.Index, shipName);
+
+                // Check if the ship actually has main guns
+                if (ship.MainBatteryModuleList is { Count: > 0 })
+                {
+                    logger.Info("Found guns on ship, asking for shell.");
+
+                    // Get all the shell of that ship, and propose the choice to the user.
+                    List<string> shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
+                    string? shellIndex;
+                    if (shellsName.Count == 1)
                     {
-                        var shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
-                        logger.Info("Trying to add ship: {0} - {1}", ship.Index, shipName);
+                        shellIndex = shellsName.First();
+                    }
+                    else
+                    {
+                        var vm = new ValueSelectionViewModel(shipName + " " + Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
+                        shellIndex = await ShellSelectionInteraction.Handle(vm);
+                    }
 
-                        // Check if the ship actually has main guns
-                        if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+                    // If the user didn't select a shell, return and do nothing.
+                    if (shellIndex is null)
+                    {
+                        return;
+                    }
+
+                    logger.Info("Shell selected: {0}", shellIndex);
+
+                    // Get the gun with the corresponding shell. This is needed for stuff like Mogami, that change dispersion pattern based on the caliber
+                    var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
+
+                    // calculate the name that will be shown for this particular series
+                    string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+
+                    var name = $"{shipName} - {shellName}";
+
+                    logger.Info("Trying to add series with name: {0}", name);
+
+                    // check if we are adding a duplicate
+                    if (!shipNames.Contains(name))
+                    {
+                        logger.Info("Ship is not a duplicate, start creating series.");
+
+                        // Create and add the dispersion series
+                        var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
+                        var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
+                        HorizontalModel!.Series.Add(hSeries);
+                        VerticalModel!.Series.Add(vSeries);
+
+                        // create and add the ballistic series
+                        var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+
+                        var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                        // create and add the dispersion plot
+                        if (refreshNeeded)
                         {
-                            logger.Info("Found guns on ship, asking for shell.");
+                            RefreshPlot();
+                        }
 
-                            // Get all the shell of that ship, and propose the choice to the user.
-                            var shellsName = ship.MainBatteryModuleList.SelectMany(x => x.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct().ToList();
-                            string? shellIndex;
-                            if (shellsName.Count == 1)
-                            {
-                                shellIndex = shellsName.First();
-                            }
-                            else
-                            {
-                                var vm = new ValueSelectionViewModel(shipName + " " + Translation.DispersionGraphWindow_SelectShellDesc, Translation.DispersionGraphWindow_SelectShell, shellsName);
-                                shellIndex = await ShellSelectionInteraction.Handle(vm);
-                            }
+                        DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
+                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
+                        DispersionPlotList.Add(new(newPlot));
 
-                            // If the user didn't select a shell, return and do nothing.
-                            if (shellIndex is null)
-                            {
-                                return;
-                            }
-
-                            logger.Info("Shell selected: {0}", shellIndex);
-
-                            // Get the gun with the corresponding shell. This is needed for stuff like mogami, that change dispersion pattern based on the caliber
-                            var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
-
-                            // calculate the name that will be shown for this particular series
-                            var shellName = Localizer.Instance[$"{shellIndex}"].Localization;
-
-                            var name = $"{shipName} - {shellName}";
-
-                            logger.Info("Trying to add series with name: {0}", name);
-
-                            // check if we are adding a duplicate
-                            if (!shipNames.Contains(name))
-                            {
-                                logger.Info("Ship is not a duplicate, start creating series.");
-
-                                // Create and add the dispersion series
-                                var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                                var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                                HorizontalModel!.Series.Add(hSeries);
-                                VerticalModel!.Series.Add(vSeries);
-
-                                // create and add the ballistic series
-                                ArtilleryShell shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
-
-                                var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
-
-                                // create and add the dispersion plot
-                                if (refreshNeeded)
-                                {
-                                    RefreshPlot();
-                                }
-
-                                DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
-                                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
-                                DispersionPlotList.Add(new(newPlot));
-
-                                PenetrationModel!.Series.Add(ballisticSeries.Penetration);
+                        PenetrationModel!.Series.Add(ballisticSeries.Penetration);
                                 FlightTimeModel!.Series.Add(ballisticSeries.FlightTime);
                                 ImpactVelocityModel!.Series.Add(ballisticSeries.ImpactVelocity);
-                                ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);
+                                ImpactAngleModel!.Series.Add(ballisticSeries.ImpactAngle);ShellTrajectoryModel!.Series.Add(ballisticSeries.Trajectory);
 
-                                // Add the new ship to the list
-                                shipNames.Add(name);
+                        // Add the new ship to the list
+                        shipNames.Add(name);
 
-                                // Invalidate all plots to update them
-                                HorizontalModel!.InvalidatePlot(true);
-                                VerticalModel!.InvalidatePlot(true);
-                                PenetrationModel!.InvalidatePlot(true);
-                                FlightTimeModel!.InvalidatePlot(true);
-                                ImpactVelocityModel!.InvalidatePlot(true);
-                                ImpactAngleModel!.InvalidatePlot(true);
+                        // Invalidate all plots to update them
+                        HorizontalModel!.InvalidatePlot(true);
+                        VerticalModel!.InvalidatePlot(true);
+                        PenetrationModel!.InvalidatePlot(true);
+                        FlightTimeModel!.InvalidatePlot(true);
+                        ImpactVelocityModel!.InvalidatePlot(true);
+                        ImpactAngleModel!.InvalidatePlot(true);
+                        ShellTrajectoryModel!.InvalidatePlot(true);
 
-                                this.RaisePropertyChanged(nameof(ShipNames));
-                            }
-                            else
-                            {
-                                logger.Warn($"{shipName} has already been added!");
-                                await MessageBox.Show(self, shipName + " " + Translation.MessageBox_DuplicateShip, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                            }
-                        }
-                        else
-                        {
-                            logger.Warn($"{shipName} has no guns!");
-                            await MessageBox.Show(self, shipName + " " + Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
-                        }
+                        this.RaisePropertyChanged(nameof(ShipNames));
                     }
+                    else
+                    {
+                        logger.Warn($"{shipName} has already been added!");
+                        await MessageBox.Show(self, shipName + " " + Translation.MessageBox_DuplicateShip, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    logger.Warn($"{shipName} has no guns!");
+                    await MessageBox.Show(self, shipName + " " + Translation.MessageBox_ShipNoGun, Translation.MessageBox_Error, MessageBox.MessageBoxButtons.Ok, MessageBox.MessageBoxIcon.Error);
                 }
             }
         }
@@ -458,37 +503,45 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             logger.Info("Trying to remove ship from series");
 
-            var result = await DispersionShipRemovalDialog.ShowShipRemoval(self!, shipNames.ToList());
-            if (result.Count > 0)
+            List<string> result = await DispersionShipRemovalDialog.ShowShipRemoval(self!, shipNames.ToList());
+            if (result.Count <= 0)
             {
-                foreach (var ship in result)
+                return;
+            }
+
+            foreach (string ship in result)
+            {
+                int index = shipNames.IndexOf(ship);
+                logger.Info("Found {0} at index {1}", ship, index);
+
+                HorizontalModel!.Series.RemoveAt(index);
+                VerticalModel!.Series.RemoveAt(index);
+                PenetrationModel!.Series.RemoveAt(index);
+                FlightTimeModel!.Series.RemoveAt(index);
+                ImpactAngleModel!.Series.RemoveAt(index);
+                ImpactVelocityModel!.Series.RemoveAt(index);
+                ShellTrajectoryModel!.Series.RemoveAt(index);
+
+                DispersionPlotList.RemoveAt(index);
+                ShellTrajectoryCache.RemoveAt(index);
+
+                if (DispersionPlotList.Count > 0)
                 {
-                    var index = shipNames.IndexOf(ship);
-                    logger.Info("Found {0} at index {1}", ship, index);
-
-                    HorizontalModel!.Series.RemoveAt(index);
-                    VerticalModel!.Series.RemoveAt(index);
-                    PenetrationModel!.Series.RemoveAt(index);
-                    FlightTimeModel!.Series.RemoveAt(index);
-                    ImpactAngleModel!.Series.RemoveAt(index);
-                    ImpactVelocityModel!.Series.RemoveAt(index);
-                    DispersionPlotList.RemoveAt(index);
-                    if (DispersionPlotList.Count > 0)
-                    {
-                        DispersionPlotList.Last().UpdateIsLast(true);
-                    }
-
-                    shipNames.RemoveAt(index);
+                    DispersionPlotList.Last().UpdateIsLast(true);
                 }
 
-                HorizontalModel!.InvalidatePlot(true);
-                VerticalModel!.InvalidatePlot(true);
-                PenetrationModel!.InvalidatePlot(true);
-                FlightTimeModel!.InvalidatePlot(true);
-                ImpactVelocityModel!.InvalidatePlot(true);
-                ImpactAngleModel!.InvalidatePlot(true);
-                this.RaisePropertyChanged(nameof(ShipNames));
+                ShipNames.RemoveAt(index);
             }
+
+            HorizontalModel!.InvalidatePlot(true);
+            VerticalModel!.InvalidatePlot(true);
+            PenetrationModel!.InvalidatePlot(true);
+            FlightTimeModel!.InvalidatePlot(true);
+            ImpactVelocityModel!.InvalidatePlot(true);
+            ImpactAngleModel!.InvalidatePlot(true);
+            ShellTrajectoryModel!.InvalidatePlot(true);
+
+            this.RaisePropertyChanged(nameof(ShipNames));
         }
 
         public void RefreshPlot()
@@ -513,76 +566,47 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             DispersionPlotList.LastOrDefault()?.UpdateIsLast(true);
         }
 
+        private void UpdateTrajectoryChart()
+        {
+            AppSettingsHelper.Settings.DispersionPlotSettings.ShootingRange = ShootingRange;
+
+            if(shellTrajectoryModel is null)
+            {
+                return;
+            }
+
+            foreach (var value in ShellTrajectoryCache)
+            {
+                int index = ShellTrajectoryCache.IndexOf(value);
+                ShellTrajectoryModel!.Series.RemoveAt(index);
+                IEnumerable<DataPoint> trajectoryData = value.Any(x => x.Key / 1000 >= ShootingRange) ? value.First(x => x.Key / 1000 >= ShootingRange).Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y)) : value.Last().Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y));
+                var trajectorySeries = new LineSeries
+                {
+                    Title = ShipNames[index],
+                    ItemsSource = trajectoryData,
+                    TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
+                    StrokeThickness = 4,
+                };
+                ShellTrajectoryModel!.Series.Insert(index, trajectorySeries);
+            }
+
+            var yAxis = shellTrajectoryModel!.Axes.First(x => x.Title.Equals(Translation.DispersionGrapghWindow_Height));
+            yAxis.MinimumRange = ShootingRange * 1000 / 4;
+            ShellTrajectoryModel!.InvalidatePlot(true);
+        }
+
         [DependsOn(nameof(ShipNames))]
         public bool CanRemoveShip(object parameter) => shipNames.Count > 0;
 
         /// <summary>
-        /// Initialize the model for the disperions plot with common settings.
-        /// </summary>
-        /// <param name="name">Title of the plot and of the Y axis.</param>
-        /// <returns>The dispersion model.</returns>
-        private PlotModel InitializeDispersionBaseModel(string name)
-        {
-            var foreground = ConvertColorFromResource("ThemeForegroundColor");
-            var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
-            var background = ConvertColorFromResource("ThemeBackgroundColor");
-
-            PlotModel model = new()
-            {
-                Title = name,
-                TextColor = foreground,
-                PlotAreaBorderColor = foreground,
-                LegendPosition = LegendPosition.TopLeft,
-                LegendBorder = foreground,
-                LegendBorderThickness = 1,
-                LegendBackground = background,
-                LegendFontSize = 13,
-            };
-
-            var xAxis = new LinearAxis
-            {
-                Position = AxisPosition.Bottom,
-                Title = Translation.ShipStats_Range,
-                IsPanEnabled = false,
-                Unit = "Km",
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foregroundLow,
-            };
-
-            var yAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                Title = name,
-                IsPanEnabled = false,
-                Unit = "m",
-                Minimum = 0,
-                AxislineColor = foreground,
-                TextColor = foreground,
-                TicklineColor = foreground,
-                MajorGridlineThickness = 1,
-                MajorGridlineStyle = LineStyle.Dash,
-                MajorGridlineColor = foregroundLow,
-            };
-            model.Axes.Add(xAxis);
-            model.Axes.Add(yAxis);
-            model.DefaultColors = GenerateColors();
-
-            return model;
-        }
-
-        /// <summary>
-        /// Initialize the model fo the ballistic plot with common settings.
+        /// Initialize the model for plots with common settings.
         /// </summary>
         /// <param name="name">Title of the plot and of the Y axis.</param>
         /// <param name="yUnit">Unit of the Y axis.</param>
         /// <param name="legendPosition">Position of the legend inside the graph.</param>
-        /// <returns>The ballistic model.</returns>
-        private PlotModel InitializeBallisticBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin)
+        /// <param name="yMaximumMargin">Max margin value for y.</param>
+        /// <returns>The plot model.</returns>
+        private PlotModel InitializePlotBaseModel(string name, string yUnit, LegendPosition legendPosition, double yMaximumMargin = 0.01)
         {
             var foreground = ConvertColorFromResource("ThemeForegroundColor");
             var foregroundLow = ConvertColorFromResource("ThemeForegroundLowColor");
@@ -605,7 +629,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 Position = AxisPosition.Bottom,
                 Title = Translation.ShipStats_Range,
                 IsPanEnabled = false,
-                Unit = "Km",
+                Unit = Translation.Unit_KM,
                 Minimum = 0,
                 AxislineColor = foreground,
                 TextColor = foreground,
@@ -613,14 +637,14 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 MajorGridlineThickness = 1,
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
-                FormatAsFractions = true,
-                FractionUnit = 1000,
+                AbsoluteMaximum = 50,
+                MajorStep = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 1 : double.NaN,
             };
 
             var yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
-                Title = name,
+                Title = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? Translation.DispersionGrapghWindow_Height : name,
                 IsPanEnabled = false,
                 Unit = yUnit,
                 Minimum = 0,
@@ -631,7 +655,10 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 MajorGridlineStyle = LineStyle.Dash,
                 MajorGridlineColor = foregroundLow,
                 MaximumPadding = yMaximumMargin,
+                MinimumRange = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? ShootingRange * 1000 / 4 : 0,
+                AbsoluteMinimum = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 0 : double.MinValue,
             };
+
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
             model.DefaultColors = GenerateColors();
@@ -648,9 +675,11 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <returns>The horizontal dispersion series for the given parameter.</returns>
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name);
-            dispSeries.TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m";
-            dispSeries.StrokeThickness = 4;
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
+            {
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
+                StrokeThickness = 4,
+            };
             return dispSeries;
         }
 
@@ -665,7 +694,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
             {
-                TrackerFormatString = "{0}\n{1}: {2:#.00} Km\n{3}: {4:#.00} m",
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
                 StrokeThickness = 4,
             };
             return dispSeries;
@@ -678,77 +707,60 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <param name="maxRange">Max range of the gun.</param>
         /// <param name="name">Name for the series.</param>
         /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
-        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle) CreateBallisticSeries(
+        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle, LineSeries Trajectory) CreateBallisticSeries(
             ArtilleryShell shell,
             double maxRange,
             string name)
         {
-            var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
+            Dictionary<double, Ballistic> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange);
 
-            var penData = ballistic.Select(x => new DataPoint(x.Key, x.Value.Penetration));
-            var penSeries = new LineSeries()
+            IEnumerable<DataPoint> penData = ballistic.Select(x => new DataPoint(x.Key / 1000, x.Value.Penetration));
+            var penSeries = new LineSeries
             {
                 Title = name,
                 ItemsSource = penData,
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_MM}",
+                StrokeThickness = 4,
             };
-            penSeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00} mm";
-            penSeries.StrokeThickness = 4;
 
-            var flightTimeData = ballistic.Select(x => new DataPoint(x.Key, x.Value.FlightTime));
-            var flightTimeSeries = new LineSeries()
+            IEnumerable<DataPoint> flightTimeData = ballistic.Select(x => new DataPoint(x.Key / 1000, x.Value.FlightTime));
+            var flightTimeSeries = new LineSeries
             {
                 Title = name,
                 ItemsSource = flightTimeData,
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_S}",
+                StrokeThickness = 4,
             };
-            flightTimeSeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00} s";
-            flightTimeSeries.StrokeThickness = 4;
 
-            var impactVelocityData = ballistic.Select(x => new DataPoint(x.Key, x.Value.Velocity));
-            var impactVelocitySeries = new LineSeries()
+            IEnumerable<DataPoint> impactVelocityData = ballistic.Select(x => new DataPoint(x.Key / 1000, x.Value.Velocity));
+            var impactVelocitySeries = new LineSeries
             {
                 Title = name,
                 ItemsSource = impactVelocityData,
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_MPS}",
+                StrokeThickness = 4,
             };
-            impactVelocitySeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00} m/s";
-            impactVelocitySeries.StrokeThickness = 4;
 
-            var impactAngleData = ballistic.Select(x => new DataPoint(x.Key, x.Value.ImpactAngle));
-            var impactAngleSeries = new LineSeries()
+            IEnumerable<DataPoint> impactAngleData = ballistic.Select(x => new DataPoint(x.Key / 1000, x.Value.ImpactAngle));
+            var impactAngleSeries = new LineSeries
             {
                 Title = name,
                 ItemsSource = impactAngleData,
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_Degree}",
+                StrokeThickness = 4,
             };
-            impactAngleSeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00}°";
-            impactAngleSeries.StrokeThickness = 4;
 
-            return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries);
-        }
-
-        /// <summary>
-        /// Create the penetration series for shells with fixed pen.
-        /// </summary>
-        /// <param name="shell">The <see cref="ArtilleryShell"/> to calculate the ballistic of.</param>
-        /// <param name="maxRange">Max range of the gun.</param>
-        /// <param name="name">Name for the series.</param>
-        /// <returns>The penetration series.</returns>
-        private LineSeries CreateSeriesForFixedPen(ArtilleryShell shell, double maxRange, string name)
-        {
-            var pen = shell.Penetration;
-            var initialDataPoint = new DataPoint(0, pen);
-            var finalDataPoint = new DataPoint(maxRange * 1.5, pen);
-            var list = new List<DataPoint>();
-            list.Add(initialDataPoint);
-            list.Add(finalDataPoint);
-
-            var penSeries = new LineSeries()
+            IEnumerable<DataPoint> trajectoryData = ballistic.Any(x => x.Key / 1000 >= ShootingRange) ? ballistic.First(x => x.Key / 1000 >= ShootingRange).Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y)) : ballistic.Last().Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y));
+            var trajectorySeries = new LineSeries
             {
                 Title = name,
-                ItemsSource = list,
+                ItemsSource = trajectoryData,
+                TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
+                StrokeThickness = 4,
             };
-            penSeries.TrackerFormatString = "{0}\n{1}: {2:0,.00} Km\n{3}: {4:#.00} mm";
-            penSeries.StrokeThickness = 4;
+            ShellTrajectoryCache.Add(ballistic);
 
-            return penSeries;
+            return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries, trajectorySeries);
         }
 
         /// <summary>
@@ -764,7 +776,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
         private List<OxyColor> GenerateColors()
         {
-            var colors = new[]
+            OxyColor[] colors =
             {
                 OxyColor.Parse("#288753"),
                 OxyColor.Parse("#ef6fcc"),

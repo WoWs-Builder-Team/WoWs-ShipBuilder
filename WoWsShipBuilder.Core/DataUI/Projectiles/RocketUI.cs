@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
@@ -45,7 +44,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             decimal rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            decimal fireChance = Math.Round((decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier), 3);
+            decimal fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
             fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
@@ -55,7 +54,7 @@ namespace WoWsShipBuilder.Core.DataUI
             if (rocket.RocketType.Equals(RocketType.AP))
             {
                 var rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
-                rocketDamage = Math.Round(rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier), 2);
+                rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
                 ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingTreshold = (int)rocket.ArmingThreshold;
@@ -65,7 +64,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var rocketUI = new RocketUI
             {
                 Name = rocket.Name,
-                Damage = rocketDamage,
+                Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
                 ArmingTreshold = armingTreshold,

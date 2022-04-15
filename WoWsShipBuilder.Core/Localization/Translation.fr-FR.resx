@@ -603,9 +603,7 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Vitesse</value>
   </data>
-  <data name="ShipStats_Weapon" xml:space="preserve">
-    <value>Type d'armement</value>
-  </data>
+  
   <data name="SkipBomb" xml:space="preserve">
     <value>Bombe à ricochet</value>
   </data>
@@ -618,15 +616,11 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Temps de recharge par attaque</value>
   </data>
-  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Vitesse de croisière</value>
-  </data>
+  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombe dans l'ellipse intérieure</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Avions max sur le pont</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Vitesse max</value>
   </data>
@@ -636,9 +630,7 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Avions par attaque</value>
   </data>
-  <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Avions dans un escadron</value>
-  </data>
+  
   <data name="ShipStats_PlaneHP" xml:space="preserve">
     <value>PS par avion</value>
   </data>
@@ -796,27 +788,19 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Dégâts reçus pendant l'attaque</value>
   </data>
-  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Délai d'invulnérabilité après l'attaque</value>
-  </data>
+  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Temps de préparation</value>
   </data>
-  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Délai jusqu'à pleine visée</value>
-  </data>
+  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Tubes lance-torpilles</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
-    <value>Pendant la visée</value>
-  </data>
+  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Taux de changement de zone de largage lors de la manœuvre</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
-    <value>Pendant la préparation</value>
-  </data>
+  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Temps de pleine puissance</value>
   </data>
@@ -900,15 +884,11 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Afficher le tracé de dispersion</value>
   </data>
-  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
-    <value>Formule à X portée (km)</value>
-  </data>
+  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersion Horizontale[X]</value>
   </data>
-  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
-    <value>Portée de visée (Km)</value>
-  </data>
+  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Graphes balistiques</value>
   </data>
@@ -1119,9 +1099,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Temps de recharge côté serveur</value>
   </data>
-  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
-    <value>Le serveur ne se met à jour que toutes les 0.142857142857 secondes. Cela signifie que les recharges qui tombent entre les multiples de ce nombre seront déplacées vers le tick suivant. La valeur représentée ici montre le vrai rechargement que vous obtenez, qui peut être différent de la recharge théorique ci-dessus.</value>
-  </data>
+  
   <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
     <value>DPM côté serveur</value>
   </data>
@@ -1185,6 +1163,30 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
