@@ -31,7 +31,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
             messageHandlerMock = new Mock<HttpMessageHandler>();
             mockFileSystem = new MockFileSystem();
             mockDataService = new DesktopDataService(mockFileSystem);
-            appDataHelper = new DesktopAppDataService(mockFileSystem, mockDataService);
+            appDataHelper = new DesktopAppDataService(mockFileSystem, mockDataService, new());
             messageHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",

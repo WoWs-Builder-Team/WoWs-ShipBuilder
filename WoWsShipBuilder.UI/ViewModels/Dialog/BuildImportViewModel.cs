@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.ViewModels.Helper;
 
@@ -32,7 +33,7 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
                 return;
             }
 
-            AppData.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
+            AppSettingsHelper.Settings.LastImageImportPath = fileSystem.Path.GetDirectoryName(result[0]);
             string buildJson = BuildImageProcessor.ExtractBuildData(result[0]);
 
             JsonSerializerSettings serializerSettings = new()

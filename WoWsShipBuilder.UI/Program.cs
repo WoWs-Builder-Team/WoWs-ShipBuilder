@@ -17,7 +17,7 @@ namespace WoWsShipBuilder.UI
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
+            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, new());
             Logging.Logger.Info("------------------------------");
             Logging.Logger.Info("Starting application...");
             var culture = AppConstants.DefaultCultureDetails.CultureInfo;

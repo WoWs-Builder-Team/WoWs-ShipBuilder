@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
 
@@ -20,7 +21,9 @@ public class WebWorkerDataService : IDataService
         this.jsRuntime = jsRuntime;
     }
 
-    private string CurrentStoreName => AppData.Settings.SelectedServerType.StringName();
+    public static AppSettings Settings { get; set; }
+
+    private string CurrentStoreName => Settings.SelectedServerType.StringName();
 
     public async Task StoreStringAsync(string content, string path)
     {

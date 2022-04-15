@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using NLog;
 using Splat;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
-        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));
+        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance, new()));
 
         private static readonly Logger Logger = Logging.GetLogger("Localization");
 
@@ -18,15 +19,15 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         private readonly IAppDataService appDataService;
 
+        private readonly AppSettings appSettings;
+
         private Dictionary<string, string> languageData = new();
         private CultureDetails? locale;
 
-        public Localizer(IAppDataService appDataService)
+        public Localizer(IAppDataService appDataService, AppSettings appSettings)
         {
             this.appDataService = appDataService;
-
-            // Prevent exception when using Avalonia previewer due to uninitialized settings.
-            var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : AppConstants.DefaultCultureDetails;
+            this.appSettings = appSettings;
         }
 
         public static Localizer Instance => instance ?? InstanceProducer.Value;
@@ -52,7 +53,7 @@ namespace WoWsShipBuilder.Core.DataProvider
                 return;
             }
 
-            var serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
+            var serverType = AppData.IsInitialized ? appSettings.SelectedServerType : ServerType.Live;
             Dictionary<string, string>? localLanguageData = await appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
 
             if (localLanguageData == null)

@@ -8,6 +8,7 @@ using NLog;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
@@ -21,6 +22,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         private readonly IAppDataService appDataService;
         private readonly IAwsClient awsClient;
         private readonly IFileSystem fileSystem;
+        private readonly AppSettings appSettings;
         private readonly Logger logger;
 
         /// <summary>
@@ -29,11 +31,12 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="fileSystem">The <see cref="IFileSystem"/> used to access the local file system.</param>
         /// <param name="awsClient">The <see cref="IAwsClient"/> used to access data.</param>
         /// <param name="appDataService">The AppDataHelper used to access local application data.</param>
-        public LocalDataUpdater(IFileSystem fileSystem, IAwsClient awsClient, IAppDataService appDataService)
+        public LocalDataUpdater(IFileSystem fileSystem, IAwsClient awsClient, IAppDataService appDataService, AppSettings appSettings)
         {
             this.fileSystem = fileSystem;
             this.awsClient = awsClient;
             this.appDataService = appDataService;
+            this.appSettings = appSettings;
             logger = Logging.GetLogger("DataUpdater");
         }
 
@@ -94,9 +97,9 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         {
             var installedLocales = await appDataService.GetInstalledLocales(serverType);
 
-            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json"))
+            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName + ".json"))
             {
-                installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json");
+                installedLocales.Add(appSettings.SelectedLanguage.LocalizationFileName + ".json");
             }
 
             var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
@@ -264,7 +267,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task<bool> ShouldUpdaterRun(ServerType serverType)
         {
             var today = DateTime.Today;
-            return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
+            return appSettings.LastDataUpdateCheck == null || (today - appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
                    await appDataService.ReadLocalVersionInfo(serverType) == null;
         }
 
@@ -333,10 +336,10 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task CheckInstalledLocalizations(ServerType serverType)
         {
             List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
-            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
+            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
             {
                 logger.Info("Selected localization is not installed. Downloading file...");
-                string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
+                string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
                 await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
                 logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
             }

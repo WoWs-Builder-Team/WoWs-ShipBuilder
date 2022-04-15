@@ -18,6 +18,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
@@ -48,12 +49,12 @@ namespace WoWsShipBuilder.UI
                 container = SetupDependencyInjection();
 
                 AppSettingsHelper.LoadSettings();
-                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
+                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, AppSettingsHelper.Settings, true);
                 desktop.Exit += OnExit;
                 desktop.MainWindow = new SplashScreen();
-                Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
+                Logging.Logger.Info($"AutoUpdate Enabled: {AppSettingsHelper.Settings.AutoUpdateEnabled}");
 
-                if (AppData.Settings.AutoUpdateEnabled)
+                if (AppSettingsHelper.Settings.AutoUpdateEnabled)
                 {
 #if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
@@ -89,6 +90,7 @@ namespace WoWsShipBuilder.UI
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<AppSettings>().SingleInstance();
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
             builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
             builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();

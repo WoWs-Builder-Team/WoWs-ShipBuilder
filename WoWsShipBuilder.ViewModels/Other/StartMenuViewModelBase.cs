@@ -11,6 +11,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
@@ -26,13 +27,16 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         protected readonly IAppDataService AppDataService;
 
+        protected readonly AppSettings AppSettings;
+
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, AppSettings appSettings)
         {
             NavigationService = navigationService;
             ClipboardService = clipboardService;
             AppDataService = appDataService;
+            AppSettings = appSettings;
             if (!AppData.Builds.Any())
             {
                 appDataService.LoadBuilds();
@@ -73,7 +77,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void NewBuild()
         {
-            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService));
+            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService, AppSettings));
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
@@ -118,7 +122,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             if (AppData.ShipSummaryList == null)
             {
                 Logging.Logger.Info("Ship summary is null, loading it.");
-                AppData.ShipSummaryList = await AppDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
+                AppData.ShipSummaryList = await AppDataService.GetShipSummaryList(AppSettings.SelectedServerType);
             }
 
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));

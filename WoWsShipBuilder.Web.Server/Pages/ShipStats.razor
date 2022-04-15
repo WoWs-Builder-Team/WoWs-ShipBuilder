@@ -5,10 +5,13 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Translations
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.Settings
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService appDataService
+@inject AppSettings appSettings
+
 <PageTitle>Ship stats</PageTitle>
 
 <MudPaper Outlined="true" Class="d-flex justify-center align-center ma-5">
@@ -84,7 +87,7 @@
         Console.WriteLine("Files loaded: " + sw.Elapsed);
         var ship = await appDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship, shipSummary, null);
-        ViewModel = new(null, appDataService, vmParams);
+        ViewModel = new(null, appDataService, appSettings, vmParams);
         Console.WriteLine("VM created: " + sw.Elapsed);
         await ViewModel.InitializeData(vmParams);
         sw.Stop();

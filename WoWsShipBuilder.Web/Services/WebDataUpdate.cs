@@ -5,6 +5,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
@@ -16,6 +17,7 @@ public class WebDataUpdate : ILocalDataUpdater
     private readonly IAwsClient awsClient;
     private readonly IDataService dataService;
     private readonly Logger logger;
+    private readonly AppSettings appSettings;
 
     /// <summary>
     /// Creates a new instance of the <see cref="LocalDataUpdater"/> class.
@@ -23,11 +25,12 @@ public class WebDataUpdate : ILocalDataUpdater
     /// <param name="dataService">The <see cref="IDataService"/> used to access the data in the indexedDB of the browser.</param>
     /// <param name="awsClient">The <see cref="IAwsClient"/> used to access data.</param>
     /// <param name="appDataService">The AppDataHelper used to access local application data.</param>
-    public WebDataUpdate(IDataService dataService, IAwsClient awsClient, IAppDataService appDataService)
+    public WebDataUpdate(IDataService dataService, IAwsClient awsClient, IAppDataService appDataService, AppSettings appSettings)
     {
         this.dataService = dataService;
         this.awsClient = awsClient;
         this.appDataService = appDataService;
+        this.appSettings = appSettings;
         logger = Logging.GetLogger("DataUpdater");
     }
 
@@ -214,9 +217,9 @@ public class WebDataUpdate : ILocalDataUpdater
     {
         var installedLocales = await appDataService.GetInstalledLocales(serverType);
 
-        if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
+        if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
         {
-            installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName);
+            installedLocales.Add(appSettings.SelectedLanguage.LocalizationFileName);
         }
 
         List<(string, string)> downloadList = installedLocales.Select(locale => ("Localization", locale + ".json")).ToList();
@@ -232,17 +235,17 @@ public class WebDataUpdate : ILocalDataUpdater
     public async Task<bool> ShouldUpdaterRun(ServerType serverType)
     {
         var today = DateTime.Today;
-        return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
+        return appSettings.LastDataUpdateCheck == null || (today - appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
                await appDataService.ReadLocalVersionInfo(serverType) == null;
     }
 
     public async Task CheckInstalledLocalizations(ServerType serverType)
     {
         List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
-        if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
+        if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
         {
             logger.Info("Selected localization is not installed. Downloading file...");
-            string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
+            string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
             await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
             logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
         }

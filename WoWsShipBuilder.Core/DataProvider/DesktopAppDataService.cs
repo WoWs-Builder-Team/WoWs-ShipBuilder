@@ -7,6 +7,7 @@ using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataProvider
@@ -27,16 +28,19 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         private readonly IDataService dataService;
 
-        public DesktopAppDataService(IFileSystem fileSystem, IDataService dataService)
+        private readonly AppSettings appSettings;
+
+        public DesktopAppDataService(IFileSystem fileSystem, IDataService dataService, AppSettings appSettings)
         {
             this.fileSystem = fileSystem;
             this.dataService = dataService;
+            this.appSettings = appSettings;
             DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
         }
 
         public static DesktopAppDataService Instance => InstanceValue.Value;
 
-        public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem(), new DesktopDataService(new FileSystem()));
+        public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem(), new DesktopDataService(new FileSystem()), new());
 
         public string DefaultAppDataDirectory { get; }
 
@@ -46,7 +50,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             {
                 if (AppData.IsInitialized)
                 {
-                    return AppData.Settings.CustomDataPath ?? DefaultAppDataDirectory;
+                    return appSettings.CustomDataPath ?? DefaultAppDataDirectory;
                 }
 
                 return DefaultAppDataDirectory;
@@ -55,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public string AppDataImageDirectory => dataService.CombinePaths(AppDataDirectory, "Images");
 
-        public string BuildImageOutputDirectory => AppData.Settings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
+        public string BuildImageOutputDirectory => appSettings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public string GetDataPath(ServerType serverType)
         {
@@ -132,7 +136,7 @@ namespace WoWsShipBuilder.Core.DataProvider
 
         public async Task LoadNationFiles(Nation nation)
         {
-            var server = AppData.Settings.SelectedServerType;
+            var server = appSettings.SelectedServerType;
             if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
             {
                 AppData.ShipDictionary = await ReadLocalJsonData<Ship>(nation, server);
@@ -155,7 +159,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             var nation = IAppDataService.GetNationFromIndex(projectileName);
             if (!AppData.ProjectileCache.ContainsKey(nation))
             {
-                AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
+                AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, appSettings.SelectedServerType));
             }
 
             return AppData.ProjectileCache[nation][projectileName];
@@ -190,7 +194,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             var nation = IAppDataService.GetNationFromIndex(aircraftName);
             if (!AppData.AircraftCache.ContainsKey(nation))
             {
-                AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
+                AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, appSettings.SelectedServerType));
             }
 
             return AppData.AircraftCache[nation][aircraftName];
@@ -212,7 +216,7 @@ namespace WoWsShipBuilder.Core.DataProvider
             }
             else
             {
-                var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+                var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, appSettings.SelectedServerType);
                 if (shipDict != null)
                 {
                     ship = shipDict[summary.Index];

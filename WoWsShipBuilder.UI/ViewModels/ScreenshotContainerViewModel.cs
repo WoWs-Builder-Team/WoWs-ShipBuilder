@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.ViewModels.Base;
@@ -22,9 +23,9 @@ namespace WoWsShipBuilder.UI.ViewModels
             var ship = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
             var appDataService = DesktopAppDataService.PreviewInstance;
 
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, ship.ShipNation).Result, true);
-            SignalSelectorViewModel = new(SignalSelectorViewModel.LoadSignalList(appDataService).Result);
-            UpgradePanelViewModel = new UpgradePanelViewModel(ship, UpgradePanelViewModelBase.LoadParamsAsync(appDataService).Result);
+            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation).Result, true);
+            SignalSelectorViewModel = new(SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings).Result);
+            UpgradePanelViewModel = new UpgradePanelViewModel(ship, UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings).Result);
             LoadBuilds(new("Test-build"));
         }
 
@@ -73,9 +74,9 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var vm = new ScreenshotContainerViewModel(build, ship, includeSignals)
             {
-                CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, ship.ShipNation), true),
-                SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService)),
-                UpgradePanelViewModel = new UpgradePanelViewModel(ship, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService)),
+                CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
+                SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings)),
+                UpgradePanelViewModel = new UpgradePanelViewModel(ship, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings)),
             };
             vm.LoadBuilds(build);
             return vm;

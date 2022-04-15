@@ -1,5 +1,4 @@
 using System.IO.Abstractions;
-using BlazorWorker.Core;
 using DnetIndexedDb;
 using DnetIndexedDb.Fluent;
 using DnetIndexedDb.Models;
@@ -10,6 +9,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web.Data;
 using LogLevel = NLog.LogLevel;
 
@@ -33,7 +33,7 @@ public static class SetupExtensions
         });
 
         services.AddScoped<AppSettingsHelper>();
-        services.AddScoped<IAppSettingsService>(_ => new AppSettingsService());
+        services.AddScoped<AppSettings>();
         services.AddScoped<IDataService, WebDataService>();
         services.AddScoped<IAppDataService, WebAppDataService>();
         services.AddScoped<ILocalDataUpdater, WebDataUpdate>();
@@ -50,7 +50,7 @@ public static class SetupExtensions
         services.AddSingleton<IDataService, DesktopDataService>();
 
         services.AddScoped<AppSettingsHelper>();
-        services.AddScoped<IAppSettingsService, AppSettingsService>();
+        services.AddScoped<AppSettings>();
 
         return services;
     }

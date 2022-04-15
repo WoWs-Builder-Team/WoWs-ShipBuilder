@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.ViewModels.Dialog;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
@@ -19,7 +20,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
-            : base(navigationService, clipboardService, appDataService)
+            : base(navigationService, clipboardService, appDataService, AppSettingsHelper.Settings)
         {
             this.fileSystem = fileSystem;
         }

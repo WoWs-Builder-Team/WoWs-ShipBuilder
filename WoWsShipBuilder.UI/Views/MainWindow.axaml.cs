@@ -12,6 +12,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
@@ -53,7 +54,7 @@ namespace WoWsShipBuilder.UI.Views
                 {
                     var result = await new ShipSelectionWindow
                     {
-                        DataContext = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance)),
+                        DataContext = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings)),
                     }.ShowDialog<List<ShipSummary>?>(this);
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);

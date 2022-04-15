@@ -65,7 +65,7 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;
 Thread.CurrentThread.CurrentCulture = culture;
 Thread.CurrentThread.CurrentUICulture = culture;
 
-AppData.ShipSummaryList ??= await app.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
+AppData.ShipSummaryList ??= await app.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(ServerType.Live);
 await app.Services.GetRequiredService<Localizer>().UpdateLanguage(AppConstants.DefaultCultureDetails, true);
 var appDataService = app.Services.GetRequiredService<IAppDataService>();
 if (appDataService is ServerAppDataService serverAppDataService)

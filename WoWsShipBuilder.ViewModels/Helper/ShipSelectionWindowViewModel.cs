@@ -11,6 +11,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -37,9 +38,9 @@ namespace WoWsShipBuilder.ViewModels.Helper
             ConfirmCommand = ReactiveCommand.CreateFromTask(Confirm, canConfirmExecute);
         }
 
-        public static async Task<Dictionary<string, ShipSummary>> LoadParamsAsync(IAppDataService appDataService)
+        public static async Task<Dictionary<string, ShipSummary>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings)
         {
-            AppData.ShipSummaryList ??= await appDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
+            AppData.ShipSummaryList ??= await appDataService.GetShipSummaryList(appSettings.SelectedServerType);
             return AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
         }
 

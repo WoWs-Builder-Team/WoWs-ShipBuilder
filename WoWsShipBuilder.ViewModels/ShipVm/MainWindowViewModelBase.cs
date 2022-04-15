@@ -15,6 +15,7 @@ using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
@@ -31,6 +32,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private readonly INavigationService navigationService;
 
         private readonly IAppDataService appDataService;
+
+        private readonly AppSettings appSettings;
 
         private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
 
@@ -62,10 +65,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         protected string? CurrentBuildName;
 
-        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, MainViewModelParams viewModelParams)
+        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, AppSettings appSettings, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
             this.appDataService = appDataService;
+            this.appSettings = appSettings;
             tokenSource = new();
             PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
 
@@ -180,7 +184,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             Logging.Logger.Info("Selecting new ship");
 
-            var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService))))?.FirstOrDefault();
+            var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings))))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info("New ship selected: {0}", result.Index);
@@ -225,10 +229,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             Logging.Logger.Info("Initializing view models");
 
             // Viewmodel inits
-            SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService));
-            CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, ship.ShipNation));
+            SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings));
+            CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
             ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-            UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService));
+            UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, appSettings));
 
             ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
 

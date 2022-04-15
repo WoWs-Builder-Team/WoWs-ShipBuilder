@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using DynamicData;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -71,12 +70,12 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             }
         }
 
-        public static async Task<List<KeyValuePair<string, SignalItemViewModel>>> LoadSignalList(IAppDataService appDataService)
+        public static async Task<List<KeyValuePair<string, SignalItemViewModel>>> LoadSignalList(IAppDataService appDataService, AppSettings appSettings)
         {
-            var dict = await appDataService.ReadLocalJsonData<Exterior>(Nation.Common, AppData.Settings.SelectedServerType);
+            var dict = await appDataService.ReadLocalJsonData<Exterior>(Nation.Common, appSettings.SelectedServerType);
             if (dict == null)
             {
-                Logging.Logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump());
+                Logging.Logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump(appSettings));
             }
 
             var list = dict!

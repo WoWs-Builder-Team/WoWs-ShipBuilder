@@ -1,10 +1,11 @@
 @using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Core.DataProvider
-@using System.Diagnostics
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Data
 @inherits LayoutComponentBase
 @inject IDataService dataService
 @inject ISnackbar snackbar
+@inject AppSettingsHelper settingsHelper
+@inject AppSettings appSettings
 
 <MudThemeProvider Theme="theme" IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -45,6 +46,13 @@
     //         StateHasChanged();
     //     }
     // }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var settings = await settingsHelper.LoadSettings();
+        appSettings.UpdateFromSettings(settings!);
+    }
 
     private readonly MudTheme theme = new()
     {

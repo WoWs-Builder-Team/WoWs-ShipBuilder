@@ -16,6 +16,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Base;
@@ -61,9 +62,9 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             self = win;
             AddShipInteraction = new();
 
-            AimingRange = AppData.Settings.DispersionPlotSettings.AimingRange;
-            ShotsNumber = AppData.Settings.DispersionPlotSettings.ShotsNumber;
-            IsVertical = AppData.Settings.DispersionPlotSettings.IsVertical;
+            AimingRange = AppSettingsHelper.Settings.DispersionPlotSettings.AimingRange;
+            ShotsNumber = AppSettingsHelper.Settings.DispersionPlotSettings.ShotsNumber;
+            IsVertical = AppSettingsHelper.Settings.DispersionPlotSettings.IsVertical;
 
             logger.Info("Creating base plot models");
             var hModel = InitializeDispersionBaseModel(Translation.ShipStats_HorizontalDisp);
@@ -304,7 +305,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set
             {
                 this.RaiseAndSetIfChanged(ref isVertical, value);
-                AppData.Settings.DispersionPlotSettings.IsVertical = value;
+                AppSettingsHelper.Settings.DispersionPlotSettings.IsVertical = value;
             }
         }
 
@@ -342,7 +343,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance)));
+            List<ShipSummary>? resultList = await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings)));
 
             if (resultList != null && resultList.Count > 0)
             {
@@ -498,8 +499,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 return;
             }
 
-            AppData.Settings.DispersionPlotSettings.AimingRange = AimingRange;
-            AppData.Settings.DispersionPlotSettings.ShotsNumber = ShotsNumber;
+            AppSettingsHelper.Settings.DispersionPlotSettings.AimingRange = AimingRange;
+            AppSettingsHelper.Settings.DispersionPlotSettings.ShotsNumber = ShotsNumber;
 
             foreach (var itemViewModel in DispersionPlotList)
             {

@@ -4,12 +4,14 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Data
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
 @inject IDataService dataService
 @inject ILocalDataUpdater dataUpdater
 @inject IAppDataService appDataService
 @inject AppSettingsHelper appSettingsHelper
 @inject NavigationManager navigationManager
+@inject AppSettings appSettings
 <MudText Typo="Typo.h2">Test Page</MudText>
 
 <MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
@@ -29,7 +31,7 @@
         <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
     }
 </MudSelect>
-<MudButton OnClick="SaveCultureChange" Disabled="AppData.Settings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="SaveCultureChange" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
 <MudButton OnClick="TestWorker" >Test worker</MudButton>
 
     @if (loading)
@@ -47,11 +49,17 @@
 
     private int count;
 
-    private CultureDetails selectedCulture = AppData.Settings.SelectedLanguage;
+    private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
 
     private string output;
 
     bool loading;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        selectedCulture = appSettings.SelectedLanguage;
+    }
 
     private async Task LoadNonExistentData()
     {
@@ -86,8 +94,8 @@
 
     private async Task SaveCultureChange()
     {
-        AppData.Settings.SelectedLanguage = selectedCulture;
-        await appSettingsHelper.SaveSettings(AppData.Settings);
+        appSettings.SelectedLanguage = selectedCulture;
+        await appSettingsHelper.SaveSettings(appSettings);
         await StartUpdate();
         navigationManager.NavigateTo(navigationManager.Uri, true, false);
     }

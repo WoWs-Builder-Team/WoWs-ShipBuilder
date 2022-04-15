@@ -8,6 +8,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -62,9 +63,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             };
         }
 
-        public static async Task<Dictionary<string, Modernization>> LoadParamsAsync(IAppDataService appDataService)
+        public static async Task<Dictionary<string, Modernization>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings)
         {
-            return await appDataService.ReadLocalJsonData<Modernization>(Nation.Common, AppData.Settings.SelectedServerType) ?? new Dictionary<string, Modernization>();
+            return await appDataService.ReadLocalJsonData<Modernization>(Nation.Common, appSettings.SelectedServerType) ?? new Dictionary<string, Modernization>();
         }
 
         public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }

@@ -5,6 +5,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -16,18 +17,21 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private readonly ILocalDataUpdater localDataUpdater;
 
+        private readonly AppSettings appSettings;
+
         private readonly ILogger logger;
 
         private double progress;
 
         public SplashScreenViewModel()
-            : this(null!)
+            : this(null!, new())
         {
         }
 
-        public SplashScreenViewModel(ILocalDataUpdater localDataUpdater)
+        public SplashScreenViewModel(ILocalDataUpdater localDataUpdater, AppSettings appSettings)
         {
             this.localDataUpdater = localDataUpdater;
+            this.appSettings = appSettings;
             logger = Logging.GetLogger("SplashScreen");
         }
 
@@ -57,8 +61,8 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             try
             {
-                await localDataUpdater.RunDataUpdateCheck(AppData.Settings.SelectedServerType, progressTracker, forceVersionCheck);
-                await Localizer.Instance.UpdateLanguage(AppData.Settings.SelectedLanguage, forceVersionCheck);
+                await localDataUpdater.RunDataUpdateCheck(appSettings.SelectedServerType, progressTracker, forceVersionCheck);
+                await Localizer.Instance.UpdateLanguage(appSettings.SelectedLanguage, forceVersionCheck);
                 logger.Debug("Version check and update tasks completed. Launching main window.");
             }
             catch (Exception e)

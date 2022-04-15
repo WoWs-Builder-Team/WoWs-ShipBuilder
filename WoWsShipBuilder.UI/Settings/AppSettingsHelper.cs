@@ -17,7 +17,9 @@ namespace WoWsShipBuilder.UI.Settings
     {
         private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
 
-        public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(AppData.Settings, SettingFile);
+        public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
+
+        public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(Settings, SettingFile);
 
         public static void LoadSettings()
         {
@@ -31,17 +33,17 @@ namespace WoWsShipBuilder.UI.Settings
                     settings = new();
                 }
 
-                AppData.Settings = settings;
+                Settings.UpdateFromSettings(settings);
             }
             else
             {
                 Logging.Logger.Info("No settings file found, creating new settings...");
-                AppData.Settings = new();
+                Settings.UpdateFromSettings(new());
             }
 
             AppData.IsInitialized = true;
             Logging.Logger.Info("Settings initialized.");
-            UpdateThreadCulture(AppData.Settings.SelectedLanguage.CultureInfo);
+            UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
         }
 
         private static void UpdateThreadCulture(CultureInfo cultureInfo)

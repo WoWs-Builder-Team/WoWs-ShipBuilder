@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         }
 
         public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
-            : base(clipboardService, appDataService)
+            : base(clipboardService, appDataService, AppSettingsHelper.Settings)
         {
             this.fileSystem = fileSystem;
         }

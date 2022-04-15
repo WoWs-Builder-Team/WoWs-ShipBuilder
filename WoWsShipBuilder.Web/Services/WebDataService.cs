@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures;
+﻿using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -11,14 +12,17 @@ public class WebDataService : IDataService
 {
     private readonly GameDataDb gameDataDb;
 
+    private readonly AppSettings appSettings;
+
     private bool initialized;
 
-    public WebDataService(GameDataDb gameDataDb)
+    public WebDataService(GameDataDb gameDataDb, AppSettings appSettings)
     {
         this.gameDataDb = gameDataDb;
+        this.appSettings = appSettings;
     }
 
-    private string CurrentStoreName => AppData.Settings.SelectedServerType.StringName();
+    private string CurrentStoreName => appSettings.SelectedServerType.StringName();
 
     public async Task StoreStringAsync(string content, string path)
     {

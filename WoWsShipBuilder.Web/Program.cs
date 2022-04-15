@@ -15,6 +15,7 @@ using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web;
 using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Services;
+using WoWsShipBuilder.Web.WebWorkers;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -38,23 +39,24 @@ host.Services.UseMicrosoftDependencyResolver();
 
 var settingsHelper = host.Services.GetRequiredService<AppSettingsHelper>();
 var settings = await settingsHelper.LoadSettings() ?? new AppSettings();
-
-AppData.Settings = settings;
+var appSettings = host.Services.GetRequiredService<AppSettings>();
+appSettings.UpdateFromSettings(settings);
 
 CultureInfo.DefaultThreadCurrentCulture = settings.SelectedLanguage.CultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = settings.SelectedLanguage.CultureInfo;
 
-await settingsHelper.SaveSettings(AppData.Settings);
+await settingsHelper.SaveSettings(appSettings);
+WebWorkerDataService.Settings = appSettings;
 
 SetupExtensions.SetupLogging();
 var logger = Logging.GetLogger("ShipBuilderInit");
 
 await host.Services.GetRequiredService<ILocalDataUpdater>().RunDataUpdateCheck(settings.SelectedServerType, new Progress<(int, string)>());
-await host.Services.GetRequiredService<Localizer>().UpdateLanguage(AppData.Settings.SelectedLanguage, true);
+await host.Services.GetRequiredService<Localizer>().UpdateLanguage(appSettings.SelectedLanguage, true);
 
 AppData.ShipDictionary = new();
 logger.Debug("Initializing summary list...");
-AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(AppData.Settings.SelectedServerType);
+AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(appSettings.SelectedServerType);
 logger.Debug("Summary list initialized. Preparation finished.");
 
 await host.RunAsync();

@@ -3,10 +3,13 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.Settings
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager navManager
 @inject Localizer localizer
 @inject IAppDataService appDataService
+@inject AppSettings appSettings
+
 <PageTitle>Ship stats</PageTitle>
 
 <MudPaper Outlined="true" Class="d-flex justify-center align-center ma-5">
@@ -79,7 +82,7 @@
         await appDataService.LoadNationFiles(shipSummary.Nation);
         var ship = await appDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship, shipSummary, null);
-        ViewModel = new(null, appDataService, vmParams);
+        ViewModel = new(null, appDataService, appSettings, vmParams);
         await ViewModel.InitializeData(vmParams);
     }
 

@@ -9,6 +9,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
@@ -28,7 +29,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private readonly Logger logger;
 
         public CaptainSkillSelectorViewModel()
-            : this(ShipClass.Cruiser, LoadParamsAsync(DesktopAppDataService.PreviewInstance, Nation.Usa).Result)
+            : this(ShipClass.Cruiser, LoadParamsAsync(DesktopAppDataService.PreviewInstance, new(), Nation.Usa).Result)
         {
         }
 
@@ -256,10 +257,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public bool ScreenshotMode { get; }
 
-        public static async Task<(Captain, Dictionary<string, Captain>?)> LoadParamsAsync(IAppDataService appDataService, Nation nation)
+        public static async Task<(Captain, Dictionary<string, Captain>?)> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, Nation nation)
         {
-            var defaultCaptain = (await appDataService.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType))!.Single().Value;
-            var nationCaptains = await appDataService.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
+            var defaultCaptain = (await appDataService.ReadLocalJsonData<Captain>(Nation.Common, appSettings.SelectedServerType))!.Single().Value;
+            var nationCaptains = await appDataService.ReadLocalJsonData<Captain>(nation, appSettings.SelectedServerType);
             return (defaultCaptain, nationCaptains);
         }
 

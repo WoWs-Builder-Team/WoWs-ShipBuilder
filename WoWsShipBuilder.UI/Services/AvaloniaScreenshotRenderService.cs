@@ -10,6 +10,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
@@ -47,7 +48,7 @@ namespace WoWsShipBuilder.UI.Services
 
         private static void OpenExplorerForFile(string filePath)
         {
-            if (AppData.Settings.OpenExplorerAfterImageSave)
+            if (AppSettingsHelper.Settings.OpenExplorerAfterImageSave)
             {
                 Process.Start("explorer.exe", $"/select, \"{filePath}\"");
             }

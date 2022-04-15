@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.WebWorkers;
@@ -21,15 +22,18 @@ public class WebAppDataService : IAppDataService
 
     private readonly IDataService dataService;
 
+    private readonly AppSettings appSettings;
+
     // private IWorkerBackgroundService<StartupWebWorkerService>? startupWorker;
 
     // private IWorkerBackgroundService<WebWorkerDataService>? worker;
 
-    public WebAppDataService(IDataService dataService, GameDataDb gameDataDb)
+    public WebAppDataService(IDataService dataService, GameDataDb gameDataDb, AppSettings appSettings)
     {
         this.gameDataDb = gameDataDb;
         // this.workerFactory = workerFactory;
         this.dataService = dataService;
+        this.appSettings = appSettings;
     }
 
     public string DefaultAppDataDirectory { get; } = default!;
@@ -66,7 +70,7 @@ public class WebAppDataService : IAppDataService
 
     public async Task LoadNationFiles(Nation nation)
     {
-        var server = AppData.Settings.SelectedServerType;
+        var server = appSettings.SelectedServerType;
         AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
         AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
         AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
@@ -77,7 +81,7 @@ public class WebAppDataService : IAppDataService
         var nation = IAppDataService.GetNationFromIndex(projectileName);
         if (!AppData.ProjectileCache.ContainsKey(nation))
         {
-            AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, AppData.Settings.SelectedServerType));
+            AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, appSettings.SelectedServerType));
         }
 
         return AppData.ProjectileCache[nation][projectileName];
@@ -93,7 +97,7 @@ public class WebAppDataService : IAppDataService
         var nation = IAppDataService.GetNationFromIndex(aircraftName);
         if (!AppData.AircraftCache.ContainsKey(nation))
         {
-            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, AppData.Settings.SelectedServerType));
+            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, appSettings.SelectedServerType));
         }
 
         return AppData.AircraftCache[nation][aircraftName];
@@ -113,10 +117,10 @@ public class WebAppDataService : IAppDataService
             return ship;
         }
 
-        var dataPath = FindDataPath<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+        var dataPath = FindDataPath<Ship>(summary.Nation, appSettings.SelectedServerType);
         // ship = await worker!.RunAsync(service => service.LoadShipAsync(summary.Index, dataPath));
 
-        // var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, AppData.Settings.SelectedServerType);
+        // var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, appSettings.SelectedServerType);
         // if (shipDict != null)
         // {
         //     ship = shipDict[summary.Index];
