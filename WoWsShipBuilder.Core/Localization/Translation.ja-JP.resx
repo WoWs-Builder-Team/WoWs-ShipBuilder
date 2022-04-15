@@ -1191,9 +1191,7 @@
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>深度</value>
   </data>
-  <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>1回あたりの回復量</value>
-  </data>
+  
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>射程 [km]:</value>
   </data>
