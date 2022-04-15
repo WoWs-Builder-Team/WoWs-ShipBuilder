@@ -1171,9 +1171,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Di profondità</value>
   </data>
-  <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>HP per cura</value>
-  </data>
+  
   
   
   
