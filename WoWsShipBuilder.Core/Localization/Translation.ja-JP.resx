@@ -1089,9 +1089,7 @@
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>選択したカスタムパスは有効ではありません。</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>艦長スキルと特殊能力</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>次のスライダーとトグルを使用すると、特定の条件付き艦長スキルを有効または無効にできます。 可能であれば、特殊能力が発動する回数を選択することもできます。 すべての艦長スキル/特殊能力が艦艇の性能表示に影響するわけではないことに注意してください。</value>
   </data>
