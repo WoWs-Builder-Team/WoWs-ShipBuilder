@@ -1071,9 +1071,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>A kiválasztott képútvonal hibás.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Készségek és képességek</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>A következő csúszkákkal és kapcsolókkal engedélyezhet vagy letilthat bizonyos feltételes képességeffektusokat. Kiválaszthatja azt is, hogy hányszor aktiválja a tehetségeffektust, ha lehetséges. Vegye figyelembe, hogy nem minden képesség/tehetség lesz hatással a hajóstatisztikákra.</value>
   </data>
