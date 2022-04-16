@@ -28,8 +28,8 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public int MaxNumberOnDeck { get; set; }
 
-        [JsonIgnore]
-        public string RestorationTime { get; set; } = default!;
+        [DataUiUnit("S")]
+        public decimal RestorationTime { get; set; }
 
         [JsonIgnore]
         public string PlaneHP { get; set; } = default!;
@@ -324,7 +324,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 AttackGroupHP = $"{finalPlaneHP * plane.AttackData.AttackerSize} {Translation.Unit_HP}",
                 NumberInSquad = plane.NumPlanesInSquadron,
                 MaxNumberOnDeck = maxOnDeck,
-                RestorationTime = $"{restorationTime} {Translation.Unit_S}",
+                RestorationTime = restorationTime,
                 CruisingSpeed = $"{finalCruisingSpeed} {Translation.Unit_Knots}",
                 MaxSpeed = $"{Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0)} {Translation.Unit_Knots}",
                 MinSpeed = $"{Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0)} {Translation.Unit_Knots}",
