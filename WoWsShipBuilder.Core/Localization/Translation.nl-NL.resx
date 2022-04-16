@@ -1073,9 +1073,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Het aangepaste bestandspad voor build afbeelding is ongeldig.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Vaardigheid &amp; Talenten</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Met de volgende slider en toggles kunt je bepaalde conditionele vaardigheden en talenten aan of uit zetten. Indien mogelijk kun je ook selecteren hoe vaak je het talent effect wilt activeren. Let op dat niet alle vaardigheden/talenten van invloed zullen zijn op de scheepsstatistieken.</value>
   </data>
