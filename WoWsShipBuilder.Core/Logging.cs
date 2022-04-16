@@ -5,6 +5,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 
 namespace WoWsShipBuilder.Core
 {
@@ -16,7 +17,7 @@ namespace WoWsShipBuilder.Core
 
         public static Logger GetLogger(string name = "ShipBuilder") => LogManager.GetLogger(name);
 
-        public static void InitializeLogging(string? sentryDsn, bool initializeSentry = false)
+        public static void InitializeLogging(string? sentryDsn, AppSettings appSettings, bool initializeSentry = false)
         {
             var config = new LoggingConfiguration();
             var target = new FileTarget
@@ -60,7 +61,7 @@ namespace WoWsShipBuilder.Core
                     o.SendDefaultPii = false;
                     o.Dsn = sentryDsn;
 
-                    o.AutoSessionTracking = AppData.Settings.SendTelemetryData;
+                    o.AutoSessionTracking = appSettings.SendTelemetryData;
                 });
             }
 

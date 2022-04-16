@@ -15,6 +15,7 @@ using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
@@ -31,6 +32,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private readonly INavigationService navigationService;
 
         private readonly IAppDataService appDataService;
+
+        private readonly AppSettings appSettings;
 
         private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
 
@@ -62,16 +65,15 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         protected string? CurrentBuildName;
 
-        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, MainViewModelParams viewModelParams)
+        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, AppSettings appSettings, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
             this.appDataService = appDataService;
+            this.appSettings = appSettings;
             tokenSource = new();
             PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
 
             LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
-
-            InitializeData(viewModelParams.Ship, PreviousShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
         }
 
         public string? CurrentShipIndex
@@ -182,7 +184,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             Logging.Logger.Info("Selecting new ship");
 
-            var result = (await SelectNewShipInteraction.Handle(new(false)))?.FirstOrDefault();
+            var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings))))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info("New ship selected: {0}", result.Index);
@@ -202,13 +204,18 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             await CloseChildrenInteraction.Handle(Unit.Default);
 
             disposables.Clear();
-            var ship = appDataService.GetShipFromSummary(summary);
-            appDataService.LoadNationFiles(summary.Nation);
+            var ship = await appDataService.GetShipFromSummary(summary);
+            await appDataService.LoadNationFiles(summary.Nation);
 
-            InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
+            await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
         }
 
-        private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+        public async Task InitializeData(MainViewModelParams viewModelParams)
+        {
+            await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+        }
+
+        private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
         {
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
@@ -222,14 +229,14 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             Logging.Logger.Info("Initializing view models");
 
             // Viewmodel inits
-            SignalSelectorViewModel = new();
-            CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, ship.ShipNation);
+            SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings));
+            CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
             ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-            UpgradePanelViewModel = new(RawShipData);
+            UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, appSettings));
 
             ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
 
-            ConsumableViewModel = new(RawShipData, ShipStatsControlViewModel.CurrentShipStats!.SurvivabilityUI.HitPoints);
+            ConsumableViewModel = await ConsumableViewModel.CreateAsync(RawShipData, 0);
 
             if (build != null)
             {
@@ -247,10 +254,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             PreviousShipIndex = previousIndex;
             if (previousIndex != null)
             {
-                PreviousShipTier = AppData.ShipDictionary![previousIndex].Tier;
+                PreviousShipTier = AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex).Tier;
             }
 
-            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipDictionary![x].Tier);
+            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipSummaryList!.First(sum => sum.Index == x).Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
             if (build != null)
@@ -302,7 +309,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
                             var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityUI.HitPoints;
-                            ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
+                            await ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
                             semaphore.Release();
                         }
                     }

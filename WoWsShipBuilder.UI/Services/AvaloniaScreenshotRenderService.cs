@@ -4,9 +4,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Newtonsoft.Json;
+using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.Views;
@@ -20,7 +24,7 @@ namespace WoWsShipBuilder.UI.Services
             string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Localizer.Instance[build.ShipIndex].Localization);
             var screenshotWindow = new ScreenshotWindow
             {
-                DataContext = new ScreenshotContainerViewModel(build, rawShipData, includeSignals),
+                DataContext = await ScreenshotContainerViewModel.CreateAsync(Locator.Current.GetServiceSafe<IAppDataService>(), build, rawShipData, includeSignals),
             };
             screenshotWindow.Show();
 
@@ -44,7 +48,7 @@ namespace WoWsShipBuilder.UI.Services
 
         private static void OpenExplorerForFile(string filePath)
         {
-            if (AppData.Settings.OpenExplorerAfterImageSave)
+            if (AppSettingsHelper.Settings.OpenExplorerAfterImageSave)
             {
                 Process.Start("explorer.exe", $"/select, \"{filePath}\"");
             }

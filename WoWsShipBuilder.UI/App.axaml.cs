@@ -49,12 +49,12 @@ namespace WoWsShipBuilder.UI
                 container = SetupDependencyInjection();
 
                 AppSettingsHelper.LoadSettings();
-                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, true);
+                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, AppSettingsHelper.Settings, true);
                 desktop.Exit += OnExit;
                 desktop.MainWindow = new SplashScreen();
-                Logging.Logger.Info($"AutoUpdate Enabled: {AppData.Settings.AutoUpdateEnabled}");
+                Logging.Logger.Info($"AutoUpdate Enabled: {AppSettingsHelper.Settings.AutoUpdateEnabled}");
 
-                if (AppData.Settings.AutoUpdateEnabled)
+                if (AppSettingsHelper.Settings.AutoUpdateEnabled)
                 {
 #if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.UI
             using var scope = container.BeginLifetimeScope();
             Logging.Logger.Info("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
-            scope.Resolve<IAppDataService>().SaveBuilds();
+            scope.Resolve<IUserDataService>().SaveBuilds();
             Logging.Logger.Info("Exiting...");
             Logging.Logger.Info(new string('-', 30));
         }
@@ -90,8 +90,11 @@ namespace WoWsShipBuilder.UI
         {
             var builder = new ContainerBuilder();
 
+            builder.RegisterType<AppSettings>().SingleInstance();
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
-            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().SingleInstance();
+            builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
+            builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().As<IUserDataService>().SingleInstance();
+            builder.RegisterType<Localizer>().AsSelf().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();

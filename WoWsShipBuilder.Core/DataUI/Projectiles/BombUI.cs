@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
@@ -37,9 +38,9 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public static BombUI FromBombName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<BombUI> FromBombName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            var bomb = appDataService.GetProjectile<Bomb>(name);
+            var bomb = await appDataService.GetProjectile<Bomb>(name);
 
             decimal bombDamage = 0;
             string ricochetAngle = "";

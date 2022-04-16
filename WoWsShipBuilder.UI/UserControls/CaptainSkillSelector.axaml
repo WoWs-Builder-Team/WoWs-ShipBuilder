@@ -60,7 +60,7 @@
                                 <DockPanel LastChildFill="True" IsVisible="{Binding ShowArHpSelection}">
                                     <Slider Minimum="0" Maximum="100" Value="{Binding ArHpPercentage}" TickFrequency="1" DockPanel.Dock="Right" Width="200"/>
                                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                                        <TextBlock Text="Adrenaline Rush HP: " FontWeight="Bold"/>
+                                        <TextBlock Text="{x:Static translations:Translation.CaptainSkillSelector_CurrentArBonus}" FontWeight="Bold"/>
                                         <TextBlock Text="{Binding ArHpPercentage}"/>
                                         <TextBlock Text=" %"/>
                                     </StackPanel>

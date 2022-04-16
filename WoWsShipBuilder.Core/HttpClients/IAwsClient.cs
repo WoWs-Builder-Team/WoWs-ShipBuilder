@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpResponses;
@@ -13,6 +15,7 @@ namespace WoWsShipBuilder.Core.HttpClients
 
         public Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null);
 
-        public Task DownloadImages(ImageType type, string? fileName = null);
+        [UnsupportedOSPlatform("browser")]
+        public Task DownloadImages(ImageType type, IFileSystem fileSystem, string? fileName = null);
     }
 }

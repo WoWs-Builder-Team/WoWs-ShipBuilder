@@ -8,6 +8,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Services;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
@@ -20,7 +21,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
         private readonly AvaloniaScreenshotRenderService screenshotRenderService;
 
         public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
-            : base(navigationService, appDataService, viewModelParams)
+            : base(navigationService, appDataService, AppSettingsHelper.Settings, viewModelParams)
         {
             this.clipboardService = clipboardService;
             screenshotRenderService = new();
@@ -41,13 +42,13 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
             }
 
             string shipName = Localizer.Instance[CurrentShipIndex!].Localization;
-            var dialogResult = await BuildCreationInteraction.Handle(new(currentBuild, shipName)) ?? BuildCreationResult.Canceled;
+            var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, currentBuild, shipName)) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)
             {
                 return;
             }
 
-            AppData.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
+            AppSettingsHelper.Settings.IncludeSignalsForImageExport = dialogResult.IncludeSignals;
             CurrentBuildName = currentBuild.BuildName;
             await CreateBuildImage(currentBuild, dialogResult.IncludeSignals, dialogResult.CopyImageToClipboard);
 
