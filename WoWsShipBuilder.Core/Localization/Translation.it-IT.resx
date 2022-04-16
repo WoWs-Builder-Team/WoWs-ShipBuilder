@@ -1071,9 +1071,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Il percorso personalizzato selezionato per l'immagine build non è valido.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Abilità &amp; Talenti</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Con i seguenti cursori e bottoni, è possibile attivare o disattivare alcuni effetti condizionali delle abilità. Puoi anche selezionare quante volte attivare l'effetto del talento, se possibile. Nota che non tutte le abilità/talenti avranno un effetto sulle statistiche della nave.</value>
   </data>
