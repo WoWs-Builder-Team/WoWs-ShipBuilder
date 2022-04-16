@@ -1072,9 +1072,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Les données du chemin personnalisé sont invalides.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Compétences &amp; Talents</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Avec le curseur et les boutons suivants, vous pouvez activer ou désactiver certains effets de compétences conditionnelles. Vous pouvez aussi choisir le nombre de fois pour déclencher l'effet de talent, si possible. Notez que toutes les compétences/talents n'auront pas d'effet sur les statistiques du navire.</value>
   </data>
