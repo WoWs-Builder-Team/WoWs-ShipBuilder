@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record AntiAirUI : IDataUi
@@ -23,11 +24,11 @@ namespace WoWsShipBuilder.Core.DataUI
             set => ShipUI.ExpanderStateMapper[expanderKey] = value;
         }
 
-        public AuraDataUI? LongRangeAura { get; set; } = default!;
+        public AuraDataUI? LongRangeAura { get; set; }
 
-        public AuraDataUI? MediumRangeAura { get; set; } = default!;
+        public AuraDataUI? MediumRangeAura { get; set; }
 
-        public AuraDataUI? ShortRangeAura { get; set; } = default!;
+        public AuraDataUI? ShortRangeAura { get; set; }
 
         public static AntiAirUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
@@ -38,7 +39,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
             TurretModule? guns = null!;
-            if (ship.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+            if (ship.MainBatteryModuleList is { Count: > 0 })
             {
                 guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
             }
@@ -50,28 +51,24 @@ namespace WoWsShipBuilder.Core.DataUI
             int flakDamageBonusIndex = modifiers.FindModifierIndex("AABubbleDamage");
             if (flakDamageBonusIndex > -1)
             {
-                var modifiersValues = modifiers.FindModifiers("AABubbleDamage").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    flakDamageBonus *= value;
-                }
+                List<float> modifiersValues = modifiers.FindModifiers("AABubbleDamage").ToList();
+                flakDamageBonus = modifiersValues.Aggregate(flakDamageBonus, (current, value) => current * (decimal)value);
             }
 
             int constantDamageBonusIndex = modifiers.FindModifierIndex("AAAuraDamage");
             if (constantDamageBonusIndex > -1)
             {
-                var modifiersValues = modifiers.FindModifiers("AAAuraDamage").ToList();
-                foreach (decimal value in modifiersValues)
-                {
-                    constantDamageBonus *= value;
-                }
+                List<float> modifiersValues = modifiers.FindModifiers("AAAuraDamage").ToList();
+                constantDamageBonus = modifiersValues.Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
             }
 
-            var constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
+            IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
             constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
 
-            var aaUI = new AntiAirUI();
-            aaUI.expanderKey = $"{ship.Index}_AA";
+            var aaUI = new AntiAirUI
+            {
+                expanderKey = $"{ship.Index}_AA",
+            };
             if (!ShipUI.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))
             {
                 ShipUI.ExpanderStateMapper[aaUI.expanderKey] = true;
@@ -84,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 longRange = hull.AntiAir.LongRangeAura;
             }
 
-            if (guns != null && guns.AntiAir != null)
+            if (guns is not null && guns.AntiAir is not null)
             {
                 if (longRange is null)
                 {
@@ -96,10 +93,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
-            int flakAmount = 0;
+            var flakAmount = 0;
             if (longRange != null)
             {
-                var extraFlak = modifiers.FindModifiers("AAExtraBubbles");
+                IEnumerable<float> extraFlak = modifiers.FindModifiers("AAExtraBubbles");
                 flakAmount = extraFlak.Aggregate(longRange.FlakCloudsNumber, (current, modifier) => current + (int)modifier);
             }
 
@@ -123,11 +120,11 @@ namespace WoWsShipBuilder.Core.DataUI
             }
             else
             {
-                string flakNumber = "";
+                var flakNumber = "";
                 if (flakAmount > 0)
                 {
                     var flakAverage = (int)(flakAmount * antiAirAura.HitChance);
-                    var flakDelta = flakAmount - flakAverage;
+                    int flakDelta = flakAmount - flakAverage;
                     flakNumber = $"{flakAverage} ± {flakDelta}";
                 }
 

@@ -108,6 +108,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected");
                     var maxViewDistance = maxViewDistanceModifiers.Aggregate(consumableModifiers["maxViewDistance"], (current, modifier) => current * modifier);
                     consumableModifiers["maxViewDistance"] = maxViewDistance;
+
+                    var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
+                    var planesConcealment = planesConcealmentModifiers.Aggregate(consumableModifiers["concealment"], (current, modifier) => current * modifier);
+                    consumableModifiers["concealment"] = planesConcealment;
                 }
                 else if (name.Contains("PCY034", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -224,6 +228,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                     consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
                     consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
+
+                    var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
+                    var planesConcealment = planesConcealmentModifiers.Aggregate(consumableModifiers["concealment"], (current, modifier) => current * modifier);
+                    consumableModifiers["concealment"] = planesConcealment;
                 }
                 else if (name.Contains("PCY018", StringComparison.InvariantCultureIgnoreCase))
                 {
