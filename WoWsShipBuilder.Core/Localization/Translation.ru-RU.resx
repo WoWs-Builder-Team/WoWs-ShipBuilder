@@ -1074,9 +1074,7 @@
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Выбранный пользовательский путь для изображений недействителен.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Перки и таланты</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>С помощью данных переключателей, вы можете включить или выключить определенные активируемые при определенных условиях эффекты от перков. Вы также можете выбрать, сколько раз сработает эффект таланта, если это возможно. Обратите внимание, что не все перки/таланты оказывают влияние на ТТХ корабля.</value>
   </data>
