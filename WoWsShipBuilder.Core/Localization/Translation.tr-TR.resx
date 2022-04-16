@@ -1071,9 +1071,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Seçilen konfigürasyon resminin konumu geçersiz.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Beceri &amp; Yetenekler</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Kaydırıcı ve seçenek geçişlerini kullanarak belirli koşullara bağlı beceri efektlerini etkinleştirebilir yada devre dışı bırakabilirsiniz. Eğer mümkünse, yetenek etkilerinin kaç kez tetiklenebileceği de seçebilirsiniz. Ancak beceri/yeteneklerin gemi istatistikleri üzerinde bir etkisi olmayacağını unutmayın.</value>
   </data>
