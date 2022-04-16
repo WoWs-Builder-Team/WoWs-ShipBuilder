@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             this.appDataService = appDataService;
             BaseShipStats = ship;
-            currentShipStats = ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService);
+            Task.Run(async () => currentShipStats = await ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService));
         }
 
         private ShipUI? currentShipStats;

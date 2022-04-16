@@ -1,0 +1,205 @@
+﻿@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Web.Utility
+@using System.Collections.ObjectModel
+@using System.Collections.Specialized
+@using DynamicData
+@using System.Linq
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+@inject Localizer localizer
+@inject IAppDataService webAppDataService
+
+<MudDialog>
+    <TitleContent>
+        <MudItem Class="d-flex align-center">
+            <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
+            <MudText Typo="Typo.h6" Class="mx-auto">
+                @Translation.ShipAndShellSelectionDialogWeb_SelectShipsAndShells
+            </MudText>
+        </MudItem>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Class="d-flex" Style="min-height: 600px; max-height: 600px; overflow-y: auto">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12" md="8" Class="d-flex" Style="overflow-y: auto">
+                    <ShipSelector SelectedShips="@selectedShips" LargerList="true"/>
+                </MudItem>
+                <MudItem xs="12" md="4" Style="min-height: 600px; max-height: 600px; overflow-y: auto">
+                    @foreach (var ship in ShipList)
+                    {
+                        <MudItem Class="d-flex" Style="flex-direction: column">
+                            <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
+                                <MudText Typo="Typo.caption" Class="my-auto">
+                                    @localizer[ship.ShipIndex + "_FULL"].Localization
+                                </MudText>
+                                <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(ship))"/>
+                            </MudItem>
+                            @if (ship.ArtilleryDataDictionary.Count > 0)
+                            {
+                                <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
+                                    @foreach ((string shellIndex, (_,_, bool isShellSelected)) in ship.ArtilleryDataDictionary)
+                                    {
+                                        <MudButton Color="GetColorFromBool(isShellSelected)" Variant="GetVariantFromBool(isShellSelected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shellIndex))">
+                                            @localizer[shellIndex].Localization
+                                        </MudButton>
+                                    }
+                                </MudButtonGroup>
+                            }
+                            else
+                            {
+                                <MudText Color="Color.Primary">
+                                    @Translation.MessageBox_ShipNoGun
+                                </MudText>
+                            }
+                            <MudDivider Light="true" Class="mt-2"/>
+                        </MudItem>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+            @Translation.Cancel
+        </MudButton>
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudButton Color="Color.Info" OnClick="ReturnSelectedShells" Variant="Variant.Filled" Disabled="processing">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Translation.ShipAndShellSelectionDialogWeb_Loading
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Translation.ShipSelectionWindow_ConfirmButton
+                    </MudText>
+                }
+            </MudButton>
+        </MudFocusTrap>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public List<ShellSelectionWrapper> ShipList { get; set; } = new();
+
+    private readonly ObservableCollection<string> selectedShips = new();
+    private readonly List<KeyValuePair<string, string>> alreadyDisplayedShips = new();
+    private bool processing;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        foreach (var ship in ShipList)
+        {
+            foreach ((string shellIndex, _) in ship.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected))
+            {
+                alreadyDisplayedShips.Add(new(ship.ShipIndex, shellIndex));
+            }
+        }
+        selectedShips.AddRange(ShipList.Select(x => x.ShipIndex));
+        selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
+    }
+
+    private async void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (selectedShips.Count > ShipList.Count)
+        {
+            foreach (string selectedShip in selectedShips.ToList().Where(selectedShip => !ShipList.Select(x => x.ShipIndex).Contains(selectedShip)))
+            {
+                await AddWrapper(selectedShip);
+            }
+        }
+        else if (selectedShips.Count < ShipList.Count)
+        {
+            foreach (string removedShip in ShipList.Select(x => x.ShipIndex).ToList().Where(removedShip => !selectedShips.Contains(removedShip)))
+            {
+                ShipList.Remove(ShipList.First(x => removedShip.Equals(x.ShipIndex)));
+            }
+        }
+        StateHasChanged();
+    }
+
+    private async Task AddWrapper(string shipIndex)
+    {
+        var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
+        var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+        if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
+        Dictionary<string, ArtilleryData> artilleryData = new();
+        if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+        {
+            IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
+            foreach (string shellIndex in shellIndexes)
+            {
+                artilleryData.Add(shellIndex, new());
+            }
+        }
+        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData);
+        ShipList.Add(wrapper);
+    }
+
+    private async Task ReturnSelectedShells()
+    {
+        processing = true;
+        List<ShellSelectionWrapper> selections = ShipList.Where(x => x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<KeyValuePair<string, string>> oldStillSelected = (from selection in ShipList.Where(x => !x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
+            from t in selection.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected)
+            select new KeyValuePair<string, string>(selection.ShipIndex, t.Key)).ToList();
+        List<KeyValuePair<string, string>> oldStillSelectedUnchanged = alreadyDisplayedShips.Intersect(oldStillSelected).ToList();
+        oldStillSelected.RemoveMany(oldStillSelectedUnchanged);
+        selections.AddRange(ShipList.Where(x => oldStillSelected.Select(y => y.Key).Contains(x.ShipIndex)));
+        foreach (var data in selections)
+        {
+            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(data.ShipIndex));
+            var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+            IEnumerable<string> shellIndexes = data.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
+            foreach (string shellIndex in shellIndexes)
+            {
+                var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
+                var shell = await webAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
+
+                var newData = data.ArtilleryDataDictionary[shellIndex];
+                newData.Shell = shell;
+                newData.DispersionValues = gun.DispersionValues;
+                data.MaxRange = (double) gun.MaxRange;
+            }
+        }
+        selections.AddRange(ShipList.Where(x => oldStillSelectedUnchanged.Select(y => y.Key).Contains(x.ShipIndex)));
+        processing = false;
+        MudDialog.Close(DialogResult.Ok(selections));
+    }
+
+    private void RemoveShip(ShellSelectionWrapper ship)
+    {
+        ShipList.Remove(ship);
+        selectedShips.Remove(ship.ShipIndex);
+    }
+
+    private void ToggleSelection(ShellSelectionWrapper ship, string shellIndex)
+    {
+        ship.ArtilleryDataDictionary[shellIndex].ShellSelected = !ship.ArtilleryDataDictionary[shellIndex].ShellSelected;
+        StateHasChanged();
+    }
+
+    private static Variant GetVariantFromBool(bool active)
+    {
+        return active ? Variant.Filled : Variant.Outlined;
+    }
+
+    private static Color GetColorFromBool(bool active)
+    {
+        return active ? Color.Primary : Color.Secondary;
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}

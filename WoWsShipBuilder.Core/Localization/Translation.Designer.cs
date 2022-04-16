@@ -268,6 +268,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adrenaline Rush HP: .
+        /// </summary>
+        public static string CaptainSkillSelector_CurrentArBonus {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_CurrentArBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain points:.
         /// </summary>
         public static string CaptainSkillSelector_Points {
@@ -309,6 +318,33 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string CaptainSkillSelector_Talents {
             get {
                 return ResourceManager.GetString("CaptainSkillSelector_Talents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add/Remove Ships/Shells.
+        /// </summary>
+        public static string ChartsWeb_AddRemoveShips {
+            get {
+                return ResourceManager.GetString("ChartsWeb_AddRemoveShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ballistic Charts.
+        /// </summary>
+        public static string ChartsWeb_BallisticCharts {
+            get {
+                return ResourceManager.GetString("ChartsWeb_BallisticCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion Charts.
+        /// </summary>
+        public static string ChartsWeb_DispersionCharts {
+            get {
+                return ResourceManager.GetString("ChartsWeb_DispersionCharts", resourceCulture);
             }
         }
         
@@ -601,7 +637,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a shell.
+        ///   Looks up a localized string similar to Select shells type.
         /// </summary>
         public static string DispersionGraphWindow_SelectShell {
             get {
@@ -1474,6 +1510,24 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string ShipAndShellSelectionDialogWeb_Loading {
+            get {
+                return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Ships and Shells.
+        /// </summary>
+        public static string ShipAndShellSelectionDialogWeb_SelectShipsAndShells {
+            get {
+                return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_SelectShipsAndShells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
@@ -1510,7 +1564,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search ship.
+        ///   Looks up a localized string similar to Search ship....
         /// </summary>
         public static string ShipSelectionWindow_SearchShip {
             get {

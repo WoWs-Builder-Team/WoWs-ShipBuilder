@@ -1,0 +1,40 @@
+﻿namespace WoWsShipBuilder.Web.Data;
+
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.JSInterop;
+using Newtonsoft.Json;
+using WoWsShipBuilder.Core.Settings;
+
+public class AppSettingsHelper
+{
+    private readonly IJSRuntime runtime;
+
+    private IJSObjectReference? module;
+
+    public AppSettingsHelper(IJSRuntime runtime)
+    {
+        this.runtime = runtime;
+    }
+
+    public async ValueTask<AppSettings?> LoadSettings()
+    {
+        await InitializeModule();
+        var settingsString = await module.InvokeAsync<string?>("getAppSettings");
+        return settingsString == null ? null : JsonConvert.DeserializeObject<AppSettings>(settingsString);
+    }
+
+    public async Task SaveSettings(AppSettings appSettings)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("setAppSettings", JsonConvert.SerializeObject(appSettings));
+    }
+
+    [MemberNotNull(nameof(module))]
+    private async Task InitializeModule()
+    {
+        // module is not null after this method but apparently, Roslyn does not want to recognize that.
+#pragma warning disable CS8774
+        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/settingsHelper.js");
+#pragma warning restore CS8774
+    }
+}

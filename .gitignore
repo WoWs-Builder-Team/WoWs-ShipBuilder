@@ -12,3 +12,5 @@ Tools/*.log
 
 WoWsShipBuilder.UI/Settings/*_ApplicationOptions.json
 buildInfo.txt
+
+WoWsShipBuilder.Web/wwwroot/lib/

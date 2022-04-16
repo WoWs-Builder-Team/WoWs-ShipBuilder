@@ -14,7 +14,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Sentry.NLog" Version="3.14.0" />
-      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
@@ -41,6 +41,12 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Translation.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="JetBrains.Annotations, Version=10.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
+        <HintPath>..\..\..\..\NuGet\cache\jetbrains.annotations\10.3.0\lib\netstandard1.0\JetBrains.Annotations.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

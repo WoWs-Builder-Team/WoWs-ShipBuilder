@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Threading.Tasks;
+using Autofac;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using WoWsShipBuilder.Core.BuildCreator;
@@ -46,13 +47,16 @@ namespace WoWsShipBuilder.UI.Services
             }
         }
 
-        public void OpenMainWindow(Ship ship, ShipSummary summary, Build? build = null, bool closeMainWindow = false)
+        public async Task OpenMainWindow(Ship ship, ShipSummary summary, Build? build = null, bool closeMainWindow = false)
         {
-            using var subScope = scope.BeginLifetimeScope();
+            await using var subScope = scope.BeginLifetimeScope();
             var vmParams = new MainViewModelParams(ship, summary, build);
+            var vm = subScope.Resolve<MainWindowViewModel>(new TypedParameter(typeof(MainViewModelParams), vmParams));
+            await vm.InitializeData(vmParams);
+
             MainWindow win = new()
             {
-                DataContext = subScope.Resolve<MainWindowViewModel>(new TypedParameter(typeof(MainViewModelParams), vmParams)),
+                DataContext = vm,
             };
 
             win.Show();

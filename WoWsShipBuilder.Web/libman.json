@@ -1,0 +1,13 @@
+﻿{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "chart.js@2.9.4",
+      "destination": "wwwroot/lib/chartJs/",
+      "files": [
+        "dist/Chart.min.js"
+      ]
+    }
+  ]
+}

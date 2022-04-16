@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
@@ -26,27 +29,28 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private readonly Logger logger;
 
         public CaptainSkillSelectorViewModel()
-            : this(ShipClass.Cruiser, Nation.Usa)
+            : this(ShipClass.Cruiser, LoadParamsAsync(DesktopAppDataService.PreviewInstance, new(), Nation.Usa).Result)
         {
         }
 
-        public CaptainSkillSelectorViewModel(ShipClass shipClass, Nation nation, bool screenshotMode = false)
+        public CaptainSkillSelectorViewModel(ShipClass shipClass, (Captain, Dictionary<string, Captain>?) vmParams, bool screenshotMode = false)
         {
             logger = Logging.GetLogger("CaptainSkillVM");
             ScreenshotMode = screenshotMode;
-            var defaultCaptain = DesktopAppDataService.Instance.ReadLocalJsonData<Captain>(Nation.Common, AppData.Settings.SelectedServerType)!.Single().Value;
+            currentClass = shipClass;
+
+            var defaultCaptain = vmParams.Item1;
 
             // Rename Default Captain
             defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
             var captainList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
-            var nationCaptain = DesktopAppDataService.Instance.ReadLocalJsonData<Captain>(nation, AppData.Settings.SelectedServerType);
-            if (nationCaptain != null && nationCaptain.Count > 0)
+            var nationCaptains = vmParams.Item2;
+            if (nationCaptains != null && nationCaptains.Count > 0)
             {
-                captainList = captainList.Union(nationCaptain).ToDictionary(x => x.Key, x => x.Value);
+                captainList = captainList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            currentClass = shipClass;
             CaptainList = captainList.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
 
@@ -252,6 +256,13 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         }
 
         public bool ScreenshotMode { get; }
+
+        public static async Task<(Captain, Dictionary<string, Captain>?)> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, Nation nation)
+        {
+            var defaultCaptain = (await appDataService.ReadLocalJsonData<Captain>(Nation.Common, appSettings.SelectedServerType))!.Single().Value;
+            var nationCaptains = await appDataService.ReadLocalJsonData<Captain>(nation, appSettings.SelectedServerType);
+            return (defaultCaptain, nationCaptains);
+        }
 
         /// <summary>
         /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
