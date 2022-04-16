@@ -1089,9 +1089,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Fertigkeiten und Talente</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Mit den folgenden Schieberegler und Schalter können einzelne bedingte Fertigkeitseffekte aktiviert und deaktiviert werden. Für einige Effekte kann außerdem die Zahl der Aktivierungen gewählt werden. Beachte, dass nicht alle Fertigkeiten und Talente einen Effekt auf die Statistiken des Schiffs haben.</value>
   </data>
