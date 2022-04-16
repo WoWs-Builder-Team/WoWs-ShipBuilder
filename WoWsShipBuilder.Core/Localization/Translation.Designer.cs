@@ -277,7 +277,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skill &amp; Talents.
+        ///   Looks up a localized string similar to Skills &amp; Talents.
         /// </summary>
         public static string CaptainSkillSelector_SkillTalent {
             get {

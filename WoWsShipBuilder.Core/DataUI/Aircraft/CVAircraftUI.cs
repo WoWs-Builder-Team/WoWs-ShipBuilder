@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record CVAircraftUI : IDataUi
@@ -180,6 +181,8 @@ namespace WoWsShipBuilder.Core.DataUI
             float cruisingSpeed = plane.Speed;
             float minSpeedMultiplier = plane.SpeedMinModifier;
             float maxSpeedMultiplier = plane.SpeedMaxModifier;
+            var planesConcealmentFromShips = (float)plane.ConcealmentFromShips;
+            var planesConcealmentFromPlanes = (float)plane.ConcealmentFromPlanes;
             decimal aimRateModifier = 1;
             decimal aimingTime = 0;
             switch (type)
@@ -240,13 +243,13 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             var allPlaneHpModifiers = modifiers.FindModifiers("planeHealth", true);
-            var finalplaneHP = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHP, (current, modifier) => current * modifier), 2);
+            var finalPlaneHP = (int)Math.Round(allPlaneHpModifiers.Aggregate(planeHP, (current, modifier) => current * modifier), 2);
 
             int planeHpPerTierIndex = modifiers.FindModifierIndex("planeHealthPerLevel");
             if (planeHpPerTierIndex > 0)
             {
                 int additionalHP = (int)modifiers[planeHpPerTierIndex].value * shipTier;
-                finalplaneHP += additionalHP;
+                finalPlaneHP += additionalHP;
             }
 
             var cruisingSpeedModifiers = modifiers.FindModifiers("planeSpeed");
@@ -257,6 +260,10 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
             maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
+
+            var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor").ToList();
+            planesConcealmentFromShips = planesConcealmentModifiers.Aggregate(planesConcealmentFromShips, (current, modifier) => current * modifier);
+            planesConcealmentFromPlanes = planesConcealmentModifiers.Aggregate(planesConcealmentFromPlanes, (current, modifier) => current * modifier);
 
             var jatoDuration = (decimal)plane.JatoData.JatoDuration;
             var jatoMultiplier = (decimal)plane.JatoData.JatoSpeedMultiplier;
@@ -278,8 +285,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     weapon = BombUI.FromBombName(plane.BombName, modifiers, appDataService);
                     break;
                 case ProjectileType.Torpedo:
-                    var torpList = new List<string>();
-                    torpList.Add(plane.BombName);
+                    var torpList = new List<string>
+                    {
+                        plane.BombName,
+                    };
                     weapon = TorpedoUI.FromTorpedoName(torpList, modifiers, true, appDataService).First();
                     break;
                 case ProjectileType.Rocket:
@@ -290,7 +299,7 @@ namespace WoWsShipBuilder.Core.DataUI
             List<ConsumableUI> consumables = new();
             foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
             {
-                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalplaneHP, 0);
+                var consumableUI = ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalPlaneHP, 0);
                 consumables.Add(consumableUI);
             }
 
@@ -303,16 +312,16 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var jatoSpeedMultiplier = jatoMultiplier > 1 ? Math.Round((jatoMultiplier - 1) * 100, 0) : 0;
 
-            const string stringFormat = "+#0.0 %;-#0.0 %;0 %";
+            string stringFormat = $"+#0.0 {Translation.Unit_PerCent};-#0.0 {Translation.Unit_PerCent};0 {Translation.Unit_PerCent}";
 
             string? jatoDurationString = jatoDuration != 0 ? $"{jatoDuration} {Translation.Unit_S}" : null;
 
             var cvAircraft = new CVAircraftUI
             {
                 Name = plane.Name,
-                PlaneHP = $"{finalplaneHP} {Translation.Unit_HP}",
-                SquadronHP = $"{finalplaneHP * plane.NumPlanesInSquadron} {Translation.Unit_HP}",
-                AttackGroupHP = $"{finalplaneHP * plane.AttackData.AttackerSize} {Translation.Unit_HP}",
+                PlaneHP = $"{finalPlaneHP} {Translation.Unit_HP}",
+                SquadronHP = $"{finalPlaneHP * plane.NumPlanesInSquadron} {Translation.Unit_HP}",
+                AttackGroupHP = $"{finalPlaneHP * plane.AttackData.AttackerSize} {Translation.Unit_HP}",
                 NumberInSquad = plane.NumPlanesInSquadron,
                 MaxNumberOnDeck = maxOnDeck,
                 RestorationTime = $"{restorationTime} {Translation.Unit_S}",
@@ -335,8 +344,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 AimingRateMoving = aimingRateMoving.ToString(stringFormat),
                 AimingPreparationRateMoving = preparationAimingRateMoving.ToString(stringFormat),
                 TimeToFullyAimed = $"{Math.Round(fullAimTime, 1)} {Translation.Unit_S}",
-                ConcealmentFromShips = $"{plane.ConcealmentFromShips} {Translation.Unit_KM}",
-                ConcealmentFromPlanes = $"{plane.ConcealmentFromPlanes} {Translation.Unit_KM}",
+                ConcealmentFromShips = $"{planesConcealmentFromShips} {Translation.Unit_KM}",
+                ConcealmentFromPlanes = $"{planesConcealmentFromPlanes} {Translation.Unit_KM}",
                 MaxViewDistance = $"{plane.SpottingOnShips} {Translation.Unit_KM}",
             };
 
