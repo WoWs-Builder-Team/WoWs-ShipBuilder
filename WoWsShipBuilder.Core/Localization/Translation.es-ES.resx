@@ -1071,9 +1071,7 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>La ruta personalizada de imagenes seleccionada no es válida.</value>
   </data>
-  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Habilidades y talentos</value>
-  </data>
+  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Con el siguiente control deslizante, puede activar o desactivar ciertos efectos de habilidad condicional. También puedes seleccionar cuántas veces puedes activar el efecto de talento, si es posible. Tenga en cuenta que no todas las habilidades/talentos tendrán un efecto en las estadísticas de la nave.</value>
   </data>
