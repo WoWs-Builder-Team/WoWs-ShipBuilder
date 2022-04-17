@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>No se encontraron barcos que coincidan con los criterios de filtro</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Buscar barco</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Tiempo para girar 180°</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>La ruta personalizada seleccionada no es válida.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Seleccione un obús</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>tiene más de un obús. Seleccione la balística que mostrar. Asumiendo el mismo calibre, el orden del obús de abajo es AE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -1160,6 +1156,11 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Estándar</value>
   </data>
@@ -1169,6 +1170,7 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Aguas profundas</value>
   </data>
+  
   
   
   
