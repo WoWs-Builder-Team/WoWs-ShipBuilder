@@ -624,9 +624,7 @@
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>内部楕円への着弾率</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-      <value>甲板上の航空機数(最大)</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>最高速度</value>
   </data>
@@ -1233,9 +1231,7 @@
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
       <value>魚雷に対して</value>
   </data>
-  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>最大視程</value>
-  </data>
+  
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>消耗品</value>
   </data>
