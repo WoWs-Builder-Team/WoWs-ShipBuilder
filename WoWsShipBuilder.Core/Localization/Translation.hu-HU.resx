@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Ilyen keresési feltételeknek egyik hajó sem felel meg</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Hajókereső</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180°-os fordulási idő</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>A kiválasztott útvonal nem érvényes.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Lőszer kiválasztása</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>egynél több lőszertípusa van. Válassza ki azt, amelyiket elemezni szeretné. Ugyanazt a kalibert feltételezve az alábbi a sorrend: HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -1160,6 +1156,11 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>Félig páncéltörő</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1169,6 +1170,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Mélyvizi</value>
   </data>
+  
   
   
   
