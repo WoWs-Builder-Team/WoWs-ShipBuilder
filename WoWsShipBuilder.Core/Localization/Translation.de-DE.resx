@@ -622,9 +622,7 @@
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomben in innerer Ellipse</value>
   </data>
-  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-      <value>Maximale Flugzeuge an Deck</value>
-  </data>
+  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -1215,9 +1213,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
       <value>Von Torpedos</value>
   </data>
-  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>Maximale Sichtweite</value>
-  </data>
+  
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>Verbrauchsmaterialien</value>
   </data>
