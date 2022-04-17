@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Nessuna nave corrispondente ai filtri trovata</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Cerca nave</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Tempo di rotazione 180°</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Il percorso personalizzato selezionato non è valido.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Seleziona un proiettile</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>ha più di un proiettile. Seleziona quello di cui vuoi la ballistica. Assumendo lo stesso calibro, l'ordine dei proiettili qui sotto è -&gt;SAP-&gt;AP.</value>
   </data>
@@ -1160,6 +1156,11 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1169,6 +1170,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Di profondità</value>
   </data>
+  
   
   
   
