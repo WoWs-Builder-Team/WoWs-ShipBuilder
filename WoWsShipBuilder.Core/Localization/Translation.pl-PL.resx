@@ -314,9 +314,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Brak okrętów pasujących do kryteriów filtrowania</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Szukaj okrętu</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Czas obrotu o 180°</value>
   </data>
@@ -794,6 +792,12 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>strzały/min</value>
   </data>
+  
+  
+  
+  
+  
+  
   
   
   
