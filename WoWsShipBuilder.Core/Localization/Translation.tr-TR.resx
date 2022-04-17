@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Eşleşmeye uyan gemi bulunamadı</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Gemi Arayın</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° dönüş süresi</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Seçilen dosya konumu geçerli değil.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Mermi türü seçin</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>Seçilen gemi birden fazla mermi türüne sahip. Balistiğini görüntülemek istediğinizi seçin. Aynı kalibre olduğu göz önüne alınarak, aşağıdaki mermi sırası HE-&gt;SAP-&gt;AP şeklindedir.</value>
   </data>
@@ -1160,6 +1156,11 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standart</value>
   </data>
@@ -1169,6 +1170,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Derin su</value>
   </data>
+  
   
   
   
