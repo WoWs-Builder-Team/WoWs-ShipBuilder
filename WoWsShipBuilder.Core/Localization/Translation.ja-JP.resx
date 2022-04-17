@@ -331,7 +331,7 @@
     <value>フィルタ条件に一致する艦艇が見つかりませんでした</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>艦艇名で検索</value>
+      <value>艦艇名で検索</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180°旋回時間</value>
@@ -850,7 +850,7 @@
     <value>選択したカスタムパスは有効ではありません。</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>砲弾を選択</value>
+      <value>砲弾を選択</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>には複数の砲弾があります。必要なものを選択してください。 同口径の砲弾の場合、弾種はHE-&gt;SAP-&gt;APの順に並んでいます。</value>
@@ -1089,7 +1089,9 @@
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>選択したカスタムパスは有効ではありません。</value>
   </data>
-  
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+      <value>艦長スキルと特殊能力</value>
+  </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>次のスライダーとトグルを使用すると、特定の条件付き艦長スキルを有効または無効にできます。 可能であれば、特殊能力が発動する回数を選択することもできます。 すべての艦長スキル/特殊能力が艦艇の性能表示に影響するわけではないことに注意してください。</value>
   </data>
@@ -1180,6 +1182,21 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>船/砲弾の追加/削除</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>散布界のチャート</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>弾道のチャート</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>艦艇と砲弾を選択</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>読み込み中…</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>標準</value>
   </data>
@@ -1189,7 +1206,9 @@
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>深度</value>
   </data>
-  
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>1回あたりの回復量</value>
+  </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>射程 [km]:</value>
   </data>
@@ -1258,5 +1277,8 @@
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
       <value>最大キル数</value>
+  </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>アドレナリンラッシュHP: </value>
   </data>
 </root>
