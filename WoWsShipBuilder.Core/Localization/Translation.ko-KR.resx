@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>검색 조건에 맞는 함선이 없습니다</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>함선 검색</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° 선회 시간</value>
   </data>
@@ -803,9 +801,7 @@
   </data>
   
   
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>포탄 선택</value>
-  </data>
+  
   
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>일반 계정</value>
@@ -945,6 +941,12 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
+  
+  
+  
+  
+  
+  
   
   
   
