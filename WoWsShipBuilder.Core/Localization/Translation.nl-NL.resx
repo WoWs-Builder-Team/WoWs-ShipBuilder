@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Geen schepen die aan de filtercriteria voldoen</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Zoeken naar schip</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° draaitijd</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Het gekozen bestandslocatie is ongeldig.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Selecteer een granaattype</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -1162,6 +1158,11 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SPD</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standaard</value>
   </data>
@@ -1171,6 +1172,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Diepwater</value>
   </data>
+  
   
   
   
