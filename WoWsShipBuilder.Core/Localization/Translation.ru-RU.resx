@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Не найдено кораблей, соответствующих критериям фильтра</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Поиск корабля</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Время поворота на 180°</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Выбранный пользовательский адрес недействителен.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Выберите снаряд</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>имеет более одного типа снаряда. Выберите снаряд, чью баллистику вы хотите увидеть. При одинаковом калибре, порядок снарядов - ОФ-&gt;ПББ-&gt;ББ.</value>
   </data>
@@ -1165,6 +1161,11 @@
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>ПББ</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Стандартные</value>
   </data>
@@ -1184,6 +1185,7 @@
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>Показать график траектории снаряда</value>
   </data>
+  
   
   
   
