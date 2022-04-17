@@ -2,6 +2,8 @@
 
 public interface ILocalizer
 {
+    LocalizationResult this[string key] { get; }
+
     LocalizationResult GetGameLocalization(string key);
 
     LocalizationResult GetAppLocalization(string key);

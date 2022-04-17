@@ -6,6 +6,7 @@ using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 
@@ -18,6 +19,8 @@ namespace WoWsShipBuilder.UI.Settings
         private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
 
         public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
+
+        public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DataHelper.DemoLocalizer;
 
         public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(Settings, SettingFile);
 

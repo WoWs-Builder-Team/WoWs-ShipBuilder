@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -10,6 +9,7 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web;
@@ -52,7 +52,7 @@ SetupExtensions.SetupLogging();
 var logger = Logging.GetLogger("ShipBuilderInit");
 
 await host.Services.GetRequiredService<ILocalDataUpdater>().RunDataUpdateCheck(settings.SelectedServerType, new Progress<(int, string)>());
-await host.Services.GetRequiredService<Localizer>().UpdateLanguage(appSettings.SelectedLanguage, true);
+await host.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(appSettings.SelectedLanguage);
 
 AppData.ShipDictionary = new();
 logger.Debug("Initializing summary list...");

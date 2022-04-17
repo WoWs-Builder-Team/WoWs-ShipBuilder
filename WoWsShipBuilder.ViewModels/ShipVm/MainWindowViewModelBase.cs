@@ -14,6 +14,7 @@ using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
@@ -32,6 +33,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private readonly INavigationService navigationService;
 
         private readonly IAppDataService appDataService;
+
+        private readonly ILocalizer localizer;
 
         private readonly AppSettings appSettings;
 
@@ -65,10 +68,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         protected string? CurrentBuildName;
 
-        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, AppSettings appSettings, MainViewModelParams viewModelParams)
+        protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
         {
             this.navigationService = navigationService;
             this.appDataService = appDataService;
+            this.localizer = localizer;
             this.appSettings = appSettings;
             tokenSource = new();
             PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
@@ -184,7 +188,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             Logging.Logger.Info("Selecting new ship");
 
-            var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings))))?.FirstOrDefault();
+            var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings, localizer))))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info("New ship selected: {0}", result.Index);
@@ -234,7 +238,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
             UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, appSettings));
 
-            ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService);
+            ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService, localizer);
 
             ConsumableViewModel = await ConsumableViewModel.CreateAsync(RawShipData, 0);
 

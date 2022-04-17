@@ -5,10 +5,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.SkillToolTip"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:t="clr-namespace:WoWsShipBuilder.Core.Translations">
+             xmlns:t="clr-namespace:WoWsShipBuilder.Core.Translations"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations">
 
     <UserControl.Resources>
-        <t:LocalizeConverter x:Key="LocalizeConverter" />
+        <translations:LocalizeConverter x:Key="LocalizeConverter" />
         <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
     

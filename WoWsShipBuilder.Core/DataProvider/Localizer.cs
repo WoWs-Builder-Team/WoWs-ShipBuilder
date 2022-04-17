@@ -9,7 +9,7 @@ using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
-    [Obsolete("Use WoWsShipBuilder.Core.Localization.Localizer instead", false)]
+    [Obsolete("Use WoWsShipBuilder.Core.Localization.Localizer instead", true)]
     public class Localizer
     {
         private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));

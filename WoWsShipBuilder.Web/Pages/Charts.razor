@@ -13,8 +13,9 @@
 @using System.ComponentModel
 @using System.Linq
 @using DynamicData
+@using WoWsShipBuilder.Core.Localization
 @inject NavigationManager navManager
-@inject Localizer localizer
+@inject ILocalizer localizer
 @inject IAppDataService webAppDataService
 @inject IDialogService dialogService
 
@@ -141,14 +142,14 @@
         List<string> labelNames = new();
         foreach (var selectedShip in selectedShips)
         {
-            string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            string shipName = localizer[$"{selectedShip.ShipIndex}_FULL"].Localization;
             foreach ((string shellIndex, (var shell, var dispersionValues, bool value)) in selectedShip.ArtilleryDataDictionary)
             {
                 if (!value) continue;
 
                 await Task.Yield();
 
-                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                string shellName = localizer[$"{shellIndex}"].Localization;
                 var labelName = $"{shipName} - {shellName}";
                 labelNames.Add(labelName);
 

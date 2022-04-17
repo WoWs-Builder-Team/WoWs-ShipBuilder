@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
@@ -35,7 +35,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> TorpedoArmamentData { get; set; } = default!;
 
-        public static async Task<TorpedoArmamentUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<TorpedoArmamentUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
             ShipUpgrade? torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Torpedoes);
             if (torpConfiguration == null)
@@ -51,7 +51,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 .Select(group => (BarrelCount: group.Key, TorpCount: group.Count()))
                 .OrderBy(item => item.TorpCount)
                 .ToList();
-            string torpArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TorpCount} x {item.BarrelCount} {Localizer.Instance[launcher.Name].Localization}"));
+            string torpArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TorpCount} x {item.BarrelCount} {localizer.GetGameLocalization(launcher.Name).Localization}"));
 
             var turnSpeedModifiers = modifiers.FindModifiers("GTRotationSpeed");
             decimal traverseSpeed = Math.Round(turnSpeedModifiers.Aggregate(launcher.HorizontalRotationSpeed, (current, modifier) => current * (decimal)modifier), 2);

@@ -11,9 +11,12 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using ReactiveUI;
+using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Settings;
@@ -30,6 +33,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         private readonly DispersionGraphsWindow? self;
 
         private readonly Logger logger;
+
+        private readonly ILocalizer localizer;
 
         private bool refreshNeeded;
 
@@ -59,6 +64,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             logger = Logging.GetLogger("DispersionGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
+            localizer = Locator.Current.GetServiceSafe<ILocalizer>();
 
             self = win;
             AddShipInteraction = new();
@@ -80,8 +86,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             if (maxRange > 0 && disp != null && shell != null)
             {
-                string shipName = Localizer.Instance[$"{shipIndex}_FULL"].Localization;
-                string shellName = Localizer.Instance[$"{shell.Name}"].Localization;
+                string shipName = localizer.GetGameLocalization($"{shipIndex}_FULL").Localization;
+                string shellName = localizer.GetGameLocalization($"{shell.Name}").Localization;
                 var name = $"{shipName} - {shellName}";
 
                 logger.Info("Creating series for {0}", name);
@@ -383,7 +389,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings))))!;
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings, Locator.Current.GetServiceSafe<ILocalizer>()))))!;
 
             if (resultList is not { Count: > 0 })
             {
@@ -398,7 +404,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                     continue;
                 }
 
-                string shipName = Localizer.Instance[$"{ship.Index}_FULL"].Localization;
+                string shipName = localizer.GetGameLocalization($"{ship.Index}_FULL").Localization;
                 logger.Info("Trying to add ship: {0} - {1}", ship.Index, shipName);
 
                 // Check if the ship actually has main guns
@@ -431,7 +437,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                     var guns = ship.MainBatteryModuleList.Select(x => x.Value).First(x => x.Guns.First().AmmoList.Contains(shellIndex));
 
                     // calculate the name that will be shown for this particular series
-                    string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                    string shellName = localizer.GetGameLocalization($"{shellIndex}").Localization;
 
                     var name = $"{shipName} - {shellName}";
 

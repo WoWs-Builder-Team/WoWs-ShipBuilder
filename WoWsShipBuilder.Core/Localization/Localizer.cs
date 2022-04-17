@@ -15,6 +15,8 @@ public class Localizer : ILocalizer
         this.appSettings = appSettings;
     }
 
+    public LocalizationResult this[string key] => GetGameLocalization(key);
+
     public LocalizationResult GetGameLocalization(string key)
     {
         string? result = gameLocalizationProvider.GetString(key, appSettings.SelectedLanguage);
