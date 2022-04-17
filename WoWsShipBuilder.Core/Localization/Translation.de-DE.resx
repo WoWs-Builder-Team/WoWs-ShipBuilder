@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Keine den Filterkriterien entsprechenden Schiffe gefunden</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Schiff suchen</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Dauer für 180°-Drehung</value>
   </data>
@@ -849,9 +847,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Granate wählen</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>hat mehr als eine Granate. Wähle die Granate, deren Ballistik du sehen möchtest. Bei gleichem Kaliber ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -1180,6 +1176,11 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1259,4 +1260,5 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
       <value>Maximale Abschüsse</value>
   </data>
+  
 </root>
