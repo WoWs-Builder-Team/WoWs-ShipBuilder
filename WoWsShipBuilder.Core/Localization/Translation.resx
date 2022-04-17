@@ -625,7 +625,7 @@
     <value>Bomb in inner ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-      <value>On deck (max)</value>
+      <value>Max on deck</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -1234,7 +1234,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>On torpedoes</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>Max view distance</value>
+      <value>Max view distance on ships</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>Consumables</value>

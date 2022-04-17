@@ -105,9 +105,14 @@ namespace WoWsShipBuilder.Core.DataUI
                     consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
                     consumableModifiers.Add("maxKills", consumableModifiers["fightersNum"]);
 
-                    var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected");
+                    var maxViewDistanceModifiers = modifiers.FindModifiers("interceptorSelected").ToList();
                     var maxViewDistance = maxViewDistanceModifiers.Aggregate(consumableModifiers["maxViewDistance"], (current, modifier) => current * modifier);
                     consumableModifiers["maxViewDistance"] = maxViewDistance;
+                    if (maxViewDistanceModifiers.Count > 0)
+                    {
+                        iconName = $"{name}_Upgrade";
+                        localizationKey = $"{consumable.Name}_Upgrade";
+                    }
 
                     var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor");
                     var planesConcealment = planesConcealmentModifiers.Aggregate(consumableModifiers["concealment"], (current, modifier) => current * modifier);

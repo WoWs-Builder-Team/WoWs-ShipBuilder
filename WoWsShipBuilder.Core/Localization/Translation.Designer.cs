@@ -2458,7 +2458,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to On deck (max).
+        ///   Looks up a localized string similar to Max on deck.
         /// </summary>
         public static string ShipStats_MaxNumberOnDeck {
             get {
@@ -2476,7 +2476,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max view distance.
+        ///   Looks up a localized string similar to Max view distance on ships.
         /// </summary>
         public static string ShipStats_MaxViewDistance {
             get {
