@@ -330,9 +330,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Nenhum navio foi encontrado com os critérios atuais de filtragem</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Procurar navio</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Tempo para virar 180°</value>
   </data>
@@ -835,9 +833,7 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>O caminho customizado para os dados não é válido.</value>
   </data>
-  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Selecione um projétil</value>
-  </data>
+  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>possui mais de um projétil. Selecione o projétil do qual você quer o gráfico de balística. Assumindo como padrão o calibre, a ordem dos projéteis abaixo é HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -1166,6 +1162,11 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  
+  
+  
+  
+  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Padrão</value>
   </data>
@@ -1185,6 +1186,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
       <value>Mostrar gráfico da trajetória dos projéteis</value>
   </data>
+  
   
   
   
