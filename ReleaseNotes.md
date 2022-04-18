@@ -1,4 +1,4 @@
-# Update 1.4.4-pre
+# Update 1.4.4
 
 ## Additions
 
