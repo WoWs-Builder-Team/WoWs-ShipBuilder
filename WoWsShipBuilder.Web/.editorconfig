@@ -1,0 +1,3 @@
+﻿[*.cs]
+dotnet_diagnostic.SA1200.severity = none # Allow usings before namespace declaration
+dotnet_diagnostic.SA1516.severity = none # Blank lines between statements, workaround for top level statements

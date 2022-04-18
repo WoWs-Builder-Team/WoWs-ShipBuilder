@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Extensions
@@ -57,6 +58,11 @@ namespace WoWsShipBuilder.Core.Extensions
 
             thisDict[nation] = content;
             return true;
+        }
+
+        public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Task<TResult>> method)
+        {
+            return await Task.WhenAll(source.Select(async s => await method(s)));
         }
     }
 }

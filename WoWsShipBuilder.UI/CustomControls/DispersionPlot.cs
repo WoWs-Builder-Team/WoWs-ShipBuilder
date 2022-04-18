@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Extensions;
+using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.CustomControls
 {
@@ -327,7 +328,7 @@ namespace WoWsShipBuilder.UI.CustomControls
 
             // text
             var typeface = Typeface.Default;
-            if(AppData.Settings.SelectedLanguage.LocalizationFileName == "ja")
+            if(AppSettingsHelper.Settings.SelectedLanguage.LocalizationFileName == "ja")
             {
                 typeface = new Typeface("Yu Gothic UI", Typeface.Default.Style, Typeface.Default.Weight);
             }

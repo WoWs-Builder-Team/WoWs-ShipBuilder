@@ -1,40 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NLog;
+using Splat;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataProvider
 {
     public class Localizer
     {
-        private static readonly Lazy<Localizer> InstanceProducer = new(() => new());
+        private static readonly Lazy<Localizer> InstanceProducer = new(() => Locator.Current.GetService<Localizer>() ?? new(DesktopAppDataService.PreviewInstance));
+
         private static readonly Logger Logger = Logging.GetLogger("Localization");
 
+        private static Localizer? instance;
+
         private readonly IAppDataService appDataService;
+
+        private readonly AppSettings appSettings;
 
         private Dictionary<string, string> languageData = new();
         private CultureDetails? locale;
 
-        public Localizer()
-            : this(DesktopAppDataService.Instance)
-        {
-        }
-
         public Localizer(IAppDataService appDataService)
         {
             this.appDataService = appDataService;
-
-            // Prevent exception when using Avalonia previewer due to uninitialized settings.
-            var updateLanguage = AppData.IsInitialized ? AppData.Settings.SelectedLanguage : AppConstants.DefaultCultureDetails;
-            UpdateLanguage(updateLanguage, true);
+            this.appSettings = new();
         }
 
-        public static Localizer Instance => InstanceProducer.Value;
+        public static Localizer Instance => instance ?? InstanceProducer.Value;
 
         public (bool IsLocalized, string Localization) this[string key] =>
             languageData.TryGetValue(key.ToUpperInvariant(), out var localization) ? (true, localization) : (false, key);
 
-        public void UpdateLanguage(CultureDetails newLocale, bool forceLanguageUpdate)
+        public static void SetInstance(Localizer newInstance)
+        {
+            instance = newInstance;
+        }
+
+        public string GetAppLocalization(string translationKey)
+        {
+            return Translation.ResourceManager.GetString(translationKey, locale!.CultureInfo) ?? translationKey;
+        }
+
+        public async Task UpdateLanguage(CultureDetails newLocale, bool forceLanguageUpdate)
         {
             if (locale == newLocale && languageData.Count > 0 && !forceLanguageUpdate)
             {
@@ -42,8 +53,9 @@ namespace WoWsShipBuilder.Core.DataProvider
                 return;
             }
 
-            var serverType = AppData.IsInitialized ? AppData.Settings.SelectedServerType : ServerType.Live;
-            Dictionary<string, string>? localLanguageData = appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
+            var serverType = AppData.IsInitialized ? appSettings.SelectedServerType : ServerType.Live;
+            Dictionary<string, string>? localLanguageData = await appDataService.ReadLocalizationData(serverType, newLocale.LocalizationFileName);
+
             if (localLanguageData == null)
             {
                 Logger.Warn("Unable to load localization data for locale {0}.", newLocale);

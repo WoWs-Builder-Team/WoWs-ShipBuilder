@@ -1,23 +1,21 @@
-# Update 1.4.3
+# Update 1.4.4
 
 ## Additions
-- Added captain talents modifiers in their talent description.
-- Added an indicator to show if there is any talent or conditional modifier active
-- Added Hungarian translation. Thanks to StaK_1980!
-- Added amount of HP restored per heal on ship consumables.
-- Added shell trajectory chart.
-- Added concealment and spotting values for planes.
-- Added additional data to fighter planes.
 
 ## Changes
-- Increased spacing between rows in the ship statistic for better readability.
-- Improved stats layout.
 
 ## Bugfixes
-- Fixed Hidden Menace and Damage Control Party Modification 1 not changing stats of damage control party reload for CV
-- Fixed some localization issues.
-- Fixed incorrect values for CV torpedo speed and arming distance.
-- Fixed a bug causing wrong flooding chance calculations.
-___
-To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
 
+- Fixed incorrect conversion for some parameters in DefAA and Repair Party consumables.
+- Fixed Concealment System Modification 1 not working on squadrons.
+- Fixed planes restoration time not being displayed.
+- Fixed appcrash when using a file dialog.
+
+## Known Issues
+
+In order to fix the appcrash when using file dialogs, the UI framework needed an update. However, this update broke
+cleartype support, resulting in slightly more blurry texts in the application. We are sorry for the inconvenience but there is no other solution available at the moment.
+
+___
+To download the program for the first time, you need to download only the Setup.exe file. The other files are used by
+the application for automatic updates.

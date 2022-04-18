@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -76,7 +77,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static MainBatteryUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<MainBatteryUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
             if (artilleryConfiguration == null)
@@ -185,7 +186,7 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService);
+            mainBatteryUi.ShellData = await ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

@@ -8,6 +8,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -18,18 +19,21 @@ namespace WoWsShipBuilder.ViewModels.Helper
         private const string BuildNameRegex = "^[a-zA-Z0-9][a-zA-Z0-9_ -]*$";
         private readonly Build build;
 
+        private readonly AppSettings appSettings;
+
         public BuildCreationWindowViewModel()
-            : this(new("Test-build - Test-ship"), "Test-ship")
+            : this(new(), new("Test-build - Test-ship"), "Test-ship")
         {
         }
 
-        public BuildCreationWindowViewModel(Build currentBuild, string shipName)
+        public BuildCreationWindowViewModel(AppSettings appSettings, Build currentBuild, string shipName)
         {
+            this.appSettings = appSettings;
             build = currentBuild;
             ShipName = shipName;
             BuildName = build.BuildName;
             IsNewBuild = string.IsNullOrEmpty(BuildName);
-            IncludeSignals = AppData.Settings.IncludeSignalsForImageExport;
+            IncludeSignals = appSettings.IncludeSignalsForImageExport;
 
             var canSaveExecute = this.WhenAnyValue(x => x.BuildName, CanSaveBuild);
             SaveAndCopyStringCommand = ReactiveCommand.CreateFromTask(SaveAndCopyString, canSaveExecute);

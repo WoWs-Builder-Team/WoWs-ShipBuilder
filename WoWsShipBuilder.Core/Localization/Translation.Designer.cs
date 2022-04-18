@@ -268,6 +268,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adrenaline Rush HP: .
+        /// </summary>
+        public static string CaptainSkillSelector_CurrentArBonus {
+            get {
+                return ResourceManager.GetString("CaptainSkillSelector_CurrentArBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Captain points:.
         /// </summary>
         public static string CaptainSkillSelector_Points {
@@ -277,7 +286,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skill &amp; Talents.
+        ///   Looks up a localized string similar to Skills &amp; Talents.
         /// </summary>
         public static string CaptainSkillSelector_SkillTalent {
             get {
@@ -313,6 +322,33 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add/Remove Ships/Shells.
+        /// </summary>
+        public static string ChartsWeb_AddRemoveShips {
+            get {
+                return ResourceManager.GetString("ChartsWeb_AddRemoveShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ballistic Charts.
+        /// </summary>
+        public static string ChartsWeb_BallisticCharts {
+            get {
+                return ResourceManager.GetString("ChartsWeb_BallisticCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion Charts.
+        /// </summary>
+        public static string ChartsWeb_DispersionCharts {
+            get {
+                return ResourceManager.GetString("ChartsWeb_DispersionCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commonwealth.
         /// </summary>
         public static string Commonwealth {
@@ -322,7 +358,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hp per heal.
+        ///   Looks up a localized string similar to Max HP per heal.
         /// </summary>
         public static string Consumable_HpPerHeal {
             get {
@@ -601,7 +637,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a shell.
+        ///   Looks up a localized string similar to Select shells type.
         /// </summary>
         public static string DispersionGraphWindow_SelectShell {
             get {
@@ -1474,6 +1510,24 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string ShipAndShellSelectionDialogWeb_Loading {
+            get {
+                return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Ships and Shells.
+        /// </summary>
+        public static string ShipAndShellSelectionDialogWeb_SelectShipsAndShells {
+            get {
+                return ResourceManager.GetString("ShipAndShellSelectionDialogWeb_SelectShipsAndShells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
@@ -1510,7 +1564,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search ship.
+        ///   Looks up a localized string similar to Search ship....
         /// </summary>
         public static string ShipSelectionWindow_SearchShip {
             get {
@@ -2404,7 +2458,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to On deck (max).
+        ///   Looks up a localized string similar to Max on deck.
         /// </summary>
         public static string ShipStats_MaxNumberOnDeck {
             get {
@@ -2422,7 +2476,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max view distance.
+        ///   Looks up a localized string similar to Max view distance on ships.
         /// </summary>
         public static string ShipStats_MaxViewDistance {
             get {

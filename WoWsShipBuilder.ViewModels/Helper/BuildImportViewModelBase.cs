@@ -13,12 +13,8 @@ namespace WoWsShipBuilder.ViewModels.Helper
 {
     public class BuildImportViewModelBase : ViewModelBase
     {
-        protected readonly IFileSystem FileSystem;
-
-        public BuildImportViewModelBase(IFileSystem fileSystem)
+        public BuildImportViewModelBase()
         {
-            FileSystem = fileSystem;
-
             var canImportExecute = this.WhenAnyValue(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
             ImportCommand = ReactiveCommand.CreateFromTask(Import, canImportExecute);
         }

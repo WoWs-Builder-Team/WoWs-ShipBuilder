@@ -331,7 +331,7 @@
     <value>No ships matching the filtering criteria found</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Search ship</value>
+      <value>Search ship...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° turn time</value>
@@ -625,7 +625,7 @@
     <value>Bomb in inner ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-      <value>On deck (max)</value>
+      <value>Max on deck</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -850,7 +850,7 @@
     <value>The selected custom data path is not valid.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Select a shell</value>
+      <value>Select shells type</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
@@ -1090,7 +1090,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>The selected custom build image path is invalid.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Skill &amp; Talents</value>
+      <value>Skills &amp; Talents</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics.</value>
@@ -1182,6 +1182,21 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>Add/Remove Ships/Shells</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>Dispersion Charts</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Ballistic Charts</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>Select Ships and Shells</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Loading...</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1192,7 +1207,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>Deepwater</value>
   </data>
   <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>Hp per heal</value>
+      <value>Max HP per heal</value>
   </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>Range [km]:</value>
@@ -1219,7 +1234,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>On torpedoes</value>
   </data>
   <data name="ShipStats_MaxViewDistance" xml:space="preserve">
-      <value>Max view distance</value>
+      <value>Max view distance on ships</value>
   </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>Consumables</value>
@@ -1262,5 +1277,8 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
       <value>Max kills amount</value>
+  </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>Adrenaline Rush HP: </value>
   </data>
 </root>

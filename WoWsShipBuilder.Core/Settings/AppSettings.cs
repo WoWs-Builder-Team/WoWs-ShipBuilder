@@ -34,5 +34,35 @@ namespace WoWsShipBuilder.Core.Settings
         public string? CustomImagePath { get; set; }
 
         public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
+
+        public void ClearSettings()
+        {
+            AutoUpdateEnabled = true;
+            SelectedLanguage = AppConstants.DefaultCultureDetails;
+            SelectedServerType = ServerType.Live;
+            LastDataUpdateCheck = default;
+            CustomDataPath = default;
+            SendTelemetryData = default;
+            OpenExplorerAfterImageSave = default;
+            LastImageImportPath = default;
+            IncludeSignalsForImageExport = default;
+            CustomImagePath = default;
+            DispersionPlotSettings = new();
+        }
+
+        public void UpdateFromSettings(AppSettings settings)
+        {
+            AutoUpdateEnabled = settings.AutoUpdateEnabled;
+            SelectedLanguage = settings.SelectedLanguage;
+            SelectedServerType = settings.SelectedServerType;
+            LastDataUpdateCheck = settings.LastDataUpdateCheck;
+            CustomDataPath = settings.CustomDataPath;
+            SendTelemetryData = settings.SendTelemetryData;
+            OpenExplorerAfterImageSave = settings.OpenExplorerAfterImageSave;
+            LastImageImportPath = settings.LastImageImportPath;
+            IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
+            CustomImagePath = settings.CustomDataPath;
+            DispersionPlotSettings = settings.DispersionPlotSettings;
+        }
     }
 }

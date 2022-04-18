@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
@@ -10,41 +13,50 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
     public partial class LocalDataUpdaterTest
     {
         [Test]
-        public void ShouldUpdaterRun_NoLastCheck_True()
+        public async Task ShouldUpdaterRun_NoLastCheck_True()
         {
             // Arrange
-            AppData.Settings.LastDataUpdateCheck = null;
+            var appSettings = new AppSettings
+            {
+                LastDataUpdateCheck = null,
+            };
 
             // Act
-            bool result = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeTrue();
         }
 
         [Test]
-        public void ShouldUpdaterRun_LastCheckTwoHoursAgo_False()
+        public async Task ShouldUpdaterRun_LastCheckTwoHoursAgo_False()
         {
             // Arrange
-            AppData.Settings.LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(CreateTestVersionInfo(1));
+            var appSettings = new AppSettings
+            {
+                LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
+            };
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(CreateTestVersionInfo(1));
 
             // Act
-            bool result = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeFalse();
         }
 
         [Test]
-        public void ShouldUpdaterRun_LocalVersionInfoNull_True()
+        public async Task ShouldUpdaterRun_LocalVersionInfoNull_True()
         {
             // Arrange
-            AppData.Settings.LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns((VersionInfo?)null);
+            var appSettings = new AppSettings
+            {
+                LastDataUpdateCheck = DateTime.Now.Subtract(TimeSpan.FromHours(2)),
+            };
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync((VersionInfo?)null);
 
             // Act
-            bool result = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).ShouldUpdaterRun(ServerType.Live);
+            bool result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, appSettings).ShouldUpdaterRun(ServerType.Live);
 
             // Assert
             result.Should().BeTrue();

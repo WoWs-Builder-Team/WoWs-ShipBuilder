@@ -16,6 +16,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Base;
@@ -62,10 +63,10 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             self = win;
             AddShipInteraction = new();
 
-            AimingRange = AppData.Settings.DispersionPlotSettings.AimingRange;
-            ShotsNumber = AppData.Settings.DispersionPlotSettings.ShotsNumber;
-            IsVertical = AppData.Settings.DispersionPlotSettings.IsVertical;
-            ShootingRange = AppData.Settings.DispersionPlotSettings.ShootingRange;
+            AimingRange = AppSettingsHelper.Settings.DispersionPlotSettings.AimingRange;
+            ShotsNumber = AppSettingsHelper.Settings.DispersionPlotSettings.ShotsNumber;
+            IsVertical = AppSettingsHelper.Settings.DispersionPlotSettings.IsVertical;
+            ShootingRange = AppSettingsHelper.Settings.DispersionPlotSettings.ShootingRange;
 
             logger.Info("Creating base plot models");
 
@@ -344,7 +345,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set
             {
                 this.RaiseAndSetIfChanged(ref isVertical, value);
-                AppData.Settings.DispersionPlotSettings.IsVertical = value;
+                AppSettingsHelper.Settings.DispersionPlotSettings.IsVertical = value;
             }
         }
 
@@ -382,7 +383,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true)))!;
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings))))!;
 
             if (resultList is not { Count: > 0 })
             {
@@ -391,7 +392,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             foreach (var result in resultList)
             {
-                var ship = result != null ? DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
+                var ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
                 if (ship == null)
                 {
                     continue;
@@ -448,7 +449,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         VerticalModel!.Series.Add(vSeries);
 
                         // create and add the ballistic series
-                        var shell = DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+                        var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
 
@@ -552,8 +553,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 return;
             }
 
-            AppData.Settings.DispersionPlotSettings.AimingRange = AimingRange;
-            AppData.Settings.DispersionPlotSettings.ShotsNumber = ShotsNumber;
+            AppSettingsHelper.Settings.DispersionPlotSettings.AimingRange = AimingRange;
+            AppSettingsHelper.Settings.DispersionPlotSettings.ShotsNumber = ShotsNumber;
 
             foreach (var itemViewModel in DispersionPlotList)
             {
@@ -568,9 +569,9 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
         private void UpdateTrajectoryChart()
         {
-            AppData.Settings.DispersionPlotSettings.ShootingRange = ShootingRange;
+            AppSettingsHelper.Settings.DispersionPlotSettings.ShootingRange = ShootingRange;
 
-            if(shellTrajectoryModel is null)
+            if (shellTrajectoryModel is null)
             {
                 return;
             }

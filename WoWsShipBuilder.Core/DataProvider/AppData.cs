@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <summary>
         /// Gets or sets the current <see cref="AppSettings"/> for the application.
         /// </summary>
-        public static AppSettings Settings { get; set; } = new();
+        // public static AppSettings Settings { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the current data version name.
@@ -73,6 +73,12 @@ namespace WoWsShipBuilder.Core.DataProvider
         /// <seealso cref="DesktopAppDataService.GetAircraft"/>
         public static Dictionary<Nation, Dictionary<string, Aircraft>> AircraftCache { get; } = new();
 
+        public static Dictionary<Nation, Dictionary<string, Exterior>> ExteriorCache { get; } = new();
+
+        public static Dictionary<Nation, Dictionary<string, Captain>> CaptainCache { get; } = new();
+
+        public static Dictionary<string, Modernization> ModernizationCache { get; } = new();
+
         /// <summary>
         /// Gets or sets the list of <see cref="ShipSummary">ship summaries</see> that are currently available.
         /// </summary>
@@ -89,12 +95,12 @@ namespace WoWsShipBuilder.Core.DataProvider
         public static bool IsDebug => false;
 #endif
 
-        public static string GenerateLogDump()
+        public static string GenerateLogDump(AppSettings appSettings)
         {
             var result = new StringBuilder();
             result.Append("DataVersion: ").AppendLine(DataVersion)
                 .Append("CurrentNation: ").AppendLine(CurrentLoadedNation?.ToString())
-                .Append("ServerType: ").AppendLine(Settings.SelectedServerType.ToString());
+                .Append("ServerType: ").AppendLine(appSettings.ToString());
             return result.ToString();
         }
 

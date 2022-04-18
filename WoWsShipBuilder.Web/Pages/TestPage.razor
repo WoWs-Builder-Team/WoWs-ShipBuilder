@@ -1,0 +1,125 @@
+﻿@page "/test"
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider.Updater
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Web.Data
+@using System.Diagnostics
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures
+@inject IDataService dataService
+@inject ILocalDataUpdater dataUpdater
+@inject IAppDataService appDataService
+@inject AppSettingsHelper appSettingsHelper
+@inject NavigationManager navigationManager
+@inject AppSettings appSettings
+<MudText Typo="Typo.h2">Test Page</MudText>
+
+<MudButton OnClick="LoadNonExistentData" Color="Color.Secondary">Load non-existent data</MudButton>
+<MudText >@nonExistentDataResult</MudText>
+
+<MudButton OnClick="AddData" Color="Color.Secondary">Add data</MudButton>
+<MudButton OnClick="GetData" Color="Color.Secondary" >Get data</MudButton>
+<MudText>@dataResult</MudText>
+
+<MudButton OnClick="StartUpdate" Color="Color.Secondary" >Start localization update</MudButton>
+<MudButton OnClick="CheckLocales" Color="Color.Secondary" >Check installed locales</MudButton>
+<MudButton OnClick="StartFullUpdate" Color="Color.Secondary" >Start full update</MudButton>
+
+<MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;">
+    @foreach (var culture in AppConstants.SupportedLanguages)
+    {
+        <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+    }
+</MudSelect>
+<MudButton OnClick="SaveCultureChange" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="TestWorker" >Test worker</MudButton>
+
+    @if (loading)
+    {
+        <MudProgressCircular Color="Color.Success" Size="Size.Large" Indeterminate="true"/>
+    }
+
+<MudText>@output</MudText>
+
+@code {
+
+    private string nonExistentDataResult = string.Empty;
+
+    private string dataResult = string.Empty;
+
+    private int count;
+
+    private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
+
+    private string output = string.Empty;
+
+    bool loading;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        selectedCulture = appSettings.SelectedLanguage;
+    }
+
+    private async Task LoadNonExistentData()
+    {
+        var result = await dataService.LoadStringAsync("test.does.not.exist");
+        nonExistentDataResult = result is null ? "Returned null, success" : "Returned not null, something went wrong";
+    }
+
+    private async Task AddData()
+    {
+        await dataService.StoreStringAsync("Teststring123-" + count++, "testing.teststring");
+    }
+
+    private async Task GetData()
+    {
+        dataResult = await dataService.LoadStringAsync("testing.teststring") ?? "err: not found";
+    }
+
+    private async Task StartUpdate()
+    {
+        await dataUpdater.UpdateLocalization(ServerType.Live);
+    }
+
+    private async Task CheckLocales()
+    {
+        Console.WriteLine(string.Join(", ", await appDataService.GetInstalledLocales(ServerType.Live)));
+    }
+
+    private async Task StartFullUpdate()
+    {
+        await dataUpdater.RunDataUpdateCheck(ServerType.Live, new Progress<(int, string)>());
+    }
+
+    private async Task SaveCultureChange()
+    {
+        appSettings.SelectedLanguage = selectedCulture;
+        await appSettingsHelper.SaveSettings(appSettings);
+        await StartUpdate();
+        navigationManager.NavigateTo(navigationManager.Uri, true, false);
+    }
+    
+    private async Task TestWorker()
+    {
+        loading = true;
+        StateHasChanged();
+        Stopwatch s = new();
+        s.Start();
+        var summary = (await appDataService.GetShipSummaryList(ServerType.Live)).First(x => x.Nation == Nation.Usa);
+        var ship = await appDataService.GetShipFromSummary(summary);
+        s.Stop();
+        if (ship is null)
+        {
+            output = "Error";
+        }
+        else
+        {
+            //var text = JsonConvert.SerializeObject(shell);
+            output = s.Elapsed.ToString();
+        }
+        loading = false;
+        StateHasChanged();
+    }
+    
+}

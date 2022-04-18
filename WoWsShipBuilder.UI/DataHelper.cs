@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.UI
         {
             DesktopAppDataService.PreviewInstance.LoadNationFiles(nation);
 
-            var ship = DesktopAppDataService.PreviewInstance.ReadLocalJsonData<Ship>(nation, ServerType.Live)!
+            var ship = DesktopAppDataService.PreviewInstance.ReadLocalJsonData<Ship>(nation, ServerType.Live).Result!
                 .Select(entry => entry.Value)
                 .First(ship => ship.ShipClass == shipClass && ship.Tier == tier);
 
@@ -32,7 +32,7 @@ namespace WoWsShipBuilder.UI
         public static ShipSummary GetPreviewShipSummary(ShipClass shipClass, int tier, Nation nation)
         {
             var ship = LoadPreviewShip(shipClass, tier, nation);
-            return DesktopAppDataService.PreviewInstance.GetShipSummaryList(ServerType.Live).First(summary => summary.Index == ship.Ship.Index);
+            return DesktopAppDataService.PreviewInstance.GetShipSummaryList(ServerType.Live).Result.First(summary => summary.Index == ship.Ship.Index);
         }
 
         public static MainViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)
@@ -43,7 +43,7 @@ namespace WoWsShipBuilder.UI
         public static TurretModule GetPreviewTurretModule(ShipClass shipClass, int tier, Nation nation)
         {
             var testData = LoadPreviewShip(shipClass, tier, nation);
-            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance);
+            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance).Result;
             return currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
         }
     }

@@ -1,0 +1,39 @@
+﻿@typeparam TItem
+
+@* <Dropdown @ref="dropdown"> *@
+@*     <DropdownToggle Color="Color.Primary" ToggleIconVisible="false">@ItemTemplate(SelectedItem)</DropdownToggle> *@
+@*     <DropdownMenu Style="min-width: 1rem;"> *@
+@*         @foreach (var item in Items) *@
+@*         { *@
+@*             var background = item.Equals(SelectedItem) ? Background.Secondary : Background.Default; *@
+@*             <DropdownItem Clicked="() => HandleItemClicked(item)" Background="background"> *@
+@*                 @ItemTemplate(item) *@
+@*             </DropdownItem> *@
+@*         } *@
+@*     </DropdownMenu> *@
+@* </Dropdown> *@
+
+@code {
+    // private Dropdown dropdown = null!;
+    //
+    // [Parameter, EditorRequired]
+    // public IEnumerable<TItem> Items { get; set; } = null!;
+    //
+    // [Parameter]
+    // public TItem SelectedItem { get; set; } = default!;
+    //
+    // [Parameter, EditorRequired]
+    // public RenderFragment<TItem> ItemTemplate { get; set; } = null!;
+    //
+    // [Parameter]
+    // public EventCallback<TItem> SelectedItemChanged { get; set; }
+    //
+    // public async Task ShowDropdown() => await dropdown.Show();
+    //
+    // private async Task HandleItemClicked(TItem item)
+    // {
+    //     SelectedItem = item;
+    //     await SelectedItemChanged.InvokeAsync(item);
+    // }
+
+}

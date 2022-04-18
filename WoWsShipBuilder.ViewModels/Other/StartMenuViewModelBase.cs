@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -11,6 +10,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
@@ -20,25 +20,25 @@ namespace WoWsShipBuilder.ViewModels.Other
 {
     public abstract class StartMenuViewModelBase : ViewModelBase
     {
-        protected readonly IFileSystem FileSystem;
-
         protected readonly INavigationService NavigationService;
 
         protected readonly IClipboardService ClipboardService;
 
         protected readonly IAppDataService AppDataService;
 
+        protected readonly AppSettings AppSettings;
+
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, AppSettings appSettings)
         {
-            FileSystem = fileSystem;
             NavigationService = navigationService;
             ClipboardService = clipboardService;
             AppDataService = appDataService;
+            AppSettings = appSettings;
             if (!AppData.Builds.Any())
             {
-                appDataService.LoadBuilds();
+                userDataService.LoadBuilds();
             }
 
             var builds = new List<Build> { new(Translation.StartMenu_ImportBuild) };
@@ -76,16 +76,16 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void NewBuild()
         {
-            var dc = new ShipSelectionWindowViewModel(false);
+            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService, AppSettings));
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
                 Logging.Logger.Info($"Selected ship with index {result.Index}");
                 try
                 {
-                    var ship = AppDataService.GetShipFromSummary(result)!;
-                    AppDataService.LoadNationFiles(result.Nation);
-                    NavigationService.OpenMainWindow(ship, result, closeMainWindow: true);
+                    var ship = await AppDataService.GetShipFromSummary(result);
+                    await AppDataService.LoadNationFiles(result.Nation);
+                    await NavigationService.OpenMainWindow(ship!, result, closeMainWindow: true);
                 }
                 catch (Exception e)
                 {
@@ -121,7 +121,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             if (AppData.ShipSummaryList == null)
             {
                 Logging.Logger.Info("Ship summary is null, loading it.");
-                AppData.ShipSummaryList = AppDataService.GetShipSummaryList(AppData.Settings.SelectedServerType);
+                AppData.ShipSummaryList = await AppDataService.GetShipSummaryList(AppSettings.SelectedServerType);
             }
 
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
@@ -133,9 +133,9 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             try
             {
-                var ship = AppDataService.GetShipFromSummary(summary)!;
-                AppDataService.LoadNationFiles(summary.Nation);
-                NavigationService.OpenMainWindow(ship, summary, build, true);
+                var ship = await AppDataService.GetShipFromSummary(summary);
+                await AppDataService.LoadNationFiles(summary.Nation);
+                await NavigationService.OpenMainWindow(ship!, summary, build, true);
             }
             catch (Exception e)
             {

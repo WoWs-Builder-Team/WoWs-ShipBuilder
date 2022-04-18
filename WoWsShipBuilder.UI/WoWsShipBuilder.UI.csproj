@@ -9,7 +9,7 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.4.3</VersionPrefix>
+        <VersionPrefix>1.4.4</VersionPrefix>
 <!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -48,10 +48,10 @@
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.10" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+        <PackageReference Include="Avalonia" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
         <PackageReference Include="Clowd.Squirrel" Version="2.7.98-pre" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4" />
@@ -60,7 +60,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Splat.Autofac" Version="14.1.45" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
