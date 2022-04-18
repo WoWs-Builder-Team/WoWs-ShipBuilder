@@ -40,3 +40,14 @@ Hosting the server where we store the data used by the program has a monthly cos
 
 ## Discord
 We have a discord server that you can join by clicking [here](https://discord.gg/C8EaepZJDY) . 
+
+## Sponsorships and Support
+
+Product subscriptions provided by JetBrains through their [Open Source Support](https://jb.gg/OpenSourceSupport)
+
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo (Main) logo." height="150">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/Rider.png" alt="Rider logo." height="150">
+
+Free Open-Source subscription of their localization solution provided by [Crowdin](https://crowdin.com/)
+
+Free Open-Source subscription provided by [Sentry](https://sentry.io/)
