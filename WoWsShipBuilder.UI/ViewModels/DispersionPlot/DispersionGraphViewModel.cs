@@ -9,6 +9,7 @@ using Avalonia.Metadata;
 using NLog;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -22,6 +23,9 @@ using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 using static WoWsShipBuilder.UI.CustomControls.DispersionPlot;
+using Legend = OxyPlot.Legends.Legend;
+using LinearAxis = OxyPlot.Axes.LinearAxis;
+using LineSeries = OxyPlot.Series.LineSeries;
 
 namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 {
@@ -618,11 +622,16 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 Title = name,
                 TextColor = foreground,
                 PlotAreaBorderColor = foreground,
+            };
+
+            var legend = new Legend
+            {
                 LegendPosition = legendPosition,
                 LegendBorder = foreground,
                 LegendBorderThickness = 1,
                 LegendBackground = background,
                 LegendFontSize = 13,
+                SeriesInvisibleTextColor = OxyColors.Gray,
             };
 
             var xAxis = new LinearAxis
@@ -660,6 +669,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 AbsoluteMinimum = name.Equals(Translation.DispersionGraphWindow_ShellsPath) ? 0 : double.MinValue,
             };
 
+            model.Legends.Add(legend);
             model.Axes.Add(xAxis);
             model.Axes.Add(yAxis);
             model.DefaultColors = GenerateColors();
