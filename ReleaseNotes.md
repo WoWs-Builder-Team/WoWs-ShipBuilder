@@ -1,4 +1,4 @@
-# Update 1.4.4
+# Update 1.4.5
 
 ## Additions
 
@@ -6,10 +6,7 @@
 
 ## Bugfixes
 
-- Fixed incorrect conversion for some parameters in DefAA and Repair Party consumables.
-- Fixed Concealment System Modification 1 not working on squadrons.
-- Fixed planes restoration time not being displayed.
-- Fixed appcrash when using a file dialog.
+- Fixed a bug where the app could not create or update its shortcuts on install and update.
 
 ## Known Issues
 
