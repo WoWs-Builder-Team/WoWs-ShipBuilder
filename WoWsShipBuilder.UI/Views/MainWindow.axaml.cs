@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.UI.Views
                     {
                         DataContext = interaction.Input,
                     };
-                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = win;
                     }
