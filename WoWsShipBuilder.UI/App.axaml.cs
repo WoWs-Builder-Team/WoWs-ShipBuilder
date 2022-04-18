@@ -56,7 +56,6 @@ namespace WoWsShipBuilder.UI
 
                 if (AppSettingsHelper.Settings.AutoUpdateEnabled)
                 {
-#if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
                     {
                         if (OperatingSystem.IsWindows())
@@ -69,7 +68,6 @@ namespace WoWsShipBuilder.UI
                             Logging.Logger.Warn("Skipped updatecheck");
                         }
                     });
-#endif
                 }
             }
 
@@ -125,6 +123,12 @@ namespace WoWsShipBuilder.UI
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
             using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+            if (!updateManager.IsInstalledApp)
+            {
+                Logging.Logger.Info("No update.exe found, aborting update check.");
+                return;
+            }
+
             Logging.Logger.Info("Update manager initialized.");
             try
             {
