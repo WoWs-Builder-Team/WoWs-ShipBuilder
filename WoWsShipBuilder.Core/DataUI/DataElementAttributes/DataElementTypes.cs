@@ -1,10 +1,10 @@
 ﻿namespace WoWsShipBuilder.Core.DataUI.DataElementAttributes;
 
-public enum DataElementEnum
+public enum DataElementTypes
 {
     KeyValue,
     KeyValueUnit,
     Value,
-    Nested,
+    Grouped,
     Tooltip,
 }

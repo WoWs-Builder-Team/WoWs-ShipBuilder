@@ -6,4 +6,4 @@
 /// <param name="Key">The key of the element.</param>
 /// <param name="Value">The value of the element.</param>
 /// <param name="Tooltip">The tooltip text to show when hovering over the element.</param>
-public sealed record TooltipDataElement(string Key, string Value, string Tooltip) : IDataElement;
+public readonly record struct TooltipDataElement(string Key, string Value, string Tooltip) : IDataElement;

@@ -3,12 +3,12 @@
 namespace WoWsShipBuilder.Core.DataUI.DataElementAttributes;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class DataElementType : Attribute
+public class DataElementTypeAttribute : Attribute
 {
-    public DataElementType(DataElementEnum type)
+    public DataElementTypeAttribute(DataElementTypes type)
     {
         Type = type;
     }
 
-    public DataElementEnum Type { get; }
+    public DataElementTypes Type { get; }
 }

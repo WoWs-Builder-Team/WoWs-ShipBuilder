@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace WoWsShipBuilder.Core.DataUI.DataElements;
 /// <summary>
@@ -7,4 +6,4 @@ namespace WoWsShipBuilder.Core.DataUI.DataElements;
 /// </summary>
 /// <param name="Key">The key of the element.</param>
 /// <param name="Children">The enumerable of <see cref="IDataElement"/> that this key contain.</param>
-public sealed record NestedDataElement(string Key, IEnumerable<IDataElement> Children) : IDataElement;
+public sealed record GroupedDataElement(string Key, IEnumerable<IDataElement> Children) : IDataElement;

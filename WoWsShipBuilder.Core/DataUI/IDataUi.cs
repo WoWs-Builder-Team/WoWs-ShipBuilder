@@ -1,6 +1,5 @@
-﻿namespace WoWsShipBuilder.Core.DataUI
+﻿namespace WoWsShipBuilder.Core.DataUI;
+
+public interface IDataUi
 {
-    public interface IDataUi
-    {
-    }
 }
