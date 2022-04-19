@@ -1,5 +1,5 @@
 ﻿using System;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataUI;
@@ -183,7 +183,7 @@ public static class ModifierProcessor
         return value;
     }
 
-    private static string GetUiModifierDescription(string localizerKey)
+    private static string GetUiModifierDescription(string localizerKey, ILocalizer localizer)
     {
         string description;
 
@@ -216,7 +216,7 @@ public static class ModifierProcessor
         localizerKey = $"{prefix}{localizerKey}";
 
         bool found;
-        (found, description) = Localizer.Instance[localizerKey.ToUpper()];
+        (found, description) = localizer.GetGameLocalization(localizerKey.ToUpper());
 
         // We need this to deal with the consumable mod of slot 5
         var moduleFallback = "";
@@ -227,12 +227,12 @@ public static class ModifierProcessor
             localizerKey.Contains("callFightersAdditionalConsumables", StringComparison.InvariantCultureIgnoreCase))
         {
             moduleFallback = description;
-            (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
+            (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_SKILL");
         }
 
         if (!found)
         {
-            (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"];
+            (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_MODERNIZATION");
         }
 
         if (!found)
@@ -254,7 +254,7 @@ public static class ModifierProcessor
 
         if (localizerKey.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase))
         {
-            description = Localizer.Instance["PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY"].Localization;
+            description = localizer.GetGameLocalization("PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY").Localization;
         }
 
         if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
@@ -264,12 +264,12 @@ public static class ModifierProcessor
 
         if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
         {
-            description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+            description = localizer.GetGameLocalization("PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS").Localization;
         }
 
         if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
         {
-            description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
+            description = localizer.GetGameLocalization("PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE").Localization;
         }
 
         if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
@@ -280,7 +280,7 @@ public static class ModifierProcessor
         return description;
     }
 
-    public static string GetUiModifierString(string localizerKey, float modifier, ReturnFilter returnFilter)
+    public static string GetUiModifierString(string localizerKey, float modifier, ReturnFilter returnFilter, ILocalizer localizer)
     {
         string value = string.Empty;
         string description = string.Empty;
@@ -292,7 +292,7 @@ public static class ModifierProcessor
 
         if (returnFilter is ReturnFilter.Description or ReturnFilter.All)
         {
-            description = GetUiModifierDescription(localizerKey);
+            description = GetUiModifierDescription(localizerKey, localizer);
         }
 
         if (string.IsNullOrEmpty(description.Trim()) && returnFilter != ReturnFilter.Value)
@@ -307,8 +307,8 @@ public static class ModifierProcessor
         }
     }
 
-    public static string GetUiModifierString(string localizerKey, double modifier, ReturnFilter returnFilter)
+    public static string GetUiModifierString(string localizerKey, double modifier, ReturnFilter returnFilter, ILocalizer localizer)
     {
-        return GetUiModifierString(localizerKey, (float)modifier, returnFilter);
+        return GetUiModifierString(localizerKey, (float)modifier, returnFilter, localizer);
     }
 }

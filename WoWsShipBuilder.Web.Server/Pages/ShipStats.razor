@@ -5,10 +5,11 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Translations
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager navManager
-@inject Localizer localizer
+@inject ILocalizer localizer
 @inject IAppDataService appDataService
 @inject AppSettings appSettings
 
@@ -89,7 +90,7 @@
         var vmParams = new MainViewModelParams(ship!, shipSummary, null);
         
         // TODO
-        ViewModel = new(null!, appDataService, appSettings, vmParams);
+        ViewModel = new(null!, appDataService, localizer, appSettings, vmParams);
         Console.WriteLine("VM created: " + sw.Elapsed);
         await ViewModel.InitializeData(vmParams);
         sw.Stop();

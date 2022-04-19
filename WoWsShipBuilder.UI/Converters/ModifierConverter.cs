@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Core.DataProvider;
+using Splat;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class ModifierConverter : IMultiValueConverter
     {
+        private readonly ILocalizer localizer;
+
+        public ModifierConverter()
+        {
+            localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+        }
+
         private enum ReturnFilter
         {
             All,
@@ -290,7 +299,7 @@ namespace WoWsShipBuilder.UI.Converters
                 localizerKey = $"{prefix}{localizerKey}";
 
                 bool found;
-                (found, description) = Localizer.Instance[localizerKey.ToUpper()];
+                (found, description) = localizer.GetGameLocalization(localizerKey.ToUpper());
 
                 // We need this to deal with the consumable mod of slot 5
                 var moduleFallback = "";
@@ -301,12 +310,12 @@ namespace WoWsShipBuilder.UI.Converters
                     localizerKey.Contains("callFightersAdditionalConsumables", StringComparison.InvariantCultureIgnoreCase))
                 {
                     moduleFallback = description;
-                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
+                    (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_SKILL");
                 }
 
                 if (!found)
                 {
-                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"];
+                    (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_MODERNIZATION");
                 }
 
                 if (!found)
@@ -321,7 +330,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (localizerKey.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY").Localization;
                 }
 
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
@@ -331,12 +340,12 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS").Localization;
                 }
 
                 if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE").Localization;
                 }
 
                 if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))

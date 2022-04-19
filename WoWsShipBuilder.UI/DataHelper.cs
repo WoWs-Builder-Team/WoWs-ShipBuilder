@@ -3,6 +3,7 @@ using System.Linq;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
@@ -11,6 +12,8 @@ namespace WoWsShipBuilder.UI
     public static class DataHelper
     {
         public static readonly IReadOnlyList<Modernization> PlaceholderBaseList = new List<Modernization> { UpgradePanelViewModelBase.PlaceholderModernization };
+
+        public static ILocalizer DemoLocalizer { get; } = new DemoLocalizerImpl();
 
         public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
         {
@@ -43,8 +46,17 @@ namespace WoWsShipBuilder.UI
         public static TurretModule GetPreviewTurretModule(ShipClass shipClass, int tier, Nation nation)
         {
             var testData = LoadPreviewShip(shipClass, tier, nation);
-            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance).Result;
+            var currentShipStats = ShipUI.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance, DemoLocalizer).Result;
             return currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
+        }
+
+        public class DemoLocalizerImpl : ILocalizer
+        {
+            public LocalizationResult this[string key] => GetGameLocalization(key);
+
+            public LocalizationResult GetGameLocalization(string key) => new(true, key);
+
+            public LocalizationResult GetAppLocalization(string key) => new(true, key);
         }
     }
 }

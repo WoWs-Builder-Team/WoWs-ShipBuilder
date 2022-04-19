@@ -2,7 +2,8 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using System.Globalization
 @using System.Collections.ObjectModel
-@inject Localizer localizer
+@using WoWsShipBuilder.Core.Localization
+@inject ILocalizer localizer
 
 <MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
     <MudItem xs="6" md="3">
@@ -54,7 +55,7 @@
         {
             @foreach (var ship in SelectedShips)
             {
-                <MudChip Text="@localizer[ship + "_FULL"].Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                <MudChip Text="@localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
             }
         }
         <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Translation.ShipSelectionWindow_SearchShip" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
@@ -165,7 +166,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => localizer[$"{ship.Index}_FULL"].Localization, ship => ship));
+        totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
     

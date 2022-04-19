@@ -1,5 +1,4 @@
 using System;
-using System.IO.Abstractions;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -7,14 +6,18 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Helper
 {
     public class BuildImportViewModelBase : ViewModelBase
     {
-        public BuildImportViewModelBase()
+        private readonly ILocalizer localizer;
+
+        public BuildImportViewModelBase(ILocalizer localizer)
         {
+            this.localizer = localizer;
             var canImportExecute = this.WhenAnyValue(x => x.BuildString, buildStr => !string.IsNullOrWhiteSpace(buildStr));
             ImportCommand = ReactiveCommand.CreateFromTask(Import, canImportExecute);
         }
@@ -55,7 +58,7 @@ namespace WoWsShipBuilder.ViewModels.Helper
             Logging.Logger.Info("Trying to import build string: {0}", BuildString);
             try
             {
-                build = Build.CreateBuildFromString(BuildString!);
+                build = Build.CreateBuildFromString(BuildString!, localizer);
                 Logging.Logger.Info("Build correctly created");
             }
             catch (Exception e)

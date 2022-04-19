@@ -17,6 +17,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
@@ -28,6 +29,7 @@ using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Other;
+using Localizer = WoWsShipBuilder.Core.Localization.Localizer;
 
 namespace WoWsShipBuilder.UI
 {
@@ -92,7 +94,8 @@ namespace WoWsShipBuilder.UI
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
             builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
             builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().As<IUserDataService>().SingleInstance();
-            builder.RegisterType<Localizer>().AsSelf().SingleInstance();
+            builder.RegisterType<LocalizationProvider>().As<ILocalizationProvider>().SingleInstance();
+            builder.RegisterType<Localizer>().AsSelf().As<ILocalizer>().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
