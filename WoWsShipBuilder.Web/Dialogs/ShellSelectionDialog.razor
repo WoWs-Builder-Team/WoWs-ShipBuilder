@@ -1,8 +1,9 @@
 ﻿@using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
-@inject Localizer localizer
+@inject ILocalizer localizer
 @inject IAppDataService webAppDataService
 
 <MudDialog>
@@ -22,7 +23,7 @@
                     <MudItem xs="12" md="6" Class="d-flex" Style="flex-direction: column">
                         <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
                             <MudText Typo="Typo.caption" Class="my-auto">
-                                @localizer[ship.ShipIndex + "_FULL"].Localization
+                                @localizer.GetGameLocalization(ship.ShipIndex + "_FULL").Localization
                             </MudText>
                             <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(ship))"/>
                         </MudItem>
@@ -32,7 +33,7 @@
                                 @foreach ((string shellIndex, (_,_, bool shellSelected)) in ship.ArtilleryDataDictionary)
                                 {
                                     <MudButton Color="GetColorFromBool(shellSelected)" Variant="GetVariantFromBool(shellSelected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shellIndex))">
-                                        @localizer[shellIndex].Localization
+                                        @localizer.GetGameLocalization(shellIndex).Localization
                                     </MudButton>
                                 }
                             </MudButtonGroup>

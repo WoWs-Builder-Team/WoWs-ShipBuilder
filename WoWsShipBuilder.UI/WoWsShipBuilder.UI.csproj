@@ -9,16 +9,17 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.4.4</VersionPrefix>
+        <VersionPrefix>1.4.5</VersionPrefix>
 <!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
         <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     </PropertyGroup>
     <PropertyGroup>
         <NuspecFile>WoWsShipBuilder.nuspec</NuspecFile>
-        <NuspecBasePath>bin/$(Configuration)/net5.0/publish</NuspecBasePath>
+        <NuspecBasePath>bin/$(Configuration)/net6.0/publish</NuspecBasePath>
         <NuspecProperties>$(NuspecProperties);version=$(VersionPrefix)</NuspecProperties>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -52,9 +53,9 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
-        <PackageReference Include="Clowd.Squirrel" Version="2.7.98-pre" />
+        <PackageReference Include="Clowd.Squirrel" Version="2.8.40" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-20210506.4" />
+        <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-Preview1" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

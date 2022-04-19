@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
@@ -38,10 +39,10 @@ namespace WoWsShipBuilder.ViewModels.Helper
             ConfirmCommand = ReactiveCommand.CreateFromTask(Confirm, canConfirmExecute);
         }
 
-        public static async Task<Dictionary<string, ShipSummary>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings)
+        public static async Task<Dictionary<string, ShipSummary>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, ILocalizer localizer)
         {
             AppData.ShipSummaryList ??= await appDataService.GetShipSummaryList(appSettings.SelectedServerType);
-            return AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
+            return AppData.ShipSummaryList.ToDictionary(ship => localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship);
         }
 
         public bool MultiSelectionEnabled { get; }

@@ -17,6 +17,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Extensions;
@@ -28,6 +29,7 @@ using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Other;
+using Localizer = WoWsShipBuilder.Core.Localization.Localizer;
 
 namespace WoWsShipBuilder.UI
 {
@@ -56,7 +58,6 @@ namespace WoWsShipBuilder.UI
 
                 if (AppSettingsHelper.Settings.AutoUpdateEnabled)
                 {
-#if !DEBUG || UPDATE_TEST
                     Task.Run(async () =>
                     {
                         if (OperatingSystem.IsWindows())
@@ -69,7 +70,6 @@ namespace WoWsShipBuilder.UI
                             Logging.Logger.Warn("Skipped updatecheck");
                         }
                     });
-#endif
                 }
             }
 
@@ -94,7 +94,8 @@ namespace WoWsShipBuilder.UI
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
             builder.RegisterType<DesktopDataService>().As<IDataService>().SingleInstance();
             builder.RegisterType<DesktopAppDataService>().As<IAppDataService>().As<DesktopAppDataService>().As<IUserDataService>().SingleInstance();
-            builder.RegisterType<Localizer>().AsSelf().SingleInstance();
+            builder.RegisterType<LocalizationProvider>().As<ILocalizationProvider>().SingleInstance();
+            builder.RegisterType<Localizer>().AsSelf().As<ILocalizer>().SingleInstance();
             builder.RegisterType<AwsClient>().As<IAwsClient>().SingleInstance();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
             builder.RegisterType<AvaloniaClipboardService>().As<IClipboardService>();
@@ -125,6 +126,12 @@ namespace WoWsShipBuilder.UI
             Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
 
             using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
+            if (!updateManager.IsInstalledApp)
+            {
+                Logging.Logger.Info("No update.exe found, aborting update check.");
+                return;
+            }
+
             Logging.Logger.Info("Update manager initialized.");
             try
             {

@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
@@ -41,18 +42,18 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public SpecialAbilityUI? SpecialAbilityUI { get; set; }
 
-        public static async Task<ShipUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public static async Task<ShipUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
             var shipUI = new ShipUI(ship.Index)
             {
                 // Main weapons
-                MainBatteryUI = await MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                TorpedoArmamentUI = await TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                MainBatteryUI = await MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
+                TorpedoArmamentUI = await TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 CVAircraftUI = await DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
                 AswAirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, true, appDataService),

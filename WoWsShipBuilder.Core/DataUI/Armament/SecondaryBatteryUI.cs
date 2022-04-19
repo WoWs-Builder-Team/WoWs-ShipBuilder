@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
@@ -42,7 +42,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> SecondaryBatteryData { get; set; } = default!;
 
-        public static async Task<List<SecondaryBatteryUI>?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public static async Task<List<SecondaryBatteryUI>?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
             TurretModule? secondary = ship.Hulls[shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()]
                 .SecondaryModule;
@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var secondaryUI = new SecondaryBatteryUI
                 {
-                    Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + Localizer.Instance[secondaryGun.Name].Localization,
+                    Name = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels} " + localizer.GetGameLocalization(secondaryGun.Name).Localization,
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
                     TrueReload = Math.Round(trueReload, 2) + " " + Translation.Unit_S,
@@ -92,7 +92,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 try
                 {
-                    secondaryUI.Shell = (await ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService)).First();
+                    secondaryUI.Shell = (await ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService, localizer)).First();
                 }
                 catch (KeyNotFoundException e)
                 {

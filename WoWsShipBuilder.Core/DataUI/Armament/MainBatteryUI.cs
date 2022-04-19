@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
@@ -77,7 +77,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static async Task<MainBatteryUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<MainBatteryUI?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
             ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
             if (artilleryConfiguration == null)
@@ -106,7 +106,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 .Select(group => (BarrelCount: group.Key, TurretCount: group.Count(), GunName: group.First().Name))
                 .OrderBy(item => item.TurretCount)
                 .ToList();
-            string turretArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TurretCount} x {item.BarrelCount} {Localizer.Instance[item.GunName].Localization}"));
+            string turretArrangement = string.Join($"\n", arrangementList.Select(item => $"{item.TurretCount} x {item.BarrelCount} {localizer.GetGameLocalization(item.GunName).Localization}"));
             int barrelCount = arrangementList.Select(item => item.TurretCount * item.BarrelCount).Sum();
             Gun gun = mainBattery.Guns.First();
 
@@ -186,7 +186,7 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = await ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService);
+            mainBatteryUi.ShellData = await ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService, localizer);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

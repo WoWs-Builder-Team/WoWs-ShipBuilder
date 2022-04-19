@@ -7,8 +7,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
@@ -86,7 +86,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
 
-        public static async Task<List<ShellUI>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
+        public static async Task<List<ShellUI>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService, ILocalizer localizer)
         {
             var shells = new List<ShellUI>();
             foreach (string shellName in shellNames)
@@ -203,7 +203,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 var uiShell = new ShellUI
                 {
-                    Name = Localizer.Instance[shell.Name].Localization,
+                    Name = localizer.GetGameLocalization(shell.Name).Localization,
                     Type = shell.ShellType.ToString(),
                     Mass = (decimal)shellMass,
                     Damage = Math.Round((decimal)shellDamage),

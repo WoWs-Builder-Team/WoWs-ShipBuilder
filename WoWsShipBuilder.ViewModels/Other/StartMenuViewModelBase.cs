@@ -9,6 +9,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
@@ -26,15 +27,18 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         protected readonly IAppDataService AppDataService;
 
+        private readonly ILocalizer localizer;
+
         protected readonly AppSettings AppSettings;
 
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, AppSettings appSettings)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer, AppSettings appSettings)
         {
             NavigationService = navigationService;
             ClipboardService = clipboardService;
             AppDataService = appDataService;
+            this.localizer = localizer;
             AppSettings = appSettings;
             if (!AppData.Builds.Any())
             {
@@ -76,7 +80,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void NewBuild()
         {
-            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService, AppSettings));
+            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService, AppSettings, localizer));
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
