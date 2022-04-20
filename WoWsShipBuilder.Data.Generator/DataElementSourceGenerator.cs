@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
     public const string BaseInterfaceName = "IDataUi";
     public const string GeneratedMethodName = "UpdateDataElements";
     public const string DataElementCollectionName = "DataElements";
+    public const string Indentation = "        ";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -52,6 +54,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
         context.AddSource("DataElementTooltipAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTooltipAttribute, Encoding.UTF8));
         context.AddSource("DataElementGroupAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementGroupAttribute, Encoding.UTF8));
+        context.AddSource("DataElementUnitAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementUnitAttribute, Encoding.UTF8));
     }
 
     private static void GenerateCode(SourceProductionContext context, ImmutableArray<ITypeSymbol> dataRecords)
@@ -61,6 +64,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             var properties = dataRecord.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => !attr.AttributeClass!.Name.Contains("Ignore"))).ToList();
             var methodStart = $@"
 using System;
+using System.Collections.Generic;
 using WoWsShipBuilder.Core.DataUI.DataElements;
 
 namespace {dataRecord.ContainingNamespace.ToDisplayString()};
@@ -85,15 +89,15 @@ public partial record {dataRecord.Name}
                 if (typeAttribute is not null)
                 {
                     var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
-                    switch (type)
+                    var (code, additionalIndexes) = GenerateCode(type, prop, propertyAttributes, properties, DataElementCollectionName);
+                    builder.Append(code);
+                    builder.AppendLine();
+
+                    foreach (var index in additionalIndexes.OrderByDescending(x => x))
                     {
-                        case DataElementTypes.Value:
-                            builder.Append(GenerateValueRecord(prop, propertyAttributes));
-                            break;
+                        properties.RemoveAt(index);
                     }
                 }
-
-                properties.RemoveAt(0);
             }
 
             builder.Append(methodEnd);
@@ -101,13 +105,133 @@ public partial record {dataRecord.Name}
         }
     }
 
-    private static string GenerateValueRecord(IPropertySymbol property, ImmutableArray<AttributeData> attributes)
+    private static (string code, List<int> additionalIndexes) GenerateCode(DataElementTypes type, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    {
+        var builder = new StringBuilder();
+        var additionalPropIndexes = new List<int>();
+        switch (type)
+        {
+            case DataElementTypes.Value:
+                builder.Append(GenerateValueRecord(currentProp, collectionName));
+                builder.AppendLine();
+                additionalPropIndexes.Add(0);
+                break;
+            case DataElementTypes.KeyValue:
+                builder.Append(GenerateKeyValueRecord(currentProp, collectionName));
+                builder.AppendLine();
+                additionalPropIndexes.Add(0);
+                break;
+            case DataElementTypes.KeyValueUnit:
+                builder.Append(GenerateKeyValueUnitRecord(currentProp, propertyAttributes, collectionName));
+                builder.AppendLine();
+                additionalPropIndexes.Add(0);
+                break;
+            case DataElementTypes.Tooltip:
+                builder.Append(GenerateTooltipRecord(currentProp, propertyAttributes, collectionName));
+                builder.AppendLine();
+                additionalPropIndexes.Add(0);
+                break;
+            case DataElementTypes.Grouped:
+                var (code, additionalIndexes) = GenerateGroupedRecord(currentProp, propertyAttributes, properties, collectionName);
+                builder.Append(code);
+                builder.AppendLine();
+                additionalPropIndexes.AddRange(additionalIndexes);
+                break;
+        }
+
+        return (builder.ToString(), additionalPropIndexes);
+    }
+
+    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    {
+        var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementGroupAttribute"));
+        if (tooltipAttribute is null)
+        {
+            return (string.Empty, new List<int>());
+        }
+        var groupName = (string) tooltipAttribute.ConstructorArguments[0].Value!;
+
+        var builder = new StringBuilder();
+
+        builder.Append($@"{Indentation}var {groupName}List = new List<IDataElement>();");
+        builder.AppendLine();
+
+        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementGroupAttribute") && attribute.ConstructorArguments[0].Value!.Equals(groupName))).ToList();
+
+        var indexList = groupProperties.Select(singleProperty => properties.IndexOf(singleProperty)).ToList();
+
+        while (groupProperties.Any())
+        {
+            var currentGroupProp = groupProperties.First();
+            var currentGroupPropertyAttributes = currentGroupProp.GetAttributes();
+
+            //exclude the group attribute, to avoid infinite recursion. Need to find a better way to skip the Group type.
+            var typeAttribute = currentGroupPropertyAttributes.LastOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
+            if (typeAttribute is not null)
+            {
+                var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
+                var (code, additionalIndexes) = GenerateCode(type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
+                builder.Append(code);
+                foreach (var index in additionalIndexes.OrderByDescending(x => x))
+                {
+                    groupProperties.RemoveAt(index);
+                }
+            }
+        }
+
+        builder.Append(@$"{Indentation}{collectionName}.Add(new GroupedDataElement(""{groupName}"", {groupName}List));");
+
+        return (builder.ToString(), indexList);
+    }
+
+    private static string GenerateTooltipRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    {
+        var name = property.Name;
+        var propertyProcessingAddition = GetPropertyAddition(property);
+        var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementTooltipAttribute"));
+        if (tooltipAttribute is null)
+        {
+            return string.Empty;
+        }
+        var tooltip = (string) tooltipAttribute.ConstructorArguments[0].Value!;
+
+        return $@"{Indentation}{collectionName}.Add(new TooltipDataElement(""{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));";
+    }
+
+    private static string GenerateKeyValueUnitRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    {
+        var name = property.Name;
+        var propertyProcessingAddition = GetPropertyAddition(property);
+
+        var unitAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementUnitAttribute"));
+        if (unitAttribute is null)
+        {
+            return string.Empty;
+        }
+        var unit = (string) unitAttribute.ConstructorArguments[0].Value!;
+        return $@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));";
+    }
+
+    private static string GenerateKeyValueRecord(IPropertySymbol property, string collectionName)
+    {
+        var name = property.Name;
+        var propertyProcessingAddition = GetPropertyAddition(property);
+        return $@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""{name}"", {name}{propertyProcessingAddition}));";
+    }
+
+    private static string GenerateValueRecord(IPropertySymbol property, string collectionName)
+    {
+        var propertyProcessingAddition = GetPropertyAddition(property);
+        return $@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}));";
+    }
+
+    private static string GetPropertyAddition(IPropertySymbol property)
     {
         var propertyProcessingAddition = string.Empty;
-        if (property.Type.Name.Equals("string", StringComparison.InvariantCultureIgnoreCase))
+        if (!property.Type.Name.Equals("string", StringComparison.InvariantCultureIgnoreCase))
         {
             propertyProcessingAddition = ".ToString()";
         }
-        return $@"{DataElementCollectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}));";
+        return propertyProcessingAddition;
     }
 }

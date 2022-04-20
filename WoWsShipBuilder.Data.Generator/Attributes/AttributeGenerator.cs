@@ -20,7 +20,7 @@ using System;
 
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 public class DataElementTypeAttribute : Attribute
 {
     public DataElementTypeAttribute(DataElementTypes type)
@@ -63,6 +63,23 @@ public class DataElementGroupAttribute : Attribute
     }
 
     public string GroupKey { get; }
+}
+";
+
+    public const string DataElementUnitAttribute = @"
+using System;
+
+namespace WoWsShipBuilder.DataElements.DataElementAttributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class DataElementUnitAttribute : Attribute
+{
+    public DataElementUnitAttribute(string unitKey)
+    {
+        UnitKey = unitKey;
+    }
+
+    public string UnitKey { get; }
 }
 ";
 }
