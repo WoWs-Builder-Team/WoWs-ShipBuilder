@@ -1,4 +1,5 @@
 ﻿namespace WoWsShipBuilder.Core.DataUI.DataElements;
+
 /// <summary>
 /// Record that represent a key value pair, with a measurement unit to be applied to the value.
 /// </summary>

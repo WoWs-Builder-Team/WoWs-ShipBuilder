@@ -62,23 +62,25 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         foreach (var dataRecord in dataRecords)
         {
             var properties = dataRecord.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => !attr.AttributeClass!.Name.Contains("Ignore"))).ToList();
-            var methodStart = $@"
+            var classStart = $@"
 using System;
 using System.Collections.Generic;
 using WoWsShipBuilder.Core.DataUI.DataElements;
 
 namespace {dataRecord.ContainingNamespace.ToDisplayString()};
+#nullable enable
 public partial record {dataRecord.Name}
 {{
     private void {GeneratedMethodName}()
     {{
         {DataElementCollectionName}.Clear();
 ";
-            const string methodEnd = @"
+            const string classEnd = @"
     }
 }
+#nullable restore
 ";
-            var builder = new StringBuilder(methodStart);
+            var builder = new StringBuilder(classStart);
 
             while (properties.Any())
             {
@@ -100,7 +102,7 @@ public partial record {dataRecord.Name}
                 }
             }
 
-            builder.Append(methodEnd);
+            builder.Append(classEnd);
             context.AddSource($"{dataRecord.Name}.g.cs", SourceText.From(builder.ToString(), Encoding.UTF8));
         }
     }

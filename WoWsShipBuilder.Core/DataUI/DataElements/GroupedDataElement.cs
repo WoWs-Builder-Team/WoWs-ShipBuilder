@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace WoWsShipBuilder.Core.DataUI.DataElements;
+
 /// <summary>
 /// A record that represent a group of <see cref="IDataElement"/> that share a common group.
 /// </summary>
