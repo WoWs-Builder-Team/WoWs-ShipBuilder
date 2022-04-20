@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
+// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
     public record TorpedoUI : ProjectileUI, IDataUi
@@ -91,7 +92,8 @@ namespace WoWsShipBuilder.Core.DataUI
                     SplashCoeff = (decimal)torp.SplashCoeff,
                 };
 
-                if (name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
+                // because WG is fucking retarded
+                if (!name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
                 {
                     torpUI.Type = Translation.ShipStats_TorpedoMagnetic;
                 }
