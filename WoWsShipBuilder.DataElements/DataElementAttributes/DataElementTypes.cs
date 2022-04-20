@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Core.DataUI.DataElementAttributes;
+﻿namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
 public enum DataElementTypes
 {

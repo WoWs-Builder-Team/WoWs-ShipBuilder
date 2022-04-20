@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShipUI(string Index) : IDataUi
+    public partial record ShipUI(string Index) : IDataUi
     {
         // TODO: check if really necessary
         public static readonly ConcurrentDictionary<string, bool> ExpanderStateMapper = new();

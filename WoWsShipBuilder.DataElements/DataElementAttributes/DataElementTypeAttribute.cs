@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WoWsShipBuilder.Core.DataUI.DataElementAttributes;
+namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class DataElementTypeAttribute : Attribute
