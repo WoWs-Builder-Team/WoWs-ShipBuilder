@@ -29,7 +29,7 @@ public partial record TestDataUi1 : IDataUi
 
     [DataElementType(DataElementTypes.Grouped)]
     [DataElementGroup("test1")]
-    [DataElementType(DataElementTypes.Value)]
+    [DataElementType(DataElementTypes.KeyValue)]
     public string Test2Group1 { get; init; } = default!;
 
     public void UpdateData()
