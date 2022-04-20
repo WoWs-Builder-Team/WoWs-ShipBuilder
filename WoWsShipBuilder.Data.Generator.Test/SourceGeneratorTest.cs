@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CSharp.RuntimeBinder;
 using NUnit.Framework;
 using WoWsShipBuilder.Data.Generator.Attributes;
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
@@ -89,7 +87,8 @@ public partial record TestDataUi1 : IDataUi
         var compilation = CreateCompilation(baseCompilationInput, code);
         var driver = rawDriver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
-        diagnostics.Should().NotBeEmpty();
+        // diagnostics.Should().NotBeEmpty();
+        diagnostics.Should().BeEmpty();
     }
 
     private static Compilation CreateCompilation(params string[] source)
@@ -101,9 +100,18 @@ public partial record TestDataUi1 : IDataUi
         syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementUnitAttribute));
         syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementTypesEnum));
 
+        var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
         return CSharpCompilation.Create("compilation",
             syntaxTrees,
-            new[] { MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location) },
+            new[]
+            {
+                MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Core.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Private.CoreLib.dll")),
+                MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Runtime.dll")),
+            },
             new(OutputKind.ConsoleApplication));
     }
 

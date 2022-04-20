@@ -36,7 +36,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             .Collect();
 
         // Uncomment to generate attribute classes instead of using them from a separate dependency
-        context.RegisterPostInitializationOutput(GenerateFixedCode);
+        // context.RegisterPostInitializationOutput(GenerateFixedCode);
         context.RegisterSourceOutput(dataClasses, GenerateCode!);
     }
 

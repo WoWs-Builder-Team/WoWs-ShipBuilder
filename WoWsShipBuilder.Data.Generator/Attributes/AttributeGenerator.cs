@@ -2,6 +2,12 @@
 
 public static class AttributeGenerator
 {
+    public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+
+
     public const string DataElementTypesEnum = @"
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 

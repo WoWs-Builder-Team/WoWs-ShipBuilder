@@ -2,7 +2,7 @@
 
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 public class DataElementTypeAttribute : Attribute
 {
     public DataElementTypeAttribute(DataElementTypes type)
