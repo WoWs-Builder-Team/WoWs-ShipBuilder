@@ -12,7 +12,12 @@ public partial record TestDataUi1 : IDataUi
     public string TestValue { get; init; } = default!;
 
     [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementVisibility(false)]
     public decimal TestKeyValue { get; init; }
+
+    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementVisibility(true, "TestVisibility")]
+    public decimal TestVisibilityCustom { get; init; }
 
     [DataElementType(DataElementTypes.KeyValueUnit)]
     [DataElementUnit("mm")]
@@ -29,11 +34,16 @@ public partial record TestDataUi1 : IDataUi
 
     [DataElementType(DataElementTypes.Grouped)]
     [DataElementGroup("test1")]
-    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementType(DataElementTypes.Value)]
     public string Test2Group1 { get; init; } = default!;
 
     public void UpdateData()
     {
         UpdateDataElements();
+    }
+
+    public bool TestVisibility(object value)
+    {
+        return true;
     }
 }

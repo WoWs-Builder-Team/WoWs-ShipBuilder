@@ -74,12 +74,21 @@ public partial record TestDataUi1 : IDataUi
 
     [DataElementType(DataElementTypes.Grouped)]
     [DataElementGroup(""test1"")]
-    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementType(DataElementTypes.Value)]
     public string Test2Group1 { get; init; } = default!;
+
+    [DataElementType(DataElementTypes.KeyVaLue)]
+    [DataElementVisibility(true, ""TestVisibility"")]
+    public decimal TestVisibilityCustom { get; init; }
 
     public void UpdateData()
     {
         UpdateDataElements();
+    }
+
+    public bool TestVisibility(object value)
+    {
+        return true;
     }
 }
 
@@ -99,6 +108,7 @@ public partial record TestDataUi1 : IDataUi
         syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementTypeAttribute));
         syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementUnitAttribute));
         syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementTypesEnum));
+        syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementVisibilityAttribute));
 
         var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
         return CSharpCompilation.Create("compilation",
