@@ -74,7 +74,7 @@ public partial record TestDataUi1 : IDataUi
 
     [DataElementType(DataElementTypes.Grouped)]
     [DataElementGroup(""test1"")]
-    [DataElementType(DataElementTypes.Value)]
+    [DataElementType(DataElementTypes.Val)]
     public string Test2Group1 { get; init; } = default!;
 
     [DataElementType(DataElementTypes.KeyVaLue)]
@@ -96,8 +96,8 @@ public partial record TestDataUi1 : IDataUi
         var compilation = CreateCompilation(baseCompilationInput, code);
         var driver = rawDriver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
-        // diagnostics.Should().NotBeEmpty();
-        diagnostics.Should().BeEmpty();
+         diagnostics.Should().NotBeEmpty();
+        //diagnostics.Should().BeEmpty();
     }
 
     private static Compilation CreateCompilation(params string[] source)

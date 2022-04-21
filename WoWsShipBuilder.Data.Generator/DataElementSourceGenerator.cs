@@ -193,6 +193,12 @@ public partial record {dataRecord.Name}
             var typeAttribute = currentGroupPropertyAttributes.LastOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
             if (typeAttribute is not null)
             {
+                if (typeAttribute.ConstructorArguments.IsEmpty)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, Location.None, currentGroupProp.Name));
+                    groupProperties.RemoveAt(0);
+                    continue;
+                }
                 var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
                 var (code, additionalIndexes) = GenerateCode(context, type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
                 builder.Append(code);
