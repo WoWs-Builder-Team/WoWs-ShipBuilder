@@ -93,7 +93,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 };
 
                 // because WG is fucking retarded
-                if (!name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
+                if (name.Contains("Sub", StringComparison.OrdinalIgnoreCase) && !name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
                 {
                     torpUI.Type = Translation.ShipStats_TorpedoMagnetic;
                 }
