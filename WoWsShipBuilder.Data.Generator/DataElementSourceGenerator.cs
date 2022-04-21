@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -22,19 +22,19 @@ public class DataElementSourceGenerator : IIncrementalGenerator
     private const string Indentation = "        ";
     private const string IfIndentation = "    ";
 
-    private static readonly DiagnosticDescriptor MissingAttributeError = new DiagnosticDescriptor(id: "WOWSSB001",
-                                                                             title: "A required secondary attribute is missing",
-                                                                             messageFormat: "Couldn't find the required attribute {0} for the DataElement type {1}",
-                                                                             category: "DataElementGenerator",
-                                                                             DiagnosticSeverity.Error,
-                                                                             isEnabledByDefault: true);
+    private static readonly DiagnosticDescriptor MissingAttributeError = new (id: "SB001",
+        title: "A required secondary attribute is missing",
+        messageFormat: "Couldn't find the required attribute {0} for the DataElement type {1}",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
 
-    private static readonly DiagnosticDescriptor InvalidTypeEnumError = new DiagnosticDescriptor(id: "WOWSSB002",
-                                                                            title: "The enum type is invalid",
-                                                                            messageFormat: "The enum type for the property {0} doesn't exist",
-                                                                            category: "DataElementGenerator",
-                                                                            DiagnosticSeverity.Error,
-                                                                            isEnabledByDefault: true);
+    private static readonly DiagnosticDescriptor InvalidTypeEnumError = new(id: "SB002",
+        title: "The enum type is invalid",
+        messageFormat: "The enum type for the property {0} doesn't exist",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -111,6 +111,7 @@ public partial record {dataRecord.Name}
                         properties.RemoveAt(0);
                         continue;
                     }
+
                     var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
                     var (code, additionalIndexes) = GenerateCode(context, type, prop, propertyAttributes, properties, DataElementCollectionName);
                     builder.Append(code);
@@ -173,7 +174,8 @@ public partial record {dataRecord.Name}
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementGroupAttribute", "GroupedDataElement"));
             return (string.Empty, new List<int>());
         }
-        var groupName = (string) tooltipAttribute.ConstructorArguments[0].Value!;
+
+        var groupName = (string)tooltipAttribute.ConstructorArguments[0].Value!;
 
         var builder = new StringBuilder();
 
@@ -199,7 +201,8 @@ public partial record {dataRecord.Name}
                     groupProperties.RemoveAt(0);
                     continue;
                 }
-                var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
+
+                var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
                 var (code, additionalIndexes) = GenerateCode(context, type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
                 builder.Append(code);
                 foreach (var index in additionalIndexes.OrderByDescending(x => x))
@@ -226,7 +229,8 @@ public partial record {dataRecord.Name}
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementTooltipAttribute", "TooltipDataElement"));
             return string.Empty;
         }
-        var tooltip = (string) tooltipAttribute.ConstructorArguments[0].Value!;
+
+        var tooltip = (string)tooltipAttribute.ConstructorArguments[0].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
@@ -248,7 +252,8 @@ public partial record {dataRecord.Name}
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementUnitAttribute", "KeyValueUnitDataElement"));
             return string.Empty;
         }
-        var unit = (string) unitAttribute.ConstructorArguments[0].Value!;
+
+        var unit = (string)unitAttribute.ConstructorArguments[0].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
@@ -291,6 +296,7 @@ public partial record {dataRecord.Name}
         {
             propertyProcessingAddition = ".ToString()";
         }
+
         return propertyProcessingAddition;
     }
 
@@ -314,13 +320,14 @@ public partial record {dataRecord.Name}
     private static string GetFilterAttributeData(string propertyName, ImmutableArray<AttributeData> propertyAttributes)
     {
         var attribute = propertyAttributes.FirstOrDefault(attribute => attribute.AttributeClass!.Name.Contains("DataElementVisibilityAttribute"));
+
         // if there is no attribute, returns active filter, no name for custom filter.
         if (attribute is null)
         {
             return GetFilterString(propertyName, true, "");
         }
 
-        var filterEnabled = (bool) attribute.ConstructorArguments[0].Value!;
+        var filterEnabled = (bool)attribute.ConstructorArguments[0].Value!;
         string filterName = string.Empty;
         if (attribute.ConstructorArguments.Length > 1)
         {
