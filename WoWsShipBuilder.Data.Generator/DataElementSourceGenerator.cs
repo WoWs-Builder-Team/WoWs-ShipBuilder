@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -16,10 +16,25 @@ namespace WoWsShipBuilder.Data.Generator;
 [Generator]
 public class DataElementSourceGenerator : IIncrementalGenerator
 {
-    public const string BaseInterfaceName = "IDataUi";
-    public const string GeneratedMethodName = "UpdateDataElements";
-    public const string DataElementCollectionName = "DataElements";
-    public const string Indentation = "        ";
+    private const string BaseInterfaceName = "IDataUi";
+    private const string GeneratedMethodName = "UpdateDataElements";
+    private const string DataElementCollectionName = "DataElements";
+    private const string Indentation = "        ";
+    private const string IfIndentation = "    ";
+
+    private static readonly DiagnosticDescriptor MissingAttributeError = new (id: "SB001",
+        title: "A required secondary attribute is missing",
+        messageFormat: "Couldn't find the required attribute {0} for the DataElement type {1}",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
+    private static readonly DiagnosticDescriptor InvalidTypeEnumError = new(id: "SB002",
+        title: "The enum type is invalid",
+        messageFormat: "The enum type for the property {0} doesn't exist",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -28,7 +43,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             .Collect();
 
         // Uncomment to generate attribute classes instead of using them from a separate dependency
-        context.RegisterPostInitializationOutput(GenerateFixedCode);
+        // context.RegisterPostInitializationOutput(GenerateFixedCode);
         context.RegisterSourceOutput(dataClasses, GenerateCode!);
     }
 
@@ -90,8 +105,15 @@ public partial record {dataRecord.Name}
                 var typeAttribute = propertyAttributes.FirstOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
                 if (typeAttribute is not null)
                 {
+                    if (typeAttribute.ConstructorArguments.IsEmpty)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, Location.None, prop.Name));
+                        properties.RemoveAt(0);
+                        continue;
+                    }
+
                     var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
-                    var (code, additionalIndexes) = GenerateCode(type, prop, propertyAttributes, properties, DataElementCollectionName);
+                    var (code, additionalIndexes) = GenerateCode(context, type, prop, propertyAttributes, properties, DataElementCollectionName);
                     builder.Append(code);
                     builder.AppendLine();
 
@@ -107,34 +129,34 @@ public partial record {dataRecord.Name}
         }
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateCode(DataElementTypes type, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, DataElementTypes type, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
     {
         var builder = new StringBuilder();
         var additionalPropIndexes = new List<int>();
         switch (type)
         {
             case DataElementTypes.Value:
-                builder.Append(GenerateValueRecord(currentProp, collectionName));
+                builder.Append(GenerateValueRecord(currentProp, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.KeyValue:
-                builder.Append(GenerateKeyValueRecord(currentProp, collectionName));
+                builder.Append(GenerateKeyValueRecord(currentProp, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.KeyValueUnit:
-                builder.Append(GenerateKeyValueUnitRecord(currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateKeyValueUnitRecord(context, currentProp, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.Tooltip:
-                builder.Append(GenerateTooltipRecord(currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateTooltipRecord(context, currentProp, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.Grouped:
-                var (code, additionalIndexes) = GenerateGroupedRecord(currentProp, propertyAttributes, properties, collectionName);
+                var (code, additionalIndexes) = GenerateGroupedRecord(context, propertyAttributes, properties, collectionName);
                 builder.Append(code);
                 builder.AppendLine();
                 additionalPropIndexes.AddRange(additionalIndexes);
@@ -144,14 +166,16 @@ public partial record {dataRecord.Name}
         return (builder.ToString(), additionalPropIndexes);
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
     {
         var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementGroupAttribute"));
         if (tooltipAttribute is null)
         {
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementGroupAttribute", "GroupedDataElement"));
             return (string.Empty, new List<int>());
         }
-        var groupName = (string) tooltipAttribute.ConstructorArguments[0].Value!;
+
+        var groupName = (string)tooltipAttribute.ConstructorArguments[0].Value!;
 
         var builder = new StringBuilder();
 
@@ -171,8 +195,15 @@ public partial record {dataRecord.Name}
             var typeAttribute = currentGroupPropertyAttributes.LastOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
             if (typeAttribute is not null)
             {
-                var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
-                var (code, additionalIndexes) = GenerateCode(type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
+                if (typeAttribute.ConstructorArguments.IsEmpty)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, Location.None, currentGroupProp.Name));
+                    groupProperties.RemoveAt(0);
+                    continue;
+                }
+
+                var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
+                var (code, additionalIndexes) = GenerateCode(context, type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
                 builder.Append(code);
                 foreach (var index in additionalIndexes.OrderByDescending(x => x))
                 {
@@ -181,26 +212,36 @@ public partial record {dataRecord.Name}
             }
         }
 
+        builder.Append($@"{IfIndentation}if ({groupName}List.Count > 0)");
+        builder.AppendLine();
         builder.Append(@$"{Indentation}{collectionName}.Add(new GroupedDataElement(""{groupName}"", {groupName}List));");
 
         return (builder.ToString(), indexList);
     }
 
-    private static string GenerateTooltipRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateTooltipRecord(SourceProductionContext context, IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
         var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementTooltipAttribute"));
         if (tooltipAttribute is null)
         {
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementTooltipAttribute", "TooltipDataElement"));
             return string.Empty;
         }
-        var tooltip = (string) tooltipAttribute.ConstructorArguments[0].Value!;
 
-        return $@"{Indentation}{collectionName}.Add(new TooltipDataElement(""{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));";
+        var tooltip = (string)tooltipAttribute.ConstructorArguments[0].Value!;
+
+        var filter = GetFilterAttributeData(property.Name, propertyAttributes);
+
+        var builder = new StringBuilder();
+        builder.Append(filter);
+        builder.AppendLine();
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));");
+        return builder.ToString();
     }
 
-    private static string GenerateKeyValueUnitRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateKeyValueUnitRecord(SourceProductionContext context, IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
@@ -208,23 +249,44 @@ public partial record {dataRecord.Name}
         var unitAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementUnitAttribute"));
         if (unitAttribute is null)
         {
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementUnitAttribute", "KeyValueUnitDataElement"));
             return string.Empty;
         }
-        var unit = (string) unitAttribute.ConstructorArguments[0].Value!;
-        return $@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));";
+
+        var unit = (string)unitAttribute.ConstructorArguments[0].Value!;
+
+        var filter = GetFilterAttributeData(property.Name, propertyAttributes);
+
+        var builder = new StringBuilder();
+        builder.Append(filter);
+        builder.AppendLine();
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));");
+        return builder.ToString();
     }
 
-    private static string GenerateKeyValueRecord(IPropertySymbol property, string collectionName)
+    private static string GenerateKeyValueRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
-        return $@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""{name}"", {name}{propertyProcessingAddition}));";
+        var filter = GetFilterAttributeData(property.Name, propertyAttributes);
+
+        var builder = new StringBuilder();
+        builder.Append(filter);
+        builder.AppendLine();
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""{name}"", {name}{propertyProcessingAddition}));");
+        return builder.ToString();
     }
 
-    private static string GenerateValueRecord(IPropertySymbol property, string collectionName)
+    private static string GenerateValueRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var propertyProcessingAddition = GetPropertyAddition(property);
-        return $@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}));";
+        var filter = GetFilterAttributeData(property.Name, propertyAttributes);
+
+        var builder = new StringBuilder();
+        builder.Append(filter);
+        builder.AppendLine();
+        builder.Append($@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}));");
+        return builder.ToString();
     }
 
     private static string GetPropertyAddition(IPropertySymbol property)
@@ -234,6 +296,44 @@ public partial record {dataRecord.Name}
         {
             propertyProcessingAddition = ".ToString()";
         }
+
         return propertyProcessingAddition;
+    }
+
+    private static string GetFilterString(string propertyName, bool filterEnabled, string filterName)
+    {
+        var filter = string.Empty;
+        if (!filterEnabled)
+        {
+            return filter;
+        }
+
+        if (string.IsNullOrWhiteSpace(filterName))
+        {
+            return @$"{IfIndentation}if ({BaseInterfaceName}.ShouldAdd({propertyName}))";
+        }
+
+        filter = @$"{IfIndentation}if ({filterName}({propertyName}))";
+        return filter;
+    }
+
+    private static string GetFilterAttributeData(string propertyName, ImmutableArray<AttributeData> propertyAttributes)
+    {
+        var attribute = propertyAttributes.FirstOrDefault(attribute => attribute.AttributeClass!.Name.Contains("DataElementVisibilityAttribute"));
+
+        // if there is no attribute, returns active filter, no name for custom filter.
+        if (attribute is null)
+        {
+            return GetFilterString(propertyName, true, "");
+        }
+
+        var filterEnabled = (bool)attribute.ConstructorArguments[0].Value!;
+        string filterName = string.Empty;
+        if (attribute.ConstructorArguments.Length > 1)
+        {
+            filterName = attribute.ConstructorArguments[1].Value?.ToString() ?? string.Empty;
+        }
+
+        return GetFilterString(propertyName, filterEnabled, filterName);
     }
 }

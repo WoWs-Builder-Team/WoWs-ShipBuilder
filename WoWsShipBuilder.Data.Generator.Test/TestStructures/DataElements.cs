@@ -9,6 +9,18 @@ public interface IDataElement
 public interface IDataUi
 {
     List<IDataElement> DataElements { get; }
+
+    protected static bool ShouldAdd(object? value)
+    {
+        return value switch
+        {
+            string strValue => !string.IsNullOrEmpty(strValue),
+            decimal decValue => decValue != 0,
+            (decimal min, decimal max) => min > 0 || max > 0,
+            int intValue => intValue != 0,
+            _ => false,
+        };
+    }
 }
 
 public readonly record struct KeyValueDataElement(string Key, string Value) : IDataElement;

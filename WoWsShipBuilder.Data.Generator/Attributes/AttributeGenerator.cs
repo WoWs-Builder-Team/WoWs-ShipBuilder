@@ -2,6 +2,12 @@
 
 public static class AttributeGenerator
 {
+    public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+    // public const string DataElementTypeAttributeName = "DataElementTypeAttribute";
+
+
     public const string DataElementTypesEnum = @"
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
@@ -82,4 +88,22 @@ public class DataElementUnitAttribute : Attribute
     public string UnitKey { get; }
 }
 ";
+
+    public const string DataElementVisibilityAttribute = @"using System;
+
+namespace WoWsShipBuilder.DataElements.DataElementAttributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class DataElementVisibilityAttribute : Attribute
+{
+    public DataElementVisibilityAttribute(bool enableFilterVisibility, string filterMethodName = "")
+    {
+        EnableFilterVisibility = enableFilterVisibility;
+        FilterMethodName = filterMethodName;
+    }
+
+    public bool EnableFilterVisibility { get; }
+
+    public string FilterMethodName { get; }
+}";
 }
