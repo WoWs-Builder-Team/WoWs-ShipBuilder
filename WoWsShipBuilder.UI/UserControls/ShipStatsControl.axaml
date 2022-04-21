@@ -10,16 +10,56 @@
              xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm">
+             xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
+             xmlns:dataElements="clr-namespace:WoWsShipBuilder.Core.DataUI.DataElements;assembly=WoWsShipBuilder.Core">
+    
     <Design.DataContext>
         <shipVm:ShipStatsControlViewModel/>
     </Design.DataContext>
+    
     <UserControl.Resources>
         <converters:ClassToPathConverter x:Key="PathConverter"/>
         <converters:ImagePathConverter x:Key="ImageConverter" />
         <converters:ModifierConverter x:Key="ModifierConverter"/>
         <converters:StatGridConverter x:Key="GridSizeConverter"/>
     </UserControl.Resources>
+    
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="dataElements:GroupedDataElement">
+            <StackPanel Margin="0 5 0 0">
+                <TextBlock Classes="Key"/>
+                <ItemsControl Items="{Binding Children}" Classes="Stagger"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:KeyValueDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Unit"/>
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:TooltipDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Value"/>
+                <ToolTip.Tip>
+                    <TextBlock Classes="Tip"/>
+                </ToolTip.Tip>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:ValueDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    
     <UserControl.Styles>
         <Style Selector="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -40,6 +80,20 @@
             <Setter Property="Text" Value="{Binding Value}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Margin" Value="20 0 0 0"/>
+        </Style>
+        <Style Selector="TextBlock.Unit">
+            <Setter Property="Text" Value="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>         
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Margin" Value="4 0 0 0"/>
+        </Style>
+        <Style Selector="TextBlock.Tip">
+            <Setter Property="Text" Value="{Binding Tip}"/>
+            <Setter Property="MaxWidth" Value="300"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>         
         </Style>
         <Style Selector="ItemsControl.Stagger">
             <Setter Property="Margin" Value="10,0,0,0"/>
@@ -112,30 +166,30 @@
                             <TextBlock Text="{x:Static translations:Translation.ShipStats_VerticalDisp}" DockPanel.Dock="Left" Margin="10 0 0 0"/>
                             <TextBlock Text="{Binding VerticalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                             <ToolTip.Tip>
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
-                                    <TextBlock Text=" &lt; "/>
-                                    <TextBlock Text="{Binding DelimDist}"/>
-                                    <TextBlock Text=":"/>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text=" &lt; "/>
+                                        <TextBlock Text="{Binding DelimDist}"/>
+                                        <TextBlock Text=":"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding VerticalCoeffFormulaAtShortRange}"/>
+                                        <TextBlock Text=" * "/>
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
+                                        <TextBlock Text=" &gt;= "/>
+                                        <TextBlock Text="{Binding DelimDist}"/>
+                                        <TextBlock Text=":"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding VerticalCoeffFormula}"/>
+                                        <TextBlock Text=" * "/>
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding VerticalCoeffFormulaAtShortRange}"/>
-                                    <TextBlock Text=" * "/>
-                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_DispFormulaTooltip}"/>
-                                    <TextBlock Text=" &gt;= "/>
-                                    <TextBlock Text="{Binding DelimDist}"/>
-                                    <TextBlock Text=":"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding VerticalCoeffFormula}"/>
-                                    <TextBlock Text=" * "/>
-                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_HorizontalDispersionX}"/>
-                                </StackPanel>
-                            </StackPanel>
                             </ToolTip.Tip>
                         </DockPanel>
                         <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_TurretAngles}" PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" Margin="0 5" />                        
