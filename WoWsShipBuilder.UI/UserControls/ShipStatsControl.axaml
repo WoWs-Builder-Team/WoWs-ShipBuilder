@@ -85,7 +85,7 @@
                 <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Value" Text="{Binding Value}"/>
                 <ToolTip.Tip>
-                    <TextBlock Classes="Tip" Text="{Binding Tooltip}"/>
+                    <TextBlock Classes="Tip" Text="{Binding Tooltip, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 </ToolTip.Tip>
             </DockPanel>
         </DataTemplate>

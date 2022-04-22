@@ -242,7 +242,7 @@ public partial record {dataRecord.Name}
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}""));");
         return builder.ToString();
     }
 
