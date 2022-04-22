@@ -31,6 +31,7 @@
         <Style Selector="DockPanel">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="0 2"/>
+            <Setter Property="LastChildFill" Value="True"/>
         </Style>
         <Style Selector="DockPanel.NameValuePanel">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -40,15 +41,16 @@
             <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
         <Style Selector="TextBlock.Value">
-            <Setter Property="TextWrapping" Value="Wrap"/>         
+            <Setter Property="TextWrapping" Value="NoWrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="Margin" Value="20 0 0 0"/>
         </Style>
         <Style Selector="TextBlock.Unit">
-            <Setter Property="TextWrapping" Value="Wrap"/>         
+            <Setter Property="TextWrapping" Value="NoWrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="Margin" Value="4 0 0 0"/>
         </Style>
         <Style Selector="TextBlock.Tip">
             <Setter Property="MaxWidth" Value="300"/>
@@ -76,7 +78,6 @@
             <DockPanel Classes="NameValuePanel">
                 <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Unit" Text="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
-                <TextBlock Classes="Unit" Text=" "/>
                 <TextBlock Classes="Value" Text="{Binding Value}"/>
             </DockPanel>
         </DataTemplate>
@@ -99,12 +100,12 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <customControls:AutoGrid Name="StatGrid" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <customControls:AutoGrid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MinWidth="180" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="*" MinWidth="180" />
-                <ColumnDefinition Width="{Binding CurrentShipStats.SecondColumnContent.Count, Converter={StaticResource GridSizeConverter}, FallbackValue={x:Static GridLength.Auto}, ConverterParameter=separator}" />
+                <ColumnDefinition Width="*" MinWidth="180"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*" MinWidth="180"/>
+                <ColumnDefinition Width="{Binding CurrentShipStats.SecondColumnContent.Count, Converter={StaticResource GridSizeConverter}, FallbackValue={x:Static GridLength.Auto}, ConverterParameter=separator}"/>
                 <ColumnDefinition Width="{Binding CurrentShipStats.SecondColumnContent.Count, Converter={StaticResource GridSizeConverter}, FallbackValue={x:Static GridLength.Auto}}" 
-                                  MinWidth="{Binding CurrentShipStats.SecondColumnContent.Count, Converter={StaticResource GridSizeConverter}, FallbackValue=0}" />
+                                  MinWidth="{Binding CurrentShipStats.SecondColumnContent.Count, Converter={StaticResource GridSizeConverter}, FallbackValue=0}"/>
             </customControls:AutoGrid.ColumnDefinitions>
             
             <!-- Main Armaments -->
