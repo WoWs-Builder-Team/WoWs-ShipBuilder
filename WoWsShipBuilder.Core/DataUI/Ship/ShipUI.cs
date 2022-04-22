@@ -34,13 +34,13 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; set; } = default!;
 
-        public ConcealmentUI ConcealmentUI { get; set; } = default!;
+        public ConcealmentUIDataContainer ConcealmentUiDataContainer { get; set; } = default!;
 
-        public AntiAirUI? AntiAirUI { get; set; }
+        public AntiAirDataContainer? AntiAirUI { get; set; }
 
         public List<object> SecondColumnContent { get; set; } = default!;
 
-        public SpecialAbilityUI? SpecialAbilityUI { get; set; }
+        public SpecialAbilityDataContainer? SpecialAbilityUI { get; set; }
 
         public static async Task<ShipUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
@@ -54,16 +54,16 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 // Secondary weapons
                 SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
-                AntiAirUI = AntiAirUI.FromShip(ship, shipConfiguration, modifiers),
+                AntiAirUI = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
                 AswAirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, true, appDataService),
                 DepthChargeLauncherUI = await DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
 
                 // Misc
                 ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
+                ConcealmentUiDataContainer = ConcealmentUIDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, shipConfiguration, modifiers),
+                SpecialAbilityUI = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
             };
 
             shipUI.SecondColumnContent = new List<object?>

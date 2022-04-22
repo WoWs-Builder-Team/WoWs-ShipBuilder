@@ -2,53 +2,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SpecialAbilityUI : DataContainerBase
+    public partial record SpecialAbilityDataContainer : DataContainerBase
     {
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.Value)]
         public string Name { get; set; } = default!;
 
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.Value)]
+
         public string Description { get; set; } = default!;
 
         // These are for the special ability of ships like satsuma etc.
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal Duration { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public int RequiredHits { get; set; }
 
         // These are for Burst mode
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal ReloadDuringBurst { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal ReloadAfterBurst { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public int ShotInBurst { get; set; }
 
         // This is in common
         [JsonIgnore]
         public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-        [JsonIgnore]
         public bool IsBurstMode { get; set; } = false;
 
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>> SpecialData { get; set; } = default!;
-
-        public static SpecialAbilityUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+        public static SpecialAbilityDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            SpecialAbilityUI specialUI;
+            SpecialAbilityDataContainer specialDataContainer;
 
             if (ship.SpecialAbility is not null)
             {
                 var specialAbility = ship.SpecialAbility;
 
-                specialUI = new()
+                specialDataContainer = new()
                 {
                     Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
                     Description = $"DOCK_RAGE_MODE_DESCRIPTION_{specialAbility.Name}",
@@ -57,7 +57,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     Modifiers = specialAbility.Modifiers,
                 };
 
-                specialUI.SpecialData = specialUI.ToPropertyMapping();
+                specialDataContainer.UpdateDataElements();
             }
             else
             {
@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     return null;
                 }
 
-                specialUI = new()
+                specialDataContainer = new()
                 {
                     Name = "ShipStats_BurstMode",
                     ReloadDuringBurst = burstMode.ReloadDuringBurst,
@@ -98,10 +98,10 @@ namespace WoWsShipBuilder.Core.DataUI
                     IsBurstMode = true,
                 };
 
-                specialUI.SpecialData = specialUI.ToPropertyMapping();
+                specialDataContainer.UpdateDataElements();
             }
 
-            return specialUI;
+            return specialDataContainer;
         }
     }
 }

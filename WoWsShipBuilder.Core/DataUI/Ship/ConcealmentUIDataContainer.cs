@@ -4,37 +4,35 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ConcealmentUI : DataContainerBase
+    public partial record ConcealmentUIDataContainer : DataContainerBase
     {
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? ConcealmentData { get; set; }
-
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentBySea { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentBySeaFiringSmoke { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentBySeaFire { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentByAir { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentByAirFire { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentBySubPeriscope { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal ConcealmentBySubOperating { get; set; }
 
-        public static ConcealmentUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        public static ConcealmentUIDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
@@ -104,7 +102,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var concealmentBySeaFire = concealmentBySea + 2.0m;
             var concealmentByAirFire = concealmentByAir + 3.0m;
 
-            var concealment = new ConcealmentUI
+            var concealment = new ConcealmentUIDataContainer
             {
                 ConcealmentBySea = Math.Round(concealmentBySea, 2),
                 ConcealmentBySeaFiringSmoke = Math.Round(concealmentBySeaFiringSmoke, 2),
@@ -115,7 +113,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ConcealmentBySubPeriscope = Math.Round(concealmentBySubPeriscope, 2),
             };
 
-            concealment.ConcealmentData = concealment.ToPropertyMapping();
+            concealment.UpdateDataElements();
 
             return concealment;
         }

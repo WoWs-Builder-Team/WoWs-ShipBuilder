@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AntiAirUI : DataContainerBase
+    public record AntiAirDataContainer
     {
         // These two are for the conversion in damage per second
         private const decimal ConstantDamageMultiplier = 1 / AntiAirAura.DamageInterval;
@@ -17,20 +18,19 @@ namespace WoWsShipBuilder.Core.DataUI
 
         private string expanderKey = default!;
 
-        [JsonIgnore]
         public bool IsExpanderOpen
         {
             get => ShipUI.ExpanderStateMapper[expanderKey];
             set => ShipUI.ExpanderStateMapper[expanderKey] = value;
         }
 
-        public AuraDataUI? LongRangeAura { get; set; }
+        public AuraDataDataContainer? LongRangeAura { get; set; }
 
-        public AuraDataUI? MediumRangeAura { get; set; }
+        public AuraDataDataContainer? MediumRangeAura { get; set; }
 
-        public AuraDataUI? ShortRangeAura { get; set; }
+        public AuraDataDataContainer? ShortRangeAura { get; set; }
 
-        public static AntiAirUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
+        public static AntiAirDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Name, float Value)> modifiers)
         {
             if (ship.ShipClass.Equals(ShipClass.Submarine))
             {
@@ -65,7 +65,7 @@ namespace WoWsShipBuilder.Core.DataUI
             IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
             constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
 
-            var aaUI = new AntiAirUI
+            var aaUI = new AntiAirDataContainer
             {
                 expanderKey = $"{ship.Index}_AA",
             };
@@ -112,7 +112,7 @@ namespace WoWsShipBuilder.Core.DataUI
             return aaUI;
         }
 
-        private static AuraDataUI? FromAura(AntiAirAura? antiAirAura, decimal flakDamageBonus, decimal constantDamageBonus, int flakAmount)
+        private static AuraDataDataContainer? FromAura(AntiAirAura? antiAirAura, decimal flakDamageBonus, decimal constantDamageBonus, int flakAmount)
         {
             if (antiAirAura == null)
             {
@@ -128,7 +128,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     flakNumber = $"{flakAverage} ± {flakDelta}";
                 }
 
-                var auraData = new AuraDataUI
+                var auraData = new AuraDataDataContainer
                 {
                     Range = Math.Round(antiAirAura.MaxRange / 1000, 2),
                     ConstantDamage = Math.Round(antiAirAura.ConstantDps * ConstantDamageMultiplier * constantDamageBonus, 2),
@@ -137,28 +137,9 @@ namespace WoWsShipBuilder.Core.DataUI
                     HitChance = (int)Math.Round(antiAirAura.HitChance * 100, 2),
                 };
 
-                auraData.AntiAirData = auraData.ToPropertyMapping();
+                auraData.UpdateData();
                 return auraData;
             }
         }
-    }
-
-    public record AuraDataUI : DataContainerBase
-    {
-        [DataUiUnit("KM")]
-        public decimal Range { get; set; }
-
-        [DataUiUnit("DPS")]
-        public decimal ConstantDamage { get; set; }
-
-        public string Flak { get; set; } = default!;
-
-        public decimal FlakDamage { get; set; }
-
-        [DataUiUnit("PerCent")]
-        public int HitChance { get; set; }
-
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? AntiAirData { get; set; }
     }
 }
