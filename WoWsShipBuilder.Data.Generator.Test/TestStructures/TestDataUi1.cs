@@ -19,27 +19,23 @@ public partial record TestDataUi1 : IDataUi
     [DataElementVisibility(true, "TestVisibility")]
     public decimal TestVisibilityCustom { get; init; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit)]
-    [DataElementUnit("mm")]
+    [DataElementType(DataElementTypes.KeyValueUnit, "mm")]
     public string TestKeyUnitValue { get; init; } = default!;
 
-    [DataElementType(DataElementTypes.Tooltip)]
-    [DataElementTooltip("testTooltip")]
+    [DataElementType(DataElementTypes.Tooltip, "testTooltip")]
     public decimal TestTooltipValue { get; init; }
 
-    [DataElementType(DataElementTypes.Grouped)]
-    [DataElementGroup("test1")]
+    [DataElementType(DataElementTypes.Grouped, "test1")]
     [DataElementType(DataElementTypes.KeyValue)]
     public string TestGroup1 { get; init; } = default!;
 
-    [DataElementType(DataElementTypes.Grouped)]
-    [DataElementGroup("test1")]
+    [DataElementType(DataElementTypes.Grouped, "test1")]
     [DataElementType(DataElementTypes.KeyValue)]
     public string Test2Group1 { get; init; } = default!;
 
     public void UpdateData()
     {
-        UpdateDataElements();
+         UpdateDataElements();
     }
 
     public bool TestVisibility(object value)

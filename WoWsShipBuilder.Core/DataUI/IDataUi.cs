@@ -1,4 +1,7 @@
-﻿namespace WoWsShipBuilder.Core.DataUI;
+﻿using System.Collections.Generic;
+using WoWsShipBuilder.Core.DataUI.DataElements;
+
+namespace WoWsShipBuilder.Core.DataUI;
 
 public interface IDataUi
 {

@@ -67,9 +67,6 @@ public class DataElementSourceGenerator : IIncrementalGenerator
     {
         context.AddSource("DataElementTypes.g.cs", SourceText.From(AttributeGenerator.DataElementTypesEnum, Encoding.UTF8));
         context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
-        context.AddSource("DataElementTooltipAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTooltipAttribute, Encoding.UTF8));
-        context.AddSource("DataElementGroupAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementGroupAttribute, Encoding.UTF8));
-        context.AddSource("DataElementUnitAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementUnitAttribute, Encoding.UTF8));
     }
 
     private static void GenerateCode(SourceProductionContext context, ImmutableArray<ITypeSymbol> dataRecords)
@@ -111,9 +108,7 @@ public partial record {dataRecord.Name}
                         properties.RemoveAt(0);
                         continue;
                     }
-
-                    var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
-                    var (code, additionalIndexes) = GenerateCode(context, type, prop, propertyAttributes, properties, DataElementCollectionName);
+                    var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName);
                     builder.Append(code);
                     builder.AppendLine();
 
@@ -129,10 +124,11 @@ public partial record {dataRecord.Name}
         }
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, DataElementTypes type, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
     {
         var builder = new StringBuilder();
         var additionalPropIndexes = new List<int>();
+        var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
         switch (type)
         {
             case DataElementTypes.Value:
@@ -146,17 +142,17 @@ public partial record {dataRecord.Name}
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.KeyValueUnit:
-                builder.Append(GenerateKeyValueUnitRecord(context, currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateKeyValueUnitRecord(context, currentProp, typeAttribute, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.Tooltip:
-                builder.Append(GenerateTooltipRecord(context, currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateTooltipRecord(context, currentProp, typeAttribute, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.Grouped:
-                var (code, additionalIndexes) = GenerateGroupedRecord(context, propertyAttributes, properties, collectionName);
+                var (code, additionalIndexes) = GenerateGroupedRecord(context, propertyAttributes, typeAttribute, properties, collectionName);
                 builder.Append(code);
                 builder.AppendLine();
                 additionalPropIndexes.AddRange(additionalIndexes);
@@ -166,23 +162,22 @@ public partial record {dataRecord.Name}
         return (builder.ToString(), additionalPropIndexes);
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
     {
-        var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementGroupAttribute"));
-        if (tooltipAttribute is null)
+        if (typeAttr.ConstructorArguments.Length <= 1)
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementGroupAttribute", "GroupedDataElement"));
-            return (string.Empty, new List<int>());
+            return (string.Empty, new List<int>(){0});
         }
 
-        var groupName = (string)tooltipAttribute.ConstructorArguments[0].Value!;
+        var groupName = (string) typeAttr.ConstructorArguments[1].Value!;
 
         var builder = new StringBuilder();
 
         builder.Append($@"{Indentation}var {groupName}List = new List<IDataElement>();");
         builder.AppendLine();
 
-        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementGroupAttribute") && attribute.ConstructorArguments[0].Value!.Equals(groupName))).ToList();
+        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementType") && attribute.ConstructorArguments[0].Value!.Equals(3) && attribute.ConstructorArguments.Length > 1 && attribute.ConstructorArguments[1].Value!.Equals(groupName))).ToList();
 
         var indexList = groupProperties.Select(singleProperty => properties.IndexOf(singleProperty)).ToList();
 
@@ -202,8 +197,7 @@ public partial record {dataRecord.Name}
                     continue;
                 }
 
-                var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
-                var (code, additionalIndexes) = GenerateCode(context, type, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
+                var (code, additionalIndexes) = GenerateCode(context, typeAttribute, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
                 builder.Append(code);
                 foreach (var index in additionalIndexes.OrderByDescending(x => x))
                 {
@@ -219,18 +213,17 @@ public partial record {dataRecord.Name}
         return (builder.ToString(), indexList);
     }
 
-    private static string GenerateTooltipRecord(SourceProductionContext context, IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateTooltipRecord(SourceProductionContext context, IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
-        var tooltipAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementTooltipAttribute"));
-        if (tooltipAttribute is null)
+        if (typeAttribute.ConstructorArguments.Length <= 1)
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementTooltipAttribute", "TooltipDataElement"));
             return string.Empty;
         }
 
-        var tooltip = (string)tooltipAttribute.ConstructorArguments[0].Value!;
+        var tooltip = (string)typeAttribute.ConstructorArguments[1].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
@@ -241,19 +234,18 @@ public partial record {dataRecord.Name}
         return builder.ToString();
     }
 
-    private static string GenerateKeyValueUnitRecord(SourceProductionContext context, IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateKeyValueUnitRecord(SourceProductionContext context, IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
 
-        var unitAttribute = propertyAttributes.FirstOrDefault(x => x.AttributeClass!.Name.Contains("DataElementUnitAttribute"));
-        if (unitAttribute is null)
+        if (typeAttribute.ConstructorArguments.Length <= 1)
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementUnitAttribute", "KeyValueUnitDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementUnitAttribute", "KeyValueUnitDataElement"));
             return string.Empty;
         }
 
-        var unit = (string)unitAttribute.ConstructorArguments[0].Value!;
+        var unit = (string)typeAttribute.ConstructorArguments[1].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
