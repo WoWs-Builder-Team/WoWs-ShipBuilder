@@ -36,33 +36,23 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
         <Style Selector="TextBlock.Key">
-            <Setter Property="Text" Value="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
         <Style Selector="TextBlock.Value">
-            <Setter Property="Text" Value="{Binding Value}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="Margin" Value="20 0 0 0"/>
         </Style>
         <Style Selector="TextBlock.Unit">
-            <Setter Property="Text" Value="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
         </Style>
         <Style Selector="TextBlock.Tip">
-            <Setter Property="Text" Value="{Binding Tip}"/>
             <Setter Property="MaxWidth" Value="300"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
-        <Style Selector="TextBlock.Blank">
-            <!-- <Setter Property="Text" Value=" "/> -->
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="DockPanel.Dock" Value="Right"/>
         </Style>
         <Style Selector="ItemsControl.Stagger">
             <Setter Property="Margin" Value="10,0,0,0"/>
@@ -72,36 +62,36 @@
     <UserControl.DataTemplates>
         <DataTemplate DataType="dataElements:GroupedDataElement">
             <StackPanel Margin="0 5 0 0">
-                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <ItemsControl Items="{Binding Children}" Classes="Stagger"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:KeyValueDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Value"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                <TextBlock Classes="Value" Text="{Binding Value}"/>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Unit"/>
-                <TextBlock Classes="Blank"/>
-                <TextBlock Classes="Value"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                <TextBlock Classes="Unit" Text="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                <TextBlock Classes="Unit" Text=" "/>
+                <TextBlock Classes="Value" Text="{Binding Value}"/>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:TooltipDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Value"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                <TextBlock Classes="Value" Text="{Binding Value}"/>
                 <ToolTip.Tip>
-                    <TextBlock Classes="Tip"/>
+                    <TextBlock Classes="Tip" Text="{Binding Tooltip}"/>
                 </ToolTip.Tip>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:ValueDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Value"/>
+                <TextBlock Classes="Value" Text="{Binding Value}"/>
             </DockPanel>
         </DataTemplate>
     </UserControl.DataTemplates>
