@@ -70,30 +70,28 @@
         </DataTemplate>
         <DataTemplate DataType="dataElements:KeyValueDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Value" Text="{Binding Value}"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Unit" Text="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Value" Text="{Binding Value}"/>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:TooltipDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <TextBlock Classes="Value" Text="{Binding Value}"/>
                 <ToolTip.Tip>
                     <TextBlock Classes="Tip" Text="{Binding Tooltip, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 </ToolTip.Tip>
+                <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:ValueDataElement">
-            <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Value" Text="{Binding Value}"/>
-            </DockPanel>
+            <TextBlock Classes="Value" Text="{Binding Value}"/>
         </DataTemplate>
     </UserControl.DataTemplates>
     
