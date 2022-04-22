@@ -40,6 +40,8 @@ public class DataElementSourceGenerator : IIncrementalGenerator
     {
         var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataContainerRecord, GetRecordTypeOrNull)
             .Where(type => type is not null)
+            .Select(GetPropertiesWithAttributes)
+            .Where(x => x.properties.Count > 0)
             .Collect();
 
         // Uncomment to generate attribute classes instead of using them from a separate dependency
@@ -49,6 +51,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static bool IsDataContainerRecord(SyntaxNode syntaxNode, CancellationToken token)
     {
+        token.ThrowIfCancellationRequested();
         if (syntaxNode is not RecordDeclarationSyntax recordSyntax)
         {
             return false;
@@ -59,8 +62,18 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static ITypeSymbol? GetRecordTypeOrNull(GeneratorSyntaxContext context, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var recordSyntax = (RecordDeclarationSyntax)context.Node;
         return context.SemanticModel.GetDeclaredSymbol(recordSyntax);
+    }
+
+    private static (string className, string classNamespace, List<IPropertySymbol> properties) GetPropertiesWithAttributes(ITypeSymbol? symbol, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var name = symbol!.Name;
+        var dataNamespace = symbol.ContainingNamespace.ToDisplayString();
+        var properties = symbol.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute))).ToList();
+        return (name, dataNamespace, properties);
     }
 
     private static void GenerateFixedCode(IncrementalGeneratorPostInitializationContext context)
@@ -69,20 +82,20 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
     }
 
-    private static void GenerateCode(SourceProductionContext context, ImmutableArray<ITypeSymbol> dataRecords)
+    private static void GenerateCode(SourceProductionContext context, ImmutableArray<(string className, string classNamespace, List<IPropertySymbol> properties)> dataRecords)
     {
         // context.AddSource("test.g.cs", SourceText.From("//" + string.Join(" - ",dataRecords.Select(x => x.Name)), Encoding.UTF8));
         foreach (var dataRecord in dataRecords)
         {
-            var properties = dataRecord.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => !attr.AttributeClass!.Name.Contains("Ignore"))).ToList();
+            var properties = dataRecord.properties;
             var classStart = $@"
 using System;
 using System.Collections.Generic;
 using WoWsShipBuilder.Core.DataUI.DataElements;
 
-namespace {dataRecord.ContainingNamespace.ToDisplayString()};
+namespace {dataRecord.classNamespace};
 #nullable enable
-public partial record {dataRecord.Name}
+public partial record {dataRecord.className}
 {{
     private void {GeneratedMethodName}()
     {{
@@ -100,7 +113,7 @@ public partial record {dataRecord.Name}
                 var prop = properties.First();
                 var propertyAttributes = prop.GetAttributes();
 
-                var typeAttribute = propertyAttributes.FirstOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
+                var typeAttribute = propertyAttributes.FirstOrDefault();
                 if (typeAttribute is not null)
                 {
                     if (typeAttribute.ConstructorArguments.IsEmpty)
@@ -122,7 +135,7 @@ public partial record {dataRecord.Name}
             }
 
             builder.Append(classEnd);
-            context.AddSource($"{dataRecord.Name}.g.cs", SourceText.From(builder.ToString(), Encoding.UTF8));
+            context.AddSource($"{dataRecord.className}.g.cs", SourceText.From(builder.ToString(), Encoding.UTF8));
         }
     }
 
@@ -199,7 +212,7 @@ public partial record {dataRecord.Name}
             var currentGroupPropertyAttributes = currentGroupProp.GetAttributes();
 
             //exclude the group attribute, to avoid infinite recursion. Need to find a better way to skip the Group type.
-            var typeAttribute = currentGroupPropertyAttributes.LastOrDefault(attr => attr.AttributeClass!.Name == nameof(AttributeGenerator.DataElementTypeAttribute));
+            var typeAttribute = currentGroupPropertyAttributes.LastOrDefault();
             if (typeAttribute is not null)
             {
                 if (typeAttribute.ConstructorArguments.IsEmpty)
