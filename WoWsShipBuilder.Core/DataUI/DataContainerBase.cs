@@ -6,7 +6,6 @@ namespace WoWsShipBuilder.Core.DataUI;
 
 public abstract record DataContainerBase
 {
-    [JsonIgnore]
     public List<IDataElement> DataElements { get; } = new();
 
     protected static bool ShouldAdd(object? value)

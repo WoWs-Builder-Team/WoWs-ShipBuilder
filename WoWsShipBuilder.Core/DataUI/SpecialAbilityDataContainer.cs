@@ -10,10 +10,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record SpecialAbilityDataContainer : DataContainerBase
     {
-        [DataElementType(DataElementTypes.Value)]
         public string Name { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Value)]
 
         public string Description { get; set; } = default!;
 
