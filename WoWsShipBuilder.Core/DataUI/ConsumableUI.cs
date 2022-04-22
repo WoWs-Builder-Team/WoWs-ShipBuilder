@@ -9,7 +9,7 @@ using WoWsShipBuilder.Core.Extensions;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ConsumableUI : IDataUi
+    public record ConsumableUI : DataContainerBase
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

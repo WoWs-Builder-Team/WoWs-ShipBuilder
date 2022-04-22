@@ -42,16 +42,13 @@ public class SourceGeneratorTest
     [Test]
     public void AllTest()
     {
-        var code = @"using System.Collections.Generic;
-using WoWsShipBuilder.Core.DataUI.DataElements;
+        var code = @"using WoWsShipBuilder.Core.DataUI.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 
 namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
 
-public partial record TestDataUi1 : IDataUi
+public partial record TestDataUi1 : DataContainerBase
 {
-    public List<IDataElement> DataElements { get; } = new();
-
     [DataElementType(DataElementTypes.Value)]
     public string TestValue { get; init; } = default!;
 
@@ -61,27 +58,19 @@ public partial record TestDataUi1 : IDataUi
 
     [DataElementType(DataElementTypes.KeyValue)]
     [DataElementVisibility(true, ""TestVisibility"")]
-
     public decimal TestVisibilityCustom { get; init; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit)]
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = ""mm"")]
     public string TestKeyUnitValue { get; init; } = default!;
 
-    [DataElementType(DataElementTypes.Tooltip, ""testTooltip"")]
+    [DataElementType(DataElementTypes.Tooltip, TooltipKey = ""testTooltip"")]
     public decimal TestTooltipValue { get; init; }
 
-    [DataElementType(DataElementTypes.Grouped, ""test1"")]
-    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = ""test1"")]
     public string TestGroup1 { get; init; } = default!;
 
-    [DataElementType(DataElementTypes.Grouped, ""test1"")]
-    [DataElementType(DataElementTypes.KeyValue)]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = ""test1"")]
     public string Test2Group1 { get; init; } = default!;
-
-    public void UpdateData()
-    {
-        //UpdateDataElements();
-    }
 
     public bool TestVisibility(object value)
     {

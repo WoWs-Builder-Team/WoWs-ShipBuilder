@@ -11,7 +11,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoUI : ProjectileUI, IDataUi
+    public record TorpedoUI : ProjectileUI
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

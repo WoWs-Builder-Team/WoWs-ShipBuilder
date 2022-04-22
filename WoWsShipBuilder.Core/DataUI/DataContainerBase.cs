@@ -3,8 +3,10 @@ using WoWsShipBuilder.Core.DataUI.DataElements;
 
 namespace WoWsShipBuilder.Core.DataUI;
 
-public interface IDataUi
+public abstract record DataContainerBase
 {
+    public List<IDataElement> DataElements { get; } = new();
+
     protected static bool ShouldAdd(object? value)
     {
         return value switch

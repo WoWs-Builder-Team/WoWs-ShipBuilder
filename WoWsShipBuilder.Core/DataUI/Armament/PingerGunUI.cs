@@ -7,7 +7,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record PingerGunUI : IDataUi
+    public record PingerGunUI : DataContainerBase
     {
         [DataUiUnit("S")]
         public decimal Reload { get; set; }

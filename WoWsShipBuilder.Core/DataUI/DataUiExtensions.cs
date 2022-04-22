@@ -7,7 +7,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public static class DataUiExtensions
     {
-        public static List<KeyValuePair<string, string>> ToPropertyMapping(this IDataUi dataUi, Func<(string Key, object? Value, DataUiUnitAttribute? Unit), bool>? filter = null)
+        public static List<KeyValuePair<string, string>> ToPropertyMapping(this DataContainerBase dataUi, Func<(string Key, object? Value, DataUiUnitAttribute? Unit), bool>? filter = null)
         {
             filter ??= DefaultDataUiFilter;
             return dataUi.GetType().GetProperties()

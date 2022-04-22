@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
-        <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj"/>
+        <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
     </ItemGroup>
     
     <ItemGroup>

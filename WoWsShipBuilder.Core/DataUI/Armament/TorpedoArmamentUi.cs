@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoArmamentUI : IDataUi
+    public record TorpedoArmamentUI : DataContainerBase
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

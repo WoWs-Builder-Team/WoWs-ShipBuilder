@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI.Projectiles
 {
-    public record DepthChargeUI : ProjectileUI, IDataUi
+    public record DepthChargeUI : ProjectileUI
     {
         [JsonIgnore]
         public string Name { get; set; } = null!;

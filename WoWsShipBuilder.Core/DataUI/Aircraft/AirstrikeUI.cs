@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AirstrikeUI : IDataUi
+    public record AirstrikeUI : DataContainerBase
     {
         private string expanderKey = default!;
 

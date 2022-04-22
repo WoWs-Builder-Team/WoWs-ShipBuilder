@@ -1,10 +1,13 @@
-﻿namespace WoWsShipBuilder.DataElements.DataElementAttributes;
+﻿using System;
 
+namespace WoWsShipBuilder.DataElements.DataElementAttributes;
+
+[Flags]
 public enum DataElementTypes
 {
-    KeyValue,
-    KeyValueUnit,
-    Value,
-    Grouped,
-    Tooltip,
+    KeyValue = 1,
+    KeyValueUnit = 2,
+    Value = 4,
+    Grouped = 8,
+    Tooltip = 16,
 }

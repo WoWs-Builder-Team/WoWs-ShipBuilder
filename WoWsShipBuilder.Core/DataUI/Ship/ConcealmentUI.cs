@@ -8,7 +8,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ConcealmentUI : IDataUi
+    public record ConcealmentUI : DataContainerBase
     {
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? ConcealmentData { get; set; }

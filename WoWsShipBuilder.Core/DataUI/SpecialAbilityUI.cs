@@ -7,7 +7,7 @@ using WoWsShipBuilder.DataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SpecialAbilityUI : IDataUi
+    public record SpecialAbilityUI : DataContainerBase
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

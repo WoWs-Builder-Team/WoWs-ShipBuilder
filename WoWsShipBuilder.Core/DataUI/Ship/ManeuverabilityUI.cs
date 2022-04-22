@@ -8,7 +8,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ManeuverabilityUI : IDataUi
+    public record ManeuverabilityUI : DataContainerBase
     {
         [DataUiUnit("Knots")]
         public decimal ManeuverabilityMaxSpeed { get; set; }

@@ -6,13 +6,14 @@ public static class AttributeGenerator
     public const string DataElementTypesEnum = @"
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
+[Flags]
 public enum DataElementTypes
 {
-    KeyValue,
-    KeyValueUnit,
-    Value,
-    Grouped,
-    Tooltip,
+    KeyValue = 1,
+    KeyValueUnit = 2,
+    Value = 4,
+    Grouped = 8,
+    Tooltip = 16,
 }
 ";
 
@@ -21,18 +22,23 @@ using System;
 
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+[AttributeUsage(AttributeTargets.Property)]
 public class DataElementTypeAttribute : Attribute
 {
-     public DataElementTypeAttribute(DataElementTypes type, string argument = """")
+    public DataElementTypeAttribute(DataElementTypes type)
     {
         Type = type;
-        Argument = argument;
     }
 
     public DataElementTypes Type { get; }
 
-    public string Argument { get; }
+    public string? UnitKey { get; set; }
+
+    public string? TooltipKey { get; set; }
+
+    public string? GroupKey { get; set; }
+
+    public string[] LocalizationArguments { get; set; } = Array.Empty<string>();
 }
 ";
 

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace WoWsShipBuilder.Core.DataUI.Projectiles
 {
-    public record ProjectileUI : IDataUi
+    public record ProjectileUI : DataContainerBase
     {
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? ProjectileData { get; set; }

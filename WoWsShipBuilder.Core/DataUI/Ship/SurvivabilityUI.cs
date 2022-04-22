@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SurvivabilityUI : IDataUi
+    public record SurvivabilityUI : DataContainerBase
     {
         [DataUiUnit("HP")]
         public int HitPoints { get; set; }

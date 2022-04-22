@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record BombUI : ProjectileUI, IDataUi
+    public record BombUI : ProjectileUI
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

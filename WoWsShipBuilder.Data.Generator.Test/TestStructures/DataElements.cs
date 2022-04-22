@@ -6,9 +6,9 @@ public interface IDataElement
 {
 }
 
-public interface IDataUi
+public abstract record DataContainerBase
 {
-    List<IDataElement> DataElements { get; }
+    public List<IDataElement> DataElements { get; } = new();
 
     protected static bool ShouldAdd(object? value)
     {

@@ -8,7 +8,7 @@ using WoWsShipBuilder.DataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record AntiAirUI : IDataUi
+    public record AntiAirUI : DataContainerBase
     {
         // These two are for the conversion in damage per second
         private const decimal ConstantDamageMultiplier = 1 / AntiAirAura.DamageInterval;
@@ -143,7 +143,7 @@ namespace WoWsShipBuilder.Core.DataUI
         }
     }
 
-    public record AuraDataUI : IDataUi
+    public record AuraDataUI : DataContainerBase
     {
         [DataUiUnit("KM")]
         public decimal Range { get; set; }

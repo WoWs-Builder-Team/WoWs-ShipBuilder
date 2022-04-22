@@ -16,13 +16,13 @@ namespace WoWsShipBuilder.Data.Generator;
 [Generator]
 public class DataElementSourceGenerator : IIncrementalGenerator
 {
-    private const string BaseInterfaceName = "IDataUi";
+    private const string DataContainerBaseName = "DataContainerBase";
     private const string GeneratedMethodName = "UpdateDataElements";
     private const string DataElementCollectionName = "DataElements";
     private const string Indentation = "        ";
     private const string IfIndentation = "    ";
 
-    private static readonly DiagnosticDescriptor MissingAttributeError = new (id: "SB001",
+    private static readonly DiagnosticDescriptor MissingAttributeError = new(id: "SB001",
         title: "A required secondary attribute is missing",
         messageFormat: "Couldn't find the required attribute {0} for the DataElement type {1}",
         category: "Generator",
@@ -38,7 +38,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataUiRecord, GetRecordTypeOrNull)
+        var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataContainerRecord, GetRecordTypeOrNull)
             .Where(type => type is not null)
             .Collect();
 
@@ -47,14 +47,14 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(dataClasses, GenerateCode!);
     }
 
-    private static bool IsDataUiRecord(SyntaxNode syntaxNode, CancellationToken token)
+    private static bool IsDataContainerRecord(SyntaxNode syntaxNode, CancellationToken token)
     {
         if (syntaxNode is not RecordDeclarationSyntax recordSyntax)
         {
             return false;
         }
 
-        return recordSyntax.Modifiers.ToString().Contains("partial") && (recordSyntax.BaseList?.Types.ToString().Contains(BaseInterfaceName) ?? false);
+        return recordSyntax.Modifiers.ToString().Contains("partial") && (recordSyntax.BaseList?.Types.ToString().Contains(DataContainerBaseName) ?? false);
     }
 
     private static ITypeSymbol? GetRecordTypeOrNull(GeneratorSyntaxContext context, CancellationToken cancellationToken)
@@ -108,6 +108,7 @@ public partial record {dataRecord.Name}
                         properties.RemoveAt(0);
                         continue;
                     }
+
                     var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName);
                     builder.Append(code);
                     builder.AppendLine();
@@ -124,11 +125,17 @@ public partial record {dataRecord.Name}
         }
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName, bool isGroup = false)
     {
         var builder = new StringBuilder();
         var additionalPropIndexes = new List<int>();
-        var type = (DataElementTypes) typeAttribute.ConstructorArguments[0].Value!;
+        var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
+
+        if (isGroup)
+        {
+            type &= ~DataElementTypes.Grouped;
+        }
+
         switch (type)
         {
             case DataElementTypes.Value:
@@ -151,11 +158,14 @@ public partial record {dataRecord.Name}
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
-            case DataElementTypes.Grouped:
+            case { } when (type & DataElementTypes.Grouped) == DataElementTypes.Grouped:
                 var (code, additionalIndexes) = GenerateGroupedRecord(context, propertyAttributes, typeAttribute, properties, collectionName);
                 builder.Append(code);
                 builder.AppendLine();
                 additionalPropIndexes.AddRange(additionalIndexes);
+                break;
+            default:
+                context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, Location.None, currentProp.Name));
                 break;
         }
 
@@ -164,20 +174,21 @@ public partial record {dataRecord.Name}
 
     private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
     {
-        if (string.IsNullOrWhiteSpace(typeAttr.ConstructorArguments[1].Value!.ToString()))
+
+        var groupName = (string?)typeAttr.NamedArguments.First(arg => arg.Key == "GroupKey").Value.Value;
+
+        if (string.IsNullOrWhiteSpace(groupName))
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttr.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementGroupAttribute", "GroupedDataElement"));
-            return (string.Empty, new List<int>(){0});
+            return (string.Empty, new List<int>() { 0 });
         }
-
-        var groupName = (string) typeAttr.ConstructorArguments[1].Value!;
 
         var builder = new StringBuilder();
 
         builder.Append($@"{Indentation}var {groupName}List = new List<IDataElement>();");
         builder.AppendLine();
 
-        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementType") && attribute.ConstructorArguments[0].Value!.Equals(3) && !string.IsNullOrWhiteSpace(attribute.ConstructorArguments[1].Value!.ToString()) && attribute.ConstructorArguments[1].Value!.Equals(groupName))).ToList();
+        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementType") && ((DataElementTypes)attribute.ConstructorArguments[0].Value!).HasFlag(DataElementTypes.Grouped) && attribute.NamedArguments.Any(arg => arg.Key == "GroupKey" && (arg.Value.Value?.Equals(groupName) ?? false)))).ToList();
 
         var indexList = groupProperties.Select(singleProperty => properties.IndexOf(singleProperty)).ToList();
 
@@ -197,7 +208,7 @@ public partial record {dataRecord.Name}
                     continue;
                 }
 
-                var (code, additionalIndexes) = GenerateCode(context, typeAttribute, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List");
+                var (code, additionalIndexes) = GenerateCode(context, typeAttribute, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List", true);
                 builder.Append(code);
                 foreach (var index in additionalIndexes.OrderByDescending(x => x))
                 {
@@ -217,13 +228,13 @@ public partial record {dataRecord.Name}
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
-        if (string.IsNullOrWhiteSpace(typeAttribute.ConstructorArguments[1].Value!.ToString()))
+
+        var tooltip = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "TooltipKey").Value.Value;
+        if (string.IsNullOrWhiteSpace(tooltip))
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementTooltipAttribute", "TooltipDataElement"));
             return string.Empty;
         }
-
-        var tooltip = (string)typeAttribute.ConstructorArguments[1].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
@@ -239,13 +250,12 @@ public partial record {dataRecord.Name}
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
 
-        if (string.IsNullOrWhiteSpace(typeAttribute.ConstructorArguments[1].Value!.ToString()))
+        var unit = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value;
+        if (string.IsNullOrWhiteSpace(unit))
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementUnitAttribute", "KeyValueUnitDataElement"));
             return string.Empty;
         }
-
-        var unit = (string)typeAttribute.ConstructorArguments[1].Value!;
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
@@ -302,7 +312,7 @@ public partial record {dataRecord.Name}
 
         if (string.IsNullOrWhiteSpace(filterName))
         {
-            return @$"{IfIndentation}if ({BaseInterfaceName}.ShouldAdd({propertyName}))";
+            return @$"{IfIndentation}if ({DataContainerBaseName}.ShouldAdd({propertyName}))";
         }
 
         filter = @$"{IfIndentation}if ({filterName}({propertyName}))";

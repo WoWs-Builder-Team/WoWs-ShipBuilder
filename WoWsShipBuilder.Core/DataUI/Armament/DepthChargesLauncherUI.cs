@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record DepthChargesLauncherUI : IDataUi
+    public record DepthChargesLauncherUI : DataContainerBase
     {
         private string expanderKey = default!;
 

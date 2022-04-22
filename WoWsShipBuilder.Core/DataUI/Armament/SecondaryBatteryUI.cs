@@ -11,7 +11,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SecondaryBatteryUI : IDataUi
+    public record SecondaryBatteryUI : DataContainerBase
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;

@@ -1,10 +1,13 @@
-﻿namespace WoWsShipBuilder.Data.Generator.Internals;
+﻿using System;
 
+namespace WoWsShipBuilder.Data.Generator.Internals;
+
+[Flags]
 internal enum DataElementTypes
 {
-    KeyValue,
-    KeyValueUnit,
-    Value,
-    Grouped,
-    Tooltip,
+    KeyValue = 1,
+    KeyValueUnit = 2,
+    Value = 4,
+    Grouped = 8,
+    Tooltip = 16,
 }
