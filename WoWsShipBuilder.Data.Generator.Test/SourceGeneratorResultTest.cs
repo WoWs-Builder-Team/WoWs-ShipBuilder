@@ -37,7 +37,7 @@ public class SourceGeneratorResultTest
         testRecord.DataElements.Should().NotBeEmpty();
         testRecord.DataElements.OfType<GroupedDataElement>().Should().HaveCount(1);
         var groupedData = testRecord.DataElements.OfType<GroupedDataElement>().Single();
-        groupedData.Key.Should().BeEquivalentTo("test1");
+        groupedData.Key.Should().BeEquivalentTo("ShipStats_test1");
         groupedData.Children.Should().HaveCount(2);
     }
 }

@@ -36,6 +36,13 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
+    private static readonly DiagnosticDescriptor GenerationError = new(id: "SB003",
+        title: "Error during source generation",
+        messageFormat: "There was an exception during source generation: {0}",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataContainerRecord, GetRecordTypeOrNull)
@@ -123,13 +130,20 @@ public partial record {dataRecord.className}
                         continue;
                     }
 
-                    var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName);
-                    builder.Append(code);
-                    builder.AppendLine();
-
-                    foreach (var index in additionalIndexes.OrderByDescending(x => x))
+                    try
                     {
-                        properties.RemoveAt(index);
+                        var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName);
+                        builder.Append(code);
+                        builder.AppendLine();
+                        foreach (var index in additionalIndexes.OrderByDescending(x => x))
+                        {
+                            properties.RemoveAt(index);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(GenerationError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), e.Message));
+                        break;
                     }
                 }
             }
@@ -212,7 +226,7 @@ public partial record {dataRecord.className}
             var currentGroupPropertyAttributes = currentGroupProp.GetAttributes();
 
             //exclude the group attribute, to avoid infinite recursion. Need to find a better way to skip the Group type.
-            var typeAttribute = currentGroupPropertyAttributes.LastOrDefault();
+            var typeAttribute = currentGroupPropertyAttributes.FirstOrDefault();
             if (typeAttribute is not null)
             {
                 if (typeAttribute.ConstructorArguments.IsEmpty)
