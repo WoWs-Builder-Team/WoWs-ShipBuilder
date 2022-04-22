@@ -64,7 +64,7 @@ public partial record TestDataUi1 : IDataUi
 
     public decimal TestVisibilityCustom { get; init; }
 
-    [DataElementType(DataElementTypes.KeyValueUnit, ""mm"")]
+    [DataElementType(DataElementTypes.KeyValueUnit)]
     public string TestKeyUnitValue { get; init; } = default!;
 
     [DataElementType(DataElementTypes.Tooltip, ""testTooltip"")]

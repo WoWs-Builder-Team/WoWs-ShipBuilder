@@ -104,7 +104,7 @@ public partial record {dataRecord.Name}
                 {
                     if (typeAttribute.ConstructorArguments.IsEmpty)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, Location.None, prop.Name));
+                        context.ReportDiagnostic(Diagnostic.Create(InvalidTypeEnumError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), prop.Name));
                         properties.RemoveAt(0);
                         continue;
                     }
@@ -164,9 +164,9 @@ public partial record {dataRecord.Name}
 
     private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
     {
-        if (typeAttr.ConstructorArguments.Length <= 1)
+        if (string.IsNullOrWhiteSpace(typeAttr.ConstructorArguments[1].Value!.ToString()))
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementGroupAttribute", "GroupedDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttr.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementGroupAttribute", "GroupedDataElement"));
             return (string.Empty, new List<int>(){0});
         }
 
@@ -177,7 +177,7 @@ public partial record {dataRecord.Name}
         builder.Append($@"{Indentation}var {groupName}List = new List<IDataElement>();");
         builder.AppendLine();
 
-        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementType") && attribute.ConstructorArguments[0].Value!.Equals(3) && attribute.ConstructorArguments.Length > 1 && attribute.ConstructorArguments[1].Value!.Equals(groupName))).ToList();
+        var groupProperties = properties.Where(prop => prop.GetAttributes().Any(attribute => attribute.AttributeClass!.Name.Contains("DataElementType") && attribute.ConstructorArguments[0].Value!.Equals(3) && !string.IsNullOrWhiteSpace(attribute.ConstructorArguments[1].Value!.ToString()) && attribute.ConstructorArguments[1].Value!.Equals(groupName))).ToList();
 
         var indexList = groupProperties.Select(singleProperty => properties.IndexOf(singleProperty)).ToList();
 
@@ -217,9 +217,9 @@ public partial record {dataRecord.Name}
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
-        if (typeAttribute.ConstructorArguments.Length <= 1)
+        if (string.IsNullOrWhiteSpace(typeAttribute.ConstructorArguments[1].Value!.ToString()))
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, Location.None, "DataElementTooltipAttribute", "TooltipDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementTooltipAttribute", "TooltipDataElement"));
             return string.Empty;
         }
 
@@ -239,7 +239,7 @@ public partial record {dataRecord.Name}
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
 
-        if (typeAttribute.ConstructorArguments.Length <= 1)
+        if (string.IsNullOrWhiteSpace(typeAttribute.ConstructorArguments[1].Value!.ToString()))
         {
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementUnitAttribute", "KeyValueUnitDataElement"));
             return string.Empty;
