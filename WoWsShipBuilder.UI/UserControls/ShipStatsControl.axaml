@@ -24,42 +24,6 @@
         <converters:StatGridConverter x:Key="GridSizeConverter"/>
     </UserControl.Resources>
     
-    <UserControl.DataTemplates>
-        <DataTemplate DataType="dataElements:GroupedDataElement">
-            <StackPanel Margin="0 5 0 0">
-                <TextBlock Classes="Key"/>
-                <ItemsControl Items="{Binding Children}" Classes="Stagger"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate DataType="dataElements:KeyValueDataElement">
-            <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Value"/>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
-            <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Unit"/>
-                <TextBlock Classes="Value"/>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate DataType="dataElements:TooltipDataElement">
-            <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Key"/>
-                <TextBlock Classes="Value"/>
-                <ToolTip.Tip>
-                    <TextBlock Classes="Tip"/>
-                </ToolTip.Tip>
-            </DockPanel>
-        </DataTemplate>
-        <DataTemplate DataType="dataElements:ValueDataElement">
-            <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Value"/>
-            </DockPanel>
-        </DataTemplate>
-    </UserControl.DataTemplates>
-    
     <UserControl.Styles>
         <Style Selector="TextBlock">
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -88,17 +52,60 @@
             <Setter Property="TextWrapping" Value="Wrap"/>         
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
-            <Setter Property="Margin" Value="4 0 0 0"/>
         </Style>
         <Style Selector="TextBlock.Tip">
             <Setter Property="Text" Value="{Binding Tip}"/>
             <Setter Property="MaxWidth" Value="300"/>
             <Setter Property="TextWrapping" Value="Wrap"/>         
         </Style>
+        <Style Selector="TextBlock.Blank">
+            <Setter Property="Text" Value=" "/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
         <Style Selector="ItemsControl.Stagger">
             <Setter Property="Margin" Value="10,0,0,0"/>
         </Style>
     </UserControl.Styles>
+    
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="dataElements:GroupedDataElement">
+            <StackPanel Margin="0 5 0 0">
+                <TextBlock Classes="Key"/>
+                <ItemsControl Items="{Binding Children}" Classes="Stagger"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:KeyValueDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Unit"/>
+                <TextBlock Classes="Blank"/>
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:TooltipDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Key"/>
+                <TextBlock Classes="Value"/>
+                <ToolTip.Tip>
+                    <TextBlock Classes="Tip"/>
+                </ToolTip.Tip>
+            </DockPanel>
+        </DataTemplate>
+        <DataTemplate DataType="dataElements:ValueDataElement">
+            <DockPanel Classes="NameValuePanel">
+                <TextBlock Classes="Value"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <customControls:AutoGrid Name="StatGrid" RowDefinitions="*" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <customControls:AutoGrid.ColumnDefinitions>
