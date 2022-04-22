@@ -237,16 +237,16 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.PingerGunUI}"
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
-                        <ItemsControl Items="{Binding PingerGunData}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <DockPanel>
-                                        <TextBlock Classes="Key"/>
-                                        <TextBlock Classes="Value"/>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ItemsControl Items="{Binding DataElements}"/>
+                            <!-- <ItemsControl.ItemTemplate> -->
+                            <!--     <DataTemplate> -->
+                            <!--         <DockPanel> -->
+                            <!--             <TextBlock Classes="Key"/> -->
+                            <!--             <TextBlock Classes="Value"/> -->
+                            <!--         </DockPanel> -->
+                            <!--     </DataTemplate> -->
+                            <!-- </ItemsControl.ItemTemplate> -->
+                        
                     </StackPanel>
                 </Expander>
                 
@@ -767,7 +767,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
-                        <ItemsControl Items="{Binding SurvivabilityUI.SurvivabilityData}">
+                        <ItemsControl Items="{Binding SurvivabilityDataContainer.SurvivabilityData}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel LastChildFill="True">

@@ -9,18 +9,18 @@ using WoWsShipBuilder.DataStructures;
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public partial record ShipUI(string Index) : DataContainerBase
+    public partial record ShipUI(string Index)
     {
         // TODO: check if really necessary
         public static readonly ConcurrentDictionary<string, bool> ExpanderStateMapper = new();
 
-        public SurvivabilityUI SurvivabilityUI { get; set; } = default!;
+        public SurvivabilityDataContainer SurvivabilityDataContainer { get; set; } = default!;
 
         public MainBatteryUI? MainBatteryUI { get; set; }
 
         public SecondaryBatteryUiContainer SecondaryBatteryUI { get; set; } = default!;
 
-        public PingerGunUI? PingerGunUI { get; set; }
+        public PingerGunDataContainer? PingerGunUI { get; set; }
 
         public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
 
@@ -50,7 +50,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 MainBatteryUI = await MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 TorpedoArmamentUI = await TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 CVAircraftUI = await DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                PingerGunUI = PingerGunUI.FromShip(ship, shipConfiguration, modifiers),
+                PingerGunUI = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
                 SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
@@ -62,7 +62,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 // Misc
                 ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
-                SurvivabilityUI = SurvivabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, shipConfiguration, modifiers),
             };
 

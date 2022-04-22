@@ -3,40 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record PingerGunUI : DataContainerBase
+    public partial record PingerGunDataContainer : DataContainerBase
     {
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal Reload { get; set; }
 
-        [DataUiUnit("DegreePerSecond")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "DegreePerSecond")]
         public decimal TraverseSpeed { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal TurnTime { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal Range { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FirstPingDuration { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal SecondPingDuration { get; set; }
 
-        [DataUiUnit("M")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal PingWidth { get; set; }
 
-        [DataUiUnit("MPS")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
         public decimal PingSpeed { get; set; }
 
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? PingerGunData { get; set; }
-
-        public static PingerGunUI? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+        public static PingerGunDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
             var pingerGunList = ship.PingerGunList;
 
@@ -64,21 +62,23 @@ namespace WoWsShipBuilder.Core.DataUI
             var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
             var reload = Math.Round(arModifiers.Aggregate(pingerGun.WaveReloadTime, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
 
-            var pingerGunUI = new PingerGunUI
+            var pingerGunUI = new PingerGunDataContainer
             {
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
                 Reload = reload,
-                Range = pingerGun.WaveDistance,
+                Range = pingerGun.WaveDistance / 1000,
                 FirstPingDuration = firstPingDuration,
                 SecondPingDuration = secondPingDuration,
                 PingWidth = pingerGun.WaveParams.First().StartWaveWidth * 30,
                 PingSpeed = pingSpeed,
             };
 
-            pingerGunUI.PingerGunData = pingerGunUI.ToPropertyMapping();
+            pingerGunUI.UpdateDataElements();
+            //pingerGunUI.PingerGunData = pingerGunUI.ToPropertyMapping();
 
             return pingerGunUI;
         }
+
     }
 }

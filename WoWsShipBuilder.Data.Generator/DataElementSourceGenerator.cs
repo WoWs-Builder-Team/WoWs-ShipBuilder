@@ -71,6 +71,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static void GenerateCode(SourceProductionContext context, ImmutableArray<ITypeSymbol> dataRecords)
     {
+        // context.AddSource("test.g.cs", SourceText.From("//" + string.Join(" - ",dataRecords.Select(x => x.Name)), Encoding.UTF8));
         foreach (var dataRecord in dataRecords)
         {
             var properties = dataRecord.GetMembers().OfType<IPropertySymbol>().Where(prop => prop.GetAttributes().Any(attr => !attr.AttributeClass!.Name.Contains("Ignore"))).ToList();

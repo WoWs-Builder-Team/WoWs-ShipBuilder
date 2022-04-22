@@ -312,7 +312,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                                 Logging.Logger.Info("Updating ship stats");
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
-                            var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityUI.HitPoints;
+                            var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
                             await ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
                             semaphore.Release();
                         }

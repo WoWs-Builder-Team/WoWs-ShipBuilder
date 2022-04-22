@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SurvivabilityUI : DataContainerBase
+    public record SurvivabilityDataContainer : DataContainerBase
     {
         [DataUiUnit("HP")]
         public int HitPoints { get; set; }
@@ -45,7 +45,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? SurvivabilityData { get; set; }
 
-        public static SurvivabilityUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        public static SurvivabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             Hull shipHull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal floodDps = Math.Round(hitPoints * shipHull.FloodingTickDamage / 100);
             decimal floodTotalDamage = Math.Round(floodDuration * floodDps);
 
-            var survivability = new SurvivabilityUI
+            var survivability = new SurvivabilityDataContainer
             {
                 HitPoints = (int)hitPoints,
                 FireDuration = Math.Round(fireDuration, 1),
