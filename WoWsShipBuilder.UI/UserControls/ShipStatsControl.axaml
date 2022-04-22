@@ -238,15 +238,6 @@
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding DataElements}"/>
-                            <!-- <ItemsControl.ItemTemplate> -->
-                            <!--     <DataTemplate> -->
-                            <!--         <DockPanel> -->
-                            <!--             <TextBlock Classes="Key"/> -->
-                            <!--             <TextBlock Classes="Value"/> -->
-                            <!--         </DockPanel> -->
-                            <!--     </DataTemplate> -->
-                            <!-- </ItemsControl.ItemTemplate> -->
-                        
                     </StackPanel>
                 </Expander>
                 
@@ -708,39 +699,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{x:Static translations:Translation.ShipStats_FullPowerTime}"/>
-                        <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
-                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Forward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerForward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                        </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
-                            <TextBlock Text="{x:Static translations:Translation.ShipStats_Backward}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
-                            <TextBlock Text="{Binding ManeuverabilityUI.ManeuverabilityFullPowerBackward}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                        </DockPanel>
-                        <ItemsControl Items="{Binding ManeuverabilityUI.ManeuverabilityData}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <DockPanel LastChildFill="True">
-                                        <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
-                                        <TextBlock Classes="Key" TextWrapping="Wrap"/>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
-                            <TextBlock Text="{Binding ManeuverabilityUI.RudderBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                            <TextBlock Text="{x:Static translations:Translation.ShipStats_RudderBlastProtection}" TextWrapping="Wrap"/>
-                            <ToolTip.Tip>
-                                <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
-                            </ToolTip.Tip>
-                        </DockPanel>
-                        <DockPanel HorizontalAlignment="Stretch" Background="Transparent" LastChildFill="True">
-                            <TextBlock Text="{Binding ManeuverabilityUI.EngineBlastProtection}" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
-                            <TextBlock Text="{x:Static translations:Translation.ShipStats_EngineBlastProtection}" TextWrapping="Wrap"/>
-                            <ToolTip.Tip>
-                                <TextBlock Text="{x:Static translations:Translation.ShipStats_BlastExplanation}"/>
-                            </ToolTip.Tip>
-                        </DockPanel>
+                        <ItemsControl Items="{Binding ManeuverabilityDataContainer.DataElements}"/>
                     </StackPanel>
                 </Expander>
                 
@@ -767,16 +726,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
-                        <ItemsControl Items="{Binding SurvivabilityDataContainer.SurvivabilityData}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <DockPanel LastChildFill="True">
-                                        <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
-                                        <TextBlock Classes="Key" TextWrapping="Wrap"/>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ItemsControl Items="{Binding SurvivabilityDataContainer.DataElements}"/>
                     </StackPanel>
                 </Expander>
                 

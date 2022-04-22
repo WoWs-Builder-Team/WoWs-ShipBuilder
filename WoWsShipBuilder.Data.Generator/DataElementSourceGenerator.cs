@@ -220,7 +220,7 @@ public partial record {dataRecord.Name}
 
         builder.Append($@"{IfIndentation}if ({groupName}List.Count > 0)");
         builder.AppendLine();
-        builder.Append(@$"{Indentation}{collectionName}.Add(new GroupedDataElement(""{groupName}"", {groupName}List));");
+        builder.Append(@$"{Indentation}{collectionName}.Add(new GroupedDataElement(""ShipStats_{groupName}"", {groupName}List));");
 
         return (builder.ToString(), indexList);
     }
@@ -242,7 +242,7 @@ public partial record {dataRecord.Name}
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""{tooltip}""));");
         return builder.ToString();
     }
 
@@ -263,7 +263,7 @@ public partial record {dataRecord.Name}
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));");
         return builder.ToString();
     }
 
@@ -276,7 +276,7 @@ public partial record {dataRecord.Name}
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""{name}"", {name}{propertyProcessingAddition}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}));");
         return builder.ToString();
     }
 

@@ -62,7 +62,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
             var reload = Math.Round(arModifiers.Aggregate(pingerGun.WaveReloadTime, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
 
-            var pingerGunUI = new PingerGunDataContainer
+            var pingerGunDataContainer = new PingerGunDataContainer
             {
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
@@ -74,11 +74,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 PingSpeed = pingSpeed,
             };
 
-            pingerGunUI.UpdateDataElements();
-            //pingerGunUI.PingerGunData = pingerGunUI.ToPropertyMapping();
+            pingerGunDataContainer.UpdateDataElements();
 
-            return pingerGunUI;
+            return pingerGunDataContainer;
         }
-
     }
 }

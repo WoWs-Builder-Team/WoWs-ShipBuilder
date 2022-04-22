@@ -1765,6 +1765,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blast Protection.
+        /// </summary>
+        public static string ShipStats_BlastProtection {
+            get {
+                return ResourceManager.GetString("ShipStats_BlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bombs in a charge.
         /// </summary>
         public static string ShipStats_BombsPerCharge {
@@ -2071,6 +2080,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fire.
+        /// </summary>
+        public static string ShipStats_Fire {
+            get {
+                return ResourceManager.GetString("ShipStats_Fire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max fires.
         /// </summary>
         public static string ShipStats_FireAmount {
@@ -2202,6 +2220,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_FloodDuration {
             get {
                 return ResourceManager.GetString("ShipStats_FloodDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flooding.
+        /// </summary>
+        public static string ShipStats_Flooding {
+            get {
+                return ResourceManager.GetString("ShipStats_Flooding", resourceCulture);
             }
         }
         

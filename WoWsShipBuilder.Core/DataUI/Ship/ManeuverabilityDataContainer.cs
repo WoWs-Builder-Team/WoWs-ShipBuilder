@@ -4,37 +4,37 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ManeuverabilityUI : DataContainerBase
+    public partial record ManeuverabilityDataContainer : DataContainerBase
     {
-        [DataUiUnit("Knots")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+        public decimal FullPowerForward { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+        public decimal FullPowerBackward { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
         public decimal ManeuverabilityMaxSpeed { get; set; }
 
-        [JsonIgnore]
-        public string ManeuverabilityFullPowerForward { get; set; } = default!;
-
-        [JsonIgnore]
-        public string ManeuverabilityFullPowerBackward { get; set; } = default!;
-
-        [DataUiUnit("M")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal ManeuverabilityTurningCircle { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+        [DataElementVisibility(false)]
         public decimal RudderBlastProtection { get; set; }
 
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+        [DataElementVisibility(false)]
         public decimal EngineBlastProtection { get; set; }
 
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? ManeuverabilityData { get; set; }
-
-        public static ManeuverabilityUI FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
@@ -50,10 +50,10 @@ namespace WoWsShipBuilder.Core.DataUI
 
             decimal fullPowerBackwardModifier = modifiers.FindModifiers("engineBackwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-            var manouvrability = new ManeuverabilityUI
+            var manoeuvrability = new ManeuverabilityDataContainer
             {
-                ManeuverabilityFullPowerBackward = $"{engine.BackwardEngineUpTime * fullPowerBackwardModifier} {Translation.Unit_S}",
-                ManeuverabilityFullPowerForward = $"{engine.ForwardEngineUpTime * fullPowerForwardModifier} {Translation.Unit_S}",
+                FullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier,
+                FullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier,
                 ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
                 ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
                 ManeuverabilityTurningCircle = hull.TurningRadius,
@@ -61,9 +61,9 @@ namespace WoWsShipBuilder.Core.DataUI
                 EngineBlastProtection = engine.ArmorCoeff,
             };
 
-            manouvrability.ManeuverabilityData = manouvrability.ToPropertyMapping();
+            manoeuvrability.UpdateDataElements();
 
-            return manouvrability;
+            return manoeuvrability;
         }
     }
 }

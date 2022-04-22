@@ -32,7 +32,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public List<CVAircraftUI>? CVAircraftUI { get; set; }
 
-        public ManeuverabilityUI ManeuverabilityUI { get; set; } = default!;
+        public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; set; } = default!;
 
         public ConcealmentUI ConcealmentUI { get; set; } = default!;
 
@@ -60,7 +60,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 DepthChargeLauncherUI = await DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
 
                 // Misc
-                ManeuverabilityUI = ManeuverabilityUI.FromShip(ship, shipConfiguration, modifiers),
+                ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 ConcealmentUI = ConcealmentUI.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 SpecialAbilityUI = SpecialAbilityUI.FromShip(ship, shipConfiguration, modifiers),

@@ -1281,4 +1281,13 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
       <value>Adrenaline Rush HP: </value>
   </data>
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>Fire</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>Flooding</value>
+  </data>
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Blast Protection</value>
+  </data>
 </root>

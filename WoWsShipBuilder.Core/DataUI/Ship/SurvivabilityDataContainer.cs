@@ -5,45 +5,46 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record SurvivabilityDataContainer : DataContainerBase
+    public partial record SurvivabilityDataContainer : DataContainerBase
     {
-        [DataUiUnit("HP")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP")]
         public int HitPoints { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Fire")]
         public decimal FireAmount { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "PerCent")]
         public decimal FireReduction { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "S")]
         public decimal FireDuration { get; set; }
 
-        [DataUiUnit("DPS")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "DPS")]
         public decimal FireDPS { get; set; }
 
-        [DataUiUnit("HP")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "HP")]
         public decimal FireTotalDamage { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Flooding")]
         public decimal FloodAmount { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "PerCent")]
         public decimal FloodTorpedoProtection { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "S")]
         public decimal FloodDuration { get; set; }
 
-        [DataUiUnit("DPS")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "DPS")]
         public decimal FloodDPS { get; set; }
 
-        [DataUiUnit("HP")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "HP")]
         public decimal FloodTotalDamage { get; set; }
-
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>>? SurvivabilityData { get; set; }
 
         public static SurvivabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
@@ -103,7 +104,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 FloodTotalDamage = floodTotalDamage,
             };
 
-            survivability.SurvivabilityData = survivability.ToPropertyMapping();
+            survivability.UpdateDataElements();
+
             return survivability;
         }
     }
