@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura longue portée</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Vers l’arrière</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Vers l'avant</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">

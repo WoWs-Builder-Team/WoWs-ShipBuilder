@@ -1744,15 +1744,6 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backward.
-        /// </summary>
-        public static string ShipStats_Backward {
-            get {
-                return ResourceManager.GetString("ShipStats_Backward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
@@ -2278,11 +2269,20 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backward.
+        /// </summary>
+        public static string ShipStats_FullPowerBackward {
+            get {
+                return ResourceManager.GetString("ShipStats_FullPowerBackward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forward.
         /// </summary>
-        public static string ShipStats_Forward {
+        public static string ShipStats_FullPowerForward {
             get {
-                return ResourceManager.GetString("ShipStats_Forward", resourceCulture);
+                return ResourceManager.GetString("ShipStats_FullPowerForward", resourceCulture);
             }
         }
         
