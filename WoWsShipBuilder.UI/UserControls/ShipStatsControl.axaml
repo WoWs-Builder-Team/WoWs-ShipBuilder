@@ -56,10 +56,10 @@
         <Style Selector="TextBlock.Tip">
             <Setter Property="Text" Value="{Binding Tip}"/>
             <Setter Property="MaxWidth" Value="300"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>         
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style Selector="TextBlock.Blank">
-            <Setter Property="Text" Value=" "/>
+            <!-- <Setter Property="Text" Value=" "/> -->
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="DockPanel.Dock" Value="Right"/>
