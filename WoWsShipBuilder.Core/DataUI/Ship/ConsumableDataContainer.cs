@@ -6,10 +6,9 @@ using Newtonsoft.Json;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 
-// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ConsumableUI : DataContainerBase
+    public record ConsumableDataContainer : DataContainerBase
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
@@ -37,7 +36,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public List<KeyValuePair<string, string>> ConsumableData { get; set; } = default!;
 
-        public static async Task<ConsumableUI> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+        public static async Task<ConsumableDataContainer> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
         {
             var consumableIdentifier = $"{name} {variant}";
             var usingFallback = false;
@@ -255,7 +254,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
             }
 
-            var consumableUI = new ConsumableUI
+            var consumableDataContainer = new ConsumableDataContainer
             {
                 Name = localizationKey,
                 NumberOfUses = consumable.NumConsumables != -1 ? uses.ToString() : "∞",
@@ -266,8 +265,8 @@ namespace WoWsShipBuilder.Core.DataUI
                 WorkTime = Math.Round((decimal)workTime, 1),
                 Modifiers = consumableModifiers,
             };
-            consumableUI.ConsumableData = consumableUI.ToPropertyMapping();
-            return consumableUI;
+            consumableDataContainer.ConsumableData = consumableDataContainer.ToPropertyMapping();
+            return consumableDataContainer;
         }
     }
 }

@@ -1,56 +1,54 @@
-// ReSharper disable InconsistentNaming
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public partial record ConcealmentUIDataContainer : DataContainerBase
+    public partial record ConcealmentDataContainer : DataContainerBase
     {
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Sea", UnitKey = "KM")]
         public decimal ConcealmentBySea { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
-        public decimal ConcealmentBySeaFiringSmoke { get; set; }
-
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Sea", UnitKey = "KM")]
         public decimal ConcealmentBySeaFire { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Sea", UnitKey = "KM")]
+        public decimal ConcealmentBySeaFiringSmoke { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Air", UnitKey = "KM")]
         public decimal ConcealmentByAir { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Air", UnitKey = "KM")]
         public decimal ConcealmentByAirFire { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
         public decimal ConcealmentBySubPeriscope { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
         public decimal ConcealmentBySubOperating { get; set; }
 
-        public static ConcealmentUIDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
             var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
             // Sea Detection
-            var concealmentBySea = hull.SurfaceDetection;
-            var concealmentBySeaFiringSmoke = hull.SmokeFiringDetection;
+            decimal concealmentBySea = hull.SurfaceDetection;
+            decimal concealmentBySeaFiringSmoke = hull.SmokeFiringDetection;
 
             // AA Detection
-            var concealmentByAir = hull.AirDetection;
+            decimal concealmentByAir = hull.AirDetection;
 
-            var concealmentBySubPeriscope = hull.DetectionBySubPeriscope;
-            var concealmentBySubOperating = hull.DetectionBySubOperating;
+            decimal concealmentBySubPeriscope = hull.DetectionBySubPeriscope;
+            decimal concealmentBySubOperating = hull.DetectionBySubOperating;
 
             int concealmentExpertIndex = modifiers.FindModifierIndex("visibilityDistCoeff");
             if (concealmentExpertIndex > -1)
             {
-                var modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
-                foreach (decimal value in modifiersValues)
+                List<float> modifiersValues = modifiers.FindModifiers("visibilityDistCoeff").ToList();
+                foreach (decimal value in modifiersValues.Select(f => (decimal)f))
                 {
                     concealmentBySea *= value;
                     concealmentByAir *= value;
@@ -67,7 +65,7 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             // Checks for Heavy He
-            ShipUpgrade? artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
+            var artilleryConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Artillery);
             if (artilleryConfiguration != null)
             {
                 string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
@@ -82,7 +80,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
                 }
 
-                Gun gun = mainBattery.Guns.First();
+                var gun = mainBattery.Guns.First();
 
                 // GMBigGunVisibilityCoeff
                 if (gun.BarrelDiameter >= 0.149M)
@@ -99,10 +97,10 @@ namespace WoWsShipBuilder.Core.DataUI
                 }
             }
 
-            var concealmentBySeaFire = concealmentBySea + 2.0m;
-            var concealmentByAirFire = concealmentByAir + 3.0m;
+            decimal concealmentBySeaFire = concealmentBySea + 2.0m;
+            decimal concealmentByAirFire = concealmentByAir + 3.0m;
 
-            var concealment = new ConcealmentUIDataContainer
+            var concealment = new ConcealmentDataContainer
             {
                 ConcealmentBySea = Math.Round(concealmentBySea, 2),
                 ConcealmentBySeaFiringSmoke = Math.Round(concealmentBySeaFiringSmoke, 2),

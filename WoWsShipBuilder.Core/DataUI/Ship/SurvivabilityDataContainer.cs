@@ -3,9 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
@@ -19,9 +17,6 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Fire")]
         public decimal FireAmount { get; set; }
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "PerCent")]
-        public decimal FireReduction { get; set; }
-
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "S")]
         public decimal FireDuration { get; set; }
 
@@ -31,11 +26,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "HP")]
         public decimal FireTotalDamage { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Fire", UnitKey = "PerCent")]
+        public decimal FireReduction { get; set; }
+
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Flooding")]
         public decimal FloodAmount { get; set; }
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "PerCent")]
-        public decimal FloodTorpedoProtection { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "S")]
         public decimal FloodDuration { get; set; }
@@ -45,6 +40,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "HP")]
         public decimal FloodTotalDamage { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Flooding", UnitKey = "PerCent")]
+        public decimal FloodTorpedoProtection { get; set; }
 
         public static SurvivabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
         {
@@ -82,12 +80,11 @@ namespace WoWsShipBuilder.Core.DataUI
             decimal fireResistance = baseFireResistance + ((1 - baseFireResistance) * (1 - fireResistanceModifiers));
 
             decimal modifiedFloodingCoeff = modifiers.FindModifiers("uwCoeffBonus").Aggregate(shipHull.FloodingResistance * 3, (current, modifier) => current - ((decimal)modifier / 100)) * 100;
-            decimal torpedoProtection = Math.Round(100 - modifiedFloodingCoeff, 1);
-            decimal fireDps = Math.Round(hitPoints * shipHull.FireTickDamage / 100);
-            decimal fireTotalDamage = Math.Round(fireDuration * fireDps);
+            decimal fireDps = hitPoints * shipHull.FireTickDamage / 100;
+            decimal fireTotalDamage = fireDuration * fireDps;
 
-            decimal floodDps = Math.Round(hitPoints * shipHull.FloodingTickDamage / 100);
-            decimal floodTotalDamage = Math.Round(floodDuration * floodDps);
+            decimal floodDps = hitPoints * shipHull.FloodingTickDamage / 100;
+            decimal floodTotalDamage = floodDuration * floodDps;
 
             var survivability = new SurvivabilityDataContainer
             {
@@ -95,13 +92,13 @@ namespace WoWsShipBuilder.Core.DataUI
                 FireDuration = Math.Round(fireDuration, 1),
                 FireAmount = fireSpots,
                 FireReduction = Math.Round(fireResistance * 100, 1),
-                FireDPS = fireDps,
-                FireTotalDamage = fireTotalDamage,
+                FireDPS = Math.Round(fireDps),
+                FireTotalDamage = Math.Round(fireTotalDamage),
                 FloodDuration = Math.Round(floodDuration, 1),
                 FloodAmount = shipHull.FloodingSpots,
-                FloodTorpedoProtection = torpedoProtection,
-                FloodDPS = floodDps,
-                FloodTotalDamage = floodTotalDamage,
+                FloodTorpedoProtection = Math.Round(100 - modifiedFloodingCoeff, 1),
+                FloodDPS = Math.Round(floodDps),
+                FloodTotalDamage = Math.Round(floodTotalDamage),
             };
 
             survivability.UpdateDataElements();

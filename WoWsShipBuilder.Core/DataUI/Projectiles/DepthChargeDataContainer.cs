@@ -9,7 +9,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI.Projectiles
 {
-    public record DepthChargeUI : ProjectileUI
+    public record DepthChargeDataContainer : ProjectileDataContainer
     {
         [JsonIgnore]
         public string Name { get; set; } = null!;
@@ -25,12 +25,12 @@ namespace WoWsShipBuilder.Core.DataUI.Projectiles
         [DataUiUnit("PerCent")]
         public decimal FloodingChance { get; set; }
 
-        public static async Task<DepthChargeUI> FromChargesName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<DepthChargeDataContainer> FromChargesName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
             float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current *= modifier);
 
-            var depthChargeUI = new DepthChargeUI
+            var depthChargeUI = new DepthChargeDataContainer
             {
                 Damage = (int)Math.Round(damage, 0),
                 FireChance = Math.Round((decimal)depthCharge.FireChance * 100, 2),

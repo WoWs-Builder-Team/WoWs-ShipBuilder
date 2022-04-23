@@ -631,7 +631,7 @@
     <value>Avions par attaque</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>PS par avion</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

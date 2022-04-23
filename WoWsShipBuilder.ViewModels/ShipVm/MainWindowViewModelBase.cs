@@ -224,7 +224,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
 
-            ShipUI.ExpanderStateMapper.Clear();
+            ShipDataContainer.ExpanderStateMapper.Clear();
 
             // Ship stats model
             RawShipData = ship;

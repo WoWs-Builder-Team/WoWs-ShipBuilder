@@ -6,10 +6,9 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
-// ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public partial record ShipUI(string Index)
+    public record ShipDataContainer(string Index)
     {
         // TODO: check if really necessary
         public static readonly ConcurrentDictionary<string, bool> ExpanderStateMapper = new();
@@ -20,13 +19,13 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public SecondaryBatteryUiContainer SecondaryBatteryUI { get; set; } = default!;
 
-        public PingerGunDataContainer? PingerGunUI { get; set; }
+        public PingerGunDataContainer? PingerGunDataContainer { get; set; }
 
         public TorpedoArmamentUI? TorpedoArmamentUI { get; set; }
 
-        public AirstrikeUI? AirstrikeUI { get; set; }
+        public AirstrikeDataContainer? AirstrikeUI { get; set; }
 
-        public AirstrikeUI? AswAirstrikeUI { get; set; }
+        public AirstrikeDataContainer? AswAirstrikeUI { get; set; }
 
         public DepthChargesLauncherUI? DepthChargeLauncherUI { get; set; }
 
@@ -34,54 +33,54 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public ManeuverabilityDataContainer ManeuverabilityDataContainer { get; set; } = default!;
 
-        public ConcealmentUIDataContainer ConcealmentUiDataContainer { get; set; } = default!;
+        public ConcealmentDataContainer ConcealmentDataContainer { get; set; } = default!;
 
-        public AntiAirDataContainer? AntiAirUI { get; set; }
+        public AntiAirDataContainer? AntiAirDataContainer { get; set; }
 
         public List<object> SecondColumnContent { get; set; } = default!;
 
-        public SpecialAbilityDataContainer? SpecialAbilityUI { get; set; }
+        public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-        public static async Task<ShipUI> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
+        public static async Task<ShipDataContainer> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
         {
-            var shipUI = new ShipUI(ship.Index)
+            var shipDataContainer = new ShipDataContainer(ship.Index)
             {
                 // Main weapons
                 MainBatteryUI = await MainBatteryUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 TorpedoArmamentUI = await TorpedoArmamentUI.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
                 CVAircraftUI = await DataUI.CVAircraftUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                PingerGunUI = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                PingerGunDataContainer = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
                 SecondaryBatteryUI = await SecondaryBatteryUiContainer.FromShip(ship, shipConfiguration, modifiers, appDataService, localizer),
-                AntiAirUI = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                AirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, false, appDataService),
-                AswAirstrikeUI = await AirstrikeUI.FromShip(ship, modifiers, true, appDataService),
+                AntiAirDataContainer = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                AirstrikeUI = await AirstrikeDataContainer.FromShip(ship, modifiers, false, appDataService),
+                AswAirstrikeUI = await AirstrikeDataContainer.FromShip(ship, modifiers, true, appDataService),
                 DepthChargeLauncherUI = await DepthChargesLauncherUI.FromShip(ship, shipConfiguration, modifiers, appDataService),
 
                 // Misc
                 ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                ConcealmentUiDataContainer = ConcealmentUIDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                ConcealmentDataContainer = ConcealmentDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 SurvivabilityDataContainer = SurvivabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                SpecialAbilityUI = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                SpecialAbilityDataContainer = SpecialAbilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
             };
 
-            shipUI.SecondColumnContent = new List<object?>
+            shipDataContainer.SecondColumnContent = new List<object?>
                 {
-                    shipUI.AntiAirUI,
-                    shipUI.AirstrikeUI,
-                    shipUI.AswAirstrikeUI,
-                    shipUI.DepthChargeLauncherUI,
+                    shipDataContainer.AntiAirDataContainer,
+                    shipDataContainer.AirstrikeUI,
+                    shipDataContainer.AswAirstrikeUI,
+                    shipDataContainer.DepthChargeLauncherUI,
                 }.Where(item => item != null)
                 .Cast<object>()
                 .ToList();
 
-            if (shipUI.SecondaryBatteryUI.Secondaries != null)
+            if (shipDataContainer.SecondaryBatteryUI.Secondaries != null)
             {
-                shipUI.SecondColumnContent.Insert(0, shipUI.SecondaryBatteryUI);
+                shipDataContainer.SecondColumnContent.Insert(0, shipDataContainer.SecondaryBatteryUI);
             }
 
-            return shipUI;
+            return shipDataContainer;
         }
     }
 }

@@ -10,7 +10,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record RocketUI : ProjectileUI
+    public record RocketDataContainer : ProjectileDataContainer
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
@@ -38,7 +38,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataUiUnit("PerCent")]
         public decimal FireChance { get; set; }
 
-        public static async Task<RocketUI> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static async Task<RocketDataContainer> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var rocket = await appDataService.GetProjectile<Rocket>(name);
 
@@ -61,7 +61,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 fireChance = 0;
             }
 
-            var rocketUI = new RocketUI
+            var rocketUI = new RocketDataContainer
             {
                 Name = rocket.Name,
                 Damage = Math.Round(rocketDamage, 2),

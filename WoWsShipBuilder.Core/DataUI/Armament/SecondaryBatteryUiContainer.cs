@@ -14,8 +14,8 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public bool IsExpanderOpen
         {
-            get => ShipUI.ExpanderStateMapper[expanderKey];
-            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+            get => ShipDataContainer.ExpanderStateMapper[expanderKey];
+            set => ShipDataContainer.ExpanderStateMapper[expanderKey] = value;
         }
 
         public static async Task<SecondaryBatteryUiContainer> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
@@ -24,9 +24,9 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 expanderKey = $"{ship.Index}_SEC",
             };
-            if (!ShipUI.ExpanderStateMapper.ContainsKey(uiContainer.expanderKey))
+            if (!ShipDataContainer.ExpanderStateMapper.ContainsKey(uiContainer.expanderKey))
             {
-                ShipUI.ExpanderStateMapper[uiContainer.expanderKey] = true;
+                ShipDataContainer.ExpanderStateMapper[uiContainer.expanderKey] = true;
             }
 
             return uiContainer;

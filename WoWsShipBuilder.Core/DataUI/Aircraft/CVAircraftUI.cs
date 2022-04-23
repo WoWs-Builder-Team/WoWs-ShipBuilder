@@ -108,10 +108,10 @@ namespace WoWsShipBuilder.Core.DataUI
         public bool IsLast { get; set; } = false;
 
         [JsonIgnore]
-        public ProjectileUI? Weapon { get; set; } = default!;
+        public ProjectileDataContainer? Weapon { get; set; } = default!;
 
         [JsonIgnore]
-        public List<ConsumableUI> PlaneConsumables { get; set; } = default!;
+        public List<ConsumableDataContainer> PlaneConsumables { get; set; } = default!;
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>> CVAircraftData { get; set; } = default!;
@@ -275,32 +275,32 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var weaponType = (await appDataService.GetProjectile(plane.BombName)).ProjectileType;
             var bombInnerEllipse = 0;
-            ProjectileUI? weapon = null!;
+            ProjectileDataContainer? weapon = null!;
             switch (weaponType)
             {
                 case ProjectileType.Bomb:
-                    weapon = await BombUI.FromBombName(plane.BombName, modifiers, appDataService);
+                    weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
                     bombInnerEllipse = (int)plane.InnerBombsPercentage;
                     break;
                 case ProjectileType.SkipBomb:
-                    weapon = await BombUI.FromBombName(plane.BombName, modifiers, appDataService);
+                    weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
                     break;
                 case ProjectileType.Torpedo:
                     var torpList = new List<string>
                     {
                         plane.BombName,
                     };
-                    weapon = (await TorpedoUI.FromTorpedoName(torpList, modifiers, true, appDataService)).First();
+                    weapon = (await TorpedoDataContainer.FromTorpedoName(torpList, modifiers, true, appDataService)).First();
                     break;
                 case ProjectileType.Rocket:
-                    weapon = await RocketUI.FromRocketName(plane.BombName, modifiers, appDataService);
+                    weapon = await RocketDataContainer.FromRocketName(plane.BombName, modifiers, appDataService);
                     break;
             }
 
-            List<ConsumableUI> consumables = new();
+            List<ConsumableDataContainer> consumables = new();
             foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
             {
-                var consumableUI = await ConsumableUI.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalPlaneHP, 0);
+                var consumableUI = await ConsumableDataContainer.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalPlaneHP, 0);
                 consumables.Add(consumableUI);
             }
 

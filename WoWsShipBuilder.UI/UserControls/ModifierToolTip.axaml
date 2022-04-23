@@ -55,7 +55,7 @@
                     </ItemsControl>
                 </StackPanel>
             </DataTemplate>
-            <DataTemplate DataType="dataUi:ConsumableUI">
+            <DataTemplate DataType="dataUi:ConsumableDataContainer">
                 <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
                     <TextBlock Classes="ModifierTitle" Name="TitleText"
                                Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DOCK_CONSUME_TITLE}" />

@@ -549,7 +549,7 @@
   </data>
   
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>PW na samolot</value>
   </data>
   

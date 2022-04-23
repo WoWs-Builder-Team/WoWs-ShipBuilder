@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming
@@ -20,8 +18,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public bool IsExpanderOpen
         {
-            get => ShipUI.ExpanderStateMapper[expanderKey];
-            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+            get => ShipDataContainer.ExpanderStateMapper[expanderKey];
+            set => ShipDataContainer.ExpanderStateMapper[expanderKey] = value;
         }
 
         public AuraDataDataContainer? LongRangeAura { get; set; }
@@ -69,9 +67,9 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 expanderKey = $"{ship.Index}_AA",
             };
-            if (!ShipUI.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))
+            if (!ShipDataContainer.ExpanderStateMapper.ContainsKey(aaUI.expanderKey))
             {
-                ShipUI.ExpanderStateMapper[aaUI.expanderKey] = true;
+                ShipDataContainer.ExpanderStateMapper[aaUI.expanderKey] = true;
             }
 
             // Long Range Aura
@@ -118,28 +116,26 @@ namespace WoWsShipBuilder.Core.DataUI
             {
                 return null;
             }
-            else
+
+            var flakNumber = "";
+            if (flakAmount > 0)
             {
-                var flakNumber = "";
-                if (flakAmount > 0)
-                {
-                    var flakAverage = (int)(flakAmount * antiAirAura.HitChance);
-                    int flakDelta = flakAmount - flakAverage;
-                    flakNumber = $"{flakAverage} ± {flakDelta}";
-                }
-
-                var auraData = new AuraDataDataContainer
-                {
-                    Range = Math.Round(antiAirAura.MaxRange / 1000, 2),
-                    ConstantDamage = Math.Round(antiAirAura.ConstantDps * ConstantDamageMultiplier * constantDamageBonus, 2),
-                    Flak = flakNumber,
-                    FlakDamage = Math.Round(antiAirAura.FlakDamage * FlakDamageMultiplier * flakDamageBonus, 2),
-                    HitChance = (int)Math.Round(antiAirAura.HitChance * 100, 2),
-                };
-
-                auraData.UpdateData();
-                return auraData;
+                var flakAverage = (int)(flakAmount * antiAirAura.HitChance);
+                int flakDelta = flakAmount - flakAverage;
+                flakNumber = $"{flakAverage} ± {flakDelta}";
             }
+
+            var auraData = new AuraDataDataContainer
+            {
+                Range = Math.Round(antiAirAura.MaxRange / 1000, 2),
+                ConstantDamage = Math.Round(antiAirAura.ConstantDps * ConstantDamageMultiplier * constantDamageBonus, 2),
+                Flak = flakNumber,
+                FlakDamage = Math.Round(antiAirAura.FlakDamage * FlakDamageMultiplier * flakDamageBonus, 2),
+                HitChance = (int)Math.Round(antiAirAura.HitChance * 100, 2),
+            };
+
+            auraData.UpdateData();
+            return auraData;
         }
     }
 }

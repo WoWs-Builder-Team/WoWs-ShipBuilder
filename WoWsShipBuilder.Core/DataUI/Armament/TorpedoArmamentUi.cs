@@ -30,7 +30,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal TimeToSwitch { get; set; }
 
         [JsonIgnore]
-        public List<TorpedoUI> Torpedoes { get; set; } = new();
+        public List<TorpedoDataContainer> Torpedoes { get; set; } = new();
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>> TorpedoArmamentData { get; set; } = default!;
@@ -67,7 +67,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var torpedoArea = $"{launcher.TorpedoAngles[0]}° - {launcher.TorpedoAngles[1]}°";
 
-            var torpedoes = await TorpedoUI.FromTorpedoName(launcher.AmmoList, modifiers, false, appDataService);
+            var torpedoes = await TorpedoDataContainer.FromTorpedoName(launcher.AmmoList, modifiers, false, appDataService);
 
             var torpedoUi = new TorpedoArmamentUI
             {

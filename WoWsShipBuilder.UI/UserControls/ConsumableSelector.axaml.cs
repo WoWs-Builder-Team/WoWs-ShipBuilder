@@ -18,13 +18,13 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private static readonly ImagePathConverter Converter = new();
 
-        public static readonly StyledProperty<List<ConsumableUI>> ConsumableListProperty =
-            AvaloniaProperty.Register<ConsumableSelector, List<ConsumableUI>>(nameof(ConsumableList), notifying: ConsumableListChanged);
+        public static readonly StyledProperty<List<ConsumableDataContainer>> ConsumableListProperty =
+            AvaloniaProperty.Register<ConsumableSelector, List<ConsumableDataContainer>>(nameof(ConsumableList), notifying: ConsumableListChanged);
 
         public static readonly StyledProperty<int> SelectedIndexProperty = AvaloniaProperty.Register<ConsumableSelector, int>(nameof(SelectedIndex), notifying: OnSelectedIndexChanged);
 
-        public static readonly StyledProperty<Action<ConsumableUI>?> SelectedIndexChangedProperty =
-            AvaloniaProperty.Register<ConsumableSelector, Action<ConsumableUI>?>(nameof(SelectedIndexChanged));
+        public static readonly StyledProperty<Action<ConsumableDataContainer>?> SelectedIndexChangedProperty =
+            AvaloniaProperty.Register<ConsumableSelector, Action<ConsumableDataContainer>?>(nameof(SelectedIndexChanged));
 
         private static readonly StyledProperty<IImage> SelectedImageProperty = AvaloniaProperty.Register<UpgradeSelector, IImage>(
             nameof(SelectedImage));
@@ -44,13 +44,13 @@ namespace WoWsShipBuilder.UI.UserControls
             set => SetValue(SelectedIndexProperty, value);
         }
 
-        public List<ConsumableUI> ConsumableList
+        public List<ConsumableDataContainer> ConsumableList
         {
             get => GetValue(ConsumableListProperty);
             set => SetValue(ConsumableListProperty, value);
         }
 
-        public Action<ConsumableUI>? SelectedIndexChanged
+        public Action<ConsumableDataContainer>? SelectedIndexChanged
         {
             get => GetValue(SelectedIndexChangedProperty);
             set => SetValue(SelectedIndexChangedProperty, value);

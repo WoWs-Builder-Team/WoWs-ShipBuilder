@@ -285,7 +285,7 @@
                 <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_ShellsPath}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <Panel>
-                            <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 7 0">
+                            <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 14 0">
                                 <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Range}" Margin="0 0 5 0" VerticalAlignment="Center"/>
                                 <NumericUpDown Minimum="1" HorizontalAlignment="Stretch" Value="{Binding ShootingRange}" VerticalAlignment="Center" Padding="0 0 0 0"/>
                             </StackPanel>

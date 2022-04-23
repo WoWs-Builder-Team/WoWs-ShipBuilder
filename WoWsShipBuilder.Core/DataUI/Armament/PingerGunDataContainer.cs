@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
@@ -47,31 +46,31 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var pingSpeed = pingerGun.WaveParams.First().WaveSpeed.First();
             var pingSpeedModifiers = modifiers.FindModifiers("pingerWaveSpeedCoeff");
-            pingSpeed = Math.Round(pingSpeedModifiers.Aggregate(pingSpeed, (current, reloadModifier) => current * (decimal)reloadModifier), 0);
+            pingSpeed = pingSpeedModifiers.Aggregate(pingSpeed, (current, reloadModifier) => current * (decimal)reloadModifier);
 
             var firstPingDuration = pingerGun.SectorParams[0].Lifetime;
             var firstPingDurationModifiers = modifiers.FindModifiers("firstSectorTimeCoeff");
-            firstPingDuration = Math.Round(pingSpeedModifiers.Aggregate(firstPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier), 1);
+            firstPingDuration = firstPingDurationModifiers.Aggregate(firstPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier);
 
             var secondPingDuration = pingerGun.WaveParams.First().WaveSpeed.First();
             var secondPingDurationModifiers = modifiers.FindModifiers("secondSectorTimeCoeff");
-            secondPingDuration = Math.Round(secondPingDurationModifiers.Aggregate(secondPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier), 1);
+            secondPingDuration = secondPingDurationModifiers.Aggregate(secondPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier);
 
             var traverseSpeed = pingerGun.RotationSpeed[0];
 
             var arModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-            var reload = Math.Round(arModifiers.Aggregate(pingerGun.WaveReloadTime, (current, arModifier) => current * (1 - ((decimal)arModifier / 100))), 2);
+            var reload = arModifiers.Aggregate(pingerGun.WaveReloadTime, (current, arModifier) => current * (1 - ((decimal)arModifier / 100)));
 
             var pingerGunDataContainer = new PingerGunDataContainer
             {
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = traverseSpeed,
-                Reload = reload,
+                Reload = Math.Round(reload, 2),
                 Range = pingerGun.WaveDistance / 1000,
-                FirstPingDuration = firstPingDuration,
-                SecondPingDuration = secondPingDuration,
+                FirstPingDuration = Math.Round(firstPingDuration, 1),
+                SecondPingDuration = Math.Round(secondPingDuration, 1),
                 PingWidth = pingerGun.WaveParams.First().StartWaveWidth * 30,
-                PingSpeed = pingSpeed,
+                PingSpeed = Math.Round(pingSpeed, 0),
             };
 
             pingerGunDataContainer.UpdateDataElements();

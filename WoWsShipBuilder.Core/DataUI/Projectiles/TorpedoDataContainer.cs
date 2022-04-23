@@ -11,7 +11,7 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoUI : ProjectileUI
+    public record TorpedoDataContainer : ProjectileDataContainer
     {
         [JsonIgnore]
         public string Name { get; set; } = default!;
@@ -50,9 +50,9 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public bool IsLast { get; set; } = false;
 
-        public static async Task<List<TorpedoUI>> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane, IAppDataService appDataService)
+        public static async Task<List<TorpedoDataContainer>> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane, IAppDataService appDataService)
         {
-            var list = new List<TorpedoUI>();
+            var list = new List<TorpedoDataContainer>();
             foreach (var name in torpedoNames)
             {
                 var torp = await appDataService.GetProjectile<Torpedo>(name);
@@ -76,7 +76,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var allClasses = new List<ShipClass> { ShipClass.Destroyer, ShipClass.Cruiser, ShipClass.Battleship, ShipClass.AirCarrier };
 
                 // v = d/t --> d = v*t
-                var torpUI = new TorpedoUI
+                var torpUI = new TorpedoDataContainer
                 {
                     Name = name,
                     Type = Translation.ShipStats_TorpedoStandard,

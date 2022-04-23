@@ -16,8 +16,8 @@ namespace WoWsShipBuilder.Core.DataUI
         [JsonIgnore]
         public bool IsExpanderOpen
         {
-            get => ShipUI.ExpanderStateMapper[expanderKey];
-            set => ShipUI.ExpanderStateMapper[expanderKey] = value;
+            get => ShipDataContainer.ExpanderStateMapper[expanderKey];
+            set => ShipDataContainer.ExpanderStateMapper[expanderKey] = value;
         }
 
         [DataUiUnit("S")]
@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public int BombsPerCharge { get; set; }
 
         [JsonIgnore]
-        public ProjectileUI? DepthCharge { get; set; }
+        public ProjectileDataContainer? DepthCharge { get; set; }
 
         [JsonIgnore]
         public List<KeyValuePair<string, string>>? DepthChargesLauncherData { get; set; }
@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var numberOfUses = modifiers.FindModifiers("dcNumPacksBonus").Aggregate(depthChargesArray.MaxPacks, (current, modifier) => current + (int)modifier);
 
-            var ammo = await DepthChargeUI.FromChargesName(ammoName, modifiers, appDataService);
+            var ammo = await DepthChargeDataContainer.FromChargesName(ammoName, modifiers, appDataService);
 
             var depthChargesLauncherUI = new DepthChargesLauncherUI
             {
@@ -61,9 +61,9 @@ namespace WoWsShipBuilder.Core.DataUI
 
             depthChargesLauncherUI.DepthChargesLauncherData = depthChargesLauncherUI.ToPropertyMapping();
             depthChargesLauncherUI.expanderKey = $"{ship.Index}_DC";
-            if (!ShipUI.ExpanderStateMapper.ContainsKey(depthChargesLauncherUI.expanderKey))
+            if (!ShipDataContainer.ExpanderStateMapper.ContainsKey(depthChargesLauncherUI.expanderKey))
             {
-                ShipUI.ExpanderStateMapper[depthChargesLauncherUI.expanderKey] = true;
+                ShipDataContainer.ExpanderStateMapper[depthChargesLauncherUI.expanderKey] = true;
             }
 
             return depthChargesLauncherUI;

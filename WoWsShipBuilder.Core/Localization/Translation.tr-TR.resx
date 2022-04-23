@@ -633,7 +633,7 @@
     <value>Saldıran Uçuş Boyutu</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Uçak Başına Cp</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

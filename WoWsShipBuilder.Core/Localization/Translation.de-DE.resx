@@ -639,7 +639,7 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Flugzeug Hp</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

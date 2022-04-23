@@ -22,6 +22,8 @@
         <converters:ImagePathConverter x:Key="ImageConverter" />
         <converters:ModifierConverter x:Key="ModifierConverter"/>
         <converters:StatGridConverter x:Key="GridSizeConverter"/>
+        
+        <SolidColorBrush Color="Gray" Opacity="0.5" x:Key="NestedBrush"/>
     </UserControl.Resources>
     
     <UserControl.Styles>
@@ -37,7 +39,6 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
         <Style Selector="TextBlock.Key">
-            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
         <Style Selector="TextBlock.Value">
@@ -54,16 +55,18 @@
         </Style>
         <Style Selector="TextBlock.Tip">
             <Setter Property="MaxWidth" Value="300"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
         <Style Selector="ItemsControl.Stagger">
             <Setter Property="Margin" Value="10,0,0,0"/>
+        </Style>
+        <Style Selector="StackPanel.Group">
+            <Setter Property="Margin" Value="0,5,0,3"/>
         </Style>
     </UserControl.Styles>
     
     <UserControl.DataTemplates>
         <DataTemplate DataType="dataElements:GroupedDataElement">
-            <StackPanel Margin="0 5 0 0">
+            <StackPanel Classes="Group">
                 <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
                 <ItemsControl Items="{Binding Children}" Classes="Stagger"/>
             </StackPanel>
@@ -199,7 +202,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="dataUi:ShellUI">
                                     <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name}"
-                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                               IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                         <StackPanel Orientation="Vertical">
                                             <ItemsControl Items="{Binding PropertyValueMapper}">
@@ -233,7 +236,7 @@
 
                 <!--Pinger Gun-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_PingerGun}"
-                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.PingerGunUI}"
+                          Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" DataContext="{Binding CurrentShipStats.PingerGunDataContainer}"
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding DataElements}"/>
@@ -263,7 +266,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name, Converter={StaticResource Localizer}}"
-                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                               IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                         <StackPanel Orientation="Vertical">
                                             <ItemsControl Items="{Binding ProjectileData}">
@@ -316,7 +319,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name, Converter={StaticResource Localizer}}"
-                                              Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                              Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                               IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                         <StackPanel Orientation="Vertical">
                                             <TextBlock Text="{x:Static translations:Translation.ShipStats_AircraftAmount}" Margin="0,4,0,0"/>
@@ -504,40 +507,36 @@
                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_LongAura}" Margin="0,0,0,5"/>
                                     <ItemsControl Items="{Binding LongRangeAura.DataElements}" Classes="Stagger"/>
                                 </StackPanel>
-                                <Separator IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="0,5,0,0"/>
-                                <StackPanel IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                    <TextBlock Text="{x:Static translations:Translation.ShipStats_MediumAura}" Margin="0,0,0,5"/>
-                                    <ItemsControl Items="{Binding MediumRangeAura.DataElements}" Classes="Stagger">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <DockPanel LastChildFill="True">
-                                                    <TextBlock Classes="Value" DockPanel.Dock="Right"/>
-                                                    <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
-                                                </DockPanel>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                                <Separator IsVisible="{Binding ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}" Margin="0,5,0,0"/>
+                                <Separator Margin="0,5,0,0">
+                                    <Separator.IsVisible>
+                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                            <Binding Path="MediumRangeAura" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                                            <Binding Path="LongRangeAura" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                                        </MultiBinding>
+                                    </Separator.IsVisible>
+                                </Separator>
+                                    <StackPanel IsVisible="{Binding MediumRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                        <TextBlock Text="{x:Static translations:Translation.ShipStats_MediumAura}" Margin="0,0,0,5"/>
+                                        <ItemsControl Items="{Binding MediumRangeAura.DataElements}" Classes="Stagger"/>
+                                    </StackPanel>
+                                <Separator Margin="0,5,0,0">
+                                    <Separator.IsVisible>
+                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                            <Binding Path="MediumRangeAura" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                                            <Binding Path="ShortRangeAura" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                                        </MultiBinding>
+                                    </Separator.IsVisible>
+                                </Separator>
                                 <StackPanel IsVisible="{Binding ShortRangeAura, Converter={x:Static ObjectConverters.IsNotNull}}">
                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_ShortAura}" Margin="0,0,0,5"/>
-                                    <ItemsControl Items="{Binding ShortRangeAura.DataElements}" Classes="Stagger">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <DockPanel LastChildFill="True">
-                                                    <TextBlock Classes="Value" DockPanel.Dock="Right"/>
-                                                    <TextBlock Classes="Key" TextWrapping="Wrap" Margin="0 0 2 0"/>
-                                                </DockPanel>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                    <ItemsControl Items="{Binding ShortRangeAura.DataElements}" Classes="Stagger"/>
                                 </StackPanel>
                             </StackPanel>
                         </Expander>
                     </DataTemplate>
                     
                     <!-- Airstrike and ASW Airstrike -->
-                    <DataTemplate DataType="dataUi:AirstrikeUI">
+                    <DataTemplate DataType="dataUi:AirstrikeDataContainer">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}" Header="{Binding Header, Converter={StaticResource Localizer}, ConverterParameter=resx}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                                   IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
@@ -546,16 +545,7 @@
                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_Name}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
                                     <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right"/>
                                 </DockPanel>
-                                <ItemsControl Items="{Binding AirstrikeData}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <DockPanel LastChildFill="True">
-                                                <TextBlock Classes="Value" TextWrapping="NoWrap" Margin="4 0 0 0" DockPanel.Dock="Right" TextAlignment="Right" HorizontalAlignment="Right"/>
-                                                <TextBlock Classes="Key" TextWrapping="Wrap"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <ItemsControl Items="{Binding DataElements}"/>
                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Weapon}" Margin="0 10 0 0"/>
                                 <DockPanel HorizontalAlignment="Stretch" Margin="10 4 0 0">
                                     <TextBlock Text="{x:Static translations:Translation.ShipStats_Type}" TextWrapping="Wrap" DockPanel.Dock="Left"/>
@@ -646,7 +636,7 @@
                                                 </DockPanel>
                                                 <TextBlock Text="{x:Static translations:Translation.ShipStats_Shells}" Margin="0 10 0 0"/>
                                                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Shell.Name}"
-                                                          Padding="5 0 5 5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
+                                                          Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                                                     <StackPanel>
                                                         <ItemsControl Items="{Binding Shell.PropertyValueMapper}">
@@ -698,7 +688,7 @@
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                           DataContext="{Binding CurrentShipStats}">
                     <StackPanel Orientation="Vertical">
-                        <ItemsControl Items="{Binding ConcealmentUiDataContainer.DataElements}"/>
+                        <ItemsControl Items="{Binding ConcealmentDataContainer.DataElements}"/>
                     </StackPanel>
                 </Expander>
                 
@@ -714,17 +704,18 @@
                 <!--Special ability-->
                 <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{x:Static translations:Translation.ShipStats_SpecialAbility}"
                           Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
-                          DataContext="{Binding CurrentShipStats.SpecialAbilityUI}"
+                          DataContext="{Binding CurrentShipStats.SpecialAbilityDataContainer}"
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <StackPanel IsVisible="{Binding !IsBurstMode}">
                             <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}}" Margin="0,0,0,10"/>
                             <TextBlock Text="{Binding Description, Converter={StaticResource Localizer}}"/>
-                            <Separator Margin="0,10"/>
+                            <Separator Margin="0 10 0 5"/>
                             <ItemsControl Items="{Binding DataElements}"/>
                         </StackPanel>
                         <StackPanel IsVisible="{Binding IsBurstMode}">
                             <TextBlock Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=resx}" Margin="0,0,0,10"/>
+                            <Separator Margin="0 0 0 5"/>
                             <ItemsControl Items="{Binding DataElements}"/>
                         </StackPanel>
                         <ItemsControl Items="{Binding Modifiers}">

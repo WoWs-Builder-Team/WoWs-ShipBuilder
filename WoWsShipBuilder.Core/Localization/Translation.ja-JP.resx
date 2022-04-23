@@ -639,7 +639,7 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>1機あたりのHP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

@@ -617,7 +617,7 @@
     <value>공격시 항공기 수</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>각 항공기의 내구도</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

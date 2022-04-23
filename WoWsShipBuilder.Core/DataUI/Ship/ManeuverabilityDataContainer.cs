@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
@@ -11,20 +9,20 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record ManeuverabilityDataContainer : DataContainerBase
     {
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
-        public decimal FullPowerForward { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
-        public decimal FullPowerBackward { get; set; } = default!;
-
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
         public decimal ManeuverabilityMaxSpeed { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        public decimal ManeuverabilityRudderShiftTime { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal ManeuverabilityTurningCircle { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-        public decimal ManeuverabilityRudderShiftTime { get; set; }
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+        public decimal FullPowerForward { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+        public decimal FullPowerBackward { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
         [DataElementFiltering(false)]

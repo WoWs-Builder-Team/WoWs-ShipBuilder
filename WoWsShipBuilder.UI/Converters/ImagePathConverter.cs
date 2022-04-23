@@ -111,7 +111,7 @@ namespace WoWsShipBuilder.UI.Converters
                     return new Bitmap(asset);
                 }
 
-                case ConsumableUI consumableUI:
+                case ConsumableDataContainer consumableUI:
                 {
                     Logger.Debug("Processing consumableUI.");
                     string iconName = consumableUI.IconName;

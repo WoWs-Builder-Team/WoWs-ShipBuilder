@@ -451,7 +451,7 @@
     <value>DPS per fire</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Fire duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Fire chance reduction</value>
@@ -463,7 +463,7 @@
     <value>DPS per flooding</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Flooding duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Flooding probability</value>
@@ -535,13 +535,13 @@
     <value>Concealment</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Concealment by air</value>
+      <value>Base</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>When on fire</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Concealment by sea</value>
+      <value>Base</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>When on fire</value>
@@ -550,19 +550,19 @@
     <value>After firing in smoke</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Max fires</value>
+      <value>Max together</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Total fire damage</value>
+      <value>Max damage per fire</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Max floods</value>
+      <value>Max together</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedo protection</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Total flood damage</value>
+      <value>Max damage per flooding</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long range aura</value>
@@ -639,7 +639,7 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>In squadron</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Hp per plane</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -652,19 +652,19 @@
     <value>Bombs per plane</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Drop time</value>
+      <value>Drop</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Time to arrive</value>
+      <value>To arrive</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximum range</value>
+      <value>Max</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Max drop length</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimum range</value>
+      <value>Min</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Number of charges</value>
@@ -868,10 +868,10 @@
     <value>Copy versions</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Concealment by sub at periscope depth</value>
+      <value>At periscope depth</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Concealment by sub at operating depth</value>
+      <value>At operating depth</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Show dispersion and ballistics graphs</value>
@@ -1289,5 +1289,23 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
       <value>Blast Protection</value>
+  </data>
+  <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
+      <value>Max together</value>
+  </data>
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>From Subs</value>
+  </data>
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>Sea</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>Air</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>Timings</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>Reload</value>
   </data>
 </root>

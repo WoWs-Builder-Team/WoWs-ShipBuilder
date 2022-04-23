@@ -633,7 +633,7 @@
     <value>Самолетов в сбросе</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>ХП каждого самолета</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
