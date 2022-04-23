@@ -24,7 +24,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static readonly DiagnosticDescriptor MissingAttributeError = new(id: "SB001",
         title: "A required secondary attribute is missing",
-        messageFormat: "Couldn't find the required attribute {0} for the DataElement type {1}",
+        messageFormat: "Couldn't find the required attribute property {0} for the DataElement type {1}",
         category: "Generator",
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
@@ -186,8 +186,13 @@ public partial record {dataRecord.className}
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
+            case DataElementTypes.FormattedText:
+                builder.Append(GenerateFormattedTextRecord(context, currentProp, typeAttribute, propertyAttributes, collectionName));
+                builder.AppendLine();
+                additionalPropIndexes.Add(0);
+                break;
             case { } when (type & DataElementTypes.Grouped) == DataElementTypes.Grouped:
-                var (code, additionalIndexes) = GenerateGroupedRecord(context, propertyAttributes, typeAttribute, properties, collectionName);
+                var (code, additionalIndexes) = GenerateGroupedRecord(context, typeAttribute, properties, collectionName);
                 builder.Append(code);
                 builder.AppendLine();
                 additionalPropIndexes.AddRange(additionalIndexes);
@@ -200,14 +205,14 @@ public partial record {dataRecord.className}
         return (builder.ToString(), additionalPropIndexes);
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, ImmutableArray<AttributeData> propertyAttributes, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
     {
 
         var groupName = (string?)typeAttr.NamedArguments.First(arg => arg.Key == "GroupKey").Value.Value;
 
         if (string.IsNullOrWhiteSpace(groupName))
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttr.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementGroupAttribute", "GroupedDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttr.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "GroupKey", "GroupedDataElement"));
             return (string.Empty, new List<int>() { 0 });
         }
 
@@ -252,6 +257,26 @@ public partial record {dataRecord.className}
         return (builder.ToString(), indexList);
     }
 
+    private static string GenerateFormattedTextRecord(SourceProductionContext context, IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    {
+        var name = property.Name;
+        var valuesProperty = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ValuesPropertyName").Value.Value;
+        if (string.IsNullOrWhiteSpace(valuesProperty))
+        {
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "ValuesPropertyName", "TooltipDataElement"));
+            return string.Empty;
+        }
+        var isKeyLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value!;
+        var isListLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value!;
+
+        var filter = GetFilterAttributeData(property.Name, propertyAttributes);
+        var builder = new StringBuilder();
+        builder.Append(filter);
+        builder.AppendLine();
+        builder.Append($@"{Indentation}{collectionName}.Add(new FormattedTextDataElement({name}, {valuesProperty}, {isKeyLocalization}, {isListLocalization}));");
+        return builder.ToString();
+    }
+
     private static string GenerateTooltipRecord(SourceProductionContext context, IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
@@ -260,7 +285,7 @@ public partial record {dataRecord.className}
         var tooltip = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "TooltipKey").Value.Value;
         if (string.IsNullOrWhiteSpace(tooltip))
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementTooltipAttribute", "TooltipDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "TooltipKey", "TooltipDataElement"));
             return string.Empty;
         }
 
@@ -281,7 +306,7 @@ public partial record {dataRecord.className}
         var unit = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value;
         if (string.IsNullOrWhiteSpace(unit))
         {
-            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "DataElementUnitAttribute", "KeyValueUnitDataElement"));
+            context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "UnitKey", "KeyValueUnitDataElement"));
             return string.Empty;
         }
 

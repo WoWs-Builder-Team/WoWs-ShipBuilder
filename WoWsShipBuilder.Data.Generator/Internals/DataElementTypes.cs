@@ -10,4 +10,5 @@ internal enum DataElementTypes
     Value = 4,
     Grouped = 8,
     Tooltip = 16,
+    FormattedText = 32,
 }
