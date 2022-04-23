@@ -44,6 +44,13 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
+    private static readonly DiagnosticDescriptor TooManyIterationsError = new(id: "SB004",
+        title: "Too many iterations",
+        messageFormat: "Too many iteration for the grouped data element.",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataContainerRecord, GetRecordTypeOrNull)
@@ -54,7 +61,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
         // Uncomment to generate attribute classes instead of using them from a separate dependency
         // context.RegisterPostInitializationOutput(GenerateFixedCode);
-        context.RegisterSourceOutput(dataClasses, GenerateCode!);
+        context.RegisterSourceOutput(dataClasses, GenerateCode);
     }
 
     private static bool IsDataContainerRecord(SyntaxNode syntaxNode, CancellationToken token)
@@ -86,11 +93,11 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         return (name, dataNamespace, properties);
     }
 
-    private static void GenerateFixedCode(IncrementalGeneratorPostInitializationContext context)
-    {
-        context.AddSource("DataElementTypes.g.cs", SourceText.From(AttributeGenerator.DataElementTypesEnum, Encoding.UTF8));
-        context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
-    }
+    // private static void GenerateFixedCode(IncrementalGeneratorPostInitializationContext context)
+    // {
+    //     context.AddSource("DataElementTypes.g.cs", SourceText.From(AttributeGenerator.DataElementTypesEnum, Encoding.UTF8));
+    //     context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
+    // }
 
     private static void GenerateCode(SourceProductionContext context, ImmutableArray<(string className, string classNamespace, List<IPropertySymbol> properties)> dataRecords)
     {
@@ -135,7 +142,7 @@ public partial record {dataRecord.className}
 
                     try
                     {
-                        var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName);
+                        var (code, additionalIndexes) = GenerateCode(context, typeAttribute, prop, propertyAttributes, properties, DataElementCollectionName, 0);
                         builder.Append(code);
                         builder.AppendLine();
                         foreach (var index in additionalIndexes.OrderByDescending(x => x))
@@ -156,10 +163,18 @@ public partial record {dataRecord.className}
         }
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName, bool isGroup = false)
+    private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName, int iterationCounter, bool isGroup = false)
     {
-        var builder = new StringBuilder();
         var additionalPropIndexes = new List<int>();
+        if (iterationCounter > 5)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(TooManyIterationsError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation()));
+            additionalPropIndexes.Add(0);
+            return("", additionalPropIndexes);
+        }
+
+        var builder = new StringBuilder();
+
         var type = (DataElementTypes)typeAttribute.ConstructorArguments[0].Value!;
 
         if (isGroup)
@@ -195,7 +210,7 @@ public partial record {dataRecord.className}
                 additionalPropIndexes.Add(0);
                 break;
             case { } when (type & DataElementTypes.Grouped) == DataElementTypes.Grouped:
-                var (code, additionalIndexes) = GenerateGroupedRecord(context, typeAttribute, properties, collectionName);
+                var (code, additionalIndexes) = GenerateGroupedRecord(context, typeAttribute, properties, collectionName, iterationCounter);
                 builder.Append(code);
                 builder.AppendLine();
                 additionalPropIndexes.AddRange(additionalIndexes);
@@ -208,7 +223,7 @@ public partial record {dataRecord.className}
         return (builder.ToString(), additionalPropIndexes);
     }
 
-    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName)
+    private static (string code, List<int> additionalIndexes) GenerateGroupedRecord(SourceProductionContext context, AttributeData typeAttr, List<IPropertySymbol> properties, string collectionName, int iterationCounter)
     {
 
         var groupName = (string?)typeAttr.NamedArguments.First(arg => arg.Key == "GroupKey").Value.Value;
@@ -244,7 +259,7 @@ public partial record {dataRecord.className}
                     continue;
                 }
 
-                var (code, additionalIndexes) = GenerateCode(context, typeAttribute, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List", true);
+                var (code, additionalIndexes) = GenerateCode(context, typeAttribute, currentGroupProp, currentGroupPropertyAttributes, groupProperties, $"{groupName}List", iterationCounter++, true);
                 builder.Append(code);
                 foreach (var index in additionalIndexes.OrderByDescending(x => x))
                 {
