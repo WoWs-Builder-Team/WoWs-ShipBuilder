@@ -2,84 +2,83 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record TorpedoDataContainer : ProjectileDataContainer
+    public partial record TorpedoDataContainer : ProjectileDataContainer
     {
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.KeyValue)]
         public string Name { get; set; } = default!;
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public string Type { get; set; } = default!;
 
-        [DataUiUnit("KM")]
-        public decimal Range { get; set; }
-
+        [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
 
-        [DataUiUnit("Knots")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        public decimal Range { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
         public decimal Speed { get; set; }
 
-        [DataUiUnit("KM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal Detectability { get; set; }
 
-        [DataUiUnit("M")]
-        public decimal ExplosionRadius { get; set; }
-
-        [JsonIgnore]
-        public decimal SplashCoeff { get; set; }
-
-        [DataUiUnit("M")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public int ArmingDistance { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal ReactionTime { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FloodingChance { get; set; }
 
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+        public decimal ExplosionRadius { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementFiltering(false)]
+        public decimal SplashCoeff { get; set; }
+
         public List<ShipClass>? CanHitClasses { get; set; }
 
-        [JsonIgnore]
-        public bool IsLast { get; set; } = false;
+        public bool IsLast { get; set; }
 
         public static async Task<List<TorpedoDataContainer>> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane, IAppDataService appDataService)
         {
             var list = new List<TorpedoDataContainer>();
-            foreach (var name in torpedoNames)
+            foreach (string name in torpedoNames)
             {
                 var torp = await appDataService.GetProjectile<Torpedo>(name);
 
                 var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
-                decimal torpedoDamage = (decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier);
+                var torpedoDamage = (decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier);
 
                 var torpedoSpeedModifiers = modifiers.FindModifiers("torpedoSpeedMultiplier").ToList();
                 torpedoSpeedModifiers.AddRange(modifiers.FindModifiers("planeTorpedoSpeedMultiplier"));
-                decimal torpedoSpeed = (decimal)torpedoSpeedModifiers.Aggregate(torp.Speed, (current, modifier) => current * modifier);
+                var torpedoSpeed = (decimal)torpedoSpeedModifiers.Aggregate(torp.Speed, (current, modifier) => current * modifier);
 
                 var torpedoDetectModifiers = modifiers.FindModifiers("torpedoVisibilityFactor");
-                decimal torpedoDetect = (decimal)torpedoDetectModifiers.Aggregate(torp.SpottingRange, (current, modifier) => current * modifier);
+                var torpedoDetect = (decimal)torpedoDetectModifiers.Aggregate(torp.SpottingRange, (current, modifier) => current * modifier);
 
                 var torpedoArmingTimeModifiers = modifiers.FindModifiers("planeTorpedoArmingTimeCoeff");
-                decimal torpedoArmingTime = (decimal)torpedoArmingTimeModifiers.Aggregate(torp.ArmingTime, (current, modifier) => current * modifier);
+                var torpedoArmingTime = (decimal)torpedoArmingTimeModifiers.Aggregate(torp.ArmingTime, (current, modifier) => current * modifier);
 
                 var torpedoFloodingModifiers = fromPlane ? modifiers.FindModifiers("floodChanceFactorPlane", true) : modifiers.FindModifiers("floodChanceFactor", true);
-                decimal torpedoFlooding = (decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier);
+                var torpedoFlooding = (decimal)torpedoFloodingModifiers.Aggregate(torp.FloodChance, (current, modifier) => current * modifier);
 
                 var allClasses = new List<ShipClass> { ShipClass.Destroyer, ShipClass.Cruiser, ShipClass.Battleship, ShipClass.AirCarrier };
 
                 // v = d/t --> d = v*t
-                var torpUI = new TorpedoDataContainer
+                var torpedoDataContainer = new TorpedoDataContainer
                 {
                     Name = name,
-                    Type = Translation.ShipStats_TorpedoStandard,
+                    Type = "ShipStats_TorpedoStandard",
                     Damage = Math.Round(torpedoDamage),
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = Math.Round(torpedoSpeed, 2),
@@ -93,17 +92,17 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 if (name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
                 {
-                    torpUI.Type = Translation.ShipStats_TorpedoMagnetic;
+                    torpedoDataContainer.Type = "ShipStats_TorpedoMagnetic";
                 }
 
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
                 {
-                    torpUI.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
-                    torpUI.Type = Translation.ShipStats_TorpedoDeepWater;
+                    torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
+                    torpedoDataContainer.Type = "ShipStats_TorpedoDeepWater";
                 }
 
-                torpUI.ProjectileData = torpUI.ToPropertyMapping();
-                list.Add(torpUI);
+                torpedoDataContainer.UpdateDataElement();
+                list.Add(torpedoDataContainer);
             }
 
             return list;

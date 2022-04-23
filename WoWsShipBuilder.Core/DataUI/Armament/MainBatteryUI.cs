@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public string TaperDist { get; set; } = default!;
 
         [JsonIgnore]
-        public List<ShellUI> ShellData { get; set; } = default!;
+        public List<ShellDataContainer> ShellData { get; set; } = default!;
 
         [JsonIgnore]
         public Dispersion DispersionData { get; set; } = default!;
@@ -186,7 +186,7 @@ namespace WoWsShipBuilder.Core.DataUI
             };
 
             var shellNames = mainBattery.Guns.First().AmmoList;
-            mainBatteryUi.ShellData = await ShellUI.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService, localizer);
+            mainBatteryUi.ShellData = await ShellDataContainer.FromShellName(shellNames, modifiers, barrelCount, rateOfFire, trueRateOfFire, appDataService);
             mainBatteryUi.PropertyValueMapper = mainBatteryUi.ToPropertyMapping();
             return mainBatteryUi;
         }

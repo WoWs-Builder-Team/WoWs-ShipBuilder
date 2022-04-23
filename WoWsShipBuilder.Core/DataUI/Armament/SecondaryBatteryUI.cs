@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal Reload { get; set; }
 
         [JsonIgnore]
-        public ShellUI? Shell { get; set; }
+        public ShellDataContainer? Shell { get; set; }
 
         [JsonIgnore]
         public bool IsLast { get; set; } = false;
@@ -92,17 +92,17 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 try
                 {
-                    secondaryUI.Shell = (await ShellUI.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService, localizer)).First();
+                    secondaryUI.Shell = (await ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, secondaryGroup.Count * secondaryGun.NumBarrels, rof, trueRateOfFire, appDataService)).First();
                 }
                 catch (KeyNotFoundException e)
                 {
                     // TODO: fix issue properly for next minor release
                     Logging.Logger.Warn(e, "One or more keys of the secondary data were not found.");
-                    secondaryUI.Shell = new ShellUI
+                    secondaryUI.Shell = new ShellDataContainer
                     {
                         Name = "Error",
                         Type = "Error",
-                        TheoreticalDPM = "-1",
+                        TheoreticalDpm = "-1",
                     };
                     secondaryUI.Shell.PropertyValueMapper = secondaryUI.Shell.ToPropertyMapping();
                 }

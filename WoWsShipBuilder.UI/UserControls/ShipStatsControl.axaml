@@ -22,6 +22,7 @@
         <converters:ImagePathConverter x:Key="ImageConverter" />
         <converters:ModifierConverter x:Key="ModifierConverter"/>
         <converters:StatGridConverter x:Key="GridSizeConverter"/>
+        <converters:DataElementValueConverter x:Key="DataElementValueConverter"/>
         
         <SolidColorBrush Color="Gray" Opacity="0.5" x:Key="NestedBrush"/>
     </UserControl.Resources>
@@ -73,7 +74,15 @@
         </DataTemplate>
         <DataTemplate DataType="dataElements:KeyValueDataElement">
             <DockPanel Classes="NameValuePanel">
-                <TextBlock Classes="Value" Text="{Binding Value}"/>
+                <TextBlock Classes="Value">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource DataElementValueConverter}">
+                            <Binding Path="Value"/>
+                            <Binding Path="IsValueKey"/>
+                            <Binding Path="IsValueAppLocalization"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
                 <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
             </DockPanel>
         </DataTemplate>
@@ -94,7 +103,15 @@
             </DockPanel>
         </DataTemplate>
         <DataTemplate DataType="dataElements:ValueDataElement">
-            <TextBlock Classes="Value" Text="{Binding Value}"/>
+            <TextBlock Classes="Value">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource DataElementValueConverter}">
+                        <Binding Path="Value"/>
+                        <Binding Path="IsValueKey"/>
+                        <Binding Path="IsValueAppLocalization"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </DataTemplate>
     </UserControl.DataTemplates>
     
@@ -200,7 +217,7 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="dataUi:ShellUI">
+                                <DataTemplate DataType="dataUi:ShellDataContainer">
                                     <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True" Header="{Binding Name}"
                                               Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5" Margin="0 5 0 0"
                                               IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">

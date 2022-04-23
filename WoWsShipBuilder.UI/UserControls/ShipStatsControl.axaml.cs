@@ -63,7 +63,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
-            var shellIndex = ((ShellUI)textBlock.DataContext!).Index;
+            string shellIndex = ((ShellDataContainer)textBlock.DataContext!).Name;
             var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
             win.Show((Window)this.GetVisualRoot());

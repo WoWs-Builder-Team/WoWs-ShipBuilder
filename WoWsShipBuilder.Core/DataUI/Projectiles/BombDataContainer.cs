@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -45,7 +43,7 @@ namespace WoWsShipBuilder.Core.DataUI
         {
             var bomb = await appDataService.GetProjectile<Bomb>(name);
 
-            decimal bombDamage = 0;
+            decimal bombDamage;
             var ricochetAngle = "";
             var armingThreshold = 0;
             decimal fuseTimer = 0;

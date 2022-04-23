@@ -2,81 +2,82 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataUI.Projectiles;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record RocketDataContainer : ProjectileDataContainer
+    public partial record RocketDataContainer : ProjectileDataContainer
     {
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.KeyValue)]
         public string Name { get; set; } = default!;
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
 
-        [DataUiUnit("MM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public int Penetration { get; set; }
 
-        [DataUiUnit("M")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal ExplosionRadius { get; set; }
 
-        [JsonIgnore]
-        public decimal SplashCoeff { get; set; }
-
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
 
-        [DataUiUnit("MM")]
-        public int ArmingTreshold { get; set; }
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
+        public int ArmingThreshold { get; set; }
 
-        [DataUiUnit("Degree")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Degree")]
         public string RicochetAngles { get; set; } = default!;
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FireChance { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementFiltering(false)]
+        public decimal SplashCoeff { get; set; }
 
         public static async Task<RocketDataContainer> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var rocket = await appDataService.GetProjectile<Rocket>(name);
 
-            decimal rocketDamage = (decimal)rocket.Damage;
+            var rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            decimal fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
+            var fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
             var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
             fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
-            string ricochetAngle = "";
+            var ricochetAngle = "";
             decimal fuseTimer = 0;
-            int armingTreshold = 0;
+            var armingThreshold = 0;
             if (rocket.RocketType.Equals(RocketType.AP))
             {
-                var rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
+                List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
                 rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
                 ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
                 fuseTimer = (decimal)rocket.FuseTimer;
-                armingTreshold = (int)rocket.ArmingThreshold;
+                armingThreshold = (int)rocket.ArmingThreshold;
                 fireChance = 0;
             }
 
-            var rocketUI = new RocketDataContainer
+            var rocketDataContainer = new RocketDataContainer
             {
                 Name = rocket.Name,
                 Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
-                ArmingTreshold = armingTreshold,
+                ArmingThreshold = armingThreshold,
                 RicochetAngles = ricochetAngle,
                 FireChance = Math.Round(fireChance * 100, 1),
                 ExplosionRadius = (decimal)rocket.ExplosionRadius,
                 SplashCoeff = (decimal)rocket.SplashCoeff,
             };
 
-            rocketUI.ProjectileData = rocketUI.ToPropertyMapping();
+            rocketDataContainer.UpdateDataElement();
 
-            return rocketUI;
+            return rocketDataContainer;
         }
     }
 }

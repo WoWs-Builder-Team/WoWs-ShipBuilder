@@ -41,26 +41,26 @@ public class DataElementTypeAttribute : Attribute
 
     /// <summary>
     /// Gets or sets if the value of the property marked by this attribute is a localization key. <br/>
-    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText">
+    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText"/>
     /// </summary>
-    public bool? IsValueLocalizationKey { get; set; } = false;
+    public bool IsValueLocalizationKey { get; set; }
 
     /// <summary>
     /// Gets or sets if the values indicated by <see cref="ValuesPropertyName"/> are localization keys. <br/>
     /// Only valid for <see cref="DataElementTypes.FormattedText"/>
     /// </summary>
-    public bool? ArePropertyNameValuesKeys { get; set; } = false;
+    public bool ArePropertyNameValuesKeys { get; set; }
 
     /// <summary>
     /// Gets or sets if the value of the property marked by this attribute is an app localization key. <br/>
-    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText">
+    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText"/>
     /// </summary>
-    public bool? IsValueAppLocalization { get; set; }
+    public bool IsValueAppLocalization { get; set; }
 
     /// <summary>
     ///  Gets or sets if the values indicated by <see cref="ValuesPropertyName"/> are app localization keys.<br/>
     /// Only valid for <see cref="DataElementTypes.FormattedText"/>
     /// </summary>
-    public bool? IsPropertyNameValuesAppLocalization { get; set; }
+    public bool IsPropertyNameValuesAppLocalization { get; set; }
 
 }

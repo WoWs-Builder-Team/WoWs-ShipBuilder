@@ -1,121 +1,108 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable InconsistentNaming
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShellUI : DataContainerBase
+    public record ShellDataContainer : DataContainerBase
     {
-        [JsonIgnore]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
 
-        [JsonIgnore]
-        public string Index { get; set; } = default!;
-
-        [DataUiUnit("KG")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KG")]
         public decimal Mass { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public string Type { get; set; } = default!;
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
 
-        public string TheoreticalDPM { get; set; } = default!;
+        [DataElementType(DataElementTypes.KeyValue)]
+        public string TheoreticalDpm { get; set; } = default!;
 
-        public string TheoreticalTrueDPM { get; set; } = default!;
+        [DataElementType(DataElementTypes.KeyValue)]
+        public string TheoreticalTrueDpm { get; set; } = default!;
 
-        [DataUiUnit("M")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal ExplosionRadius { get; set; }
 
-        [JsonIgnore]
-        public decimal SplashCoeff { get; set; }
-
-        [DataUiUnit("MPS")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
         public decimal ShellVelocity { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValue)]
         public decimal AirDrag { get; set; }
 
-        [DataUiUnit("MM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public int Penetration { get; set; }
 
-        [DataUiUnit("MM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public decimal Overmatch { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.Grouped, GroupKey = "FireChance", UnitKey = "PerCent")]
         public decimal FireChance { get; set; }
 
-        [DataUiUnit("PerCent")]
+        [DataElementType(DataElementTypes.Grouped, GroupKey = "FireChance", UnitKey = "PerCent")]
         public decimal FireChancePerSalvo { get; set; }
 
-        [DataUiUnit("Degree")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
+        public decimal PotentialFpm { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Degree")]
         public string? RicochetAngles { get; set; }
 
-        [JsonIgnore]
-        public decimal MinRicochetAngle { get; set; }
-
-        [JsonIgnore]
-        public decimal MaxRicochetAngle { get; set; }
-
-        [DataUiUnit("MM")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public decimal ArmingThreshold { get; set; }
 
-        [DataUiUnit("S")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
 
-        [DataUiUnit("FPM")]
-        public decimal PotentialFPM { get; set; }
+        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementFiltering(false)]
+        public decimal SplashCoeff { get; set; }
 
-        public decimal DepthExplosion { get; set; }
+        public decimal MinRicochetAngle { get; set; }
 
-        [JsonIgnore]
+        public decimal MaxRicochetAngle { get; set; }
+
         public bool IsLastEntry { get; private set; }
 
-        [JsonIgnore]
         public bool ShowBlastPenetration { get; private set; }
 
-        [JsonIgnore]
-        public List<KeyValuePair<string, string>> PropertyValueMapper { get; set; } = default!;
-
-        public static async Task<List<ShellUI>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService, ILocalizer localizer)
+        public static async Task<List<ShellDataContainer>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
         {
-            var shells = new List<ShellUI>();
+            var shells = new List<ShellDataContainer>();
             foreach (string shellName in shellNames)
             {
                 var shell = await appDataService.GetProjectile<ArtilleryShell>(shellName);
 
                 // Values that may be ignored depending on shell type
-                var armingTreshold = Math.Round((decimal)shell.ArmingThreshold);
-                var fuseTimer = Math.Round((decimal)shell.FuseTimer, 3);
-                var overmatch = Math.Truncate((decimal)(shell.Caliber * 1000 / 14.3));
+                decimal armingThreshold = Math.Round((decimal)shell.ArmingThreshold);
+                decimal fuseTimer = Math.Round((decimal)shell.FuseTimer, 3);
+                decimal overmatch = Math.Truncate((decimal)(shell.Caliber * 1000 / 14.3));
 
                 float shellDamage = shell.Damage;
                 float shellFireChance = shell.FireChance * 100;
                 float shellPenetration = shell.Penetration;
                 float shellAirDrag = shell.AirDrag;
                 float shellMass = shell.Mass;
-                bool showBlastPenetration = false;
-                string shellType = "";
+                var showBlastPenetration = false;
 
                 switch (shell.ShellType)
                 {
                     case ShellType.HE:
                     {
                         int index;
-                        armingTreshold = 0;
-                        fuseTimer = 0;
                         overmatch = 0;
                         showBlastPenetration = true;
-                        shellType = Translation.ArmamentType_HE;
 
                         // IFHE fire chance malus
                         if (shell.Caliber > 0.139f)
@@ -146,8 +133,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         }
 
                         // Demolition expert
-                        var burnChanceModifierName = $"artilleryBurnChanceBonus";
-                        shellFireChance += modifiers.FindModifiers(burnChanceModifierName).Select(m => m * 100).Sum();
+                        shellFireChance += modifiers.FindModifiers("artilleryBurnChanceBonus").Select(m => m * 100).Sum();
 
                         // Talent modifier
                         shellFireChance += modifiers.FindModifiers("burnProbabilityBonus").Select(m => m * 100).Sum();
@@ -160,9 +146,8 @@ namespace WoWsShipBuilder.Core.DataUI
 
                     case ShellType.SAP:
                     {
-                        armingTreshold = 0;
+                        armingThreshold = 0;
                         fuseTimer = 0;
-                        shellType = Translation.ArmamentType_SAP;
                         shellDamage = modifiers.FindModifiers("GMHECSDamageCoeff").Aggregate(shellDamage, (current, modifier) => current * modifier);
                         break;
                     }
@@ -171,7 +156,6 @@ namespace WoWsShipBuilder.Core.DataUI
                     {
                         // TODO: check and fix modifier names and application
                         int index;
-                        shellType = Translation.ArmamentType_AP;
                         if (shell.Caliber >= 0.190f)
                         {
                             index = modifiers.FindModifierIndex("GMHeavyCruiserCaliberDamageCoeff");
@@ -194,17 +178,16 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
                 decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-                var dpmNumber = Math.Round((decimal)shellDamage * barrelCount * rof);
-                var trueDmpNumber = Math.Round((decimal)shellDamage * barrelCount * trueRof);
+                decimal trueDmpNumber = Math.Round((decimal)shellDamage * barrelCount * trueRof);
                 var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
 
-                NumberFormatInfo nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+                var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
                 nfi.NumberGroupSeparator = "'";
 
-                var uiShell = new ShellUI
+                var shellDataContainer = new ShellDataContainer
                 {
-                    Name = localizer.GetGameLocalization(shell.Name).Localization,
-                    Type = shell.ShellType.ToString(),
+                    Name = shell.Name,
+                    Type = "ArmamentType_" + shell.ShellType,
                     Mass = (decimal)shellMass,
                     Damage = Math.Round((decimal)shellDamage),
                     ExplosionRadius = (decimal)shell.ExplosionRadius,
@@ -214,25 +197,24 @@ namespace WoWsShipBuilder.Core.DataUI
                     AirDrag = Math.Round((decimal)shellAirDrag, 2),
                     FireChance = Math.Round((decimal)shellFireChance, 1),
                     FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
-                    PotentialFPM = Math.Round((decimal)shellFireChance / 100 * barrelCount * rof, 2),
+                    PotentialFpm = Math.Round((decimal)shellFireChance / 100 * barrelCount * rof, 2),
                     Overmatch = overmatch,
-                    ArmingThreshold = armingTreshold,
+                    ArmingThreshold = armingThreshold,
                     FuseTimer = fuseTimer,
-                    TheoreticalDPM = dpmNumber.ToString("n0", nfi),
-                    TheoreticalTrueDPM = trueDmpNumber.ToString("n0", nfi),
-                    Index = shell.Name,
+                    TheoreticalDpm = Math.Round((decimal)shellDamage * barrelCount * rof).ToString("n0", nfi),
+                    TheoreticalTrueDpm = trueDmpNumber.ToString("n0", nfi),
                     ShowBlastPenetration = showBlastPenetration,
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)
                 {
-                    uiShell.MinRicochetAngle = minRicochet;
-                    uiShell.MaxRicochetAngle = maxRicochet;
-                    uiShell.RicochetAngles = $"{minRicochet} - {maxRicochet}";
+                    shellDataContainer.MinRicochetAngle = minRicochet;
+                    shellDataContainer.MaxRicochetAngle = maxRicochet;
+                    shellDataContainer.RicochetAngles = $"{minRicochet} - {maxRicochet}";
                 }
 
-                uiShell.PropertyValueMapper = uiShell.ToPropertyMapping();
-                shells.Add(uiShell);
+                shellDataContainer.UpdateDataElement();
+                shells.Add(shellDataContainer);
             }
 
             shells.Last().IsLastEntry = true;
