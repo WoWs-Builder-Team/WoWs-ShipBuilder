@@ -266,14 +266,18 @@ public partial record {dataRecord.className}
             context.ReportDiagnostic(Diagnostic.Create(MissingAttributeError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), "ValuesPropertyName", "TooltipDataElement"));
             return string.Empty;
         }
-        var isKeyLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value!;
-        var isListLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value!;
+        var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
+        var isListLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "ArePropertyNameValuesKeys").Value.Value ?? false;
+
+        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+        var isListAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsPropertyNameValuesAppLocalization").Value.Value ?? false;
+
 
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new FormattedTextDataElement({name}, {valuesProperty}, {isKeyLocalization}, {isListLocalization}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new FormattedTextDataElement({name}, {valuesProperty}, {isKeyLocalization}, {isKeyAppLocalization}, {isListLocalization}, {isListAppLocalization}));");
         return builder.ToString();
     }
 
@@ -374,7 +378,7 @@ public partial record {dataRecord.className}
 
     private static string GetFilterAttributeData(string propertyName, ImmutableArray<AttributeData> propertyAttributes)
     {
-        var attribute = propertyAttributes.FirstOrDefault(attribute => attribute.AttributeClass!.Name.Contains("DataElementVisibilityAttribute"));
+        var attribute = propertyAttributes.FirstOrDefault(attribute => attribute.AttributeClass!.Name.Contains("DataElementFilteringAttribute"));
 
         // if there is no attribute, returns active filter, no name for custom filter.
         if (attribute is null)

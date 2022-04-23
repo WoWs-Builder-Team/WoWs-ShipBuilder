@@ -27,11 +27,11 @@ namespace WoWsShipBuilder.Core.DataUI
         public decimal ManeuverabilityRudderShiftTime { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-        [DataElementVisibility(false)]
+        [DataElementFiltering(false)]
         public decimal RudderBlastProtection { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-        [DataElementVisibility(false)]
+        [DataElementFiltering(false)]
         public decimal EngineBlastProtection { get; set; }
 
         public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)

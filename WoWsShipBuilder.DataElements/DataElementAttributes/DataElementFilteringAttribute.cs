@@ -3,9 +3,9 @@
 namespace WoWsShipBuilder.DataElements.DataElementAttributes;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class DataElementVisibilityAttribute : Attribute
+public class DataElementFilteringAttribute : Attribute
 {
-    public DataElementVisibilityAttribute(bool enableFilterVisibility, string filterMethodName = "")
+    public DataElementFilteringAttribute(bool enableFilterVisibility, string filterMethodName = "")
     {
         EnableFilterVisibility = enableFilterVisibility;
         FilterMethodName = filterMethodName;

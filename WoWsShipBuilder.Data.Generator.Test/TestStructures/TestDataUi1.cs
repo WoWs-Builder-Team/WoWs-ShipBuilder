@@ -9,11 +9,11 @@ public partial record TestDataUi1 : DataContainerBase
     public string TestValue { get; init; } = default!;
 
     [DataElementType(DataElementTypes.KeyValue)]
-    [DataElementVisibility(false)]
+    [DataElementFiltering(false)]
     public decimal TestKeyValue { get; init; }
 
     [DataElementType(DataElementTypes.KeyValue)]
-    [DataElementVisibility(true, "TestVisibility")]
+    [DataElementFiltering(true, "TestVisibility")]
     public decimal TestVisibilityCustom { get; init; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "mm")]
