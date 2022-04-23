@@ -65,7 +65,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             return false;
         }
 
-        return recordSyntax.Modifiers.ToString().Contains("partial") && ((recordSyntax.BaseList?.Types.ToString().Contains(DataContainerBaseName) ?? false) || (recordSyntax.BaseList?.Types.ToString().Contains(ProjectileDataContainer) ?? false));
+        return recordSyntax.Modifiers.ToString().Contains("partial") && (recordSyntax.BaseList?.Types.ToString().Contains(DataContainerBaseName) ?? false);//|| (recordSyntax.BaseList?.Types.ToString().Contains(ProjectileDataContainer) ?? false)
     }
 
     private static ITypeSymbol? GetRecordTypeOrNull(GeneratorSyntaxContext context, CancellationToken cancellationToken)
@@ -143,7 +143,7 @@ public partial record {dataRecord.className}
                     }
                     catch (Exception e)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(GenerationError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), e.Message));
+                        context.ReportDiagnostic(Diagnostic.Create(GenerationError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), e.Message + " - " + e.TargetSite));
                         break;
                     }
                 }
@@ -278,7 +278,7 @@ public partial record {dataRecord.className}
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new FormattedTextDataElement({name}, {valuesProperty}, {isKeyLocalization}, {isKeyAppLocalization}, {isListLocalization}, {isListAppLocalization}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new FormattedTextDataElement({name}, {valuesProperty}, {isKeyLocalization.ToString().ToLower()}, {isKeyAppLocalization.ToString().ToLower()}, {isListLocalization.ToString().ToLower()}, {isListAppLocalization.ToString().ToLower()}));");
         return builder.ToString();
     }
 
@@ -330,14 +330,14 @@ public partial record {dataRecord.className}
         var propertyProcessingAddition = GetPropertyAddition(property);
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
-        var isKeyLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value!;
-        var isKeyAppLocalization = (bool) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value!;
+        var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
 
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, {isKeyLocalization}, {isKeyAppLocalization}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, {isKeyLocalization.ToString().ToLower()}, {isKeyAppLocalization.ToString().ToLower()}));");
         return builder.ToString();
     }
 
@@ -346,13 +346,13 @@ public partial record {dataRecord.className}
         var propertyProcessingAddition = GetPropertyAddition(property);
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
-        var isKeyLocalization = (bool)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value!;
-        var isKeyAppLocalization = (bool) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value!;
+        var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}, {isKeyLocalization}, {isKeyAppLocalization}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}, {isKeyLocalization.ToString().ToLower()}, {isKeyAppLocalization.ToString().ToLower()}));");
         return builder.ToString();
     }
 
