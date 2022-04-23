@@ -11,8 +11,11 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record RocketDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+        public string Type { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
@@ -65,6 +68,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var rocketDataContainer = new RocketDataContainer
             {
                 Name = rocket.Name,
+                Type = $"ArmamentType_{rocket.RocketType}",
                 Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
@@ -75,7 +79,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 SplashCoeff = (decimal)rocket.SplashCoeff,
             };
 
-            rocketDataContainer.UpdateDataElement();
+            rocketDataContainer.UpdateDataElements();
 
             return rocketDataContainer;
         }

@@ -11,10 +11,10 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record TorpedoDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
         public string Type { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
@@ -78,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpedoDataContainer = new TorpedoDataContainer
                 {
                     Name = name,
-                    Type = "ShipStats_TorpedoStandard",
+                    Type = "TorpedoStandard",
                     Damage = Math.Round(torpedoDamage),
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = Math.Round(torpedoSpeed, 2),
@@ -92,16 +92,16 @@ namespace WoWsShipBuilder.Core.DataUI
 
                 if (name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
                 {
-                    torpedoDataContainer.Type = "ShipStats_TorpedoMagnetic";
+                    torpedoDataContainer.Type = "TorpedoMagnetic";
                 }
 
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
                 {
                     torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
-                    torpedoDataContainer.Type = "ShipStats_TorpedoDeepWater";
+                    torpedoDataContainer.Type = "TorpedoDeepWater";
                 }
 
-                torpedoDataContainer.UpdateDataElement();
+                torpedoDataContainer.UpdateDataElements();
                 list.Add(torpedoDataContainer);
             }
 

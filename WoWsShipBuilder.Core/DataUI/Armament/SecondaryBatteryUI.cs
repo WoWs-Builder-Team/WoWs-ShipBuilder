@@ -104,7 +104,7 @@ namespace WoWsShipBuilder.Core.DataUI
                         Type = "Error",
                         TheoreticalDpm = "-1",
                     };
-                    secondaryUI.Shell.PropertyValueMapper = secondaryUI.Shell.ToPropertyMapping();
+                    //secondaryUI.Shell.PropertyValueMapper = secondaryUI.Shell.ToPropertyMapping();
                 }
 
                 secondaryUI.SecondaryBatteryData = secondaryUI.ToPropertyMapping();

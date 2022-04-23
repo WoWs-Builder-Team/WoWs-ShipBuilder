@@ -11,7 +11,7 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record DepthChargeDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = null!;
 
         [DataElementType(DataElementTypes.KeyValue)]
@@ -40,7 +40,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 ExplosionRadius = Math.Round((decimal)depthCharge.ExplosionRadius, 2),
             };
 
-            depthChargeDataContainer.UpdateDataElement();
+            depthChargeDataContainer.UpdateDataElements();
 
             return depthChargeDataContainer;
         }

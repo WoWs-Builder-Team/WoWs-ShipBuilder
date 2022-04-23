@@ -79,7 +79,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 SplashCoeff = (decimal)bomb.SplashCoeff,
             };
 
-            bombDataContainer.UpdateDataElement();
+            bombDataContainer.UpdateDataElements();
 
             return bombDataContainer;
         }

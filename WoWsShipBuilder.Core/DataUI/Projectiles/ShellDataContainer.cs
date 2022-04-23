@@ -20,7 +20,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KG")]
         public decimal Mass { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
         public string Type { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
@@ -187,7 +187,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var shellDataContainer = new ShellDataContainer
                 {
                     Name = shell.Name,
-                    Type = "ArmamentType_" + shell.ShellType,
+                    Type = $"ArmamentType_{shell.ShellType}",
                     Mass = (decimal)shellMass,
                     Damage = Math.Round((decimal)shellDamage),
                     ExplosionRadius = (decimal)shell.ExplosionRadius,
@@ -213,7 +213,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     shellDataContainer.RicochetAngles = $"{minRicochet} - {maxRicochet}";
                 }
 
-                shellDataContainer.UpdateDataElement();
+                //shellDataContainer.UpdateDataElements();
                 shells.Add(shellDataContainer);
             }
 
