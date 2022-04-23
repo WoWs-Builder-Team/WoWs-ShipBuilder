@@ -30,3 +30,4 @@ public readonly record struct ValueDataElement(string Value, bool IsValueKey, bo
 public sealed record FormattedTextDataElement(string Text, IEnumerable<string> Values, bool IsTextKey, bool IsTextAppLocalization, bool AreValuesKeys, bool AreValuesAppLocalization) : IDataElement;
 
 public sealed record GroupedDataElement(string Key, IEnumerable<IDataElement> Children) : IDataElement;
+public record ProjectileDataContainer : DataContainerBase;

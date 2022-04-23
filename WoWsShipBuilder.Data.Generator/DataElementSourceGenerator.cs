@@ -65,7 +65,9 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             return false;
         }
 
-        return recordSyntax.Modifiers.ToString().Contains("partial") && (recordSyntax.BaseList?.Types.ToString().Contains(DataContainerBaseName) ?? false);//|| (recordSyntax.BaseList?.Types.ToString().Contains(ProjectileDataContainer) ?? false)
+        bool baseName = recordSyntax.BaseList?.Types.ToString().Contains(DataContainerBaseName) ?? false;
+        bool projectileDataContainerName = recordSyntax.BaseList?.Types.ToString().Contains(ProjectileDataContainer) ?? false;
+        return recordSyntax.Modifiers.ToString().Contains("partial") && (baseName || projectileDataContainerName);
     }
 
     private static ITypeSymbol? GetRecordTypeOrNull(GeneratorSyntaxContext context, CancellationToken cancellationToken)

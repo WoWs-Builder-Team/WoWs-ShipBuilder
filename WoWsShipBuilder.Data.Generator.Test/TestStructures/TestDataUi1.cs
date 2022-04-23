@@ -3,7 +3,7 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 
 namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
 
-public partial record TestDataUi1 : DataContainerBase
+public partial record TestDataUi1 : ProjectileDataContainer
 {
     [DataElementType(DataElementTypes.Value)]
     public string TestValue { get; init; } = default!;
@@ -30,7 +30,7 @@ public partial record TestDataUi1 : DataContainerBase
 
     public void UpdateData()
     {
-         UpdateDataElements();
+        UpdateDataElements();
     }
 
     public bool TestVisibility(object value)
