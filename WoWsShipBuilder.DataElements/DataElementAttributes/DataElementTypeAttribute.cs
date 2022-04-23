@@ -41,7 +41,7 @@ public class DataElementTypeAttribute : Attribute
 
     /// <summary>
     /// Gets or sets if the value of the property marked by this attribute is a localization key. <br/>
-    /// Only valid for <see cref="DataElementTypes.FormattedText"/>
+    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText">
     /// </summary>
     public bool? IsValueLocalizationKey { get; set; } = false;
 
@@ -53,7 +53,7 @@ public class DataElementTypeAttribute : Attribute
 
     /// <summary>
     /// Gets or sets if the value of the property marked by this attribute is an app localization key. <br/>
-    /// Only valid for <see cref="DataElementTypes.FormattedText"/>
+    /// Only valid for <see cref="DataElementTypes.Value"/>, <see cref="DataElementTypes.KeyValue"/> and <see cref="DataElementTypes.FormattedText">
     /// </summary>
     public bool? IsValueAppLocalization { get; set; }
 

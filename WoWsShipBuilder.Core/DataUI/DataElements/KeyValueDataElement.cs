@@ -5,4 +5,6 @@
 /// </summary>
 /// <param name="Key">The key of the element.</param>
 /// <param name="Value">The value of the element.</param>
-public readonly record struct KeyValueDataElement(string Key, string Value) : IDataElement;
+/// <param name="IsValueKey">If the value is a localizer key.</param>
+/// <param name="IsValueAppLocalization">If the value is an app localization key.</param>
+public readonly record struct KeyValueDataElement(string Key, string Value, bool IsValueKey, bool IsValueAppLocalization) : IDataElement;

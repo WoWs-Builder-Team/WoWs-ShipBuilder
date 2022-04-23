@@ -167,12 +167,12 @@ public partial record {dataRecord.className}
         switch (type)
         {
             case DataElementTypes.Value:
-                builder.Append(GenerateValueRecord(currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateValueRecord(currentProp, typeAttribute, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
             case DataElementTypes.KeyValue:
-                builder.Append(GenerateKeyValueRecord(currentProp, propertyAttributes, collectionName));
+                builder.Append(GenerateKeyValueRecord(currentProp, typeAttribute, propertyAttributes, collectionName));
                 builder.AppendLine();
                 additionalPropIndexes.Add(0);
                 break;
@@ -323,28 +323,35 @@ public partial record {dataRecord.className}
         return builder.ToString();
     }
 
-    private static string GenerateKeyValueRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateKeyValueRecord(IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var name = property.Name;
         var propertyProcessingAddition = GetPropertyAddition(property);
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
+        var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+
+
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, {isKeyLocalization}, {isKeyAppLocalization}));");
         return builder.ToString();
     }
 
-    private static string GenerateValueRecord(IPropertySymbol property, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
+    private static string GenerateValueRecord(IPropertySymbol property, AttributeData typeAttribute, ImmutableArray<AttributeData> propertyAttributes, string collectionName)
     {
         var propertyProcessingAddition = GetPropertyAddition(property);
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
+        var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
+        var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
+
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new ValueDataElement({property.Name}{propertyProcessingAddition}, {isKeyLocalization}, {isKeyAppLocalization}));");
         return builder.ToString();
     }
 
