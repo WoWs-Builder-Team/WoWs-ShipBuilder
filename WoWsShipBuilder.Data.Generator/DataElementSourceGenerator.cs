@@ -51,6 +51,13 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
+    private static readonly DiagnosticDescriptor GroupedMissingDefinitionError = new(id: "SB004",
+        title: "Grouped require secondary type definition",
+        messageFormat: "The property {0} is missing its own type definition. Add a type definition with the use of |",
+        category: "Generator",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var dataClasses = context.SyntaxProvider.CreateSyntaxProvider(IsDataContainerRecord, GetRecordTypeOrNull)
@@ -166,7 +173,7 @@ public partial record {dataRecord.className}
     private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName, int iterationCounter, bool isGroup = false)
     {
         var additionalPropIndexes = new List<int>();
-        if (iterationCounter > 5)
+        if (iterationCounter > 3)
         {
             context.ReportDiagnostic(Diagnostic.Create(TooManyIterationsError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation()));
             additionalPropIndexes.Add(0);
@@ -180,6 +187,13 @@ public partial record {dataRecord.className}
         if (isGroup)
         {
             type &= ~DataElementTypes.Grouped;
+            // Grouped element is missing the element own type. Return and add error diagnostic
+            if (type == 0)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(GroupedMissingDefinitionError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation(), currentProp.Name));
+                additionalPropIndexes.Add(0);
+                return("", additionalPropIndexes);
+            }
         }
 
         switch (type)
