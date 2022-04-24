@@ -173,7 +173,7 @@ public partial record {dataRecord.className}
     private static (string code, List<int> additionalIndexes) GenerateCode(SourceProductionContext context, AttributeData typeAttribute, IPropertySymbol currentProp, ImmutableArray<AttributeData> propertyAttributes, List<IPropertySymbol> properties, string collectionName, int iterationCounter, bool isGroup = false)
     {
         var additionalPropIndexes = new List<int>();
-        if (iterationCounter > 3)
+        if (iterationCounter > 10)
         {
             context.ReportDiagnostic(Diagnostic.Create(TooManyIterationsError, typeAttribute.ApplicationSyntaxReference!.GetSyntax().GetLocation()));
             additionalPropIndexes.Add(0);
@@ -326,12 +326,17 @@ public partial record {dataRecord.className}
         }
 
         var unit = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value ?? "";
+        if (!string.IsNullOrWhiteSpace(unit))
+        {
+            unit = "Unit_" + unit;
+        }
+
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}"", {unit}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}"", ""{unit}""));");
         return builder.ToString();
     }
 
