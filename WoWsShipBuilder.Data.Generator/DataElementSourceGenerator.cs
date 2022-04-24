@@ -325,12 +325,13 @@ public partial record {dataRecord.className}
             return string.Empty;
         }
 
+        var unit = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "UnitKey").Value.Value ?? "";
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}"", {unit}));");
         return builder.ToString();
     }
 
