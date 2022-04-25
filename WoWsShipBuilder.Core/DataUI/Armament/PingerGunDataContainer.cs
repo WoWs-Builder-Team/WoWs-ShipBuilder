@@ -52,7 +52,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var firstPingDurationModifiers = modifiers.FindModifiers("firstSectorTimeCoeff");
             firstPingDuration = firstPingDurationModifiers.Aggregate(firstPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier);
 
-            var secondPingDuration = pingerGun.WaveParams.First().WaveSpeed.First();
+            var secondPingDuration = pingerGun.SectorParams[1].Lifetime;
             var secondPingDurationModifiers = modifiers.FindModifiers("secondSectorTimeCoeff");
             secondPingDuration = secondPingDurationModifiers.Aggregate(secondPingDuration, (current, reloadModifier) => current * (decimal)reloadModifier);
 
@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 Range = pingerGun.WaveDistance / 1000,
                 FirstPingDuration = Math.Round(firstPingDuration, 1),
                 SecondPingDuration = Math.Round(secondPingDuration, 1),
-                PingWidth = pingerGun.WaveParams.First().StartWaveWidth * 30,
+                PingWidth = pingerGun.WaveParams.First().StartWaveWidth,
                 PingSpeed = Math.Round(pingSpeed, 0),
             };
 
