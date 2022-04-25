@@ -53,7 +53,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static readonly DiagnosticDescriptor GroupedMissingDefinitionError = new(id: "SB004",
         title: "Grouped require secondary type definition",
-        messageFormat: "The property {0} is missing its own type definition. Add a type definition with the use of |",
+        messageFormat: "The property {0} is missing its own type definition. Add a type definition with the use of |.",
         category: "Generator",
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);

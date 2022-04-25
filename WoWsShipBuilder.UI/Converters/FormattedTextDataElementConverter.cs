@@ -8,6 +8,7 @@ using Splat;
 using WoWsShipBuilder.Core.DataUI.DataElements;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters;
 
@@ -17,7 +18,7 @@ public class FormattedTextDataElementConverter : IValueConverter
 
     public FormattedTextDataElementConverter()
     {
-        localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+        localizer = AppSettingsHelper.LocalizerInstance;
     }
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

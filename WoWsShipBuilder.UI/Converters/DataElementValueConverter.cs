@@ -6,6 +6,7 @@ using Avalonia.Data.Converters;
 using Splat;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters;
 
@@ -15,7 +16,7 @@ public class DataElementValueConverter : IMultiValueConverter
 
     public DataElementValueConverter()
     {
-        localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+        localizer = AppSettingsHelper.LocalizerInstance;
     }
 
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
