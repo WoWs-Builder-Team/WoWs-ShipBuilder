@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public string Header { get; set; } = default!;
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "HP")]

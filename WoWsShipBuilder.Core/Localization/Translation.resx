@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Shell weight</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Theoretical DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -757,10 +757,10 @@
     <value>Error during the loading of the build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Initial boost duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Initial boost speed multiplier</value>
+      <value>Speed boost</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Time to switch ammo</value>
@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Preparation time</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
       <value>To fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedo Launchers</value>
   </data>
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
     <value>During aiming</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Drop area change rate while manoeuvring</value>
   </data>
-  <data name="ShipStats_DuringPreparation" xml:space="preserve">
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>During preparation</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -987,11 +987,11 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Mass</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>Potential FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Fire chance per salvo</value>
+      <value>Full salvo</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
     <value>Explosion radius</value>
@@ -1119,7 +1119,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value represented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Server-side DPM</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
@@ -1245,10 +1245,10 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
       <value>In attack group</value>
   </data>
-  <data name="ShipStats_Squadron" xml:space="preserve">
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
       <value>Squadron</value>
   </data>
-  <data name="ShipStats_AttackGroup" xml:space="preserve">
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
       <value>Attack group</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">
@@ -1307,5 +1307,35 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="ShipStats_ReloadTime" xml:space="preserve">
       <value>Reload</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>Single shell</value>
+  </data>
+  <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_HP" xml:space="preserve">
+      <value>HP</value>
+  </data>
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>Rocket type</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>Torpedo Type</value>
   </data>
 </root>

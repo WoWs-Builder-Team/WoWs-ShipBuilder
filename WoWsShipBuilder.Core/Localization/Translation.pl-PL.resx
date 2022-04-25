@@ -339,7 +339,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Waga pocisku</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Teoretyczne Uszk./min.</value>
   </data>
   

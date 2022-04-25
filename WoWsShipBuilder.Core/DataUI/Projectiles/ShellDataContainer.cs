@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
@@ -12,9 +11,8 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
 {
-    public record ShellDataContainer : DataContainerBase
+    public partial record ShellDataContainer : DataContainerBase
     {
-        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KG")]
@@ -29,7 +27,7 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValue)]
         public string TheoreticalDpm { get; set; } = default!;
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip")]
         public string TheoreticalTrueDpm { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
@@ -47,14 +45,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public decimal Overmatch { get; set; }
 
-        [DataElementType(DataElementTypes.Grouped, GroupKey = "FireChance", UnitKey = "PerCent")]
-        public decimal FireChance { get; set; }
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FireChance", UnitKey = "PerCent")]
+        public decimal ShellFireChance { get; set; }
 
-        [DataElementType(DataElementTypes.Grouped, GroupKey = "FireChance", UnitKey = "PerCent")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FireChance", UnitKey = "PerCent")]
         public decimal FireChancePerSalvo { get; set; }
-
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
-        public decimal PotentialFpm { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Degree")]
         public string? RicochetAngles { get; set; }
@@ -65,8 +60,8 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
-        [DataElementFiltering(false)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
+        [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
         public decimal SplashCoeff { get; set; }
 
         public decimal MinRicochetAngle { get; set; }
@@ -77,7 +72,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
         public bool ShowBlastPenetration { get; private set; }
 
-        public static async Task<List<ShellDataContainer>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, decimal rof, decimal trueRof, IAppDataService appDataService)
+        public static async Task<List<ShellDataContainer>> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, IAppDataService appDataService)
         {
             var shells = new List<ShellDataContainer>();
             foreach (string shellName in shellNames)
@@ -178,11 +173,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 decimal minRicochet = Math.Round((decimal)shell.RicochetAngle, 1);
                 decimal maxRicochet = Math.Round((decimal)shell.AlwaysRicochetAngle, 1);
 
-                decimal trueDmpNumber = Math.Round((decimal)shellDamage * barrelCount * trueRof);
                 var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
-
-                var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
-                nfi.NumberGroupSeparator = "'";
 
                 var shellDataContainer = new ShellDataContainer
                 {
@@ -195,14 +186,11 @@ namespace WoWsShipBuilder.Core.DataUI
                     ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
                     Penetration = (int)Math.Truncate(shellPenetration),
                     AirDrag = Math.Round((decimal)shellAirDrag, 2),
-                    FireChance = Math.Round((decimal)shellFireChance, 1),
+                    ShellFireChance = Math.Round((decimal)shellFireChance, 1),
                     FireChancePerSalvo = Math.Round(fireChancePerSalvo * 100, 1),
-                    PotentialFpm = Math.Round((decimal)shellFireChance / 100 * barrelCount * rof, 2),
                     Overmatch = overmatch,
                     ArmingThreshold = armingThreshold,
                     FuseTimer = fuseTimer,
-                    TheoreticalDpm = Math.Round((decimal)shellDamage * barrelCount * rof).ToString("n0", nfi),
-                    TheoreticalTrueDpm = trueDmpNumber.ToString("n0", nfi),
                     ShowBlastPenetration = showBlastPenetration,
                 };
 
@@ -213,12 +201,17 @@ namespace WoWsShipBuilder.Core.DataUI
                     shellDataContainer.RicochetAngles = $"{minRicochet} - {maxRicochet}";
                 }
 
-                //shellDataContainer.UpdateDataElements();
+                shellDataContainer.UpdateDataElements();
                 shells.Add(shellDataContainer);
             }
 
             shells.Last().IsLastEntry = true;
             return shells;
+        }
+
+        private bool ShouldDisplayBlastPenetration(object obj)
+        {
+            return ShowBlastPenetration;
         }
     }
 }

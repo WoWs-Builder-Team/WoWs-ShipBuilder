@@ -22,7 +22,7 @@ public class DataElementValueConverter : IMultiValueConverter
     {
         if (values[0] is not null && values[1] is bool isValueKey && values[2] is bool isAppLocalizationKey)
         {
-            var value = values[0];
+            object? value = values[0];
             if (!isValueKey)
             {
                 return value;
@@ -30,7 +30,7 @@ public class DataElementValueConverter : IMultiValueConverter
 
             if (values[0] is string key)
             {
-                return isAppLocalizationKey ? localizer.GetAppLocalization(key) : localizer.GetGameLocalization(key);
+                return (isAppLocalizationKey ? localizer.GetAppLocalization(key) : localizer.GetGameLocalization(key)).Localization;
             }
         }
 

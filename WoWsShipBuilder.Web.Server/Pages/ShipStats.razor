@@ -48,13 +48,13 @@
         <MudItem xs="8">
             @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
             {
-                @foreach (var (name, value) in ViewModel.ShipStatsControlViewModel.CurrentShipStats.MainBatteryUI?.PropertyValueMapper ?? new())
+                @*@foreach (var (name, value) in ViewModel.ShipStatsControlViewModel.CurrentShipStats.MainBatteryDataContainer?.PropertyValueMapper ?? new())
                 {
                     <MudStack Row="true">
                         <MudText>@Translation.ResourceManager.GetString(name)</MudText>
                         <MudText>@value</MudText>
                     </MudStack>
-                }
+                }*@
             }
         </MudItem>
     </MudGrid>

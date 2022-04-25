@@ -20,33 +20,33 @@ public class FormattedTextDataElementConverter : IValueConverter
         localizer = Locator.Current.GetServiceSafe<ILocalizer>();
     }
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is FormattedTextDataElement formattedTextDataElement)
+        if (value is not FormattedTextDataElement formattedTextDataElement)
         {
-            var text = formattedTextDataElement.Text;
-            if (formattedTextDataElement.IsTextKey)
-            {
-                text = formattedTextDataElement.IsTextAppLocalization ? localizer.GetAppLocalization(text).Localization : localizer.GetGameLocalization(text).Localization;
-            }
-
-            var values = formattedTextDataElement.Values;
-            if (formattedTextDataElement.AreValuesKeys)
-            {
-                values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
-            }
-
-            try
-            {
-                return string.Format(text, values.Cast<object>().ToArray());
-            }
-            catch (Exception e)
-            {
-                return new BindingNotification(e, BindingErrorType.Error);
-            }
+            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
         }
 
-        return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
+        string text = formattedTextDataElement.Text;
+        if (formattedTextDataElement.IsTextKey)
+        {
+            text = formattedTextDataElement.IsTextAppLocalization ? localizer.GetAppLocalization(text).Localization : localizer.GetGameLocalization(text).Localization;
+        }
+
+        IEnumerable<string> values = formattedTextDataElement.Values;
+        if (formattedTextDataElement.AreValuesKeys)
+        {
+            values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
+        }
+
+        try
+        {
+            return string.Format(text, values.Cast<object>().ToArray());
+        }
+        catch (Exception e)
+        {
+            return new BindingNotification(e, BindingErrorType.Error);
+        }
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -51,7 +51,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModelBase)DataContext!;
             var win = new FiringAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryUI!.OriginalMainBatteryData),
+                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
@@ -60,7 +60,7 @@ namespace WoWsShipBuilder.UI.UserControls
         private async Task OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
         {
             var dc = DataContext as ShipStatsControlViewModelBase;
-            var mainBattery = dc!.CurrentShipStats!.MainBatteryUI!;
+            var mainBattery = dc!.CurrentShipStats!.MainBatteryDataContainer!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
             string shellIndex = ((ShellDataContainer)textBlock.DataContext!).Name;

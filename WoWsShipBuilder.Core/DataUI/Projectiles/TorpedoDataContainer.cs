@@ -11,11 +11,12 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record TorpedoDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
-        public string Name { get; set; } = default!;
-
         [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
-        public string Type { get; set; } = default!;
+        public string TorpedoType { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
+        [DataElementFiltering(true, "ShouldDisplayName")]
+        public string Name { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
@@ -41,13 +42,15 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
         public decimal ExplosionRadius { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
         [DataElementFiltering(false)]
         public decimal SplashCoeff { get; set; }
 
         public List<ShipClass>? CanHitClasses { get; set; }
 
         public bool IsLast { get; set; }
+
+        public bool IsFromPlane { get; set; }
 
         public static async Task<List<TorpedoDataContainer>> FromTorpedoName(List<string> torpedoNames, List<(string name, float value)> modifiers, bool fromPlane, IAppDataService appDataService)
         {
@@ -78,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 var torpedoDataContainer = new TorpedoDataContainer
                 {
                     Name = name,
-                    Type = "TorpedoStandard",
+                    TorpedoType = $"ShipStats_Torpedo{torp.TorpedoType}",
                     Damage = Math.Round(torpedoDamage),
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = Math.Round(torpedoSpeed, 2),
@@ -88,17 +91,12 @@ namespace WoWsShipBuilder.Core.DataUI
                     ReactionTime = Math.Round(torpedoDetect / (torpedoSpeed * Constants.KnotsToMps) * 1000, 2),
                     ExplosionRadius = (decimal)torp.ExplosionRadius,
                     SplashCoeff = (decimal)torp.SplashCoeff,
+                    IsFromPlane = fromPlane,
                 };
-
-                if (name.Contains("Magnetic", StringComparison.OrdinalIgnoreCase))
-                {
-                    torpedoDataContainer.Type = "TorpedoMagnetic";
-                }
 
                 if (torp.IgnoreClasses != null && torp.IgnoreClasses.Any())
                 {
                     torpedoDataContainer.CanHitClasses = allClasses.Except(torp.IgnoreClasses).ToList();
-                    torpedoDataContainer.Type = "TorpedoDeepWater";
                 }
 
                 torpedoDataContainer.UpdateDataElements();
@@ -106,6 +104,11 @@ namespace WoWsShipBuilder.Core.DataUI
             }
 
             return list;
+        }
+
+        private bool ShouldDisplayName(object obj)
+        {
+            return IsFromPlane;
         }
     }
 }

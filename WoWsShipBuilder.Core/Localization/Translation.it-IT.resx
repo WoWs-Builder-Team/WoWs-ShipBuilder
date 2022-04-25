@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Peso del proiettile</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>DPM teorico</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -969,7 +969,7 @@ Le navi in gioco sono due volte più grandi dell'ambiente quindi una nave lunga 
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>FPM Potenziale </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1099,7 +1099,7 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
     <value>Tempo di ricarica lato server</value>
   </data>
   
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>DPM lato server</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">

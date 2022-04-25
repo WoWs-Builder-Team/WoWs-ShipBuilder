@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
@@ -11,11 +12,11 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record RocketDataContainer : ProjectileDataContainer
     {
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+        public string RocketType { get; set; } = default!;
+
         [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
-        public string Type { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
@@ -38,9 +39,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FireChance { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
-        [DataElementFiltering(false)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
+        [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
         public decimal SplashCoeff { get; set; }
+
+        public bool ShowBlastPenetration { get; private set; }
 
         public static async Task<RocketDataContainer> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
@@ -52,10 +55,11 @@ namespace WoWsShipBuilder.Core.DataUI
             var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
             fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
 
+            var showBlastPenetration = true;
             var ricochetAngle = "";
             decimal fuseTimer = 0;
             var armingThreshold = 0;
-            if (rocket.RocketType.Equals(RocketType.AP))
+            if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
             {
                 List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
                 rocketDamage = rocketDamageModifiers.Aggregate(rocketDamage, (current, modifier) => current * (decimal)modifier);
@@ -63,12 +67,13 @@ namespace WoWsShipBuilder.Core.DataUI
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingThreshold = (int)rocket.ArmingThreshold;
                 fireChance = 0;
+                showBlastPenetration = false;
             }
 
             var rocketDataContainer = new RocketDataContainer
             {
                 Name = rocket.Name,
-                Type = $"ArmamentType_{rocket.RocketType}",
+                RocketType = $"ArmamentType_{rocket.RocketType}",
                 Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
@@ -77,11 +82,17 @@ namespace WoWsShipBuilder.Core.DataUI
                 FireChance = Math.Round(fireChance * 100, 1),
                 ExplosionRadius = (decimal)rocket.ExplosionRadius,
                 SplashCoeff = (decimal)rocket.SplashCoeff,
+                ShowBlastPenetration = showBlastPenetration,
             };
 
             rocketDataContainer.UpdateDataElements();
 
             return rocketDataContainer;
+        }
+
+        private bool ShouldDisplayBlastPenetration(object obj)
+        {
+            return ShowBlastPenetration;
         }
     }
 }

@@ -17,7 +17,7 @@ public class DataElementTypeAttribute : Attribute
 
     /// <summary>
     /// Gets or sets the unit localization key for the property marked by this attribute. <br/>
-    /// Only valid for <see cref="DataElementTypes.KeyValueUnit"/>.
+    /// Only valid for <see cref="DataElementTypes.KeyValueUnit"/> and <see cref="DataElementTypes.Tooltip"/>.
     /// </summary>
     public string? UnitKey { get; set; }
 
@@ -34,7 +34,7 @@ public class DataElementTypeAttribute : Attribute
     public string? GroupKey { get; set; }
 
     /// <summary>
-    /// Gets or sets the property names of the values to be used by the string property marked by this attribute. Requires the value of the property marked by thus attribute to follow the <see cref="string.Format(string,object[])"/> specifications. <br/>
+    /// Gets or set the name of the property containing the list of values that will replace the placeholder. Requires the value of the property marked by this attribute to follow the <see cref="string.Format(string,object[])"/> specifications. <br/>
     /// Only valid for <see cref="DataElementTypes.FormattedText"/>.
     /// </summary>
     public string? ValuesPropertyName { get; set; }
@@ -58,7 +58,7 @@ public class DataElementTypeAttribute : Attribute
     public bool IsValueAppLocalization { get; set; }
 
     /// <summary>
-    ///  Gets or sets if the values indicated by <see cref="ValuesPropertyName"/> are app localization keys.<br/>
+    /// Gets or sets if the values indicated by <see cref="ValuesPropertyName"/> are app localization keys.<br/>
     /// Only valid for <see cref="DataElementTypes.FormattedText"/>
     /// </summary>
     public bool IsPropertyNameValuesAppLocalization { get; set; }

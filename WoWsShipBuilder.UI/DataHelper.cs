@@ -47,7 +47,7 @@ namespace WoWsShipBuilder.UI
         {
             var testData = LoadPreviewShip(shipClass, tier, nation);
             var currentShipStats = ShipDataContainer.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance, DemoLocalizer).Result;
-            return currentShipStats.MainBatteryUI!.OriginalMainBatteryData;
+            return currentShipStats.MainBatteryDataContainer!.OriginalMainBatteryData;
         }
 
         public class DemoLocalizerImpl : ILocalizer

@@ -11,7 +11,10 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record BombDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue)]
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
+        public string BombType { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
         public string Name { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
@@ -35,9 +38,11 @@ namespace WoWsShipBuilder.Core.DataUI
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FireChance { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
-        [DataElementFiltering(false)]
+        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
+        [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
         public decimal SplashCoeff { get; set; }
+
+        public bool ShowBlastPenetration { get; private set; }
 
         public static async Task<BombDataContainer> FromBombName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
@@ -47,13 +52,15 @@ namespace WoWsShipBuilder.Core.DataUI
             var ricochetAngle = "";
             var armingThreshold = 0;
             decimal fuseTimer = 0;
-            if (bomb.BombType.Equals(BombType.AP))
+            var showBlastPenetration = true;
+            if (bomb.BombType.Equals(WoWsShipBuilder.DataStructures.BombType.AP))
             {
                 List<float> bombDamageModifiers = modifiers.FindModifiers("bombApAlphaDamageMultiplier").ToList();
                 bombDamage = (decimal)bombDamageModifiers.Aggregate(bomb.Damage, (current, modifier) => current * modifier);
                 ricochetAngle = $"{bomb.RicochetAngle}-{bomb.AlwaysRicochetAngle}";
                 armingThreshold = (int)bomb.ArmingThreshold;
                 fuseTimer = (decimal)bomb.FuseTimer;
+                showBlastPenetration = false;
             }
             else
             {
@@ -69,6 +76,7 @@ namespace WoWsShipBuilder.Core.DataUI
             var bombDataContainer = new BombDataContainer
             {
                 Name = bomb.Name,
+                BombType = $"ArmamentType_{bomb.BombType}",
                 Damage = Math.Round(bombDamage, 2),
                 Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = fuseTimer,
@@ -77,11 +85,17 @@ namespace WoWsShipBuilder.Core.DataUI
                 FireChance = Math.Round(fireChance * 100, 1),
                 ExplosionRadius = (decimal)bomb.ExplosionRadius,
                 SplashCoeff = (decimal)bomb.SplashCoeff,
+                ShowBlastPenetration = showBlastPenetration,
             };
 
             bombDataContainer.UpdateDataElements();
 
             return bombDataContainer;
+        }
+
+        private bool ShouldDisplayBlastPenetration(object obj)
+        {
+            return ShowBlastPenetration;
         }
     }
 }

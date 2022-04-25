@@ -357,7 +357,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>포탄 중량</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>분당 데미지</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">

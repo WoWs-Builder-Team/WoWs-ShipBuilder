@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Core.DataUI.DataElements;
 
@@ -10,4 +9,4 @@ namespace WoWsShipBuilder.Core.DataUI.DataElements;
 /// <param name="Values">The enumerable that will be used by <see cref="string.Format(string,object[])"/>.</param>
 /// <param name="IsTextKey">If <see cref="Text"/> is a localization key and not actual text.</param>
 /// <param name="AreValuesKeys">If <see cref="Values"/> are localization keys and not actual values.</param>
-public sealed record FormattedTextDataElement(string Text, IEnumerable<string> Values, bool IsTextKey, bool IsTextAppLocalization, bool AreValuesKeys, bool AreValuesAppLocalization) : IDataElement;
+public sealed record FormattedTextDataElement(string Text, IEnumerable<string> Values, bool IsTextKey = false, bool IsTextAppLocalization = false, bool AreValuesKeys = false, bool AreValuesAppLocalization = false) : IDataElement;
