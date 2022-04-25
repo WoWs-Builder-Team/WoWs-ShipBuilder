@@ -25,7 +25,7 @@ public abstract record DataContainerBase
 
 public readonly record struct KeyValueDataElement(string Key, string Value, bool IsValueKey, bool IsValueAppLocalization) : IDataElement;
 public readonly record struct KeyValueUnitDataElement(string Key, string Value, string Unit) : IDataElement;
-public readonly record struct TooltipDataElement(string Key, string Value, string Tooltip) : IDataElement;
+public readonly record struct TooltipDataElement(string Key, string Value, string Tooltip, string Unit) : IDataElement;
 public readonly record struct ValueDataElement(string Value, bool IsValueKey, bool IsValueAppLocalization) : IDataElement;
 public sealed record FormattedTextDataElement(string Text, IEnumerable<string> Values, bool IsTextKey, bool IsTextAppLocalization, bool AreValuesKeys, bool AreValuesAppLocalization) : IDataElement;
 
