@@ -11,9 +11,9 @@ namespace WoWsShipBuilder.Core.DataUI
 {
     public partial record DepthChargeDataContainer : ProjectileDataContainer
     {
-        [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
-        public string Name { get; set; } = null!;
-
+        // Some DC are missing in game name localization. Name property disabled until their addition.
+        // [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true)]
+        // public string Name { get; set; } = null!;
         [DataElementType(DataElementTypes.KeyValue)]
         public int Damage { get; set; }
 
@@ -33,7 +33,7 @@ namespace WoWsShipBuilder.Core.DataUI
 
             var depthChargeDataContainer = new DepthChargeDataContainer
             {
-                Name = depthCharge.Name,
+                // Name = depthCharge.Name,
                 Damage = (int)Math.Round(damage, 0),
                 FireChance = Math.Round((decimal)depthCharge.FireChance * 100, 2),
                 FloodingChance = Math.Round((decimal)depthCharge.FloodChance * 100, 2),
