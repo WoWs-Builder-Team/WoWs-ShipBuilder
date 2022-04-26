@@ -7,6 +7,7 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
+             xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
              MaxWidth="350">
     <UserControl.Resources>
         <conv:ModifierConverter x:Key="ModifierConverter" />
@@ -63,15 +64,39 @@
                                Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DOCK_CONSUME_DESCRIPTION}"
                                IsVisible="{Binding Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                     <Separator/>
-                    <ItemsControl Items="{Binding ConsumableData}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                    <ItemsControl Items="{Binding DataElements}">
+                        <ItemsControl.Styles>
+                            <Style Selector="TextBlock.Key">
+                                <Setter Property="DockPanel.Dock" Value="Left" />
+                            </Style>
+                            <Style Selector="TextBlock.Value">
+                                <Setter Property="TextWrapping" Value="NoWrap" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="DockPanel.Dock" Value="Right" />
+                                <Setter Property="Margin" Value="20 0 0 0" />
+                            </Style>
+                            <Style Selector="TextBlock.Unit">
+                                <Setter Property="TextWrapping" Value="NoWrap" />
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="DockPanel.Dock" Value="Right" />
+                                <Setter Property="Margin" Value="4 0 0 0" />
+                            </Style>
+                        </ItemsControl.Styles>
+                        <ItemsControl.DataTemplates>
+                            <DataTemplate DataType="dataElements:KeyValueUnitDataElement">
+                                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
+                                    <TextBlock Classes="Unit" Text="{Binding Unit, Converter={StaticResource Localizer}, ConverterParameter=resx}" />
+                                    <TextBlock Classes="Value" Text="{Binding Value}" />
+                                    <TextBlock Classes="Key" Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" />
+                                </DockPanel>
+                            </DataTemplate>
+                            <DataTemplate DataType="dataElements:KeyValueDataElement">
                                 <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
                                     <TextBlock Text="{Binding Value}" TextWrapping="NoWrap" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
                                     <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}, ConverterParameter=resx}" TextWrapping="Wrap"/>
                                 </DockPanel>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
+                        </ItemsControl.DataTemplates>
                     </ItemsControl>
                     <ItemsControl Items="{Binding Modifiers}">
                         <ItemsControl.ItemTemplate>
