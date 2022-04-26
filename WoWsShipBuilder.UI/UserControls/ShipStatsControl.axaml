@@ -11,7 +11,7 @@
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
-             xmlns:dataElements="clr-namespace:WoWsShipBuilder.Core.DataUI.DataElements;assembly=WoWsShipBuilder.Core">
+             xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements">
 
     <Design.DataContext>
         <shipVm:ShipStatsControlViewModel />

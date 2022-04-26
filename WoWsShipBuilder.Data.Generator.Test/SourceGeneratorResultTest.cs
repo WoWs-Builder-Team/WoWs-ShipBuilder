@@ -1,8 +1,8 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using WoWsShipBuilder.Core.DataUI.DataElements;
 using WoWsShipBuilder.Data.Generator.Test.TestStructures;
+using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.Data.Generator.Test;
 

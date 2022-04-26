@@ -46,7 +46,7 @@ public class DataElementSourceGenerator : IIncrementalGenerator
 
     private static readonly DiagnosticDescriptor TooManyIterationsError = new(id: "SB004",
         title: "Too many iterations",
-        messageFormat: "Too many iteration for the grouped data element.",
+        messageFormat: "Too many iteration for the grouped data element",
         category: "Generator",
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
@@ -66,8 +66,6 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             .Where(x => x.properties.Count > 0)
             .Collect();
 
-        // Uncomment to generate attribute classes instead of using them from a separate dependency
-        // context.RegisterPostInitializationOutput(GenerateFixedCode);
         context.RegisterSourceOutput(dataClasses, GenerateCode);
     }
 
@@ -100,12 +98,6 @@ public class DataElementSourceGenerator : IIncrementalGenerator
         return (name, dataNamespace, properties);
     }
 
-    // private static void GenerateFixedCode(IncrementalGeneratorPostInitializationContext context)
-    // {
-    //     context.AddSource("DataElementTypes.g.cs", SourceText.From(AttributeGenerator.DataElementTypesEnum, Encoding.UTF8));
-    //     context.AddSource("DataElementTypeAttribute.g.cs", SourceText.From(AttributeGenerator.DataElementTypeAttribute, Encoding.UTF8));
-    // }
-
     private static void GenerateCode(SourceProductionContext context, ImmutableArray<(string className, string classNamespace, List<IPropertySymbol> properties)> dataRecords)
     {
         // context.AddSource("test.g.cs", SourceText.From("//" + string.Join(" - ",dataRecords.Select(x => x.Name)), Encoding.UTF8));
@@ -115,9 +107,10 @@ public class DataElementSourceGenerator : IIncrementalGenerator
             var classStart = $@"
 using System;
 using System.Collections.Generic;
-using WoWsShipBuilder.Core.DataUI.DataElements;
+using WoWsShipBuilder.DataElements.DataElements;
 
 namespace {dataRecord.classNamespace};
+
 #nullable enable
 public partial record {dataRecord.className}
 {{
@@ -399,6 +392,10 @@ public partial record {dataRecord.className}
         if (!property.Type.Name.Equals("string", StringComparison.InvariantCultureIgnoreCase))
         {
             propertyProcessingAddition = ".ToString()";
+        }
+        else if (property.NullableAnnotation == NullableAnnotation.Annotated)
+        {
+            propertyProcessingAddition = " ?? \"null\"";
         }
 
         return propertyProcessingAddition;

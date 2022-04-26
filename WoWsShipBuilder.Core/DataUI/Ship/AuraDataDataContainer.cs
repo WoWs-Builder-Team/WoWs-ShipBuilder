@@ -1,4 +1,5 @@
 ﻿using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.Core.DataUI;
 

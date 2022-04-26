@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -200,7 +201,7 @@ namespace WoWsShipBuilder.Core.DataUI
                     maxSpeedMultiplier = maxSpeedMultiplierModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 
                     var aimModifiersBomber = modifiers.FindModifiers("diveBomberAccuracyIncRateCoeff");
-                    aimRateModifier = aimModifiersBomber.Aggregate(aimRateModifier, (current, modifier) => current * (decimal) modifier);
+                    aimRateModifier = aimModifiersBomber.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
 
                     break;
                 case PlaneType.TorpedoBomber:

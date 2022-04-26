@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
 using WoWsShipBuilder.Data.Generator.Attributes;
+using WoWsShipBuilder.DataElements.DataElementAttributes;
 using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace WoWsShipBuilder.Data.Generator.Test;
@@ -42,7 +43,7 @@ public class SourceGeneratorTest
     [Test]
     public void AllTest()
     {
-        var code = @"using WoWsShipBuilder.Core.DataUI.DataElements;
+        var code = @"using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 
 namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
@@ -88,7 +89,7 @@ public partial record TestDataUi1 : ProjectileDataContainer
     [Test]
     public void ManeuverabilityDataContainer_NoErrors()
     {
-        var code = @"using WoWsShipBuilder.Core.DataUI.DataElements;
+        var code = @"using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 
 namespace WoWsShipBuilder.Core.DataUI
@@ -131,9 +132,6 @@ namespace WoWsShipBuilder.Core.DataUI
     private static Compilation CreateCompilation(params string[] source)
     {
         List<SyntaxTree> syntaxTrees = source.Select(sourceFile => CSharpSyntaxTree.ParseText(sourceFile)).ToList();
-        syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementTypeAttribute));
-        syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementTypesEnum));
-        syntaxTrees.Add(CSharpSyntaxTree.ParseText(AttributeGenerator.DataElementVisibilityAttribute));
 
         var assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
         return CSharpCompilation.Create("compilation",
@@ -146,6 +144,7 @@ namespace WoWsShipBuilder.Core.DataUI
                 MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Core.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Private.CoreLib.dll")),
                 MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "System.Runtime.dll")),
+                MetadataReference.CreateFromFile(typeof(DataElementTypeAttribute).GetTypeInfo().Assembly.Location),
             },
             new(OutputKind.ConsoleApplication));
     }

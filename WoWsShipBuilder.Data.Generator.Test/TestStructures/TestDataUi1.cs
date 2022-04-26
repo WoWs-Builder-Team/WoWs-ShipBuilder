@@ -1,5 +1,4 @@
-﻿using WoWsShipBuilder.Core.DataUI.DataElements;
-using WoWsShipBuilder.DataElements.DataElementAttributes;
+﻿using WoWsShipBuilder.DataElements.DataElementAttributes;
 
 namespace WoWsShipBuilder.Data.Generator.Test.TestStructures;
 

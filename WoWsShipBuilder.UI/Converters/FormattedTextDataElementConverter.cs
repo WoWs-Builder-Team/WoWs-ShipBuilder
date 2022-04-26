@@ -4,10 +4,8 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Splat;
-using WoWsShipBuilder.Core.DataUI.DataElements;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters;

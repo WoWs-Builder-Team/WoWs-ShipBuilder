@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.Core.DataUI
 {

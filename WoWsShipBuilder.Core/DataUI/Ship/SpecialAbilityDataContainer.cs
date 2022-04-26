@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
+using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 
 // ReSharper disable InconsistentNaming

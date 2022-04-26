@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Core.DataUI.DataElements;
+﻿namespace WoWsShipBuilder.DataElements.DataElements;
 
 /// <summary>
 /// Record that represent a key value pair. Localization is left to the UI.

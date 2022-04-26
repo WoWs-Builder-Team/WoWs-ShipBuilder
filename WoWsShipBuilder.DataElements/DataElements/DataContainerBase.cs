@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using WoWsShipBuilder.Core.DataUI.DataElements;
 
-namespace WoWsShipBuilder.Core.DataUI;
+namespace WoWsShipBuilder.DataElements.DataElements;
 
 public abstract record DataContainerBase
 {

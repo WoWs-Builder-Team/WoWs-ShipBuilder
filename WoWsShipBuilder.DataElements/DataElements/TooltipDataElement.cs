@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Core.DataUI.DataElements;
+﻿namespace WoWsShipBuilder.DataElements.DataElements;
 
 /// <summary>
 /// A record that represent a key value pair with a tooltip text.

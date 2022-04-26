@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using WoWsShipBuilder.DataElements.DataElements;
 
 namespace WoWsShipBuilder.Core.DataUI
 {

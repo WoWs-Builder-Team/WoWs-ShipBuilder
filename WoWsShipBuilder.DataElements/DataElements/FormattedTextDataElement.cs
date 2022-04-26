@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWsShipBuilder.Core.DataUI.DataElements;
+namespace WoWsShipBuilder.DataElements.DataElements;
 
 /// <summary>
 /// A record that represent a formatted text data element.
