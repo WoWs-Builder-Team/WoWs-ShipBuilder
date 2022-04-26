@@ -6,7 +6,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 
 namespace WoWsShipBuilder.UI.Converters
 {

@@ -6,7 +6,7 @@ using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 

@@ -11,8 +11,8 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using NLog;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.Converters

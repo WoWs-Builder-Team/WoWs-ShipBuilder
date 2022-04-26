@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;

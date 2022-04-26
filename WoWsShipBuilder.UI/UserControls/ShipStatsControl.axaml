@@ -6,12 +6,12 @@
              xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
              mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="1000"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipStatsControl"
-             xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
              xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.UI.ViewModels.ShipVm"
-             xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements">
+             xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
+             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Core.DataContainers;assembly=WoWsShipBuilder.Core">
 
     <Design.DataContext>
         <shipVm:ShipStatsControlViewModel />
@@ -211,7 +211,7 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="dataUi:ShellDataContainer">
+                                <DataTemplate DataType="dataContainers:ShellDataContainer">
                                     <Expander Classes="modules" ExpandDirection="Down" IsExpanded="True"
                                               Header="{Binding Name, Converter={StaticResource Localizer}}"
                                               Padding="5 0 5 5" BorderBrush="{StaticResource NestedBrush}" BorderThickness="1" CornerRadius="5"
@@ -361,7 +361,7 @@
                 <ItemsControl.DataTemplates>
 
                     <!-- Anti Air -->
-                    <DataTemplate DataType="dataUi:AntiAirDataContainer">
+                    <DataTemplate DataType="dataContainers:AntiAirDataContainer">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}"
                                   Header="{x:Static translations:Translation.ShipStats_AADefense}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
@@ -400,7 +400,7 @@
                     </DataTemplate>
 
                     <!-- Airstrike and ASW Airstrike -->
-                    <DataTemplate DataType="dataUi:AirstrikeDataContainer">
+                    <DataTemplate DataType="dataContainers:AirstrikeDataContainer">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}"
                                   Header="{Binding Header, Converter={StaticResource Localizer}, ConverterParameter=resx}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
@@ -419,7 +419,7 @@
                     </DataTemplate>
 
                     <!-- Depth charge launcher -->
-                    <DataTemplate DataType="dataUi:DepthChargesLauncherDataContainer">
+                    <DataTemplate DataType="dataContainers:DepthChargesLauncherDataContainer">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}"
                                   Header="{x:Static translations:Translation.ShipStats_DepthChargesLauncher}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
@@ -432,7 +432,7 @@
                     </DataTemplate>
 
                     <!-- Secondaries -->
-                    <DataTemplate DataType="dataUi:SecondaryBatteryUiDataContainer">
+                    <DataTemplate DataType="dataContainers:SecondaryBatteryUiDataContainer">
                         <Expander Classes="modules" ExpandDirection="Down" IsExpanded="{Binding IsExpanderOpen}"
                                   Header="{x:Static translations:Translation.ShipStats_SecondaryBattery}"
                                   Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"

@@ -6,8 +6,8 @@
              x:Class="WoWsShipBuilder.UI.UserControls.ModifierToolTip"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
-             xmlns:dataUi="clr-namespace:WoWsShipBuilder.Core.DataUI;assembly=WoWsShipBuilder.Core"
              xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
+             xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Core.DataContainers;assembly=WoWsShipBuilder.Core"
              MaxWidth="350">
     <UserControl.Resources>
         <conv:ModifierConverter x:Key="ModifierConverter" />
@@ -56,7 +56,7 @@
                     </ItemsControl>
                 </StackPanel>
             </DataTemplate>
-            <DataTemplate DataType="dataUi:ConsumableDataContainer">
+            <DataTemplate DataType="dataContainers:ConsumableDataContainer">
                 <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
                     <TextBlock Classes="ModifierTitle" Name="TitleText"
                                Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=DOCK_CONSUME_TITLE}" />

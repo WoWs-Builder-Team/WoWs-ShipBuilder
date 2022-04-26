@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
