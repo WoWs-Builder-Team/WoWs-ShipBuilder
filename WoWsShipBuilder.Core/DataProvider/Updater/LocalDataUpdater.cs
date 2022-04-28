@@ -203,9 +203,11 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 // TODO: remove legacy compatibility code with update 1.5.0
                 try
                 {
+#pragma warning disable CS8602
 #pragma warning disable CS0618
                     versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
 #pragma warning restore CS0618
+#pragma warning restore CS8602
                 }
                 catch (Exception e)
                 {
