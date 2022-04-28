@@ -7,6 +7,7 @@ using Splat;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -16,7 +17,7 @@ namespace WoWsShipBuilder.UI.Converters
 
         public ModifierConverter()
         {
-            localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+            localizer = AppSettingsHelper.LocalizerInstance;
         }
 
         private enum ReturnFilter

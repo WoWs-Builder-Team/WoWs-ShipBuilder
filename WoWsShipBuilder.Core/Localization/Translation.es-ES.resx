@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Peso del obús</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>DPM teórico</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura de largo alcance</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Hacia atrás</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Marcha alante</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -633,7 +633,7 @@
     <value>Aviones por ataque</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Pv por avión</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -969,7 +969,7 @@ Los barcos en el juego son el doble de grandes que el entorno, por lo que un bar
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masa</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>IPM potenciales </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1099,7 +1099,7 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
     <value>Tiempo de recarga del lado del servidor</value>
   </data>
   
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>DPM lado del servidor</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">

@@ -357,7 +357,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>포탄 중량</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>분당 데미지</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -553,10 +553,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>장거리 대공 아우라</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>후진</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>전진</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -617,7 +617,7 @@
     <value>공격시 항공기 수</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>각 항공기의 내구도</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">

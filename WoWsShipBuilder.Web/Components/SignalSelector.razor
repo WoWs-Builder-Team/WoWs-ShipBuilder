@@ -1,9 +1,9 @@
 ﻿@using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.DataUI
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.ViewModels.ShipVm;
+@using WoWsShipBuilder.Core.DataContainers
 @inherits ReactiveComponentBase<SignalSelectorViewModel>
-@inject ILocalizer localizer
+@inject ILocalizer Localizer
 
 @if (ViewModel is not null)
 {
@@ -25,12 +25,12 @@
                         <TooltipContent>
                             <MudPaper Outlined="true">
                                 <MudStack Spacing="0" Class="pa-2">
-                                    <MudText Align="Align.Center" Typo="Typo.h6">@localizer.GetGameLocalization(signal.Signal.Name).Localization</MudText>
+                                    <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization(signal.Signal.Name).Localization</MudText>
                                     <MudDivider Light="true" Class="ma-1"/>
                                     @foreach (var (modifierName, modifierValue) in signal.Signal.Modifiers)
                                     {
                                         // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                        var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, localizer);
+                                        var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                         @if (!string.IsNullOrWhiteSpace(modifierString))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>

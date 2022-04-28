@@ -12,8 +12,8 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.Data;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -224,7 +224,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             Logging.Logger.Info("Loading data for ship {0}", ship.Index);
             Logging.Logger.Info("Build is null: {0}", build is null);
 
-            ShipUI.ExpanderStateMapper.Clear();
+            ShipDataContainer.ExpanderStateMapper.Clear();
 
             // Ship stats model
             RawShipData = ship;
@@ -312,7 +312,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                                 Logging.Logger.Info("Updating ship stats");
                                 await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                             }
-                            var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityUI.HitPoints;
+                            var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
                             await ConsumableViewModel.UpdateShipConsumables(modifiers, hp);
                             semaphore.Release();
                         }

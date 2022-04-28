@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>砲弾質量</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>理論値DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>長射程対空</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>後進</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>前進</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -639,7 +639,7 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>1機あたりのHP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>攻撃準備時間</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
       <value>照準収縮までの時間</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>魚雷発射管</value>
   </data>
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
     <value>攻撃態勢中</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>回避機動中の照準変化率</value>
   </data>
-  <data name="ShipStats_DuringPreparation" xml:space="preserve">
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>攻撃準備中</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -987,7 +987,7 @@
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>質量</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>潜在的分間火災率 </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1119,7 +1119,7 @@
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>サーバー側の状態は0.142857142857秒ごとに更新されます。つまり、この数の倍数にならない装填時間はその後ティックへ移動されます。 ここで表示される値は実際の(サーバーの)装填時間を示しており、理論上の装填時間とは異なる場合があります。</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>サーバー上のDPM</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
@@ -1230,10 +1230,10 @@
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
       <value>攻撃中隊内</value>
   </data>
-  <data name="ShipStats_Squadron" xml:space="preserve">
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
       <value>中隊</value>
   </data>
-  <data name="ShipStats_AttackGroup" xml:space="preserve">
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
       <value>攻撃中隊</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">

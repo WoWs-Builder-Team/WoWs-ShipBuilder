@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -20,12 +20,12 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             this.appDataService = appDataService;
             this.localizer = localizer;
             BaseShipStats = ship;
-            Task.Run(async () => currentShipStats = await ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
+            Task.Run(async () => currentShipStats = await ShipDataContainer.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
         }
 
-        private ShipUI? currentShipStats;
+        private ShipDataContainer? currentShipStats;
 
-        public ShipUI? CurrentShipStats
+        public ShipDataContainer? CurrentShipStats
         {
             get => currentShipStats;
             set => this.RaiseAndSetIfChanged(ref currentShipStats, value);
@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
         {
-            ShipUI shipStats = await Task.Run(() => ShipUI.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
+            ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
             CurrentShipStats = shipStats;
         }
     }

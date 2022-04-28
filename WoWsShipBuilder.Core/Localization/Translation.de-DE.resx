@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Geschossgewicht</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Theoretische DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Langstreckenaura</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Rückwärts</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Vorwärts</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -639,7 +639,7 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Flugzeug Hp</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -801,19 +801,19 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
-  <data name="ShipStats_ToFullyAimed" xml:space="preserve">
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
       <value>Bis zur maximalen Genauigkeit</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
   </data>
-  <data name="ShipStats_DuringAiming" xml:space="preserve">
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
     <value>Während des Angriffs</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
-  <data name="ShipStats_DuringPreparation" xml:space="preserve">
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Während der Vorbereitungszeit</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -987,7 +987,7 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masse</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>Potentielle BPM</value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1119,7 +1119,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Serverseitige DPM</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
@@ -1230,10 +1230,10 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
       <value>In der Angriffsgruppe</value>
   </data>
-  <data name="ShipStats_Squadron" xml:space="preserve">
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
       <value>Staffel</value>
   </data>
-  <data name="ShipStats_AttackGroup" xml:space="preserve">
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
       <value>Angriffsgruppe</value>
   </data>
   <data name="ShipStats_Max" xml:space="preserve">

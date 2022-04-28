@@ -6,7 +6,7 @@ using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -16,7 +16,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
     {
         private readonly Ship ship;
 
-        private List<List<ConsumableUI>> shipConsumables;
+        private List<List<ConsumableDataContainer>> shipConsumables;
 
         public ConsumableViewModel()
             : this(new())
@@ -51,18 +51,18 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             ShipConsumables = (await Task.WhenAll(ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
                     .OrderBy(group => group.Key)
                     .Select(async group => (await Task.WhenAll(group.OrderBy(c => c.ConsumableName).Select(async c =>
-                            await ConsumableUI.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))))
+                            await ConsumableDataContainer.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))))
                         .ToList())))
                 .ToList();
 
-            List<ConsumableUI> newSelection = new();
+            List<ConsumableDataContainer> newSelection = new();
             if (isFirstTry)
             {
                 newSelection = ShipConsumables.Select(list => list.First()).ToList();
             }
             else
             {
-                foreach (ConsumableUI selectedConsumable in SelectedConsumables)
+                foreach (ConsumableDataContainer selectedConsumable in SelectedConsumables)
                 {
                     newSelection.Add(ShipConsumables.SelectMany(list => list).First(consumable => consumable.IconName.Equals(selectedConsumable.IconName)));
                 }
@@ -73,20 +73,20 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             SelectedConsumables.AddRange(newSelection);
         }
 
-        public List<List<ConsumableUI>> ShipConsumables
+        public List<List<ConsumableDataContainer>> ShipConsumables
         {
             get => shipConsumables;
             set => this.RaiseAndSetIfChanged(ref shipConsumables, value);
         }
 
-        public CustomObservableCollection<ConsumableUI> SelectedConsumables { get; private set; }
+        public CustomObservableCollection<ConsumableDataContainer> SelectedConsumables { get; private set; }
 
-        public Action<ConsumableUI> OnConsumableSelected { get; }
+        public Action<ConsumableDataContainer> OnConsumableSelected { get; }
 
         public void LoadBuild(IEnumerable<string> storedData)
         {
-            var selection = new List<ConsumableUI>();
-            foreach (List<ConsumableUI> consumableList in ShipConsumables)
+            var selection = new List<ConsumableDataContainer>();
+            foreach (List<ConsumableDataContainer> consumableList in ShipConsumables)
             {
                 selection.AddRange(consumableList.Where(consumable => storedData.Contains(consumable.IconName)));
             }

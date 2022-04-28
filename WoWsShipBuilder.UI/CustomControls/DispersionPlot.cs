@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
@@ -329,7 +329,8 @@ namespace WoWsShipBuilder.UI.CustomControls
             var typeface = Typeface.Default;
             if(AppSettingsHelper.Settings.SelectedLanguage.LocalizationFileName == "ja")
             {
-                typeface = new Typeface("Yu Gothic UI", Typeface.Default.Style, Typeface.Default.Weight);
+                // workaround to solve incorrect rendering of this localization
+                typeface = new("Yu Gothic UI", Typeface.Default.Style, Typeface.Default.Weight);
             }
 
             var vertical = Translation.DispersionPlot_Vertical;
