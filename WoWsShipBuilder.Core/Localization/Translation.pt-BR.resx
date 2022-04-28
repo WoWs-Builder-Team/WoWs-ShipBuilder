@@ -361,9 +361,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Peso do projétil</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>DPM Teórico</value>
-  </data>
+  
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Limite para Armar</value>
   </data>
@@ -448,9 +446,7 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>DPS por incêndio</value>
   </data>
-  <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Duração do incêndio</value>
-  </data>
+  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Redução de chance de incêndio</value>
   </data>
@@ -460,9 +456,7 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>DPS por inundação</value>
   </data>
-  <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Duração da inundação</value>
-  </data>
+  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Probabilidade de inundação</value>
   </data>
@@ -532,45 +526,29 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Ocultamento</value>
   </data>
-  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Ocultamento por ar</value>
-  </data>
+  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Quando em chamas</value>
   </data>
-  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Ocultamento por mar</value>
-  </data>
+  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Quando em chamas</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Após disparar em fumaça</value>
   </data>
-  <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Número máximo de incêndios</value>
-  </data>
-  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Dano total por incêndio</value>
-  </data>
-  <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Número máximo de inundações</value>
-  </data>
+  
+  
+  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Proteção de torpedo</value>
   </data>
-  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Dano total por inundação</value>
-  </data>
+  
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura de longo alcance</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Para trás</value>
-  </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
-    <value>Para a frente</value>
-  </data>
+  
+  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Velocidade máxima</value>
   </data>
@@ -631,9 +609,7 @@
     <value>Aeronaves por ataque</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>HP por avião</value>
-  </data>
+  
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tempo de restauração</value>
   </data>
@@ -643,21 +619,13 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Bombas por aeronave</value>
   </data>
-  <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Tempo de drop</value>
-  </data>
-  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Tempo para chegada</value>
-  </data>
-  <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Alcance máximo</value>
-  </data>
+  
+  
+  
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Comprimento máximo do drop</value>
   </data>
-  <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Alcance mínimo</value>
-  </data>
+  
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Número de cargas</value>
   </data>
@@ -748,12 +716,8 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Erro durante o carregamento da build</value>
   </data>
-  <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Duração do boost inicial</value>
-  </data>
-  <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Multiplicador de velocidade do boost inicial</value>
-  </data>
+  
+  
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Tempo para mudar munição</value>
   </data>
@@ -849,12 +813,8 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Copiar versões</value>
   </data>
-  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Ocultamento do submarino na profundidade de periscópio</value>
-  </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Ocultamento do submarino na profundidade de operação</value>
-  </data>
+  
+  
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Mostrar gráficos de dispersão e balística</value>
   </data>
@@ -969,12 +929,8 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
-    <value>FPM Potencial </value>
-  </data>
-  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Chance de incêndio por salva</value>
-  </data>
+  
+  
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
     <value>Raio de explosão</value>
   </data>
@@ -1099,9 +1055,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
-    <value>DPM no Servidor</value>
-  </data>
+  
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Taxa de Disparo no Servidor</value>
   </data>
@@ -1205,6 +1159,39 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_HP" xml:space="preserve">
+      <value>HP</value>
+  </data>
   
   
 </root>
