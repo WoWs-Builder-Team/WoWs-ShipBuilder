@@ -16,6 +16,6 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         bool ShouldImagesUpdate,
         bool CanImagesDeltaUpdate,
         bool ShouldLocalizationUpdate,
-        string DataVersionName,
+        string? DataVersionName,
         ServerType ServerType);
 }

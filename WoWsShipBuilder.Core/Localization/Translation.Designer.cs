@@ -376,6 +376,24 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There has been an error during the data update. This may cause data to be invalid or not up to date. To try again, restart the application. For more information, check the application log..
+        /// </summary>
+        public static string DataUpdate_ErrorDescription {
+            get {
+                return ResourceManager.GetString("DataUpdate_ErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Update Error.
+        /// </summary>
+        public static string DataUpdate_ErrorTitle {
+            get {
+                return ResourceManager.GetString("DataUpdate_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Depth charges.
         /// </summary>
         public static string DepthCharge {
@@ -2386,7 +2404,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial boost duration.
+        ///   Looks up a localized string similar to Duration.
         /// </summary>
         public static string ShipStats_JatoDuration {
             get {
@@ -2395,7 +2413,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial boost speed multiplier.
+        ///   Looks up a localized string similar to Speed boost.
         /// </summary>
         public static string ShipStats_JatoSpeedMultiplier {
             get {

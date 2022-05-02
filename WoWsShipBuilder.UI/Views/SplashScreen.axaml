@@ -5,15 +5,14 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="566"
         x:Class="WoWsShipBuilder.UI.Views.SplashScreen"
         xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
-        xmlns:other="clr-namespace:WoWsShipBuilder.ViewModels.Other;assembly=WoWsShipBuilder.ViewModels"
+        xmlns:vm="clr-namespace:WoWsShipBuilder.ViewModels.Other;assembly=WoWsShipBuilder.ViewModels"
         Title="SplashScreenWindow"
         Name="SplashScreenWindow"
         Height="566" Width="800" CanResize="False"
         SystemDecorations="None"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
-        <other:SplashScreenViewModel />
+        <vm:SplashScreenViewModel />
     </Design.DataContext>
 
     <RelativePanel Width="800">

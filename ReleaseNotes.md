@@ -4,6 +4,7 @@
 - Add ability to hide lines in charts by clicking on the corresponding name in the chart's legend.
 
 ## Changes
+- Data update errors are no longer silent and are shown through a popup.
 
 ## Bugfixes
 

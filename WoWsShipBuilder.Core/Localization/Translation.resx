@@ -1338,4 +1338,10 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TorpedoType" xml:space="preserve">
       <value>Torpedo Type</value>
   </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>There has been an error during the data update. This may cause data to be invalid or not up to date. To try again, restart the application. For more information, check the application log.</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>Data Update Error</value>
+  </data>
 </root>

@@ -52,7 +52,7 @@ public class SplashScreenViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref downloadInfo, value);
     }
 
-    public async Task VersionCheck(bool forceVersionCheck = false)
+    public async Task VersionCheck(bool forceVersionCheck = false, bool throwOnException = false)
     {
         logger.Debug("Checking gamedata versions...");
         IProgress<(int, string)> progressTracker = new Progress<(int state, string title)>(value =>
@@ -70,6 +70,12 @@ public class SplashScreenViewModel : ViewModelBase
         }
         catch (Exception e)
         {
+            if (throwOnException)
+            {
+                logger.Warn(e, "Encountered unexpected exception during version check.");
+                throw;
+            }
+
             logger.Error(e, "Encountered unexpected exception during version check.");
         }
 

@@ -193,28 +193,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 filesToDownload.Add((string.Empty, "VersionInfo.json"));
             }
 
-            string versionName;
-            if (onlineVersionInfo.CurrentVersion != null)
-            {
-                versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
-            }
-            else
-            {
-                // TODO: remove legacy compatibility code with update 1.5.0
-                try
-                {
-#pragma warning disable CS8602
-#pragma warning disable CS0618
-                    versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
-#pragma warning restore CS0618
-#pragma warning restore CS8602
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
-                    versionName = "0.11.0"; // Fallback value for now.
-                }
-            }
+            var versionName = onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3);
 
             var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
             if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
@@ -307,7 +286,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="progressTracker">An <see cref="IProgress{T}"/> used to report the progress of the operation.</param>
         /// <param name="canDeltaUpdate">A bool indicating whether images can be updated differentially.</param>
         /// <param name="versionName">The version name of the new image data, needs to be identical to the WG version name.</param>
-        private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string versionName)
+        private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string? versionName)
         {
             string imageBasePath = appDataService.AppDataImageDirectory;
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
