@@ -248,7 +248,14 @@ namespace WoWsShipBuilder.Core.DataProvider
             if (fileSystem.File.Exists(path))
             {
                 var rawBuildList = dataService.Load<List<string>>(path);
-                AppData.Builds = rawBuildList?.Select(str => Build.CreateBuildFromString(str, Locator.Current.GetServiceSafe<ILocalizer>())).ToList() ?? new List<Build>();
+                var localizer = Locator.Current.GetService<ILocalizer>();
+                if (localizer is null)
+                {
+                    Logging.Logger.Warn("Localizer was null, aborting build loading.");
+                    return;
+                }
+
+                AppData.Builds = rawBuildList?.Select(str => Build.CreateBuildFromString(str, localizer)).ToList() ?? new List<Build>();
             }
         }
 

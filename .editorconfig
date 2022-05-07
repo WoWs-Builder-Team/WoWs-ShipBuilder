@@ -138,6 +138,7 @@ dotnet_diagnostic.sa1600.severity = none # Elements don't have to be documented
 dotnet_diagnostic.sa1601.severity = none # Elements don't have to be documented
 dotnet_diagnostic.sa1602.severity = none # Enums don't have to be documented
 dotnet_diagnostic.sa1608.severity = none # Default summary in docs is allowed
+dotnet_diagnostic.sa1615.severity = none # Ignore missing return value doc due to Task causing false-positives for async methods
 dotnet_diagnostic.sa1625.severity = none # Copy-paste documentation is allowed
 dotnet_diagnostic.sa1633.severity = none # File does not need a header
 dotnet_diagnostic.sa1634.severity = none # No header copyright

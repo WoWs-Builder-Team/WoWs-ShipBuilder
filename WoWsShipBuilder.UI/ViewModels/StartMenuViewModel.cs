@@ -18,15 +18,18 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly IFileSystem fileSystem;
 
         public StartMenuViewModel()
-            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance, DesktopAppDataService.PreviewInstance, DataHelper.DemoLocalizer)
+            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance, DesktopAppDataService.PreviewInstance, DataHelper.DemoLocalizer, new())
         {
         }
 
-        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer)
+        public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer, AppNotificationService notificationService)
             : base(navigationService, clipboardService, appDataService, userDataService, localizer, AppSettingsHelper.Settings)
         {
             this.fileSystem = fileSystem;
+            NotificationService = notificationService;
         }
+
+        public AppNotificationService NotificationService { get; }
 
         public override async void Setting()
         {

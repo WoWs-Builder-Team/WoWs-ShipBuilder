@@ -1159,6 +1159,33 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error during the app update. Check the log file for more details..
+        /// </summary>
+        public static string NotificationService_ErrorMessage {
+            get {
+                return ResourceManager.GetString("NotificationService_ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App update running in background....
+        /// </summary>
+        public static string NotificationService_UpdateActive {
+            get {
+                return ResourceManager.GetString("NotificationService_UpdateActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app has been updated in the background. A restart is required to apply the update. Click to restart..
+        /// </summary>
+        public static string NotificationService_UpdateCompleted {
+            get {
+                return ResourceManager.GetString("NotificationService_UpdateCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {
@@ -3651,6 +3678,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string UnitedKingdom {
             get {
                 return ResourceManager.GetString("UnitedKingdom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app has been updated, do you want to restart to apply the changes?.
+        /// </summary>
+        public static string UpdateMessageBox_Description {
+            get {
+                return ResourceManager.GetString("UpdateMessageBox_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App updated.
+        /// </summary>
+        public static string UpdateMessageBox_Title {
+            get {
+                return ResourceManager.GetString("UpdateMessageBox_Title", resourceCulture);
             }
         }
         
