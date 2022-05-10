@@ -1359,4 +1359,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="UpdateMessageBox_Title" xml:space="preserve">
       <value>App updated</value>
   </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
+  </data>
 </root>

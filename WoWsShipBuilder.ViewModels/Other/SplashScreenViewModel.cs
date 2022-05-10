@@ -44,7 +44,7 @@ public class SplashScreenViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref progress, value);
     }
 
-    private string downloadInfo = Translation.SplashScreen_Init;
+    private string downloadInfo = nameof(Translation.SplashScreen_Init);
 
     public string DownloadInfo
     {
@@ -79,6 +79,6 @@ public class SplashScreenViewModel : ViewModelBase
             logger.Error(e, "Encountered unexpected exception during version check.");
         }
 
-        progressTracker.Report((TaskNumber, Translation.SplashScreen_Done));
+        progressTracker.Report((TaskNumber, nameof(Translation.SplashScreen_Done)));
     }
 }

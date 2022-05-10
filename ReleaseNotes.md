@@ -6,6 +6,7 @@
 
 ## Changes
 - Data update errors are no longer silent and are shown through a popup.
+- Data validation is using file checksums now and does no longer just check for the existence of a file (#133)
 
 ## Bugfixes
 - Localize contents of restart dialog after an update has been installed.

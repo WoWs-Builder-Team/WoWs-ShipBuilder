@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
+using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.Services;
@@ -12,7 +13,7 @@ namespace WoWsShipBuilder.UI.Services;
 /// </summary>
 public class AppNotificationService : ViewModelBase
 {
-    private string appUpdateMessage = string.Empty;
+    private string appUpdateMessage = nameof(Translation.Placeholder);
 
     private UpdateStatus appUpdateStatus = UpdateStatus.None;
 
