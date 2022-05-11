@@ -330,7 +330,9 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Keine den Filterkriterien entsprechenden Schiffe gefunden</value>
   </data>
-  
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Schiff suchen...</value>
+  </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Dauer für 180°-Drehung</value>
   </data>
@@ -361,7 +363,9 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Geschossgewicht</value>
   </data>
-  
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
+    <value>Theoretische DPM</value>
+  </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Grenzwert für Scharfschaltung</value>
   </data>
@@ -446,7 +450,9 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>DPS je Brand</value>
   </data>
-  
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+      <value>Branddauer</value>
+  </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Verminderung der Brandwahrscheinlichkeit</value>
   </data>
@@ -456,7 +462,9 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>DPS je Wassereinbruch</value>
   </data>
-  
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+      <value>Dauer eines Wassereinbruchs</value>
+  </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Wassereinbruchswahrscheinlichkeit</value>
   </data>
@@ -537,18 +545,30 @@
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Nach Abfeuern der Hauptgeschütze im Nebel</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_FireAmount" xml:space="preserve">
+      <value>Maximale Brände</value>
+  </data>
+  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
+      <value>Gesamter Brandschaden</value>
+  </data>
+  <data name="ShipStats_FloodAmount" xml:space="preserve">
+      <value>Maximale Wassereinbrüche</value>
+  </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedoschutz</value>
   </data>
-  
+  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
+      <value>Gesamter Wassereinbruchsschaden</value>
+  </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Langstreckenaura</value>
   </data>
-  
-  
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
+    <value>Rückwärts</value>
+  </data>
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
+    <value>Vorwärts</value>
+  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -600,7 +620,9 @@
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomben in innerer Ellipse</value>
   </data>
-  
+  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
+      <value>Maximale Flugzeuge an Deck</value>
+  </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -613,7 +635,9 @@
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
   </data>
-  
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+    <value>Flugzeug HP</value>
+  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Wiederherstellungszeit</value>
   </data>
@@ -623,13 +647,21 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Bomben je Flugzeug</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_DropTime" xml:space="preserve">
+      <value>Abwurfzeit</value>
+  </data>
+  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
+      <value>Zeit bis zur Ankunft</value>
+  </data>
+  <data name="ShipStats_MaximumDistance" xml:space="preserve">
+      <value>Maximale Reichweite</value>
+  </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Maximaler Abwurfbereich</value>
   </data>
-  
+  <data name="ShipStats_MinimumDistance" xml:space="preserve">
+      <value>Minimale Reichweite</value>
+  </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Bomben pro Ladung</value>
   </data>
@@ -720,8 +752,12 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Fehler beim Laden des Builds</value>
   </data>
-  
-  
+  <data name="ShipStats_JatoDuration" xml:space="preserve">
+      <value>Dauer</value>
+  </data>
+  <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
+      <value>Geschwindigkeitsbonus</value>
+  </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Zeit zum Wechseln des Munitionstyps</value>
   </data>
@@ -761,15 +797,21 @@
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Vorbereitungszeit</value>
   </data>
-  
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+      <value>Bis zur maximalen Genauigkeit</value>
+  </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedowerfer</value>
   </data>
-  
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
+    <value>Während des Angriffs</value>
+  </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Veränderung des Dropbereichs beim Manövrieren</value>
   </data>
-  
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
+    <value>Während der Vorbereitungszeit</value>
+  </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Zeit bis zur maximalen Leistung</value>
   </data>
@@ -803,7 +845,9 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
-  
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+      <value>Granate wählen</value>
+  </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>hat mehr als eine Granate. Wähle die Granate, deren Ballistik du sehen möchtest. Bei gleichem Kaliber ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -819,8 +863,12 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Versionsinformationen kopieren</value>
   </data>
-  
-  
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+      <value>Auf Periskoptiefe</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+      <value>Auf Einsatztiefe</value>
+  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Streuungs- und Ballistikdiagramme zeigen</value>
   </data>
@@ -935,8 +983,12 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masse</value>
   </data>
-  
-  
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
+    <value>Potentielle BPM</value>
+  </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+      <value>Brandwahrscheinlichkeit per Salve</value>
+  </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
     <value>Explosionsradius</value>
   </data>
@@ -1033,7 +1085,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
-  
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+      <value>Fertigkeiten und Talente</value>
+  </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Mit den folgenden Schieberegler und Schalter können einzelne bedingte Fertigkeitseffekte aktiviert und deaktiviert werden. Für einige Effekte kann außerdem die Zahl der Aktivierungen gewählt werden. Beachte, dass nicht alle Fertigkeiten und Talente einen Effekt auf die Statistiken des Schiffs haben.</value>
   </data>
@@ -1061,7 +1115,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>Die Server-Aktualisierungsrate beträgt 0,142857142857 Sekunden. Das bedeutet, dass Nachladezeiten, welche kein Vielfaches dieses Wertes sind, auf das nächste Vielfache des Wertes aufgerundet werden. Somit zeigt dieser Wert die tatsächliche Nachladezeit im Spiel, welche von der theoretischen Ladezeit abweichen kann.</value>
   </data>
-  
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
+    <value>Serverseitige DPM</value>
+  </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Serverseitige Feuerrate</value>
   </data>
@@ -1122,11 +1178,21 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>Schiffe/Granaten hinzufügen/entfernen</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>Streuungsdiagramme</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Ballistikdiagramme</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>Schiffe und Granaten wählen</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Lädt...</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1136,7 +1202,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Tiefwasser</value>
   </data>
-  
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>TP pro Heilung</value>
+  </data>
   <data name="DispersionGraphWindow_Range" xml:space="preserve">
       <value>Reichweite [km]:</value>
   </data>
@@ -1161,7 +1229,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
       <value>Von Torpedos</value>
   </data>
-  
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>Maximale Sichtweite</value>
+  </data>
   <data name="ShipStats_Consumables" xml:space="preserve">
       <value>Verbrauchsmaterialien</value>
   </data>
@@ -1171,8 +1241,12 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
       <value>In der Angriffsgruppe</value>
   </data>
-  
-  
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
+      <value>Staffel</value>
+  </data>
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
+      <value>Angriffsgruppe</value>
+  </data>
   <data name="ShipStats_Max" xml:space="preserve">
       <value>Max.</value>
   </data>
@@ -1204,8 +1278,12 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   
   
   
-  
-  
+  <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
+      <value>Maximale Brände</value>
+  </data>
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>Von U-Booten</value>
+  </data>
   
   
   
