@@ -534,11 +534,15 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Verborgenheit</value>
   </data>
-  
+  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
+      <value>Basis</value>
+  </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
   </data>
-  
+  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
+      <value>Basis</value>
+  </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
   </data>
@@ -1275,20 +1279,36 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
       <value>Maximale Abschüsse</value>
   </data>
   
-  
-  
-  
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>Brand</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>Wassereinbruch</value>
+  </data>
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Explosionsschutz</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Maximale Brände</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
       <value>Von U-Booten</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>Zu See</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>Aus der Luft</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>Zeiten</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>Ladezeit</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>Einzelne Granate</value>
+  </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1310,14 +1330,34 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_HP" xml:space="preserve">
       <value>TP</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>Raketen-Art</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>Torpedo-Art</value>
+  </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>Beim Update der Daten ist ein Fehler aufgetreten. Dadurch können Daten beschädigt oder nicht mehr aktuell sein. Starte die App neu, um es erneut zu versuchen. Weitere Details sind im Log der App zu finden.</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>Fehler beim Daten-Update</value>
+  </data>
+  <data name="NotificationService_UpdateActive" xml:space="preserve">
+      <value>App-Update im Hintergrund...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>Beim App-Update ist ein Fehler aufgetreten. Weitere Details findest du in der Log-Datei.</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>Die App wurde im Hintergrund aktualisiert. Ein Neustart ist erforderlich, um das Update anzuwenden. Klicke zum Neustarten.</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>Die App wurde aktualisiert, möchtest du sie neu starten, um die Änderungen anzuwenden?</value>
+  </data>
+  <data name="UpdateMessageBox_Title" xml:space="preserve">
+      <value>App aktualisiert</value>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
+  </data>
 </root>
