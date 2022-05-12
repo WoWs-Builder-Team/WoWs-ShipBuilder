@@ -330,7 +330,9 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Nessuna nave corrispondente ai filtri trovata</value>
   </data>
-  
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Cerca nave...</value>
+  </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Tempo di rotazione 180°</value>
   </data>
@@ -609,7 +611,9 @@
     <value>Aerei per attacco</value>
   </data>
   
-  
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+    <value>HP per aereo</value>
+  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tempo di ripristino</value>
   </data>
