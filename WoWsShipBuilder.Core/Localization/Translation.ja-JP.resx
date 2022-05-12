@@ -1259,18 +1259,36 @@
   <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
       <value>アドレナリンラッシュHP: </value>
   </data>
-  
-  
-  
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>火災</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>浸水</value>
+  </data>
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>爆風耐性</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>同時最大数</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>潜水艦から</value>
+  </data>
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>海面</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>航空</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>タイミング</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>装填</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>1発あたり</value>
+  </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1292,14 +1310,34 @@
   <data name="ShipStats_HP" xml:space="preserve">
       <value>HP</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>ロケット種別</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>魚雷種別</value>
+  </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>データの更新中にエラーが発生しました。データが無効または最新でない可能性があります。 再試行するには、アプリケーションを再起動してください。詳細については、アプリケーションログを確認してください。</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>データ更新エラー</value>
+  </data>
+  <data name="NotificationService_UpdateActive" xml:space="preserve">
+      <value>アプリのアップデートをバックグラウンドで実行しています...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>アプリの更新中にエラーが発生しました。詳細はログファイルを確認してください。</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>アプリがバックグラウンドで更新されました。アップデートを適用するには再起動が必要です。再起動をクリックしてください。</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>アプリが更新されました。再起動して変更を適用しますか？</value>
+  </data>
+  <data name="UpdateMessageBox_Title" xml:space="preserve">
+      <value>アプリが更新されました</value>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
+  </data>
 </root>
