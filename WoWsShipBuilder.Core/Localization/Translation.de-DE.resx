@@ -1278,7 +1278,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
       <value>Maximale Abschüsse</value>
   </data>
-  
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>TP für Adrenalinrausch: </value>
+  </data>
   <data name="ShipStats_Fire" xml:space="preserve">
       <value>Brand</value>
   </data>
