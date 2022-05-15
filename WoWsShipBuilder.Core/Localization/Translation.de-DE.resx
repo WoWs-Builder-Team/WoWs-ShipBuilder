@@ -331,7 +331,7 @@
     <value>Keine den Filterkriterien entsprechenden Schiffe gefunden</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Schiff suchen</value>
+      <value>Schiff suchen...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Dauer für 180°-Drehung</value>
@@ -451,7 +451,7 @@
     <value>DPS je Brand</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Branddauer</value>
+      <value>Branddauer</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Verminderung der Brandwahrscheinlichkeit</value>
@@ -463,7 +463,7 @@
     <value>DPS je Wassereinbruch</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Dauer eines Wassereinbruchs</value>
+      <value>Dauer eines Wassereinbruchs</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Wassereinbruchswahrscheinlichkeit</value>
@@ -535,13 +535,13 @@
     <value>Verborgenheit</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Erkennbarkeit zu Luft</value>
+      <value>Basis</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Erkennbarkeit zu Wasser</value>
+      <value>Basis</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Bei brennendem Schiff</value>
@@ -550,19 +550,19 @@
     <value>Nach Abfeuern der Hauptgeschütze im Nebel</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Maximale Brände</value>
+      <value>Maximale Brände</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Gesamter Brandschaden</value>
+      <value>Gesamter Brandschaden</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Maximale Wassereinbrüche</value>
+      <value>Maximale Wassereinbrüche</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedoschutz</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Gesamter Wassereinbruchsschaden</value>
+      <value>Gesamter Wassereinbruchsschaden</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Langstreckenaura</value>
@@ -640,7 +640,7 @@
       <value>Flugzeuge pro Staffel</value>
   </data>
   <data name="ShipStats_PlaneHp" xml:space="preserve">
-    <value>Flugzeug Hp</value>
+    <value>Flugzeug HP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Wiederherstellungszeit</value>
@@ -652,19 +652,19 @@
     <value>Bomben je Flugzeug</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Abwurfzeit</value>
+      <value>Abwurfzeit</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Zeit bis zur Ankunft</value>
+      <value>Zeit bis zur Ankunft</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximale reichweite</value>
+      <value>Maximale Reichweite</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Maximaler Abwurfbereich</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimale reichweite</value>
+      <value>Minimale Reichweite</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Bomben pro Ladung</value>
@@ -757,10 +757,10 @@
     <value>Fehler beim Laden des Builds</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Anfängliche Boostdauer</value>
+      <value>Dauer</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Anfänglicher Geschwindigkeitsmultiplikator</value>
+      <value>Geschwindigkeitsbonus</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Zeit zum Wechseln des Munitionstyps</value>
@@ -850,7 +850,7 @@
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Granate wählen</value>
+      <value>Granate wählen</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>hat mehr als eine Granate. Wähle die Granate, deren Ballistik du sehen möchtest. Bei gleichem Kaliber ist die Reihenfolge HE-&gt;SAP-&gt;AP.</value>
@@ -868,10 +868,10 @@
     <value>Versionsinformationen kopieren</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Erkennbarkeit für U-Boote auf Periskoptiefe</value>
+      <value>Auf Periskoptiefe</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Erkennbarkeit für U-Boote auf Einsatztiefe</value>
+      <value>Auf Einsatztiefe</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Streuungs- und Ballistikdiagramme zeigen</value>
@@ -991,7 +991,7 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
     <value>Potentielle BPM</value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Brandwahrscheinlichkeit per Salve</value>
+      <value>Brandwahrscheinlichkeit per Salve</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
     <value>Explosionsradius</value>
@@ -1090,7 +1090,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
     <value>Der ausgewählte Pfad ist ungültig.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Fertigkeiten und Talente</value>
+      <value>Fertigkeiten und Talente</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Mit den folgenden Schieberegler und Schalter können einzelne bedingte Fertigkeitseffekte aktiviert und deaktiviert werden. Für einige Effekte kann außerdem die Zahl der Aktivierungen gewählt werden. Beachte, dass nicht alle Fertigkeiten und Talente einen Effekt auf die Statistiken des Schiffs haben.</value>
@@ -1182,6 +1182,21 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>Schiffe/Granaten hinzufügen/entfernen</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>Streuungsdiagramme</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Ballistikdiagramme</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>Schiffe und Granaten wählen</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Lädt...</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1262,5 +1277,89 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   </data>
   <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
       <value>Maximale Abschüsse</value>
+  </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>TP für Adrenalinrausch: </value>
+  </data>
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>Brand</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>Wassereinbruch</value>
+  </data>
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
+      <value>Maximale Brände</value>
+  </data>
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>Von U-Booten</value>
+  </data>
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>Zu See</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>Aus der Luft</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>Zeiten</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>Ladezeit</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>Einzelne Granate</value>
+  </data>
+  <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_HP" xml:space="preserve">
+      <value>TP</value>
+  </data>
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>Raketen-Art</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>Torpedo-Art</value>
+  </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>Beim Update der Daten ist ein Fehler aufgetreten. Dadurch können Daten beschädigt oder nicht mehr aktuell sein. Starte die App neu, um es erneut zu versuchen. Weitere Details sind im Log der App zu finden.</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>Fehler beim Daten-Update</value>
+  </data>
+  <data name="NotificationService_UpdateActive" xml:space="preserve">
+      <value>App-Update im Hintergrund...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>Beim App-Update ist ein Fehler aufgetreten. Weitere Details findest du in der Log-Datei.</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>Die App wurde im Hintergrund aktualisiert. Ein Neustart ist erforderlich, um das Update anzuwenden. Klicke zum Neustarten.</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>Die App wurde aktualisiert, möchtest du sie neu starten, um die Änderungen anzuwenden?</value>
+  </data>
+  <data name="UpdateMessageBox_Title" xml:space="preserve">
+      <value>App aktualisiert</value>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
   </data>
 </root>
