@@ -115,7 +115,7 @@ namespace WoWsShipBuilder.Core.Services
         /// <returns>A possibly empty list of installed locales.</returns>
         Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true);
 
-        protected static string GetNationString(Nation nation)
+        public static string GetNationString(Nation nation)
         {
             return nation switch
             {
@@ -127,7 +127,7 @@ namespace WoWsShipBuilder.Core.Services
             };
         }
 
-        protected static string GetCategoryString<T>()
+        public static string GetCategoryString<T>()
         {
             return typeof(T) switch
             {

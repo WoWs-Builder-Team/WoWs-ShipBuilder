@@ -11,8 +11,8 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using NLog;
 using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataUI;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.UI.Converters
@@ -111,7 +111,7 @@ namespace WoWsShipBuilder.UI.Converters
                     return new Bitmap(asset);
                 }
 
-                case ConsumableUI consumableUI:
+                case ConsumableDataContainer consumableUI:
                 {
                     Logger.Debug("Processing consumableUI.");
                     string iconName = consumableUI.IconName;

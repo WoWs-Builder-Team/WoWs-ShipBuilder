@@ -1,17 +1,17 @@
-# Update 1.4.5
+# Update 1.5.0
 
 ## Additions
+- Add ability to hide lines in charts by clicking on the corresponding name in the chart's legend.
+- Add a status indicator for background app updates. (#131)
 
 ## Changes
+- Data update errors are no longer silent and are shown through a popup.
+- Data validation is using file checksums now and does no longer just check for the existence of a file (#133)
 
 ## Bugfixes
-
-- Fixed a bug where the app could not create or update its shortcuts on install and update.
+- Localize contents of restart dialog after an update has been installed.
 
 ## Known Issues
-
-In order to fix the appcrash when using file dialogs, the UI framework needed an update. However, this update broke
-cleartype support, resulting in slightly more blurry texts in the application. We are sorry for the inconvenience but there is no other solution available at the moment.
 
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by

@@ -42,7 +42,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <param name="dataBasePath">The base file system path to the directory of the local VersionInfo file.</param>
         /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
-        public Task<bool> ValidateData(ServerType serverType, string dataBasePath);
+        public Task<ValidationResult> ValidateData(ServerType serverType, string dataBasePath);
 
         /// <summary>
         /// Checks whether the update should be executed or not.

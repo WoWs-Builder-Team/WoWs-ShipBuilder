@@ -314,9 +314,7 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Brak okrętów pasujących do kryteriów filtrowania</value>
   </data>
-  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Szukaj okrętu</value>
-  </data>
+  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Czas obrotu o 180°</value>
   </data>
@@ -339,9 +337,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Waga pocisku</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
-    <value>Teoretyczne Uszk./min.</value>
-  </data>
+  
   
   
   <data name="ShipStats_FireChance" xml:space="preserve">
@@ -408,9 +404,7 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>DPS na pożar</value>
   </data>
-  <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Czas trwania pożaru</value>
-  </data>
+  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Redukcja szansy na pożar</value>
   </data>
@@ -418,9 +412,7 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>DPS na zalanie</value>
   </data>
-  <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Czas trwania zalania</value>
-  </data>
+  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Prawdopodobieństwo zalania</value>
   </data>
@@ -489,24 +481,16 @@
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Po wystrzeleniu w dymie</value>
   </data>
-  <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Maks. liczba pożarów</value>
-  </data>
   
-  <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Maks. liczba zalań</value>
-  </data>
+  
+  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Ochrona torpedowa</value>
   </data>
   
   
-  <data name="ShipStats_Backward" xml:space="preserve">
-    <value>Wstecz</value>
-  </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
-    <value>W przód</value>
-  </data>
+  
+  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maks. Prędkość</value>
   </data>
@@ -549,21 +533,15 @@
   </data>
   
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
-    <value>PW na samolot</value>
-  </data>
   
   
   
   
   
-  <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maksymalny zasięg</value>
-  </data>
   
-  <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimalny zasięg</value>
-  </data>
+  
+  
+  
   
   
   
@@ -815,6 +793,41 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_HP" xml:space="preserve">
+      <value>PW</value>
+  </data>
   
   
   

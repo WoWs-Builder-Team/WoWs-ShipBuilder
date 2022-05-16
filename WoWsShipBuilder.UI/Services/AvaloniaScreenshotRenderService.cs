@@ -8,6 +8,7 @@ using Splat;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Settings;
@@ -21,7 +22,7 @@ namespace WoWsShipBuilder.UI.Services
     {
         public async Task CreateBuildImageAsync(Build build, Ship rawShipData, bool includeSignals, bool copyToClipboard)
         {
-            string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Localizer.Instance[build.ShipIndex].Localization);
+            string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Locator.Current.GetServiceSafe<ILocalizer>().GetGameLocalization(build.ShipIndex).Localization);
             var screenshotWindow = new ScreenshotWindow
             {
                 DataContext = await ScreenshotContainerViewModel.CreateAsync(Locator.Current.GetServiceSafe<IAppDataService>(), build, rawShipData, includeSignals),

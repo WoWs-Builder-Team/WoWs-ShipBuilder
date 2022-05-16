@@ -7,8 +7,8 @@ using Avalonia.Threading;
 using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.UI.Extensions;
-using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.Views
@@ -41,11 +41,20 @@ namespace WoWsShipBuilder.UI.Views
                 var viewmodel = Locator.Current.GetServiceSafe<SplashScreenViewModel>();
                 try
                 {
-                    await viewmodel.VersionCheck(true);
+                    await viewmodel.VersionCheck(true, true);
                 }
                 catch (Exception e)
                 {
                     Logging.Logger.Error(e, "Encountered unexpected error during data download.");
+                    await Dispatcher.UIThread.InvokeAsync(async () =>
+                        await MessageBox.Show(
+                            this,
+                            Translation.DataUpdate_ErrorDescription,
+                            Translation.DataUpdate_ErrorTitle,
+                            MessageBox.MessageBoxButtons.Ok,
+                            MessageBox.MessageBoxIcon.Error,
+                            width: 500,
+                            sizeToContent: SizeToContent.Height));
                 }
 
                 await Dispatcher.UIThread.InvokeAsync(Close);
