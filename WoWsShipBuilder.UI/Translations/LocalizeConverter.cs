@@ -5,7 +5,6 @@ using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Settings;
@@ -24,7 +23,7 @@ namespace WoWsShipBuilder.UI.Translations
         /// <param name="value">The object to convert. Should be a string.</param>
         /// <param name="targetType">The target type of the conversion. Should be of type string.</param>
         /// <param name="parameter">The conversion parameter. Ignored by this converter.</param>
-        /// <param name="culture">The conversion culture. Ignored by this converter, use the selected locale of<see cref="AppData.Settings"/> instead.</param>
+        /// <param name="culture">The conversion culture. Ignored by this converter, use the selected locale of <see cref="ApplicationSettings"/> instead.</param>
         /// <returns>The localized string or the provided value if there is no localization available.</returns>
         /// <exception cref="NotSupportedException">Occurs if the provided value is not a string and the target type is not string either.</exception>
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -40,14 +39,15 @@ namespace WoWsShipBuilder.UI.Translations
                 if (stringParam.Equals("RESX", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string? localization = Translation.ResourceManager.GetString(localizerKey, culture);
-                    if (localization == null)
+
+                    // TODO: fix properly by handling Unit property in TooltipDataElement generation
+                    if (localization == null && !string.IsNullOrWhiteSpace(localizerKey))
                     {
                         Logging.Logger.Warn($"Missing localization for key {localizerKey}.");
                         Debug.WriteLine(localizerKey);
-                        localization = localizerKey;
                     }
 
-                    return localization;
+                    return localization ?? localizerKey;
                 }
 
                 if (localizerKey.Contains("Placeholder", StringComparison.InvariantCultureIgnoreCase))
