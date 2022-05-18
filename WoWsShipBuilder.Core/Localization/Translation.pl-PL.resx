@@ -339,7 +339,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Waga pocisku</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Teoretyczne Uszk./min.</value>
   </data>
   
@@ -501,10 +501,10 @@
   </data>
   
   
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Wstecz</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>W przód</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -549,7 +549,7 @@
   </data>
   
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>PW na samolot</value>
   </data>
   

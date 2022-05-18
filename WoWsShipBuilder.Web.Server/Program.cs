@@ -7,6 +7,7 @@ using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Server.Services;
 using WoWsShipBuilder.Web.Services;
@@ -63,7 +64,7 @@ Thread.CurrentThread.CurrentCulture = culture;
 Thread.CurrentThread.CurrentUICulture = culture;
 
 AppData.ShipSummaryList ??= await app.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(ServerType.Live);
-await app.Services.GetRequiredService<Localizer>().UpdateLanguage(AppConstants.DefaultCultureDetails, true);
+await app.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(AppConstants.SupportedLanguages.ToArray());
 var appDataService = app.Services.GetRequiredService<IAppDataService>();
 if (appDataService is ServerAppDataService serverAppDataService)
 {

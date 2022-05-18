@@ -31,7 +31,7 @@ public class DesktopDataService : IDataService
     public async Task StoreAsync(Stream stream, string path)
     {
         CreateDirectory(path);
-        await using var fileStream = fileSystem.File.OpenWrite(path);
+        await using var fileStream = fileSystem.File.Open(path, FileMode.Create);
         await stream.CopyToAsync(fileStream);
     }
 

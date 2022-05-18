@@ -54,7 +54,7 @@ namespace WoWsShipBuilder.UI.Views
                 {
                     var result = await new ShipSelectionWindow
                     {
-                        DataContext = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings)),
+                        DataContext = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings, AppSettingsHelper.LocalizerInstance)),
                     }.ShowDialog<List<ShipSummary>?>(this);
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);
@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.UI.Views
                     {
                         DataContext = interaction.Input,
                     };
-                    if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                    if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
                     {
                         desktop.MainWindow = win;
                     }

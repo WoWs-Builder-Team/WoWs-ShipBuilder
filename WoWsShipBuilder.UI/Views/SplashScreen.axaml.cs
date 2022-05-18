@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,10 +7,11 @@ using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using ReactiveUI;
 using Splat;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.UI.Extensions;
-using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.UI.Views
@@ -24,34 +26,41 @@ namespace WoWsShipBuilder.UI.Views
 #endif
             this.WhenActivated(_ =>
             {
-                var vm = ViewModel;
-                if (vm != null)
-                {
-                    Task.Run(async () =>
-                    {
-                        var minimumRuntime = Task.Delay(1500);
-                        await vm.VersionCheck();
-                        await minimumRuntime;
-                        var navigationService = Locator.Current.GetServiceSafe<INavigationService>();
+                var vm = ViewModel ?? Locator.Current.GetServiceSafe<SplashScreenViewModel>();
 
-                        await Dispatcher.UIThread.InvokeAsync(() => { navigationService.OpenStartMenu(true); });
-                    });
-                }
+                Task.Run(async () =>
+                {
+                    var minimumRuntime = Task.Delay(1500);
+                    try
+                    {
+                        await vm.VersionCheck(throwOnException: true);
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.Logger.Error(e, "Encountered unexpected error during data download.");
+                        await Dispatcher.UIThread.InvokeAsync(async () =>
+                            await MessageBox.Show(
+                                this,
+                                Translation.DataUpdate_ErrorDescription,
+                                Translation.DataUpdate_ErrorTitle,
+                                MessageBox.MessageBoxButtons.Ok,
+                                MessageBox.MessageBoxIcon.Error,
+                                width: 500,
+                                sizeToContent: SizeToContent.Height));
+                    }
+
+                    await minimumRuntime;
+                    var navigationService = Locator.Current.GetServiceSafe<INavigationService>();
+
+                    await Dispatcher.UIThread.InvokeAsync(() => { navigationService.OpenStartMenu(true); });
+                });
             });
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            DataContext = Locator.Current.GetServiceSafe<SplashScreenViewModel>();
-        }
-
-        protected override void OnInitialized()
-        {
-            if (Design.IsDesignMode)
-            {
-                return;
-            }
+            ViewModel = Locator.Current.GetServiceSafe<SplashScreenViewModel>();
         }
     }
 }

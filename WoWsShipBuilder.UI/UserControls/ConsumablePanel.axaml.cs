@@ -5,8 +5,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using WoWsShipBuilder.Core.DataUI;
-using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.UserControls
@@ -29,7 +28,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var parent = button.Parent;
                 var optionsPopup = parent?.LogicalChildren.FirstOrDefault(child => child is Popup) as Popup;
-                if (optionsPopup?.DataContext is List<ConsumableUI> { Count: > 1 })
+                if (optionsPopup?.DataContext is List<ConsumableDataContainer> { Count: > 1 })
                 {
                     optionsPopup.IsOpen = true;
                 }
@@ -40,7 +39,7 @@ namespace WoWsShipBuilder.UI.UserControls
         {
             if (sender is Image image)
             {
-                if (DataContext is ConsumableViewModel viewModel && image.DataContext is ConsumableUI consumableUi)
+                if (DataContext is ConsumableViewModel viewModel && image.DataContext is ConsumableDataContainer consumableUi)
                 {
                     var parent = image.Parent;
                     while (parent is not Popup && parent != null)

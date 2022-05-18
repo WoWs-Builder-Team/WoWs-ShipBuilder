@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.BuildCreator
@@ -34,9 +34,6 @@ namespace WoWsShipBuilder.Core.BuildCreator
 
         public string BuildName { get; set; }
 
-        [JsonIgnore]
-        public string DisplayName => string.IsNullOrWhiteSpace(ShipIndex) ? BuildName : BuildName + " - " + Localizer.Instance[ShipIndex].Localization;
-
         public string ShipIndex { get; set; } = string.Empty;
 
         public Nation Nation { get; set; }
@@ -59,9 +56,10 @@ namespace WoWsShipBuilder.Core.BuildCreator
         /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.
         /// </summary>
         /// <param name="buildString">The build string.</param>
-        /// <returns>The <see cref="Build"/> object rapresented by the string.</returns>
+        /// <param name="localizer">The <see cref="ILocalizer"/> used to resolve build localizations.</param>
+        /// <returns>The <see cref="Build"/> object represented by the string.</returns>
         /// <exception cref="FormatException">If the string is not in the correct format.</exception>
-        public static Build CreateBuildFromString(string buildString)
+        public static Build CreateBuildFromString(string buildString, ILocalizer localizer)
         {
             try
             {
@@ -71,7 +69,7 @@ namespace WoWsShipBuilder.Core.BuildCreator
                 using var reader = new StreamReader(gzip, System.Text.Encoding.UTF8);
                 string buildJson = reader.ReadToEnd();
                 var build = JsonConvert.DeserializeObject<Build>(buildJson);
-                return UpgradeBuild(build!);
+                return UpgradeBuild(build!, localizer);
             }
             catch (Exception e)
             {
@@ -101,13 +99,14 @@ namespace WoWsShipBuilder.Core.BuildCreator
         /// Helper method to upgrade a build from an old build format to the current build format.
         /// </summary>
         /// <param name="oldBuild">The old build.</param>
+        /// <param name="localizer">The localizer to use to resolve the ship name.</param>
         /// <returns>The updated build.</returns>
-        private static Build UpgradeBuild(Build oldBuild)
+        private static Build UpgradeBuild(Build oldBuild, ILocalizer localizer)
         {
             if (oldBuild.BuildVersion <= 1)
             {
                 Logging.Logger.Info("Upgrading build {} from build version {} to current version.", oldBuild.BuildName, oldBuild.BuildVersion);
-                var buildShipName = " - " + Localizer.Instance[oldBuild.ShipIndex].Localization;
+                var buildShipName = " - " + localizer.GetGameLocalization(oldBuild.ShipIndex).Localization;
                 if (oldBuild.BuildName.Contains(buildShipName))
                 {
                     oldBuild.BuildName = oldBuild.BuildName.Replace(buildShipName, string.Empty);

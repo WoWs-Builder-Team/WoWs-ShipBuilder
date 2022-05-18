@@ -6,12 +6,15 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.UI.Settings;
 
-namespace WoWsShipBuilder.Core.Translations
+namespace WoWsShipBuilder.UI.Translations
 {
     /// <summary>
     /// An <see cref="IValueConverter"/> that allows to convert a string to its localized version.
-    /// Accesses the localizations provided by <see cref="Localizer"/>.
+    /// Accesses the localizations provided by <see cref="Core.DataProvider.Localizer"/>.
     /// </summary>
     public class LocalizeConverter : IValueConverter
     {
@@ -30,7 +33,7 @@ namespace WoWsShipBuilder.Core.Translations
             {
                 if (parameter is not string stringParam)
                 {
-                    string localization = Localizer.Instance[localizerKey].Localization.Trim();
+                    string localization = AppSettingsHelper.LocalizerInstance.GetGameLocalization(localizerKey).Localization.Trim();
                     return !string.IsNullOrEmpty(localization) ? localization : "noName";
                 }
 
@@ -57,10 +60,10 @@ namespace WoWsShipBuilder.Core.Translations
                     localizerKey = ToSnakeCase(localizerKey);
                 }
 
-                (bool, string) result;
+                LocalizationResult result;
                 if (stringParam.StartsWith('_'))
                 {
-                    result = Localizer.Instance[localizerKey + stringParam];
+                    result = AppSettingsHelper.LocalizerInstance.GetGameLocalization(localizerKey + stringParam);
                 }
                 else
                 {
@@ -69,10 +72,10 @@ namespace WoWsShipBuilder.Core.Translations
                         stringParam += "_";
                     }
 
-                    result = Localizer.Instance[stringParam + localizerKey];
+                    result = AppSettingsHelper.LocalizerInstance.GetGameLocalization(stringParam + localizerKey);
                 }
 
-                return result.Item2.Trim();
+                return result.Localization.Trim();
             }
 
             if (value is Enum enumValue)

@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Merminin Ağırlığı</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Teorik SBH</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Uzun Menzilli Silahlar</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Geriye</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>İleriye</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -633,7 +633,7 @@
     <value>Saldıran Uçuş Boyutu</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Uçak Başına Cp</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -969,7 +969,7 @@ Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metr
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Kütle</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>Potansiyel DBY </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1099,7 +1099,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Sunucu-Tarafı Yükleme Süresi</value>
   </data>
   
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Sunucu-Tarafı DBH</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">

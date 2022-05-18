@@ -1,23 +1,18 @@
-# Update 1.4.3
+# Update 1.4.6-pre
 
 ## Additions
-- Added captain talents modifiers in their talent description.
-- Added an indicator to show if there is any talent or conditional modifier active
-- Added Hungarian translation. Thanks to StaK_1980!
-- Added amount of HP restored per heal on ship consumables.
-- Added shell trajectory chart.
-- Added concealment and spotting values for planes.
-- Added additional data to fighter planes.
+- Add ability to hide lines in charts by clicking on the corresponding name in the chart's legend.
+- Add a status indicator for background app updates. (#131)
 
 ## Changes
-- Increased spacing between rows in the ship statistic for better readability.
-- Improved stats layout.
+- Data update errors are no longer silent and are shown through a popup.
+- Data validation is using file checksums now and does no longer just check for the existence of a file (#133)
 
 ## Bugfixes
-- Fixed Hidden Menace and Damage Control Party Modification 1 not changing stats of damage control party reload for CV
-- Fixed some localization issues.
-- Fixed incorrect values for CV torpedo speed and arming distance.
-- Fixed a bug causing wrong flooding chance calculations.
-___
-To download the program for the first time, you need to download only the Setup.exe file. The other files are used by the application for automatic updates.
+- Localize contents of restart dialog after an update has been installed.
 
+## Known Issues
+
+___
+To download the program for the first time, you need to download only the Setup.exe file. The other files are used by
+the application for automatic updates.

@@ -1,9 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Server.Services;
 
 namespace WoWsShipBuilder.Web.Server.Test;
@@ -11,16 +17,44 @@ namespace WoWsShipBuilder.Web.Server.Test;
 [TestFixture]
 public class ServerAwsClientTest
 {
+    private Mock<HttpMessageHandler> messageHandlerMock = default!;
+
+    [SetUp]
+    public void Setup()
+    {
+        messageHandlerMock = new();
+        AppData.ShipDictionary = new();
+    }
+
     [Test]
     public async Task DownloadFiles()
     {
-        var client = new ServerAwsClient(new());
-        AppData.ShipDictionary = new();
+        var testVersionInfo = new VersionInfo(new() { { "Ship", new() { new("Germany.json", 1) } } });
+        const string testShipKey = "PGSA001";
+        var shipDictionary = new Dictionary<string, Ship> { { testShipKey, new Ship { Index = testShipKey, Id = 1234 } } };
+
+        messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsoluteUri.EndsWith("VersionInfo.json")),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(testVersionInfo)) });
+
+        var shipRequestExpression = ItExpr.Is<HttpRequestMessage>(message => message.RequestUri!.AbsolutePath.Equals("/api/live/Ship/Germany.json"));
+        messageHandlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                shipRequestExpression,
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(shipDictionary)) });
+
+        var client = new ServerAwsClient(new(messageHandlerMock.Object));
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);
         var files = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await client.DownloadFiles(ServerType.Live, files);
 
-        AppData.ShipDictionary.Should().HaveCountGreaterThan(0);
+        AppData.ShipDictionary.Should().HaveCount(1);
+        AppData.ShipDictionary.Should().ContainKey(testShipKey);
+        messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(1), shipRequestExpression, ItExpr.IsAny<CancellationToken>());
+        messageHandlerMock.Protected().Verify("SendAsync", Times.Exactly(2), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
     }
 }

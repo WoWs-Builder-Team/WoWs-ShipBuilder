@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Peso do projétil</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>DPM Teórico</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura de longo alcance</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Para trás</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Para a frente</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -633,7 +633,7 @@
     <value>Aeronaves por ataque</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>HP por avião</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -973,7 +973,7 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>FPM Potencial </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1105,7 +1105,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>O servidor atualiza apenas a cada 0,142857142857 segundos. Isso significa que recargas que caem entre múltiplos deste número serão movidas para o próximo tick. O valor representado aqui mostra a recarga real que você está tendo e pode diferir da recarga teórica mostrada acima.</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>DPM no Servidor</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">

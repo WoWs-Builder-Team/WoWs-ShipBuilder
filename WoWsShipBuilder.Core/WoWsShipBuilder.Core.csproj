@@ -19,9 +19,14 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.0.3" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\WoWsShipBuilder.Data.Generator\WoWsShipBuilder.Data.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj" />
+    </ItemGroup>
+    
     <ItemGroup>
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>

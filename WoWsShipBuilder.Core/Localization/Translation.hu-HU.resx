@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Lőszertömeg</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Elméleti percenkénti sebzés</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -567,10 +567,10 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Nagy hatótávolságú légvédelmi aura</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Hátrafelé</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Előre</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -633,7 +633,7 @@
     <value>Gépek egy támadásban</value>
   </data>
   
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Repülőgép HP</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -969,7 +969,7 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Tömeg</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>Lehetséges FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
@@ -1099,7 +1099,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
     <value>Szerver-oldali újratöltési idő</value>
   </data>
   
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Szerver-oldali percenkénti sebzés</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">

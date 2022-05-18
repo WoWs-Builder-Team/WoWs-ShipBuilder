@@ -6,17 +6,18 @@
 @using ChartJs.Blazor.LineChart
 @using ChartJs.Blazor.Common.Axes
 @using ChartJs.Blazor.Common.Enums
-@using WoWsShipBuilder.Core.DataUI
 @using WoWsShipBuilder.Web.Dialogs
 @using ChartJs.Blazor.Common
 @using ChartJs.Blazor.Util
 @using System.ComponentModel
 @using System.Linq
 @using DynamicData
-@inject NavigationManager navManager
-@inject Localizer localizer
-@inject IAppDataService webAppDataService
-@inject IDialogService dialogService
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.Localization
+@inject NavigationManager NavManager
+@inject ILocalizer Localizer
+@inject IAppDataService WebAppDataService
+@inject IDialogService DialogService
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
@@ -93,11 +94,11 @@
         await base.OnInitializedAsync();
         CreateChartConfig();
         
-        if (navManager.TryGetQueryString("shellIndex", out string shellIndex))
+        if (NavManager.TryGetQueryString("shellIndex", out string shellIndex))
         {
             shellIndexFromUrl = shellIndex;
         }
-        if (navManager.TryGetQueryString("shipIndex", out string shipIndex))
+        if (NavManager.TryGetQueryString("shipIndex", out string shipIndex))
         {
             shipIndexesFromUrl = shipIndex.Split(',');
         }
@@ -132,7 +133,7 @@
         {
             ["shipList"] = displayedShips.Values.DistinctBy(x => x.ShipIndex).ToList(),
         };
-        var dialog = dialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
+        var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
     }
 
@@ -141,14 +142,14 @@
         List<string> labelNames = new();
         foreach (var selectedShip in selectedShips)
         {
-            string shipName = Localizer.Instance[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            string shipName = Localizer[$"{selectedShip.ShipIndex}_FULL"].Localization;
             foreach ((string shellIndex, (var shell, var dispersionValues, bool value)) in selectedShip.ArtilleryDataDictionary)
             {
                 if (!value) continue;
 
                 await Task.Yield();
 
-                string shellName = Localizer.Instance[$"{shellIndex}"].Localization;
+                string shellName = Localizer[$"{shellIndex}"].Localization;
                 var labelName = $"{shipName} - {shellName}";
                 labelNames.Add(labelName);
 
@@ -391,11 +392,11 @@
         if (shellIndexFromUrl.Length > 0)
         {
             var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shellIndexFromUrl));
-            var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+            var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
 
             Dictionary<string, ArtilleryData> artilleryData = new();
             var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
-            var shell = await webAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
+            var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
 
             ArtilleryData data = new(shell, gun.DispersionValues, true);
             artilleryData.Add(shellIndexFromUrl, data);
@@ -411,7 +412,7 @@
             foreach (string shipIndex in shipIndexesFromUrl)
             {
                 var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-                var ship = await webAppDataService.GetShipFromSummary(shipSummary);
+                var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
                 
                 Dictionary<string, ArtilleryData> artilleryData = new();
                 if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
@@ -436,7 +437,7 @@
             {
                 ["shipList"] = shipList,
             };
-            var dialog = dialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters, options);
+            var dialog = DialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters, options);
             var result = await dialog.Result;
             if (result is null || result.Cancelled) return;
             selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();

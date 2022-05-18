@@ -36,7 +36,7 @@ namespace WoWsShipBuilder.UI.Services
             };
 
             startWindow.Show();
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (closeMainWindow)
                 {
@@ -60,7 +60,7 @@ namespace WoWsShipBuilder.UI.Services
             };
 
             win.Show();
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (closeMainWindow)
                 {
@@ -79,7 +79,7 @@ namespace WoWsShipBuilder.UI.Services
             window.DataContext = viewModel;
             window.Show();
 
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 if (closeCurrentWindow)
                 {
