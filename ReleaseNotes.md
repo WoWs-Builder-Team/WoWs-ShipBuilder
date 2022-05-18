@@ -1,4 +1,4 @@
-# Update 1.4.6-pre
+# Update 1.5.0
 
 ## Additions
 - Add ability to hide lines in charts by clicking on the corresponding name in the chart's legend.
