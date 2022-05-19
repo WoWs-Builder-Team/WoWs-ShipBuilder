@@ -97,14 +97,15 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 logger.Info("Creating series for {0}", name);
                 logger.Info("Creating series");
 
-                var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
-                var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name);
                 var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
+                var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
+                var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name, ballisticSeries.Ballistic);
+                VerticalDispCache.Add(vDisp);
 
                 logger.Info("Adding series and setting models");
 
                 hModel.Series.Add(hDisp);
-                vModel.Series.Add(vDisp);
+                vModel.Series.Add(vDisp.VertDispAtImpactAngle);
 
                 penModel.Series.Add(ballisticSeries.Penetration);
                 fTModel.Series.Add(ballisticSeries.FlightTime);
@@ -259,6 +260,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
         private AvaloniaList<Dictionary<double, Ballistic>> ShellTrajectoryCache { get; } = new();
 
+        private AvaloniaList<(FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater)> VerticalDispCache { get; } = new();
+
         public AvaloniaList<DispersionPlotItemViewModel> DispersionPlotList { get; } = new();
 
         private int shotsNumber = 100;
@@ -383,6 +386,50 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             set => this.RaiseAndSetIfChanged(ref isRealPlane, value);
         }
 
+        private List<EllipsePlanes> verticalDispPlanesList = Enum.GetValues<EllipsePlanes>().ToList();
+
+        public List<EllipsePlanes> VerticalDispPlanesList
+        {
+            get => verticalDispPlanesList;
+            set => this.RaiseAndSetIfChanged(ref verticalDispPlanesList, value);
+        }
+
+        private EllipsePlanes selectedVerticalDispPlane = EllipsePlanes.RealPlane;
+
+        public EllipsePlanes SelectedVerticalDispPlane
+        {
+            get => selectedVerticalDispPlane;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref selectedVerticalDispPlane, value);
+                ChangeVerticalDispPlane(value);
+            }
+        }
+
+        private bool isVerticalDispAtImpactAngle = true;
+
+        public bool IsVerticalDispAtImpactAngle
+        {
+            get => isVerticalDispAtImpactAngle;
+            set => this.RaiseAndSetIfChanged(ref isVerticalDispAtImpactAngle, value);
+        }
+
+        private bool isVerticalDispOnWater;
+
+        public bool IsVerticalDispOnWater
+        {
+            get => isVerticalDispOnWater;
+            set => this.RaiseAndSetIfChanged(ref isVerticalDispOnWater, value);
+        }
+
+        private bool isVerticalDispOnPerpendicularToWater;
+
+        public bool IsVerticalDispOnPerpendicularToWater
+        {
+            get => isVerticalDispOnPerpendicularToWater;
+            set => this.RaiseAndSetIfChanged(ref isVerticalDispOnPerpendicularToWater, value);
+        }
+
         public Interaction<ShipSelectionWindowViewModel, List<ShipSummary>?> AddShipInteraction { get; }
 
         public Interaction<ValueSelectionViewModel, string?> ShellSelectionInteraction { get; } = new();
@@ -453,16 +500,29 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                     {
                         logger.Info("Ship is not a duplicate, start creating series.");
 
-                        // Create and add the dispersion series
-                        var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                        var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
-                        HorizontalModel!.Series.Add(hSeries);
-                        VerticalModel!.Series.Add(vSeries);
-
                         // create and add the ballistic series
                         var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+
+                        // Create and add the dispersion series
+                        var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
+                        var vSeries = CreateVerticalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name, ballisticSeries.Ballistic);
+                        VerticalDispCache.Add(vSeries);
+                        HorizontalModel!.Series.Add(hSeries);
+                        switch (selectedVerticalDispPlane)
+                        {
+                            case EllipsePlanes.HorizontalPlane:
+                                VerticalModel!.Series.Add(vSeries.VertDispOnWater);
+                                break;
+                            case EllipsePlanes.VerticalPlane:
+                                VerticalModel!.Series.Add(vSeries.VertDispOnPerpendicularToWater);
+                                break;
+                            case EllipsePlanes.RealPlane:
+                            default:
+                                VerticalModel!.Series.Add(vSeries.VertDispAtImpactAngle);
+                                break;
+                        }
 
                         // create and add the dispersion plot
                         if (refreshNeeded)
@@ -529,6 +589,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
                 DispersionPlotList.RemoveAt(index);
                 ShellTrajectoryCache.RemoveAt(index);
+                VerticalDispCache.RemoveAt(index);
                 ShipNames.RemoveAt(index);
 
                 if (DispersionPlotList.Count > 0)
@@ -609,6 +670,43 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             shellTrajectoryModel!.Axes.First(x => x.Title.Equals(Translation.DispersionGrapghWindow_Height)).MinimumRange = ShootingRange * 1000 / 4;
             UpdatePlots(ShellTrajectoryModel);
+        }
+
+        private void ChangeVerticalDispPlane(EllipsePlanes plane)
+        {
+            foreach (int index in VerticalDispCache.Select(disp => VerticalDispCache.IndexOf(disp)))
+            {
+                switch (plane)
+                {
+                    case EllipsePlanes.HorizontalPlane:
+                        VerticalModel!.Series.RemoveAt(index);
+                        VerticalModel!.Series.Insert(index, VerticalDispCache[index].VertDispOnWater);
+                        VerticalModel!.Legends.First().LegendPosition = LegendPosition.TopRight;
+                        IsVerticalDispOnWater = true;
+                        IsVerticalDispOnPerpendicularToWater = false;
+                        IsVerticalDispAtImpactAngle = false;
+                        break;
+                    case EllipsePlanes.VerticalPlane:
+                        VerticalModel!.Series.RemoveAt(index);
+                        VerticalModel!.Series.Insert(index, VerticalDispCache[index].VertDispOnPerpendicularToWater);
+                        VerticalModel!.Legends.First().LegendPosition = LegendPosition.TopLeft;
+                        IsVerticalDispOnWater = false;
+                        IsVerticalDispOnPerpendicularToWater = true;
+                        IsVerticalDispAtImpactAngle = false;
+                        break;
+                    case EllipsePlanes.RealPlane:
+                    default:
+                        VerticalModel!.Series.RemoveAt(index);
+                        VerticalModel!.Series.Insert(index, VerticalDispCache[index].VertDispAtImpactAngle);
+                        VerticalModel!.Legends.First().LegendPosition = LegendPosition.TopLeft;
+                        IsVerticalDispOnWater = false;
+                        IsVerticalDispOnPerpendicularToWater = false;
+                        IsVerticalDispAtImpactAngle = true;
+                        break;
+                }
+            }
+
+            UpdatePlots(VerticalModel);
         }
 
         [DependsOn(nameof(ShipNames))]
@@ -711,15 +809,27 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
         /// <param name="maxRange">Max range of the gun.</param>
         /// <param name="name">Name for the series.</param>
+        /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
         /// <returns>The vertical dispersion series for the given parameter.</returns>
-        private FunctionSeries CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name)
+        private (FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name, Dictionary<double, Ballistic> impactAngles)
         {
             var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
             {
                 TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
                 StrokeThickness = 4,
             };
-            return dispSeries;
+
+            List<DataPoint> vertDispOnWater = new();
+            List<DataPoint> vertDispOnPerpendicularToWater = new();
+
+            foreach ((double range, var data) in impactAngles)
+            {
+                double disp = dispersion.CalculateVerticalDispersion(maxRange, range);
+                vertDispOnWater.Add(new(range / 1000, disp / Math.Sin(Math.PI / 180 * data.ImpactAngle)));
+                vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
+            }
+
+            return (dispSeries, CreateDataSeries(name, vertDispOnWater, Translation.Unit_M), CreateDataSeries(name, vertDispOnPerpendicularToWater, Translation.Unit_M));
         }
 
         /// <summary>
@@ -729,7 +839,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <param name="maxRange">Max range of the gun.</param>
         /// <param name="name">Name for the series.</param>
         /// <returns>A tuple with series for Penetration, flight time, impact velocity and impact angle.</returns>
-        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle, LineSeries Trajectory) CreateBallisticSeries(
+        private (LineSeries Penetration, LineSeries FlightTime, LineSeries ImpactVelocity, LineSeries ImpactAngle, LineSeries Trajectory, Dictionary<double, Ballistic> Ballistic) CreateBallisticSeries(
             ArtilleryShell shell,
             double maxRange,
             string name)
@@ -752,7 +862,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             var trajectorySeries = CreateDataSeries(name, trajectoryData, Translation.Unit_M);
             ShellTrajectoryCache.Add(ballistic);
 
-            return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries, trajectorySeries);
+            return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries, trajectorySeries, ballistic);
         }
 
         /// <summary>
