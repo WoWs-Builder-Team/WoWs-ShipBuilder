@@ -100,6 +100,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                 var ballisticSeries = CreateBallisticSeries(shell, maxRange, name);
                 var hDisp = CreateHorizontalDispersionSeries(disp, maxRange, name);
                 var vDisp = CreateVerticalDispersionSeries(disp, maxRange, name, ballisticSeries.Ballistic);
+                ShellTrajectoryCache.Add(ballisticSeries.Ballistic);
                 VerticalDispCache.Add(vDisp);
 
                 logger.Info("Adding series and setting models");
@@ -504,6 +505,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
+                        ShellTrajectoryCache.Add(ballisticSeries.Ballistic);
 
                         // Create and add the dispersion series
                         var hSeries = CreateHorizontalDispersionSeries(guns.DispersionValues, (double)guns.MaxRange, name);
@@ -860,7 +862,6 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             IEnumerable<DataPoint> trajectoryData = ballistic.Any(x => x.Key / 1000 >= ShootingRange) ? ballistic.First(x => x.Key / 1000 >= ShootingRange).Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y)) : ballistic.Last().Value.Coordinates.Select(x => new DataPoint(x.X / 1000, x.Y));
             var trajectorySeries = CreateDataSeries(name, trajectoryData, Translation.Unit_M);
-            ShellTrajectoryCache.Add(ballistic);
 
             return (penSeries, flightTimeSeries, impactVelocitySeries, impactAngleSeries, trajectorySeries, ballistic);
         }
