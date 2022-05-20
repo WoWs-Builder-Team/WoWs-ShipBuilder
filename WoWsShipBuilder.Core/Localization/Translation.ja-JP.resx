@@ -977,18 +977,12 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>1斉射</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>爆発半径</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>爆風貫通力</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>エンジン爆風耐性</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>操舵装置爆風耐性</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>"モジュールの爆風耐性" + "兵装の爆風貫通力" &gt; 0 の場合
      モジュールは機能停止する可能性があります
@@ -1340,4 +1334,14 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>ダメージ</value>
+  </data>
+  
+  
+  
+  
+  
 </root>
