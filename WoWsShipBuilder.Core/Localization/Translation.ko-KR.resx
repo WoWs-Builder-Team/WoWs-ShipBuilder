@@ -968,4 +968,14 @@
   
   
   
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>피해</value>
+  </data>
+  
+  
+  
+  
+  
 </root>
