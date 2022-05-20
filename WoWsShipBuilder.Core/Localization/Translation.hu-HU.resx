@@ -927,18 +927,12 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Robbanás hatósugara</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Robbanás átütése</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Motorvédelem</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Kormányvédelem</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Ha a "modul robbanás elleni védelem" + "fegyverzet átütése" &gt; 0
       A modul működésképtelenné válhat.
@@ -1185,6 +1179,16 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Sebzés</value>
+  </data>
   
   
   
