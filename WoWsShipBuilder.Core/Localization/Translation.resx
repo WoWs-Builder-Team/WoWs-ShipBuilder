@@ -994,16 +994,16 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
       <value>Full salvo</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Explosion radius</value>
+      <value>Blast radius</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Blast penetration</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Engine blast protection</value>
+      <value>Engine</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Rudder blast protection</value>
+      <value>Rudder</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>If "module blast protection" + "armament blast penetration" &gt; 0 
@@ -1361,5 +1361,30 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   </data>
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
+  </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Splash</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Radius</value>
+  </data>
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Damage</value>
+  </data>
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>These parameters only affect submarines.
+They do not have any effect on surface ships.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Explosion radius</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Detonation Timer</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Sink Speed</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Detonation Depth</value>
   </data>
 </root>

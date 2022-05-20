@@ -20,11 +20,14 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation", UnitKey = "M")]
+        public decimal SplashRadius { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
+        public decimal SplashDmg { get; set; }
+
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MM")]
         public int Penetration { get; set; }
-
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
-        public decimal ExplosionRadius { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
@@ -37,6 +40,9 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FireChance { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+        public decimal ExplosionRadius { get; set; }
 
         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
         [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
@@ -82,6 +88,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 ExplosionRadius = (decimal)rocket.ExplosionRadius,
                 SplashCoeff = (decimal)rocket.SplashCoeff,
                 ShowBlastPenetration = showBlastPenetration,
+                SplashRadius = (decimal)rocket.DepthSplashRadius,
+                SplashDmg = Math.Round(rocketDamage * (decimal)rocket.SplashDamageCoefficient),
             };
 
             rocketDataContainer.UpdateDataElements();

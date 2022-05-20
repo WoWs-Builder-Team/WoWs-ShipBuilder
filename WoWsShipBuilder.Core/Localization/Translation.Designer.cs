@@ -2044,6 +2044,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explosion radius.
+        /// </summary>
+        public static string ShipStats_DcSplashRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_DcSplashRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delay.
         /// </summary>
         public static string ShipStats_Delay {
@@ -2076,6 +2085,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_Detectability {
             get {
                 return ResourceManager.GetString("ShipStats_Detectability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detonation Depth.
+        /// </summary>
+        public static string ShipStats_DetonationDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_DetonationDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detonation Timer.
+        /// </summary>
+        public static string ShipStats_DetonationTimer {
+            get {
+                return ResourceManager.GetString("ShipStats_DetonationTimer", resourceCulture);
             }
         }
         
@@ -2116,7 +2143,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Engine blast protection.
+        ///   Looks up a localized string similar to Engine.
         /// </summary>
         public static string ShipStats_EngineBlastProtection {
             get {
@@ -2125,7 +2152,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explosion radius.
+        ///   Looks up a localized string similar to Blast radius.
         /// </summary>
         public static string ShipStats_ExplosionRadius {
             get {
@@ -2881,7 +2908,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rudder blast protection.
+        ///   Looks up a localized string similar to Rudder.
         /// </summary>
         public static string ShipStats_RudderBlastProtection {
             get {
@@ -3007,6 +3034,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sink Speed.
+        /// </summary>
+        public static string ShipStats_SinkSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_SinkSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Special abilities.
         /// </summary>
         public static string ShipStats_SpecialAbility {
@@ -3034,11 +3070,48 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Splash.
+        /// </summary>
+        public static string ShipStats_Splash {
+            get {
+                return ResourceManager.GetString("ShipStats_Splash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast penetration.
         /// </summary>
         public static string ShipStats_SplashCoeff {
             get {
                 return ResourceManager.GetString("ShipStats_SplashCoeff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage.
+        /// </summary>
+        public static string ShipStats_SplashDmg {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashDmg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These parameters only affect submarines.
+        ///They do not have any effect on surface ships..
+        /// </summary>
+        public static string ShipStats_SplashExplanation {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Radius.
+        /// </summary>
+        public static string ShipStats_SplashRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashRadius", resourceCulture);
             }
         }
         

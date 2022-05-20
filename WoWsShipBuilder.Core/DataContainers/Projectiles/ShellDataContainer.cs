@@ -25,14 +25,17 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation", UnitKey = "M")]
+        public decimal SplashRadius { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation")]
+        public decimal SplashDmg { get; set; }
+
         [DataElementType(DataElementTypes.KeyValue)]
         public string TheoreticalDpm { get; set; } = default!;
 
         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip")]
         public string TheoreticalTrueDpm { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
-        public decimal ExplosionRadius { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
         public decimal ShellVelocity { get; set; }
@@ -60,6 +63,9 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+        public decimal ExplosionRadius { get; set; }
 
         [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
         [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
@@ -193,6 +199,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                     ArmingThreshold = armingThreshold,
                     FuseTimer = fuseTimer,
                     ShowBlastPenetration = showBlastPenetration,
+                    SplashRadius = (decimal)shell.DepthSplashRadius,
+                    SplashDmg = Math.Round((decimal)(shellDamage * shell.SplashDamageCoefficient)),
                 };
 
                 if (minRicochet > 0 || maxRicochet > 0)
