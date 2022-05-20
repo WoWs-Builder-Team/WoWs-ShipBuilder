@@ -931,18 +931,12 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Raio de explosão</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Penetração da explosão</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Proteção do motor contra explosões</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Proteção do leme contra explosões</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &gt; 0 
      O módulo pode ser incapacitado.
@@ -1197,6 +1191,16 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Dano</value>
+  </data>
   
   
   
