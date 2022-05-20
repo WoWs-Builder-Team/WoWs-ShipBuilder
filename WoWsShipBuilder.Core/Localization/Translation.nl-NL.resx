@@ -929,18 +929,12 @@ Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter l
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Explosie radius</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Explosie penetratie</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Motor explosie bescherming</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Roer explosie bescherming</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Als "module explosie bescherming" + "bewapening explosie penetratie" &gt; 0 
      De module kan beschadigd worden.
@@ -1187,6 +1181,16 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Schade</value>
+  </data>
   
   
   
