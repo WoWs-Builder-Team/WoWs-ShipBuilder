@@ -990,18 +990,12 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Полный залп</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Радиус взрыва</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Пробитие взрывом</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Защита двигателя от взрывов</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Защита рулей от взрывов</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &gt; 0 
      Модуль может быть выведен из строя.
@@ -1359,4 +1353,14 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Урон</value>
+  </data>
+  
+  
+  
+  
+  
 </root>
