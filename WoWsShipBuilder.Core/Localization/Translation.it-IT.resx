@@ -931,18 +931,12 @@ Le navi in gioco sono due volte più grandi dell'ambiente quindi una nave lunga 
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Raggio di esplosione</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Penetrazione dell'esplosione</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Protezione dell'esplosione del motore</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Protezione dell'esplosione del timone</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'armamento" &gt;0
      Il modulo può essere incapacitato.
@@ -1189,6 +1183,16 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Danno</value>
+  </data>
   
   
   
