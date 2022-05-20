@@ -993,18 +993,12 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Brandwahrscheinlichkeit per Salve</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Explosionsradius</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Explosions-Durchschlagskraft</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Antriebs-Explosionsschutz</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Ruder-Explosionsschutz</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
      Das Modul kann beschädigt werden.
@@ -1362,4 +1356,14 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Schaden</value>
+  </data>
+  
+  
+  
+  
+  
 </root>
