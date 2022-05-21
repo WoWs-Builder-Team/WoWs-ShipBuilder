@@ -64,10 +64,10 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal FuseTimer { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Blast", UnitKey = "M")]
         public decimal ExplosionRadius { get; set; }
 
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Blast", TooltipKey = "BlastExplanation")]
         [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
         public decimal SplashCoeff { get; set; }
 

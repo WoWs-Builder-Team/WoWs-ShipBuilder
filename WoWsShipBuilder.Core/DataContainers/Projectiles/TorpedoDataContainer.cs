@@ -39,10 +39,10 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FloodingChance { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Blast", UnitKey = "M")]
         public decimal ExplosionRadius { get; set; }
 
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "BlastExplanation")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Blast", TooltipKey = "BlastExplanation")]
         [DataElementFiltering(false)]
         public decimal SplashCoeff { get; set; }
 

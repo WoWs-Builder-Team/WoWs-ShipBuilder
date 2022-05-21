@@ -6,6 +6,8 @@ using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.UI.CustomControls;
+using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.ShipVm;
@@ -65,6 +67,18 @@ namespace WoWsShipBuilder.UI.UserControls
             string shellIndex = ((ShellDataContainer)textBlock.DataContext!).Name;
             var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
+            win.Show((Window)this.GetVisualRoot());
+            e.Handled = true;
+        }
+
+        public void OpenDepthChargeDamageDistributionChart(object sender, PointerReleasedEventArgs e)
+        {
+            var dc = (ShipStatsControlViewModelBase)DataContext!;
+            DepthChargeDataContainer dataContext = dc.CurrentShipStats!.DepthChargeLauncherDataContainer?.DepthCharge as DepthChargeDataContainer ?? (dc.CurrentShipStats!.AswAirstrikeDataContainer!.Weapon as DepthChargeDataContainer)!;
+            var win = new DepthChargeDamageDistributionChartWindow
+            {
+                DataContext = new DepthChargeDamageDistributionChartViewModelBase(dataContext),
+            };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }

@@ -994,10 +994,10 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
       <value>Full salvo</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>Blast radius</value>
+      <value>Radius</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Blast penetration</value>
+      <value>Penetration</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>Engine</value>
@@ -1288,7 +1288,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>Flooding</value>
   </data>
   <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>Blast Protection</value>
+      <value>Protection</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Max together</value>
@@ -1386,5 +1386,11 @@ They do not have any effect on surface ships.</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Detonation Depth</value>
+  </data>
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>Blast</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>Show Damage Distribution Chart</value>
   </data>
 </root>
