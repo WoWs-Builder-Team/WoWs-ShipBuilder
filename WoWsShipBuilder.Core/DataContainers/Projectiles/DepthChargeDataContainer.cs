@@ -35,7 +35,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FloodingChance { get; set; }
 
-        public Dictionary<float, List<float>> PointsOfDmg { get; set; }
+        public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
 
         public static async Task<DepthChargeDataContainer> FromChargesName(string name, IEnumerable<(string name, float value)> modifiers, IAppDataService appDataService)
         {
