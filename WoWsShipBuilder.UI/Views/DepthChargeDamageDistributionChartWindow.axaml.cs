@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace WoWsShipBuilder.UI.Views;
 
-public partial class DepthChargeDamageDistributionChartWindow : Window
+public class DepthChargeDamageDistributionChartWindow : Window
 {
     public DepthChargeDamageDistributionChartWindow()
     {
@@ -19,4 +19,3 @@ public partial class DepthChargeDamageDistributionChartWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
 }
-
