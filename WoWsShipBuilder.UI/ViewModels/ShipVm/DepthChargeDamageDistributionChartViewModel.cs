@@ -3,11 +3,11 @@ using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm;
+namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 
-public class DepthChargeDamageDistributionChartViewModelBase : ViewModelBase
+public class DepthChargeDamageDistributionChartViewModel : ViewModelBase
 {
-    public DepthChargeDamageDistributionChartViewModelBase(DepthChargeDataContainer depthCharge)
+    public DepthChargeDamageDistributionChartViewModel(DepthChargeDataContainer depthCharge)
     {
         DcDmg = depthCharge.Damage;
         SplashRadius = depthCharge.DcSplashRadius;

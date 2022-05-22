@@ -69,8 +69,6 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
         var center = rect.Center;
 
-        DrawBackGround(context, center);
-
         foreach (var data in PointsOfDmg)
         {
             int index = PointsOfDmg.IndexOf(data);
@@ -84,34 +82,33 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
 
     private static void DrawDistribution(DrawingContext context, Point center, float radiusCoeff, double opacity)
     {
-        var filling = new SolidColorBrush(Colors.DarkOrange, opacity);
+        var filling = new SolidColorBrush(Colors.SteelBlue, opacity);
 
         var rad = radiusCoeff * MaxRadius;
         Point circleCenter = new(center.X - rad, center.Y - rad);
         Rect circleRectangle = new(circleCenter, new Size(rad * 2, rad * 2));
         EllipseGeometry circle = new(circleRectangle);
 
-        context.DrawGeometry(filling, new Pen(Brushes.Black, 3), circle);
-    }
+        context.DrawGeometry(filling, new Pen(Brushes.White, 3), circle);
 
-    private static void DrawBackGround(DrawingContext context, Point center)
-    {
-        const int offset = 25;
+        if (Math.Abs(opacity - 1.0) != 0)
+        {
+            return;
+        }
 
-        var filling = new SolidColorBrush(Colors.Black, 0.1);
+        const float r = 5;
+        Point cC = new(center.X - r, center.Y - r);
+        Rect cR = new(cC, new Size(r * 2,  r * 2));
+        EllipseGeometry c = new(cR);
 
-        Point circleCenter = new(center.X - MaxRadius - offset, center.Y - MaxRadius - offset);
-        Rect circleRectangle = new(circleCenter, new Size((MaxRadius + offset ) * 2, (MaxRadius + offset) * 2));
-        RectangleGeometry rect = new(circleRectangle);
-
-        context.DrawGeometry(filling, new Pen(Brushes.Black, 5), rect);
+        context.DrawGeometry(Brushes.White, new Pen(Brushes.White, 1), c);
     }
 
     private void DrawExtraElements(DrawingContext context, Point center)
     {
         const int delta = 20;
-        context.DrawLine(new Pen(Brushes.Black, 2, DashStyle.DashDotDot), new Point(center.X, center.Y - MaxRadius - delta), new Point(center.X, center.Y + MaxRadius + delta));
-        context.DrawLine(new Pen(Brushes.Black, 2, DashStyle.DashDotDot), new Point(center.X + MaxRadius + delta, center.Y), new Point(center.X - MaxRadius - delta, center.Y));
+        context.DrawLine(new Pen(Brushes.White, 2, DashStyle.DashDotDot), new (center.X, center.Y - MaxRadius - delta), new (center.X, center.Y + MaxRadius + delta));
+        context.DrawLine(new Pen(Brushes.White, 2, DashStyle.DashDotDot), new (center.X + MaxRadius + delta, center.Y), new (center.X - MaxRadius - delta, center.Y));
     }
 
     private void DrawText(DrawingContext context, Point center, float dmgCoeff, float radiusCoeff)
@@ -119,7 +116,7 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         double rad = radiusCoeff * MaxRadius * Math.Sqrt(2) / 2;
 
         var typeface = AppSettingsHelper.Settings.SelectedLanguage.LocalizationFileName == "ja" ? new("Yu Gothic UI", Typeface.Default.Style, FontWeight.Bold) : new Typeface(FontFamily.DefaultFontFamilyName, Typeface.Default.Style, FontWeight.Bold);
-        var brush = Foreground;
+        var brush = new SolidColorBrush(Colors.White);
         const int fontSize = 11;
 
         var dmg = new FormattedText($"{Math.Round(DcDmg * dmgCoeff)} dmg", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
