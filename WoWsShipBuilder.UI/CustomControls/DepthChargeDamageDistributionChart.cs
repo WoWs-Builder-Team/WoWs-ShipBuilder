@@ -101,7 +101,7 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         Rect cR = new(cC, new Size(r * 2,  r * 2));
         EllipseGeometry c = new(cR);
 
-        context.DrawGeometry(Brushes.White, new Pen(Brushes.White, 1), c);
+        context.DrawGeometry(Brushes.White, new Pen(Brushes.White), c);
     }
 
     private void DrawExtraElements(DrawingContext context, Point center)
@@ -120,7 +120,7 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         const int fontSize = 11;
 
         var dmg = new FormattedText($"{Math.Round(DcDmg * dmgCoeff)} dmg", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
-        var range = new FormattedText($"{Math.Round(SplashRadius * radiusCoeff, 1)} {Translation.Unit_M}", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
+        var range = new FormattedText($"{Math.Round(SplashRadius * radiusCoeff)} {Translation.Unit_M}", typeface, fontSize, TextAlignment.Left, TextWrapping.NoWrap, Size.Infinity);
 
         context.DrawText(brush, new (center.X + rad - dmg.Bounds.Width, center.Y - rad), dmg);
         context.DrawText(brush, new (center.X - rad - range.Bounds.Width, center.Y - rad - range.Bounds.Height), range);
