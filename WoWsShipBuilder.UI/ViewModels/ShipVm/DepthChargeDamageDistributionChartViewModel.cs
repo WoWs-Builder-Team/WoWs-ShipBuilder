@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 
-public class DepthChargeDamageDistributionChartViewModel : ViewModelBase
+public record DepthChargeDamageDistributionChartViewModel
 {
     public DepthChargeDamageDistributionChartViewModel(DepthChargeDataContainer depthCharge)
     {
@@ -14,27 +12,10 @@ public class DepthChargeDamageDistributionChartViewModel : ViewModelBase
         PointsOfDmg = depthCharge.PointsOfDmg;
     }
 
-    private int dcDmg;
+    public int DcDmg { get; }
 
-    public int DcDmg
-    {
-        get => dcDmg;
-        set => this.RaiseAndSetIfChanged(ref dcDmg, value);
-    }
+    public decimal SplashRadius { get; }
 
-    private decimal splashRadius;
+    public Dictionary<float, List<float>> PointsOfDmg { get; } = default!;
 
-    public decimal SplashRadius
-    {
-        get => splashRadius;
-        set => this.RaiseAndSetIfChanged(ref splashRadius, value);
-    }
-
-    private Dictionary<float, List<float>> pointsOfDmg = default!;
-
-    public Dictionary<float, List<float>> PointsOfDmg
-    {
-        get => pointsOfDmg;
-        set => this.RaiseAndSetIfChanged(ref pointsOfDmg, value);
-    }
 }
