@@ -17,5 +17,4 @@ public record DepthChargeDamageDistributionChartViewModel
     public decimal SplashRadius { get; }
 
     public Dictionary<float, List<float>> PointsOfDmg { get; } = default!;
-
 }
