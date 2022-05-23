@@ -75,20 +75,17 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
             double opacity = 1.0 / (PointsOfDmg.Count - index);
 
             DrawDistribution(context, center, data.Value.First(), opacity);
-            DrawExtraElements(context, center);
             DrawText(context, center, data.Key, data.Value.First());
         }
     }
 
-    private static void DrawDistribution(DrawingContext context, Point center, float radiusCoeff, double opacity)
+    private void DrawDistribution(DrawingContext context, Point center, float radiusCoeff, double opacity)
     {
         var filling = new SolidColorBrush(Colors.SteelBlue, opacity);
-
         var rad = radiusCoeff * MaxRadius;
         Point circleCenter = new(center.X - rad, center.Y - rad);
         Rect circleRectangle = new(circleCenter, new Size(rad * 2, rad * 2));
         EllipseGeometry circle = new(circleRectangle);
-
         context.DrawGeometry(filling, new Pen(Brushes.White, 3), circle);
 
         if (Math.Abs(opacity - 1.0) != 0)
@@ -96,12 +93,7 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
             return;
         }
 
-        const float r = 5;
-        Point cC = new(center.X - r, center.Y - r);
-        Rect cR = new(cC, new Size(r * 2,  r * 2));
-        EllipseGeometry c = new(cR);
-
-        context.DrawGeometry(Brushes.White, new Pen(Brushes.White), c);
+        DrawExtraElements(context, center);
     }
 
     private void DrawExtraElements(DrawingContext context, Point center)
@@ -109,6 +101,12 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         const int delta = 20;
         context.DrawLine(new Pen(Brushes.White, 2, DashStyle.DashDotDot), new (center.X, center.Y - MaxRadius - delta), new (center.X, center.Y + MaxRadius + delta));
         context.DrawLine(new Pen(Brushes.White, 2, DashStyle.DashDotDot), new (center.X + MaxRadius + delta, center.Y), new (center.X - MaxRadius - delta, center.Y));
+
+        const float r = 5;
+        Point cC = new(center.X - r, center.Y - r);
+        Rect cR = new(cC, new Size(r * 2,  r * 2));
+        EllipseGeometry c = new(cR);
+        context.DrawGeometry(Brushes.White, new Pen(Brushes.White), c);
     }
 
     private void DrawText(DrawingContext context, Point center, float dmgCoeff, float radiusCoeff)

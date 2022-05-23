@@ -3,7 +3,7 @@ using WoWsShipBuilder.Core.DataContainers;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 
-public record DepthChargeDamageDistributionChartViewModel
+public sealed record DepthChargeDamageDistributionChartViewModel
 {
     public DepthChargeDamageDistributionChartViewModel(DepthChargeDataContainer depthCharge)
     {
