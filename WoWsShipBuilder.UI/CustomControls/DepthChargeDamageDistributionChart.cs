@@ -79,10 +79,10 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         }
     }
 
-    private void DrawDistribution(DrawingContext context, Point center, float radiusCoeff, double opacity)
+    private static void DrawDistribution(DrawingContext context, Point center, float radiusCoeff, double opacity)
     {
         var filling = new SolidColorBrush(Colors.SteelBlue, opacity);
-        var rad = radiusCoeff * MaxRadius;
+        float rad = radiusCoeff * MaxRadius;
         Point circleCenter = new(center.X - rad, center.Y - rad);
         Rect circleRectangle = new(circleCenter, new Size(rad * 2, rad * 2));
         EllipseGeometry circle = new(circleRectangle);
@@ -96,7 +96,7 @@ public class DepthChargeDamageDistributionChart : TemplatedControl
         DrawExtraElements(context, center);
     }
 
-    private void DrawExtraElements(DrawingContext context, Point center)
+    private static void DrawExtraElements(DrawingContext context, Point center)
     {
         const int delta = 20;
         context.DrawLine(new Pen(Brushes.White, 2, DashStyle.DashDotDot), new (center.X, center.Y - MaxRadius - delta), new (center.X, center.Y + MaxRadius + delta));
