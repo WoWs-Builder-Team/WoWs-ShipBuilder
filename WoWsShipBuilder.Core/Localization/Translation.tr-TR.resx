@@ -993,12 +993,18 @@ Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metr
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Tam salvo</value>
   </data>
-  
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+      <value>Patlama Yarıçapı</value>
+  </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
     <value>Patlama Delişi</value>
   </data>
-  
-  
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+      <value>Motor</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+      <value>Dümen</value>
+  </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>If "modülün patlayıcıya koruması" + "cephanenin patlama delişi" &gt; 0 
      Modül devre dışı kalmaz.
