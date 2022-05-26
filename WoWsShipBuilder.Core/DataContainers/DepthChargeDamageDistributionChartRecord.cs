@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using WoWsShipBuilder.Core.DataContainers;
 
-namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
+namespace WoWsShipBuilder.Core.DataContainers;
 
-public sealed record DepthChargeDamageDistributionChartViewModel
+public sealed record DepthChargeDamageDistributionChartRecord
 {
-    public DepthChargeDamageDistributionChartViewModel(DepthChargeDataContainer depthCharge)
+    public DepthChargeDamageDistributionChartRecord(DepthChargeDataContainer depthCharge)
     {
         DcDmg = depthCharge.Damage;
         SplashRadius = depthCharge.DcSplashRadius;

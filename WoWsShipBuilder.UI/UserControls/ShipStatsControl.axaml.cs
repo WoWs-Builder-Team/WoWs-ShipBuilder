@@ -1,6 +1,3 @@
-using System.ComponentModel.Design;
-using System.Data;
-using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -9,10 +6,7 @@ using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.UI.CustomControls;
-using WoWsShipBuilder.UI.ViewModels;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
-using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.ShipVm;
 using static WoWsShipBuilder.UI.ViewModels.DispersionPlot.DispersionGraphViewModel;
@@ -88,7 +82,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var win = new DepthChargeDamageDistributionChartWindow
                 {
-                    DataContext = new DepthChargeDamageDistributionChartViewModel(dataContext),
+                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext),
                 };
                 win.Show((Window)this.GetVisualRoot());
             }
