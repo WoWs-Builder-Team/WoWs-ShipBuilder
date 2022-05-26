@@ -50,6 +50,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private List<ShipSummary>? nextShips = new();
 
+        private ShipSummary? currentShip;
+
         private ShipSummary? previousShip;
 
         private Ship rawShipData = null!;
@@ -74,6 +76,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             this.appSettings = appSettings;
             tokenSource = new();
             PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
+            CurrentShip = viewModelParams.ShipSummary;
 
             LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
         }
@@ -88,6 +91,12 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             get => currentShipTier;
             set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
+        }
+
+        public ShipSummary? CurrentShip
+        {
+            get => currentShip;
+            set => this.RaiseAndSetIfChanged(ref currentShip, value);
         }
 
         public ShipSummary? PreviousShip
@@ -247,6 +256,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             CurrentShipIndex = ship.Index;
             CurrentShipTier = ship.Tier;
+            CurrentShip = AppData.ShipSummaryList!.First(sum => sum.Index == ship.Index);
             PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex);
             NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList!.First(sum => sum.Index == index)).ToList();
 

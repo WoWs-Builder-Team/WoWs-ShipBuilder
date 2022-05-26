@@ -97,4 +97,7 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Assets\nation_flags" />
+    </ItemGroup>
 </Project>

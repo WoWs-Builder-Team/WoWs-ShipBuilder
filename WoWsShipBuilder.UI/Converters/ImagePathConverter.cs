@@ -79,6 +79,60 @@ namespace WoWsShipBuilder.UI.Converters
                     return new Bitmap(asset);
                 }
 
+                case ShipSummary summary:
+                {
+                    Logger.Debug("Processing nation flag.");
+                    Uri uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{summary.Index}.png");
+
+                    Stream asset;
+                    try
+                    {
+                        asset = assets.Open(uri);
+                    }
+                    catch (Exception e1) when (e1 is NullReferenceException or FileNotFoundException)
+                    {
+                        uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{summary.Nation}.png");
+                        try
+                        {
+                            asset = assets.Open(uri);
+                        }
+                        catch (Exception e2) when (e2 is NullReferenceException or FileNotFoundException)
+                        {
+                            Logger.Warn("Unable to find file for uri {0}, falling back to error icon.", uri);
+                            asset = LoadErrorIcon(assets);
+                        }
+                    }
+
+                    return new Bitmap(asset);
+                }
+
+                case Ship ship:
+                {
+                    Logger.Debug("Processing nation flag.");
+                    Uri uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{ship.Index}.png");
+
+                    Stream asset;
+                    try
+                    {
+                        asset = assets.Open(uri);
+                    }
+                    catch (Exception e1) when (e1 is NullReferenceException or FileNotFoundException)
+                    {
+                        uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{ship.ShipNation}.png");
+                        try
+                        {
+                            asset = assets.Open(uri);
+                        }
+                        catch (Exception e2) when (e2 is NullReferenceException or FileNotFoundException)
+                        {
+                            Logger.Warn("Unable to find file for uri {0}, falling back to error icon.", uri);
+                            asset = LoadErrorIcon(assets);
+                        }
+                    }
+
+                    return new Bitmap(asset);
+                }
+
                 case Modernization modernization:
                 {
                     Logger.Debug("Processing modernization.");
