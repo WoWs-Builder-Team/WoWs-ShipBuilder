@@ -1362,14 +1362,29 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  
-  
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Sıçrama</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Yarıçap</value>
+  </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Hasar</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>Bu parametreler sadece denizaltıları etkilemektedir.
+Yüzey gemilerine herhangi bir etkileri yoktur.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Patlama Yarıçapı</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Fünye Zamanlayıcı</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Batma Hızı</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Patlama Derinliği</value>
+  </data>
 </root>
