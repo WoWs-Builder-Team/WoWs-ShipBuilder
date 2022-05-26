@@ -618,7 +618,9 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Tempo de recarga do ataque</value>
   </data>
-  
+  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
+      <value>Cruzeiro</value>
+  </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombas na elipse interna</value>
   </data>
@@ -1379,7 +1381,9 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_DetonationTimer" xml:space="preserve">
       <value>Temporizador de Detonação</value>
   </data>
-  
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Velocidade de submersão</value>
+  </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Profundidade de Detonação</value>
   </data>
