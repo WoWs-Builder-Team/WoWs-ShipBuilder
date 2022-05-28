@@ -931,7 +931,7 @@ Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter l
   
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Explosie penetratie</value>
+      <value>Penetratie</value>
   </data>
   
   
@@ -1191,6 +1191,8 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schade</value>
   </data>
+  
+  
   
   
   
