@@ -995,7 +995,7 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   </data>
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Explosions-Durchschlagskraft</value>
+      <value>Durchschlagskraft</value>
   </data>
   
   
@@ -1281,9 +1281,7 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Wassereinbruch</value>
   </data>
-  <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>Explosionsschutz</value>
-  </data>
+  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Maximale Brände</value>
   </data>
@@ -1361,6 +1359,8 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schaden</value>
   </data>
+  
+  
   
   
   
