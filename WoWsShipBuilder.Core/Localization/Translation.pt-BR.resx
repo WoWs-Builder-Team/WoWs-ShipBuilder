@@ -993,11 +993,9 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Salva completa</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>Raio de explosão</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Penetração da explosão</value>
+      <value>Penetração</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>Motor</value>
@@ -1287,9 +1285,7 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Inundação</value>
   </data>
-  <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>Proteção contra explosões</value>
-  </data>
+  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Máximo simultâneo</value>
   </data>
@@ -1387,4 +1383,6 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Profundidade de Detonação</value>
   </data>
+  
+  
 </root>
