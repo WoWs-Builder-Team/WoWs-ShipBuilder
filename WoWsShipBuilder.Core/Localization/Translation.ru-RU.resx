@@ -992,7 +992,7 @@
   </data>
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Пробитие взрывом</value>
+      <value>Бронепробитие</value>
   </data>
   
   
@@ -1278,9 +1278,7 @@
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Затоп</value>
   </data>
-  <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>Защита от взрыва</value>
-  </data>
+  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Макс. пожаров</value>
   </data>
@@ -1358,6 +1356,8 @@
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Урон</value>
   </data>
+  
+  
   
   
   
