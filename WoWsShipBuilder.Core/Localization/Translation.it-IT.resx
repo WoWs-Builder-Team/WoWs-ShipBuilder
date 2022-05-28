@@ -933,7 +933,7 @@ Le navi in gioco sono due volte più grandi dell'ambiente quindi una nave lunga 
   
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Penetrazione dell'esplosione</value>
+      <value>Penetrazione</value>
   </data>
   
   
@@ -1193,6 +1193,8 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Danno</value>
   </data>
+  
+  
   
   
   
