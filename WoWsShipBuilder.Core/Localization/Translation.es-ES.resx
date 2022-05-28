@@ -929,7 +929,7 @@ Los barcos en el juego son el doble de grandes que el entorno, por lo que un bar
   
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Penetración explosiva</value>
+      <value>Penetración</value>
   </data>
   
   
@@ -1189,6 +1189,8 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Daño</value>
   </data>
+  
+  
   
   
   
