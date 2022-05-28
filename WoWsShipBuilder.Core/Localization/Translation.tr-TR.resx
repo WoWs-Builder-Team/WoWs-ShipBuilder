@@ -993,11 +993,9 @@ Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metr
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Tam salvo</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>Patlama Yarıçapı</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Patlama Delişi</value>
+      <value>Delme</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>Motor</value>
@@ -1287,9 +1285,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Su Alma</value>
   </data>
-  <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>Patlama Koruması</value>
-  </data>
+  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Azami Toplam</value>
   </data>
@@ -1387,4 +1383,6 @@ Yüzey gemilerine herhangi bir etkileri yoktur.</value>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Patlama Derinliği</value>
   </data>
+  
+  
 </root>
