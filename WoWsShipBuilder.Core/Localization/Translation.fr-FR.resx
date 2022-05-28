@@ -930,7 +930,7 @@ Les navires dans le jeu sont deux fois plus gros que l'environnement qui les ent
   
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Pénétration explosive</value>
+      <value>Pénétration</value>
   </data>
   
   
@@ -1184,6 +1184,8 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Dégâts</value>
   </data>
+  
+  
   
   
   
