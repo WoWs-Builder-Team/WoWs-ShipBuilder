@@ -326,12 +326,8 @@ namespace WoWsShipBuilder.UI.CustomControls
             double yInnerRadius = DispersionPlotParameters.HorizontalRadiusHalfHitPoints * PlotScaling;
 
             // text
-            var typeface = Typeface.Default;
-            if(AppSettingsHelper.Settings.SelectedLanguage.LocalizationFileName == "ja")
-            {
-                // workaround to solve incorrect rendering of this localization
-                typeface = new("Yu Gothic UI", Typeface.Default.Style, Typeface.Default.Weight);
-            }
+            // workaround to solve incorrect rendering of this localization
+            var typeface = AppSettingsHelper.Settings.SelectedLanguage.LocalizationFileName == "ja" ? new("Yu Gothic UI", Typeface.Default.Style, Typeface.Default.Weight) : Typeface.Default;
 
             var vertical = Translation.DispersionPlot_Vertical;
             var innerVertical = Translation.DispersionPlot_InnerVertical;

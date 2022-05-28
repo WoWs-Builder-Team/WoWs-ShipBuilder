@@ -1825,6 +1825,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blast.
+        /// </summary>
+        public static string ShipStats_Blast {
+            get {
+                return ResourceManager.GetString("ShipStats_Blast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
@@ -1837,7 +1846,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blast Protection.
+        ///   Looks up a localized string similar to Protection.
         /// </summary>
         public static string ShipStats_BlastProtection {
             get {
@@ -2152,7 +2161,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blast radius.
+        ///   Looks up a localized string similar to Radius.
         /// </summary>
         public static string ShipStats_ExplosionRadius {
             get {
@@ -2998,6 +3007,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Damage Distribution Chart.
+        /// </summary>
+        public static string ShipStats_ShowDcDamageDistribution {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowDcDamageDistribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show dispersion graphs.
         /// </summary>
         public static string ShipStats_ShowDispGraph {
@@ -3079,7 +3097,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blast penetration.
+        ///   Looks up a localized string similar to Penetration.
         /// </summary>
         public static string ShipStats_SplashCoeff {
             get {

@@ -35,6 +35,8 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
         public decimal FloodingChance { get; set; }
 
+        public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
+
         public static async Task<DepthChargeDataContainer> FromChargesName(string name, IEnumerable<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
@@ -56,6 +58,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 SinkSpeed = $"{Math.Round(minSpeed, 1)} ~ {Math.Round(maxSpeed, 1)}",
                 DetonationTimer = $"{Math.Round(minTimer, 1)} ~ {Math.Round(maxTimer, 1)}",
                 DetonationDepth = $"{Math.Round(minDetDepth, 1)} ~ {Math.Round(maxDetDepth, 1)}",
+                PointsOfDmg = depthCharge.PointsOfDamage,
             };
 
             depthChargeDataContainer.UpdateDataElements();

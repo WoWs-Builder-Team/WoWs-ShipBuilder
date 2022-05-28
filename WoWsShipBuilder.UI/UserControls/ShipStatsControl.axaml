@@ -24,6 +24,7 @@
         <converters:StatGridConverter x:Key="GridSizeConverter" />
         <converters:DataElementValueConverter x:Key="DataElementValueConverter" />
         <converters:FormattedTextDataElementConverter x:Key="FormattedTextDataElementConverter" />
+        <converters:WeaponTypeToBooleanConverter x:Key="WeaponTypeToBooleanConverter"/>
 
         <SolidColorBrush Color="Gray" Opacity="0.5" x:Key="NestedBrush" />
     </UserControl.Resources>
@@ -414,6 +415,9 @@
                                                TextWrapping="Wrap" HorizontalAlignment="Right" DockPanel.Dock="Right" />
                                 </DockPanel>
                                 <ItemsControl Items="{Binding Weapon.DataElements}" Classes="Stagger" />
+                                <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDcDamageDistribution}"
+                                           PointerReleased="OpenDepthChargeDamageDistributionChart" TextDecorations="Underline" Margin="10 8 0 0" 
+                                           IsVisible="{Binding WeaponType, Converter={StaticResource WeaponTypeToBooleanConverter}, FallbackValue=false}"/>
                             </StackPanel>
                         </Expander>
                     </DataTemplate>
@@ -427,6 +431,8 @@
                             <StackPanel Orientation="Vertical">
                                 <ItemsControl Items="{Binding DataElements}" />
                                 <ItemsControl Items="{Binding DepthCharge.DataElements}" Classes="Stagger" />
+                                <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_ShowDcDamageDistribution}"
+                                           PointerReleased="OpenDepthChargeDamageDistributionChart" TextDecorations="Underline" Margin="10 8 0 0" />
                             </StackPanel>
                         </Expander>
                     </DataTemplate>

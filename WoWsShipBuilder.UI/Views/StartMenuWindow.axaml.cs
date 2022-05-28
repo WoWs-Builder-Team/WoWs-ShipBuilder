@@ -79,7 +79,8 @@ namespace WoWsShipBuilder.UI.Views
         private void Control_PointerReleased(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
         {
             var window = new TestWindow();
-            window.DataContext = new TestWindowViewModel();
+
+            // window.DataContext = new TestWindowViewModel();
             window.Show();
         }
 
