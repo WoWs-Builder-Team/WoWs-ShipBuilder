@@ -993,11 +993,9 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>1斉射</value>
   </data>
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-      <value>爆風半径</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>爆風貫通力</value>
+      <value>貫通力</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
       <value>エンジン</value>
@@ -1287,9 +1285,7 @@
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>浸水</value>
   </data>
-  <data name="ShipStats_BlastProtection" xml:space="preserve">
-      <value>爆風耐性</value>
-  </data>
+  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>同時最大数</value>
   </data>
@@ -1387,4 +1383,6 @@
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>起爆深度</value>
   </data>
+  
+  
 </root>
