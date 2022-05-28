@@ -929,7 +929,7 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
   
   
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Robbanás átütése</value>
+      <value>Átütés</value>
   </data>
   
   
@@ -1189,6 +1189,8 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Sebzés</value>
   </data>
+  
+  
   
   
   
