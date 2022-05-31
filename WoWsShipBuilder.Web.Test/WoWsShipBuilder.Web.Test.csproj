@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WoWsShipBuilder.Web.Server\WoWsShipBuilder.Web.Server.csproj" />
+      <ProjectReference Include="..\WoWsShipBuilder.Web\WoWsShipBuilder.Web.csproj" />
     </ItemGroup>
 
 </Project>

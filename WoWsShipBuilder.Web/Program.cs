@@ -1,62 +1,73 @@
 using System.Globalization;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Net;
 using MudBlazor;
 using MudBlazor.Services;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.DataProvider.Updater;
+using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.Web;
-using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Services;
-using WoWsShipBuilder.Web.WebWorkers;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
 
 builder.Services.UseMicrosoftDependencyResolver();
 var resolver = Locator.CurrentMutable;
 resolver.InitializeSplat();
-resolver.InitializeReactiveUI();
+resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddMudServices(config =>
+builder.Services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
+
+builder.Services.AddShipBuilderServerServices();
+builder.Services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
 {
-    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
-});
+    AutomaticDecompression = DecompressionMethods.All,
+}));
+builder.Services.AddSingleton<IAwsClient, ServerAwsClient>();
 
-builder.Services.AddShipBuilderServices();
+builder.Services.AddSingleton<IAppDataService, ServerAppDataService>();
 
-var host = builder.Build();
-host.Services.UseMicrosoftDependencyResolver();
+var app = builder.Build();
+app.Services.UseMicrosoftDependencyResolver();
 
-var settingsHelper = host.Services.GetRequiredService<AppSettingsHelper>();
-var settings = await settingsHelper.LoadSettings() ?? new AppSettings();
-var appSettings = host.Services.GetRequiredService<AppSettings>();
-appSettings.UpdateFromSettings(settings);
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
 
-CultureInfo.DefaultThreadCurrentCulture = settings.SelectedLanguage.CultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = settings.SelectedLanguage.CultureInfo;
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
-await settingsHelper.SaveSettings(appSettings);
-WebWorkerDataService.Settings = appSettings;
+app.UseHttpsRedirection();
 
-SetupExtensions.SetupLogging();
-var logger = Logging.GetLogger("ShipBuilderInit");
+app.UseStaticFiles();
 
-await host.Services.GetRequiredService<ILocalDataUpdater>().RunDataUpdateCheck(settings.SelectedServerType, new Progress<(int, string)>());
-await host.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(appSettings.SelectedLanguage);
+app.UseRouting();
 
-AppData.ShipDictionary = new();
-logger.Debug("Initializing summary list...");
-AppData.ShipSummaryList ??= await host.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(appSettings.SelectedServerType);
-logger.Debug("Summary list initialized. Preparation finished.");
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
-await host.RunAsync();
+var culture = AppConstants.DefaultCultureDetails.CultureInfo;
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
+Thread.CurrentThread.CurrentCulture = culture;
+Thread.CurrentThread.CurrentUICulture = culture;
+
+AppData.ShipSummaryList ??= await app.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(ServerType.Live);
+await app.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(AppConstants.SupportedLanguages.ToArray());
+var appDataService = app.Services.GetRequiredService<IAppDataService>();
+if (appDataService is ServerAppDataService serverAppDataService)
+{
+    await serverAppDataService.FetchData();
+}
+
+app.Run();

@@ -6,7 +6,7 @@ using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Web.Server.Services;
+namespace WoWsShipBuilder.Web.Services;
 
 // TODO: implement properly
 public class ServerAppDataService : IAppDataService

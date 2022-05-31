@@ -8,7 +8,7 @@ using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Web.Server.Services;
+namespace WoWsShipBuilder.Web.Services;
 
 public class ServerAwsClient : IAwsClient
 {

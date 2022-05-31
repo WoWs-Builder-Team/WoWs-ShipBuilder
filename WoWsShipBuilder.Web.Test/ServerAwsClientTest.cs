@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Web.Server.Services;
+using WoWsShipBuilder.Web.Services;
 
 namespace WoWsShipBuilder.Web.Server.Test;
 
