@@ -1,17 +1,16 @@
 # Update 1.5.0
 
 ## Additions
-- Add ability to hide lines in charts by clicking on the corresponding name in the chart's legend.
-- Add a status indicator for background app updates. (#131)
+- Add ability to change plot plane for vertical dispersion chart.
 
 ## Changes
-- Data update errors are no longer silent and are shown through a popup.
-- Data validation is using file checksums now and does no longer just check for the existence of a file (#133)
+
 
 ## Bugfixes
-- Localize contents of restart dialog after an update has been installed.
+- Fix "Skills & Talents" button not enabling when loading a build with conditional skills selected.
 
 ## Known Issues
+
 
 ___
 To download the program for the first time, you need to download only the Setup.exe file. The other files are used by

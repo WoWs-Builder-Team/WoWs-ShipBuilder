@@ -43,7 +43,19 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var appDataDir = new DirectoryInfo(appData);
                 if (appDataDir.Exists)
                 {
-                    appDataDir.Delete(true);
+                    foreach (var directoryInfo in appDataDir.GetDirectories())
+                    {
+                        if (!directoryInfo.Name.Equals("logs"))
+                        {
+                            directoryInfo.Delete(true);
+                        }
+                    }
+
+                    foreach (var fileInfo in appDataDir.GetFiles())
+                    {
+                        fileInfo.Delete();
+                    }
+
                     await ShutdownInteraction.Handle(Unit.Default);
                 }
                 else

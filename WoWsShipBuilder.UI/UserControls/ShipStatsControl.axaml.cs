@@ -68,5 +68,26 @@ namespace WoWsShipBuilder.UI.UserControls
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
+
+        public void OpenDepthChargeDamageDistributionChart(object sender, PointerReleasedEventArgs e)
+        {
+            if (DataContext is not ShipStatsControlViewModelBase vm)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            var dataContext = vm.CurrentShipStats?.DepthChargeLauncherDataContainer?.DepthCharge as DepthChargeDataContainer ?? vm.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer;
+            if (dataContext != null)
+            {
+                var win = new DepthChargeDamageDistributionChartWindow
+                {
+                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext),
+                };
+                win.Show((Window)this.GetVisualRoot());
+            }
+
+            e.Handled = true;
+        }
     }
 }

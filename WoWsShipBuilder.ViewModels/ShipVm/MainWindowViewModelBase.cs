@@ -48,11 +48,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private Ship effectiveShipData = null!;
 
-        private Dictionary<string, int>? nextShips = new();
+        private List<ShipSummary>? nextShips = new();
 
-        private string? previousShipIndex;
+        private ShipSummary? currentShip;
 
-        private int? previousShipTier;
+        private ShipSummary? previousShip;
 
         private Ship rawShipData = null!;
 
@@ -75,7 +75,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             this.localizer = localizer;
             this.appSettings = appSettings;
             tokenSource = new();
-            PreviousShipIndex = viewModelParams.ShipSummary.PrevShipIndex;
+            PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
+            CurrentShip = viewModelParams.ShipSummary;
 
             LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
         }
@@ -92,19 +93,19 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
         }
 
-        public string? PreviousShipIndex
+        public ShipSummary? CurrentShip
         {
-            get => previousShipIndex;
-            set => this.RaiseAndSetIfChanged(ref previousShipIndex, value);
+            get => currentShip;
+            set => this.RaiseAndSetIfChanged(ref currentShip, value);
         }
 
-        public int? PreviousShipTier
+        public ShipSummary? PreviousShip
         {
-            get => previousShipTier;
-            set => this.RaiseAndSetIfChanged(ref previousShipTier, value);
+            get => previousShip;
+            set => this.RaiseAndSetIfChanged(ref previousShip, value);
         }
 
-        public Dictionary<string, int>? NextShips
+        public List<ShipSummary>? NextShips
         {
             get => nextShips;
             set => this.RaiseAndSetIfChanged(ref nextShips, value);
@@ -255,13 +256,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             CurrentShipIndex = ship.Index;
             CurrentShipTier = ship.Tier;
-            PreviousShipIndex = previousIndex;
-            if (previousIndex != null)
-            {
-                PreviousShipTier = AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex).Tier;
-            }
+            CurrentShip = AppData.ShipSummaryList!.First(sum => sum.Index == ship.Index);
+            PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex);
+            NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList!.First(sum => sum.Index == index)).ToList();
 
-            NextShips = nextShipsIndexes?.ToDictionary(x => x, x => AppData.ShipSummaryList!.First(sum => sum.Index == x).Tier);
             AddChangeListeners();
             UpdateStatsViewModel();
             if (build != null)
