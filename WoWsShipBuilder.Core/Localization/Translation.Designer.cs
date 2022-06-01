@@ -1825,6 +1825,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auxiliary rooms section.
+        /// </summary>
+        public static string ShipStats_AuxiliaryRooms {
+            get {
+                return ResourceManager.GetString("ShipStats_AuxiliaryRooms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast.
         /// </summary>
         public static string ShipStats_Blast {
@@ -1891,6 +1900,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bow section.
+        /// </summary>
+        public static string ShipStats_Bow {
+            get {
+                return ResourceManager.GetString("ShipStats_Bow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Artillery burst mode.
         /// </summary>
         public static string ShipStats_BurstMode {
@@ -1905,6 +1923,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_CanHitClasses {
             get {
                 return ResourceManager.GetString("ShipStats_CanHitClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Casemate section.
+        /// </summary>
+        public static string ShipStats_Casemate {
+            get {
+                return ResourceManager.GetString("ShipStats_Casemate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Citadel section.
+        /// </summary>
+        public static string ShipStats_Citadel {
+            get {
+                return ResourceManager.GetString("ShipStats_Citadel", resourceCulture);
             }
         }
         
@@ -2458,6 +2494,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hull section.
+        /// </summary>
+        public static string ShipStats_Hull {
+            get {
+                return ResourceManager.GetString("ShipStats_Hull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial boost.
         /// </summary>
         public static string ShipStats_InitialBoost {
@@ -2836,6 +2881,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repairable damage.
+        /// </summary>
+        public static string ShipStats_RegenRatio {
+            get {
+                return ResourceManager.GetString("ShipStats_RegenRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reload Time.
         /// </summary>
         public static string ShipStats_Reload {
@@ -2985,6 +3039,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_ShellWeight {
             get {
                 return ResourceManager.GetString("ShipStats_ShellWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship HP.
+        /// </summary>
+        public static string ShipStats_ShipHp {
+            get {
+                return ResourceManager.GetString("ShipStats_ShipHp", resourceCulture);
             }
         }
         
@@ -3175,6 +3238,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_StartingNumberOnDeck {
             get {
                 return ResourceManager.GetString("ShipStats_StartingNumberOnDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stern section.
+        /// </summary>
+        public static string ShipStats_Stern {
+            get {
+                return ResourceManager.GetString("ShipStats_Stern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Superstructure section.
+        /// </summary>
+        public static string ShipStats_Superstructure {
+            get {
+                return ResourceManager.GetString("ShipStats_Superstructure", resourceCulture);
             }
         }
         

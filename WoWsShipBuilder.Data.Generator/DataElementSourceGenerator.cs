@@ -324,12 +324,18 @@ public partial record {dataRecord.className}
             unit = "Unit_" + unit;
         }
 
+        var localizationKey = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value ?? "";
+        if (string.IsNullOrWhiteSpace(localizationKey))
+        {
+            localizationKey = name;
+        }
+
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}"", ""{unit}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new TooltipDataElement(""ShipStats_{localizationKey}"", {name}{propertyProcessingAddition}, ""ShipStats_{tooltip}"", ""{unit}""));");
         return builder.ToString();
     }
 
@@ -345,12 +351,18 @@ public partial record {dataRecord.className}
             return string.Empty;
         }
 
+        var localizationKey = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value ?? "";
+        if (string.IsNullOrWhiteSpace(localizationKey))
+        {
+            localizationKey = name;
+        }
+
         var filter = GetFilterAttributeData(property.Name, propertyAttributes);
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueUnitDataElement(""ShipStats_{localizationKey}"", {name}{propertyProcessingAddition}, ""Unit_{unit}""));");
         return builder.ToString();
     }
 
@@ -363,11 +375,16 @@ public partial record {dataRecord.className}
         var isKeyLocalization = (bool?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueLocalizationKey").Value.Value ?? false;
         var isKeyAppLocalization = (bool?) typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "IsValueAppLocalization").Value.Value ?? false;
 
+        var localizationKey = (string?)typeAttribute.NamedArguments.FirstOrDefault(arg => arg.Key == "NameLocalizationKey").Value.Value ?? "";
+        if (string.IsNullOrWhiteSpace(localizationKey))
+        {
+            localizationKey = name;
+        }
 
         var builder = new StringBuilder();
         builder.Append(filter);
         builder.AppendLine();
-        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{name}"", {name}{propertyProcessingAddition}, {isKeyLocalization.ToString().ToLower()}, {isKeyAppLocalization.ToString().ToLower()}));");
+        builder.Append($@"{Indentation}{collectionName}.Add(new KeyValueDataElement(""ShipStats_{localizationKey}"", {name}{propertyProcessingAddition}, {isKeyLocalization.ToString().ToLower()}, {isKeyAppLocalization.ToString().ToLower()}));");
         return builder.ToString();
     }
 
