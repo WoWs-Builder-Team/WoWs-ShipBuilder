@@ -993,7 +993,9 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>1斉射</value>
   </data>
-  
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+      <value>半径</value>
+  </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>貫通力</value>
   </data>
@@ -1285,7 +1287,9 @@
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>浸水</value>
   </data>
-  
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>耐性</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>同時最大数</value>
   </data>
@@ -1383,15 +1387,37 @@
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>起爆深度</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>爆風</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>ダメージ分布図を表示</value>
+  </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>防郭</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>艦首</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>修理可能なダメージ</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>艦尾</value>
+  </data>
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>上部構造物</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>ケースメイト</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>艦全体</value>
+  </data>
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>補助区画</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>艦艇HP</value>
+  </data>
 </root>
