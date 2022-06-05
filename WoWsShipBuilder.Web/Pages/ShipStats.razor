@@ -3,15 +3,14 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.Translations
 @using System.Diagnostics
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @inherits ReactiveComponentBase<ShipViewModel>
-@inject NavigationManager navManager
-@inject ILocalizer localizer
-@inject IAppDataService appDataService
-@inject AppSettings appSettings
+@inject NavigationManager NavManager
+@inject ILocalizer Localizer
+@inject IAppDataService AppDataService
+@inject AppSettings AppSettings
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -66,13 +65,13 @@
 
     private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
 
-    private bool initialized = false;
+    private bool initialized;
     
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        navManager.TryGetQueryString("shipIndex", out string shipIndex);
-        navManager.LocationChanged += HandleLocationChanged;
+        NavManager.TryGetQueryString("shipIndex", out string shipIndex);
+        NavManager.LocationChanged += HandleLocationChanged;
         await LoadShipViewModel(shipIndex);
         await ViewModel!.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         // this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
@@ -84,13 +83,13 @@
         var sw = new Stopwatch();
         sw.Start();
         var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-        await appDataService.LoadNationFiles(shipSummary.Nation);
+        await AppDataService.LoadNationFiles(shipSummary.Nation);
         Console.WriteLine("Files loaded: " + sw.Elapsed);
-        var ship = await appDataService.GetShipFromSummary(shipSummary);
+        var ship = await AppDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship!, shipSummary, null);
         
         // TODO
-        ViewModel = new(null!, appDataService, localizer, appSettings, vmParams);
+        ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
         Console.WriteLine("VM created: " + sw.Elapsed);
         await ViewModel.InitializeData(vmParams);
         sw.Stop();
@@ -99,16 +98,16 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        var uri = navManager.Uri;
+        var uri = NavManager.Uri;
         if (uri.Contains("/ship"))
         {
-            navManager.TryGetQueryString("shipIndex", out string shipIndex);
+            NavManager.TryGetQueryString("shipIndex", out string shipIndex);
             await LoadShipViewModel(shipIndex);
             StateHasChanged();
         }
         else
         {
-            navManager.LocationChanged -= HandleLocationChanged;
+            NavManager.LocationChanged -= HandleLocationChanged;
         }
     }
 }

@@ -144,7 +144,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 FloodTotalDamage = Math.Round(floodTotalDamage),
             };
 
-            foreach (var location in shipHull.HitLocations)
+            foreach (var location in shipHull.HitLocations ?? new List<HitLocation>())
             {
                 switch (location.Name)
                 {

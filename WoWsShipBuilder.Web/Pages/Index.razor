@@ -1,11 +1,8 @@
 @page "/"
-@using WoWsShipBuilder.Core.Services
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
-@using WoWsShipBuilder.Core.Localization
-@inject IAppDataService appDataService
-@inject ILocalizer localizer
-@inject NavigationManager navManager
+@inject NavigationManager NavManager
+@implements IDisposable
 
 <PageTitle>
     WoWs ShipBuilder
@@ -36,9 +33,6 @@
     </MudGrid>
 </MudContainer>
 
-
-
-
 @code
 {
     private readonly ObservableCollection<string> selectedShips = new();
@@ -57,12 +51,17 @@
     private void GoToShipPage()
     {
         string index = selectedShips.First();
-        navManager.NavigateTo("/ship?shipIndex=" + index);
+        NavManager.NavigateTo("/ship?shipIndex=" + index);
     }
     
     private void GoToChartPage()
     {
         string indexes = string.Join(",", selectedShips);
-        navManager.NavigateTo("/charts?shipIndex=" + indexes);
+        NavManager.NavigateTo("/charts?shipIndex=" + indexes);
+    }
+
+    public void Dispose()
+    {
+        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
     }
 }
