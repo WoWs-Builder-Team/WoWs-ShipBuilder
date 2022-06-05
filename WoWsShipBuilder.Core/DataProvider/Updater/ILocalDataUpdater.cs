@@ -10,6 +10,11 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
     public interface ILocalDataUpdater
     {
         /// <summary>
+        /// Gets the currently supported data structure version.
+        /// </summary>
+        Version SupportedDataStructureVersion { get; }
+
+        /// <summary>
         /// A method that runs a full update check, using one or more of the methods defined by this interface.
         /// <b>This method should be implemented as async method because it launch network requests!</b>
         /// </summary>

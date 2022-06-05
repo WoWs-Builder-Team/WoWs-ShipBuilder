@@ -19,7 +19,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.1.1" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.2.1" />
     </ItemGroup>
 
     <ItemGroup>

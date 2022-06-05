@@ -9,8 +9,8 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.5.0</VersionPrefix>
-<!--        <VersionSuffix>pre</VersionSuffix>-->
+        <VersionPrefix>1.5.1</VersionPrefix>
+        <VersionSuffix>pre</VersionSuffix>
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>

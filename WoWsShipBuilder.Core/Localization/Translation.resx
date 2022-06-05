@@ -1393,4 +1393,31 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
       <value>Show Damage Distribution Chart</value>
   </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>Citadel section</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>Bow section</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>Repairable damage</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>Stern section</value>
+  </data>
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>Superstructure section</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>Casemate section</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>Hull section</value>
+  </data>
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>Auxiliary rooms section</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>Ship HP</value>
+  </data>
 </root>

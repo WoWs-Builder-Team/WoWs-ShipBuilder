@@ -1,10 +1,10 @@
-# Update 1.5.0
+# Update 1.5.1
 
 ## Additions
 - Add ability to change plot plane for vertical dispersion chart.
 
 ## Changes
-
+- The gamedata updater no longer downloads data that is not supported by the current application version. 
 
 ## Bugfixes
 - Fix "Skills & Talents" button not enabling when loading a build with conditional skills selected.
