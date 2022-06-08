@@ -993,7 +993,9 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Salva completa</value>
   </data>
-  
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+      <value>Raio</value>
+  </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetração</value>
   </data>
@@ -1285,7 +1287,9 @@ Se "proteção de explosão do módulo" + "penetração de explosão do armament
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Inundação</value>
   </data>
-  
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Proteção</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Máximo simultâneo</value>
   </data>
@@ -1383,12 +1387,24 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Profundidade de Detonação</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>Explosão</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>Mostrar gráfico de distribuição de danos</value>
+  </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>Seção de Cidadela</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>Seção de Proa</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>Dano reparável</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>Seção de Popa</value>
+  </data>
   <data name="ShipStats_Superstructure" xml:space="preserve">
       <value>Seção de Superestrutura</value>
   </data>
@@ -1398,6 +1414,10 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_Hull" xml:space="preserve">
       <value>Seção do Casco</value>
   </data>
-  
-  
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>Seção das Salas Auxiliares</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>HP do Navio</value>
+  </data>
 </root>
