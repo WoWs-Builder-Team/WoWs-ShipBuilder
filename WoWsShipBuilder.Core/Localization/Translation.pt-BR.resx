@@ -1389,9 +1389,15 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   
   
   
-  
-  
-  
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>Seção de Superestrutura</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>Seção de Casamata</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>Seção do Casco</value>
+  </data>
   
   
 </root>
