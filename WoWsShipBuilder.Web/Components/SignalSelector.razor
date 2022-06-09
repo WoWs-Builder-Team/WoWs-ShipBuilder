@@ -10,7 +10,7 @@
     <MudPaper Outlined="true" Class="pa-2">
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Align="Align.Center">@(Translation.SignalSelector_Flags + ViewModel.SignalsNumber + "/8")</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">@(Translation.SignalSelector_Flags + ViewModel.SignalsNumber + "/8")</MudText>
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {
@@ -18,8 +18,8 @@
                 <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
-                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@GetImageStyle(signal)">
-                                <MudImage Width="50" Height="50" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
+                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetImageStyle(signal))">
+                                <MudImage ObjectFit="ObjectFit.ScaleDown" Width="40" Height="40" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
                             </MudButton>
                         </ChildContent>
                         <TooltipContent>

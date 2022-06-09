@@ -1,0 +1,126 @@
+﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.DataElements.DataElements
+@using WoWsShipBuilder.ViewModels.ShipVm;
+@inherits ReactiveComponentBase<ShipStatsControlViewModelBase>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null){
+    
+    <MudGrid>
+        <MudItem xs="3">
+                <MudExpansionPanel Text="@Translation.ShipStats_MainBattery" Class="border border-solid rounded-0"  >
+                    <MudStack Spacing="2">
+                        @foreach (var data in ViewModel.CurrentShipStats.MainBatteryDataContainer.DataElements)
+                        {
+                            @fragment((data, Localizer))
+                        }
+                    </MudStack>
+                </MudExpansionPanel>
+        </MudItem>
+        <MudItem xs="3">
+            <MudExpansionPanel Text="@Translation.ShipStats_Maneuverability" Class="border border-solid rounded-0"  >
+                <MudStack Spacing="2">
+                    @foreach (var data in ViewModel.CurrentShipStats.ManeuverabilityDataContainer.DataElements)
+                    {
+                        @fragment((data, Localizer))
+                    }
+                </MudStack>
+            </MudExpansionPanel>
+        </MudItem>
+        <MudItem xs="3">
+                    <MudExpansionPanel Text="@Translation.ShipStats_Concealment" Class="border border-solid rounded-0"  >
+                        <MudStack Spacing="2">
+                            @foreach (var data in ViewModel.CurrentShipStats.ConcealmentDataContainer.DataElements)
+                            {
+                                @fragment((data, Localizer))
+                            }
+                        </MudStack>
+                    </MudExpansionPanel>
+                </MudItem>
+    </MudGrid>
+    
+    
+
+}
+
+@code {
+    private static RenderFragment<(IDataElement dataElement, ILocalizer localizer)> fragment = group => __builder =>
+    {
+        switch ( group.dataElement)
+        {
+            case GroupedDataElement element:
+                <MudText Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Key).Localization</MudText>
+                <div class="ml-3">
+                    @foreach (var child in element.Children)
+                    {
+                        @fragment((child, group.localizer));
+                    }
+                </div>
+                break;
+            case KeyValueDataElement element:
+                <div class="d-flex justify-space-between">
+                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                </div>
+                break;
+            case KeyValueUnitDataElement element:
+                <div class="d-flex justify-space-between">
+                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + @group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
+                </div>
+                break;
+            case TooltipDataElement element:
+                <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%">
+                    <ChildContent>
+                        <div class="d-flex justify-space-between">
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + @group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
+                        </div>
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudPaper Outlined="true" Class="pa-2">
+                            <MudText Style="max-width: 500px" Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Tooltip).Localization</MudText>
+                        </MudPaper>
+                    </TooltipContent>
+                </MudTooltip>
+                break;
+            case ValueDataElement element:
+                <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                break;
+            case FormattedTextDataElement element:
+                <MudText Typo="Typo.body2">@ConvertFormattedText(element, group.localizer)</MudText>
+                break;
+        }
+    };
+
+    private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)
+    {
+        return !isValueKey ? value : (isAppLocalizationKey ? localizer.GetAppLocalization(value) : localizer.GetGameLocalization(value)).Localization;
+    }
+
+    private static string ConvertFormattedText(FormattedTextDataElement formattedTextDataElement,  ILocalizer localizer)
+    {
+        
+        string text = formattedTextDataElement.Text;
+        if (formattedTextDataElement.IsTextKey)
+        {
+            text = formattedTextDataElement.IsTextAppLocalization ? localizer.GetAppLocalization(text).Localization : localizer.GetGameLocalization(text).Localization;
+        }
+
+        IEnumerable<string> values = formattedTextDataElement.Values;
+        if (formattedTextDataElement.AreValuesKeys)
+        {
+            values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
+        }
+
+        try
+        {
+            return string.Format(text, values.Cast<object>().ToArray());
+        }
+        catch (Exception e)
+        {
+            return "Error";
+        }
+    }
+
+}

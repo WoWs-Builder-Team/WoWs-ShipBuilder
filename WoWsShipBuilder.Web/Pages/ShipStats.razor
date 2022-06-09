@@ -38,25 +38,19 @@
     else
     {
         <MudGrid>
-        <MudItem xs="4">
-            <MudStack>
-                <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel"/>
-                <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
-            </MudStack>
-        </MudItem>
-        <MudItem xs="8">
-            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-            {
-                @*@foreach (var (name, value) in ViewModel.ShipStatsControlViewModel.CurrentShipStats.MainBatteryDataContainer?.PropertyValueMapper ?? new())
+            <MudItem xs="3">
+                <MudStack>
+                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel"/>
+                    <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="9">
+                @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
                 {
-                    <MudStack Row="true">
-                        <MudText>@Translation.ResourceManager.GetString(name)</MudText>
-                        <MudText>@value</MudText>
-                    </MudStack>
-                }*@
-            }
-        </MudItem>
-    </MudGrid>
+                    <ShipStatsComponent ViewModel="@ViewModel?.ShipStatsControlViewModel"/>
+                }
+            </MudItem>
+        </MudGrid>
     }
 </MudContainer>
 

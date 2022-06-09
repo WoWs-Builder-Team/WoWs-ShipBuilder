@@ -18,23 +18,22 @@
     <MudPaper Outlined="true" Class="pa-2">
         <MudGrid Class="align-center" Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
             </MudItem>
-            <MudItem xs="5">
+            <MudItem xs="7">
                 <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
                     @foreach (var captain in ViewModel.CaptainList!)
                     {
                         <MudSelectItem Value="captain">
-                            <MudText Color="Color.Secondary">@Localizer.GetGameLocalization(captain.Name).Localization</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">@Localizer.GetGameLocalization(captain.Name).Localization</MudText>
                         </MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
-            <MudItem xs="4" Style="text-align: center">
-                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">@Translation.CaptainSkillSelector_SkillTalent</MudButton>
-            </MudItem>
-            <MudItem xs="3">
-                <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
+            <MudItem xs="5" Style="text-align: center">
+                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">
+                    <MudText Typo="Typo.body2">@Translation.CaptainSkillSelector_SkillTalent</MudText>
+                </MudButton>
             </MudItem>
             @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {
@@ -43,8 +42,8 @@
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
-                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
-                                        <MudImage Width="50" Height="50" ObjectFit="ObjectFit.ScaleDown" Style="" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="min-width: 55px; width: 55px; height: 55px;">
+                                        <MudImage Width="40" Height="40" ObjectFit="ObjectFit.ScaleDown" Style="" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
                                     </MudButton>
                                 </MudBadge>
                             </MudBadge>
