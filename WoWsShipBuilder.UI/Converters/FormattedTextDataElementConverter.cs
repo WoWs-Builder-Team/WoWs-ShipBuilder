@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using WoWsShipBuilder.Core.ConverterHelpers;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.UI.Settings;
@@ -26,21 +27,9 @@ public class FormattedTextDataElementConverter : IValueConverter
             return new BindingNotification(new NotSupportedException(), BindingErrorType.Error);
         }
 
-        string text = formattedTextDataElement.Text;
-        if (formattedTextDataElement.IsTextKey)
-        {
-            text = formattedTextDataElement.IsTextAppLocalization ? localizer.GetAppLocalization(text).Localization : localizer.GetGameLocalization(text).Localization;
-        }
-
-        IEnumerable<string> values = formattedTextDataElement.Values;
-        if (formattedTextDataElement.AreValuesKeys)
-        {
-            values = formattedTextDataElement.AreValuesAppLocalization ? values.Select(x => localizer.GetAppLocalization(x).Localization) : values.Select(x => localizer.GetGameLocalization(x).Localization);
-        }
-
         try
         {
-            return string.Format(text, values.Cast<object>().ToArray());
+            return FormattedTextHelper.ConvertFormattedText(formattedTextDataElement, localizer);
         }
         catch (Exception e)
         {

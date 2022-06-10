@@ -3,46 +3,28 @@ using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
+using WoWsShipBuilder.Core.ConverterHelpers;
 using WoWsShipBuilder.DataStructures;
+using Brushes = Avalonia.Media.Brushes;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class ClassToPathConverter : IValueConverter
     {
-        private const string CVIcon = "M 0 0 V 3.9688 H 8.7312 V 0 Z M 18.8417 4.715 10.675 0 V 9.43 Z M 0 5.5563 V 9.525 H 8.7312 V 5.5563 Z";
-        private const string DDIcon = "m 0 0 v 9.525 L 17.9917 4.7625 Z";
-        private const string BBIcon = "M 0 0 H 6.6146 L 1.5875 9.525 H 0 Z m 9.5406 0 h 1.3229 L 5.8365 9.525 H 4.5136 Z m 4.1167 0 l -5.0271 9.525 h 5.0271 l 8.599 -4.7625 z";
-        private const string CCIcon = "M 0 0 H 8.2021 L 3.175 9.525 H 0 Z M 11.6573 0 6.6302 9.525 h 5.0271 l 8.599 -4.7625 z";
-        private const string SubIcon = "m 0 0 h 3.175 V 9.7896 h -3.175 z M 5.8208 0.1719 V 9.6969 L 18.124 4.9344 Z";
-
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             switch (value)
             {
                 case ShipClass shipClass:
-                    return shipClass switch
-                    {
-                        ShipClass.Submarine => PathGeometry.Parse(SubIcon),
-                        ShipClass.Destroyer => PathGeometry.Parse(DDIcon),
-                        ShipClass.Cruiser => PathGeometry.Parse(CCIcon),
-                        ShipClass.Battleship => PathGeometry.Parse(BBIcon),
-                        ShipClass.AirCarrier => PathGeometry.Parse(CVIcon),
-                        _ => "",
-                    };
+                    return PathGeometry.Parse(ClassToPathHelper.GetSvgPathFromClass(shipClass));
+
                 case ShipCategory category when parameter != null:
                 {
                     var par = parameter.ToString();
-                    if (par != null && par.Contains("stroke", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return category.Equals(ShipCategory.TechTree) ? Brushes.White : Brushes.Gold;
-                    }
+                    bool border = par!.Contains("stroke", StringComparison.InvariantCultureIgnoreCase);
 
-                    if (category.Equals(ShipCategory.Premium) && par!.Contains("fill", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return Brushes.Gold;
-                    }
-
-                    return Brushes.White;
+                    var color = Color.Parse(ClassToPathHelper.GetColorFromCategory(category, border));
+                    return new SolidColorBrush(color);
                 }
 
                 default:
