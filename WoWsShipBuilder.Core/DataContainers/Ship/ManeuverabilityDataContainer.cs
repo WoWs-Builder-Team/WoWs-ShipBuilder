@@ -6,63 +6,63 @@ using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Core.DataContainers
+namespace WoWsShipBuilder.Core.DataContainers;
+
+public partial record ManeuverabilityDataContainer : DataContainerBase
 {
-    public partial record ManeuverabilityDataContainer : DataContainerBase
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
+    public decimal ManeuverabilityMaxSpeed { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal ManeuverabilityRudderShiftTime { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
+    public decimal ManeuverabilityTurningCircle { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+    public decimal FullPowerForward { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
+    public decimal FullPowerBackward { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+    [DataElementFiltering(false)]
+    public decimal RudderBlastProtection { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
+    [DataElementFiltering(false)]
+    public decimal EngineBlastProtection { get; set; }
+
+    public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
     {
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
-        public decimal ManeuverabilityMaxSpeed { get; set; }
+        var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
-        public decimal ManeuverabilityRudderShiftTime { get; set; }
+        var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine].First()];
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]
-        public decimal ManeuverabilityTurningCircle { get; set; }
+        decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
-        public decimal FullPowerForward { get; set; }
+        maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
+        maxSpeedModifier = modifiers.FindModifiers("boostCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * ((decimal)modifier + 1));
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FullPowerTime", UnitKey = "S")]
-        public decimal FullPowerBackward { get; set; }
+        decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-        [DataElementFiltering(false)]
-        public decimal RudderBlastProtection { get; set; }
+        decimal fullPowerForwardModifier = modifiers.FindModifiers("engineForwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "BlastProtection", TooltipKey = "BlastExplanation")]
-        [DataElementFiltering(false)]
-        public decimal EngineBlastProtection { get; set; }
+        decimal fullPowerBackwardModifier = modifiers.FindModifiers("engineBackwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
-        public static ManeuverabilityDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)
+        var manoeuvrability = new ManeuverabilityDataContainer
         {
-            var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
+            FullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier / Constants.TimeScale,
+            FullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier / Constants.TimeScale,
+            ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
+            ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
+            ManeuverabilityTurningCircle = hull.TurningRadius,
+            RudderBlastProtection = hull.SteeringGearArmorCoeff,
+            EngineBlastProtection = engine.ArmorCoeff,
+        };
 
-            var engine = ship.Engines[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Engine).Components[ComponentType.Engine].First()];
+        manoeuvrability.UpdateDataElements();
 
-            decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
-
-            maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
-
-            decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
-
-            decimal fullPowerForwardModifier = modifiers.FindModifiers("engineForwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
-
-            decimal fullPowerBackwardModifier = modifiers.FindModifiers("engineBackwardUpTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
-
-            var manoeuvrability = new ManeuverabilityDataContainer
-            {
-                FullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier / Constants.TimeScale,
-                FullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier / Constants.TimeScale,
-                ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
-                ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
-                ManeuverabilityTurningCircle = hull.TurningRadius,
-                RudderBlastProtection = hull.SteeringGearArmorCoeff,
-                EngineBlastProtection = engine.ArmorCoeff,
-            };
-
-            manoeuvrability.UpdateDataElements();
-
-            return manoeuvrability;
-        }
+        return manoeuvrability;
     }
 }
