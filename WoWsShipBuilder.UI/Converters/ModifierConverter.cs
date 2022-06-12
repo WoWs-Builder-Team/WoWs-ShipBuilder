@@ -261,6 +261,11 @@ namespace WoWsShipBuilder.UI.Converters
                         break;
                     }
 
+                    // this is for TRB
+                    case { } str when str.Contains("torpedoReloadTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_S}";
+                        break;
+
                     default:
                         // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
                         value = modifier > 1000 ? $"+{modifier / 1000} {Translation.Unit_KM}" : $"+{(int)modifier}";
