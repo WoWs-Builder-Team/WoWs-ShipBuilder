@@ -31,7 +31,7 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="5" Style="text-align: center">
-                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">
+                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">
                     <MudText Typo="Typo.body2">@Translation.CaptainSkillSelector_SkillTalent</MudText>
                 </MudButton>
             </MudItem>
@@ -101,7 +101,7 @@
         </TitleContent>
         <DialogContent>
             <MudContainer Style="overflow-y: auto; max-height: 500px">
-                <MudGrid Class="pa-2" >
+                <MudGrid Class="pa-2" Style="align-items: center">
                                 <MudItem xs="12">
                                     <MudText>@Translation.CaptainSkillSelector_SkillTalentDescription</MudText>
                                 </MudItem>
@@ -251,6 +251,11 @@
             return @"opacity: 0.4";
         }
         return string.Empty;
+    }
+
+    private string GetSkillOrTalentsEnabledIndicator()
+    {
+        return (ViewModel.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled) ? "border: #BF0000FF solid 1px" : string.Empty;
     }
 
 }
