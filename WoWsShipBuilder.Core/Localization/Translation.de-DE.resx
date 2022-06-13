@@ -993,12 +993,18 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Brandwahrscheinlichkeit per Salve</value>
   </data>
-  
-  <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Durchschlagskraft</value>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+      <value>Explosionsradius</value>
   </data>
-  
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>Explosions-Durchschlagskraft</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+      <value>Antriebs-Explosionsschutz</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+      <value>Ruder-Explosionsschutz</value>
+  </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
      Das Modul kann beschädigt werden.
@@ -1281,7 +1287,9 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Wassereinbruch</value>
   </data>
-  
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Explosionsschutz</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Maximale Brände</value>
   </data>
@@ -1354,25 +1362,62 @@ Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  
-  
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Schadensbereich</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Radius</value>
+  </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schaden</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>Diese Parameter betreffen nur U-Boote.
+Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Explosionsradius</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Detonationstimer</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Sinkgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Detonationstiefe</value>
+  </data>
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>Explosion</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>Wasserbomben Schadensverteilungs-Diagramm anzeigen</value>
+  </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>Zitadelle</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>Bug</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>Reparierbarer Schaden</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>Heck</value>
+  </data>
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>Aufbauten</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>Kasematte</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>Rumpf</value>
+  </data>
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>Hilfsräume</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>Schiffs-TP</value>
+  </data>
 </root>
