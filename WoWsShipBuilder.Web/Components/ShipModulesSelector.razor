@@ -1,0 +1,41 @@
+﻿@using WoWsShipBuilder.ViewModels.ShipVm;
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Core.Localization
+@inherits ReactiveComponentBase<ShipModuleViewModel>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="pa-2">
+        <MudStack Row="true" Justify="Justify.SpaceAround" >
+            @foreach (var columnUpgrade in ViewModel.ShipUpgrades)
+            {
+                <MudStack>
+                    @foreach (var upgrade in columnUpgrade)
+                    {
+                        <MudStack AlignItems="AlignItems.Center">
+                            @if (columnUpgrade.IndexOf(upgrade) != 0)
+                            {
+                                <MudIcon Icon="@Icons.Filled.ArrowDropDown"/>
+                            }
+                            <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="min-width: 55px; width: 55px; height: 55px;" Variant="Variant.Outlined" >
+                                <MudImage Width="40" Height="40" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
+                            </MudButton>
+                            <MudText Style="max-width: 80px; max-height: 40px; overflow: hidden; text-overflow: ellipsis;" Align="Align.Center" Typo="Typo.body2">@Localizer.GetGameLocalization(upgrade.Name).Localization</MudText>
+                        </MudStack>
+                    }
+                </MudStack>
+            }
+        </MudStack>
+    </MudCard>
+}
+
+@code {
+
+    private string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
+    {
+        string uriSuffix = isSelected ? "_installed" : string.Empty;
+        var path = $"/assets/modules/icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png";
+        return path;
+    }
+}
