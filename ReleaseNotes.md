@@ -2,6 +2,7 @@
 
 ## Additions
 - Add ability to change plot plane for vertical dispersion chart.
+- Allow to include consumable effects in ship statistics (#141)
 
 ## Changes
 - The gamedata updater no longer downloads data that is not supported by the current application version. 

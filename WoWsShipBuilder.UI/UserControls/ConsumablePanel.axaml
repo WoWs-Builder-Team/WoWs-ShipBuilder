@@ -4,23 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumablePanel"
              Name="ConsumablePanel">
     <Design.DataContext>
         <shipVm:ConsumableViewModel />
     </Design.DataContext>
-
-    <ItemsControl Items="{Binding ConsumableSlots}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal" Spacing="5"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="shipVm:ConsumableSlotViewModel">
-                <userControls:ConsumablePanelItem />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    
+    <StackPanel Orientation="Vertical" Spacing="2">
+        <ItemsControl HorizontalAlignment="Center" Items="{Binding ConsumableSlots}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="5"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="shipVm:ConsumableSlotViewModel">
+                    <userControls:ConsumablePanelItem />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{x:Static translations:Translation.Consumable_RightClickToggle}" />
+    </StackPanel>
 </UserControl>
