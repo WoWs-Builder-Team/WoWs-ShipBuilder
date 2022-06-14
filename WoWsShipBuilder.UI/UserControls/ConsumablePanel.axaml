@@ -25,6 +25,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="{x:Static translations:Translation.Consumable_RightClickToggle}" />
+        <TextBlock HorizontalAlignment="Center" FontSize="12" Opacity="0.75" VerticalAlignment="Bottom" Text="{x:Static translations:Translation.Consumable_RightClickToggle}" />
     </StackPanel>
 </UserControl>
