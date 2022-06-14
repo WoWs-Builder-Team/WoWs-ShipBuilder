@@ -43,22 +43,11 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
 
             // var flakBonus = 0;
-            decimal flakDamageBonus = 1;
-            decimal constantDamageBonus = 1;
+            decimal flakDamageBonus = modifiers.FindModifiers("AABubbleDamage").Aggregate(1M, (current, value) => current * (decimal)value);
+            flakDamageBonus = modifiers.FindModifiers("bubbleDamageMultiplier").Aggregate(flakDamageBonus, (current, modifier) => current * (decimal)modifier);
 
-            int flakDamageBonusIndex = modifiers.FindModifierIndex("AABubbleDamage");
-            if (flakDamageBonusIndex > -1)
-            {
-                List<float> modifiersValues = modifiers.FindModifiers("AABubbleDamage").ToList();
-                flakDamageBonus = modifiersValues.Aggregate(flakDamageBonus, (current, value) => current * (decimal)value);
-            }
-
-            int constantDamageBonusIndex = modifiers.FindModifierIndex("AAAuraDamage");
-            if (constantDamageBonusIndex > -1)
-            {
-                List<float> modifiersValues = modifiers.FindModifiers("AAAuraDamage").ToList();
-                constantDamageBonus = modifiersValues.Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
-            }
+            decimal constantDamageBonus = modifiers.FindModifiers("AAAuraDamage").Aggregate(1M, (current, value) => current * (decimal)value);
+            constantDamageBonus = modifiers.FindModifiers("areaDamageMultiplier").Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
 
             IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
             constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);

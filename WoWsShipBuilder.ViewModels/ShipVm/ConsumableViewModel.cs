@@ -1,105 +1,125 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using DynamicData;
-using ReactiveUI;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.DataContainers;
+using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm
+namespace WoWsShipBuilder.ViewModels.ShipVm;
+
+/// <summary>
+/// Represents the consumable slots of a ship.
+/// Data for each slot is stored in an individual <see cref="ConsumableSlotViewModel"/>
+/// while this viewmodel is responsible to store these individual instances and provide methods to easily interact with consumable-related data.
+/// </summary>
+public class ConsumableViewModel : ViewModelBase, IBuildStorable
 {
-    public class ConsumableViewModel : ViewModelBase, IBuildStorable
+    private readonly IAppDataService appDataService;
+    private readonly Ship ship;
+
+    public ConsumableViewModel()
+        : this(DesktopAppDataService.PreviewInstance, new())
     {
-        private readonly Ship ship;
+    }
 
-        private List<List<ConsumableDataContainer>> shipConsumables;
+    private ConsumableViewModel(IAppDataService appDataService, Ship ship)
+    {
+        this.appDataService = appDataService;
+        this.ship = ship;
+        ConsumableSlots = new();
+    }
 
-        public ConsumableViewModel()
-            : this(new())
+    /// <summary>
+    /// Gets an ObservableCollection containing the slot numbers of all activated consumable slots.
+    /// </summary>
+    public ObservableCollection<int> ActivatedSlots { get; } = new();
+
+    /// <summary>
+    /// Gets an ObservableCollection containing a viewmodel for each consumable slot.
+    /// </summary>
+    public ObservableCollection<ConsumableSlotViewModel> ConsumableSlots { get; }
+
+    public void LoadBuild(IEnumerable<string> storedData)
+    {
+        foreach (var slotViewModel in ConsumableSlots)
         {
-        }
-
-        private ConsumableViewModel(Ship ship)
-        {
-            this.ship = ship;
-            shipConsumables = new();
-            SelectedConsumables = new();
-
-            // TODO: get rid of callback property
-            OnConsumableSelected = newConsumable =>
+            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Contains(consumable.IconName));
+            if (index > -1)
             {
-                var removeList = SelectedConsumables.Where(consumable => consumable.Slot == newConsumable.Slot).ToList();
-                SelectedConsumables.RemoveMany(removeList);
-                SelectedConsumables.Add(newConsumable);
-                this.RaisePropertyChanged(nameof(SelectedConsumables));
-            };
-        }
-
-        public static async Task<ConsumableViewModel> CreateAsync(Ship ship, int shipHp)
-        {
-            var vm = new ConsumableViewModel(ship);
-            await vm.UpdateShipConsumables(new(), shipHp, true);
-            return vm;
-        }
-
-        public async Task UpdateShipConsumables(List<(string, float)> modifiers, int shipHp, bool isFirstTry = false)
-        {
-            ShipConsumables = (await Task.WhenAll(ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
-                    .OrderBy(group => group.Key)
-                    .Select(async group => (await Task.WhenAll(group.OrderBy(c => c.ConsumableName).Select(async c =>
-                            await ConsumableDataContainer.FromTypeAndVariant(c.ConsumableName, c.ConsumableVariantName, c.Slot, modifiers, false, 0, shipHp))))
-                        .ToList())))
-                .ToList();
-
-            List<ConsumableDataContainer> newSelection = new();
-            if (isFirstTry)
-            {
-                newSelection = ShipConsumables.Select(list => list.First()).ToList();
+                slotViewModel.SelectedIndex = index;
             }
-            else
-            {
-                foreach (ConsumableDataContainer selectedConsumable in SelectedConsumables)
-                {
-                    newSelection.Add(ShipConsumables.SelectMany(list => list).First(consumable => consumable.IconName.Equals(selectedConsumable.IconName)));
-                }
+        }
+    }
 
-                SelectedConsumables.Clear();
-            }
+    public List<string> SaveBuild()
+    {
+        return ConsumableSlots.Select(slot => slot.SelectedConsumable.IconName).ToList();
+    }
 
-            SelectedConsumables.AddRange(newSelection);
+    /// <summary>
+    /// Creates a new instance of the <see cref="ConsumableViewModel"/> and initializes its data through asynchronous methods.
+    /// </summary>
+    /// <param name="appDataService">The <see cref="IAppDataService"/> used by the new viewmodel.</param>
+    /// <param name="ship">The ship associated with the new viewmodel instance.</param>
+    /// <param name="disabledConsumables">A list of consumables that are currently disabled.</param>
+    /// <returns>A new instance of the <see cref="ConsumableViewModel"/> with initialized data.</returns>
+    public static async Task<ConsumableViewModel> CreateAsync(IAppDataService appDataService, Ship ship, IEnumerable<string> disabledConsumables)
+    {
+        var vm = new ConsumableViewModel(appDataService, ship);
+        await vm.UpdateSlotViewModels(disabledConsumables);
+        return vm;
+    }
+
+    /// <summary>
+    /// Updates the consumable data for each slot.
+    /// This method only replaces the <see cref="WoWsShipBuilder.Core.DataContainers.ConsumableDataContainer">ConsumableDataContainer</see> objects in each slot viewmodel but not the viewmodels themselves.
+    /// </summary>
+    /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
+    /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>
+    public async Task UpdateConsumableData(List<(string, float)> modifiers, int shipHp)
+    {
+        await Parallel.ForEachAsync(ConsumableSlots, async (consumableSlot, _) => { await consumableSlot.UpdateDataContainers(modifiers, shipHp); });
+    }
+
+    public IEnumerable<(string, float)> GetModifiersList()
+    {
+        var modifiers = new List<(string, float)>();
+        foreach (int slot in ActivatedSlots)
+        {
+            modifiers.AddRange(ConsumableSlots[slot].SelectedConsumable.Modifiers.Select(entry => (entry.Key, entry.Value)));
         }
 
-        public List<List<ConsumableDataContainer>> ShipConsumables
+        return modifiers;
+    }
+
+    private async Task UpdateSlotViewModels(IEnumerable<string> disabledConsumables)
+    {
+        var rawSlots = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
+            .AsParallel()
+            .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
+            .Where(consumables => consumables.Any());
+        var slots = new ConcurrentBag<ConsumableSlotViewModel>();
+
+        await Parallel.ForEachAsync(rawSlots, async (consumables, _) => { slots.Add(await ConsumableSlotViewModel.CreateAsync(appDataService, consumables, ConsumableActivationChanged)); });
+
+        ConsumableSlots.Clear();
+        ConsumableSlots.AddRange(slots.OrderBy(vm => vm.Slot));
+    }
+
+    private void ConsumableActivationChanged(int slot, bool activationState)
+    {
+        if (activationState)
         {
-            get => shipConsumables;
-            set => this.RaiseAndSetIfChanged(ref shipConsumables, value);
+            ActivatedSlots.Add(slot);
         }
-
-        public CustomObservableCollection<ConsumableDataContainer> SelectedConsumables { get; private set; }
-
-        public Action<ConsumableDataContainer> OnConsumableSelected { get; }
-
-        public void LoadBuild(IEnumerable<string> storedData)
+        else
         {
-            var selection = new List<ConsumableDataContainer>();
-            foreach (List<ConsumableDataContainer> consumableList in ShipConsumables)
-            {
-                selection.AddRange(consumableList.Where(consumable => storedData.Contains(consumable.IconName)));
-            }
-
-            var removeList = SelectedConsumables.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
-            SelectedConsumables.RemoveMany(removeList);
-            SelectedConsumables.AddRange(selection);
-            this.RaisePropertyChanged(nameof(SelectedConsumables));
-        }
-
-        public List<string> SaveBuild()
-        {
-            return SelectedConsumables.Select(consumable => consumable.IconName).ToList();
+            ActivatedSlots.Remove(slot);
         }
     }
 }

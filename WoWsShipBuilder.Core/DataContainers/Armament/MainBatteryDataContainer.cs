@@ -161,6 +161,8 @@ namespace WoWsShipBuilder.Core.DataContainers
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
             decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
             decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
+            var consumableRangeModifiers = modifiers.FindModifiers("artilleryDistCoeff");
+            range = consumableRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier);
 
             var talentRangeModifiers = modifiers.FindModifiers("talentMaxDistGM");
             range = talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000;

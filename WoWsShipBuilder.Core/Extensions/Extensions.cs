@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.Core.Extensions
         /// <param name="content">The content dictionary for the key.</param>
         /// <typeparam name="T">The data type of the content dictionary.</typeparam>
         /// <returns><see langword="true"/> if the content was added, <see langword="false"/> otherwise.</returns>
-        public static bool SetIfNotNull<T>(this Dictionary<Nation, Dictionary<string, T>> thisDict, Nation nation, Dictionary<string, T>? content)
+        public static bool SetIfNotNull<T>(this IDictionary<Nation, Dictionary<string, T>> thisDict, Nation nation, Dictionary<string, T>? content)
         {
             if (content == null)
             {

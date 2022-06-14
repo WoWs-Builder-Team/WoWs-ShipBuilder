@@ -1420,4 +1420,7 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_ShipHp" xml:space="preserve">
       <value>Ship HP</value>
   </data>
+  <data name="Consumable_RightClickToggle" xml:space="preserve">
+      <value>Right-click an icon to toggle effects</value>
+  </data>
 </root>
