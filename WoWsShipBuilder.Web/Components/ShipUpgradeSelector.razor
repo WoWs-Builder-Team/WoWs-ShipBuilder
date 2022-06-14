@@ -1,0 +1,57 @@
+﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.ShipVm
+@using System.Collections.ObjectModel
+@inherits ReactiveComponentBase<UpgradePanelViewModelBase>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="pa-2">
+        <MudStack Row="true" Justify="Justify.Center" >
+            @foreach (var columnModernizations in ViewModel.AvailableModernizationList)
+            {
+                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0" >
+                    <ActivatorContent>
+                        <MudButton Class="pa-2" Style="min-width: 55px; width: 55px; height: 55px;" Variant="Variant.Outlined" >
+                            <MudImage Width="40" Height="40" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
+                        </MudButton>
+                    </ActivatorContent>
+                    <ChildContent >
+                        <MudPaper Outlined="true"  >
+                            @foreach (var modernization in columnModernizations)
+                            {
+                                <MudMenuItem OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))" Class="mx-0 my-1 px-2 py-0"  >
+                                    <MudImage Width="40" Height="40" Src="@GetUpgradeIcon(modernization)"/>
+                                </MudMenuItem>
+                            }
+                        </MudPaper>
+                    </ChildContent>
+                </MudMenu>
+            }
+        </MudStack>
+    </MudCard>
+    
+}
+
+@code {
+    
+    
+
+    private string GetSelectedUpgradeIcon(List<Modernization> modernizations, ObservableCollection<Modernization> selectedModernizations )
+    {
+        Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
+        selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
+        string path;
+        
+        path = selectedMod.Index != null ? $"/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+
+        return path;
+    }
+    
+    private string GetUpgradeIcon(Modernization modernization)
+    {
+        return modernization.Index != null ? $"/assets/modernization_icons/icon_modernization_{modernization.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+    }
+
+}
