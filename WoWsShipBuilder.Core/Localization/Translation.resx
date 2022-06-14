@@ -1421,6 +1421,6 @@ They do not have any effect on surface ships.</value>
       <value>Ship HP</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
-      <value>Right-click on a consumable to toggle its effects</value>
+      <value>Right-click an icon to toggle effects</value>
   </data>
 </root>

@@ -367,7 +367,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Right-click on a consumable to toggle its effects.
+        ///   Looks up a localized string similar to Right-click an icon to toggle effects.
         /// </summary>
         public static string Consumable_RightClickToggle {
             get {
