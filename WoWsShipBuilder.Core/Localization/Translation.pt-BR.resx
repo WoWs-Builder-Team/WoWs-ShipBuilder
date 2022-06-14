@@ -1420,4 +1420,5 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_ShipHp" xml:space="preserve">
       <value>HP do Navio</value>
   </data>
+  
 </root>
