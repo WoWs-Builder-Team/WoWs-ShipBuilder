@@ -288,7 +288,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             List<ConsumableDataContainer> consumables = new();
             foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
             {
-                var consumableDataContainer = await ConsumableDataContainer.FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, true, finalPlaneHp, 0);
+                var consumableDataContainer = await ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0, appDataService);
                 consumables.Add(consumableDataContainer);
             }
 

@@ -367,6 +367,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Right-click an icon to toggle effects.
+        /// </summary>
+        public static string Consumable_RightClickToggle {
+            get {
+                return ResourceManager.GetString("Consumable_RightClickToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cruiser.
         /// </summary>
         public static string Cruiser {

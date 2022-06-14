@@ -12,6 +12,7 @@ using WoWsShipBuilder.UI.Converters;
 
 namespace WoWsShipBuilder.UI.UserControls
 {
+    [Obsolete("Use ConsumablePanel instead")]
     public class ConsumableSelector : UserControl
     {
         #region Static Fields and Constants

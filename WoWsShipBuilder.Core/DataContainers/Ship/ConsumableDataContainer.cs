@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataContainers;
 
@@ -30,7 +32,17 @@ public partial record ConsumableDataContainer : DataContainerBase
 
     public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-    public static async Task<ConsumableDataContainer> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
+    public static Task<ConsumableDataContainer> FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
+    {
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, appDataService);
+    }
+
+    public static Task<ConsumableDataContainer> FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
+    {
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, appDataService);
+    }
+
+    private static async Task<ConsumableDataContainer> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
@@ -92,7 +104,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
                 consumableModifiers["timeFromHeaven"] = timeFromHeaven;
 
-                var plane = await DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = await appDataService.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
@@ -221,7 +233,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
-                var plane = await DesktopAppDataService.Instance.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = await appDataService.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
