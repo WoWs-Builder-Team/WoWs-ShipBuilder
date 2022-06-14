@@ -24,7 +24,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             mockFileSystem = new();
             awsClientMock = new();
             appDataHelper = new();
-            appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"C:\AppData\live");
+            appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"AppData/live");
         }
 
         private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion? gameVersion = null)
