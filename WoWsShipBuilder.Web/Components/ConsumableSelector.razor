@@ -1,0 +1,59 @@
+﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.ShipVm
+@using WoWsShipBuilder.Core.DataContainers
+@inherits ReactiveComponentBase<ConsumableViewModel>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="pa-2">
+        <MudStack Row="true" Justify="Justify.Center" >
+            @foreach (var consumableSlot in ViewModel.ConsumableSlots)
+            {
+                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0" >
+                    <ActivatorContent>
+                        <MudButton @oncontextmenu="@(_ => ActivateConsumable(consumableSlot))" @oncontextmenu:preventDefault="true"  Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot))" Variant="Variant.Outlined" >
+                            <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
+                        </MudButton>
+                    </ActivatorContent>
+                    <ChildContent >
+                        <MudPaper Outlined="true"  >
+                            @foreach (var consumable in consumableSlot.ConsumableData)
+                            {
+                                <MudMenuItem OnClick="@(_ => SwapConsumable(consumableSlot, consumable))" Class="mx-0 my-1 px-2 py-0"  >
+                                    <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumable)"/>
+                                </MudMenuItem>
+                            }
+                        </MudPaper>
+                    </ChildContent>
+                </MudMenu>
+            }
+        </MudStack>
+    </MudCard>
+    
+}
+
+@code {
+
+    private string GetConsumableIcon(ConsumableDataContainer consumable)
+    {
+        string iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
+        return $"/assets/consumable_icons/consumable_{iconName}.png";
+    }
+    
+    private void SwapConsumable(ConsumableSlotViewModel viewModel, ConsumableDataContainer consumableData)
+    {
+        viewModel.SelectedIndex = viewModel.ConsumableData.IndexOf(consumableData);
+    }
+
+    private void ActivateConsumable(ConsumableSlotViewModel viewModel)
+    {
+        viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+    }
+
+    private string GetColorFromStatus(ConsumableSlotViewModel viewModel)
+    {
+        return viewModel.ConsumableActivated ? $"border-color: #FFD700" : $"border-color: {Color.Default}";
+    }
+}
