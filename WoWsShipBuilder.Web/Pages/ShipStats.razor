@@ -24,13 +24,15 @@
     @if (!initialized)
     {
         <MudGrid>
-            <MudItem xs="4">
+            <MudItem xs="3">
                 <MudStack>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
                 </MudStack>
             </MudItem>
-            <MudItem xs="8">
+            <MudItem xs="9">
                 <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
             </MudItem>
         </MudGrid>
@@ -70,7 +72,6 @@
         NavManager.LocationChanged += HandleLocationChanged;
         await LoadShipViewModel(shipIndex);
         await ViewModel!.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
-        // this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
         initialized = true;
     }
     
