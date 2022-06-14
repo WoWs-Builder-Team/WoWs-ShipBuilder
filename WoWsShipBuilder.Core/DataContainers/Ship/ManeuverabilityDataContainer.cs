@@ -52,8 +52,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
 
         var manoeuvrability = new ManeuverabilityDataContainer
         {
-            FullPowerBackward = engine.BackwardEngineUpTime * fullPowerBackwardModifier / Constants.TimeScale,
-            FullPowerForward = engine.ForwardEngineUpTime * fullPowerForwardModifier / Constants.TimeScale,
+            FullPowerBackward = Math.Round(engine.BackwardEngineUpTime * fullPowerBackwardModifier / Constants.TimeScale),
+            FullPowerForward = Math.Round(engine.ForwardEngineUpTime * fullPowerForwardModifier / Constants.TimeScale),
             ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
             ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
             ManeuverabilityTurningCircle = hull.TurningRadius,
