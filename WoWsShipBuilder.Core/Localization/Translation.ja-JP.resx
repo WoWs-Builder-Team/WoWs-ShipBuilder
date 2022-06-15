@@ -1420,5 +1420,7 @@
   <data name="ShipStats_ShipHp" xml:space="preserve">
       <value>艦艇HP</value>
   </data>
-  
+  <data name="Consumable_RightClickToggle" xml:space="preserve">
+      <value>アイコンを右クリックして効果を切り替える</value>
+  </data>
 </root>
