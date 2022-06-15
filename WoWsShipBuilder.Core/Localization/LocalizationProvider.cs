@@ -17,11 +17,11 @@ public class LocalizationProvider : ILocalizationProvider
         this.appDataService = appDataService;
     }
 
-    public async Task RefreshDataAsync(params CultureDetails[] supportedCultures)
+    public async Task RefreshDataAsync(ServerType serverType, params CultureDetails[] supportedCultures)
     {
         foreach (var culture in supportedCultures)
         {
-            var cultureLocalization = await appDataService.ReadLocalizationData(ServerType.Live, culture.LocalizationFileName) ?? throw new InvalidOperationException("Localization data not found");
+            var cultureLocalization = await appDataService.ReadLocalizationData(serverType, culture.LocalizationFileName) ?? throw new InvalidOperationException("Localization data not found");
             localizationData[culture] = cultureLocalization;
         }
     }
