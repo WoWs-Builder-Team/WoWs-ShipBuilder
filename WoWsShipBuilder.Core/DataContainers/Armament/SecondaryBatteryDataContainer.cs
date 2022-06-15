@@ -25,20 +25,11 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal Reload { get; set; }
 
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip", UnitKey = "S")]
-        public decimal TrueReload { get; set; }
-
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
         public decimal RoF { get; set; }
 
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip", UnitKey = "ShotsPerMinute")]
-        public decimal TrueRoF { get; set; }
-
         [DataElementType(DataElementTypes.KeyValue)]
         public string TheoreticalDpm { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip")]
-        public string TheoreticalTrueDpm { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
         [DataElementFiltering(true, "ShouldDisplayFpm")]
@@ -88,9 +79,6 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                 decimal rof = 60 / (decimal)reload;
 
-                decimal trueReload = Math.Ceiling((decimal)reload / Constants.TickRate) * Constants.TickRate;
-                decimal trueRateOfFire = 60 / trueReload;
-
                 var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
                 nfi.NumberGroupSeparator = "'";
 
@@ -103,8 +91,6 @@ namespace WoWsShipBuilder.Core.DataContainers
                     TurretSetup = new(arrangementString, turretName, AreValuesKeys: true),
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
-                    TrueReload = Math.Round(trueReload, 2),
-                    TrueRoF = Math.Round(trueRateOfFire, 1),
                     RoF = Math.Round(rof, 1),
                     Sigma = secondary.Sigma,
                 };
@@ -130,7 +116,6 @@ namespace WoWsShipBuilder.Core.DataContainers
                 secondaryBatteryDataContainer.Shell = shellData;
                 secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE}");
                 secondaryBatteryDataContainer.TheoreticalDpm = Math.Round(shellData.Damage * barrelCount * rof).ToString("n0", nfi);
-                secondaryBatteryDataContainer.TheoreticalTrueDpm = Math.Round(shellData.Damage * barrelCount * trueRateOfFire).ToString("n0", nfi);
 
                 if (secondaryBatteryDataContainer.DisplayFpm)
                 {

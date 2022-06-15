@@ -31,14 +31,8 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal Reload { get; set; }
 
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip", UnitKey = "S")]
-        public decimal TrueReload { get; set; }
-
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "ShotsPerMinute")]
         public decimal RoF { get; set; }
-
-        [DataElementType(DataElementTypes.Tooltip, TooltipKey = "TrueReloadTooltip", UnitKey = "ShotsPerMinute")]
-        public decimal TrueRoF { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "TheoreticalDpm")]
         [DataElementFiltering(true, "ShouldDisplayHeDpm")]
@@ -51,18 +45,6 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "TheoreticalDpm")]
         [DataElementFiltering(true, "ShouldDisplayApDpm")]
         public string TheoreticalApDpm { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "TheoreticalTrueDpm", TooltipKey = "TrueReloadTooltip")]
-        [DataElementFiltering(true, "ShouldDisplayHeDpm")]
-        public string TheoreticalTrueHeDpm { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "TheoreticalTrueDpm", TooltipKey = "TrueReloadTooltip")]
-        [DataElementFiltering(true, "ShouldDisplaySapDpm")]
-        public string TheoreticalTrueSapDpm { get; set; } = default!;
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "TheoreticalTrueDpm", TooltipKey = "TrueReloadTooltip")]
-        [DataElementFiltering(true, "ShouldDisplayApDpm")]
-        public string TheoreticalTrueApDpm { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "FPM")]
         [DataElementFiltering(true, "ShouldDisplayHeDpm")]
@@ -187,9 +169,6 @@ namespace WoWsShipBuilder.Core.DataContainers
             var maxRangeBw = (double)(mainBattery.MaxRange / 30);
             double vRadiusCoeff = (modifiedDispersion.RadiusOnMax - modifiedDispersion.RadiusOnDelim) / (maxRangeBw * (1 - modifiedDispersion.Delim));
 
-            decimal trueReload = Math.Ceiling(reload / Constants.TickRate) * Constants.TickRate;
-            decimal trueRateOfFire = 60 / trueReload;
-
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = "'";
 
@@ -202,9 +181,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 TurretNames = turretNames,
                 Range = Math.Round(range, 2),
                 Reload = Math.Round(reload, 2),
-                TrueReload = Math.Round(trueReload, 2),
                 RoF = Math.Round(rateOfFire * barrelCount, 1),
-                TrueRoF = Math.Round(trueRateOfFire * barrelCount, 1),
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = Math.Round(traverseSpeed, 2),
                 Sigma = mainBattery.Sigma,
@@ -228,7 +205,6 @@ namespace WoWsShipBuilder.Core.DataContainers
             {
                 var heShell = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"));
                 mainBatteryDataContainer.TheoreticalHeDpm = Math.Round(heShell.Damage * barrelCount * rateOfFire).ToString("n0", nfi);
-                mainBatteryDataContainer.TheoreticalTrueHeDpm = Math.Round(heShell.Damage * barrelCount * trueRateOfFire).ToString("n0", nfi);
                 mainBatteryDataContainer.PotentialFpm = Math.Round(heShell.ShellFireChance / 100 * barrelCount * rateOfFire, 2);
             }
 
@@ -236,14 +212,12 @@ namespace WoWsShipBuilder.Core.DataContainers
             {
                 decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.AP}")).Damage;
                 mainBatteryDataContainer.TheoreticalApDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
-                mainBatteryDataContainer.TheoreticalTrueApDpm = Math.Round(shellDamage * barrelCount * trueRateOfFire).ToString("n0", nfi);
             }
 
             if (mainBatteryDataContainer.DisplaySapDpm)
             {
                 decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}")).Damage;
                 mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
-                mainBatteryDataContainer.TheoreticalTrueSapDpm = Math.Round(shellDamage * barrelCount * trueRateOfFire).ToString("n0", nfi);
             }
 
             mainBatteryDataContainer.UpdateDataElements();
