@@ -17,6 +17,8 @@
 - Fix "Skills & Talents" button not enabling when loading a build with conditional skills selected.
 - Fix torpedo reload time parameter being displayed incorrectly in the torpedo reload booster consumable.
 - Fix tier 1 ships names sometimes being displayed incorrectly.
+- Fix an error during the initialization of the localization data for server type PTS.
+- Fix an error when opening a ship after switching the server type of the application.
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
