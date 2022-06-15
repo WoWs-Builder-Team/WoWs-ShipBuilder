@@ -13,7 +13,7 @@
             {
                 <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0" >
                     <ActivatorContent>
-                        <MudButton @oncontextmenu="@(_ => ActivateConsumable(consumableSlot))" @oncontextmenu:preventDefault="true"  Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot))" Variant="Variant.Outlined" >
+                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true"  Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot))" Variant="Variant.Outlined" >
                             <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                         </MudButton>
                     </ActivatorContent>
@@ -47,9 +47,12 @@
         viewModel.SelectedIndex = viewModel.ConsumableData.IndexOf(consumableData);
     }
 
-    private void ActivateConsumable(ConsumableSlotViewModel viewModel)
+    private void ActivateConsumable(MouseEventArgs args, ConsumableSlotViewModel viewModel)
     {
-        viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+        if (args.Button == 2)
+        {
+            viewModel.ConsumableActivated = !viewModel.ConsumableActivated;   
+        }
     }
 
     private string GetColorFromStatus(ConsumableSlotViewModel viewModel)
