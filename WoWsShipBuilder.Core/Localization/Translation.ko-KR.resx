@@ -817,7 +817,9 @@
   
   
   
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>관통</value>
+  </data>
   
   
   
@@ -958,6 +960,28 @@
   <data name="ShipStats_HP" xml:space="preserve">
       <value>체력</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>피해</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
   
   
   
