@@ -88,7 +88,7 @@ public static class AppData
 #if DEBUG
     public static bool IsDebug => true;
 #else
-        public static bool IsDebug => false;
+    public static bool IsDebug => false;
 #endif
 
     public static string GenerateLogDump(AppSettings appSettings)
