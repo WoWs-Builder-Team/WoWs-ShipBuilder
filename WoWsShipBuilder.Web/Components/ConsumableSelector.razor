@@ -2,6 +2,8 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.DataElements.DataElements
+@using WoWsShipBuilder.Core.ConverterHelpers
 @inherits ReactiveComponentBase<ConsumableViewModel>
 @inject ILocalizer Localizer
 
@@ -13,16 +15,78 @@
             {
                 <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0" >
                     <ActivatorContent>
-                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true"  Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot))" Variant="Variant.Outlined" >
-                            <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
-                        </MudButton>
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Bottom">
+                            <ChildContent>
+                                <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true"  Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot))" Variant="Variant.Outlined" >
+                                    <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
+                                </MudButton>
+                            </ChildContent>
+                            <TooltipContent>
+                                <MudPaper Outlined="true" Style="max-width: 300px">
+                                    <MudStack Spacing="0" Class="pa-2">
+                                        <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
+                                        <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
+                                        <MudDivider Light="true" Class="ma-1"/>
+                                        @foreach (var data in consumableSlot.SelectedConsumable.DataElements)
+                                        {
+                                            @fragment((data, Localizer))
+                                        }
+                                        <div style="margin-top: 6px"></div>
+                                        @foreach (var (modifierName, modifierValue) in consumableSlot.SelectedConsumable.Modifiers)
+                                        {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                            var modifierDesc = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Description, Localizer);
+                                            var modifierValueString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Value, Localizer);
+                                            @if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
+                                            {
+                                                <div class="d-flex justify-space-between">
+                                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifierDesc</MudText>
+                                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@modifierValueString</MudText>
+                                                </div>
+                                            }
+                                        }
+                                    </MudStack>
+                                </MudPaper>
+                            </TooltipContent>
+                        </MudTooltip>
                     </ActivatorContent>
                     <ChildContent >
                         <MudPaper Outlined="true"  >
                             @foreach (var consumable in consumableSlot.ConsumableData)
                             {
-                                <MudMenuItem OnClick="@(_ => SwapConsumable(consumableSlot, consumable))" Class="mx-0 my-1 px-2 py-0"  >
-                                    <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumable)"/>
+                                <MudMenuItem OnClick="@(_ => SwapConsumable(consumableSlot, consumable))" Class="mx-0 my-1 px-2 py-0">
+                                    <MudTooltip Placement="Placement.Bottom" Color="Color.Transparent">
+                                        <ChildContent>
+                                            <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumable)"/>
+                                        </ChildContent>
+                                        <TooltipContent>
+                                            <MudPaper Outlined="true" Style="max-width: 300px">
+                                                <MudStack Spacing="0" Class="pa-2">
+                                                    <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + consumable.Name).Localization</MudText>
+                                                    <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + consumable.Name).Localization</MudText>
+                                                    <MudDivider Light="true" Class="ma-1"/>
+                                                    @foreach (var data in consumable.DataElements)
+                                                    {
+                                                        @fragment((data, Localizer))
+                                                    }
+                                                    <div style="margin-top: 6px"></div>
+                                                    @foreach (var (modifierName, modifierValue) in consumable.Modifiers)
+                                                    {
+                                                        // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                                        var modifierDesc = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Description, Localizer);
+                                                        var modifierValueString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Value, Localizer);
+                                                        @if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
+                                                        {
+                                                            <div class="d-flex justify-space-between">
+                                                                <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifierDesc</MudText>
+                                                                <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@modifierValueString</MudText>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </MudStack>
+                                            </MudPaper>
+                                        </TooltipContent>
+                                    </MudTooltip>
                                 </MudMenuItem>
                             }
                         </MudPaper>
@@ -58,5 +122,74 @@
     private string GetColorFromStatus(ConsumableSlotViewModel viewModel)
     {
         return viewModel.ConsumableActivated ? $"border-color: #FFD700" : $"border-color: {Color.Default}";
+    }
+    
+    private static RenderFragment<(IDataElement dataElement, ILocalizer localizer)> fragment = group => __builder =>
+    {
+        switch (group.dataElement)
+        {
+            case GroupedDataElement element:
+                <div>
+                    <MudText Typo="Typo.body2" Class="mb-1">@group.localizer.GetAppLocalization(element.Key).Localization</MudText>
+                    <div class="ml-3">
+                        @foreach (var child in element.Children)
+                        {
+                            @fragment((child, group.localizer))
+                            ;
+                        }
+                    </div>
+                </div>
+                break;
+            case KeyValueDataElement element:
+                <div class="d-flex justify-space-between">
+                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                </div>
+                break;
+            case KeyValueUnitDataElement element:
+                <div class="d-flex justify-space-between">
+                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + @group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
+                </div>
+                break;
+            case TooltipDataElement element:
+                <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%">
+                    <ChildContent>
+                        <div class="d-flex justify-space-between">
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + @group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
+                        </div>
+                    </ChildContent>
+                    <TooltipContent>
+                        <MudPaper Outlined="true" Class="pa-2">
+                            <MudText Style="max-width: 500px" Typo="Typo.body2">@group.localizer.GetAppLocalization(element.Tooltip).Localization</MudText>
+                        </MudPaper>
+                    </TooltipContent>
+                </MudTooltip>
+                break;
+            case ValueDataElement element:
+                <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
+                break;
+            case FormattedTextDataElement element:
+                <MudText Typo="Typo.body2">@ConvertFormattedText(element, group.localizer)</MudText>
+                break;
+        }
+    };
+
+    private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)
+    {
+        return !isValueKey ? value : (isAppLocalizationKey ? localizer.GetAppLocalization(value) : localizer.GetGameLocalization(value)).Localization;
+    }
+
+    private static string ConvertFormattedText(FormattedTextDataElement formattedTextDataElement, ILocalizer localizer)
+    {
+        try
+        {
+            return FormattedTextHelper.ConvertFormattedText(formattedTextDataElement, localizer);
+        }
+        catch (Exception e)
+        {
+            return "Error";
+        }
     }
 }
