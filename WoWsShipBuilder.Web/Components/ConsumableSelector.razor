@@ -17,14 +17,14 @@
                 {
                     <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0">
                     <ActivatorContent>
-                        <MudTooltip Color="Color.Transparent" Placement="Placement.Bottom">
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                             <ChildContent>
                                 <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Class="pa-2" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                     <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                                 </MudButton>
                             </ChildContent>
                             <TooltipContent>
-                                <MudPaper Outlined="true" Style="max-width: 300px">
+                                <MudPaper Outlined="true" Style=" min-width: 300px; max-width: 500px">
                                     <MudStack Spacing="0" Class="pa-2">
                                         <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
                                         <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
@@ -57,12 +57,12 @@
                             @foreach (var consumable in consumableSlot.ConsumableData)
                             {
                                 <MudMenuItem OnClick="@(_ => SwapConsumable(consumableSlot, consumable))" Class="mx-0 my-1 px-2 py-0">
-                                    <MudTooltip Placement="Placement.Bottom" Color="Color.Transparent">
+                                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                                         <ChildContent>
                                             <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumable)"/>
                                         </ChildContent>
                                         <TooltipContent>
-                                            <MudPaper Outlined="true" Style="max-width: 300px">
+                                            <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
                                                 <MudStack Spacing="0" Class="pa-2">
                                                     <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + consumable.Name).Localization</MudText>
                                                     <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + consumable.Name).Localization</MudText>
@@ -97,15 +97,12 @@
                 }
                 else
                 {
-                    <MudTooltip Color="Color.Transparent" Placement="Placement.Bottom" RootClass="pa-2" RootStyle="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" >
+                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootClass="pa-2" RootStyle="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" >
                         <ChildContent>
-                            @* <div @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" class="pa-2" style="@("min-width: 55px; width: 55px; height: 55px;" + GetColorFromStatus(consumableSlot, false))"> *@
-                            @*     <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" /> *@
-                            @* </div> *@
-                                <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" />
+                            <MudImage Width="40" Height="40" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" />
                         </ChildContent>
                         <TooltipContent>
-                            <MudPaper Outlined="true" Style="max-width: 300px">
+                            <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
                                 <MudStack Spacing="0" Class="pa-2">
                                     <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
                                     <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + consumableSlot.SelectedConsumable.Name).Localization</MudText>
