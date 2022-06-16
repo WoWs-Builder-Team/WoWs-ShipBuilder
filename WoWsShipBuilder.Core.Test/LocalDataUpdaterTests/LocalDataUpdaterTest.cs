@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO.Abstractions.TestingHelpers;
+﻿using System.IO.Abstractions.TestingHelpers;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
@@ -21,22 +21,25 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         [SetUp]
         public void Setup()
         {
-            mockFileSystem = new MockFileSystem();
-            awsClientMock = new Mock<IAwsClient>();
-            appDataHelper = new Mock<IAppDataService>();
-            appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"C:\AppData\live");
+            mockFileSystem = new();
+            awsClientMock = new();
+            appDataHelper = new();
+            appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"AppData/live");
         }
 
         private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion? gameVersion = null)
         {
-            return new VersionInfo(
-                new Dictionary<string, List<FileVersion>>
+            return new(
+                new()
                 {
-                    { "Ability", new List<FileVersion> { new("Common.json", versionCode) } },
-                    { "Ship", new List<FileVersion> { new("Japan.json", versionCode), new("Germany.json", versionCode) } },
+                    { "Ability", new() { new("Common.json", versionCode) } },
+                    { "Ship", new() { new("Japan.json", versionCode), new("Germany.json", versionCode) } },
                 },
                 versionCode,
-                gameVersion);
+                gameVersion)
+            {
+                DataStructuresVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!,
+            };
         }
     }
 }

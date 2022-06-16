@@ -52,7 +52,7 @@ SetupExtensions.SetupLogging();
 var logger = Logging.GetLogger("ShipBuilderInit");
 
 await host.Services.GetRequiredService<ILocalDataUpdater>().RunDataUpdateCheck(settings.SelectedServerType, new Progress<(int, string)>());
-await host.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(appSettings.SelectedLanguage);
+await host.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(appSettings.SelectedServerType, appSettings.SelectedLanguage);
 
 AppData.ShipDictionary = new();
 logger.Debug("Initializing summary list...");

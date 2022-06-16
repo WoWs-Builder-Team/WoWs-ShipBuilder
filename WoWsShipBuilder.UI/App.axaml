@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:WoWsShipBuilder.UI"
              xmlns:translations="clr-namespace:WoWsShipBuilder.UI.Translations"
+             xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
@@ -19,5 +20,6 @@
     
     <Application.Resources>
         <translations:LocalizeConverter x:Key="Localizer" />
+        <converters:ImagePathConverter x:Key="ImageConverter" />
     </Application.Resources>
 </Application>

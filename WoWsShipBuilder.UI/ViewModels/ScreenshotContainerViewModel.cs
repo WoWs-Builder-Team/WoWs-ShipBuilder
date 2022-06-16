@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -77,7 +78,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
                 SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings)),
                 UpgradePanelViewModel = new UpgradePanelViewModel(ship, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings)),
-                ConsumableViewModel = await ConsumableViewModel.CreateAsync(ship, 0),
+                ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),
             };
             vm.LoadBuilds(build);
             return vm;

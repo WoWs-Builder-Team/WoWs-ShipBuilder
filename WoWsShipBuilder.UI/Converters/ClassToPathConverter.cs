@@ -17,52 +17,37 @@ namespace WoWsShipBuilder.UI.Converters
 
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value is ShipClass shipClass)
+            switch (value)
             {
-                switch (shipClass)
-                {
-                    case ShipClass.Submarine:
-                        return PathGeometry.Parse(SubIcon);
-                    case ShipClass.Destroyer:
-                        return PathGeometry.Parse(DDIcon);
-                    case ShipClass.Cruiser:
-                        return PathGeometry.Parse(CCIcon);
-                    case ShipClass.Battleship:
-                        return PathGeometry.Parse(BBIcon);
-                    case ShipClass.AirCarrier:
-                        return PathGeometry.Parse(CVIcon);
-                    default:
-                        return "";
-                }
-            }
-            else if (value is ShipCategory category && parameter != null)
-            {
-                var par = parameter.ToString();
-                if (par != null && par.Contains("stroke", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (category.Equals(ShipCategory.TechTree))
+                case ShipClass shipClass:
+                    return shipClass switch
                     {
-                        return Brushes.White;
-                    }
-                    else
-                    {
-                        return Brushes.Gold;
-                    }
-                }
-                else
+                        ShipClass.Submarine => PathGeometry.Parse(SubIcon),
+                        ShipClass.Destroyer => PathGeometry.Parse(DDIcon),
+                        ShipClass.Cruiser => PathGeometry.Parse(CCIcon),
+                        ShipClass.Battleship => PathGeometry.Parse(BBIcon),
+                        ShipClass.AirCarrier => PathGeometry.Parse(CVIcon),
+                        _ => "",
+                    };
+                case ShipCategory category when parameter != null:
                 {
+                    var par = parameter.ToString();
+                    if (par != null && par.Contains("stroke", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return category.Equals(ShipCategory.TechTree) ? Brushes.White : Brushes.Gold;
+                    }
+
                     if (category.Equals(ShipCategory.Premium) && par!.Contains("fill", StringComparison.InvariantCultureIgnoreCase))
                     {
                         return Brushes.Gold;
                     }
-                    else
-                    {
-                        return Brushes.White;
-                    }
-                }
-            }
 
-            return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+                    return Brushes.White;
+                }
+
+                default:
+                    return new BindingNotification(new NotSupportedException(), BindingErrorType.Error, value);
+            }
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

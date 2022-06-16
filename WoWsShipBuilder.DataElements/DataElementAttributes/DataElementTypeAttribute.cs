@@ -22,6 +22,12 @@ public class DataElementTypeAttribute : Attribute
     public string? UnitKey { get; set; }
 
     /// <summary>
+    /// Gets or sets the property name localization key for the property marked by this attribute. <br/>
+    /// Only valid for <see cref="DataElementTypes.Grouped"/>, <see cref="DataElementTypes.KeyValue"/>, <see cref="DataElementTypes.KeyValueUnit"/> and <see cref="DataElementTypes.Tooltip"/>.
+    /// </summary>
+    public string? NameLocalizationKey { get; set; }
+
+    /// <summary>
     /// Gets or sets the tooltip localization key for the property marked by this attribute. <br/>
     /// Only valid for <see cref="DataElementTypes.Tooltip"/>.
     /// </summary>

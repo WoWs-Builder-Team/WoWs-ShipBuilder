@@ -927,18 +927,12 @@ Los barcos en el juego son el doble de grandes que el entorno, por lo que un bar
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Radio de explosión</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Penetración explosiva</value>
+      <value>Penetración</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Protección sala de maquinas</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Protección de timón</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Si el resultado "protección ante explosión del módulo" + "penetración explosiva del armamento" &gt; 0 
      El módulo puede ser incapacitado.
@@ -1180,6 +1174,28 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ShipStats_HP" xml:space="preserve">
       <value>PV</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Daño</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
   
   
   

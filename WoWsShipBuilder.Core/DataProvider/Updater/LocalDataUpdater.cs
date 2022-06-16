@@ -20,9 +20,9 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
     public class LocalDataUpdater : ILocalDataUpdater
     {
         private readonly IAppDataService appDataService;
+        private readonly AppSettings appSettings;
         private readonly IAwsClient awsClient;
         private readonly IFileSystem fileSystem;
-        private readonly AppSettings appSettings;
         private readonly Logger logger;
 
         /// <summary>
@@ -39,6 +39,8 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             this.appSettings = appSettings;
             logger = Logging.GetLogger("DataUpdater");
         }
+
+        public Version SupportedDataStructureVersion => Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
 
         /// <summary>
         /// A utility method that combines the update check and execution of necessary updates.
@@ -152,7 +154,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                     "Local data version ({0}) is older than online data version ({1}). Selecting files for update...",
                     localVersionInfo.CurrentVersionCode,
                     onlineVersionInfo.CurrentVersionCode);
-                filesToDownload = new List<(string, string)>();
+                filesToDownload = new();
 
                 foreach ((string category, var fileVersions) in onlineVersionInfo.Categories)
                 {
@@ -207,13 +209,22 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
 
             var versionName = onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3);
 
-            var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
-            if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
+            if (SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
             {
                 logger.Warn(
-                    "Data structures version of online data not supported yet. Highest supported version: {}, online version: {}",
-                    currentDataStructureVersion,
+                    "Online data is incompatible with this application version. Online data version: {}, maximum supported version: {}",
+                    SupportedDataStructureVersion,
                     onlineVersionInfo.DataStructuresVersion);
+                return new(new(), false, false, false, versionName, serverType);
+            }
+
+            if (SupportedDataStructureVersion.Build != onlineVersionInfo.DataStructuresVersion.Build)
+            {
+                logger.Warn("The build version of the online data is different to the currently supported version. Some data may be unavailable.");
+            }
+            else if (SupportedDataStructureVersion.Major > onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor > onlineVersionInfo.DataStructuresVersion.Minor)
+            {
+                logger.Warn("Online data version is behind the currently supported data version. Loading data may crash the application.");
             }
 
             return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
@@ -276,6 +287,22 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                    await appDataService.GetLocalVersionInfo(serverType) == null;
         }
 
+        public async Task CheckInstalledLocalizations(ServerType serverType)
+        {
+            List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
+            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
+            {
+                logger.Info("Selected localization is not installed. Downloading file...");
+                string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
+                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
+            }
+            else
+            {
+                logger.Info("Selected localization is installed.");
+            }
+        }
+
         /// <summary>
         /// Helper method to manage the download of the results of a version check.
         /// </summary>
@@ -336,22 +363,6 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             //     progressTracker.Report((3, "SplashScreen_CamoImages"));
             //     await awsClient.DownloadImages(ImageType.Camo, versionName);
             // }
-        }
-
-        public async Task CheckInstalledLocalizations(ServerType serverType)
-        {
-            List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
-            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
-            {
-                logger.Info("Selected localization is not installed. Downloading file...");
-                string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
-                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
-                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
-            }
-            else
-            {
-                logger.Info("Selected localization is installed.");
-            }
         }
     }
 }

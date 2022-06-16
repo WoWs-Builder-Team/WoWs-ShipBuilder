@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.ViewModels.Base;
@@ -6,54 +7,35 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class TestWindowViewModel : ViewModelBase
     {
-        public TestWindowViewModel()
+        public TestWindowViewModel(DepthChargeDataContainer depthCharge)
         {
-            // var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
-            // var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
-            // var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
-            // var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
-            // var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
-            // var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
-            // var aimingRange = 15000;
-            // DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
-            // PlotScaling = 0.5;
+            DcDmg = depthCharge.Damage;
+            SplashRadius = depthCharge.DcSplashRadius;
+            PointsOfDmg = depthCharge.PointsOfDmg;
         }
 
-        private DispersionEllipse dispersionPlotParameters = default!;
+        private int dcDmg;
 
-        public DispersionEllipse DispersionPlotParameters
+        public int DcDmg
         {
-            get => dispersionPlotParameters;
-            set => this.RaiseAndSetIfChanged(ref dispersionPlotParameters, value);
+            get => dcDmg;
+            set => this.RaiseAndSetIfChanged(ref dcDmg, value);
         }
 
-        private int shots;
+        private decimal splashRadius;
 
-        public int Shots
+        public decimal SplashRadius
         {
-            get => shots;
-            set => this.RaiseAndSetIfChanged(ref shots, value);
+            get => splashRadius;
+            set => this.RaiseAndSetIfChanged(ref splashRadius, value);
         }
 
-        private double plotScaling;
+        private Dictionary<float, List<float>> pointsOfDmg = default!;
 
-        public double PlotScaling
+        public Dictionary<float, List<float>> PointsOfDmg
         {
-            get => plotScaling;
-            set => this.RaiseAndSetIfChanged(ref plotScaling, value);
-        }
-
-        public void Apply()
-        {
-            // var ship = DataHelper.LoadPreviewShip(ShipClass.Battleship, 10, Nation.Japan).Ship;
-            // var shellName = ship.MainBatteryModuleList.First().Value.Guns.First().AmmoList.Last();
-            // var shell = AppDataHelper.Instance.GetProjectile<ArtilleryShell>(shellName);
-            // var dispersionData = ship.MainBatteryModuleList.First().Value.DispersionValues;
-            // var sigma = ship.MainBatteryModuleList.First().Value.Sigma;
-            // var maxRange = ship.MainBatteryModuleList.First().Value.MaxRange;
-            // var aimingRange = 15000;
-            // DispersionPlotParameters = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionData, shell, (double)maxRange, aimingRange, (double)sigma, Shots);
-            // PlotScaling = 0.5;
+            get => pointsOfDmg;
+            set => this.RaiseAndSetIfChanged(ref pointsOfDmg, value);
         }
     }
 }

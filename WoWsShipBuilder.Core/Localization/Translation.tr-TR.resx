@@ -330,7 +330,9 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Eşleşmeye uyan gemi bulunamadı</value>
   </data>
-  
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Gemi Arayın</value>
+  </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° dönüş süresi</value>
   </data>
@@ -361,7 +363,9 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Merminin Ağırlığı</value>
   </data>
-  
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
+    <value>Teorik DBH</value>
+  </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Fünye Eşiği</value>
   </data>
@@ -446,7 +450,9 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>Yangın Başına SBH</value>
   </data>
-  
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+      <value>Süre</value>
+  </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Yangın Çıkma Riski Düşürme</value>
   </data>
@@ -456,7 +462,9 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>Su Alma Başına SBH</value>
   </data>
-  
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+      <value>Süre</value>
+  </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Su Alma Olasılığı</value>
   </data>
@@ -526,29 +534,45 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Gizlilik</value>
   </data>
-  
+  <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
+      <value>Esas</value>
+  </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Yanarken</value>
   </data>
-  
+  <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
+      <value>Esas</value>
+  </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Yanarken</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Sis İçerisinde ateş edince</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_FireAmount" xml:space="preserve">
+      <value>Azami Toplam</value>
+  </data>
+  <data name="ShipStats_FireTotalDamage" xml:space="preserve">
+      <value>Yangın Başına Azami Hasar</value>
+  </data>
+  <data name="ShipStats_FloodAmount" xml:space="preserve">
+      <value>Azami Toplam</value>
+  </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpido Koruması</value>
   </data>
-  
+  <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
+      <value>Su Alma Başına Azami Hasar</value>
+  </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Uzun Menzilli Silahlar</value>
   </data>
-  
-  
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
+    <value>Geriye</value>
+  </data>
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
+    <value>İleriye</value>
+  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Azami Hız</value>
   </data>
@@ -594,11 +618,15 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Saldırı için Bekleme Süresi</value>
   </data>
-  
+  <data name="ShipStats_CruisingSpeed" xml:space="preserve">
+      <value>Seyir hızı</value>
+  </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombanın iç çembere düşme olasılığı</value>
   </data>
-  
+  <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
+      <value>Güvertedeki Azami</value>
+  </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Azami Hız</value>
   </data>
@@ -608,8 +636,12 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Saldıran Uçuş Boyutu</value>
   </data>
-  
-  
+  <data name="ShipStats_NumberInSquad" xml:space="preserve">
+      <value>Filodaki Miktar</value>
+  </data>
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
+    <value>Uçak Başına Cp</value>
+  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Uçak Yenileme Süresi</value>
   </data>
@@ -619,13 +651,21 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Uçak Başına Yüklü Bomba</value>
   </data>
-  
-  
-  
+  <data name="ShipStats_DropTime" xml:space="preserve">
+      <value>Düşüş</value>
+  </data>
+  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
+      <value>Varış Süresi</value>
+  </data>
+  <data name="ShipStats_MaximumDistance" xml:space="preserve">
+      <value>Azami</value>
+  </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Azami Bırakma Aralığı</value>
   </data>
-  
+  <data name="ShipStats_MinimumDistance" xml:space="preserve">
+      <value>Asgari</value>
+  </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Salvo Sayısı</value>
   </data>
@@ -716,8 +756,12 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Konfigürasyon yüklenirken hata oluştu</value>
   </data>
-  
-  
+  <data name="ShipStats_JatoDuration" xml:space="preserve">
+      <value>Süresi</value>
+  </data>
+  <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
+      <value>İtki Desteği</value>
+  </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Mermi Türü Değişikliği Süresi</value>
   </data>
@@ -751,19 +795,27 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Saldırı Sırasında Alınan hasar</value>
   </data>
-  
+  <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
+      <value>Saldırı sonrası hasar almama</value>
+  </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Hazırlık Süresi</value>
   </data>
-  
+  <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
+      <value>Tam Olarak Nişan Alma</value>
+  </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpido Kovanları</value>
   </data>
-  
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
+    <value>Nişan Alırken</value>
+  </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Manevra yaparken bomba bırakma alanının değişim oranı</value>
   </data>
-  
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
+    <value>Hazırlık Sırasında</value>
+  </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tam güce ulaşma süresi</value>
   </data>
@@ -797,7 +849,9 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Seçilen dosya konumu geçerli değil.</value>
   </data>
-  
+  <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
+      <value>Mermi türü seçin</value>
+  </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>Seçilen gemi birden fazla mermi türüne sahip. Balistiğini görüntülemek istediğinizi seçin. Aynı kalibre olduğu göz önüne alınarak, aşağıdaki mermi sırası HE-&gt;SAP-&gt;AP şeklindedir.</value>
   </data>
@@ -813,8 +867,12 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Sürümü Kopyala</value>
   </data>
-  
-  
+  <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
+      <value>Periskop Derinliğinde</value>
+  </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+      <value>Operasyonel Derinliğinde</value>
+  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Dağılım ve Balistik Grafiklerini Görüntüle</value>
   </data>
@@ -839,11 +897,15 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Dağılım Diyagramını Göster</value>
   </data>
-  
+  <data name="ShipStats_DispFormulaTooltip" xml:space="preserve">
+      <value>X Menzili için Formül</value>
+  </data>
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Yatay Dağılım[X]</value>
   </data>
-  
+  <data name="DispersionGraphWindow_AimingRange" xml:space="preserve">
+      <value>Nişan Alma Menzili(Km)</value>
+  </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Balistik Grafikleri</value>
   </data>
@@ -878,7 +940,7 @@
     <value>Çarpma Açısı</value>
   </data>
   <data name="VerticalPlane" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Dikey</value>
   </data>
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fuso Referansı</value>
@@ -925,19 +987,21 @@ Oyundaki gemiler grafikteki ortamdan iki kat daha büyük olduğu için 200 metr
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Kütle</value>
   </data>
-  
-  
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Patlama Yarıçapı</value>
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
+    <value>Potansiyel DBY </value>
   </data>
+  <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
+      <value>Tam salvo</value>
+  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Patlama Delişi</value>
+      <value>Delme</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Motorun Patlayıcıya Koruması</value>
+      <value>Motor</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Dümenin Patlayıcıya Koruması</value>
+      <value>Dümen</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>If "modülün patlayıcıya koruması" + "cephanenin patlama delişi" &gt; 0 
@@ -970,7 +1034,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Grafik Oryantasyonu</value>
   </data>
   <data name="DispersionGraphWindow_Vertical" xml:space="preserve">
-    <value>Yatay</value>
+    <value>Dikey</value>
   </data>
   <data name="DispersionGraphWindow_ShellsPath" xml:space="preserve">
     <value>Mermi Yolu</value>
@@ -1000,7 +1064,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>Hayır</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
-    <value>Tamam</value>
+    <value>Ok</value>
   </data>
   <data name="Dialog_SaveExit" xml:space="preserve">
     <value>Kaydet &amp; Çık</value>
@@ -1023,7 +1087,9 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Seçilen konfigürasyon resminin konumu geçersiz.</value>
   </data>
-  
+  <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
+      <value>Beceri &amp; Yetenekler</value>
+  </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Kaydırıcı ve seçenek geçişlerini kullanarak belirli koşullara bağlı beceri efektlerini etkinleştirebilir yada devre dışı bırakabilirsiniz. Eğer mümkünse, yetenek etkilerinin kaç kez tetiklenebileceği de seçebilirsiniz. Ancak beceri/yeteneklerin gemi istatistikleri üzerinde bir etkisi olmayacağını unutmayın.</value>
   </data>
@@ -1048,8 +1114,12 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Sunucu-Tarafı Yükleme Süresi</value>
   </data>
-  
-  
+  <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
+      <value>Sunucu sadece her 0.142857142857 saniyede güncelleme yapmakta. Bu, yeniden yükleme süresinin her tıklamadan sonra bu sayının katları arasına düştüğü anlamına geliyor. Buradaki değer gerçek yeniden yükleme süresini sizlere gösteriyor ve yukarıdaki teorik yeniden yükleme süresi ile farklılık gösterebilir.</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
+    <value>Sunucu-Tarafı DBH</value>
+  </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Sunucu-Tarafı DbA</value>
   </data>
@@ -1110,11 +1180,21 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>Ekle/Sil Gemiler/Mermiler</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>Dağılım Diyagramı</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Balistik Diyagramı</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>Gemileri ve Mermileri Seç</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Yükleniyor...</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standart</value>
   </data>
@@ -1124,41 +1204,109 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Derin su</value>
   </data>
+  <data name="Consumable_HpPerHeal" xml:space="preserve">
+      <value>Onarım Başına Azami HP</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>Menzil[km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>Yükseklik</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>Mermi Yolu Grafiğini Görüntüle</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
+      <value>Gemilerden</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
+      <value>Uçaklardan</value>
+  </data>
+  <data name="ShipStats_SpottingOnShips" xml:space="preserve">
+      <value>Gemilerde</value>
+  </data>
+  <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
+      <value>Uçaklarda</value>
+  </data>
+  <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
+      <value>Torpidolarda</value>
+  </data>
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>Gemilerdeki Azami Görüş Mesafesi</value>
+  </data>
+  <data name="ShipStats_Consumables" xml:space="preserve">
+      <value>Sarf Malzemeleri</value>
+  </data>
+  <data name="ShipStats_AircraftAmount" xml:space="preserve">
+      <value>Uçak Sayısı</value>
+  </data>
+  <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
+      <value>Saldırı Grubunda</value>
+  </data>
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
+      <value>Filo</value>
+  </data>
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
+      <value>Saldırı Grubu</value>
+  </data>
+  <data name="ShipStats_Max" xml:space="preserve">
+      <value>Azami</value>
+  </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>Asgari</value>
+  </data>
+  <data name="ShipStats_AttackTimings" xml:space="preserve">
+      <value>Saldırı Zamanlamaları</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+      <value>Nişan Alırken</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+      <value>Hazırlık</value>
+  </data>
+  <data name="ShipStats_InitialBoost" xml:space="preserve">
+      <value>İtki Desteği</value>
+  </data>
+  <data name="ShipStats_SpeedBoost" xml:space="preserve">
+      <value>İtki Desteği</value>
+  </data>
+  <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
+      <value>Azami Etkileşim Süresi</value>
+  </data>
+  <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
+      <value>Azami Öldürme Miktarı</value>
+  </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>Adrenalin Patlaması CP: </value>
+  </data>
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>Yangın</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>Su Alma</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
+      <value>Azami Toplam</value>
+  </data>
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>Denizaltılardan</value>
+  </data>
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>Deniz</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>Hava</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>Zamanlamalar</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>Yeniden Yükleme</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>Tek Mermi</value>
+  </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1180,6 +1328,63 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_HP" xml:space="preserve">
       <value>cp</value>
   </data>
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>Roket Türü</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>Torpido Türü</value>
+  </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>Veri Güncellemesi sırasında bir hata meydana geldi. Bu verilerin geçersiz yada güncel olmamasına sebep olabilir. Tekrar denemek için uygulamayı yeniden başlatabilirsiniz. Daha fazla bilgi için uygulama günlüğünü kontrol edin.</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>Veri Güncelleme Hatası</value>
+  </data>
+  <data name="NotificationService_UpdateActive" xml:space="preserve">
+      <value>Uygulama Güncellemesi Arka Planda Çalışıyor...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>Uygulama güncellemesi sırasında bir hata meydana geldi. Daha fazla bilgi için uygulama günlüğünü kontrol edin.</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>Uygulama arka planda güncellendi. Güncellemeyi uygulamak için yeniden başlatma gerekli. Yeniden başlatmak için Tıklayın.</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>Uygulama güncellendi, Değişiklikleri uygulamak için yeniden başlatmak istiyormusunuz?</value>
+  </data>
+  <data name="UpdateMessageBox_Title" xml:space="preserve">
+      <value>Uygulama Güncellendi</value>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
+  </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Sıçrama</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Yarıçap</value>
+  </data>
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Hasar</value>
+  </data>
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>Bu parametreler sadece denizaltıları etkilemektedir.
+Yüzey gemilerine herhangi bir etkileri yoktur.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Patlama Yarıçapı</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Fünye Zamanlayıcı</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Batma Hızı</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Patlama Derinliği</value>
+  </data>
+  
+  
   
   
   

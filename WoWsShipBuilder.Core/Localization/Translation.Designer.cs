@@ -367,6 +367,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Right-click an icon to toggle effects.
+        /// </summary>
+        public static string Consumable_RightClickToggle {
+            get {
+                return ResourceManager.GetString("Consumable_RightClickToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cruiser.
         /// </summary>
         public static string Cruiser {
@@ -1825,6 +1834,24 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auxiliary rooms section.
+        /// </summary>
+        public static string ShipStats_AuxiliaryRooms {
+            get {
+                return ResourceManager.GetString("ShipStats_AuxiliaryRooms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blast.
+        /// </summary>
+        public static string ShipStats_Blast {
+            get {
+                return ResourceManager.GetString("ShipStats_Blast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
@@ -1837,7 +1864,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blast Protection.
+        ///   Looks up a localized string similar to Protection.
         /// </summary>
         public static string ShipStats_BlastProtection {
             get {
@@ -1882,6 +1909,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bow section.
+        /// </summary>
+        public static string ShipStats_Bow {
+            get {
+                return ResourceManager.GetString("ShipStats_Bow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Artillery burst mode.
         /// </summary>
         public static string ShipStats_BurstMode {
@@ -1896,6 +1932,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_CanHitClasses {
             get {
                 return ResourceManager.GetString("ShipStats_CanHitClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Casemate section.
+        /// </summary>
+        public static string ShipStats_Casemate {
+            get {
+                return ResourceManager.GetString("ShipStats_Casemate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Citadel section.
+        /// </summary>
+        public static string ShipStats_Citadel {
+            get {
+                return ResourceManager.GetString("ShipStats_Citadel", resourceCulture);
             }
         }
         
@@ -2044,6 +2098,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Explosion radius.
+        /// </summary>
+        public static string ShipStats_DcSplashRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_DcSplashRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delay.
         /// </summary>
         public static string ShipStats_Delay {
@@ -2076,6 +2139,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_Detectability {
             get {
                 return ResourceManager.GetString("ShipStats_Detectability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detonation Depth.
+        /// </summary>
+        public static string ShipStats_DetonationDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_DetonationDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detonation Timer.
+        /// </summary>
+        public static string ShipStats_DetonationTimer {
+            get {
+                return ResourceManager.GetString("ShipStats_DetonationTimer", resourceCulture);
             }
         }
         
@@ -2116,7 +2197,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Engine blast protection.
+        ///   Looks up a localized string similar to Engine.
         /// </summary>
         public static string ShipStats_EngineBlastProtection {
             get {
@@ -2125,7 +2206,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Explosion radius.
+        ///   Looks up a localized string similar to Radius.
         /// </summary>
         public static string ShipStats_ExplosionRadius {
             get {
@@ -2418,6 +2499,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_HP {
             get {
                 return ResourceManager.GetString("ShipStats_HP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hull section.
+        /// </summary>
+        public static string ShipStats_Hull {
+            get {
+                return ResourceManager.GetString("ShipStats_Hull", resourceCulture);
             }
         }
         
@@ -2800,6 +2890,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repairable damage.
+        /// </summary>
+        public static string ShipStats_RegenRatio {
+            get {
+                return ResourceManager.GetString("ShipStats_RegenRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reload Time.
         /// </summary>
         public static string ShipStats_Reload {
@@ -2881,7 +2980,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rudder blast protection.
+        ///   Looks up a localized string similar to Rudder.
         /// </summary>
         public static string ShipStats_RudderBlastProtection {
             get {
@@ -2953,6 +3052,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship HP.
+        /// </summary>
+        public static string ShipStats_ShipHp {
+            get {
+                return ResourceManager.GetString("ShipStats_ShipHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Short range aura.
         /// </summary>
         public static string ShipStats_ShortAura {
@@ -2967,6 +3075,15 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_ShotInBurst {
             get {
                 return ResourceManager.GetString("ShipStats_ShotInBurst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Damage Distribution Chart.
+        /// </summary>
+        public static string ShipStats_ShowDcDamageDistribution {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowDcDamageDistribution", resourceCulture);
             }
         }
         
@@ -3007,6 +3124,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sink Speed.
+        /// </summary>
+        public static string ShipStats_SinkSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_SinkSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Special abilities.
         /// </summary>
         public static string ShipStats_SpecialAbility {
@@ -3034,11 +3160,48 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blast penetration.
+        ///   Looks up a localized string similar to Splash.
+        /// </summary>
+        public static string ShipStats_Splash {
+            get {
+                return ResourceManager.GetString("ShipStats_Splash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Penetration.
         /// </summary>
         public static string ShipStats_SplashCoeff {
             get {
                 return ResourceManager.GetString("ShipStats_SplashCoeff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage.
+        /// </summary>
+        public static string ShipStats_SplashDmg {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashDmg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These parameters only affect submarines.
+        ///They do not have any effect on surface ships..
+        /// </summary>
+        public static string ShipStats_SplashExplanation {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Radius.
+        /// </summary>
+        public static string ShipStats_SplashRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_SplashRadius", resourceCulture);
             }
         }
         
@@ -3084,6 +3247,24 @@ namespace WoWsShipBuilder.Core.Translations {
         public static string ShipStats_StartingNumberOnDeck {
             get {
                 return ResourceManager.GetString("ShipStats_StartingNumberOnDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stern section.
+        /// </summary>
+        public static string ShipStats_Stern {
+            get {
+                return ResourceManager.GetString("ShipStats_Stern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Superstructure section.
+        /// </summary>
+        public static string ShipStats_Superstructure {
+            get {
+                return ResourceManager.GetString("ShipStats_Superstructure", resourceCulture);
             }
         }
         

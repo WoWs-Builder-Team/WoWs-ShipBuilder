@@ -34,6 +34,8 @@ public class WebDataUpdate : ILocalDataUpdater
         logger = Logging.GetLogger("DataUpdater");
     }
 
+    public Version SupportedDataStructureVersion => Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
+
     public async Task RunDataUpdateCheck(ServerType serverType, IProgress<(int, string)> progressTracker, bool overrideDateCheck = false)
     {
         logger.Info("UpdateCheck triggered. Checking whether update should execute...");

@@ -15,21 +15,21 @@ namespace WoWsShipBuilder.Core.DataProvider
 {
     public class DesktopAppDataService : IAppDataService, IUserDataService
     {
-        #region Static Fields and Constants
-
+#if DEBUG
+        private const string ShipBuilderName = "WoWsShipBuilderDev";
+#else
         private const string ShipBuilderName = "WoWsShipBuilder";
+#endif
 
 #pragma warning disable CS8603
         private static readonly Lazy<DesktopAppDataService> InstanceValue = new(() => Locator.Current.GetService<DesktopAppDataService>() ?? PreviewInstance);
 #pragma warning restore CS8603
 
-        #endregion
-
-        private readonly IFileSystem fileSystem;
+        private readonly AppSettings appSettings;
 
         private readonly IDataService dataService;
 
-        private readonly AppSettings appSettings;
+        private readonly IFileSystem fileSystem;
 
         public DesktopAppDataService(IFileSystem fileSystem, IDataService dataService, AppSettings appSettings)
         {
@@ -42,6 +42,8 @@ namespace WoWsShipBuilder.Core.DataProvider
         public static DesktopAppDataService Instance => InstanceValue.Value;
 
         public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem(), new DesktopDataService(new FileSystem()), new());
+
+        public string BuildImageOutputDirectory => appSettings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public string DefaultAppDataDirectory { get; }
 
@@ -59,8 +61,6 @@ namespace WoWsShipBuilder.Core.DataProvider
         }
 
         public string AppDataImageDirectory => dataService.CombinePaths(AppDataDirectory, "Images");
-
-        public string BuildImageOutputDirectory => appSettings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
         public string GetDataPath(ServerType serverType)
         {
@@ -88,19 +88,6 @@ namespace WoWsShipBuilder.Core.DataProvider
             fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
             var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
             return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
-        }
-
-        /// <summary>
-        /// Helper method to create the path for a build image file.
-        /// </summary>
-        /// <param name="buildName">The name of the saved build.</param>
-        /// <param name="shipName">The name of the ship of the build.</param>
-        /// <returns>The path where the generated image should be stored.</returns>
-        public string GetImageOutputPath(string buildName, string shipName)
-        {
-            string directory = BuildImageOutputDirectory;
-            fileSystem.Directory.CreateDirectory(directory);
-            return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
         }
 
         /// <summary>
@@ -211,9 +198,9 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             Ship? ship = null;
 
-            if (summary.Nation.Equals(AppData.CurrentLoadedNation))
+            if (summary.Nation.Equals(AppData.CurrentLoadedNation) && AppData.ShipDictionary is not null)
             {
-                ship = AppData.ShipDictionary![summary.Index];
+                ship = AppData.ShipDictionary[summary.Index];
             }
             else
             {
@@ -257,6 +244,19 @@ namespace WoWsShipBuilder.Core.DataProvider
 
                 AppData.Builds = rawBuildList?.Select(str => Build.CreateBuildFromString(str, localizer)).ToList() ?? new List<Build>();
             }
+        }
+
+        /// <summary>
+        /// Helper method to create the path for a build image file.
+        /// </summary>
+        /// <param name="buildName">The name of the saved build.</param>
+        /// <param name="shipName">The name of the ship of the build.</param>
+        /// <returns>The path where the generated image should be stored.</returns>
+        public string GetImageOutputPath(string buildName, string shipName)
+        {
+            string directory = BuildImageOutputDirectory;
+            fileSystem.Directory.CreateDirectory(directory);
+            return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
         }
 
         internal async Task<T?> DeserializeFile<T>(string filePath)

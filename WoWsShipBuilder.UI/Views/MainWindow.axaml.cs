@@ -104,7 +104,7 @@ namespace WoWsShipBuilder.UI.Views
 
         public void OnClickChangeShipPrevious(object sender, PointerReleasedEventArgs e)
         {
-            var shipIndex = ViewModel?.PreviousShipIndex;
+            string? shipIndex = ViewModel?.PreviousShip?.Index;
             ViewModel?.LoadShipFromIndexCommand.Execute(shipIndex);
         }
 

@@ -68,7 +68,46 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <StackPanel Orientation="Vertical">
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <Panel>
+                                <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 10 14 0">
+                                    <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotPlane}" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                    <ComboBox Items="{Binding VerticalDispPlanesList}" SelectedItem="{Binding SelectedVerticalDispPlane}"
+                                              BorderBrush="Gray" BorderThickness="1" HorizontalContentAlignment="Center" MinWidth="131">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Panel Width="27" Height="27" Margin="10 0 0 0">
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 0 0 L 0 -5 Z"
+                                              IsVisible="{Binding !IsVerticalDispOnPerpendicularToWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 0 0 M 0 5 H 5 Z"
+                                              IsVisible="{Binding !IsVerticalDispOnWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
+                                              IsVisible="{Binding !IsVerticalDispAtImpactAngle}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 0 0 L 0 -5 Z"
+                                              IsVisible="{Binding IsVerticalDispOnPerpendicularToWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 0 0 M 0 5 H 5 Z"
+                                              IsVisible="{Binding IsVerticalDispOnWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
+                                              IsVisible="{Binding IsVerticalDispAtImpactAngle}">
+                                        </Path>
+                                    </Panel>
+                                </StackPanel>
+                                <oxy:PlotView Height="700" ZIndex="1" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            </Panel>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
@@ -285,7 +324,7 @@
                 <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_ShellsPath}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <Panel>
-                            <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 14 0">
+                            <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 10 14 0">
                                 <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Range}" Margin="0 0 5 0" VerticalAlignment="Center"/>
                                 <NumericUpDown Minimum="1" HorizontalAlignment="Stretch" Value="{Binding ShootingRange}" VerticalAlignment="Center" Padding="0 0 0 0"/>
                             </StackPanel>

@@ -928,18 +928,12 @@ Les navires dans le jeu sont deux fois plus gros que l'environnement qui les ent
   </data>
   
   
-  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Radius d'explosion</value>
-  </data>
+  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Pénétration explosive</value>
+      <value>Pénétration</value>
   </data>
-  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions aux moteurs</value>
-  </data>
-  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Protection contre les explosions au gouvernail</value>
-  </data>
+  
+  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Si « protection de projection de module » + « pénétration de projection d'armement » &gt; 0 
      Le module peut être incapacité.
@@ -1175,6 +1169,28 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_HP" xml:space="preserve">
       <value>PV</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Dégâts</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
   
   
   

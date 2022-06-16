@@ -43,15 +43,15 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             // Rename Default Captain
             defaultCaptain.Name = Translation.CaptainSkillSelector_StandardCaptain;
-            var captainList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
+            var capList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
             var nationCaptains = vmParams.Item2;
-            if (nationCaptains != null && nationCaptains.Count > 0)
+            if (nationCaptains is {Count: > 0})
             {
-                captainList = captainList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
+                capList = capList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
             }
 
-            CaptainList = captainList.Select(x => x.Value).ToList();
+            CaptainList = capList.Select(x => x.Value).ToList();
             SelectedCaptain = CaptainList.First();
 
             this.WhenAnyValue(x => x.AssignedPoints).Do(_ => UpdateCanAddSkill()).Subscribe();
@@ -87,7 +87,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 if (newCaptain!.UniqueSkills != null)
                 {
                     CaptainWithTalents = true;
-                    foreach ((string name, UniqueSkill talent) in newCaptain!.UniqueSkills)
+                    foreach ((string _, UniqueSkill talent) in newCaptain.UniqueSkills)
                     {
                         SkillActivationItemViewModel talentModel;
 
@@ -210,7 +210,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         private bool skillActivationPopupOpen;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the skill activation popup is visibile.
+        /// Gets or sets a value indicating whether the skill activation popup is visible.
         /// </summary>
         public bool SkillActivationPopupOpen
         {
@@ -222,7 +222,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             }
         }
 
-        private bool skillActivationButtonEnabled = false;
+        private bool skillActivationButtonEnabled;
 
         /// <summary>
         /// Gets or sets a value indicating whether the skill activation button is enabled.
@@ -233,7 +233,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
         }
 
-        private bool talentOrConditionalSkillEnabled = false;
+        private bool talentOrConditionalSkillEnabled;
 
         /// <summary>
         /// Gets or sets a value indicating whether a talent or a conditional skill are enabled.
@@ -244,7 +244,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref talentOrConditionalSkillEnabled, value);
         }
 
-        private bool captainWithTalents = false;
+        private bool captainWithTalents;
 
         /// <summary>
         /// Gets or sets a value indicating whether the current captain has talents.
@@ -265,7 +265,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         }
 
         /// <summary>
-        /// Get a <see cref="Dictionary{string, Skill}"/> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
+        /// Get a <see><cref>Dictionary{string, Skill}</cref></see> for the class indicated by <paramref name="shipClass"/> from <paramref name="captain"/>.
         /// </summary>
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
@@ -293,7 +293,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     skill.Value.Modifiers = modifierClassSkill;
                 }
             });
-            Console.WriteLine("SKILLS: " + skills.Count);
+            Console.WriteLine(@"SKILLS: " + skills.Count);
             var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this));
             logger.Info("Found {0} skills", filteredDictionary.Count);
             return filteredDictionary;
@@ -328,14 +328,14 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 SkillOrderList.Remove(skill);
                 ReorderSkillList();
-                var pointCost = skill.Tiers.First().Tier + 1;
+                int pointCost = skill.Tiers.First().Tier + 1;
                 AssignedPoints -= pointCost;
                 if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
                 {
                     ShowArHpSelection = false;
                 }
 
-                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                if (skill.ConditionalModifiers is {Count: > 0})
                 {
                     var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
@@ -353,7 +353,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     ShowArHpSelection = true;
                 }
 
-                if (skill.ConditionalModifiers != null && skill.ConditionalModifiers.Count > 0)
+                if (skill.ConditionalModifiers is {Count: > 0})
                 {
                     ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
                 }
@@ -370,7 +370,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             SkillActivationItemViewModel result;
             if (skill.SkillNumber is FuriousSkillNumber)
             {
-                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4, 1);
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4);
             }
             else
             {
@@ -556,9 +556,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             return SelectedCaptain!.Index;
         }
 
-        public void LoadBuild(List<int> selectedSkills, string captainIndex)
+        public void LoadBuild(List<int> selectedSkills, string? captainIndex)
         {
-            // this check is purely for retrocompatibility
+            // this check is purely for backward compatibility
             if (captainIndex != null)
             {
                 var captain = CaptainList!.First(x => x.Index.Equals(captainIndex));
@@ -580,6 +580,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
                 }
             }
+
+            SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
         }
     }
 }
