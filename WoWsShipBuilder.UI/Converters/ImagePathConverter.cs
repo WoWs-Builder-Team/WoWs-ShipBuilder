@@ -51,12 +51,12 @@ namespace WoWsShipBuilder.UI.Converters
 
                     if (imageName.Equals("blank"))
                     {
-                        uri = new Uri($"avares://{assemblyName}/Assets/blank.png");
+                        uri = new($"avares://{assemblyName}/Assets/blank.png");
                     }
                     else if (type.Equals("skill", StringComparison.InvariantCultureIgnoreCase))
                     {
                         imageName = GetSkillImageId(imageName).ToLower();
-                        uri = new Uri($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
+                        uri = new($"avares://{assemblyName}/Assets/Skills/{imageName}.png");
                     }
                     else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -75,13 +75,35 @@ namespace WoWsShipBuilder.UI.Converters
                         return new Bitmap(stream);
                     }
 
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 case Ship or ShipSummary:
                 {
-                    return GetNationFlagImage(assets, assemblyName, value);
+                    Logger.Debug("Processing nation flag.");
+                    string shipIndex = default!;
+                    string shipNation = default!;
+
+                    switch (value)
+                    {
+                        case ShipSummary summary:
+                            shipIndex = summary.Index;
+                            shipNation = summary.Nation.ToString();
+                            break;
+                        case Ship ship:
+                            shipIndex = ship.Index;
+                            shipNation = ship.ShipNation.ToString();
+                            break;
+                    }
+
+                    Uri uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{shipIndex}.png");
+
+                    if (!assets.Exists(uri))
+                    {
+                        uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{shipNation}.png");
+                    }
+
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 case Modernization modernization:
@@ -97,8 +119,7 @@ namespace WoWsShipBuilder.UI.Converters
                         uri = new($"avares://{assemblyName}/Assets/modernization_icons/modernization_default3.png");
                     }
 
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 case Consumable or (ShipConsumable, Consumable):
@@ -112,8 +133,7 @@ namespace WoWsShipBuilder.UI.Converters
                     string iconName = string.IsNullOrEmpty(consumable.IconId) ? consumable.Name : consumable.IconId;
                     Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
 
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 case ConsumableDataContainer consumableUi:
@@ -122,37 +142,30 @@ namespace WoWsShipBuilder.UI.Converters
                     string iconName = consumableUi.IconName;
                     Uri uri = new($"avares://{assemblyName}/Assets/consumable_icons/consumable_{iconName}.png");
 
-                    Stream asset = LoadEmbeddedAsset(assets, uri);
-                    return new Bitmap(asset);
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 case Exterior exterior:
                 {
                     Logger.Debug("Processing Exterior.");
+
+                    Uri? uri = null;
                     if (!string.IsNullOrEmpty(exterior.Name) && parameter != null && parameter.ToString()!.Equals("Flags", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        Uri uri = new($"avares://{assemblyName}/Assets/signal_flags/{exterior.Name}.png");
-                        Stream asset = LoadEmbeddedAsset(assets, uri);
-                        return new Bitmap(asset);
+                        uri = new($"avares://{assemblyName}/Assets/signal_flags/{exterior.Name}.png");
                     }
                     else if (string.IsNullOrEmpty(exterior.Name))
                     {
-                        Uri uri = new($"avares://{assemblyName}/Assets/blank.png");
-                        Stream asset = LoadEmbeddedAsset(assets, uri);
-                        return new Bitmap(asset);
+                        uri = new($"avares://{assemblyName}/Assets/blank.png");
                     }
-                    else
-                    {
-                        Stream asset = LoadEmbeddedAsset(assets, null);
-                        return new Bitmap(asset);
-                    }
+
+                    return new Bitmap(LoadEmbeddedAsset(assets, uri));
                 }
 
                 default:
                 {
                     Logger.Warn($"Unable to find handler for type {value?.GetType()}. Falling back to default implementation.");
-                    Stream asset = LoadEmbeddedAsset(assets, null);
-                    return new Bitmap(asset);
+                    return new Bitmap(LoadEmbeddedAsset(assets, null));
                 }
             }
         }
@@ -160,48 +173,6 @@ namespace WoWsShipBuilder.UI.Converters
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
-        }
-
-        private static Bitmap GetNationFlagImage(IAssetLoader assets, string assemblyName, object imageName)
-        {
-            Logger.Debug("Processing nation flag.");
-            string imageIndex = default!;
-            string imageNation = default!;
-
-            switch (imageName)
-            {
-                case ShipSummary summary:
-                    imageIndex = summary.Index;
-                    imageNation = summary.Nation.ToString();
-                    break;
-                case Ship ship:
-                    imageIndex = ship.Index;
-                    imageNation = ship.ShipNation.ToString();
-                    break;
-            }
-
-            Uri uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{imageIndex}.png");
-
-            Stream asset;
-            try
-            {
-                asset = assets.Open(uri);
-            }
-            catch (Exception e1) when (e1 is NullReferenceException or FileNotFoundException)
-            {
-                uri = new($"avares://{assemblyName}/Assets/nation_flags/flag_{imageNation}.png");
-                try
-                {
-                    asset = assets.Open(uri);
-                }
-                catch (Exception e2) when (e2 is NullReferenceException or FileNotFoundException)
-                {
-                    Logger.Warn("Unable to find file for uri {0}, falling back to error icon.", uri);
-                    asset = LoadErrorIcon(assets);
-                }
-            }
-
-            return new(asset);
         }
 
         /// <summary>
