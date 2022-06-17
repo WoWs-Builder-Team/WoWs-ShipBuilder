@@ -13,7 +13,7 @@ public enum ReturnFilter
 
 public static class ModifierProcessor
 {
-    private static string prefix = "PARAMS_MODIFIER_";
+    private static readonly string prefix = "PARAMS_MODIFIER_";
 
     private static string GetUiModifierValue(float modifier, string localizerKey, ReturnFilter returnFilter)
     {
@@ -146,7 +146,9 @@ public static class ModifierProcessor
             // this is the actual value
             case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
                 value = $"{modifier} {Translation.Unit_S}";
-                prefix += "CALLFIGHTERS";
+
+                // TODO: fix effects
+                // prefix += "CALLFIGHTERS";
                 break;
             case { } str when str.Contains("radius"):
                 value = $"{Math.Round(modifier * 30 / 1000, 1)} {Translation.Unit_KM}";

@@ -12,12 +12,12 @@
         <MudStack Row="true" Justify="Justify.Center" >
             @foreach (var columnModernizations in ViewModel.AvailableModernizationList)
             {
-                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" FullWidth="true" ListClass="pa-0" >
+                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0" >
                     <ActivatorContent>
                         <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                             <ChildContent>
-                                <MudButton Class="pa-2" Style="min-width: 55px; width: 55px; height: 55px;" Variant="Variant.Outlined" >
-                                    <MudImage Width="40" Height="40" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
+                                <MudButton Style="min-width: 60px; width: 60px; height: 60px; padding: 2px;" Variant="Variant.Outlined" >
+                                    <MudImage Width="56" Height="56" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
                                 </MudButton>
                             </ChildContent>
                             <TooltipContent>
@@ -55,13 +55,13 @@
                         </MudTooltip>
                     </ActivatorContent>
                     <ChildContent >
-                        <MudPaper Outlined="true"  >
+                        <MudPaper Outlined="true">
                             @foreach (var modernization in columnModernizations)
                             {
-                                <MudMenuItem OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))" Class="mx-0 my-1 px-2 py-0">
+                                <MudMenuItem Style="padding: 2px 4px;" OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
                                      <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                                         <ChildContent>
-                                            <MudImage Width="40" Height="40" Src="@GetUpgradeIcon(modernization)"/>
+                                            <MudImage Width="60" Height="60" Src="@GetUpgradeIcon(modernization)"/>
                                         </ChildContent>
                                         <TooltipContent>
                                             <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
