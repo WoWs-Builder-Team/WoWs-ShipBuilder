@@ -1423,4 +1423,10 @@ They do not have any effect on surface ships.</value>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
       <value>Right-click an icon to toggle effects</value>
   </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Shell Trajectory Chart</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Height </value>
+  </data>
 </root>

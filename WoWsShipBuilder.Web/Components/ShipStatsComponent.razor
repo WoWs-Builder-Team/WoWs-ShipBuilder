@@ -8,6 +8,7 @@
 @using System.Text
 @inherits ReactiveComponentBase<ShipStatsControlViewModelBase>
 @inject ILocalizer Localizer
+@inject NavigationManager navManager
 
 @if (ViewModel is not null)
 {
@@ -63,6 +64,7 @@
                                 </MudPaper>
                             </TooltipContent>
                         </MudTooltip>
+                        @* TODO redirect/open the turret angle visualizer *@
                         <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization</MudText>
 
                         <!--Shell data-->
@@ -77,10 +79,10 @@
                                         {
                                             @fragment((data, Localizer))
                                         }
-                                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispGraph)).Localization</MudText>
-                                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispPlot)).Localization</MudText>
-                                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_OpenBallistic)).Localization</MudText>
-                                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowShellTrajectoryGraph)).Localization</MudText>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispGraph)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispPlot)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_OpenBallistic)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowShellTrajectoryGraph)).Localization</MudLink>
                                     </MudStack>
                                 </MudExpansionPanel>
                             }
@@ -474,5 +476,10 @@
         {
             return "Error";
         }
+    }
+
+    private void NavigateToGraph(string shipIndex, string shellIndex)
+    {
+        navManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
     }
 }
