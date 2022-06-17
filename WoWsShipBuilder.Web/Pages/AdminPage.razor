@@ -1,0 +1,95 @@
+﻿@page "/admin"
+@using WoWsShipBuilder.Web.Utility
+@using System.Text.Json
+@using System.Diagnostics
+@using System.Text.Json.Serialization
+@inject NavigationManager NavigationManager
+@inject HttpClient Client
+
+<MudText Class="ma-2" Align="Align.Center" Typo="Typo.h4">Administration page</MudText>
+
+<div class="d-flex align-center flex-column">
+    <MudButton Variant="Variant.Outlined" OnClick="TryWgAuth">Auth with Wg</MudButton>
+    @if (authorized)
+    {
+        <MudStack Class="mt-2">
+            <MudText>@($"status: {status}")</MudText>
+            <MudText>@($"account_id: {accountId}")</MudText>
+            <MudText>@($"access_token: {accessToken}")</MudText>
+        </MudStack>
+    }
+</div>
+
+@code {
+
+    private bool authorized = false;
+
+    private string status = string.Empty;
+    
+    private string accountId = string.Empty;
+
+    private string accessToken = string.Empty;
+
+    private static readonly List<string> AllowedIds = new() {"534767817", "537376379", "534769513"};
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (NavigationManager.TryGetQueryString("status", out status) && status.Equals("ok"))
+        {
+            NavigationManager.TryGetQueryString("account_id", out accountId);
+            if (AllowedIds.Contains(accountId))
+            {
+                NavigationManager.TryGetQueryString("access_token", out accessToken);
+                authorized = ValidateAuth();
+            }
+        }
+    }
+    
+    private void TryWgAuth()
+    {
+        var pageUrl = @"https://localhost:7034/admin";
+        var url = @$"https://api.worldoftanks.eu/wot/auth/login/?application_id=6d563fd75651dbf9de009418d3ee7f56&redirect_uri={pageUrl}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    private bool ValidateAuth()
+    {
+        var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id=6d563fd75651dbf9de009418d3ee7f56&account_id={accountId}&access_token={accessToken}&fields=private.gold";
+        
+        var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
+        var response = Client.Send(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            using var responseStream = response.Content.ReadAsStream();
+            var data = JsonSerializer.Deserialize<WgResponse>(responseStream);
+            
+            if (data is not null && data.status.Equals("ok"))
+            {
+                return data.data.First().Value._private.gold is not null;
+            }
+        }
+        
+        return false;
+    }
+
+    private class WgResponse
+    {
+        public string status { get; set; }
+
+        public Dictionary<string,Data> data { get; set; }
+    }
+
+    private class Data
+    {
+        [JsonPropertyName("private")]
+        public Private _private { get; set; }
+    }
+
+    private class Private
+    {
+        public int? gold { get; set; }
+    }
+
+}
