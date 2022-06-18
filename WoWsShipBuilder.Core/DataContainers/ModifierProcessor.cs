@@ -288,11 +288,6 @@ public static class ModifierProcessor
         var value = string.Empty;
         var description = string.Empty;
 
-#if DEBUG
-        Console.WriteLine(localizerKey);
-        Console.WriteLine(modifier);
-#endif
-
         if (returnFilter is ReturnFilter.Value or ReturnFilter.All)
         {
             value = GetUiModifierValue(modifier, localizerKey, returnFilter, localizer);

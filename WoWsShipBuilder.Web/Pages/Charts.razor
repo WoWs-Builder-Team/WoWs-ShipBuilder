@@ -532,7 +532,8 @@
         List<ShellSelectionWrapper> selectedShipList = new();
         if (shellIndexFromUrl.Length > 0)
         {
-            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shellIndexFromUrl));
+            string shipIndex = shipIndexesFromUrl.First();
+            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
             var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
 
             Dictionary<string, ArtilleryData> artilleryData = new();
@@ -541,7 +542,7 @@
 
             ArtilleryData data = new(shell, gun.DispersionValues, true);
             artilleryData.Add(shellIndexFromUrl, data);
-            ShellSelectionWrapper wrapper = new(shellIndexFromUrl, artilleryData)
+            ShellSelectionWrapper wrapper = new(shipIndex, artilleryData)
             {
                 MaxRange = (double) gun.MaxRange,
             };

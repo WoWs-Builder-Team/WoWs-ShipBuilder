@@ -80,10 +80,10 @@
                                         {
                                             @DataElementFragment((data, Localizer))
                                         }
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispGraph)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispPlot)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_OpenBallistic)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowShellTrajectoryGraph)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispGraph)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispPlot)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_OpenBallistic)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowShellTrajectoryGraph)).Localization</MudLink>
                                     </MudStack>
                                 </MudExpansionPanel>
                             }
@@ -95,7 +95,7 @@
             <!--Pinger gun-->
             @if (ViewModel.CurrentShipStats.PingerGunDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_PingerGun)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_PingerGun)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.PingerGunDataContainer.DataElements)
                         {
@@ -108,7 +108,7 @@
             <!--Torpedo-->
             @if (ViewModel.CurrentShipStats.TorpedoArmamentDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_TorpedoLaunchers)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_TorpedoLaunchers)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.DataElements)
                         {
@@ -149,7 +149,7 @@
             <!--CV planes-->
             @if (ViewModel.CurrentShipStats.CvAircraftDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Aircraft)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Aircraft)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var plane in ViewModel.CurrentShipStats.CvAircraftDataContainer)
                         {
@@ -213,7 +213,7 @@
             <!--Secondaries-->
             @if (ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries is not null)
             {
-                <MudExpansionPanel Dense DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel Dense DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var secondary in ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries)
                         {
@@ -244,7 +244,7 @@
             <!--Anti air-->
             @if (ViewModel.CurrentShipStats.AntiAirDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_AADefense)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_AADefense)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         <!--Long range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.LongRangeAura is not null)
@@ -292,7 +292,7 @@
             <!--Airstrikes-->
             @if (ViewModel.CurrentShipStats.AirstrikeDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.AirstrikeDataContainer.DataElements)
                         {
@@ -320,7 +320,7 @@
             <!--Depth charges-->
             @if (ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_DepthChargesLauncher)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_DepthChargesLauncher)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DataElements)
                         {
@@ -342,7 +342,7 @@
     <MudItem xs="4">
         <MudStack>
             <!--Maneuverability-->
-            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                 <MudStack Spacing="2" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats.ManeuverabilityDataContainer.DataElements)
                     {
@@ -352,7 +352,7 @@
             </MudExpansionPanel>
 
             <!--Concealment-->
-            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Concealment)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Concealment)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                 <MudStack Spacing="2" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats.ConcealmentDataContainer.DataElements)
                     {
@@ -374,10 +374,10 @@
                 
             </MudExpansionPanel>
 
+            <!--T11 abilities-->
             @if (ViewModel.CurrentShipStats.SpecialAbilityDataContainer is not null)
             {
-                <!--T11 abilities-->
-                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SpecialAbility)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_SpecialAbility)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
 
                         @if (ViewModel.CurrentShipStats.SpecialAbilityDataContainer.IsBurstMode)

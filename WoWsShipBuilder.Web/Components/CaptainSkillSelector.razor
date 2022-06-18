@@ -37,7 +37,7 @@
             </MudItem>
             @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {
-                <MudItem Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
+                <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
