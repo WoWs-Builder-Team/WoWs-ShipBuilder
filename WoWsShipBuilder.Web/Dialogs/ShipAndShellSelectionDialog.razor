@@ -15,7 +15,7 @@
         <MudItem Class="d-flex align-center">
             <MudIcon Icon="@Icons.Material.Filled.HelpOutline" Color="Color.Info" Size="Size.Large"/>
             <MudText Typo="Typo.h6" Class="mx-auto">
-                @Translation.ShipAndShellSelectionDialogWeb_SelectShipsAndShells
+                @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_SelectShipsAndShells)).Localization
             </MudText>
         </MudItem>
     </TitleContent>
@@ -49,7 +49,7 @@
                             else
                             {
                                 <MudText Color="Color.Primary">
-                                    @Translation.MessageBox_ShipNoGun
+                                    @Localizer.GetAppLocalization(nameof(Translation.MessageBox_ShipNoGun)).Localization
                                 </MudText>
                             }
                             <MudDivider Light="true" Class="mt-2"/>
@@ -61,7 +61,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
-            @Translation.Cancel
+            @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
             <MudButton Color="Color.Info" OnClick="ReturnSelectedShells" Variant="Variant.Filled" Disabled="processing">
@@ -69,13 +69,13 @@
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
                     <MudText Class="ms-2" Typo="Typo.button">
-                        @Translation.ShipAndShellSelectionDialogWeb_Loading
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
                     </MudText>
                 }
                 else
                 {
                     <MudText Typo="Typo.button">
-                        @Translation.ShipSelectionWindow_ConfirmButton
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
                     </MudText>
                 }
             </MudButton>

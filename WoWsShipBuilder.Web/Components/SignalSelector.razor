@@ -10,7 +10,7 @@
     <MudPaper Outlined="true" Class="pa-2">
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Typo="Typo.body2" Align="Align.Center">@(Translation.SignalSelector_Flags + ViewModel.SignalsNumber + "/8")</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">@(Localizer.GetAppLocalization(nameof(Translation.SignalSelector_Flags)).Localization + ViewModel.SignalsNumber + "/8")</MudText>
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {

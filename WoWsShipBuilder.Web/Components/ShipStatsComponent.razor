@@ -320,7 +320,7 @@
             <!--Depth charges-->
             @if (ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer is not null)
             {
-                <MudExpansionPanel DisableGutters Text="@Translation.ShipStats_DepthChargesLauncher" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_DepthChargesLauncher)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DataElements)
                         {
@@ -342,7 +342,7 @@
     <MudItem xs="4">
         <MudStack>
             <!--Maneuverability-->
-            <MudExpansionPanel DisableGutters Text="@Translation.ShipStats_Maneuverability" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
                 <MudStack Spacing="2" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats.ManeuverabilityDataContainer.DataElements)
                     {
@@ -352,7 +352,7 @@
             </MudExpansionPanel>
 
             <!--Concealment-->
-            <MudExpansionPanel DisableGutters Text="@Translation.ShipStats_Concealment" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
+            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Concealment)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="border border-solid rounded-0">
                 <MudStack Spacing="2" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats.ConcealmentDataContainer.DataElements)
                     {
@@ -362,7 +362,7 @@
             </MudExpansionPanel>
 
             <!--Survivability-->
-            <MudExpansionPanel DisableGutters Text="@Translation.ShipStats_Survivability" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Survivability)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                 <ChildContent>
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.SurvivabilityDataContainer.DataElements)

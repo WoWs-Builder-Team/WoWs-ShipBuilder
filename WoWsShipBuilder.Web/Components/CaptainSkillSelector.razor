@@ -18,7 +18,7 @@
     <MudPaper Outlined="true" Class="pa-2">
         <MudGrid Class="align-center" Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Typo="Typo.body2" Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21 </MudText>
             </MudItem>
             <MudItem xs="7">
                 <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
@@ -32,7 +32,7 @@
             </MudItem>
             <MudItem xs="5" Style="text-align: center">
                 <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">
-                    <MudText Typo="Typo.body2">@Translation.CaptainSkillSelector_SkillTalent</MudText>
+                    <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization</MudText>
                 </MudButton>
             </MudItem>
             @foreach (var (skillName, skill) in ViewModel.SkillList!)
@@ -97,13 +97,13 @@
 
     <MudDialog @bind-IsVisible="@ViewModel.SkillActivationPopupOpen" Options="@dialogOptions">
         <TitleContent>
-            <MudText> @Translation.CaptainSkillSelector_SkillTalent</MudText>
+            <MudText> @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization</MudText>
         </TitleContent>
         <DialogContent>
             <MudContainer Style="overflow-y: auto; max-height: 500px">
                 <MudGrid Class="pa-2" Style="align-items: center">
                                 <MudItem xs="12">
-                                    <MudText>@Translation.CaptainSkillSelector_SkillTalentDescription</MudText>
+                                    <MudText>@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalentDescription)).Localization</MudText>
                                 </MudItem>
                                 @if (ViewModel.ShowArHpSelection)
                                 {
@@ -111,7 +111,7 @@
                                         <MudDivider Light="true"/>
                                     </MudItem>
                                     <MudItem xs="6">
-                                        <MudText Style="font-weight: bold">@(Translation.CaptainSkillSelector_CurrentArBonus + ViewModel.ArHpPercentage + " %")</MudText>
+                                        <MudText Style="font-weight: bold">@(Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_CurrentArBonus)).Localization + ViewModel.ArHpPercentage + " %")</MudText>
                                     </MudItem>
                                     <MudItem xs="6">
                                         <MudSlider Min="0" Max="100" Step="1" @bind-Value="@ViewModel.ArHpPercentage" Immediate="true" Variant="Variant.Filled" Color="Color.Info"></MudSlider>
