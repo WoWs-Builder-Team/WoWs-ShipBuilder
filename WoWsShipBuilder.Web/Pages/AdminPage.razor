@@ -1,7 +1,5 @@
 ﻿@page "/admin"
 @using WoWsShipBuilder.Web.Utility
-@using System.Text.Json
-@using System.Diagnostics
 @using System.Text.Json.Serialization
 @inject NavigationManager NavigationManager
 @inject HttpClient Client
@@ -32,16 +30,16 @@
 
     private static readonly List<string> AllowedIds = new() {"534767817", "537376379", "534769513"};
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         if (NavigationManager.TryGetQueryString("status", out status) && status.Equals("ok"))
         {
             NavigationManager.TryGetQueryString("account_id", out accountId);
             if (AllowedIds.Contains(accountId))
             {
                 NavigationManager.TryGetQueryString("access_token", out accessToken);
-                authorized = ValidateAuth();
+                authorized = await ValidateAuth();
             }
         }
     }
@@ -53,17 +51,16 @@
         NavigationManager.NavigateTo(url);
     }
 
-    private bool ValidateAuth()
+    private async Task<bool> ValidateAuth()
     {
         var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id=6d563fd75651dbf9de009418d3ee7f56&account_id={accountId}&access_token={accessToken}&fields=private.gold";
         
         var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
-        var response = Client.Send(request);
+        var response = await Client.SendAsync(request);
 
         if (response.IsSuccessStatusCode)
         {
-            using var responseStream = response.Content.ReadAsStream();
-            var data = JsonSerializer.Deserialize<WgResponse>(responseStream);
+            var data = await response.Content.ReadFromJsonAsync<WgResponse>();
             
             if (data is not null && data.status.Equals("ok"))
             {
