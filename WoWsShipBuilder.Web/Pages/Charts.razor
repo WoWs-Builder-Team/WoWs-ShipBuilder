@@ -43,7 +43,7 @@
             <Chart Config="horizontalDispConfig"/>
             <MudGrid Class="d-inline-flex" Style="flex-direction: column">
                 <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
-                    <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane(selectedVertDispPlane))" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
+                    <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
                         @foreach (var item in ellipsePlanesList)
                         {
                             <MudSelectItem Value="@item">
@@ -208,7 +208,6 @@
                 if (displayedShips.ContainsKey(labelName)) continue;
 
                 Dictionary<double, Ballistic> ballisticSeries = trajectoriesCache.ContainsKey(labelName) ? trajectoriesCache[labelName] : BallisticHelper.CalculateBallistic(shell, selectedShip.MaxRange);
-                IEnumerable<Point> selectedVerticalDispSeries;
                 (IEnumerable<Point> horizontalDispSeries, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) dispData;
                 if (dispersionsCache.ContainsKey(labelName))
                 {
@@ -513,7 +512,7 @@
         processing = false;
     }
     
-    private void ChangeVerticalDispPlane(EllipsePlanes plane)
+    private void ChangeVerticalDispPlane()
     {
         processing = true;
         foreach (var item in dispersionsCache)
