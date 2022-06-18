@@ -133,7 +133,7 @@
                                                 <MudStack Row="true">
                                                     @foreach (var shipClass in torpedo.CanHitClasses)
                                                     {
-                                                        <MudIcon Icon="@ClassToPathHelper.GetSvgPathFromClass(shipClass)"/>
+                                                        <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(shipClass)"/>
                                                     }
                                                 </MudStack>
                                             </div>
@@ -417,4 +417,9 @@
         NavManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
     }
 
+    private string GetIconFromClass(ShipClass shipClass)
+    {
+        var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
+        return $"<path d=\"{path}\"/>";
+    }
 }
