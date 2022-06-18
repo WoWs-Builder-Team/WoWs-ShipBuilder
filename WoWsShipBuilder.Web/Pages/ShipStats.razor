@@ -155,7 +155,7 @@
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 
-    private async void GoToShip(ShipSummary? shipSummary)
+    private void GoToShip(ShipSummary? shipSummary)
     {
         NavManager.NavigateTo($"/ship?shipIndex={shipSummary.Index}");
     }
