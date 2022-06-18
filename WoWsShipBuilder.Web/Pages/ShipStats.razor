@@ -43,10 +43,10 @@
                 <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
                     @if (ViewModel.PreviousShip is not null)
                     {
-                        <MudStack Class="px-2">
-                            <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.PreviousShip.Index + ".png")" Style="@GetBackgroundFlag(ViewModel.PreviousShip.Nation)"/>
+                        <MudStack Class="px-2" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
+                            <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                             <MudStack Row="true" Justify="Justify.Center">
-                                <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
+                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
                                 <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index).Localization</MudText>
                             </MudStack>
                         </MudStack>
@@ -54,7 +54,7 @@
                     <MudStack Class="px-2">
                         <MudImage Width="150" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation)"/>
                         <MudStack Row="true" Justify="Justify.Center">
-                            <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
+                            <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
                             <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex).Localization</MudText>
                         </MudStack>
                     </MudStack>
@@ -62,10 +62,10 @@
                     {
                         @foreach (var ship in ViewModel.NextShips)
                         {
-                            <MudStack Class="px-2">
-                                <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ship.Index + ".png")" Style="@GetBackgroundFlag(ship.Nation)"/>
+                            <MudStack Class="px-2" @onclick="@(_ => GoToShip(ship))">
+                                <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ship.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center">
-                                    <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                    <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
                                     <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index).Localization</MudText>
                                 </MudStack>
                             </MudStack>
@@ -119,7 +119,6 @@
         var ship = await AppDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship!, shipSummary, null);
         
-        // TODO
         ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
         Console.WriteLine("VM created: " + sw.Elapsed);
         await ViewModel.InitializeData(vmParams);
@@ -152,6 +151,13 @@
     {
         var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
         var stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
-        return $"<path stroke=\"#{stroke}\" stroke-width=\"2\"  d=\"{path}\" />";
+        var fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
+        return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
+
+    private async void GoToShip(ShipSummary? shipSummary)
+    {
+        NavManager.NavigateTo($"/ship?shipIndex={shipSummary.Index}");
+    }
+
 }
