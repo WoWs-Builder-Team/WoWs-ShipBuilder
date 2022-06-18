@@ -23,47 +23,61 @@
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true" Color="Color.Primary" ActivePanelIndexChanged="ReloadCharts" Outlined="true" Border="true">
-    <MudTabPanel Text="@Translation.ChartsWeb_DispersionCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
                 <MudText Class="ms-2" Typo="Typo.button">
-                    @Translation.ShipAndShellSelectionDialogWeb_Loading
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
                 </MudText>
             }
             else
             {
                 <MudText Typo="Typo.button">
-                    @Translation.ChartsWeb_AddRemoveShips
+                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
                 </MudText>
             }
         </MudButton>
         <MudContainer>
             <Chart Config="horizontalDispConfig"/>
-            <Chart Config="verticalDispConfig"/>
+            <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+                <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
+                    <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane(selectedVertDispPlane))" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
+                        @foreach (var item in ellipsePlanesList)
+                        {
+                            <MudSelectItem Value="@item">
+                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString()!)).Localization</MudText>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem Class="z-10" xs="12">
+                    <Chart Config="verticalDispConfig"/>
+                </MudItem>
+            </MudGrid>
         </MudContainer>
     </MudTabPanel>
-    <MudTabPanel Text="@Translation.ChartsWeb_ShellTrajectoryChart">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
                 <MudText Class="ms-2" Typo="Typo.button">
-                    @Translation.ShipAndShellSelectionDialogWeb_Loading
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
                 </MudText>
             }
             else
             {
                 <MudText Typo="Typo.button">
-                    @Translation.ChartsWeb_AddRemoveShips
+                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
                 </MudText>
             }
         </MudButton>
         <MudContainer>
             <MudGrid Class="d-inline-flex" Style="flex-direction: column">
                 <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
-                    <MudNumericField Value="range" Label="@Translation.ShipStats_Range" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
+                    <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
                 </MudItem>
                 <MudItem Class="z-10" xs="12">
                     <Chart Config="trajectoryConfig"/>
@@ -71,19 +85,19 @@
             </MudGrid>
         </MudContainer>
     </MudTabPanel>
-    <MudTabPanel Text="@Translation.ChartsWeb_BallisticCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization">
         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
                 <MudText Class="ms-2" Typo="Typo.button">
-                    @Translation.ShipAndShellSelectionDialogWeb_Loading
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
                 </MudText>
             }
             else
             {
                 <MudText Typo="Typo.button">
-                    @Translation.ChartsWeb_AddRemoveShips
+                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
                 </MudText>
             }
         </MudButton>
@@ -114,9 +128,18 @@
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
+    private EllipsePlanes selectedVertDispPlane = EllipsePlanes.RealPlane;
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
     private readonly Dictionary<string, Dictionary<double, Ballistic>> trajectoriesCache = new();
-    private readonly Dictionary<string, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp)> dispersionsCache = new();
+    private readonly Dictionary<string, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater)> dispersionsCache = new();
+    private readonly List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
+
+    public enum EllipsePlanes
+    {
+        RealPlane,
+        HorizontalPlane,
+        VerticalPlane,
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -171,39 +194,39 @@
         List<string> labelNames = new();
         foreach (var selectedShip in selectedShips)
         {
-            string shipName = Localizer[$"{selectedShip.ShipIndex}_FULL"].Localization;
+            string shipName = Localizer.GetGameLocalization($"{selectedShip.ShipIndex}_FULL").Localization;
             foreach ((string shellIndex, (var shell, var dispersionValues, bool value)) in selectedShip.ArtilleryDataDictionary)
             {
                 if (!value) continue;
 
                 await Task.Yield();
 
-                string shellName = Localizer[$"{shellIndex}"].Localization;
+                string shellName = Localizer.GetGameLocalization(shellIndex).Localization;
                 var labelName = $"{shipName} - {shellName}";
                 labelNames.Add(labelName);
 
                 if (displayedShips.ContainsKey(labelName)) continue;
 
-                displayedShips.Add(labelName, selectedShip);
-
                 Dictionary<double, Ballistic> ballisticSeries = trajectoriesCache.ContainsKey(labelName) ? trajectoriesCache[labelName] : BallisticHelper.CalculateBallistic(shell, selectedShip.MaxRange);
-                IEnumerable<Point> horizontalDispSeries;
-                IEnumerable<Point> verticalDispSeries;
+                IEnumerable<Point> selectedVerticalDispSeries;
+                (IEnumerable<Point> horizontalDispSeries, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) dispData;
                 if (dispersionsCache.ContainsKey(labelName))
                 {
-                    horizontalDispSeries = dispersionsCache[labelName].horizontalDisp;
-                    verticalDispSeries = dispersionsCache[labelName].verticalDisp;
+                    dispData = dispersionsCache[labelName];
                 }
                 else
                 {
-                    horizontalDispSeries = CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange);
-                    verticalDispSeries = CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange);
+                    var vertDispSeries = CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange, ballisticSeries);
+                    dispData = (CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange), vertDispSeries.vertDispAtImpactAngle, vertDispSeries.vertDispOnWater, vertDispSeries.vertDispOnPerpendicularToWater);
                 }
+                
                 var lineColor = GetColor();
-                AddDispersionChartDataset(labelName, (horizontalDispSeries, verticalDispSeries), lineColor);
+                AddDispersionChartDataset(labelName, dispData, lineColor);
                 AddTrajectoryChartDataset(labelName, ballisticSeries, lineColor);
                 await Task.Yield();
                 AddBallisticChartDataset(labelName, ballisticSeries, lineColor);
+                
+                displayedShips.Add(labelName, selectedShip);
             }
         }
 
@@ -215,15 +238,33 @@
         StateHasChanged();
     }
 
-    private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) data, string chartLineColor)
+    private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDispSeries, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) data, string chartLineColor)
     {
         if (!dispersionsCache.ContainsKey(name))
         {
             dispersionsCache.Add(name, data);
         }
-        (IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp) = data;
-        AddChartDataset(name, horizontalDisp, horizontalDispConfig, chartLineColor);
-        AddChartDataset(name, verticalDisp, verticalDispConfig, chartLineColor);
+        
+        if (!displayedShips.ContainsKey(name))
+        {
+            AddChartDataset(name, data.horizontalDispSeries, horizontalDispConfig, chartLineColor);   
+        }
+        
+        IEnumerable<Point> verticalDispSeries;
+        switch (selectedVertDispPlane)
+        {
+            case EllipsePlanes.HorizontalPlane:
+                verticalDispSeries = data.vertDispOnWater;
+                break;
+            case EllipsePlanes.VerticalPlane:
+                verticalDispSeries = data.vertDispOnPerpendicularToWater;
+                break;
+            case EllipsePlanes.RealPlane:
+            default:
+                verticalDispSeries = data.vertDispAtImpactAngle;
+                break;
+        }
+        AddChartDataset(name, verticalDispSeries, verticalDispConfig, chartLineColor);
     }
 
     private void AddTrajectoryChartDataset(string name, Dictionary<double, Ballistic> data, string chartLineColor)
@@ -289,7 +330,6 @@
             BorderColor = chartLineColor,
             Fill = FillingMode.Disabled,
             PointRadius = 0,
-            CubicInterpolationMode = CubicInterpolationMode.Monotone,
         };
         chartConfig.Data.Datasets.Add(dataset);
     }
@@ -339,18 +379,18 @@
 
     private void CreateChartConfig()
     {
-        horizontalDispConfig = SetChartConfig($"{Translation.DispersionGraphWindow_Horizontal} {Translation.ShipStats_Dispersion}", $"{Translation.ShipStats_Dispersion} [{Translation.Unit_M}]");
-        verticalDispConfig = SetChartConfig($"{Translation.DispersionGraphWindow_Vertical} {Translation.ShipStats_Dispersion}", $"{Translation.ShipStats_Dispersion} [{Translation.Unit_M}]");
-        penetrationConfig = SetChartConfig($"{Translation.ShipStats_Penetration}", $"{Translation.ShipStats_Penetration} [{Translation.Unit_MM}]");
-        flightTimeConfig = SetChartConfig($"{Translation.DispersionGraphWindow_FlightTime}", $"{Translation.DispersionGraphWindow_FlightTime} [{Translation.Unit_S}]");
-        impactVelocityConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactVelocity}", $"{Translation.DispersionGraphWindow_ImpactVelocity} [{Translation.Unit_MPS}]");
-        impactAngleConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ImpactAngle}", $"{Translation.DispersionGraphWindow_ImpactAngle} [{Translation.Unit_Degree}]");
-        trajectoryConfig = SetChartConfig($"{Translation.DispersionGraphWindow_ShellsPath}", $"{Translation.ChartsWeb_Height} [{Translation.Unit_M}]", true);
+        horizontalDispConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization} {Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]");
+        verticalDispConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization} {Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]");
+        penetrationConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization}]");
+        flightTimeConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}]");
+        impactVelocityConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization}]");
+        impactAngleConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization}]");
+        trajectoryConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Height)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]", true);
     }
 
     private LineConfig SetChartConfig(string title, string yLabel, bool isShellTrajectoryChart = false)
     {
-        var xLabel = $"{Translation.ShipStats_Range} [{Translation.Unit_KM}]";
+        var xLabel = $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}]";
         string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
         string? gridColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DimGray);
         var gridDash = new double[] {5, 5};
@@ -472,6 +512,20 @@
         }
         processing = false;
     }
+    
+    private void ChangeVerticalDispPlane(EllipsePlanes plane)
+    {
+        processing = true;
+        foreach (var item in dispersionsCache)
+        {
+            if (!displayedShips.ContainsKey(item.Key)) continue;
+            var dataset = verticalDispConfig.Data.Datasets.First(x => (x as LineDataset<Point>)!.Label.Equals(item.Key)) as LineDataset<Point>;
+            string color = dataset!.BackgroundColor;
+            verticalDispConfig.Data.Datasets.Remove(dataset);
+            AddDispersionChartDataset(item.Key, item.Value, color);
+        }
+        processing = false;
+    }
 
     private async Task MakeChartsFromUrl()
     {
@@ -555,10 +609,23 @@
     /// </summary>
     /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
     /// <param name="maxRange">Max range of the gun.</param>
+    /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    private static IEnumerable<Point> CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange)
+    private static (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
     {
-        return CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
+        List<Point> series = CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1).ToList();
+        
+        List<Point> vertDispOnWater = new();
+        List<Point> vertDispOnPerpendicularToWater = new();
+        
+        foreach ((double range, var data) in impactAngles)
+        {
+            double disp = dispersion.CalculateVerticalDispersion(maxRange, range);
+            vertDispOnWater.Add(new(range / 1000, disp / Math.Sin(Math.PI / 180 * data.ImpactAngle)));
+            vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
+        }
+
+        return (series, vertDispOnWater, vertDispOnPerpendicularToWater);
     }
 
     /// <summary>
