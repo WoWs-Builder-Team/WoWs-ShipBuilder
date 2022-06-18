@@ -25,8 +25,8 @@ public class DesktopDataServiceTest
     [Test]
     public void Store_DirectoryNotExisting_DirectoryCreated()
     {
-        const string settingsDirectory = @"C:\app";
-        const string settingsPath = settingsDirectory + @"\settings.json";
+        const string settingsDirectory = @"app";
+        const string settingsPath = settingsDirectory + @"/settings.json";
         const string customDataPath = "1234";
         var testSettings = new AppSettings { AutoUpdateEnabled = false, CustomDataPath = customDataPath };
 
@@ -43,8 +43,8 @@ public class DesktopDataServiceTest
     [Test]
     public async Task Store_FileAlreadyExists_FileReplaced()
     {
-        const string settingsDirectory = @"C:\app";
-        const string settingsPath = settingsDirectory + @"\settings.json";
+        const string settingsDirectory = @"app";
+        const string settingsPath = settingsDirectory + @"/settings.json";
         const string customDataPath = "1234";
         var testSettings = new AppSettings { AutoUpdateEnabled = false, CustomDataPath = customDataPath };
         mockFileSystem.AddFile(settingsPath, new(JsonConvert.SerializeObject(testSettings)));

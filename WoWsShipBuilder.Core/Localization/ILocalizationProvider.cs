@@ -5,7 +5,7 @@ namespace WoWsShipBuilder.Core.Localization;
 
 public interface ILocalizationProvider
 {
-    Task RefreshDataAsync(params CultureDetails[] supportedCultures);
+    Task RefreshDataAsync(ServerType serverType, params CultureDetails[] supportedCultures);
 
     string? GetString(string key, CultureDetails cultureDetails);
 }

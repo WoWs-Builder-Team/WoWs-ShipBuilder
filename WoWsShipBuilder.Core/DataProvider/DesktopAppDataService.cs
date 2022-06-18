@@ -198,9 +198,9 @@ namespace WoWsShipBuilder.Core.DataProvider
         {
             Ship? ship = null;
 
-            if (summary.Nation.Equals(AppData.CurrentLoadedNation))
+            if (summary.Nation.Equals(AppData.CurrentLoadedNation) && AppData.ShipDictionary is not null)
             {
-                ship = AppData.ShipDictionary![summary.Index];
+                ship = AppData.ShipDictionary[summary.Index];
             }
             else
             {

@@ -65,7 +65,7 @@ public class SplashScreenViewModel : ViewModelBase
         try
         {
             await localDataUpdater.RunDataUpdateCheck(appSettings.SelectedServerType, progressTracker, forceVersionCheck);
-            await localizationProvider.RefreshDataAsync(appSettings.SelectedLanguage);
+            await localizationProvider.RefreshDataAsync(appSettings.SelectedServerType, appSettings.SelectedLanguage);
             logger.Debug("Version check and update tasks completed. Launching main window.");
         }
         catch (Exception e)

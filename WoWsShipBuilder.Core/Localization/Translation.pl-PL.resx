@@ -685,7 +685,9 @@
   
   
   
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>Penetracja</value>
+  </data>
   
   
   
@@ -828,6 +830,28 @@
   <data name="ShipStats_HP" xml:space="preserve">
       <value>PW</value>
   </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Uszkodzenia</value>
+  </data>
+  
+  
+  
+  
+  
+  
+  
   
   
   
