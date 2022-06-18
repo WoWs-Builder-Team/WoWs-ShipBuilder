@@ -24,4 +24,54 @@
       <AdditionalFiles Include="Dialogs\ShipAndShellSelectionDialog.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Ashigara.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Barracuda.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Commonwealth.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Europe.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Events.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_France.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Germany.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Halloween.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_HW20_Pirates.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_HW20_Protos.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_HW20_Raiders.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Italy.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Japan.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Moray.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Netherlands.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Octopus.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PanAmerica.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PanAsia.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PGSC718.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB700.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB705.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB706.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB707.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB708.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB799.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB878.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSB888.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC705.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC707.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC708.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC709.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC717.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC718.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC727.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSC737.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSX701.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PJSX702.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Poland.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PZSA508.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PZSB509.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PZSB519.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PZSC518.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_PZSD718.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Russia.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Spain.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_UnitedKingdom.png" />
+      <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Usa.png" />
+    </ItemGroup>
+
 </Project>

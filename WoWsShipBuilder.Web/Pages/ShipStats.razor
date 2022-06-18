@@ -4,8 +4,10 @@
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -14,16 +16,13 @@
 
 <PageTitle>Ship stats</PageTitle>
 
-<MudPaper Outlined="true" Class="d-flex justify-center align-center ma-5">
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-</MudPaper>
-
-<MudContainer MaxWidth="MaxWidth.False">
+<MudContainer MaxWidth="MaxWidth.False" Class="mt-3">
     @if (!initialized)
     {
         <MudGrid>
+            <MudItem xs="12">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+            </MudItem>
             <MudItem xs="3">
                 <MudStack>
                     <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
@@ -40,6 +39,40 @@
     else
     {
         <MudGrid>
+            <MudItem xs="12">
+                <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
+                    @if (ViewModel.PreviousShip is not null)
+                    {
+                        <MudStack Class="px-2">
+                            <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.PreviousShip.Index + ".png")" Style="@GetBackgroundFlag(ViewModel.PreviousShip.Nation)"/>
+                            <MudStack Row="true" Justify="Justify.Center">
+                                <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
+                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index).Localization</MudText>
+                            </MudStack>
+                        </MudStack>
+                    }
+                    <MudStack Class="px-2">
+                        <MudImage Width="150" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation)"/>
+                        <MudStack Row="true" Justify="Justify.Center">
+                            <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
+                            <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex).Localization</MudText>
+                        </MudStack>
+                    </MudStack>
+                    @if (ViewModel.NextShips is not null)
+                    {
+                        @foreach (var ship in ViewModel.NextShips)
+                        {
+                            <MudStack Class="px-2">
+                                <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ship.Index + ".png")" Style="@GetBackgroundFlag(ship.Nation)"/>
+                                <MudStack Row="true" Justify="Justify.Center">
+                                    <MudIcon ViewBox="0 0 22 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                    <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index).Localization</MudText>
+                                </MudStack>
+                            </MudStack>
+                        }
+                    }
+                </MudPaper>
+            </MudItem>
             <MudItem xs="3">
                 <MudStack>
                     <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
@@ -62,7 +95,7 @@
 
 @code {
 
-    private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
+    private string baseAddress = @"https://d2nzlaerr9l5k3.cloudfront.net/images/individual/";
 
     private bool initialized;
     
@@ -107,5 +140,18 @@
         {
             NavManager.LocationChanged -= HandleLocationChanged;
         }
+    }
+
+    private string GetBackgroundFlag(Nation nation)
+    {
+        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+        return $"background-image: url(\"/assets/nation_flags/flag_{nation.ToString()}.png\"); background-size: cover";
+    }
+
+    private string GetIconFromClass(ShipClass shipClass, ShipCategory category)
+    {
+        var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
+        var stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
+        return $"<path stroke=\"#{stroke}\" stroke-width=\"2\"  d=\"{path}\" />";
     }
 }
