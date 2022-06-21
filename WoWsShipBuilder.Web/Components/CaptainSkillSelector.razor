@@ -37,7 +37,7 @@
             </MudItem>
             @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {
-                <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
+                <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass))">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
@@ -60,10 +60,10 @@
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
                                         }
                                     }
-                                    @if (skill.Skill.Modifiers is {Count: > 0 })
+                                    @if (skill.Modifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
+                                        @foreach (var (modifierName, modifierValue) in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
@@ -73,10 +73,10 @@
                                             }
                                         }
                                     }
-                                    @if (skill.Skill.ConditionalModifiers is {Count: > 0 })
+                                    @if (skill.ConditionalModifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
+                                        @foreach (var (modifierName, modifierValue) in skill.ConditionalModifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
@@ -174,6 +174,10 @@
 }
 
 @code {
+
+    [Parameter]
+    public ShipClass ShipClass { get; set; }
+
     private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
 
     private DialogOptions dialogOptions = new()

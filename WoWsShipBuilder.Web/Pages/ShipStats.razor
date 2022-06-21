@@ -78,7 +78,7 @@
                     <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
                     <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
                     <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
-                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel"/>
+                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
                     <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
                 </MudStack>
             </MudItem>
