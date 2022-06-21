@@ -166,8 +166,8 @@
                         <Setter Property="Opacity" Value="1" />
                     </Style>
                     <Style Selector="ItemsControl.SkillContainer > ContentPresenter">
-                        <Setter Property="Grid.Row" Value="{Binding Value.Skill.Tiers[0].Tier}"/>
-                        <Setter Property="Grid.Column" Value="{Binding Value.Skill.Tiers[0].XPosition}"/>
+                        <Setter Property="Grid.Row" Value="{Binding Value.SkillTier}"/>
+                        <Setter Property="Grid.Column" Value="{Binding Value.SkillXPosition}"/>
                     </Style>
                 </ItemsControl.Styles>
             </ItemsControl>

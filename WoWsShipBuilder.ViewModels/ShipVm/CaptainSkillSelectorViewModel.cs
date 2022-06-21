@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
-                SkillList = GetSkillsForClass(currentClass, newCaptain);
+                SkillList = ConvertSkillToViewModel(currentClass, newCaptain);
                 CaptainTalentsList.Clear();
 
                 if (newCaptain!.UniqueSkills != null)
@@ -270,34 +270,19 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
         /// <returns>A dictionary containing the skill for the class from the captain.</returns>
-        private Dictionary<string, SkillItemViewModel> GetSkillsForClass(ShipClass shipClass, Captain? captain)
+        private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
             var skills = captain.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
-            filteredSkills.ForEach(skill =>
-            {
-                // Get only the tier for the relevant class
-                var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
-                skill.Value.Tiers = classSkill;
-
-                // Get only the value for the relevant class
-                Dictionary<string, float> modifierClassSkill = skill.Value.Modifiers
-                    ?.Where(x => x.Key.Contains(shipClass.ToString()))
-                    .ToDictionary(x => x.Key, x => x.Value) ?? new Dictionary<string, float>();
-
-                // If Count is 0, the skill has universal value. If Count is > 0, the skill has values divided by class
-                if (modifierClassSkill.Count > 0)
-                {
-                    skill.Value.Modifiers = modifierClassSkill;
-                }
-            });
             Console.WriteLine(@"SKILLS: " + skills.Count);
-            var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this));
-            logger.Info("Found {0} skills", filteredDictionary.Count);
-            return filteredDictionary;
-        }
+
+            var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass));
+            logger.Info("Found {0} skills", dictionary.Count);
+            return dictionary;
+
+            }
 
         /// <summary>
         /// Helper method to trigger a reevaluation of the <see cref="SkillItemViewModel.CanExecute"/> property of the skill view models.
@@ -328,7 +313,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 SkillOrderList.Remove(skill);
                 ReorderSkillList();
-                int pointCost = skill.Tiers.First().Tier + 1;
+                int pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
                 AssignedPoints -= pointCost;
                 if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
                 {
@@ -346,7 +331,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             else
             {
                 SkillOrderList.Add(skill);
-                var pointCost = skill.Tiers.First().Tier + 1;
+                var pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
                 AssignedPoints += pointCost;
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
                 {
@@ -395,7 +380,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
             var supportList = SkillOrderList.ToList();
-            var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First().Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First().Tier).ToList();
+            var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier).ToList();
 
             // Tier 0 skill reordering
             var tier0Skills = groups[0];
@@ -420,8 +405,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             if (groups.Count > 2)
             {
                 var tier1Skills = groups[1];
-                var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 0);
-                var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 2);
+                var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
+                var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 2);
 
                 var tier1SkillFirst = false;
 
@@ -445,8 +430,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             if (groups.Count > 3)
             {
                 var tier1Skills = groups[2];
-                var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 1);
-                var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 3);
+                var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
+                var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 3);
 
                 var tier1SkillFirst = false;
 
@@ -480,6 +465,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 .SelectMany(m => m.Modifiers)
                 .Select(effect => (effect.Key, effect.Value))
                 .ToList();
+
+            //filter out modifiers that are class specific
+            modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
+                .Select(effect => (effect.Key, effect.Value))
+                .ToList();;
 
             if (CamoEnabled)
             {

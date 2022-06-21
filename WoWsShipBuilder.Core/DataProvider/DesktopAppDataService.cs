@@ -186,11 +186,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
 
     public async Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)
     {
-        if (nation == Nation.Common)
-        {
-            AppData.CaptainCache.SetIfNotNull(nation, await ReadLocalJsonData<Captain>(nation, serverType));
-        }
-        else if (!AppData.CaptainCache.ContainsKey(nation))
+        if (!AppData.CaptainCache.ContainsKey(nation))
         {
             AppData.CaptainCache.SetIfNotNull(nation, await ReadLocalJsonData<Captain>(nation, serverType));
         }
