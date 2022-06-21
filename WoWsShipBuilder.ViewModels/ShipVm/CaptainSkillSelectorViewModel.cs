@@ -259,8 +259,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public static async Task<(Captain, Dictionary<string, Captain>?)> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, Nation nation)
         {
-            var defaultCaptain = (await appDataService.ReadLocalJsonData<Captain>(Nation.Common, appSettings.SelectedServerType))!.Single().Value;
-            var nationCaptains = await appDataService.ReadLocalJsonData<Captain>(nation, appSettings.SelectedServerType);
+            var defaultCaptain = (await appDataService.GetCaptains(Nation.Common, appSettings.SelectedServerType)).Single().Value;
+            var nationCaptains = await appDataService.GetCaptains(nation, appSettings.SelectedServerType);
             return (defaultCaptain, nationCaptains);
         }
 

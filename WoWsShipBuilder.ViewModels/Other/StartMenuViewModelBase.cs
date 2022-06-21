@@ -88,7 +88,6 @@ namespace WoWsShipBuilder.ViewModels.Other
                 try
                 {
                     var ship = await AppDataService.GetShipFromSummary(result);
-                    await AppDataService.LoadNationFiles(result.Nation);
                     await NavigationService.OpenMainWindow(ship!, result, closeMainWindow: true);
                 }
                 catch (Exception e)
@@ -138,7 +137,6 @@ namespace WoWsShipBuilder.ViewModels.Other
             try
             {
                 var ship = await AppDataService.GetShipFromSummary(summary);
-                await AppDataService.LoadNationFiles(summary.Nation);
                 await NavigationService.OpenMainWindow(ship!, summary, build, true);
             }
             catch (Exception e)

@@ -130,7 +130,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         {
             logger.Info("Checking json file versions for server type {0}...", serverType);
             VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-            VersionInfo? localVersionInfo = await appDataService.GetLocalVersionInfo(serverType);
+            VersionInfo? localVersionInfo = await appDataService.GetCurrentVersionInfo(serverType);
 
             List<(string, string)> filesToDownload;
             bool shouldImagesUpdate;
@@ -240,7 +240,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
         public async Task<ValidationResult> ValidateData(ServerType serverType, string dataBasePath)
         {
-            var versionInfo = await appDataService.GetLocalVersionInfo(serverType);
+            var versionInfo = await appDataService.GetCurrentVersionInfo(serverType);
             if (versionInfo == null)
             {
                 logger.Error("VersionInfo does not exist. AppData validation failed.");
@@ -284,7 +284,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         {
             var today = DateTime.Today;
             return appSettings.LastDataUpdateCheck == null || (today - appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
-                   await appDataService.GetLocalVersionInfo(serverType) == null;
+                   await appDataService.GetCurrentVersionInfo(serverType) == null;
         }
 
         public async Task CheckInstalledLocalizations(ServerType serverType)

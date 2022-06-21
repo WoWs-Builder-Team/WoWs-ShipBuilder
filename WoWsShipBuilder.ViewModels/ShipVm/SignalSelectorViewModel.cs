@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public static async Task<List<KeyValuePair<string, SignalItemViewModel>>> LoadSignalList(IAppDataService appDataService, AppSettings appSettings)
         {
-            var dict = await appDataService.ReadLocalJsonData<Exterior>(Nation.Common, appSettings.SelectedServerType);
+            var dict = await appDataService.GetExteriorList(Nation.Common, appSettings.SelectedServerType);
             if (dict == null)
             {
                 Logging.Logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump(appSettings));

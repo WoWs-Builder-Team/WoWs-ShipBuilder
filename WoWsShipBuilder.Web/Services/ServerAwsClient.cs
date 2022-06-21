@@ -122,10 +122,7 @@ public class ServerAwsClient : IAwsClient
             case "modernization":
                 if (jsonObject is Dictionary<string, Modernization> modernizations)
                 {
-                    foreach (var modernization in modernizations)
-                    {
-                        AppData.ModernizationCache.Add(modernization.Key, modernization.Value);
-                    }
+                    AppData.ModernizationCache = modernizations;
                 }
 
                 break;
@@ -143,6 +140,7 @@ public class ServerAwsClient : IAwsClient
 
                 break;
             case "unit":
+                // TODO: add once unit is actually needed
                 break;
             case "summary":
                 if (jsonObject is List<ShipSummary> shipSummaries)

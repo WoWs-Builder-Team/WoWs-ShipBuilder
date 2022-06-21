@@ -69,6 +69,7 @@ namespace WoWsShipBuilder.UI
             AppData.ProjectileCache.SetIfNotNull(nation, ReadLocalJsonData<Projectile>(nation, serverType));
             AppData.AircraftCache.SetIfNotNull(nation, ReadLocalJsonData<Aircraft>(nation, serverType));
             AppData.ConsumableList ??= ReadLocalJsonData<Consumable>(Nation.Common, serverType);
+            AppData.ModernizationCache ??= ReadLocalJsonData<Modernization>(Nation.Common, serverType);
         }
 
         private static Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType)
