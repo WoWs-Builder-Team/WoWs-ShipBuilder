@@ -19,6 +19,7 @@
 @inject ILocalizer Localizer
 @inject IAppDataService WebAppDataService
 @inject IDialogService DialogService
+@inject IJSRuntime Ijs
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
@@ -40,7 +41,7 @@
             }
         </MudButton>
         <MudContainer>
-            <Chart Config="horizontalDispConfig"/>
+            <Chart SetupCompletedCallback="@Callback" Config="horizontalDispConfig"/>
             <MudGrid Class="d-inline-flex" Style="flex-direction: column">
                 <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
                     <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
@@ -119,7 +120,7 @@
     private LineConfig impactVelocityConfig = new();
     private LineConfig impactAngleConfig = new();
     private LineConfig trajectoryConfig = new();
-
+    
     private int colorCounter;
     private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
     private bool processing;
@@ -159,7 +160,11 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && shipIndexesFromUrl.Any()) await MakeChartsFromUrl();
+        if (firstRender && shipIndexesFromUrl.Any())
+        {
+            await MakeChartsFromUrl();
+        }
+        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
     }
 
     private async Task EditCharts()
@@ -172,6 +177,7 @@
             return;
         }
         await UpdateCharts(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
+        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
         processing = false;
     }
 
@@ -234,7 +240,10 @@
         {
             RemoveChartDataset(labelName);
         }
+
         StateHasChanged();
+        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
+
     }
 
     private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDispSeries, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) data, string chartLineColor)
@@ -329,6 +338,8 @@
             BorderColor = chartLineColor,
             Fill = FillingMode.Disabled,
             PointRadius = 0,
+            PointHitRadius = 10,
+            PointHoverRadius = 5,
         };
         chartConfig.Data.Datasets.Add(dataset);
     }
@@ -456,6 +467,7 @@
                                 Color = gridColor,
                                 BorderDash = gridDash,
                             },
+                            
                         },
                     },
                     YAxes = new List<CartesianAxis>
@@ -694,5 +706,12 @@
         ImpactVelocity,
         ImpactAngle,
         Trajectory,
+    }
+
+    private async void Callback()
+    {
+        var canvasId = horizontalDispConfig.CanvasId;
+        Console.WriteLine(canvasId);
+         await Ijs.InvokeVoidAsync("chartConfig", canvasId);
     }
 }

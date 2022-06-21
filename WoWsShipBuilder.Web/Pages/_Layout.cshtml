@@ -33,5 +33,51 @@
 <script src="/lib/chartJs/dist/Chart.min.js"></script>
 <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script>
+function test()
+{
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+    let p = new Path2D("M 10.451042,11.377083 9.525,12.170833 H 3.4395833 l -0.79375,-0.79375 h -1.5875 v -1.322916 h " +
+        "0.79375 V 8.4666667 c 0,-0.5291667 0.3002661,-1.3683176 0.9634748,-1.6052961 0.449291,-0.1888714 " +
+        "0.8886086,-0.2467873 1.4177752,-0.2467873 l 0,-4.7625 h 1.5875 l 0,4.7625 h 1.5875 l 0,-4.7625 h " +
+        "1.5875 l 0,4.7625 c 0.5291667,0 1.2930047,0.095838 1.8008907,0.4810755 0.402385,0.3919374 " +
+        "0.580359,1.1064245 0.580359,1.5319045 v 1.4266037 h 0.79375 v 1.322916 z");
+    context.fillStyle = "gray";
+    context.strokeStyle = "black";
+    context.lineWidth  = 0.1;
+    context.setTransform(10,0,0,10,250,400)
+    context.fill(p);
+    context.stroke(p);
+    let p2 = new Path2D("m 7.4083332,6.6145832 v 1.0583334 h 1.5875 V 6.6145832 m -4.7624999,0 v 1.0583334 h 1.5875 V 6.6145832");
+    context.stroke(p2);
+    context.resetTransform();
+    context.strokeStyle = "black";
+    context.strokeRect(260,425, 115, 100);
+}
+
+function chartConfig(canvasId)
+{
+    let chart = window.ChartJsInterop.BlazorCharts.get(canvasId);
+    chart.options.tooltips.callbacks.label = function(context, dataset)
+    {
+        let label = dataset.datasets[context.datasetIndex].label;
+        
+        if (label) {
+            label += ': ';
+        }
+        
+        if (context.yLabel !== null) {
+            label += context.yLabel.toFixed(2);
+        }
+        return label;
+    }
+    
+    chart.options.tooltips.callbacks.title = function (context)
+    {
+        return context[0].xLabel.toFixed(2);
+    }
+}
+</script>
 </body>
 </html>
