@@ -46,7 +46,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var capList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
             var nationCaptains = vmParams.Item2;
-            if (nationCaptains is {Count: > 0})
+            if (nationCaptains is { Count: > 0 })
             {
                 capList = capList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
             }
@@ -64,6 +64,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
         }
+
         private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
@@ -181,7 +182,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             get => showArHpSelection;
             set
             {
-                this. RaiseAndSetIfChanged(ref showArHpSelection, value);
+                this.RaiseAndSetIfChanged(ref showArHpSelection, value);
                 TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
             }
         }
@@ -261,7 +262,24 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             var defaultCaptain = (await appDataService.GetCaptains(Nation.Common, appSettings.SelectedServerType)).Single().Value;
             var nationCaptains = await appDataService.GetCaptains(nation, appSettings.SelectedServerType);
-            return (defaultCaptain, nationCaptains);
+
+            // Copy the default captain object to trigger an update on the ComboBox selection.
+            // Necessary because it only updates when the item itself is changed.
+            return (ShallowCopyCaptain(defaultCaptain), nationCaptains);
+        }
+
+        private static Captain ShallowCopyCaptain(Captain original)
+        {
+            return new()
+            {
+                Id = original.Id,
+                Index = original.Index,
+                Name = original.Name,
+                HasSpecialSkills = original.HasSpecialSkills,
+                Skills = original.Skills,
+                UniqueSkills = original.UniqueSkills,
+                Nation = original.Nation,
+            };
         }
 
         /// <summary>
@@ -281,8 +299,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass));
             logger.Info("Found {0} skills", dictionary.Count);
             return dictionary;
-
-            }
+        }
 
         /// <summary>
         /// Helper method to trigger a reevaluation of the <see cref="SkillItemViewModel.CanExecute"/> property of the skill view models.
@@ -320,7 +337,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     ShowArHpSelection = false;
                 }
 
-                if (skill.ConditionalModifiers is {Count: > 0})
+                if (skill.ConditionalModifiers is { Count: > 0 })
                 {
                     var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
@@ -338,7 +355,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     ShowArHpSelection = true;
                 }
 
-                if (skill.ConditionalModifiers is {Count: > 0})
+                if (skill.ConditionalModifiers is { Count: > 0 })
                 {
                     ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
                 }
@@ -469,7 +486,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             //filter out modifiers that are class specific
             modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
                 .Select(effect => (effect.Key, effect.Value))
-                .ToList();;
+                .ToList();
 
             if (CamoEnabled)
             {

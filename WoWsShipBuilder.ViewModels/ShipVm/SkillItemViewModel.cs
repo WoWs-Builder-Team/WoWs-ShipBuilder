@@ -12,7 +12,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private bool canExecute;
 
-        private ShipClass shipClass;
+        private readonly ShipClass shipClass;
 
         public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass)
         {
@@ -46,9 +46,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public int SkillXPosition { get; }
 
-        public  Dictionary<string,float> Modifiers { get; }
+        public Dictionary<string, float> Modifiers { get; } = new();
 
-        public  Dictionary<string,float> ConditionalModifiers { get; }
+        public Dictionary<string, float> ConditionalModifiers { get; } = new();
 
         public bool CanExecute
         {
