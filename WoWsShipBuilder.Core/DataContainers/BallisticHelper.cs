@@ -13,7 +13,6 @@ namespace WoWsShipBuilder.Core.DataContainers
         private const double P0 = 101325;                // Pressure at Sea Level        | Pa
         private const double R = 8.31447;                // Ideal Gas Constant           | J/(mol K)
         private const double M = 0.0289644;              // Molarity of Air at Sea Level | kg/mol
-        private const double TimeMultiplier = 2.75;      // In game time multiplier
 
         // Calculation Parameters
         private const double MaxAngles = 600;            // Max Angle                    | degrees
@@ -142,7 +141,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                     break;
                 }
 
-                var ballistic = new Ballistic(pen, vImpact, t / TimeMultiplier, impactAngle, coordinates);
+                var ballistic = new Ballistic(pen, vImpact, t / (double)Constants.TimeScale, impactAngle, coordinates);
                 dict.Add(x, ballistic);
                 lastRange = x;
             }
