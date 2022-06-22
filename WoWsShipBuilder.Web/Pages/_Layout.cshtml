@@ -1,4 +1,5 @@
-﻿@namespace WoWsShipBuilder.Web.Pages
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace WoWsShipBuilder.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
@@ -22,6 +23,7 @@ Custom builds." property="og:description">
     <meta name="theme-color" content="#7289DA">
     <meta name="twitter:card" content="summary_large_image">
     <link type="application/json+oembed" href="/assets/jsons/oembed.json" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body style="background-color: #282828">
 @RenderBody()
