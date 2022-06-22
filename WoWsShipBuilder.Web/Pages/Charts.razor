@@ -126,21 +126,14 @@
     private bool processing;
     private bool isFirstRendering = true;
     private double range = 10;
+    private EllipsePlanes selectedVertDispPlane = EllipsePlanes.RealPlane;
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
-    private EllipsePlanes selectedVertDispPlane = EllipsePlanes.RealPlane;
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
     private readonly Dictionary<string, Dictionary<double, Ballistic>> trajectoriesCache = new();
     private readonly Dictionary<string, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater)> dispersionsCache = new();
     private readonly List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
-
-    public enum EllipsePlanes
-    {
-        RealPlane,
-        HorizontalPlane,
-        VerticalPlane,
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -164,7 +157,6 @@
         {
             await MakeChartsFromUrl();
         }
-        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
     }
 
     private async Task EditCharts()
@@ -559,7 +551,6 @@
                 MaxRange = (double) gun.MaxRange,
             };
             selectedShipList.Add(wrapper);
-            processing = false;
         }
         else
         {
@@ -712,6 +703,13 @@
     {
         var canvasId = horizontalDispConfig.CanvasId;
         Console.WriteLine(canvasId);
-         await Ijs.InvokeVoidAsync("chartConfig", canvasId);
+        await Ijs.InvokeVoidAsync("chartConfig", canvasId);
+    }
+    
+    private enum EllipsePlanes
+    {
+        RealPlane,
+        HorizontalPlane,
+        VerticalPlane,
     }
 }
