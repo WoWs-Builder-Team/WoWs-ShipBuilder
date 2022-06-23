@@ -35,6 +35,8 @@ namespace WoWsShipBuilder.Core.Settings
 
         public DispersionPlotSettings DispersionPlotSettings { get; set; } = new();
 
+        public WebAppSettings? WebAppSettings { get; set; }
+
         public void ClearSettings()
         {
             AutoUpdateEnabled = true;
@@ -48,6 +50,7 @@ namespace WoWsShipBuilder.Core.Settings
             IncludeSignalsForImageExport = default;
             CustomImagePath = default;
             DispersionPlotSettings = new();
+            WebAppSettings = null;
         }
 
         public void UpdateFromSettings(AppSettings settings)
@@ -63,6 +66,7 @@ namespace WoWsShipBuilder.Core.Settings
             IncludeSignalsForImageExport = settings.IncludeSignalsForImageExport;
             CustomImagePath = settings.CustomDataPath;
             DispersionPlotSettings = settings.DispersionPlotSettings;
+            WebAppSettings = settings.WebAppSettings;
         }
     }
 }

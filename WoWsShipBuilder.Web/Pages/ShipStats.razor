@@ -18,7 +18,7 @@
 <PageTitle>Ship stats</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-3">
-    @if (!initialized)
+    @if (!(initialized && SettingsInitialized))
     {
         <MudGrid>
             <MudItem xs="12">
@@ -100,6 +100,9 @@
 
     private bool initialized;
     
+    [CascadingParameter]
+    protected bool SettingsInitialized { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -110,22 +113,19 @@
         await ViewModel!.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         initialized = true;
     }
-    
+
     private async Task LoadShipViewModel(string shipIndex)
     {
         var sw = new Stopwatch();
         sw.Start();
         var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
         await AppDataService.LoadNationFiles(shipSummary.Nation);
-        Console.WriteLine("Files loaded: " + sw.Elapsed);
         var ship = await AppDataService.GetShipFromSummary(shipSummary);
         var vmParams = new MainViewModelParams(ship!, shipSummary, null);
         
         ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
-        Console.WriteLine("VM created: " + sw.Elapsed);
         await ViewModel.InitializeData(vmParams);
         sw.Stop();
-        Console.WriteLine("VM initizalized: " + sw.Elapsed);
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)

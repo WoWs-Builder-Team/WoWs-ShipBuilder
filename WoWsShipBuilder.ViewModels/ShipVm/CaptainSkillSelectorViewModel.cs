@@ -294,7 +294,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var skills = captain.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
-            Console.WriteLine(@"SKILLS: " + skills.Count);
 
             var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass));
             logger.Info("Found {0} skills", dictionary.Count);

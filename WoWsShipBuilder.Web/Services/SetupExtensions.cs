@@ -17,6 +17,7 @@ public static class SetupExtensions
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();
         services.AddScoped<AppSettings>();
+        services.AddScoped<RefreshNotifierService>();
 
         return services;
     }

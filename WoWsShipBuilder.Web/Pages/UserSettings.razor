@@ -1,0 +1,116 @@
+﻿@page "/settings"
+@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
+
+@implements IDisposable
+@inject ILocalizer Localizer
+@inject RefreshNotifierService RefreshNotifierService
+@inject AppSettings AppSettings
+@inject AppSettingsHelper AppSettingsHelper
+@inject ISnackbar Snackbar
+
+<PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
+
+<MudContainer Style="padding-top: 1em;">
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudCard Outlined>
+                <MudCardHeader>
+                    <CardHeaderAvatar>
+                        <MudIcon Icon="@Icons.Filled.Info"/>
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Application Info</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    Current data version: @AppData.DataVersion
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="Selected Language">
+                @foreach (var culture in AppConstants.SupportedLanguages)
+                {
+                    <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <MudSwitch @bind-Checked="@openExpandersByDefault" Label="Open Expanders by default" Color="Color.Info"/>
+        </MudItem>
+        <MudItem xs="12"/>
+        <MudItem xs="3">
+            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Secondary" OnClick="SaveSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Save)).Localization</MudButton>
+        </MudItem>
+        <MudItem xs="3">
+            <MudButton FullWidth Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetSettingsAsync">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Reset)).Localization</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+
+    [CascadingParameter]
+    protected bool SettingsInitialized { get; set; }
+
+    private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
+
+    private bool openExpandersByDefault = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
+        UpdateSettingsValues();
+    }
+
+    private void UpdateSettingsValues()
+    {
+        selectedCulture = AppSettings.SelectedLanguage;
+        openExpandersByDefault = AppSettings.WebAppSettings?.OpenAllExpandersByDefault ?? true;
+        StateHasChanged();
+    }
+
+    private async Task SaveSettingsAsync()
+    {
+        bool settingsChanged = AppSettings.SelectedLanguage != selectedCulture;
+        AppSettings.SelectedLanguage = selectedCulture;
+
+        if (AppSettings.WebAppSettings == null)
+        {
+            AppSettings.WebAppSettings = new();
+            settingsChanged = true;
+        }
+
+        settingsChanged = settingsChanged || openExpandersByDefault != AppSettings.WebAppSettings.OpenAllExpandersByDefault;
+        AppSettings.WebAppSettings.OpenAllExpandersByDefault = openExpandersByDefault;
+
+        await AppSettingsHelper.SaveSettings(AppSettings);
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Add("Settings saved", Severity.Success, config => { config.CloseAfterNavigation = true; });
+        if (settingsChanged)
+        {
+            RefreshNotifierService.NotifyRefreshRequested();
+        }
+    }
+
+    public void Dispose()
+    {
+        RefreshNotifierService.RefreshRequested -= UpdateSettingsValues;
+    }
+
+    private async Task ResetSettingsAsync()
+    {
+        AppSettings.ClearSettings();
+        await AppSettingsHelper.SaveSettings(AppSettings);
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+        Snackbar.Add("Settings cleared", Severity.Success, config => { config.CloseAfterNavigation = true; });
+        RefreshNotifierService.NotifyRefreshRequested();
+    }
+
+}

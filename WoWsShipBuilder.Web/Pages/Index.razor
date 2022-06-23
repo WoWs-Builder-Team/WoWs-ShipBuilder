@@ -1,7 +1,9 @@
 @page "/"
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
+@using WoWsShipBuilder.Web.Services
 @inject NavigationManager NavManager
+@inject RefreshNotifierService NotifierService
 @implements IDisposable
 
 <PageTitle>
@@ -41,9 +43,15 @@
     {
         base.OnInitialized();
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
+        NotifierService.RefreshRequested += OnRefresh;
     }
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    private void OnRefresh()
     {
         StateHasChanged();
     }
@@ -63,5 +71,6 @@
     public void Dispose()
     {
         selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
+        NotifierService.RefreshRequested -= OnRefresh;
     }
 }
