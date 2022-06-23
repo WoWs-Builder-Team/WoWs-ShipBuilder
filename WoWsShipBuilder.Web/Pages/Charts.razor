@@ -41,10 +41,10 @@
             }
         </MudButton>
         <MudContainer>
-            <Chart SetupCompletedCallback="@Callback" Config="horizontalDispConfig"/>
+            <Chart Config="horizontalDispConfig"/>
             <MudGrid Class="d-inline-flex" Style="flex-direction: column">
                 <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
-                    <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane())" T="EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
+                    <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
                         @foreach (var item in ellipsePlanesList)
                         {
                             <MudSelectItem Value="@item">
@@ -122,18 +122,18 @@
     private LineConfig trajectoryConfig = new();
     
     private int colorCounter;
-    private static readonly System.Drawing.Color[] ChartColors = GenerateColors();
+    private static readonly System.Drawing.Color[] ChartColors = ChartsHelper.GenerateColors();
     private bool processing;
     private bool isFirstRendering = true;
     private double range = 10;
-    private EllipsePlanes selectedVertDispPlane = EllipsePlanes.RealPlane;
+    private ChartsHelper.EllipsePlanes selectedVertDispPlane = ChartsHelper.EllipsePlanes.RealPlane;
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = {};
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
     private readonly Dictionary<string, Dictionary<double, Ballistic>> trajectoriesCache = new();
     private readonly Dictionary<string, (IEnumerable<Point> horizontalDisp, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater)> dispersionsCache = new();
-    private readonly List<EllipsePlanes> ellipsePlanesList = Enum.GetValues<EllipsePlanes>().ToList();
+    private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
 
     protected override async Task OnInitializedAsync()
     {
@@ -169,7 +169,6 @@
             return;
         }
         await UpdateCharts(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
-        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
         processing = false;
     }
 
@@ -213,8 +212,8 @@
                 }
                 else
                 {
-                    var vertDispSeries = CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange, ballisticSeries);
-                    dispData = (CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange), vertDispSeries.vertDispAtImpactAngle, vertDispSeries.vertDispOnWater, vertDispSeries.vertDispOnPerpendicularToWater);
+                    var vertDispSeries = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, selectedShip.MaxRange, ballisticSeries);
+                    dispData = (ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange), vertDispSeries.vertDispAtImpactAngle, vertDispSeries.vertDispOnWater, vertDispSeries.vertDispOnPerpendicularToWater);
                 }
                 
                 var lineColor = GetColor();
@@ -232,10 +231,8 @@
         {
             RemoveChartDataset(labelName);
         }
-
+        
         StateHasChanged();
-        await Ijs.InvokeVoidAsync("chartConfig", horizontalDispConfig.CanvasId);
-
     }
 
     private void AddDispersionChartDataset(string name, (IEnumerable<Point> horizontalDispSeries, IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) data, string chartLineColor)
@@ -253,13 +250,13 @@
         IEnumerable<Point> verticalDispSeries;
         switch (selectedVertDispPlane)
         {
-            case EllipsePlanes.HorizontalPlane:
+            case ChartsHelper.EllipsePlanes.HorizontalPlane:
                 verticalDispSeries = data.vertDispOnWater;
                 break;
-            case EllipsePlanes.VerticalPlane:
+            case ChartsHelper.EllipsePlanes.VerticalPlane:
                 verticalDispSeries = data.vertDispOnPerpendicularToWater;
                 break;
-            case EllipsePlanes.RealPlane:
+            case ChartsHelper.EllipsePlanes.RealPlane:
             default:
                 verticalDispSeries = data.vertDispAtImpactAngle;
                 break;
@@ -287,31 +284,31 @@
 
     private void AddBallisticChartDataset(string name, Dictionary<double, Ballistic> data, string chartLineColor)
     {
-        CreateBallisticChartDataset(name, data, BallisticParameter.Penetration, chartLineColor);
-        CreateBallisticChartDataset(name, data, BallisticParameter.FlightTime, chartLineColor);
-        CreateBallisticChartDataset(name, data, BallisticParameter.ImpactVelocity, chartLineColor);
-        CreateBallisticChartDataset(name, data, BallisticParameter.ImpactAngle, chartLineColor);
+        CreateBallisticChartDataset(name, data, ChartsHelper.BallisticParameter.Penetration, chartLineColor);
+        CreateBallisticChartDataset(name, data, ChartsHelper.BallisticParameter.FlightTime, chartLineColor);
+        CreateBallisticChartDataset(name, data, ChartsHelper.BallisticParameter.ImpactVelocity, chartLineColor);
+        CreateBallisticChartDataset(name, data, ChartsHelper.BallisticParameter.ImpactAngle, chartLineColor);
     }
 
-    private void CreateBallisticChartDataset(string name, Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter, string chartLineColor)
+    private void CreateBallisticChartDataset(string name, Dictionary<double, Ballistic> data, ChartsHelper.BallisticParameter ballisticParameter, string chartLineColor)
     {
         LineConfig chartConfig;
         IEnumerable<Point> pointsList;
         switch (ballisticParameter)
         {
-            case BallisticParameter.Penetration:
+            case ChartsHelper.BallisticParameter.Penetration:
                 pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.Penetration));
                 chartConfig = penetrationConfig;
                 break;
-            case BallisticParameter.ImpactVelocity:
+            case ChartsHelper.BallisticParameter.ImpactVelocity:
                 pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.Velocity));
                 chartConfig = impactVelocityConfig;
                 break;
-            case BallisticParameter.FlightTime:
+            case ChartsHelper.BallisticParameter.FlightTime:
                 pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.FlightTime));
                 chartConfig = flightTimeConfig;
                 break;
-            case BallisticParameter.ImpactAngle:
+            case ChartsHelper.BallisticParameter.ImpactAngle:
                 pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.ImpactAngle));
                 chartConfig = impactAngleConfig;
                 break;
@@ -357,147 +354,54 @@
             return;
         }
 
-        Dictionary<ChartDatasets, IList<IDataset>> datasets = new()
+        Dictionary<ChartsHelper.ChartDatasets, IList<IDataset>> datasets = new()
         {
-            {ChartDatasets.HorizontalDispersion, horizontalDispConfig.Data.Datasets},
-            {ChartDatasets.VerticalDispersion, verticalDispConfig.Data.Datasets},
-            {ChartDatasets.Penetration, penetrationConfig.Data.Datasets},
-            {ChartDatasets.FlightTime, flightTimeConfig.Data.Datasets},
-            {ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
-            {ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
-            {ChartDatasets.Trajectory, trajectoryConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.HorizontalDispersion, horizontalDispConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.VerticalDispersion, verticalDispConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.Penetration, penetrationConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.FlightTime, flightTimeConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.ImpactVelocity, impactVelocityConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.ImpactAngle, impactAngleConfig.Data.Datasets},
+            {ChartsHelper.ChartDatasets.Trajectory, trajectoryConfig.Data.Datasets},
         };
 
         CreateChartConfig();
 
-        horizontalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.HorizontalDispersion]);
-        verticalDispConfig.Data.Datasets.Add(datasets[ChartDatasets.VerticalDispersion]);
-        penetrationConfig.Data.Datasets.Add(datasets[ChartDatasets.Penetration]);
-        flightTimeConfig.Data.Datasets.Add(datasets[ChartDatasets.FlightTime]);
-        impactVelocityConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactVelocity]);
-        impactAngleConfig.Data.Datasets.Add(datasets[ChartDatasets.ImpactAngle]);
-        trajectoryConfig.Data.Datasets.Add(datasets[ChartDatasets.Trajectory]);
+        horizontalDispConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.HorizontalDispersion]);
+        verticalDispConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.VerticalDispersion]);
+        penetrationConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.Penetration]);
+        flightTimeConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.FlightTime]);
+        impactVelocityConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.ImpactVelocity]);
+        impactAngleConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.ImpactAngle]);
+        trajectoryConfig.Data.Datasets.Add(datasets[ChartsHelper.ChartDatasets.Trajectory]);
     }
 
     private void CreateChartConfig()
     {
-        horizontalDispConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization} {Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]");
-        verticalDispConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization} {Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]");
-        penetrationConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization}]");
-        flightTimeConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}]");
-        impactVelocityConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization}]");
-        impactAngleConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization}]");
-        trajectoryConfig = SetChartConfig($"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Height)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization}]", true);
+        string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
+        string dispersion = Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization;
+        
+        horizontalDispConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization} {dispersion}", $"{dispersion} [{m}]", range);
+        verticalDispConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization} {dispersion}", $"{dispersion} [{m}]", range);
+        penetrationConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization}]", range);
+        flightTimeConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}]", range);
+        impactVelocityConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization}]", range);
+        impactAngleConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization}]", range);
+        trajectoryConfig = ChartsHelper.SetChartConfig(Localizer, $"{Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization}", $"{Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_Height)).Localization} [{m}]", range, true);
     }
 
-    private LineConfig SetChartConfig(string title, string yLabel, bool isShellTrajectoryChart = false)
+    private async Task ApplyChartTooltipConfig()
     {
-        var xLabel = $"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} [{Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}]";
-        string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
-        string? gridColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DimGray);
-        var gridDash = new double[] {5, 5};
-        return new()
-        {
-            Options = new()
-            {
-                Responsive = true,
-                SpanGaps = true,
-                Title = new()
-                {
-                    Display = true,
-                    Text = title,
-                    FontColor = foregroundColor,
-                    FontSize = 30,
-                },
-                Tooltips = new()
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true,
-                    DisplayColors = true,
-                },
-                Hover = new()
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true,
-                },
-                Legend = new()
-                {
-                    Labels = new()
-                    {
-                        FontColor = foregroundColor,
-                    },
-                },
-                Scales = new()
-                {
-                    XAxes = new List<CartesianAxis>
-                    {
-                        new LinearCartesianAxis
-                        {
-                            Ticks = new()
-                            {
-                                Display = true,
-                                FontColor = foregroundColor,
-                                MaxTicksLimit = 10,
-                                BeginAtZero = true,
-                            },
-                            ScaleLabel = new()
-                            {
-                                LabelString = xLabel,
-                                FontColor = foregroundColor,
-                                Display = true,
-                                FontSize = 15,
-                            },
-                            GridLines = new()
-                            {
-                                ZeroLineColor = foregroundColor,
-                                Display = true,
-                                DrawTicks = true,
-                                TickMarkLength = 5,
-                                DrawBorder = true,
-                                ZeroLineWidth = 3,
-                                DrawOnChartArea = true,
-                                Color = gridColor,
-                                BorderDash = gridDash,
-                            },
-                            
-                        },
-                    },
-                    YAxes = new List<CartesianAxis>
-                    {
-                        new LinearCartesianAxis
-                        {
-                            Ticks = new()
-                            {
-                                Display = true,
-                                FontColor = foregroundColor,
-                                MaxTicksLimit = 10,
-                                BeginAtZero = true,
-                                SuggestedMax = isShellTrajectoryChart ? (int)(range / 4 * 1000) : 0,
-                            },
-                            ScaleLabel = new()
-                            {
-                                LabelString = yLabel,
-                                FontColor = foregroundColor,
-                                Display = true,
-                                FontSize = 15,
-                            },
-                            GridLines = new()
-                            {
-                                ZeroLineColor = foregroundColor,
-                                Display = true,
-                                DrawTicks = true,
-                                TickMarkLength = 5,
-                                DrawBorder = true,
-                                ZeroLineWidth = 3,
-                                DrawOnChartArea = true,
-                                Color = gridColor,
-                                BorderDash = gridDash,
-                            },
-                        },
-                    },
-                },
-            },
-        };
+        string km = Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization;
+        string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
+        
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", horizontalDispConfig.CanvasId, km, m);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", verticalDispConfig.CanvasId, km, m);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", penetrationConfig.CanvasId, km, Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", flightTimeConfig.CanvasId, km, Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", impactVelocityConfig.CanvasId, km, Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", impactAngleConfig.CanvasId, km, Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization);
+        await Ijs.InvokeVoidAsync("ApplyTooltipConfig", trajectoryConfig.CanvasId, km, m);
     }
 
     private void UpdateTrajectory(double aimingRange)
@@ -591,60 +495,9 @@
             }
             selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();
         }
-
         await UpdateCharts(selectedShipList);
         processing = false;
-    }
-
-    /// <summary>
-    /// Create the series for the horizontal dispersion.
-    /// </summary>
-    /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
-    /// <param name="maxRange">Max range of the gun.</param>
-    /// <returns>The horizontal dispersion series for the given parameter.</returns>
-    private static IEnumerable<Point> CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange)
-    {
-        return CreateFunctionSeries(x => dispersion.CalculateHorizontalDispersion(x * 1000), 0, (maxRange * 1.5) / 1000, 0.1);
-    }
-
-    /// <summary>
-    /// Create the series for the vertical dispersion.
-    /// </summary>
-    /// <param name="dispersion"><see cref="Dispersion"/> data of the gun.</param>
-    /// <param name="maxRange">Max range of the gun.</param>
-    /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
-    /// <returns>The vertical dispersion series for the given parameter.</returns>
-    private static (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
-    {
-        List<Point> series = CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1).ToList();
-        
-        List<Point> vertDispOnWater = new();
-        List<Point> vertDispOnPerpendicularToWater = new();
-        
-        foreach ((double range, var data) in impactAngles)
-        {
-            double disp = dispersion.CalculateVerticalDispersion(maxRange, range);
-            vertDispOnWater.Add(new(range / 1000, disp / Math.Sin(Math.PI / 180 * data.ImpactAngle)));
-            vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
-        }
-
-        return (series, vertDispOnWater, vertDispOnPerpendicularToWater);
-    }
-
-    /// <summary>
-    /// Create data series using a function <code>f(x)</code>.
-    /// </summary>
-    /// <param name="f">The function <code>f(x)</code>.</param>
-    /// <param name="x0">The start x value.</param>
-    /// <param name="x1">The end x value.</param>
-    /// <param name="dx">The increment in x.</param>
-    /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
-    private static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
-    {
-        List<Point> dispSeries = new();
-        for (double x = x0; x <= x1 + dx * 0.5; x += dx)
-            dispSeries.Add(new(x, f(x)));
-        return dispSeries;
+        StateHasChanged();
     }
 
     private string GetColor()
@@ -656,60 +509,5 @@
         var color = ChartColors[colorCounter];
         colorCounter++;
         return ColorUtil.FromDrawingColor(color);
-    }
-
-    private static System.Drawing.Color[] GenerateColors()
-    {
-        var colors = new[]
-        {
-            System.Drawing.ColorTranslator.FromHtml("#ef6fcc"),
-            System.Drawing.ColorTranslator.FromHtml("#62ce75"),
-            System.Drawing.ColorTranslator.FromHtml("#f53a4c"),
-            System.Drawing.ColorTranslator.FromHtml("#11ccdc"),
-            System.Drawing.ColorTranslator.FromHtml("#9166aa"),
-            System.Drawing.ColorTranslator.FromHtml("#a4c28a"),
-            System.Drawing.ColorTranslator.FromHtml("#c15734"),
-            System.Drawing.ColorTranslator.FromHtml("#faa566"),
-            System.Drawing.ColorTranslator.FromHtml("#6c7b66"),
-            System.Drawing.ColorTranslator.FromHtml("#eda4ba"),
-            System.Drawing.ColorTranslator.FromHtml("#2d6df9"),
-            System.Drawing.ColorTranslator.FromHtml("#f62ef3"),
-            System.Drawing.ColorTranslator.FromHtml("#957206"),
-            System.Drawing.ColorTranslator.FromHtml("#a45dff"),
-        };
-        return colors;
-    }
-
-    private enum BallisticParameter
-    {
-        Penetration,
-        FlightTime,
-        ImpactVelocity,
-        ImpactAngle,
-    }
-
-    private enum ChartDatasets
-    {
-        HorizontalDispersion,
-        VerticalDispersion,
-        Penetration,
-        FlightTime,
-        ImpactVelocity,
-        ImpactAngle,
-        Trajectory,
-    }
-
-    private async void Callback()
-    {
-        var canvasId = horizontalDispConfig.CanvasId;
-        Console.WriteLine(canvasId);
-        await Ijs.InvokeVoidAsync("chartConfig", canvasId);
-    }
-    
-    private enum EllipsePlanes
-    {
-        RealPlane,
-        HorizontalPlane,
-        VerticalPlane,
     }
 }

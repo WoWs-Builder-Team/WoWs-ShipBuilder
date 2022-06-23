@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @namespace WoWsShipBuilder.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -20,9 +21,9 @@
 Advanced ballistc charts.
 Custom builds." property="og:description">
     <meta content="/assets/app-logo.png" property="og:image">
-    <meta name="theme-color" content="#7289DA">
+    <meta name="theme-color" content="#FFFFFF">
     <meta name="twitter:card" content="summary_large_image">
-    <link type="application/json+oembed" href="/json/oembed.json" />
+    <link rel="alternate" type="application/json+oembed" href="/json/oembed.json" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body style="background-color: #282828">
@@ -67,26 +68,49 @@ function test()
     context.strokeRect(260,425, 115, 100);
 }
 
-function chartConfig(canvasId)
+function ApplyTooltipConfig(canvasId, titleUnit, labelUnit)
 {
     let chart = window.ChartJsInterop.BlazorCharts.get(canvasId);
-    chart.options.tooltips.callbacks.label = function(context, dataset)
+    if (chart)
     {
-        let label = dataset.datasets[context.datasetIndex].label;
-        
-        if (label) {
-            label += ': ';
+        chart.options.tooltips.callbacks.label = function(context, dataset)
+        {
+            let label = dataset.datasets[context.datasetIndex].label;
+            
+            if (label) 
+            {
+                label += ': ';
+            }
+            
+            if (context.yLabel !== null) 
+            {
+                label += context.yLabel.toFixed(2);
+            }
+            
+            if (labelUnit)
+            {
+                label += ' ' + labelUnit;
+            }
+            
+            return label;
         }
         
-        if (context.yLabel !== null) {
-            label += context.yLabel.toFixed(2);
+        chart.options.tooltips.callbacks.title = function (context)
+        {
+            let label =  context[0].xLabel.toFixed(2);
+            
+            if (titleUnit)
+            {
+                label += ' ' + titleUnit;
+            }
+             
+            return label;
         }
-        return label;
+        console.log(canvasId + " = working")
     }
-    
-    chart.options.tooltips.callbacks.title = function (context)
+    else     
     {
-        return context[0].xLabel.toFixed(2);
+     console.log(canvasId + " = not working")   
     }
 }
 </script>

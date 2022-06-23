@@ -13,6 +13,7 @@
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
+@inject IHostEnvironment Environment
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -44,7 +45,7 @@
                     @if (ViewModel.PreviousShip is not null)
                     {
                         <MudStack Class="px-2" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
-                            <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.PreviousShip.Index + ".png")"/>
+                            <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                             <MudStack Row="true" Justify="Justify.Center">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
                                 <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index).Localization</MudText>
@@ -52,7 +53,7 @@
                         </MudStack>
                     }
                     <MudStack Class="px-2">
-                        <MudImage Width="150" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation)"/>
+                        <MudImage Width="150" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                         <MudStack Row="true" Justify="Justify.Center">
                             <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
                             <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex).Localization</MudText>
@@ -63,7 +64,7 @@
                         @foreach (var ship in ViewModel.NextShips)
                         {
                             <MudStack Class="px-2" @onclick="@(_ => GoToShip(ship))">
-                                <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(baseAddress + ship.Index + ".png")"/>
+                                <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
                                     <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index).Localization</MudText>
@@ -95,13 +96,14 @@
 
 @code {
 
-    private string baseAddress = @"https://cdn.wowssb.com/images/individual/";
+    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
     
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        initialized = false;
         NavManager.TryGetQueryString("shipIndex", out string shipIndex);
         NavManager.LocationChanged += HandleLocationChanged;
         await LoadShipViewModel(shipIndex);
@@ -128,11 +130,13 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        var uri = NavManager.Uri;
+        string uri = NavManager.Uri;
         if (uri.Contains("/ship"))
         {
+            initialized = false;
             NavManager.TryGetQueryString("shipIndex", out string shipIndex);
             await LoadShipViewModel(shipIndex);
+            initialized = true;
             StateHasChanged();
         }
         else
@@ -141,23 +145,28 @@
         }
     }
 
-    private string GetBackgroundFlag(Nation nation)
+    private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
         // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
-        return $"background-image: url(\"/assets/nation_flags/flag_{nation.ToString()}.png\"); background-size: cover";
+        string imgName = shipIndex;
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath , "wwwroot" ,"assets", "nation_flags", $"flag_{shipIndex}.png")))
+        {
+            imgName = shipNation.ToString();
+        }
+        return $"background-image: url(\"/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
     }
 
-    private string GetIconFromClass(ShipClass shipClass, ShipCategory category)
+    private static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
     {
-        var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
-        var stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
-        var fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
+        string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
+        string stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
+        string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 
     private void GoToShip(ShipSummary? shipSummary)
     {
-        NavManager.NavigateTo($"/ship?shipIndex={shipSummary.Index}");
+        NavManager.NavigateTo($"/ship?shipIndex={shipSummary!.Index}");
     }
 
 }

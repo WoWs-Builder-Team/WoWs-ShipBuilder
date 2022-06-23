@@ -80,10 +80,7 @@
                                         {
                                             @DataElementFragment((data, Localizer))
                                         }
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispGraph)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDispPlot)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_OpenBallistic)).Localization</MudLink>
-                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowShellTrajectoryGraph)).Localization</MudLink>
+                                        <MudLink Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization</MudLink>
                                     </MudStack>
                                 </MudExpansionPanel>
                             }

@@ -367,6 +367,15 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Charts.
+        /// </summary>
+        public static string ChartsWeb_ShowCharts {
+            get {
+                return ResourceManager.GetString("ChartsWeb_ShowCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commonwealth.
         /// </summary>
         public static string Commonwealth {
