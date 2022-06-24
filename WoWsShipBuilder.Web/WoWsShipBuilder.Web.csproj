@@ -76,6 +76,7 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\lib" />
+      <Folder Include="wwwroot\lib\autocolor\dist" />
     </ItemGroup>
 
 </Project>

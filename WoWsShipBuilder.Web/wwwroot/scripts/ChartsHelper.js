@@ -39,13 +39,23 @@ function GetColor(index)
 
 export function AddData(chartId, data, label) {
     const chart = Chart.getChart(chartId);
+    const index = chart.data.datasets.length;
     const dataset =
         {
             data: data,
             label: label,
+            index: index,
         };
     
     chart.data.datasets.push(dataset);
+    
+    chart.update();
+}
+
+export function UpdateData(chartId, index, newData)
+{
+    const chart = Chart.getChart(chartId);
+    chart.data.datasets[index].data = newData;
     chart.update();
 }
 
@@ -59,6 +69,13 @@ export function RemoveAllData(chartId)
 {
     const chart = Chart.getChart(chartId);
     chart.data.datasets.length = 0;
+    chart.update();
+}
+
+export function ChangeSuggestedMax(chartId, newSuggestedMax)
+{
+    const chart = Chart.getChart(chartId);
+    chart.options.scales['y'].suggestedMax = newSuggestedMax;
     chart.update();
 }
 
@@ -184,6 +201,13 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
                             autocolors:
                                 {
                                     mode: 'dataset',
+                                    customize(context) {
+                                        const index = context.datasetIndex;
+                                        return {
+                                            background: GetColor(index),
+                                            border: GetColor(index)
+                                        };
+                                    }
                                 }
                         }
                 },

@@ -4,7 +4,6 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Dialogs
-@using System.ComponentModel
 @using System.Linq
 @using DynamicData
 @using WoWsShipBuilder.Core.DataContainers
@@ -38,12 +37,27 @@
         <div>
             <canvas id="@HorizontalDispersionId"></canvas>
         </div>
-        <div>
-            <canvas id="@VerticalDispersionId"></canvas>
-        </div>
+        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+            <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
+                <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlane())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomRight">
+                    @foreach (var item in ellipsePlanesList)
+                    {
+                        <MudSelectItem Value="@item">
+                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString()!)).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem Class="z-10" xs="12">
+                <div>
+                    <canvas id="@VerticalDispersionId"></canvas>
+                </div>
+            </MudItem>
+        </MudGrid>
+
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization">
-         <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
+        <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -58,9 +72,16 @@
                 </MudText>
             }
         </MudButton>
-        <div>
-            <canvas id="@TrajectoryId"></canvas>
-        </div>
+        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+                        <MudItem Class="z-20 mt-1 ml-auto mr-3 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
+                            <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectory" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
+                        </MudItem>
+                        <MudItem Class="z-10" xs="12">
+                            <div>
+                                <canvas id="@TrajectoryId"></canvas>
+                            </div>
+                        </MudItem>
+                    </MudGrid>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization">
          <MudButton OnClick="EditCharts" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
@@ -114,6 +135,7 @@
     private ChartsHelper.EllipsePlanes selectedVertDispPlane = ChartsHelper.EllipsePlanes.RealPlane;
     private readonly Dictionary<string, (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater)> vertDispersionsCache = new();
     private readonly Dictionary<string, Dictionary<double, Ballistic>> ballisticCache = new();
+    private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
     
     protected override async Task OnInitializedAsync()
     {
@@ -134,14 +156,14 @@
 
         if (firstRender)
         {
+            SetProcessing(true);
             module = await Ijs.InvokeAsync<IJSObjectReference>("import",
                 "/scripts/ChartsHelper.js");
             await SetupCharts();
             if (shipIndexesFromUrl.Any())
             {
                 List<ShellSelectionWrapper> selectedShipList = new();
-                processing = true;
-                
+
                 if (shellIndexFromUrl.Any())
                 {
                     string shipIndex = shipIndexesFromUrl.First();
@@ -194,16 +216,15 @@
                     var result = await dialog.Result;
                     if (result is null || result.Cancelled)
                     {
-                        processing = false;
+                        SetProcessing(false);;
                         return;
                     }
                     selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();
                 }
-                await AddShips(selectedShipList);
-               
+                await UpdateShips(selectedShipList);
             }
         }
-        processing = false;
+        SetProcessing(false);;
     }
 
     private async Task SetupCharts()
@@ -223,16 +244,18 @@
             //CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
             await module.InvokeVoidAsync("CreateChart", HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
             await module.InvokeVoidAsync("CreateChart", VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-            await module.InvokeVoidAsync("CreateChart", TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, s);
+            await module.InvokeVoidAsync("CreateChart", TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
             await module.InvokeVoidAsync("CreateChart", PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
             await module.InvokeVoidAsync("CreateChart", FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
             await module.InvokeVoidAsync("CreateChart", ImpactVelocityId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, km, mps);
             await module.InvokeVoidAsync("CreateChart", ImpactAngleId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, km, degree);
+            await ChangeSuggestedMax(TrajectoryId, range / 4 * 1000);
         }
     }
 
-    private async Task AddShips(List<ShellSelectionWrapper> shipList)
+    private async Task UpdateShips(List<ShellSelectionWrapper> shipList)
     {
+        List<string> labelNames = new();
         foreach (var selectedShip in shipList)
         {
             string shipName = Localizer.GetGameLocalization($"{selectedShip.ShipIndex}_FULL").Localization;
@@ -242,6 +265,7 @@
                 
                 string shellName = Localizer.GetGameLocalization(shellIndex).Localization;
                 var labelName = $"{shipName} - {shellName}";
+                labelNames.Add(labelName);
                 
                 if (displayedShips.ContainsKey(labelName)) continue;
                 
@@ -254,6 +278,14 @@
                 
                 displayedShips.Add(labelName, selectedShip);
             }
+        }
+        
+        var removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key));
+        foreach ((string labelName, _) in removedShips)
+        {
+            var index = displayedShips.Keys.IndexOf(labelName);
+            await RemoveDataFromAll(index);
+            displayedShips.Remove(labelName);
         }
     }
 
@@ -300,27 +332,28 @@
     private async Task UpdateTrajectory(double aimingRange)
     {
         range = aimingRange;
+        //await RemoveAllData(TrajectoryId);
         foreach (var item in displayedShips)
         {
-            await RemoveAllData(TrajectoryId);
             var ballisticSeries = ballisticCache[item.Key];
             var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
-            await AddData(TrajectoryId, item.Key, trajectory);
+            await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
+            await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
         }
     }
     
     private async Task EditCharts()
     {
-        processing = true;
+        SetProcessing(true);
         var selectedShipList = await GetSelectedShips();
         if (selectedShipList is null || selectedShipList.Cancelled)
         {
-            processing = false;
+            SetProcessing(false);
             return;
         }
-        await AddShips(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
-        processing = false;
-        StateHasChanged();
+        
+        await UpdateShips(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
+        SetProcessing(false);
     }
     
     private async Task<DialogResult?> GetSelectedShips()
@@ -356,6 +389,20 @@
         }
     }
 
+    private async Task RemoveDataFromAll(int index)
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("RemoveData", HorizontalDispersionId, index);
+            await module.InvokeVoidAsync("RemoveData", VerticalDispersionId, index);
+            await module.InvokeVoidAsync("RemoveData", TrajectoryId, index);
+            await module.InvokeVoidAsync("RemoveData", PenetrationId, index);
+            await module.InvokeVoidAsync("RemoveData", ImpactAngleId, index);
+            await module.InvokeVoidAsync("RemoveData", ImpactVelocityId, index);
+            await module.InvokeVoidAsync("RemoveData", FlightTimeId, index);
+        }
+    }
+
     private async Task RemoveAllData(string chartId)
     {
         if (module is not null)
@@ -369,6 +416,35 @@
         if (module is not null)
         {
             await module.InvokeVoidAsync("AddData", chartId, data.ToArray(), label);
+        }
+    }
+
+    private async Task ChangeSuggestedMax(string chartId, double newSuggestedMax)
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
+        }
+    }
+
+    private async Task UpdateData(string chartId, int index, IEnumerable<Point> data)
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("UpdateData", chartId, index, data);
+        }
+    }
+    
+    private void SetProcessing(bool newProcessing)
+    {
+        if (newProcessing)
+        {
+            processing = newProcessing;
+        }
+        else
+        {
+            processing = newProcessing;
+            StateHasChanged();
         }
     }
     

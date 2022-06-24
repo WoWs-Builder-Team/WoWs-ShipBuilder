@@ -13,7 +13,7 @@
       "library": "chartjs-plugin-autocolors@0.0.6",
       "destination": "wwwroot/lib/autocolor/",
       "files":[
-        "dist/chartjs-plugin-autocolors.js"
+        "dist/chartjs-plugin-autocolors.min.js"
       ]
     }
   ]
