@@ -130,6 +130,7 @@
 
     private bool processing = false;
     private double range = 10;
+    private int counter = 0;
     
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
     private ChartsHelper.EllipsePlanes selectedVertDispPlane = ChartsHelper.EllipsePlanes.RealPlane;
@@ -221,10 +222,10 @@
                     }
                     selectedShipList = ((IEnumerable<ShellSelectionWrapper>) result.Data).ToList();
                 }
-                await UpdateShips(selectedShipList);
+                await UpdateShipsBatch(selectedShipList);
             }
         }
-        SetProcessing(false);;
+        SetProcessing(false);
     }
 
     private async Task SetupCharts()
@@ -252,10 +253,16 @@
             await ChangeSuggestedMax(TrajectoryId, range / 4 * 1000);
         }
     }
-
-    private async Task UpdateShips(List<ShellSelectionWrapper> shipList)
+    
+    private async Task UpdateShipsBatch(List<ShellSelectionWrapper> shipList)
     {
         List<string> labelNames = new();
+
+        var chartIds = GetChartsIdList();
+        List<string> labels = new();
+        List<List<IEnumerable<Point>>> data =  new();
+        List<int> indexes = new();
+        
         foreach (var selectedShip in shipList)
         {
             string shipName = Localizer.GetGameLocalization($"{selectedShip.ShipIndex}_FULL").Localization;
@@ -273,20 +280,39 @@
                 var horizontalDisp = ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange);
                 var verticalDispSeries = GetVerticalDispersion(labelName, dispersionValues, selectedShip.MaxRange, ballisticSeries);
                 var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
+
+                labels.Add(labelName);
+
+                List<IEnumerable<Point>> shipData = new();
+                shipData.Add(horizontalDisp);
+                shipData.Add(verticalDispSeries);
+                shipData.Add(trajectory);
+                shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration));
+                shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime));
+                shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity));
+                shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle));
+                data.Add(shipData);
                 
-                await AddAllDatasets(labelName, horizontalDisp, verticalDispSeries, ballisticSeries, trajectory);
+                indexes.Add(counter);
+                counter++;
                 
+                //await AddAllDatasets(labelName, horizontalDisp, verticalDispSeries, ballisticSeries, trajectory);
+
                 displayedShips.Add(labelName, selectedShip);
             }
         }
+
+        await BatchAddData(chartIds, labels, data, indexes);
         
         var removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key));
+        List<int> indexesToRemove = new();
         foreach ((string labelName, _) in removedShips)
         {
             var index = displayedShips.Keys.IndexOf(labelName);
-            await RemoveDataFromAll(index);
+            indexesToRemove.Add(index);
             displayedShips.Remove(labelName);
         }
+        await BatchRemoveData(chartIds, indexesToRemove);
     }
 
     private Dictionary<double, Ballistic> GetBallistic(string label, ArtilleryShell shell, double maxRange)
@@ -317,12 +343,14 @@
     
     private async Task ChangeVerticalDispPlane()
     {
+        int current = 0;
         foreach (var item in displayedShips)
         {
             await RemoveAllData(VerticalDispersionId);
             var verticalDisp = vertDispersionsCache[item.Key];
             var selectedVertical = ChartsHelper.SelectVerticalDispersionDataset(verticalDisp, selectedVertDispPlane);
-            await AddData(VerticalDispersionId, item.Key, selectedVertical);
+            await AddData(VerticalDispersionId, item.Key, selectedVertical, current);
+            current++;
         }
     }
 
@@ -330,14 +358,18 @@
     {
         SetProcessing(true);
         range = aimingRange;
-        //await RemoveAllData(TrajectoryId);
+        List<int> indexes = new();
+        List<IEnumerable<Point>> trajectoryDatas = new();
         foreach (var item in displayedShips)
         {
             var ballisticSeries = ballisticCache[item.Key];
             var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
-            await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
-            await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
+            indexes.Add(displayedShips.Keys.IndexOf(item.Key));
+            trajectoryDatas.Add(trajectory);
+           // await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
         }
+        await BatchUpdateTrajectory(TrajectoryId, indexes, trajectoryDatas);
+        await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }
     
@@ -351,7 +383,7 @@
             return;
         }
         
-        await UpdateShips(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
+        await UpdateShipsBatch(((IEnumerable<ShellSelectionWrapper>) selectedShipList.Data).ToList());
         SetProcessing(false);
     }
     
@@ -368,40 +400,22 @@
         var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
     }
-    
-    private async Task AddAllDatasets(string label, IEnumerable<Point> horizontalDisp, IEnumerable<Point> verticalDisp, Dictionary<double, Ballistic> ballisticSeries, IEnumerable<Point> trajectory)
+
+    private List<string> GetChartsIdList()
     {
-        await AddData(HorizontalDispersionId, label, horizontalDisp);
-        await AddData(VerticalDispersionId, label, verticalDisp);
-        await AddData(TrajectoryId, label, trajectory);
-        await AddData(PenetrationId, label, ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration));
-        await AddData(FlightTimeId, label, ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime));
-        await AddData(ImpactVelocityId, label, ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity));
-        await AddData(ImpactAngleId, label, ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle));
-    }
-    
-    private async Task RemoveData(string chartId, int index)
-    {
-        if (module is not null)
-        {
-            await module.InvokeVoidAsync("RemoveData", chartId, index);
-        }
+        List<string> chartIds = new();
+        chartIds.Add(HorizontalDispersionId);
+        chartIds.Add(VerticalDispersionId);
+        chartIds.Add(TrajectoryId);
+        chartIds.Add(PenetrationId);
+        chartIds.Add(FlightTimeId);
+        chartIds.Add(ImpactVelocityId);
+        chartIds.Add(ImpactAngleId);
+        return chartIds;
     }
 
-    private async Task RemoveDataFromAll(int index)
-    {
-        if (module is not null)
-        {
-            await module.InvokeVoidAsync("RemoveData", HorizontalDispersionId, index);
-            await module.InvokeVoidAsync("RemoveData", VerticalDispersionId, index);
-            await module.InvokeVoidAsync("RemoveData", TrajectoryId, index);
-            await module.InvokeVoidAsync("RemoveData", PenetrationId, index);
-            await module.InvokeVoidAsync("RemoveData", ImpactAngleId, index);
-            await module.InvokeVoidAsync("RemoveData", ImpactVelocityId, index);
-            await module.InvokeVoidAsync("RemoveData", FlightTimeId, index);
-        }
-    }
-
+    #region JSInterop stuff
+    
     private async Task RemoveAllData(string chartId)
     {
         if (module is not null)
@@ -410,11 +424,11 @@
         }
     }
 
-    private async Task AddData(string chartId, string label, IEnumerable<Point> data)
+    private async Task AddData(string chartId, string label, IEnumerable<Point> data, int index)
     {
         if (module is not null)
         {
-            await module.InvokeVoidAsync("AddData", chartId, data.ToArray(), label);
+            await module.InvokeVoidAsync("AddData", chartId, data.ToArray(), label, index);
         }
     }
 
@@ -425,14 +439,32 @@
             await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
         }
     }
-
-    private async Task UpdateData(string chartId, int index, IEnumerable<Point> data)
+    
+    private async Task BatchAddData(List<string> chartIds, List<string> labels, List<List<IEnumerable<Point>>> data, List<int> indexes)
     {
         if (module is not null)
         {
-            await module.InvokeVoidAsync("UpdateData", chartId, index, data);
+            await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
         }
     }
+    
+    private async Task BatchRemoveData(List<string> chartId, List<int> indexes)
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("BatchRemoveData", chartId, indexes);
+        }
+    }
+
+    private async Task BatchUpdateTrajectory(string chartId, List<int> indexes, List<IEnumerable<Point>> datas)
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("BatchUpdateTrajectory", chartId, indexes, datas);
+        }
+    }
+    
+    #endregion
     
     private void SetProcessing(bool newProcessing)
     {
@@ -442,7 +474,7 @@
             StateHasChanged();
         }
     }
-    
+        
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (module is not null)

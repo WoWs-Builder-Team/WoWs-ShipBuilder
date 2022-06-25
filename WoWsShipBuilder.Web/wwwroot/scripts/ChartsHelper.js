@@ -5,6 +5,7 @@ export function SetupGlobalChartConfig()
     defaults.responsive = true;
     defaults.maintainAspectRatio = true;
     defaults.datasets.spanGaps = true;
+    defaults.animation = false;
     
     //colors settings
     defaults.color = '#a9a9a9';
@@ -37,9 +38,8 @@ function GetColor(index)
     return colors[index % 14];
 }
 
-export function AddData(chartId, data, label) {
+export function AddData(chartId, data, label, index) {
     const chart = Chart.getChart(chartId);
-    const index = chart.data.datasets.length;
     const dataset =
         {
             data: data,
@@ -49,6 +49,45 @@ export function AddData(chartId, data, label) {
     
     chart.data.datasets.push(dataset);
     
+    chart.update();
+}
+
+export function BatchAddData(chartsId, datas, labels, indexes)
+{
+    chartsId.forEach((chartId, chartIndex) =>{
+        const chart = Chart.getChart(chartId);
+        datas.forEach((shipData, index) => {
+            const dataset =
+                {
+                    data : shipData[chartIndex],
+                    label: labels[index],
+                    index: indexes[index],
+                };
+            chart.data.datasets.push(dataset)
+        });
+        chart.update();
+    });
+
+}
+
+export function BatchRemoveData(chartsId, indexes)
+{
+    chartsId.forEach((chartId, chartIndex) =>{
+        const chart = Chart.getChart(chartId);
+
+        indexes.forEach((index) => {
+            chart.data.datasets.splice(index, 1);  
+        })
+        chart.update();
+    });
+}
+
+export function BatchUpdateTrajectory(chartId, indexes, newDatas)
+{
+    const chart = Chart.getChart(chartId);
+    newDatas.forEach((shipData, index) => {
+        chart.data.datasets[indexes[index]].data = shipData;
+    });
     chart.update();
 }
 
