@@ -15,11 +15,13 @@
 @using DynamicData
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.Web.Services
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService WebAppDataService
 @inject IDialogService DialogService
 @inject IJSRuntime Ijs
+@inject IMetricsService MetricsService
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
@@ -138,6 +140,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        MetricsService.BallisticPageCount.Inc();
         CreateChartConfig();
 
         if (NavManager.TryGetQueryString("shellIndex", out string shellIndex))

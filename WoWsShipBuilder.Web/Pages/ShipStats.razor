@@ -3,17 +3,20 @@
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
-@using System.Diagnostics
+@using Prometheus
 @using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Services
+@using System.Diagnostics
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
 @inject IHostEnvironment Environment
+@inject IMetricsService MetricsService
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -96,16 +99,17 @@
 
 @code {
 
-    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
+        private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
-    
+
     [CascadingParameter]
     protected bool SettingsInitialized { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        MetricsService.ShipPageCount.Inc();
         initialized = false;
         NavManager.TryGetQueryString("shipIndex", out string shipIndex);
         NavManager.LocationChanged += HandleLocationChanged;
@@ -116,16 +120,17 @@
 
     private async Task LoadShipViewModel(string shipIndex)
     {
-        var sw = new Stopwatch();
-        sw.Start();
-        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-        await AppDataService.LoadNationFiles(shipSummary.Nation);
-        var ship = await AppDataService.GetShipFromSummary(shipSummary);
-        var vmParams = new MainViewModelParams(ship!, shipSummary, null);
-        
-        ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
-        await ViewModel.InitializeData(vmParams);
-        sw.Stop();
+        MetricsService.ShipCount.WithLabels(shipIndex).Inc();
+        using (MetricsService.ShipViewModelInitDuration.NewTimer())
+        {
+            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+            await AppDataService.LoadNationFiles(shipSummary.Nation);
+            var ship = await AppDataService.GetShipFromSummary(shipSummary);
+            var vmParams = new MainViewModelParams(ship!, shipSummary);
+
+            ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
+            await ViewModel.InitializeData(vmParams);
+        }
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -147,9 +152,9 @@
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
-        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+    // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
         string imgName = shipIndex;
-        if (!File.Exists(Path.Combine(Environment.ContentRootPath , "wwwroot" ,"assets", "nation_flags", $"flag_{shipIndex}.png")))
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
         {
             imgName = shipNation.ToString();
         }

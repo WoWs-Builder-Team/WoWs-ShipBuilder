@@ -13,6 +13,7 @@ public static class SetupExtensions
         services.AddSingleton<IFileSystem, FileSystem>();
         services.AddSingleton<IDataService, DesktopDataService>();
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
+        services.AddSingleton<IMetricsService, MetricsService>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();

@@ -1,0 +1,46 @@
+services: 
+  app:
+    build: 
+      context: ../../.
+      dockerfile: WoWsShipBuilder.Web/Dockerfile
+    ports:
+      - "8082:443"
+      - "8081:80"
+    networks:
+      - local
+    container_name: "wowssb-app"
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - type: bind
+        source: ./prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks: 
+      - local
+  cAdvisor:
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8080:8080"
+    networks: 
+      - local
+  grafana:
+    image: grafana/grafana-oss
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - local
+
+networks:
+  local:
+volumes: 
+  grafana-data:
