@@ -103,7 +103,7 @@
 
     private bool initialized;
 
-    [CascadingParameter]
+    [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
 
     protected override async Task OnInitializedAsync()

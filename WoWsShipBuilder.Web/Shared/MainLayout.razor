@@ -18,7 +18,7 @@
 <MudLayout>
     <TopMenu />
     <MudMainContent Class="px-2">
-        <CascadingValue Value="@settingsInitialized">
+        <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
             @Body
         </CascadingValue>
     </MudMainContent>
@@ -30,7 +30,7 @@
 @code
 {
     private bool settingsInitialized;
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -48,7 +48,7 @@
             StateHasChanged();
         }
     }
-    
+
     private readonly MudTheme theme = new()
     {
         LayoutProperties =

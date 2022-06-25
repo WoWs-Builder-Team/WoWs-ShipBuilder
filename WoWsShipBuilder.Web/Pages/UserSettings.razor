@@ -55,7 +55,7 @@
 
 @code {
 
-    [CascadingParameter]
+    [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
