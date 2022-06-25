@@ -26,14 +26,12 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - "8080:8080"
     networks: 
       - local
   grafana:
     image: grafana/grafana-oss
     ports:
-      - "3000:3000"
+      - "8084:3000"
     container_name: grafana
     volumes:
       - grafana-data:/var/lib/grafana
