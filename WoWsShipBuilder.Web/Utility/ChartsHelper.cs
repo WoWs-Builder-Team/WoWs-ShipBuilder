@@ -4,7 +4,6 @@
 // using ChartJs.Blazor.LineChart;
 // using ChartJs.Blazor.Util;
 
-using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
@@ -58,7 +57,7 @@ public static class ChartsHelper
     /// <param name="x1">The end x value.</param>
     /// <param name="dx">The increment in x.</param>
     /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
-    public static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
+    private static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
     {
         List<Point> dispSeries = new();
         for (double x = x0; x <= x1 + dx * 0.5; x += dx)
@@ -71,13 +70,13 @@ public static class ChartsHelper
         IEnumerable<Point> verticalDispSeries;
         switch (selectedVertDispPlane)
         {
-            case ChartsHelper.EllipsePlanes.HorizontalPlane:
+            case EllipsePlanes.HorizontalPlane:
                 verticalDispSeries = vertDispSeries.vertDispOnWater;
                 break;
-            case ChartsHelper.EllipsePlanes.VerticalPlane:
+            case EllipsePlanes.VerticalPlane:
                 verticalDispSeries = vertDispSeries.vertDispOnPerpendicularToWater;
                 break;
-            case ChartsHelper.EllipsePlanes.RealPlane:
+            case EllipsePlanes.RealPlane:
             default:
                 verticalDispSeries = vertDispSeries.vertDispAtImpactAngle;
                 break;
@@ -102,24 +101,14 @@ public static class ChartsHelper
 
     public static  IEnumerable<Point> CreateBallisticChartDataset(Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter)
     {
-        IEnumerable<Point> pointsList;
-        switch (ballisticParameter)
+        IEnumerable<Point> pointsList = ballisticParameter switch
         {
-            case ChartsHelper.BallisticParameter.Penetration:
-                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.Penetration));
-                break;
-            case ChartsHelper.BallisticParameter.ImpactVelocity:
-                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.Velocity));
-                break;
-            case ChartsHelper.BallisticParameter.FlightTime:
-                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.FlightTime));
-                break;
-            case ChartsHelper.BallisticParameter.ImpactAngle:
-                pointsList = data.Select(x => new Point(x.Key / 1000, x.Value.ImpactAngle));
-                break;
-            default:
-                throw new InvalidEnumArgumentException();
-        }
+            BallisticParameter.Penetration => data.Select(x => new Point(x.Key / 1000, x.Value.Penetration)),
+            BallisticParameter.ImpactVelocity => data.Select(x => new Point(x.Key / 1000, x.Value.Velocity)),
+            BallisticParameter.FlightTime => data.Select(x => new Point(x.Key / 1000, x.Value.FlightTime)),
+            BallisticParameter.ImpactAngle => data.Select(x => new Point(x.Key / 1000, x.Value.ImpactAngle)),
+            _ => throw new InvalidEnumArgumentException(),
+        };
 
         return pointsList;
     }

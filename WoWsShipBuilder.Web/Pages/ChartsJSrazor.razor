@@ -295,27 +295,24 @@
         {
             return ballisticCache[label];
         }
-        else
-        {
-            var ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
-            ballisticCache.Add(label, ballisticSeries);
-            return ballisticSeries;
-        }
+        var ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
+        ballisticCache.Add(label, ballisticSeries);
+        return ballisticSeries;
     }
     
     private IEnumerable<Point> GetVerticalDispersion(string label, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
     {
+        (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) verticalDispersions;
         if (vertDispersionsCache.ContainsKey(label))
         {
-            var verticalDispersions = vertDispersionsCache[label];
-            return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispPlane);
+           verticalDispersions = vertDispersionsCache[label];
         }
         else
         {
-            var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
+            verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
             vertDispersionsCache.Add(label, verticalDispersions);
-            return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispPlane);
         }
+        return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispPlane);
     }
     
     private async Task ChangeVerticalDispPlane()
@@ -331,6 +328,7 @@
 
     private async Task UpdateTrajectory(double aimingRange)
     {
+        SetProcessing(true);
         range = aimingRange;
         //await RemoveAllData(TrajectoryId);
         foreach (var item in displayedShips)
@@ -340,6 +338,7 @@
             await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
             await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
         }
+        SetProcessing(false);
     }
     
     private async Task EditCharts()
@@ -437,13 +436,9 @@
     
     private void SetProcessing(bool newProcessing)
     {
-        if (newProcessing)
+        processing = newProcessing;
+        if (!newProcessing)
         {
-            processing = newProcessing;
-        }
-        else
-        {
-            processing = newProcessing;
             StateHasChanged();
         }
     }
