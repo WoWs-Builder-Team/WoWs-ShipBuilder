@@ -82,7 +82,7 @@ export function BatchRemoveData(chartsId, indexes)
     });
 }
 
-export function BatchUpdateTrajectory(chartId, indexes, newDatas)
+export function BatchUpdateData(chartId, indexes, newDatas)
 {
     const chart = Chart.getChart(chartId);
     newDatas.forEach((shipData, index) => {

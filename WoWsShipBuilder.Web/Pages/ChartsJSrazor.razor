@@ -8,6 +8,7 @@
 @using DynamicData
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Localization
+@using System.Collections
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService WebAppDataService
@@ -172,11 +173,21 @@
                     var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
 
                     var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
-                    var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
-
                     Dictionary<string, ArtilleryData> artilleryData = new();
-                    ArtilleryData data = new(shell, gun.DispersionValues, true);
-                    artilleryData.Add(shellIndexFromUrl, data);
+                    IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
+                    foreach (string shellIndex in shellIndexes)
+                    {
+                        if (shellIndex.Equals(shellIndexFromUrl))
+                        {
+                            var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
+                            ArtilleryData data = new(shell, gun.DispersionValues, true);
+                            artilleryData.Add(shellIndexFromUrl, data);
+                        }
+                        else
+                        {
+                            artilleryData.Add(shellIndex, new());
+                        }
+                    }
                     ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, (double) gun.MaxRange);
 
                     selectedShipList.Add(wrapper);
@@ -259,9 +270,10 @@
         List<string> labelNames = new();
 
         var chartIds = GetChartsIdList();
-        List<string> labels = new();
         List<List<IEnumerable<Point>>> data =  new();
         List<int> indexes = new();
+
+        List<string> newLabels = new();
         
         foreach (var selectedShip in shipList)
         {
@@ -280,9 +292,7 @@
                 var horizontalDisp = ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange);
                 var verticalDispSeries = GetVerticalDispersion(labelName, dispersionValues, selectedShip.MaxRange, ballisticSeries);
                 var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
-
-                labels.Add(labelName);
-
+                
                 List<IEnumerable<Point>> shipData = new();
                 shipData.Add(horizontalDisp);
                 shipData.Add(verticalDispSeries);
@@ -292,26 +302,33 @@
                 shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity));
                 shipData.Add(ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle));
                 data.Add(shipData);
-                
+                newLabels.Add(labelName);
                 indexes.Add(counter);
                 counter++;
                 
-                //await AddAllDatasets(labelName, horizontalDisp, verticalDispSeries, ballisticSeries, trajectory);
-
                 displayedShips.Add(labelName, selectedShip);
             }
         }
 
-        await BatchAddData(chartIds, labels, data, indexes);
+        await BatchAddData(chartIds, newLabels, data, indexes);
         
         var removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key));
         List<int> indexesToRemove = new();
+        List<string> labelToRemove = new();
         foreach ((string labelName, _) in removedShips)
         {
             var index = displayedShips.Keys.IndexOf(labelName);
             indexesToRemove.Add(index);
-            displayedShips.Remove(labelName);
+            labelToRemove.Add(labelName);
         }
+
+        foreach (var label in labelToRemove)
+        {
+            displayedShips.Remove(label);
+        }
+        indexesToRemove.Sort();
+        indexesToRemove.Reverse();
+        
         await BatchRemoveData(chartIds, indexesToRemove);
     }
 
@@ -343,15 +360,26 @@
     
     private async Task ChangeVerticalDispPlane()
     {
-        int current = 0;
+        SetProcessing(true);
+        List<int> indexes = new();
+        List<IEnumerable<Point>> selectedVerticals = new();
         foreach (var item in displayedShips)
         {
-            await RemoveAllData(VerticalDispersionId);
             var verticalDisp = vertDispersionsCache[item.Key];
             var selectedVertical = ChartsHelper.SelectVerticalDispersionDataset(verticalDisp, selectedVertDispPlane);
-            await AddData(VerticalDispersionId, item.Key, selectedVertical, current);
-            current++;
+            indexes.Add(displayedShips.Keys.IndexOf(item.Key));
+            selectedVerticals.Add(selectedVertical);
         }
+        try
+        {
+            await BatchUpdateData(VerticalDispersionId, indexes, selectedVerticals);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        SetProcessing(false);
     }
 
     private async Task UpdateTrajectory(double aimingRange)
@@ -368,7 +396,7 @@
             trajectoryDatas.Add(trajectory);
            // await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
         }
-        await BatchUpdateTrajectory(TrajectoryId, indexes, trajectoryDatas);
+        await BatchUpdateData(TrajectoryId, indexes, trajectoryDatas);
         await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }
@@ -456,11 +484,11 @@
         }
     }
 
-    private async Task BatchUpdateTrajectory(string chartId, List<int> indexes, List<IEnumerable<Point>> datas)
+    private async Task BatchUpdateData(string chartId, List<int> indexes, List<IEnumerable<Point>> datas)
     {
         if (module is not null)
         {
-            await module.InvokeVoidAsync("BatchUpdateTrajectory", chartId, indexes, datas);
+            await module.InvokeVoidAsync("BatchUpdateData", chartId, indexes, datas);
         }
     }
     

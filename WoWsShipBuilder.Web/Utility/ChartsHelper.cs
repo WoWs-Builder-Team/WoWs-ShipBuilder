@@ -46,6 +46,7 @@ public static class ChartsHelper
             vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
         }
 
+        vertDispOnWater.RemoveAt(0);
         return (series, vertDispOnWater, vertDispOnPerpendicularToWater);
     }
 
