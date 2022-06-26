@@ -15,6 +15,7 @@
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and Ballistic Charts</NavLink>
         @* <NavLink href="/test" class="main-nav-link" ActiveClass="nav-link-active">Test page</NavLink> *@
         <MudSpacer/>
+        <MudText Color="Color.Warning" Style="padding-right: 1em;">Alpha version!</MudText>
         <NavLink href="/settings" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</NavLink>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
     </MudHidden>
@@ -24,6 +25,8 @@
             <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
+        <MudSpacer />
+        <MudText Color="Color.Warning">Alpha Version!</MudText>
     </MudHidden>
 </MudAppBar>
 <MudHidden Invert="true">
