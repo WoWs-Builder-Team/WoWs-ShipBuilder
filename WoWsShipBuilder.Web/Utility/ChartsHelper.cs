@@ -1,10 +1,4 @@
-﻿// using ChartJs.Blazor.Common;
-// using ChartJs.Blazor.Common.Axes;
-// using ChartJs.Blazor.Common.Enums;
-// using ChartJs.Blazor.LineChart;
-// using ChartJs.Blazor.Util;
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
 using WoWsShipBuilder.Core.DataContainers;
@@ -32,7 +26,7 @@ public static class ChartsHelper
     /// <param name="maxRange">Max range of the gun.</param>
     /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    public static (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
+    public static (IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
     {
         List<Point> series = CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1).ToList();
 
@@ -66,20 +60,20 @@ public static class ChartsHelper
         return dispSeries;
     }
 
-    public static IEnumerable<Point> SelectVerticalDispersionDataset((IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) vertDispSeries, EllipsePlanes selectedVertDispPlane)
+    public static IEnumerable<Point> SelectVerticalDispersionDataset((IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) vertDispSeries, EllipsePlanes selectedVertDispPlane)
     {
         IEnumerable<Point> verticalDispSeries;
         switch (selectedVertDispPlane)
         {
             case EllipsePlanes.HorizontalPlane:
-                verticalDispSeries = vertDispSeries.vertDispOnWater;
+                verticalDispSeries = vertDispSeries.verticalDispersionOnWater;
                 break;
             case EllipsePlanes.VerticalPlane:
-                verticalDispSeries = vertDispSeries.vertDispOnPerpendicularToWater;
+                verticalDispSeries = vertDispSeries.verticalDispersionOnPerpendicularToWater;
                 break;
             case EllipsePlanes.RealPlane:
             default:
-                verticalDispSeries = vertDispSeries.vertDispAtImpactAngle;
+                verticalDispSeries = vertDispSeries.verticalDispersionAtImpactAngle;
                 break;
         }
 
@@ -133,4 +127,4 @@ public static class ChartsHelper
 
 // lowercase needed for chartjs to recognize to which axis the data belongs
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public record Point(double x, double y);
+public sealed record Point(double x, double y);

@@ -17,15 +17,6 @@ public class ShellSelectionWrapper
 
     public Dictionary<string, ArtilleryData> ArtilleryDataDictionary { get; }
 
-    protected bool Equals(ShellSelectionWrapper other)
-    {
-        return ShipIndex == other.ShipIndex;
-    }
-
-    public override int GetHashCode()
-    {
-        return ShipIndex.GetHashCode();
-    }
 }
 
 public sealed record ArtilleryData(ArtilleryShell Shell, Dispersion DispersionValues, bool ShellSelected)
