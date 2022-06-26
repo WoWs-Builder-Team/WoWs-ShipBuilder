@@ -241,7 +241,7 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
 
                                                 if (xUnit)
                                                 {
-                                                    label += ' ' + xUnit;
+                                                    label = xLabel + ': ' + label + ' ' + xUnit;
                                                 }
 
                                                 return label;

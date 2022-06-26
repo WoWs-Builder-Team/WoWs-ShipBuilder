@@ -242,13 +242,13 @@
     {
         if (module is not null)
         {
-            var km = Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization;
-            var m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
-            var rangeString = Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Range)).Localization;
-            var s = Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization;
-            var mm = Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization;
-            var degree = Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization;
-            var mps = Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization;
+            string km = Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization;
+            string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
+            string rangeString = Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization;
+            string s = Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization;
+            string mm = Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization;
+            string degree = Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization;
+            string mps = Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization;
 
             
             await module.InvokeVoidAsync("SetupGlobalChartConfig");
@@ -266,12 +266,10 @@
     
     private async Task UpdateShipsBatch(List<ShellSelectionWrapper> shipList)
     {
-        List<string> labelNames = new();
-
-        var chartIds = GetChartsIdList();
+        List<string> chartIds = GetChartsIdList();
         List<List<IEnumerable<Point>>> data =  new();
         List<int> indexes = new();
-
+        List<string> labelNames = new();
         List<string> newLabels = new();
         
         foreach (var selectedShip in shipList)
@@ -288,15 +286,12 @@
                 if (displayedShips.ContainsKey(labelName)) continue;
                 
                 Dictionary<double, Ballistic> ballisticSeries = GetBallistic(labelName, shell, selectedShip.MaxRange);
-                var horizontalDisp = ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange);
-                var verticalDispSeries = GetVerticalDispersion(labelName, dispersionValues, selectedShip.MaxRange, ballisticSeries);
-                var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
-                
+
                 List<IEnumerable<Point>> shipData = new()
                 {
-                    horizontalDisp,
-                    verticalDispSeries,
-                    trajectory,
+                    ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange),
+                    GetVerticalDispersion(labelName, dispersionValues, selectedShip.MaxRange, ballisticSeries),
+                    ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity),
@@ -313,16 +308,13 @@
 
         await BatchAddData(chartIds, newLabels, data, indexes);
         
-        var removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key));
-        List<string> labelToRemove = new();
-        foreach ((string labelName, _) in removedShips)
+        List<string> removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key)).Select(x => x.Key).ToList();
+        foreach (string labelName in removedShips)
         {
-            var index = displayedShips.Keys.IndexOf(labelName);
             displayedShips.Remove(labelName);
-            labelToRemove.Add(labelName);
         }
         
-        await BatchRemoveData(chartIds, labelToRemove);
+        await BatchRemoveData(chartIds, removedShips);
     }
 
     private Dictionary<double, Ballistic> GetBallistic(string label, ArtilleryShell shell, double maxRange)
@@ -354,24 +346,8 @@
     private async Task ChangeVerticalDispPlane()
     {
         SetProcessing(true);
-        List<string> labels = new();
-        List<IEnumerable<Point>> selectedVerticals = new();
-        foreach (var item in displayedShips)
-        {
-            var verticalDisp = vertDispersionsCache[item.Key];
-            var selectedVertical = ChartsHelper.SelectVerticalDispersionDataset(verticalDisp, selectedVertDispPlane);
-            labels.Add(item.Key);
-            selectedVerticals.Add(selectedVertical);
-        }
-        try
-        {
-            await BatchUpdateData(VerticalDispersionId, labels, selectedVerticals);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        List<IEnumerable<Point>> selectedVerticals = displayedShips.Select(item => ChartsHelper.SelectVerticalDispersionDataset(vertDispersionsCache[item.Key], selectedVertDispPlane)).ToList();
+        await BatchUpdateData(VerticalDispersionId, displayedShips.Keys.ToList(), selectedVerticals);
         SetProcessing(false);
     }
 
@@ -379,17 +355,8 @@
     {
         SetProcessing(true);
         range = aimingRange;
-        List<string> labels = new();
-        List<IEnumerable<Point>> trajectoryDatas = new();
-        foreach (var item in displayedShips)
-        {
-            var ballisticSeries = ballisticCache[item.Key];
-            var trajectory = ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range);
-            labels.Add(item.Key);
-            trajectoryDatas.Add(trajectory);
-           // await UpdateData(TrajectoryId, displayedShips.Keys.IndexOf(item.Key), trajectory);
-        }
-        await BatchUpdateData(TrajectoryId, labels, trajectoryDatas);
+        List<IEnumerable<Point>> trajectoryData = displayedShips.Select(item => ChartsHelper.CreateTrajectoryDataset(ballisticCache[item.Key], range)).ToList();
+        await BatchUpdateData(TrajectoryId, displayedShips.Keys.ToList(), trajectoryData);
         await ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }

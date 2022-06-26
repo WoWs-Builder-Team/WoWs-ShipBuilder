@@ -367,7 +367,7 @@ namespace WoWsShipBuilder.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Charts.
+        ///   Looks up a localized string similar to Show Dispersion and Ballistic Charts.
         /// </summary>
         public static string ChartsWeb_ShowCharts {
             get {

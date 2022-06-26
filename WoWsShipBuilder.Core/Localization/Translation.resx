@@ -1430,6 +1430,6 @@ They do not have any effect on surface ships.</value>
       <value>Height </value>
   </data>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
-      <value>Show Charts</value>
+      <value>Show Dispersion and Ballistic Charts</value>
   </data>
 </root>
