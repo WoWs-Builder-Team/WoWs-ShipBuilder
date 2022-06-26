@@ -1,4 +1,6 @@
-﻿
+﻿/**
+ * @description Setup global charts configurations.
+ */
 export function SetupGlobalChartConfig()
 {
     let defaults = Chart.defaults;
@@ -32,26 +34,23 @@ export function SetupGlobalChartConfig()
     
 }
 
+/**
+ * @description Get a color from a predefined list based on an index. Loops every 14.
+ * @param {Array<string>} index - An index to get the color of
+ */
 function GetColor(index)
 {
     const colors =["#ef6fcc", "#62ce75", "#f53a4c", "#11ccdc", "#9166aa", "#a4c28a", "#c15734", "#faa566", "#6c7b66", "#eda4ba", "#2d6df9", "#f62ef3", "#957206", "#a45dff",];
     return colors[index % 14];
 }
 
-export function AddData(chartId, data, label, index) {
-    const chart = Chart.getChart(chartId);
-    const dataset =
-        {
-            data: data,
-            label: label,
-            index: index,
-        };
-    
-    chart.data.datasets.push(dataset);
-    
-    chart.update();
-}
-
+/**
+ * @description Add multiple datasets to multiple charts at once.
+ * @param {Array<string>} chartsId - The charts ID
+ * @param {Array<string>} labels - The labels of the dataset to update
+ * @param {Array<Array<number>>} datas - The data of each dataset for each chart.
+ * @param {Array<number>} indexes - The indexes to associate to a dataset
+ */
 export function BatchAddData(chartsId, datas, labels, indexes)
 {
     chartsId.forEach((chartId, chartIndex) =>{
@@ -70,47 +69,49 @@ export function BatchAddData(chartsId, datas, labels, indexes)
 
 }
 
-export function BatchRemoveData(chartsId, indexes)
+/**
+ * @description Remove multiple datasets from multiple charts at once.
+ * @param {Array<string>} chartsId - The charts ID
+ * @param {Array<string>} labels - The labels of the dataset to remove
+ */
+export function BatchRemoveData(chartsId, labels)
 {
-    chartsId.forEach((chartId, chartIndex) =>{
+    chartsId.forEach((chartId) =>{
         const chart = Chart.getChart(chartId);
 
-        indexes.forEach((index) => {
-            chart.data.datasets.splice(index, 1);  
-        })
+        labels.forEach((label) => {
+            const shipIndex = chart.data.datasets.findIndex(dataset => {
+                return dataset.label === label;
+            })
+            chart.data.datasets.splice(shipIndex, 1);
+        });
         chart.update();
     });
 }
 
-export function BatchUpdateData(chartId, indexes, newDatas)
+/**
+ * @description Update multiple dataset at once for a specific chart.
+ * @param {string} chartId - The chart Id
+ * @param {Array<string>} labels - The labels of the dataset to update
+ * @param {Array<Array<number>>} newDatas - The new data
+ */
+export function BatchUpdateData(chartId, labels, newDatas)
 {
     const chart = Chart.getChart(chartId);
-    newDatas.forEach((shipData, index) => {
-        chart.data.datasets[indexes[index]].data = shipData;
+    labels.forEach((label, index) => {
+        const shipIndex = chart.data.datasets.findIndex(dataset => {
+            return dataset.label === label;
+        })
+        chart.data.datasets[shipIndex].data = newDatas[index];
     });
     chart.update();
 }
 
-export function UpdateData(chartId, index, newData)
-{
-    const chart = Chart.getChart(chartId);
-    chart.data.datasets[index].data = newData;
-    chart.update();
-}
-
-export function RemoveData(chartId, index) {
-    const chart = Chart.getChart(chartId);
-    chart.data.datasets.splice(index, 1);
-    chart.update();
-}
-
-export function RemoveAllData(chartId)
-{
-    const chart = Chart.getChart(chartId);
-    chart.data.datasets.length = 0;
-    chart.update();
-}
-
+/**
+ * @description Change the suggested max parameter of a chart.
+ * @param {string} chartId - The chart Id
+ * @param {number} newSuggestedMax - The new SuggestedMax parameter for the chart
+ */
 export function ChangeSuggestedMax(chartId, newSuggestedMax)
 {
     const chart = Chart.getChart(chartId);
@@ -118,6 +119,16 @@ export function ChangeSuggestedMax(chartId, newSuggestedMax)
     chart.update();
 }
 
+
+/**
+ * @description Create a chart from basic data.
+ * @param {string} chartId - The canvas Id to create the chart on
+ * @param {number} title - The title of the chart
+ * @param {number} xLabel - The label for the x axis
+ * @param {number} yLabel - The label for the y axis
+ * @param {number} xUnit - The measurement unit of the x axis
+ * @param {number} yUnit - The measurement unit of the y axis
+ */
 export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
 {
     const ctx = document.getElementById(chartId);
