@@ -1,4 +1,5 @@
 ﻿@page "/ship"
+
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Web.Utility
@@ -9,8 +10,10 @@
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Services
-@using System.Diagnostics
+@using WoWsShipBuilder.Core.BuildCreator
+
 @inherits ReactiveComponentBase<ShipViewModel>
+
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
@@ -47,7 +50,7 @@
                 <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
                     @if (ViewModel.PreviousShip is not null)
                     {
-                        <MudStack Class="px-2" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
+                        <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
                             <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                             <MudStack Row="true" Justify="Justify.Center">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -66,7 +69,7 @@
                     {
                         @foreach (var ship in ViewModel.NextShips)
                         {
-                            <MudStack Class="px-2" @onclick="@(_ => GoToShip(ship))">
+                            <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ship))">
                                 <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -99,9 +102,11 @@
 
 @code {
 
-        private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
+    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
+
+    private bool skipNextLocationChange;
 
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
@@ -121,12 +126,20 @@
     private async Task LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipCount.WithLabels(shipIndex).Inc();
+        Build? build = null;
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
+            if (NavManager.TryGetQueryString("build", out string buildString))
+            {
+                build = Build.CreateBuildFromString(buildString, Localizer);
+                skipNextLocationChange = true;
+                NavManager.NavigateTo($"/ship?shipIndex={shipIndex}", false, true);
+            }
+
             var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
             await AppDataService.LoadNationFiles(shipSummary.Nation);
             var ship = await AppDataService.GetShipFromSummary(shipSummary);
-            var vmParams = new MainViewModelParams(ship!, shipSummary);
+            var vmParams = new MainViewModelParams(ship!, shipSummary, build);
 
             ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
             await ViewModel.InitializeData(vmParams);
@@ -135,6 +148,11 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        if (skipNextLocationChange)
+        {
+            skipNextLocationChange = false;
+            return;
+        }
         string uri = NavManager.Uri;
         if (uri.Contains("/ship"))
         {
