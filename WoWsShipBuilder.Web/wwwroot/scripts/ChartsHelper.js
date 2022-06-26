@@ -19,6 +19,7 @@ export function SetupGlobalChartConfig()
     //tooltip settings
     defaults.interaction.mode = 'nearest';
     defaults.interaction.intersect = true;
+    defaults.interaction.axis = 'x';
     defaults.interaction.displayColors = true;
     defaults.plugins.tooltip.caretPadding = 20;
     defaults.plugins.tooltip.caretSize = 10;
@@ -26,7 +27,7 @@ export function SetupGlobalChartConfig()
     defaults.plugins.tooltip.boxPadding = 5;
     //point settings
     defaults.elements.point.radius = 0;
-    defaults.elements.point.hitRadius = 10;
+    defaults.elements.point.hitRadius = 5;
     defaults.elements.point.hoverRadius = 5;
     
     const autocolors = window['chartjs-plugin-autocolors'];
