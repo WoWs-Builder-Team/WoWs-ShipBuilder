@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -13,10 +14,13 @@ public static class SetupExtensions
         services.AddSingleton<IFileSystem, FileSystem>();
         services.AddSingleton<IDataService, DesktopDataService>();
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
+        services.AddSingleton<IMetricsService, MetricsService>();
+        services.AddSingleton<CircuitHandler, MetricCircuitHandler>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();
         services.AddScoped<AppSettings>();
+        services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
 
         return services;

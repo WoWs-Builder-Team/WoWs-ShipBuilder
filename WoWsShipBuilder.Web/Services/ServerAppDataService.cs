@@ -31,6 +31,14 @@ public class ServerAppDataService : IAppDataService
         AppData.ShipDictionary = new();
 
         var onlineVersionInfo = await awsClient.DownloadVersionInfo(ServerType.Live);
+        if (onlineVersionInfo.CurrentVersion is not null)
+        {
+            AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
+        }
+        else
+        {
+            AppData.DataVersion = "undefined";
+        }
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await awsClient.DownloadFiles(ServerType.Live, files);
     }

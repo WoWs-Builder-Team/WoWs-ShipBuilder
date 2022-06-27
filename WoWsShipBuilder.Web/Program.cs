@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using MudBlazor;
 using MudBlazor.Services;
+using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,6 @@ builder.Services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
     AutomaticDecompression = DecompressionMethods.All,
 }));
 builder.Services.AddSingleton<IAwsClient, ServerAwsClient>();
-
 builder.Services.AddSingleton<IAppDataService, ServerAppDataService>();
 
 var app = builder.Build();
@@ -52,9 +52,18 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseHttpMetrics(options =>
+{
+    options.AddCustomLabel("path", context => context.Request.Path);
+});
 
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics();
+    endpoints.MapBlazorHub();
+    endpoints.MapFallbackToPage("/_Host");
+});
 
 var culture = AppConstants.DefaultCultureDetails.CultureInfo;
 CultureInfo.DefaultThreadCurrentCulture = culture;

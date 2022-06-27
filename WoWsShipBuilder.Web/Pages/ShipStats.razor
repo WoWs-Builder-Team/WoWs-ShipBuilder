@@ -1,24 +1,30 @@
 ﻿@page "/ship"
+
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.Data
-@using System.Diagnostics
+@using Prometheus
 @using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Core.BuildCreator
+
 @inherits ReactiveComponentBase<ShipViewModel>
+
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
 @inject IHostEnvironment Environment
+@inject IMetricsService MetricsService
 
 <PageTitle>Ship stats</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.False" Class="mt-3">
-    @if (!initialized)
+    @if (!(initialized && SettingsInitialized))
     {
         <MudGrid>
             <MudItem xs="12">
@@ -44,7 +50,7 @@
                 <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
                     @if (ViewModel.PreviousShip is not null)
                     {
-                        <MudStack Class="px-2" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
+                        <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
                             <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                             <MudStack Row="true" Justify="Justify.Center">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -63,7 +69,7 @@
                     {
                         @foreach (var ship in ViewModel.NextShips)
                         {
-                            <MudStack Class="px-2" @onclick="@(_ => GoToShip(ship))">
+                            <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ship))">
                                 <MudImage Width="105" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -99,10 +105,16 @@
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
-    
+
+    private bool skipNextLocationChange;
+
+    [CascadingParameter(Name = "SettingsInitialized")]
+    protected bool SettingsInitialized { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        MetricsService.ShipPageCount.Inc();
         initialized = false;
         NavManager.TryGetQueryString("shipIndex", out string shipIndex);
         NavManager.LocationChanged += HandleLocationChanged;
@@ -110,26 +122,37 @@
         await ViewModel!.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         initialized = true;
     }
-    
+
     private async Task LoadShipViewModel(string shipIndex)
     {
-        var sw = new Stopwatch();
-        sw.Start();
-        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-        await AppDataService.LoadNationFiles(shipSummary.Nation);
-        Console.WriteLine("Files loaded: " + sw.Elapsed);
-        var ship = await AppDataService.GetShipFromSummary(shipSummary);
-        var vmParams = new MainViewModelParams(ship!, shipSummary, null);
-        
-        ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
-        Console.WriteLine("VM created: " + sw.Elapsed);
-        await ViewModel.InitializeData(vmParams);
-        sw.Stop();
-        Console.WriteLine("VM initizalized: " + sw.Elapsed);
+        MetricsService.ShipCount.WithLabels(shipIndex).Inc();
+        Build? build = null;
+        using (MetricsService.ShipViewModelInitDuration.NewTimer())
+        {
+            if (NavManager.TryGetQueryString("build", out string buildString))
+            {
+                build = Build.CreateBuildFromString(buildString, Localizer);
+                skipNextLocationChange = true;
+                NavManager.NavigateTo($"/ship?shipIndex={shipIndex}", false, true);
+            }
+
+            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
+            await AppDataService.LoadNationFiles(shipSummary.Nation);
+            var ship = await AppDataService.GetShipFromSummary(shipSummary);
+            var vmParams = new MainViewModelParams(ship!, shipSummary, build);
+
+            ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
+            await ViewModel.InitializeData(vmParams);
+        }
     }
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
+        if (skipNextLocationChange)
+        {
+            skipNextLocationChange = false;
+            return;
+        }
         string uri = NavManager.Uri;
         if (uri.Contains("/ship"))
         {
@@ -147,9 +170,9 @@
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
-        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+    // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
         string imgName = shipIndex;
-        if (!File.Exists(Path.Combine(Environment.ContentRootPath , "wwwroot" ,"assets", "nation_flags", $"flag_{shipIndex}.png")))
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
         {
             imgName = shipNation.ToString();
         }

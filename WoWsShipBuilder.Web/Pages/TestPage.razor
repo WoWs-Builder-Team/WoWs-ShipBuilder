@@ -1,13 +1,17 @@
 ﻿@page "/test"
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
 @inject IDataService dataService
 @inject IAppDataService appDataService
 @inject AppSettingsHelper appSettingsHelper
 @inject NavigationManager navigationManager
 @inject AppSettings appSettings
+@inject ILocalizer Localizer
+@inject RefreshNotifierService RefreshNotifierService
 
 <MudText Typo="Typo.h2">Test Page</MudText>
 
@@ -17,7 +21,8 @@
         <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
     }
 </MudSelect>
-<MudButton OnClick="SaveCultureChange" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="SaveCultureChangeAsync" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudText>@Localizer.GetAppLocalization(nameof(Translation.Battleship))</MudText>
 
 
 @code {
@@ -30,11 +35,10 @@
         selectedCulture = appSettings.SelectedLanguage;
     }
 
-    private async Task SaveCultureChange()
+    private async Task SaveCultureChangeAsync()
     {
         appSettings.SelectedLanguage = selectedCulture;
         await appSettingsHelper.SaveSettings(appSettings);
-        navigationManager.NavigateTo(navigationManager.Uri, true, false);
+        RefreshNotifierService.NotifyRefreshRequested();
     }
-
 }

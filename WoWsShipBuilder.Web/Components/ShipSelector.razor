@@ -7,49 +7,49 @@
 
 <MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
     <MudItem xs="6" md="3">
-            <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
-                @foreach (var item in tierList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@item</MudText>
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
+        <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var item in tierList)
+            {
+                <MudSelectItem Value="@item">
+                    <MudText Color="Color.Secondary">@item</MudText>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
 
-        <MudItem xs="6" md="3">
-            <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
-                @foreach (ShipClass? item in classList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
+    <MudItem xs="6" md="3">
+        <MudSelect T="ShipClass?" Variant="Variant.Outlined" @bind-Value="@SelectedClass" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ClassFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            @foreach (ShipClass? item in classList)
+            {
+                <MudSelectItem Value="@item">
+                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
 
-        <MudItem xs="6" md="3">
-            <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
-                @foreach (Nation? item in nationList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
+    <MudItem xs="6" md="3">
+        <MudSelect T="Nation?" Variant="Variant.Outlined" @bind-Value="@SelectedNation" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_NationFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            @foreach (Nation? item in nationList)
+            {
+                <MudSelectItem Value="@item">
+                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
 
-        <MudItem xs="6" md="3">
-            <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
-                @foreach (ShipCategory? item in typeList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </MudItem>
-        
+    <MudItem xs="6" md="3">
+        <MudSelect T="ShipCategory?" Variant="Variant.Outlined" @bind-Value="@SelectedType" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TypeFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
+            @foreach (ShipCategory? item in typeList)
+            {
+                <MudSelectItem Value="@item">
+                    <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()!).Localization</MudText>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </MudItem>
+
     <MudItem xs="12" md="@(LargerList ? 6 : 4)">
         @if (MultiSelect)
         {
@@ -71,14 +71,14 @@
             </MudList>
         </MudPaper>
     </MudItem>
-    </MudGrid>
+</MudGrid>
 
 @code
 {
-    
+
     [Parameter]
     public IList<string> SelectedShips { get; set; } = default!;
-    
+
     [Parameter]
     public bool MultiSelect { get; set; } = true;
 
@@ -88,11 +88,11 @@
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
     private MudList mudList = default!;
-    
+
     private List<KeyValuePair<string, ShipSummary>> filteredSummaryList = new();
-    
+
     private string inputText = string.Empty;
-    
+
     private string InputText
     {
         get => inputText;
@@ -104,14 +104,14 @@
     }
 
     #region Selects
-    
-    private readonly List<string> tierList = new() {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"};
 
-    private readonly List<ShipClass?> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> {ShipClass.Auxiliary}).Cast<ShipClass?>().ToList();
+    private readonly List<string> tierList = new() { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI" };
 
-    private readonly List<Nation?> nationList = Enum.GetValues<Nation>().Except(new List<Nation> {Nation.Common}).Cast<Nation?>().ToList();
+    private readonly List<ShipClass?> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).Cast<ShipClass?>().ToList();
 
-    private readonly List<ShipCategory?> typeList = Enum.GetValues<ShipCategory>().Except(new List<ShipCategory> {ShipCategory.Disabled, ShipCategory.Clan}).Cast<ShipCategory?>().ToList();
+    private readonly List<Nation?> nationList = Enum.GetValues<Nation>().Except(new List<Nation> { Nation.Common }).Cast<Nation?>().ToList();
+
+    private readonly List<ShipCategory?> typeList = Enum.GetValues<ShipCategory>().Except(new List<ShipCategory> { ShipCategory.Disabled, ShipCategory.Clan }).Cast<ShipCategory?>().ToList();
 
     private string? selectedTier;
 
@@ -162,14 +162,14 @@
     }
 
     #endregion
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
-    
+
     private void ApplyFilter()
     {
         string searchText = InputText;
@@ -179,7 +179,7 @@
         filteredSummaryList.AddRange(items);
         StateHasChanged();
     }
-    
+
     private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
     {
         var shipSummary = valuePair.Value;
@@ -207,7 +207,7 @@
 
         return result;
     }
-    
+
     private void RemoveShip(string shipIndex)
     {
         SelectedShips.Remove(shipIndex);

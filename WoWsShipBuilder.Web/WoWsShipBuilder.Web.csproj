@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
       <PackageReference Include="ReactiveUI.Blazor" Version="17.1.50" />
       <PackageReference Include="MudBlazor" Version="6.0.11-dev.4" />
       <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
