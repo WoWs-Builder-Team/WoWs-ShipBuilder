@@ -74,4 +74,8 @@
       <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_UnitedKingdom.png" />
       <AvaloniaResource Include="wwwroot\assets\nation_flags\flag_Usa.png" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\json" />
+    </ItemGroup>
 </Project>
