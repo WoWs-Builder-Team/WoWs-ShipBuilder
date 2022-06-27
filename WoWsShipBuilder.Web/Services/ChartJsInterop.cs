@@ -15,37 +15,37 @@ public class ChartJsInterop : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async Task SetupGlobalChartConfig()
+    public async Task SetupGlobalChartConfigAsync()
     {
         await InitializeModule();
         await module.InvokeVoidAsync("SetupGlobalChartConfig");
     }
 
-    public async Task CreateChart(string chartId, string title, string xLabel, string yLabel, string xUnit, string yUnit)
+    public async Task CreateChartAsync(string chartId, string title, string xLabel, string yLabel, string xUnit, string yUnit)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("CreateChart", chartId, title, xLabel, yLabel, xUnit, yUnit);
     }
 
-    public async Task ChangeSuggestedMax(string chartId, double newSuggestedMax)
+    public async Task ChangeSuggestedMaxAsync(string chartId, double newSuggestedMax)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
-    public async Task BatchAddData(List<string> chartIds, List<string> labels, List<List<IEnumerable<Point>>> data, List<int> indexes)
+    public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<Point>>> data, List<int> indexes)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
     }
 
-    public async Task BatchRemoveData(List<string> chartId, List<string> labels)
+    public async Task BatchRemoveDataAsync(List<string> chartId, List<string> labels)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
     }
 
-    public async Task BatchUpdateData(string chartId, List<string> labels, List<IEnumerable<Point>> datas)
+    public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<Point>> datas)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);

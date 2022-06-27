@@ -245,16 +245,16 @@
             string degree = Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization;
             string mps = Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization;
         
-            await ChartJsInterop.SetupGlobalChartConfig();
+            await ChartJsInterop.SetupGlobalChartConfigAsync();
         
-            await ChartJsInterop.CreateChart(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-            await ChartJsInterop.CreateChart(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-            await ChartJsInterop.CreateChart(TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
-            await ChartJsInterop.CreateChart(PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
-            await ChartJsInterop.CreateChart(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
-            await ChartJsInterop.CreateChart(ImpactVelocityId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, km, mps);
-            await ChartJsInterop.CreateChart(ImpactAngleId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, km, degree);
-            await ChartJsInterop.ChangeSuggestedMax(TrajectoryId, range / 4 * 1000);
+            await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+            await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+            await ChartJsInterop.CreateChartAsync(TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
+            await ChartJsInterop.CreateChartAsync(PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
+            await ChartJsInterop.CreateChartAsync(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
+            await ChartJsInterop.CreateChartAsync(ImpactVelocityId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, km, mps);
+            await ChartJsInterop.CreateChartAsync(ImpactAngleId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, km, degree);
+            await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, range / 4 * 1000);
     }
     
     private async Task UpdateShipsBatchAsync(List<ShellSelectionWrapper> shipList)
@@ -300,7 +300,7 @@
             }
         }
 
-        await ChartJsInterop.BatchAddData(chartIds, newLabels, data, indexes);
+        await ChartJsInterop.BatchAddDataAsync(chartIds, newLabels, data, indexes);
         
         List<string> removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key)).Select(x => x.Key).ToList();
         foreach (string labelName in removedShips)
@@ -308,7 +308,7 @@
             displayedShips.Remove(labelName);
         }
         
-        await ChartJsInterop.BatchRemoveData(chartIds, removedShips);
+        await ChartJsInterop.BatchRemoveDataAsync(chartIds, removedShips);
     }
 
     private Dictionary<double, Ballistic> GetBallistic(string label, ArtilleryShell shell, double maxRange)
@@ -341,7 +341,7 @@
     {
         SetProcessing(true);
         List<IEnumerable<Point>> selectedVerticals = displayedShips.Select(item => ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache[item.Key], selectedVertDispersionPlane)).ToList();
-        await ChartJsInterop.BatchUpdateData(VerticalDispersionId, displayedShips.Keys.ToList(), selectedVerticals);
+        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, displayedShips.Keys.ToList(), selectedVerticals);
         SetProcessing(false);
     }
 
@@ -350,8 +350,8 @@
         SetProcessing(true);
         range = aimingRange;
         List<IEnumerable<Point>> trajectoryData = displayedShips.Select(item => ChartsHelper.CreateTrajectoryDataset(ballisticCache[item.Key], range)).ToList();
-        await ChartJsInterop.BatchUpdateData(TrajectoryId, displayedShips.Keys.ToList(), trajectoryData);
-        await ChartJsInterop.ChangeSuggestedMax(TrajectoryId, aimingRange / 4 * 1000);
+        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, displayedShips.Keys.ToList(), trajectoryData);
+        await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }
     

@@ -12,6 +12,7 @@ export function SetupGlobalChartConfig()
     //colors settings
     defaults.color = '#a9a9a9';
     defaults.borderColor = '#696969';
+    defaults.backgroundColor = "#282828";
 
     //title settings
     defaults.plugins.title.display = true;
