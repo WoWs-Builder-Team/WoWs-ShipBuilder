@@ -21,6 +21,7 @@ public static class SetupExtensions
         services.AddScoped<AppSettingsHelper>();
         services.AddScoped<AppSettings>();
         services.AddScoped<RefreshNotifierService>();
+        services.AddScoped<ChartJsInterop>();
 
         return services;
     }

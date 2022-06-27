@@ -1,127 +1,13 @@
-﻿using ChartJs.Blazor.Common;
-using ChartJs.Blazor.Common.Axes;
-using ChartJs.Blazor.Common.Enums;
-using ChartJs.Blazor.LineChart;
-using ChartJs.Blazor.Util;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using DynamicData;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Web.Utility;
 
 public static class ChartsHelper
 {
-    public static LineConfig SetChartConfig(ILocalizer localizer, string title, string yLabel, double range, bool isShellTrajectoryChart = false)
-    {
-        var xLabel = $"{localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} [{localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}]";
-        string? foregroundColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DarkGray);
-        string? gridColor = ColorUtil.FromDrawingColor(System.Drawing.Color.DimGray);
-        var gridDash = new double[] {5, 5};
-        return new()
-        {
-            Options = new()
-            {
-                Responsive = true,
-                SpanGaps = true,
-                Title = new()
-                {
-                    Display = true,
-                    Text = title,
-                    FontColor = foregroundColor,
-                    FontSize = 30,
-                },
-                Tooltips = new()
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true,
-                    DisplayColors = true,
-                },
-                Hover = new()
-                {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true,
-                },
-                Legend = new()
-                {
-                    Labels = new()
-                    {
-                        FontColor = foregroundColor,
-                    },
-                },
-                Scales = new()
-                {
-                    XAxes = new List<CartesianAxis>
-                    {
-                        new LinearCartesianAxis
-                        {
-                            Ticks = new()
-                            {
-                                Display = true,
-                                FontColor = foregroundColor,
-                                MaxTicksLimit = 10,
-                                BeginAtZero = true,
-                            },
-                            ScaleLabel = new()
-                            {
-                                LabelString = xLabel,
-                                FontColor = foregroundColor,
-                                Display = true,
-                                FontSize = 15,
-                            },
-                            GridLines = new()
-                            {
-                                ZeroLineColor = foregroundColor,
-                                Display = true,
-                                DrawTicks = true,
-                                TickMarkLength = 5,
-                                DrawBorder = true,
-                                ZeroLineWidth = 3,
-                                DrawOnChartArea = true,
-                                Color = gridColor,
-                                BorderDash = gridDash,
-                            },
-
-                        },
-                    },
-                    YAxes = new List<CartesianAxis>
-                    {
-                        new LinearCartesianAxis
-                        {
-                            Ticks = new()
-                            {
-                                Display = true,
-                                FontColor = foregroundColor,
-                                MaxTicksLimit = 10,
-                                BeginAtZero = true,
-                                SuggestedMax = isShellTrajectoryChart ? (int)(range / 4 * 1000) : 0,
-                            },
-                            ScaleLabel = new()
-                            {
-                                LabelString = yLabel,
-                                FontColor = foregroundColor,
-                                Display = true,
-                                FontSize = 15,
-                            },
-                            GridLines = new()
-                            {
-                                ZeroLineColor = foregroundColor,
-                                Display = true,
-                                DrawTicks = true,
-                                TickMarkLength = 5,
-                                DrawBorder = true,
-                                ZeroLineWidth = 3,
-                                DrawOnChartArea = true,
-                                Color = gridColor,
-                                BorderDash = gridDash,
-                            },
-                        },
-                    },
-                },
-            },
-        };
-    }
-
     /// <summary>
     /// Create the series for the horizontal dispersion.
     /// </summary>
@@ -140,7 +26,7 @@ public static class ChartsHelper
     /// <param name="maxRange">Max range of the gun.</param>
     /// <param name="impactAngles">Dictionary containing the impact angle for each range.</param>
     /// <returns>The vertical dispersion series for the given parameter.</returns>
-    public static (IEnumerable<Point> vertDispAtImpactAngle, IEnumerable<Point> vertDispOnWater, IEnumerable<Point> vertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
+    public static (IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, Dictionary<double, Ballistic> impactAngles)
     {
         List<Point> series = CreateFunctionSeries(x => dispersion.CalculateVerticalDispersion(maxRange, x * 1000), 0, (maxRange * 1.5) / 1000, 0.1).ToList();
 
@@ -154,6 +40,7 @@ public static class ChartsHelper
             vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
         }
 
+        vertDispOnWater.RemoveAt(0);
         return (series, vertDispOnWater, vertDispOnPerpendicularToWater);
     }
 
@@ -165,7 +52,7 @@ public static class ChartsHelper
     /// <param name="x1">The end x value.</param>
     /// <param name="dx">The increment in x.</param>
     /// <returns>A <see cref="List{Point}"/> of <see cref="Point"/></returns>
-    public static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
+    private static IEnumerable<Point> CreateFunctionSeries(Func<double, double> f, double x0, double x1, double dx)
     {
         List<Point> dispSeries = new();
         for (double x = x0; x <= x1 + dx * 0.5; x += dx)
@@ -173,26 +60,52 @@ public static class ChartsHelper
         return dispSeries;
     }
 
-    public static System.Drawing.Color[] GenerateColors()
+    public static IEnumerable<Point> SelectVerticalDispersionDataset((IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) vertDispSeries, EllipsePlanes selectedVertDispPlane)
     {
-        var colors = new[]
+        IEnumerable<Point> verticalDispSeries;
+        switch (selectedVertDispPlane)
         {
-            System.Drawing.ColorTranslator.FromHtml("#ef6fcc"),
-            System.Drawing.ColorTranslator.FromHtml("#62ce75"),
-            System.Drawing.ColorTranslator.FromHtml("#f53a4c"),
-            System.Drawing.ColorTranslator.FromHtml("#11ccdc"),
-            System.Drawing.ColorTranslator.FromHtml("#9166aa"),
-            System.Drawing.ColorTranslator.FromHtml("#a4c28a"),
-            System.Drawing.ColorTranslator.FromHtml("#c15734"),
-            System.Drawing.ColorTranslator.FromHtml("#faa566"),
-            System.Drawing.ColorTranslator.FromHtml("#6c7b66"),
-            System.Drawing.ColorTranslator.FromHtml("#eda4ba"),
-            System.Drawing.ColorTranslator.FromHtml("#2d6df9"),
-            System.Drawing.ColorTranslator.FromHtml("#f62ef3"),
-            System.Drawing.ColorTranslator.FromHtml("#957206"),
-            System.Drawing.ColorTranslator.FromHtml("#a45dff"),
+            case EllipsePlanes.HorizontalPlane:
+                verticalDispSeries = vertDispSeries.verticalDispersionOnWater;
+                break;
+            case EllipsePlanes.VerticalPlane:
+                verticalDispSeries = vertDispSeries.verticalDispersionOnPerpendicularToWater;
+                break;
+            case EllipsePlanes.RealPlane:
+            default:
+                verticalDispSeries = vertDispSeries.verticalDispersionAtImpactAngle;
+                break;
+        }
+
+        return verticalDispSeries;
+    }
+
+    public static IEnumerable<Point> CreateTrajectoryDataset(Dictionary<double, Ballistic> ballisticSeries, double range)
+    {
+        var validData = new List<KeyValuePair<double, Ballistic>>
+        {
+            ballisticSeries.Where(x => x.Key / 1000 > range),
         };
-        return colors;
+        if (validData.Count == 0)
+        {
+            validData.Add(ballisticSeries.Last());
+        }
+        IEnumerable<Point> trajectory = validData.First().Value.Coordinates.Select(x => new Point(x.X / 1000, x.Y));
+        return trajectory;
+    }
+
+    public static  IEnumerable<Point> CreateBallisticChartDataset(Dictionary<double, Ballistic> data, BallisticParameter ballisticParameter)
+    {
+        IEnumerable<Point> pointsList = ballisticParameter switch
+        {
+            BallisticParameter.Penetration => data.Select(x => new Point(x.Key / 1000, x.Value.Penetration)),
+            BallisticParameter.ImpactVelocity => data.Select(x => new Point(x.Key / 1000, x.Value.Velocity)),
+            BallisticParameter.FlightTime => data.Select(x => new Point(x.Key / 1000, x.Value.FlightTime)),
+            BallisticParameter.ImpactAngle => data.Select(x => new Point(x.Key / 1000, x.Value.ImpactAngle)),
+            _ => throw new InvalidEnumArgumentException(),
+        };
+
+        return pointsList;
     }
 
     public enum EllipsePlanes
@@ -210,14 +123,8 @@ public static class ChartsHelper
         ImpactAngle,
     }
 
-    public enum ChartDatasets
-    {
-        HorizontalDispersion,
-        VerticalDispersion,
-        Penetration,
-        FlightTime,
-        ImpactVelocity,
-        ImpactAngle,
-        Trajectory,
-    }
 }
+
+// lowercase needed for chartjs to recognize to which axis the data belongs
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+public sealed record Point(double x, double y);

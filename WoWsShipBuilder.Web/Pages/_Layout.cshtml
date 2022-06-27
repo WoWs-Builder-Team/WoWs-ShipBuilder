@@ -42,9 +42,8 @@ Custom builds." property="og:description">
 
 <script src="_framework/blazor.server.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script src="/lib/chartJs/dist/Chart.min.js"></script>
-<script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="/lib/chartJs/dist/chart.min.js"></script>
+<script src="/lib/autocolor/dist/chartjs-plugin-autocolors.min.js"></script>
 <script>
 function test()
 {
@@ -66,52 +65,6 @@ function test()
     context.resetTransform();
     context.strokeStyle = "black";
     context.strokeRect(260,425, 115, 100);
-}
-
-function ApplyTooltipConfig(canvasId, titleUnit, labelUnit)
-{
-    let chart = window.ChartJsInterop.BlazorCharts.get(canvasId);
-    if (chart)
-    {
-        chart.options.tooltips.callbacks.label = function(context, dataset)
-        {
-            let label = dataset.datasets[context.datasetIndex].label;
-            
-            if (label) 
-            {
-                label += ': ';
-            }
-            
-            if (context.yLabel !== null) 
-            {
-                label += context.yLabel.toFixed(2);
-            }
-            
-            if (labelUnit)
-            {
-                label += ' ' + labelUnit;
-            }
-            
-            return label;
-        }
-        
-        chart.options.tooltips.callbacks.title = function (context)
-        {
-            let label =  context[0].xLabel.toFixed(2);
-            
-            if (titleUnit)
-            {
-                label += ' ' + titleUnit;
-            }
-             
-            return label;
-        }
-        console.log(canvasId + " = working")
-    }
-    else     
-    {
-     console.log(canvasId + " = not working")   
-    }
 }
 </script>
 </body>

@@ -4,17 +4,19 @@ namespace WoWsShipBuilder.Web.Utility;
 
 public class ShellSelectionWrapper
 {
-    public ShellSelectionWrapper(string shipIndex, Dictionary<string, ArtilleryData> artilleryData)
+    public ShellSelectionWrapper(string shipIndex, Dictionary<string, ArtilleryData> artilleryData, double maxRange)
     {
         ShipIndex = shipIndex;
         ArtilleryDataDictionary = artilleryData;
+        MaxRange = maxRange;
     }
 
     public string ShipIndex { get; }
 
-    public double MaxRange { get; set; } = -1;
+    public double MaxRange { get; set; }
 
     public Dictionary<string, ArtilleryData> ArtilleryDataDictionary { get; }
+
 }
 
 public sealed record ArtilleryData(ArtilleryShell Shell, Dispersion DispersionValues, bool ShellSelected)
