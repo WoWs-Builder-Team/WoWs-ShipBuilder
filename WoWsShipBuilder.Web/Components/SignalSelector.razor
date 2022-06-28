@@ -33,7 +33,7 @@
                                         var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                         @if (!string.IsNullOrWhiteSpace(modifierString))
                                         {
-                                            <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@modifierString</MudText>
                                         }
                                     }
                                 </MudStack>

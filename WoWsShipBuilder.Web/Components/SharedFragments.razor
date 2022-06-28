@@ -36,7 +36,10 @@
                 <MudTooltip Inline="false" Placement="Placement.Right" Color="Color.Transparent" RootStyle="width: 100%">
                     <ChildContent>
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@group.localizer.GetAppLocalization(@element.Key).Localization</MudText>
+                            <MudText Class="flex-grow-0 flex-shrink-1" Typo="Typo.body2">
+                                    @group.localizer.GetAppLocalization(@element.Key).Localization
+                                    <MudIcon ViewBox="0 -14 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
+                                </MudText>
                             <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(element.Value + " " + @group.localizer.GetAppLocalization(element.Unit).Localization)</MudText>
                         </div>
                     </ChildContent>
