@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using MudBlazor;
 using MudBlazor.Services;
+using NLog.Web;
 using Prometheus;
 using ReactiveUI;
 using Splat;
@@ -17,6 +18,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Logging.ClearProviders();
+builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false });
+SetupExtensions.ConfigureNlog(builder.Configuration.GetValue<bool>("DisableLoki"));
 
 PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
 
@@ -80,4 +85,11 @@ if (appDataService is ServerAppDataService serverAppDataService)
     AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(ServerType.Live);
 }
 
-app.Run();
+try
+{
+    app.Run();
+}
+finally
+{
+    NLog.LogManager.Shutdown();
+}
