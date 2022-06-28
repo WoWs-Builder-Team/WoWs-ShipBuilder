@@ -14,7 +14,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudPaper Outlined="true" Class="pa-2">
+    <MudPaper Outlined="true" Class="pa-3">
         <MudGrid Class="align-center" Justify="Justify.Center">
             <MudItem xs="12">
                 <MudText Typo="Typo.body2" Align="Align.Center">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21 </MudText>
@@ -41,8 +41,8 @@
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
-                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="min-width: 55px; width: 55px; height: 55px;">
-                                        <MudImage Width="40" Height="40" ObjectFit="ObjectFit.ScaleDown" Style="" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
+                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
                                     </MudButton>
                                 </MudBadge>
                             </MudBadge>
@@ -176,6 +176,9 @@
 
     [Parameter]
     public ShipClass ShipClass { get; set; }
+    
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
 
     private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
 
@@ -259,6 +262,34 @@
     private string GetSkillOrTalentsEnabledIndicator()
     {
         return (ViewModel.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled) ? "border: #BF0000FF solid 1px" : string.Empty;
+    }
+    
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 25;
+                break;
+            default:
+                return 40;
+                break;
+        }
+    }
+    
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 40px; width: 40px; height: 40px;";
+                break;
+            default:
+                return "min-width: 55px; width: 55px; height: 55px;";
+                break;
+        }
     }
 
 }

@@ -18,9 +18,11 @@
 <MudLayout>
     <TopMenu />
     <MudMainContent Class="px-2">
-        <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
-            @Body
-        </CascadingValue>
+        <MudBreakpointProvider>
+            <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
+                @Body
+            </CascadingValue>
+        </MudBreakpointProvider>
     </MudMainContent>
     <footer style="margin-top: 16px;">
         <ShipBuilderFooter/>

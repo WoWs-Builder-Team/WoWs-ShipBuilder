@@ -16,7 +16,7 @@
     <MudPaper Outlined="true" Class="pa-2">
     <MudGrid>
     <!--Main Armament column-->
-    <MudItem xs="4">
+    <MudItem xs="12" lg="4">
         <MudStack>
             <!--Main Battery-->
             @if (ViewModel.CurrentShipStats.MainBatteryDataContainer is not null)
@@ -205,7 +205,7 @@
     </MudItem>
 
     <!--Secondary Armament column-->
-    <MudItem xs="4">
+    <MudItem xs="12" lg="4">
         <MudStack>
             <!--Secondaries-->
             @if (ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries is not null)
@@ -336,7 +336,7 @@
     </MudItem>
 
     <!--Misc-->
-    <MudItem xs="4">
+    <MudItem xs="12" lg="4">
         <MudStack>
             <!--Maneuverability-->
             <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">

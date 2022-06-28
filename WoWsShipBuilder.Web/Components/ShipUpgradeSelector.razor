@@ -16,8 +16,8 @@
                     <ActivatorContent>
                         <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                             <ChildContent>
-                                <MudButton Style="min-width: 60px; width: 60px; height: 60px; padding: 2px;" Variant="Variant.Outlined" >
-                                    <MudImage Width="56" Height="56" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
+                                <MudButton Style="@GetImageBreakpointStyle()" Variant="Variant.Outlined" >
+                                    <MudImage Width="@GetImageSize(false)" Height="@GetImageSize(false)" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
                                 </MudButton>
                             </ChildContent>
                             <TooltipContent>
@@ -61,7 +61,7 @@
                                 <MudMenuItem Style="padding: 2px 4px;" OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
                                      <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                                         <ChildContent>
-                                            <MudImage Width="60" Height="60" Src="@GetUpgradeIcon(modernization)"/>
+                                            <MudImage Width="@GetImageSize(true)" Height="@GetImageSize(true)" Src="@GetUpgradeIcon(modernization)"/>
                                         </ChildContent>
                                         <TooltipContent>
                                             <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
@@ -106,7 +106,8 @@
 
 @code {
     
-    
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
 
     private string GetSelectedUpgradeIcon(List<Modernization> modernizations, ObservableCollection<Modernization> selectedModernizations )
     {
@@ -128,6 +129,34 @@
     private string GetUpgradeIcon(Modernization modernization)
     {
         return modernization.Index != null ? $"/assets/modernization_icons/icon_modernization_{modernization.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+    }
+    
+    private int GetImageSize(bool isInTooltip)
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return isInTooltip ? 40 : 36;
+                break;
+            default:
+                return isInTooltip ? 60: 56;
+                break;
+        }
+    }
+    
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 40px; width: 40px; height: 40px; padding: 2px;";
+                break;
+            default:
+                return "min-width: 60px; width: 60px; height: 60px; padding: 2px;";
+                break;
+        }
     }
 
 }

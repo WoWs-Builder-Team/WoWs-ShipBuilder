@@ -19,8 +19,8 @@
                         <ActivatorContent>
                             <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                                 <ChildContent>
-                                    <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@("min-width: 60px; width: 60px; height: 60px;" + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
-                                        <MudImage Width="60" Height="60" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
+                                    <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(@GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
+                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                                     </MudButton>
                                 </ChildContent>
                                 <TooltipContent>
@@ -35,7 +35,7 @@
                                     <MudMenuItem Style="padding: 0;" OnClick="@(_ => SwapConsumable(consumableSlot, consumable))" >
                                         <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                                             <ChildContent>
-                                                <MudImage Width="60" Height="60" Src="@GetConsumableIcon(consumable)"/>
+                                                <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumable)"/>
                                             </ChildContent>
                                             <TooltipContent>
                                                 @tooltipFragment((consumable, Localizer))
@@ -49,9 +49,9 @@
                 }
                 else
                 {
-                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@("min-width: 60px; width: 60px; height: 60px;" + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true">
+                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(@GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true">
                         <ChildContent>
-                            <MudImage Width="60" Height="60" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
+                            <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                         </ChildContent>
                         <TooltipContent>
                             @tooltipFragment((consumableSlot.SelectedConsumable, Localizer))
@@ -65,6 +65,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+    
     // ReSharper disable once InconsistentNaming
     private static RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> tooltipFragment = pair => __builder =>
     {
@@ -137,6 +140,34 @@
         catch (Exception)
         {
             return "Error";
+        }
+    }
+    
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 50;
+                break;
+            default:
+                return 60;
+                break;
+        }
+    }
+    
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 50px; width: 50px; height: 50px;";
+                break;
+            default:
+                return "min-width: 60px; width: 60px; height: 60px;";
+                break;
         }
     }
 

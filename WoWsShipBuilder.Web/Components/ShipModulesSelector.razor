@@ -18,8 +18,8 @@
                             {
                                 <MudIcon Icon="@Icons.Filled.ArrowDropDown"/>
                             }
-                            <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="min-width: 55px; width: 55px; height: 55px;" Variant="Variant.Outlined" >
-                                <MudImage Width="40" Height="40" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
+                            <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="@GetImageStyle()" Variant="Variant.Outlined" >
+                                <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
                             </MudButton>
                             <MudText Style="max-width: 80px; max-height: 40px; min-height: 40px; overflow: hidden;
                                                                                                    white-space: break-spaces;
@@ -37,10 +37,41 @@
 
 @code {
 
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+    
     private string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
     {
         string uriSuffix = isSelected ? "_installed" : string.Empty;
         var path = $"/assets/modules/icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png";
         return path;
+    }
+    
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 30;
+                break;
+            default:
+                return 40;
+                break;
+        }
+    }
+    
+    private string GetImageStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 45px; width: 45px; height: 45px;";
+                break;
+            default:
+                return "min-width: 55px; width: 55px; height: 55px;";
+                break;
+        }
     }
 }

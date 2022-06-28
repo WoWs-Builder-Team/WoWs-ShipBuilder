@@ -7,7 +7,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudPaper Outlined="true" Class="pa-2">
+    <MudPaper Outlined="true" Class="pa-3">
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12">
                 <MudText Typo="Typo.body2" Align="Align.Center">@(Localizer.GetAppLocalization(nameof(Translation.SignalSelector_Flags)).Localization + ViewModel.SignalsNumber + "/8")</MudText>
@@ -18,8 +18,8 @@
                 <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
                         <ChildContent>
-                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@("min-width: 55px; width: 55px; height: 55px;" + GetImageStyle(signal))">
-                                <MudImage ObjectFit="ObjectFit.ScaleDown" Width="40" Height="40" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
+                            <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@(@GetImageBreakpointStyle() + GetImageStyle(signal))">
+                                <MudImage ObjectFit="ObjectFit.ScaleDown" Width="@GetImageSize()" Height="@GetImageSize()" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
                             </MudButton>
                         </ChildContent>
                         <TooltipContent>
@@ -49,6 +49,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+    
     private Color GetColorFromState(SignalItemViewModel signalItem)
     {
         if (ViewModel!.SelectedSignals.Any(x => x.Name.Equals(signalItem.Signal.Name)))
@@ -83,6 +86,34 @@
             return @"opacity: 0.4";
         }
         return string.Empty;
+    }
+    
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 25;
+                break;
+            default:
+                return 40;
+                break;
+        }
+    }
+    
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 40px; width: 40px; height: 40px;";
+                break;
+            default:
+                return "min-width: 55px; width: 55px; height: 55px;";
+                break;
+        }
     }
 
 }
