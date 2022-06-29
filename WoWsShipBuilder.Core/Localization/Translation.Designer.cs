@@ -3942,5 +3942,50 @@ namespace WoWsShipBuilder.Core.Translations {
                 return ResourceManager.GetString("VerticalPlane", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application Info.
+        /// </summary>
+        public static string WebApp_ApplicationInfo {
+            get {
+                return ResourceManager.GetString("WebApp_ApplicationInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current data version:.
+        /// </summary>
+        public static string WebApp_CurrentVersion {
+            get {
+                return ResourceManager.GetString("WebApp_CurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Shells and Torps expanders by default.
+        /// </summary>
+        public static string WebApp_ExpanderSetting {
+            get {
+                return ResourceManager.GetString("WebApp_ExpanderSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Language.
+        /// </summary>
+        public static string WebApp_SelectedLanguage {
+            get {
+                return ResourceManager.GetString("WebApp_SelectedLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings Saved.
+        /// </summary>
+        public static string WebApp_SettingsSaved {
+            get {
+                return ResourceManager.GetString("WebApp_SettingsSaved", resourceCulture);
+            }
+        }
     }
 }
