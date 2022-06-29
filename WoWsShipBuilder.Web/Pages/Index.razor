@@ -23,7 +23,7 @@
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips"/>
         </MudItem>
-        <MudItem xs="4" Class="d-flex" Style="justify-content: space-between">
+        <MudItem xs="12" sm="8" md="4" Class="d-flex" Style="justify-content: space-between">
             <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage" FullWidth="true">
                 Go to ships page
             </MudButton>
