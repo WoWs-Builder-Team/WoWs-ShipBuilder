@@ -7,9 +7,11 @@
 @using static WoWsShipBuilder.Web.Components.SharedFragments
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
+@using WoWsShipBuilder.Core.Settings
 @inherits ReactiveComponentBase<ShipStatsControlViewModelBase>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
+@inject AppSettings AppSettings
 
 @if (ViewModel is not null)
 {
@@ -74,7 +76,7 @@
                             @foreach (var shell in ViewModel.CurrentShipStats.MainBatteryDataContainer.ShellData)
                             {
                                 <!--Border bottom initial needed to fix the first expander having a wrong color when closed-->
-                                <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(shell.Name).Localization" IsInitiallyExpanded="true" Class="mx-2 mb-2 rounded-0 child-expander">
+                                <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(shell.Name).Localization" IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenAllExpandersByDefault" Class="mx-2 mb-2 rounded-0 child-expander">
                                     <MudStack Spacing="2" Class="expander-content-padding">
                                         @foreach (var data in shell.DataElements)
                                         {
@@ -117,7 +119,7 @@
                             @foreach (var torpedo in ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.Torpedoes)
                             {
                                 <!--Border bottom initial needed to fix the first expander having a wrong color when closed-->
-                                <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(torpedo.Name).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="mx-2 mb-2 child-expander rounded-0">
+                                <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(torpedo.Name).Localization" IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenAllExpandersByDefault" Style="border-bottom: initial" Class="mx-2 mb-2 child-expander rounded-0">
                                     <MudStack Spacing="2" Class="expander-content-padding">
                                         @foreach (var data in torpedo.DataElements)
                                         {
@@ -223,7 +225,7 @@
                                     <!--Shell data-->
                                     <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
                                     <!--Border bottom initial needed to fix the first expander having a wrong color when closed-->
-                                    <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(secondary.Shell.Name).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="mx-2 mb-2 child-expander rounded-0">
+                                    <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(secondary.Shell.Name).Localization" IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenAllExpandersByDefault" Style="border-bottom: initial" Class="mx-2 mb-2 child-expander rounded-0">
                                         <MudStack Spacing="2" Class="expander-content-padding">
                                             @foreach (var data in secondary.Shell.DataElements)
                                             {

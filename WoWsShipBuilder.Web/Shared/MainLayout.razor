@@ -41,7 +41,10 @@
             var settings = await SettingsHelper.LoadSettings();
             if (settings == null)
             {
-                settings = new();
+                settings = new()
+                {
+                    WebAppSettings = new(),
+                };
                 await SettingsHelper.SaveSettings(settings);
             }
             AppSettings.UpdateFromSettings(settings);
