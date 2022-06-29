@@ -63,26 +63,29 @@
             </MudList>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" md="4">
-        <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" FullWidth Class="mt-6 mb-5" Variant="Variant.Filled" >Clear all</MudButton>
-        <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
-            @if (SelectedShips.Any())
-            {
-                @if (MultiSelect)
+    @if (!LargerList)
+    {
+        <MudItem xs="12" md="4">
+            <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" FullWidth Class="mt-6 mb-5" Variant="Variant.Filled" >Clear all</MudButton>
+            <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
+                @if (SelectedShips.Any())
                 {
-                    @foreach (var ship in SelectedShips)
+                    @if (MultiSelect)
                     {
-                        <MudChip Text="@Localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                        @foreach (var ship in SelectedShips)
+                        {
+                            <MudChip Text="@Localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                        }
                     }
-                }
 
-            }
-            else
-            {
-                <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5" Style="position: relative; top: 45%">No ship selected</MudText>
-            }
-        </MudPaper>
-    </MudItem>
+                }
+                else
+                {
+                    <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5" Style="position: relative; top: 45%">No ship selected</MudText>
+                }
+            </MudPaper>
+        </MudItem>
+    }
 </MudGrid>
 
 @code
