@@ -1,0 +1,278 @@
+﻿@page "/shipComparison"
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.Core.ConverterHelpers
+@using WoWsShipBuilder.Web.Dialogs
+@inherits ReactiveComponentBase<ShipComparisonViewModel>
+@inject IHostEnvironment Environment;
+@inject ILocalizer Localizer
+@inject IDialogService DialogService
+
+<PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
+@if (ViewModel is not null)
+{
+    <MudStack Class="mb-3 mt-3">
+        <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
+            <MudStack Row="true">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Tier
+                </MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllTiers(true))">
+                    All
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllTiers(false))">
+                    None
+                </MudButton>
+            </MudStack>
+            <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                @foreach ((string tier, bool isSelected) in ViewModel!.TierList)
+                {
+                    <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleTierSelection(tier))">
+                        @tier
+                    </MudButton>
+                }
+            </MudButtonGroup>
+            <MudStack Row="true" Class="mt-3">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Class
+                </MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllClasses(true))">
+                    All
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllClasses(false))">
+                    None
+                </MudButton>
+            </MudStack>
+            <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                @foreach ((var shipClass, bool isSelected) in ViewModel!.ClassList)
+                {
+                    <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleClassSelection(shipClass))">
+                        @shipClass
+                    </MudButton>
+                }
+            </MudButtonGroup>
+            <MudStack Row="true" Class="mt-3">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Nation
+                </MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllNations(true))">
+                    All
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllNations(false))">
+                    None
+                </MudButton>
+            </MudStack>
+            <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                @foreach ((var nation, bool isSelected) in ViewModel!.NationList)
+                {
+                    <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleNationSelection(nation))">
+                        @nation
+                    </MudButton>
+                }
+            </MudButtonGroup>
+            <MudStack Row="true" Class="mt-3">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Category
+                </MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllCategories(true))">
+                    All
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ViewModel!.ToggleAllCategories(false))">
+                    None
+                </MudButton>
+            </MudStack>
+            <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                @foreach ((var category, bool isSelected) in ViewModel!.CategoryList)
+                {
+                    <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleCategorySelection(category))">
+                        @category
+                    </MudButton>
+                }
+            </MudButtonGroup>
+        </MudPaper>
+        <MudStack Style="width: 100%">
+            <MudTable Items="ViewModel!.SelectedShipList" Hover="true" Outlined="true" Dense="true" HorizontalScrollbar="true" FixedHeader="true" Height="@(ViewModel!.SelectedShipList.Count > 4 ? "258px" : "")">
+                <ToolBarContent>
+                    <MudText Style="font-size: x-large" Class="mt-n3">
+                            Filtered Ships:
+                        </MudText>
+                    <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh></MudTh>
+                    <MudTh Style="text-align: center">Name</MudTh>
+                    <MudTh Style="text-align: center">Tier</MudTh>
+                    <MudTh Style="text-align: center">Class</MudTh>
+                    <MudTh Style="text-align: center">Nation</MudTh>
+                    <MudTh Style="text-align: center">Build</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="ShipImage" Style="text-align: center">
+                        <MudImage Src="@(BaseAddress + context.Index + ".png")" Height="37"/>
+                    </MudTd>
+                    <MudTd DataLabel="ShipName" Style="text-align: center">
+                        @Localizer.GetGameLocalization(context.Index).Localization
+                    </MudTd>
+                    <MudTd DataLabel="ShipTier" Style="text-align: center">
+                        @ViewModel!.TierList.ElementAt(context.Tier - 1).Key
+                    </MudTd>
+                    <MudTd DataLabel="ShipClass" Style="text-align: center">
+                        <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
+                    </MudTd>
+                    <MudTd DataLabel="ShipNation" Style="text-align: center">
+                        <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
+                    </MudTd>
+                    <MudTd DataLabel="ApplyBuild" Style="text-align: center">
+                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied("")" @onclick="() => OpenBuildEditorDialog(context.Index)"/>
+                    </MudTd>
+                    <MudTd DataLabel="RemoveShip" Style="text-align: center" @onclick="() => ViewModel!.RemoveSelectedShip(context)">
+                        <MudIcon Icon="@Icons.Filled.Cancel" Size="Size.Medium"/>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+            <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel!.ShowFilteredOnly)" Color="GetColorFromBool(ViewModel!.ShowFilteredOnly)" OnClick="ViewModel!.ToggleShowFilteredOnly">
+                Display only filtered ships
+            </MudButton>
+        </MudStack>
+    </MudStack>
+    <MudTable ref="table" Items="ViewModel!.GetShipsToBeDisplayedDictionary()" Hover="true" LoadingProgressColor="Color.Info" Outlined="true" Striped="true" Bordered="true" Dense="true" Breakpoint="Breakpoint.None" HorizontalScrollbar="true" Virtualize="true" FixedHeader="true" Filter="new Func<Ship,bool>(Search)">
+        <ToolBarContent>
+            <MudText Style="font-size: x-large" Class="mt-n3">
+                Ships:
+            </MudText>
+            <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
+            <MudSpacer/>
+            <MudTextField @bind-Value="searchString" Placeholder="Search ship" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh Style="text-align: center">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="SortDirection.Ascending">
+                    Filter
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="text-align: center">
+                Image
+            </MudTh>
+            <MudTh Style="text-align: center">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => Localizer.GetGameLocalization(x.Index).Localization)" InitialDirection="SortDirection.Ascending">
+                    Name
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="text-align: center">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => x.Tier)">
+                    Tier
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="text-align: center">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => x.ShipClass.ToString())">
+                    Class
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh Style="text-align: center">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => x.ShipNation.ToString())">
+                    Nation
+                </MudTableSortLabel>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Filter" Style="text-align: center">
+                <MudIcon Icon="@Icons.Filled.FilterAlt" Size="Size.Medium" Color="@IsShipSelected(context.Index)" @onclick="() => ViewModel!.SelectShip(context)"/>
+            </MudTd>
+            <MudTd DataLabel="ShipImage" Style="text-align: center">
+                <MudImage Src="@(BaseAddress + context.Index + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
+            </MudTd>
+            <MudTd DataLabel="ShipName" Style="text-align: center">
+                @Localizer.GetGameLocalization(context.Index).Localization
+            </MudTd>
+            <MudTd DataLabel="ShipTier" Style="text-align: center">
+                @ViewModel!.TierList.ElementAt(context.Tier - 1).Key
+            </MudTd>
+            <MudTd DataLabel="ShipClass" Style="text-align: center">
+                <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
+            </MudTd>
+            <MudTd DataLabel="ShipNation" Style="text-align: center">
+                <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No matching ships found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+    </MudTable>
+    <MudScrollToTop TopOffset="100" Style="z-index:2001">
+        <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+    </MudScrollToTop>
+}
+
+@code {
+
+    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
+    
+    private string searchString = default!;
+    private Dictionary<string, bool> buildApplied = new();
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel = new();
+    }
+
+    private Color IsCustomBuildApplied(string shipIndex)
+    {
+        return !string.IsNullOrEmpty(shipIndex) ? buildApplied[shipIndex] ? Color.Info : Color.Default : Color.Default;
+    }
+    
+    private Color IsShipSelected(string shipIndex)
+    {
+        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.SelectedShipList.Select(x => x.Index).Contains(shipIndex) ? Color.Info : Color.Default : Color.Default;
+    }
+
+    private static Variant GetVariantFromBool(bool active)
+    {
+        return active ? Variant.Filled : Variant.Outlined;
+    }
+
+    private static Color GetColorFromBool(bool active)
+    {
+        return active ? Color.Primary : Color.Secondary;
+    }
+    
+    private string GetNationFlag(Nation shipNation, string shipIndex)
+    {
+        string imgName = File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
+        return $"/assets/nation_flags/flag_{imgName}.png";
+    }
+    
+    private static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
+    {
+        string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
+        string stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
+        string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
+        return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
+    }
+    
+    private async Task<DialogResult?> OpenBuildEditorDialog(string shipIndex)
+    {
+        DialogOptions options = new()
+        {
+            MaxWidth = MaxWidth.Small,
+        };
+        var parameters = new DialogParameters
+        {
+            ["ShipIndex"] = shipIndex,
+        };
+        var dialog = DialogService.Show<BuildCreationDialog>("BuildCreationDialog", parameters, options);
+        return await dialog.Result;
+    }
+    
+    private bool Search(Ship ship) => Research(ship, searchString);
+
+    private bool Research(Ship ship, string researchedString)
+    {
+        return string.IsNullOrWhiteSpace(researchedString) || Localizer.GetGameLocalization(ship.Index).Localization.Contains(researchedString, StringComparison.OrdinalIgnoreCase);
+    }
+}
