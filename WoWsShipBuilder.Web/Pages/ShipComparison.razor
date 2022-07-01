@@ -125,7 +125,7 @@
                         <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
                     </MudTd>
                     <MudTd DataLabel="ApplyBuild" Style="text-align: center">
-                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied("")" @onclick="() => OpenBuildEditorDialog(context.Index)"/>
+                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied("")" @onclick="() => OpenBuildEditorDialog(context)"/>
                     </MudTd>
                     <MudTd DataLabel="RemoveShip" Style="text-align: center" @onclick="() => ViewModel!.RemoveSelectedShip(context)">
                         <MudIcon Icon="@Icons.Filled.Cancel" Size="Size.Medium"/>
@@ -210,6 +210,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+    
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
     
     private string searchString = default!;
@@ -255,15 +258,20 @@
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
     
-    private async Task<DialogResult?> OpenBuildEditorDialog(string shipIndex)
+    private async Task<DialogResult?> OpenBuildEditorDialog(Ship ship)
     {
         DialogOptions options = new()
         {
-            MaxWidth = MaxWidth.Small,
+            MaxWidth = MaxWidth.Medium,
         };
         var parameters = new DialogParameters
         {
-            ["ShipIndex"] = shipIndex,
+            ["ShipIndex"] = ship.Index,
+            ["ShipTier"] = ViewModel!.TierList.ElementAt(ship.Tier - 1).Key,
+            ["ShipIconPath"] = GetIconFromClass(ship.ShipClass, ship.ShipCategory),
+            ["ShipNationFlagPath"] = GetNationFlag(ship.ShipNation, ship.Index),
+            ["ShipImagePath"] = $"{BaseAddress}{ship.Index}.png",
+            ["Breakpoint"] = Breakpoint,
         };
         var dialog = DialogService.Show<BuildCreationDialog>("BuildCreationDialog", parameters, options);
         return await dialog.Result;
