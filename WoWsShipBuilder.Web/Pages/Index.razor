@@ -28,21 +28,21 @@
         <MudItem xs="12">
             <MudStack Row>
                 <MudTextField Immediate T="string" Label="Paste Build String" @bind-Value="buildString" />
-                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" OnClick="OnLoadBuild">Load Build</MudButton>
+                <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="OnLoadBuild">Load Build</MudButton>
             </MudStack>
         </MudItem>
-        <MudItem xs="12" Class="py-6">
-            <MudDivider DividerType="DividerType.Middle" Light/>
+        <MudItem xs="12" Class="pt-6 pb-0 ml-n4 mr-4">
+            <MudDivider DividerType="DividerType.Middle" Style="width: 100%" Light/>
         </MudItem>
         <MudItem xs="12">
             <ShipSelector SelectedShips="@selectedShips"/>
         </MudItem>
-        <MudItem xs="12" sm="8" md="4" Class="d-flex" Style="justify-content: space-between">
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToShipPage" FullWidth="true">
+        <MudItem xs="12" sm="8" Class="d-flex" Style="justify-content: space-between">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToShipPage" FullWidth="true">
                 Go to ships page
             </MudButton>
             <MudDivider Vertical="true" DividerType="DividerType.Middle"/>
-            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@GoToChartPage" FullWidth="true">
+            <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@GoToChartPage" FullWidth="true">
                 Go to charts page
             </MudButton>
         </MudItem>

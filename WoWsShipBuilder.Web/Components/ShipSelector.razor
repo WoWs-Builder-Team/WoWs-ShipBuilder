@@ -66,7 +66,7 @@
     @if (!LargerList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" FullWidth Class="mt-6 mb-5" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
+            <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
                 @if (SelectedShips.Any())
                 {
@@ -98,7 +98,7 @@
     public bool MultiSelect { get; set; } = true;
 
     [Parameter]
-    public bool LargerList { get; set; } = false;
+    public bool LargerList { get; set; }
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
