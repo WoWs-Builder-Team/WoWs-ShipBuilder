@@ -573,7 +573,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
-            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
+            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == currentClass).Tier + 1);
             foreach (var skill in SkillOrderList)
             {
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
