@@ -12,7 +12,7 @@
 @inject AppSettings AppSettings
 @inject IMetricsService MetricsService
 
-<MudDialog>
+<MudDialog Style="overflow-y: auto; max-height: 700px">
     <TitleContent>
         <MudItem Class="d-flex align-center" Style="justify-content: center">
             <MudStack Row="true" Justify="Justify.SpaceEvenly" Class="mt-n1">
@@ -29,26 +29,24 @@
         </MudItem>
     </TitleContent>
     <DialogContent>
-        <MudContainer Style="overflow-y: auto">
-            <MudStack Row="true" Style="@SetWrapping()">
-                <MudStack>
-                    <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
-                    <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
-                    <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
-                    <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
-                </MudStack>
-                <MudItem>
-                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
-                    <MudTextField Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
-                    <MudStack Row="true" Class="mt-3">
-                        <MudTextField Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                        <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1">
-                            Load build
-                        </MudButton>
-                    </MudStack>
-                </MudItem>
+        <MudStack Row="true" Style="@SetWrapping()">
+            <MudStack>
+                <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
+                <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
+                <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
+                <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
             </MudStack>
-        </MudContainer>
+            <div style="SetMaxWidth()">
+                <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
+                <MudTextField Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
+                <MudStack Row="true" Class="mt-3">
+                    <MudTextField Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
+                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1">
+                        Load build
+                    </MudButton>
+                </MudStack>
+            </div>
+        </MudStack>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
@@ -127,5 +125,16 @@
                 return "flex-wrap: nowrap";
         }
     }
-
+    
+    private string SetMaxWidth()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "max-width: 100%";
+            default:
+                return "max-width: 55%";
+        }
+    }
 }

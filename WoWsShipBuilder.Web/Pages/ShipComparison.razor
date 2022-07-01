@@ -203,9 +203,12 @@
             <MudText>Loading...</MudText>
         </LoadingContent>
     </MudTable>
-    <MudScrollToTop TopOffset="100" Style="z-index:2001">
-        <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
-    </MudScrollToTop>
+    @if (!isDialogOpen)
+    {
+        <MudScrollToTop TopOffset="100" Style="z-index:2001">
+            <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+        </MudScrollToTop>   
+    }
 }
 
 @code {
@@ -214,8 +217,10 @@
     private Breakpoint Breakpoint { get; set; }
     
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
-    
+
+    private bool isDialogOpen;
     private string searchString = default!;
+    
     private Dictionary<string, bool> buildApplied = new();
     
     protected override void OnInitialized()
@@ -260,6 +265,7 @@
     
     private async Task<DialogResult?> OpenBuildEditorDialog(Ship ship)
     {
+        isDialogOpen = true;
         DialogOptions options = new()
         {
             MaxWidth = MaxWidth.Medium,
@@ -274,7 +280,9 @@
             ["Breakpoint"] = Breakpoint,
         };
         var dialog = DialogService.Show<BuildCreationDialog>("BuildCreationDialog", parameters, options);
-        return await dialog.Result;
+        var result = await dialog.Result;
+        isDialogOpen = false;
+        return result;
     }
     
     private bool Search(Ship ship) => Research(ship, searchString);
