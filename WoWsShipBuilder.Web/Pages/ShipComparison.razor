@@ -3,6 +3,7 @@
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.ConverterHelpers
+@using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.Web.Dialogs
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 @inject IHostEnvironment Environment;
@@ -26,10 +27,12 @@
                 </MudButton>
             </MudStack>
             <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach ((string tier, bool isSelected) in ViewModel!.TierList)
+                @for(var i = 1; i <= 11; i++)
                 {
+                    int tier = i;
+                    bool isSelected = ViewModel.SelectedTiers.Contains(tier);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleTierSelection(tier))">
-                        @tier
+                        @tier.ToTierString()
                     </MudButton>
                 }
             </MudButtonGroup>
@@ -45,8 +48,9 @@
                 </MudButton>
             </MudStack>
             <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach ((var shipClass, bool isSelected) in ViewModel!.ClassList)
+                @foreach (var shipClass in ViewModel!.AvailableClasses)
                 {
+                    bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleClassSelection(shipClass))">
                         @shipClass
                     </MudButton>
@@ -64,8 +68,9 @@
                 </MudButton>
             </MudStack>
             <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach ((var nation, bool isSelected) in ViewModel!.NationList)
+                @foreach (var nation in ViewModel!.AvailableNations)
                 {
+                    bool isSelected = ViewModel.SelectedNations.Contains(nation);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleNationSelection(nation))">
                         @nation
                     </MudButton>
@@ -83,8 +88,9 @@
                 </MudButton>
             </MudStack>
             <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach ((var category, bool isSelected) in ViewModel!.CategoryList)
+                @foreach (var category in ViewModel!.AvailableShipCategories)
                 {
+                    bool isSelected = ViewModel.SelectedCategories.Contains(category);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleCategorySelection(category))">
                         @category
                     </MudButton>
@@ -116,7 +122,7 @@
                         @Localizer.GetGameLocalization(context.Index).Localization
                     </MudTd>
                     <MudTd DataLabel="ShipTier" Style="text-align: center">
-                        @ViewModel!.TierList.ElementAt(context.Tier - 1).Key
+                        @context.Tier.ToTierString()
                     </MudTd>
                     <MudTd DataLabel="ShipClass" Style="text-align: center">
                         <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
@@ -148,7 +154,7 @@
         </ToolBarContent>
         <HeaderContent>
             <MudTh Style="text-align: center">
-                <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="SortDirection.Ascending">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="MudBlazor.SortDirection.Ascending">
                     Filter
                 </MudTableSortLabel>
             </MudTh>
@@ -156,7 +162,7 @@
                 Image
             </MudTh>
             <MudTh Style="text-align: center">
-                <MudTableSortLabel SortBy="new Func<Ship, object>(x => Localizer.GetGameLocalization(x.Index).Localization)" InitialDirection="SortDirection.Ascending">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => Localizer.GetGameLocalization(x.Index).Localization)" InitialDirection="MudBlazor.SortDirection.Ascending">
                     Name
                 </MudTableSortLabel>
             </MudTh>
@@ -187,7 +193,7 @@
                 @Localizer.GetGameLocalization(context.Index).Localization
             </MudTd>
             <MudTd DataLabel="ShipTier" Style="text-align: center">
-                @ViewModel!.TierList.ElementAt(context.Tier - 1).Key
+                @context.Tier.ToTierString()
             </MudTd>
             <MudTd DataLabel="ShipClass" Style="text-align: center">
                 <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
@@ -222,7 +228,7 @@
     private string searchString = default!;
     
     private Dictionary<string, bool> buildApplied = new();
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -273,7 +279,7 @@
         var parameters = new DialogParameters
         {
             ["ShipIndex"] = ship.Index,
-            ["ShipTier"] = ViewModel!.TierList.ElementAt(ship.Tier - 1).Key,
+            ["ShipTier"] = ship.Tier.ToTierString(),
             ["ShipIconPath"] = GetIconFromClass(ship.ShipClass, ship.ShipCategory),
             ["ShipNationFlagPath"] = GetNationFlag(ship.ShipNation, ship.Index),
             ["ShipImagePath"] = $"{BaseAddress}{ship.Index}.png",

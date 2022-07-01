@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
@@ -13,14 +14,16 @@ public class ShipComparisonViewModel : ViewModelBase
 {
     #region Properties
 
-    private List<Ship?> fullShipList = new(AppData.ShipDictionary!.Values);
-    public List<Ship?> FullShipList
+    private List<Ship> fullShipList = new(AppData.ShipDictionary!.Values);
+
+    public List<Ship> FullShipList
     {
         get => fullShipList;
         set => this.RaiseAndSetIfChanged(ref fullShipList, value);
     }
 
-    private List<Ship> filteredShipList = new(AppData.ShipDictionary!.Values!);
+    private List<Ship> filteredShipList = new();
+
     public List<Ship> FilteredShipList
     {
         get => filteredShipList;
@@ -28,57 +31,29 @@ public class ShipComparisonViewModel : ViewModelBase
     }
 
     private List<Ship> selectedShipList = new();
+
     public List<Ship> SelectedShipList
     {
         get => selectedShipList;
         set => this.RaiseAndSetIfChanged(ref selectedShipList, value);
     }
 
-    private Dictionary<string, bool> tierList = new(){{"I", false}, {"II", false}, {"III", false}, {"IV", false}, {"V", false}, {"VI", false}, {"VII", false}, {"VIII", false}, {"IX", false}, {"X", false}, {"XI", false}};
-    public Dictionary<string, bool> TierList
-    {
-        get => tierList;
-        set
-        {
-            FilteredShipList = ApplyFilters();
-            this.RaiseAndSetIfChanged(ref tierList, value);
-        }
-    }
+    public ObservableCollection<int> SelectedTiers { get; } = new();
 
-    private Dictionary<ShipClass, bool> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToDictionary(key => key, _ => false);
-    public Dictionary<ShipClass, bool> ClassList
-    {
-        get => classList;
-        set
-        {
-            FilteredShipList = ApplyFilters();
-            this.RaiseAndSetIfChanged(ref classList, value);
-        }
-    }
+    public ObservableCollection<ShipClass> SelectedClasses { get; } = new();
 
-    private Dictionary<Nation, bool> nationList = Enum.GetValues<Nation>().Except(new List<Nation> {Nation.Common}).ToDictionary(key => key, _ => false);
-    public Dictionary<Nation, bool> NationList
-    {
-        get => nationList;
-        set
-        {
-            FilteredShipList = ApplyFilters();
-            this.RaiseAndSetIfChanged(ref nationList, value);
-        }
-    }
+    public ObservableCollection<Nation> SelectedNations { get; } = new();
 
-    private Dictionary<ShipCategory, bool> categoryList = Enum.GetValues<ShipCategory>().Except(new List<ShipCategory> {ShipCategory.Disabled, ShipCategory.Clan}).ToDictionary(key => key, _ => false);
-    public Dictionary<ShipCategory, bool> CategoryList
-    {
-        get => categoryList;
-        set
-        {
-            FilteredShipList = ApplyFilters();
-            this.RaiseAndSetIfChanged(ref categoryList, value);
-        }
-    }
+    public ObservableCollection<ShipCategory> SelectedCategories { get; } = new();
+
+    public IEnumerable<ShipClass> AvailableClasses { get; } = Enum.GetValues<ShipClass>().Except(new [] { ShipClass.Auxiliary });
+
+    public IEnumerable<Nation> AvailableNations { get; } = Enum.GetValues<Nation>().Except(new [] { Nation.Common });
+
+    public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new [] { ShipCategory.Disabled, ShipCategory.Clan });
 
     private string searchString = default!;
+
     public string SearchString
     {
         get => searchString;
@@ -86,6 +61,7 @@ public class ShipComparisonViewModel : ViewModelBase
     }
 
     private bool showFilteredOnly;
+
     public bool ShowFilteredOnly
     {
         get => showFilteredOnly;
@@ -95,18 +71,19 @@ public class ShipComparisonViewModel : ViewModelBase
             this.RaiseAndSetIfChanged(ref showFilteredOnly, value);
         }
     }
-    #endregion
 
+    #endregion
 
     #region Methods
 
     private List<Ship> ApplyFilters()
     {
-        return FullShipList.Where(data => data is not null &&
-                                          TierList[TierList.First(x => data.Tier == TierList.IndexOf(x) + 1).Key] &&
-                                          ClassList[ClassList.First(x => data.ShipClass.Equals(x.Key)).Key] &&
-                                          NationList[NationList.First(x => data.ShipNation.Equals(x.Key)).Key] &&
-                                          CategoryList[CategoryList.First(x => data.ShipCategory.Equals(x.Key)).Key]).ToList()!;
+        return FullShipList
+            .Where(data => SelectedTiers.Contains(data.Tier) &&
+                           SelectedClasses.Contains(data.ShipClass) &&
+                           SelectedNations.Contains(data.ShipNation) &&
+                           SelectedCategories.Contains(data.ShipCategory))
+            .ToList();
     }
 
     public void ToggleShowFilteredOnly()
@@ -114,56 +91,104 @@ public class ShipComparisonViewModel : ViewModelBase
         ShowFilteredOnly = !ShowFilteredOnly;
     }
 
-    public void ToggleTierSelection(string value)
+    public void ToggleTierSelection(int value)
     {
-        TierList[value] = !TierList[value];
+        if (SelectedTiers.Contains(value))
+        {
+            SelectedTiers.Remove(value);
+        }
+        else
+        {
+            SelectedTiers.Add(value);
+        }
+
+        FilteredShipList = ApplyFilters();
     }
 
     public void ToggleClassSelection(ShipClass value)
     {
-        ClassList[value] = !ClassList[value];
+        if (SelectedClasses.Contains(value))
+        {
+            SelectedClasses.Remove(value);
+        }
+        else
+        {
+            SelectedClasses.Add(value);
+        }
+
+        FilteredShipList = ApplyFilters();
     }
 
     public void ToggleNationSelection(Nation value)
     {
-        NationList[value] = !NationList[value];
+        if (SelectedNations.Contains(value))
+        {
+            SelectedNations.Remove(value);
+        }
+        else
+        {
+            SelectedNations.Add(value);
+        }
+
+        FilteredShipList = ApplyFilters();
     }
 
     public void ToggleCategorySelection(ShipCategory value)
     {
-        CategoryList[value] = !CategoryList[value];
+        if (SelectedCategories.Contains(value))
+        {
+            SelectedCategories.Remove(value);
+        }
+        else
+        {
+            SelectedCategories.Add(value);
+        }
+
+        FilteredShipList = ApplyFilters();
     }
 
-    public void ToggleAllTiers(bool b)
+    public void ToggleAllTiers(bool activationState)
     {
-        foreach (var tier in TierList)
+        SelectedTiers.Clear();
+        if (activationState)
         {
-            TierList[tier.Key] = b;
+            SelectedTiers.AddRange(Enumerable.Range(1, 11));
         }
+
+        FilteredShipList = ApplyFilters();
     }
 
-    public void ToggleAllClasses(bool b)
+    public void ToggleAllClasses(bool activationState)
     {
-        foreach (var shipClass in ClassList)
+        SelectedClasses.Clear();
+        if (activationState)
         {
-            ClassList[shipClass.Key] = b;
+            SelectedClasses.AddRange(Enum.GetValues<ShipClass>().Except(new[] { ShipClass.Auxiliary }));
         }
+
+        FilteredShipList = ApplyFilters();
     }
 
-    public void ToggleAllNations(bool b)
+    public void ToggleAllNations(bool activationState)
     {
-        foreach (var nation in NationList)
+        SelectedNations.Clear();
+        if (activationState)
         {
-            NationList[nation.Key] = b;
+            SelectedNations.AddRange(Enum.GetValues<Nation>().Except(new[] { Nation.Common }));
         }
+
+        FilteredShipList = ApplyFilters();
     }
 
-    public void ToggleAllCategories(bool b)
+    public void ToggleAllCategories(bool activationState)
     {
-        foreach (var category in CategoryList)
+        SelectedCategories.Clear();
+        if (activationState)
         {
-            CategoryList[category.Key] = b;
+            SelectedCategories.AddRange(Enum.GetValues<ShipCategory>().Except(new[] { ShipCategory.Disabled, ShipCategory.Clan }));
         }
+
+        FilteredShipList = ApplyFilters();
     }
 
     public List<Ship> GetShipsToBeDisplayedDictionary()
