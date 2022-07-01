@@ -17,36 +17,38 @@
         <MudItem Class="d-flex align-center" Style="justify-content: center">
             <MudStack Row="true" Justify="Justify.SpaceEvenly" Class="mt-n1">
                 <MudImage Src="@ShipImagePath" Height="45"/>
-                <MudText Style="font-size: large" Class="mt-4">
+                <MudText Style="font-size: x-large" Class="mt-4">
                     @Localizer.GetGameLocalization(ShipIndex).Localization
                 </MudText>
-                <MudText Style="font-size: large" Class="mt-4">
+                <MudText Style="font-size: x-large" Class="mt-4">
                     @ShipTier
                 </MudText>
-                <MudIcon Icon="@ShipIconPath" Size="Size.Large" Class="mt-5"/>
+                <MudIcon Icon="@ShipIconPath" Size="Size.Large" Class="mt-6 mb-n2"/>
                 <MudImage Src="@ShipNationFlagPath" Height="45"/>
             </MudStack>
         </MudItem>
     </TitleContent>
     <DialogContent>
-        <MudStack Row="true" Style="@SetWrapping()">
-            <MudStack>
-                <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
-                <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
-                <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
-                <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
-            </MudStack>
-            <MudItem>
-                <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
-                <MudTextField Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
-                <MudStack Row="true" Class="mt-3">
-                    <MudTextField Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1">
-                        Load build
-                    </MudButton>
+        <MudContainer Style="overflow-y: auto">
+            <MudStack Row="true" Style="@SetWrapping()">
+                <MudStack>
+                    <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
+                    <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
+                    <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
+                    <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
                 </MudStack>
-            </MudItem>
-        </MudStack>
+                <MudItem>
+                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
+                    <MudTextField Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
+                    <MudStack Row="true" Class="mt-3">
+                        <MudTextField Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
+                        <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1">
+                            Load build
+                        </MudButton>
+                    </MudStack>
+                </MudItem>
+            </MudStack>
+        </MudContainer>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
