@@ -10,6 +10,9 @@ using System.Windows.Input;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -20,23 +23,26 @@ namespace WoWsShipBuilder.ViewModels.Helper
         private CancellationTokenSource tokenSource;
 
         public ShipSelectionWindowViewModel()
-            : this(false)
+            : this(false, new())
         {
         }
 
-        public ShipSelectionWindowViewModel(bool multiSelection)
+        public ShipSelectionWindowViewModel(bool multiSelection, Dictionary<string, ShipSummary> availableShips)
         {
-            tokenSource = new CancellationTokenSource();
+            tokenSource = new();
 
-            AppData.ShipSummaryList ??= DesktopAppDataService.Instance.GetShipSummaryList(AppData.Settings.SelectedServerType);
-
-            Dictionary<string, ShipSummary> shipNameDictionary = AppData.ShipSummaryList.ToDictionary(ship => Localizer.Instance[$"{ship.Index}_FULL"].Localization, ship => ship);
-            FilteredShipNameDictionary = new(shipNameDictionary);
+            FilteredShipNameDictionary = new(availableShips);
             SummaryList = new(FilteredShipNameDictionary.Select(entry => entry));
             MultiSelectionEnabled = multiSelection;
 
             var canConfirmExecute = this.WhenAnyValue(x => x.SelectedShipList.Count, count => count > 0);
             ConfirmCommand = ReactiveCommand.CreateFromTask(Confirm, canConfirmExecute);
+        }
+
+        public static async Task<Dictionary<string, ShipSummary>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, ILocalizer localizer)
+        {
+            AppData.ShipSummaryList ??= await appDataService.GetShipSummaryList(appSettings.SelectedServerType);
+            return AppData.ShipSummaryList.ToDictionary(ship => localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship);
         }
 
         public bool MultiSelectionEnabled { get; }
@@ -172,7 +178,7 @@ namespace WoWsShipBuilder.ViewModels.Helper
             }
         }
 
-        private SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
+        public SortedDictionary<string, ShipSummary> FilteredShipNameDictionary { get; }
 
         public CustomObservableCollection<KeyValuePair<string, ShipSummary>> SelectedShipList { get; } = new();
 
@@ -230,7 +236,7 @@ namespace WoWsShipBuilder.ViewModels.Helper
                 token);
         }
 
-        private bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
+        public bool SummaryFilter(KeyValuePair<string, ShipSummary> valuePair, string textSearch)
         {
             var shipSummary = valuePair.Value;
             bool result = !(TierFilterChecked && !string.IsNullOrWhiteSpace(SelectedTier) && shipSummary.Tier != TierList.IndexOf(SelectedTier!) + 1);

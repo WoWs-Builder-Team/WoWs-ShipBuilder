@@ -8,6 +8,7 @@ using NLog;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.DataStructures;
 
@@ -19,6 +20,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
     public class LocalDataUpdater : ILocalDataUpdater
     {
         private readonly IAppDataService appDataService;
+        private readonly AppSettings appSettings;
         private readonly IAwsClient awsClient;
         private readonly IFileSystem fileSystem;
         private readonly Logger logger;
@@ -29,13 +31,16 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="fileSystem">The <see cref="IFileSystem"/> used to access the local file system.</param>
         /// <param name="awsClient">The <see cref="IAwsClient"/> used to access data.</param>
         /// <param name="appDataService">The AppDataHelper used to access local application data.</param>
-        public LocalDataUpdater(IFileSystem fileSystem, IAwsClient awsClient, IAppDataService appDataService)
+        public LocalDataUpdater(IFileSystem fileSystem, IAwsClient awsClient, IAppDataService appDataService, AppSettings appSettings)
         {
             this.fileSystem = fileSystem;
             this.awsClient = awsClient;
             this.appDataService = appDataService;
+            this.appSettings = appSettings;
             logger = Logging.GetLogger("DataUpdater");
         }
+
+        public Version SupportedDataStructureVersion => Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
 
         /// <summary>
         /// A utility method that combines the update check and execution of necessary updates.
@@ -47,7 +52,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         public async Task RunDataUpdateCheck(ServerType serverType, IProgress<(int, string)> progressTracker, bool overrideDateCheck = false)
         {
             logger.Info("UpdateCheck triggered. Checking whether update should execute...");
-            if (!overrideDateCheck && !ShouldUpdaterRun(serverType))
+            if (!overrideDateCheck && !await ShouldUpdaterRun(serverType))
             {
                 logger.Info("Skipping update check.");
             }
@@ -62,14 +67,26 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             await CheckInstalledLocalizations(serverType);
             logger.Info("Starting data validation...");
             string dataBasePath = appDataService.GetDataPath(serverType);
-            if (!ValidateData(serverType, dataBasePath))
+            var validation = await ValidateData(serverType, dataBasePath);
+            if (!validation.ValidationStatus)
             {
-                logger.Info("Data validation failed. Clearing existing app data...");
-                fileSystem.Directory.Delete(dataBasePath, true);
-                await CheckFilesAndDownloadUpdates(serverType, progressTracker);
-                if (!ValidateData(serverType, dataBasePath))
+                logger.Info("Data validation failed. Selecting repair method...");
+                if (validation.InvalidFiles != null)
                 {
-                    logger.Error("Invalid application data after full reload detected.");
+                    logger.Info("List of corrupted files found. Attempting partial repair...");
+                    await awsClient.DownloadFiles(serverType, validation.InvalidFiles.ToList());
+                }
+                else
+                {
+                    logger.Info("No list of corrupted files found. Attempting clean reload of gamedata...");
+                    fileSystem.Directory.Delete(dataBasePath, true);
+                    await CheckFilesAndDownloadUpdates(serverType, progressTracker);
+                }
+
+                validation = await ValidateData(serverType, dataBasePath);
+                if (!validation.ValidationStatus)
+                {
+                    logger.Error("Invalid application data after data reload detected.");
                 }
                 else
                 {
@@ -92,11 +109,11 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UpdateLocalization(ServerType serverType)
         {
-            var installedLocales = appDataService.GetInstalledLocales(serverType);
+            var installedLocales = await appDataService.GetInstalledLocales(serverType);
 
-            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json"))
+            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName + ".json"))
             {
-                installedLocales.Add(AppData.Settings.SelectedLanguage.LocalizationFileName + ".json");
+                installedLocales.Add(appSettings.SelectedLanguage.LocalizationFileName + ".json");
             }
 
             var downloadList = installedLocales.Select(locale => ("Localization", locale)).ToList();
@@ -113,7 +130,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         {
             logger.Info("Checking json file versions for server type {0}...", serverType);
             VersionInfo onlineVersionInfo = await awsClient.DownloadVersionInfo(serverType);
-            VersionInfo? localVersionInfo = appDataService.ReadLocalVersionInfo(serverType);
+            VersionInfo? localVersionInfo = await appDataService.GetLocalVersionInfo(serverType);
 
             List<(string, string)> filesToDownload;
             bool shouldImagesUpdate;
@@ -137,7 +154,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                     "Local data version ({0}) is older than online data version ({1}). Selecting files for update...",
                     localVersionInfo.CurrentVersionCode,
                     onlineVersionInfo.CurrentVersionCode);
-                filesToDownload = new List<(string, string)>();
+                filesToDownload = new();
 
                 foreach ((string category, var fileVersions) in onlineVersionInfo.Categories)
                 {
@@ -190,34 +207,24 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 filesToDownload.Add((string.Empty, "VersionInfo.json"));
             }
 
-            string versionName;
-            if (onlineVersionInfo.CurrentVersion != null)
-            {
-                versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
-            }
-            else
-            {
-                // TODO: remove legacy compatibility code with update 1.5.0
-                try
-                {
-#pragma warning disable CS0618
-                    versionName = onlineVersionInfo.VersionName![..onlineVersionInfo.VersionName.IndexOf('#')];
-#pragma warning restore CS0618
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e, "Unable to strip version name of unnecessary suffixes.");
-                    versionName = "0.11.0"; // Fallback value for now.
-                }
-            }
+            var versionName = onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3);
 
-            var currentDataStructureVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
-            if (onlineVersionInfo.DataStructuresVersion.Major > 0 && onlineVersionInfo.DataStructuresVersion > currentDataStructureVersion)
+            if (SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
             {
                 logger.Warn(
-                    "Data structures version of online data not supported yet. Highest supported version: {}, online version: {}",
-                    currentDataStructureVersion,
+                    "Online data is incompatible with this application version. Online data version: {}, maximum supported version: {}",
+                    SupportedDataStructureVersion,
                     onlineVersionInfo.DataStructuresVersion);
+                return new(new(), false, false, false, versionName, serverType);
+            }
+
+            if (SupportedDataStructureVersion.Build != onlineVersionInfo.DataStructuresVersion.Build)
+            {
+                logger.Warn("The build version of the online data is different to the currently supported version. Some data may be unavailable.");
+            }
+            else if (SupportedDataStructureVersion.Major > onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor > onlineVersionInfo.DataStructuresVersion.Minor)
+            {
+                logger.Warn("Online data version is behind the currently supported data version. Loading data may crash the application.");
             }
 
             return new(filesToDownload, shouldImagesUpdate, canImagesDeltaUpdate, shouldLocalizationUpdate, versionName, serverType);
@@ -231,29 +238,41 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <param name="dataBasePath">The base file system path to the directory of the local VersionInfo file.</param>
         /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
-        public bool ValidateData(ServerType serverType, string dataBasePath)
+        public async Task<ValidationResult> ValidateData(ServerType serverType, string dataBasePath)
         {
-            var versionInfo = appDataService.ReadLocalVersionInfo(serverType);
+            var versionInfo = await appDataService.GetLocalVersionInfo(serverType);
             if (versionInfo == null)
             {
                 logger.Error("VersionInfo does not exist. AppData validation failed.");
-                return false;
+                return new(false);
             }
 
-            var missingFiles = new List<string>();
-            foreach ((string category, var files) in versionInfo.Categories)
+            var missingFiles = new List<(string, string)>();
+            var categoryFiles = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file)));
+            foreach ((string category, var file) in categoryFiles)
             {
-                missingFiles.AddRange(files.Where(file => !fileSystem.File.Exists(fileSystem.Path.Combine(dataBasePath, category, file.FileName)))
-                    .Select(file => $"{category}: {file.FileName}"));
+                string? path = fileSystem.Path.Combine(dataBasePath, category, file.FileName);
+                if (!fileSystem.File.Exists(path))
+                {
+                    missingFiles.Add((category, file.FileName));
+                    continue;
+                }
+
+                await using var fs = fileSystem.File.OpenRead(path);
+                string hash = FileVersion.ComputeChecksum(fs);
+                if (!hash.Equals(file.Checksum))
+                {
+                    missingFiles.Add((category, file.FileName));
+                }
             }
 
             if (!missingFiles.Any())
             {
-                return true;
+                return new(true);
             }
 
             logger.Warn("Missing files during data validation. These files were missing: {MissingFiles}", string.Join(", ", missingFiles));
-            return false;
+            return new(false) { InvalidFiles = missingFiles };
         }
 
         /// <summary>
@@ -261,11 +280,27 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// </summary>
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <returns><see langword="true"/> if the updater should run, <see langword="false"/> otherwise.</returns>
-        public bool ShouldUpdaterRun(ServerType serverType)
+        public async Task<bool> ShouldUpdaterRun(ServerType serverType)
         {
             var today = DateTime.Today;
-            return AppData.Settings.LastDataUpdateCheck == null || (today - AppData.Settings.LastDataUpdateCheck).Value.TotalDays > 1 ||
-                   appDataService.ReadLocalVersionInfo(serverType) == null;
+            return appSettings.LastDataUpdateCheck == null || (today - appSettings.LastDataUpdateCheck).Value.TotalDays > 1 ||
+                   await appDataService.GetLocalVersionInfo(serverType) == null;
+        }
+
+        public async Task CheckInstalledLocalizations(ServerType serverType)
+        {
+            List<string> installedLocales = await appDataService.GetInstalledLocales(serverType, false);
+            if (!installedLocales.Contains(appSettings.SelectedLanguage.LocalizationFileName))
+            {
+                logger.Info("Selected localization is not installed. Downloading file...");
+                string localizationFile = appSettings.SelectedLanguage.LocalizationFileName + ".json";
+                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
+                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
+            }
+            else
+            {
+                logger.Info("Selected localization is installed.");
+            }
         }
 
         /// <summary>
@@ -279,7 +314,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             if (checkResult.AvailableFileUpdates.Any())
             {
                 logger.Info("Updating {0} files...", checkResult.AvailableFileUpdates.Count);
-                progressTracker.Report((1, Translation.SplashScreen_Json));
+                progressTracker.Report((1, nameof(Translation.SplashScreen_Json)));
                 await awsClient.DownloadFiles(serverType, checkResult.AvailableFileUpdates);
             }
 
@@ -302,19 +337,19 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="progressTracker">An <see cref="IProgress{T}"/> used to report the progress of the operation.</param>
         /// <param name="canDeltaUpdate">A bool indicating whether images can be updated differentially.</param>
         /// <param name="versionName">The version name of the new image data, needs to be identical to the WG version name.</param>
-        private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string versionName)
+        private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string? versionName)
         {
             string imageBasePath = appDataService.AppDataImageDirectory;
             var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
-                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
-                await awsClient.DownloadImages(ImageType.Ship);
+                progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
+                await awsClient.DownloadImages(ImageType.Ship, fileSystem);
             }
             else
             {
-                progressTracker.Report((2, Translation.SplashScreen_ShipImages));
-                await awsClient.DownloadImages(ImageType.Ship, versionName);
+                progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
+                await awsClient.DownloadImages(ImageType.Ship, fileSystem, versionName);
             }
 
             // var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
@@ -328,22 +363,6 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             //     progressTracker.Report((3, "SplashScreen_CamoImages"));
             //     await awsClient.DownloadImages(ImageType.Camo, versionName);
             // }
-        }
-
-        public async Task CheckInstalledLocalizations(ServerType serverType)
-        {
-            List<string> installedLocales = appDataService.GetInstalledLocales(serverType, false);
-            if (!installedLocales.Contains(AppData.Settings.SelectedLanguage.LocalizationFileName))
-            {
-                logger.Info("Selected localization is not installed. Downloading file...");
-                string localizationFile = AppData.Settings.SelectedLanguage.LocalizationFileName + ".json";
-                await awsClient.DownloadFiles(serverType, new() { ("Localization", localizationFile) });
-                logger.Info("Downlaoded localization file for selected localization. Updating localizer data...");
-            }
-            else
-            {
-                logger.Info("Selected localization is installed.");
-            }
         }
     }
 }

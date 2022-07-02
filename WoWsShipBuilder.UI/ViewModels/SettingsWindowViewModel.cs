@@ -9,7 +9,6 @@ using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
@@ -19,14 +18,17 @@ namespace WoWsShipBuilder.UI.ViewModels
 {
     public class SettingsWindowViewModel : SettingsWindowViewModelBase
     {
+        private readonly IFileSystem fileSystem;
+
         public SettingsWindowViewModel()
             : this(new FileSystem(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
         {
         }
 
         public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
-            : base(fileSystem, clipboardService, appDataService)
+            : base(clipboardService, appDataService, AppSettingsHelper.Settings)
         {
+            this.fileSystem = fileSystem;
         }
 
         public Interaction<(string title, string text), MessageBox.MessageBoxResult> ShowWarningInteraction { get; } = new();
@@ -41,7 +43,19 @@ namespace WoWsShipBuilder.UI.ViewModels
                 var appDataDir = new DirectoryInfo(appData);
                 if (appDataDir.Exists)
                 {
-                    appDataDir.Delete(true);
+                    foreach (var directoryInfo in appDataDir.GetDirectories())
+                    {
+                        if (!directoryInfo.Name.Equals("logs"))
+                        {
+                            directoryInfo.Delete(true);
+                        }
+                    }
+
+                    foreach (var fileInfo in appDataDir.GetFiles())
+                    {
+                        fileInfo.Delete();
+                    }
+
                     await ShutdownInteraction.Handle(Unit.Default);
                 }
                 else
@@ -62,6 +76,29 @@ namespace WoWsShipBuilder.UI.ViewModels
                     UpdateManager.RestartApp();
                 }
             }
+        }
+
+        protected override bool IsValidPath(string path, bool exactPath = true)
+        {
+            bool isValid;
+            try
+            {
+                if (exactPath)
+                {
+                    string root = fileSystem.Path.GetPathRoot(path)!;
+                    isValid = string.IsNullOrEmpty(root.Trim('\\', '/')) == false;
+                }
+                else
+                {
+                    isValid = fileSystem.Path.IsPathRooted(path);
+                }
+            }
+            catch (Exception)
+            {
+                isValid = false;
+            }
+
+            return isValid;
         }
     }
 }

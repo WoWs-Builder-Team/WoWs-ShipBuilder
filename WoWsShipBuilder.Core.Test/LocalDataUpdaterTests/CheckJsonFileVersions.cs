@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -21,7 +22,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should()
@@ -49,10 +50,10 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                 localVersionInfo.CurrentVersion);
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(localVersionInfo);
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should().HaveCount(2);
@@ -68,15 +69,55 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             var testVersionInfo = CreateTestVersionInfo(1);
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
-            appDataHelper.Setup(x => x.ReadLocalVersionInfo(ServerType.Live)).Returns(testVersionInfo);
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should().BeEmpty();
             result.ShouldImagesUpdate.Should().BeFalse();
             result.CanImagesDeltaUpdate.Should().BeFalse();
+            result.ShouldLocalizationUpdate.Should().BeFalse();
+        }
+
+        [Test]
+        public async Task CheckJsonFileVersions_OneVersionDiffNewVersionNotSupported()
+        {
+            // Arrange
+            var supportedDataVersion = Assembly.GetAssembly(typeof(Ship))!.GetName().Version!;
+            var currentVersion = new GameVersion(new(0, 10, 10), GameVersionType.Live, 1);
+            var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
+            var previousVersionCode = 1;
+            var localVersionInfo = new VersionInfo(
+                new()
+                {
+                    { "Ability", new() { new("Common.json", previousVersionCode) } },
+                    { "Ship", new() { new("Japan.json", previousVersionCode), new("Germany.json", previousVersionCode) } },
+                },
+                previousVersionCode,
+                previousVersion);
+            var testVersionInfo = new VersionInfo(
+                new()
+                {
+                    { "Ability", new() { new("Common.json", 2) } },
+                    { "Ship", new() { new("Japan.json", 1), new("Germany.json", 1) } },
+                },
+                2,
+                currentVersion,
+                localVersionInfo.CurrentVersion)
+            {
+                DataStructuresVersion = new(supportedDataVersion.Major, supportedDataVersion.Minor + 1, supportedDataVersion.Build),
+            };
+            awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
+            mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
+            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
+
+            // Act
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
+
+            // Assert
+            result.AvailableFileUpdates.Should().BeEmpty();
             result.ShouldLocalizationUpdate.Should().BeFalse();
         }
     }

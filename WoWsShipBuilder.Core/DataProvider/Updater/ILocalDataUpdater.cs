@@ -10,6 +10,11 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
     public interface ILocalDataUpdater
     {
         /// <summary>
+        /// Gets the currently supported data structure version.
+        /// </summary>
+        Version SupportedDataStructureVersion { get; }
+
+        /// <summary>
         /// A method that runs a full update check, using one or more of the methods defined by this interface.
         /// <b>This method should be implemented as async method because it launch network requests!</b>
         /// </summary>
@@ -42,14 +47,14 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <param name="dataBasePath">The base file system path to the directory of the local VersionInfo file.</param>
         /// <returns><see langword="true"/> if the local data matches the structure of the version info file, <see langword="false"/> otherwise.</returns>
-        public bool ValidateData(ServerType serverType, string dataBasePath);
+        public Task<ValidationResult> ValidateData(ServerType serverType, string dataBasePath);
 
         /// <summary>
         /// Checks whether the update should be executed or not.
         /// </summary>
         /// <param name="serverType">The currently selected <see cref="ServerType"/> of the application.</param>
         /// <returns><see langword="true"/> if the updater should run, <see langword="false"/> otherwise.</returns>
-        public bool ShouldUpdaterRun(ServerType serverType);
+        public Task<bool> ShouldUpdaterRun(ServerType serverType);
 
         public Task CheckInstalledLocalizations(ServerType serverType);
     }

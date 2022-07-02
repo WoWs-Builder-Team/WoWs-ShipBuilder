@@ -50,23 +50,30 @@
                             <!--PreviousShip-->
                             <StackPanel Classes="Clickable" x:Name="PreviousShip" Orientation="Vertical" RelativePanel.LeftOf="CurrentShip"
                                         RelativePanel.AlignBottomWith="CurrentShip"
-                                        IsVisible="{Binding PreviousShipIndex, Converter={x:Static ObjectConverters.IsNotNull}}">
-                                <Image Source="{Binding PreviousShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50"
+                                        IsVisible="{Binding PreviousShip, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <Image Source="{Binding PreviousShip.Index, FallbackValue = {Binding CurrentShipIndex}, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="50"
                                        PointerReleased="OnClickChangeShipPrevious" />
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding PreviousShipTier, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
-                                    <TextBlock Text="{Binding PreviousShipIndex, FallbackValue=None, TargetNullValue=None, Converter={StaticResource Localizer}}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" IsVisible="{Binding PreviousShip, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                    <Path Data="{Binding PreviousShip.ShipClass, FallbackValue = {Binding RawShipData.ShipClass}, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                          Fill="{Binding PreviousShip.Category, FallbackValue = {Binding RawShipData.ShipCategory}, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                          Stroke="{Binding PreviousShip.Category, FallbackValue = {Binding RawShipData.ShipCategory}, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                          StrokeThickness="1"/>
+                                    <TextBlock Text="{Binding PreviousShip.Tier, FallbackValue = {Binding CurrentShipTier}, Converter={StaticResource RomanConverter}}" Margin="5 0"/>
+                                    <TextBlock Text="{Binding PreviousShip.Index, FallbackValue = {Binding CurrentShipIndex}, Converter={StaticResource Localizer}}"/>
                                 </StackPanel>
                             </StackPanel>
                             <!--Current Ship-->
                             <StackPanel x:Name="CurrentShip" Orientation="Vertical" RelativePanel.AlignVerticalCenterWithPanel="True"
                                         RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="20,0">
-                                <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90" />
+                                <Panel Height="90">
+                                    <Image Source="{Binding CurrentShipIndex, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}" Height="90" ZIndex="2"/>
+                                    <Image Source="{Binding CurrentShip, Converter={StaticResource ImagePathConverter}}" Height="90" ZIndex="1" Opacity="0.25"/>
+                                </Panel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Path Data="{Binding RawShipData.ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
                                           Fill="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
                                           Stroke="{Binding RawShipData.ShipCategory, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"/>
                                     <TextBlock Text="{Binding CurrentShipTier, Converter={StaticResource RomanConverter}}" Margin="5 0"/>
                                     <TextBlock Text="{Binding CurrentShipIndex, Converter={StaticResource Localizer}}"/>
                                 </StackPanel>
@@ -82,11 +89,15 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Classes="Clickable" Orientation="Vertical">
-                                            <Image Name="{Binding Key}" Source="{Binding Key, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}"
+                                            <Image Name="{Binding Index}" Source="{Binding Index, Converter={StaticResource ImagePathConverter}, ConverterParameter=Ship}"
                                                    Height="50" PointerReleased="OnClickChangeShipNext" />
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                <TextBlock Text="{Binding Value, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
-                                                <TextBlock Text="{Binding Key, Converter={StaticResource Localizer}}" />
+                                                <Path Data="{Binding ShipClass, Converter={StaticResource PathConverter}}" VerticalAlignment="Center"
+                                                      Fill="{Binding Category, Converter={StaticResource PathConverter},ConverterParameter=Fill}"
+                                                      Stroke="{Binding Category, Converter={StaticResource PathConverter},ConverterParameter=Stroke}"
+                                                      StrokeThickness="1" Margin="10 0 5 0"/>
+                                                <TextBlock Text="{Binding Tier, Converter={StaticResource RomanConverter}}" Margin="0 0 5 0"/>
+                                                <TextBlock Text="{Binding Index, Converter={StaticResource Localizer}}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>

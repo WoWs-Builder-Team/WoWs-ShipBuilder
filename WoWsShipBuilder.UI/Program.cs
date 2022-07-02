@@ -17,17 +17,18 @@ namespace WoWsShipBuilder.UI
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn);
+            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, new());
+            if (OperatingSystem.IsWindows())
+            {
+                Logging.Logger.Debug("Operating system is windows.");
+                SquirrelAwareApp.HandleEvents(onInitialInstall: OnInitialInstall, onAppUninstall: OnAppUninstall, onEveryRun: OnEveryRun);
+            }
+
             Logging.Logger.Info("------------------------------");
             Logging.Logger.Info("Starting application...");
             var culture = AppConstants.DefaultCultureDetails.CultureInfo;
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-
-            if (OperatingSystem.IsWindows())
-            {
-                SquirrelAwareApp.HandleEvents(OnInitialInstall, onAppUninstall: OnAppUninstall, onEveryRun: OnEveryRun);
-            }
 
             try
             {
@@ -66,7 +67,17 @@ namespace WoWsShipBuilder.UI
         [SupportedOSPlatform("windows")]
         private static void OnInitialInstall(SemanticVersion version, IAppTools tools)
         {
-            tools.CreateShortcutForThisExe();
+            Logging.Logger.Info("App has been installed, creating shortcuts...");
+            try
+            {
+                tools.CreateShortcutForThisExe();
+                Logging.Logger.Info("Shortcuts have been created.");
+            }
+            catch (Exception e)
+            {
+                Logging.Logger.Error(e);
+                throw;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -20,9 +21,9 @@ namespace WoWsShipBuilder.ViewModels.Other
     {
         protected readonly IAppDataService AppDataService;
 
-        private readonly IClipboardService clipboardService;
+        private readonly AppSettings appSettings;
 
-        private readonly IFileSystem fileSystem;
+        private readonly IClipboardService clipboardService;
 
         private bool autoUpdate;
 
@@ -48,35 +49,40 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private bool telemetryDataEnabled;
 
-        public SettingsWindowViewModelBase(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
+        public SettingsWindowViewModelBase(IClipboardService clipboardService, IAppDataService appDataService, AppSettings appSettings)
         {
             Logging.Logger.Info("Creating setting window view model");
-            this.fileSystem = fileSystem;
             this.clipboardService = clipboardService;
-            this.AppDataService = appDataService;
+            this.appSettings = appSettings;
+            AppDataService = appDataService;
             Version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
             languagesList = AppConstants.SupportedLanguages.ToList(); // Copy existing list. Do not change!
-            SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(AppData.Settings.SelectedLanguage.CultureInfo))
+            SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(appSettings.SelectedLanguage.CultureInfo))
                                ?? AppConstants.DefaultCultureDetails;
 #if DEBUG
             Servers = Enum.GetNames<ServerType>().ToList();
 #else
             Servers = new List<ServerType> { ServerType.Live, ServerType.Pts }.Select(serverType => Enum.GetName(serverType) ?? serverType.StringName()).ToList();
 #endif
-            SelectedServer = Enum.GetName(typeof(ServerType), AppData.Settings.SelectedServerType)!;
-            AutoUpdate = AppData.Settings.AutoUpdateEnabled;
-            CustomPath = AppData.Settings.CustomDataPath;
-            CustomBuildImagePath = AppData.Settings.CustomImagePath;
+            SelectedServer = Enum.GetName(typeof(ServerType), appSettings.SelectedServerType)!;
+            AutoUpdate = appSettings.AutoUpdateEnabled;
+            CustomPath = appSettings.CustomDataPath;
+            CustomBuildImagePath = appSettings.CustomImagePath;
             IsCustomPathEnabled = CustomPath is not null;
             IsCustomBuildImagePathEnabled = CustomBuildImagePath is not null;
-            TelemetryDataEnabled = AppData.Settings.SendTelemetryData;
-            OpenExplorerAfterImageSave = AppData.Settings.OpenExplorerAfterImageSave;
+            TelemetryDataEnabled = appSettings.SendTelemetryData;
+            OpenExplorerAfterImageSave = appSettings.OpenExplorerAfterImageSave;
 
+            InitializeDataVersionAsync(appDataService);
+        }
+
+        private async void InitializeDataVersionAsync(IAppDataService appDataService)
+        {
             if (AppData.DataVersion is null)
             {
                 Logging.Logger.Info("AppData.DataVersion is null, reading from VersionInfo.");
 
-                var localVersionInfo = appDataService.ReadLocalVersionInfo(AppData.Settings.SelectedServerType);
+                var localVersionInfo = await appDataService.GetLocalVersionInfo(appSettings.SelectedServerType);
                 if (localVersionInfo?.CurrentVersion?.MainVersion != null)
                 {
                     AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
@@ -178,8 +184,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public void ResetSettings()
         {
-            var cleanSettings = new AppSettings();
-            AppData.Settings = cleanSettings;
+            appSettings.ClearSettings();
         }
 
         public abstract void CleanAppData();
@@ -187,9 +192,9 @@ namespace WoWsShipBuilder.ViewModels.Other
         public async void Save()
         {
             Logging.Logger.Info("Saving settings");
-            bool serverChanged = AppData.Settings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
-            bool pathChanged = AppData.Settings.CustomDataPath != null && !IsCustomPathEnabled;
-            bool imagePathChanged = IsCustomBuildImagePathEnabled ? !(CustomBuildImagePath?.Equals(AppData.Settings.CustomImagePath) ?? false) : AppData.Settings.CustomImagePath != null;
+            bool serverChanged = appSettings.SelectedServerType != Enum.Parse<ServerType>(SelectedServer);
+            bool pathChanged = appSettings.CustomDataPath != null && !IsCustomPathEnabled;
+            bool imagePathChanged = IsCustomBuildImagePathEnabled ? !(CustomBuildImagePath?.Equals(appSettings.CustomImagePath) ?? false) : appSettings.CustomImagePath != null;
             bool cultureChanged = false;
             if (IsCustomPathEnabled)
             {
@@ -200,24 +205,24 @@ namespace WoWsShipBuilder.ViewModels.Other
                 }
                 else
                 {
-                    pathChanged = !AppData.Settings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
-                    AppData.Settings.CustomDataPath = CustomPath;
+                    pathChanged = !appSettings.CustomDataPath?.Equals(CustomPath) ?? CustomPath != null;
+                    appSettings.CustomDataPath = CustomPath;
                 }
             }
             else
             {
-                AppData.Settings.CustomDataPath = null;
+                appSettings.CustomDataPath = null;
             }
 
             if (imagePathChanged)
             {
                 if (!IsCustomBuildImagePathEnabled || string.IsNullOrWhiteSpace(CustomBuildImagePath))
                 {
-                    AppData.Settings.CustomImagePath = null;
+                    appSettings.CustomImagePath = null;
                 }
                 else if (IsValidPath(CustomBuildImagePath ?? string.Empty))
                 {
-                    AppData.Settings.CustomImagePath = CustomBuildImagePath;
+                    appSettings.CustomImagePath = CustomBuildImagePath;
                 }
                 else
                 {
@@ -226,18 +231,18 @@ namespace WoWsShipBuilder.ViewModels.Other
                 }
             }
 
-            AppData.Settings.AutoUpdateEnabled = AutoUpdate;
-            AppData.Settings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
+            appSettings.AutoUpdateEnabled = AutoUpdate;
+            appSettings.SelectedServerType = Enum.Parse<ServerType>(SelectedServer);
 
-            // AppData.Settings.Locale = languages[SelectedLanguage];
-            if (!AppData.Settings.SelectedLanguage.Equals(SelectedLanguage))
+            // appSettings.Locale = languages[SelectedLanguage];
+            if (!appSettings.SelectedLanguage.Equals(SelectedLanguage))
             {
-                AppData.Settings.SelectedLanguage = SelectedLanguage;
+                appSettings.SelectedLanguage = SelectedLanguage;
                 cultureChanged = true;
             }
 
-            AppData.Settings.SendTelemetryData = TelemetryDataEnabled;
-            AppData.Settings.OpenExplorerAfterImageSave = OpenExplorerAfterImageSave;
+            appSettings.SendTelemetryData = TelemetryDataEnabled;
+            appSettings.OpenExplorerAfterImageSave = OpenExplorerAfterImageSave;
 
             if (serverChanged || pathChanged)
             {
@@ -293,27 +298,6 @@ namespace WoWsShipBuilder.ViewModels.Other
             return await SelectFolderInteraction.Handle(AppDataService.AppDataDirectory);
         }
 
-        private bool IsValidPath(string path, bool exactPath = true)
-        {
-            bool isValid;
-            try
-            {
-                if (exactPath)
-                {
-                    string root = fileSystem.Path.GetPathRoot(path)!;
-                    isValid = string.IsNullOrEmpty(root.Trim('\\', '/')) == false;
-                }
-                else
-                {
-                    isValid = fileSystem.Path.IsPathRooted(path);
-                }
-            }
-            catch (Exception)
-            {
-                isValid = false;
-            }
-
-            return isValid;
-        }
+        protected abstract bool IsValidPath(string path, bool exactPath = true);
     }
 }

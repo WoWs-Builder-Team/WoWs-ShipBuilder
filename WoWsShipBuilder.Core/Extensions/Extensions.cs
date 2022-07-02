@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Extensions
@@ -48,7 +49,7 @@ namespace WoWsShipBuilder.Core.Extensions
         /// <param name="content">The content dictionary for the key.</param>
         /// <typeparam name="T">The data type of the content dictionary.</typeparam>
         /// <returns><see langword="true"/> if the content was added, <see langword="false"/> otherwise.</returns>
-        public static bool SetIfNotNull<T>(this Dictionary<Nation, Dictionary<string, T>> thisDict, Nation nation, Dictionary<string, T>? content)
+        public static bool SetIfNotNull<T>(this IDictionary<Nation, Dictionary<string, T>> thisDict, Nation nation, Dictionary<string, T>? content)
         {
             if (content == null)
             {
@@ -57,6 +58,11 @@ namespace WoWsShipBuilder.Core.Extensions
 
             thisDict[nation] = content;
             return true;
+        }
+
+        public static async Task<IEnumerable<TResult>> SelectAsync<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, Task<TResult>> method)
+        {
+            return await Task.WhenAll(source.Select(async s => await method(s)));
         }
     }
 }

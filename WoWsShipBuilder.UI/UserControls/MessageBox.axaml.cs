@@ -49,6 +49,7 @@ namespace WoWsShipBuilder.UI.UserControls
                 ShowInTaskbar = true,
                 Title = title,
                 SizeToContent = sizeToContent,
+                CanResize = false,
             };
 
             msgbox.FindControl<AppHeader>("Header").Title = title;

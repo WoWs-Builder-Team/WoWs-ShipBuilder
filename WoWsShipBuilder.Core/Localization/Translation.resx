@@ -331,7 +331,7 @@
     <value>No ships matching the filtering criteria found</value>
   </data>
   <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
-    <value>Search ship</value>
+      <value>Search ship...</value>
   </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° turn time</value>
@@ -363,7 +363,7 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Shell weight</value>
   </data>
-  <data name="ShipStats_TheoreticalDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
     <value>Theoretical DPM</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
@@ -451,7 +451,7 @@
     <value>DPS per fire</value>
   </data>
   <data name="ShipStats_FireDuration" xml:space="preserve">
-    <value>Fire duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Fire chance reduction</value>
@@ -463,7 +463,7 @@
     <value>DPS per flooding</value>
   </data>
   <data name="ShipStats_FloodDuration" xml:space="preserve">
-    <value>Flooding duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Flooding probability</value>
@@ -535,13 +535,13 @@
     <value>Concealment</value>
   </data>
   <data name="ShipStats_ConcealmentByAir" xml:space="preserve">
-    <value>Concealment by air</value>
+      <value>Base</value>
   </data>
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>When on fire</value>
   </data>
   <data name="ShipStats_ConcealmentBySea" xml:space="preserve">
-    <value>Concealment by sea</value>
+      <value>Base</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>When on fire</value>
@@ -550,27 +550,27 @@
     <value>After firing in smoke</value>
   </data>
   <data name="ShipStats_FireAmount" xml:space="preserve">
-    <value>Max fires</value>
+      <value>Max together</value>
   </data>
   <data name="ShipStats_FireTotalDamage" xml:space="preserve">
-    <value>Total fire damage</value>
+      <value>Max damage per fire</value>
   </data>
   <data name="ShipStats_FloodAmount" xml:space="preserve">
-    <value>Max floods</value>
+      <value>Max together</value>
   </data>
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedo protection</value>
   </data>
   <data name="ShipStats_FloodTotalDamage" xml:space="preserve">
-    <value>Total flood damage</value>
+      <value>Max damage per flooding</value>
   </data>
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long range aura</value>
   </data>
-  <data name="ShipStats_Backward" xml:space="preserve">
+  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
     <value>Backward</value>
   </data>
-  <data name="ShipStats_Forward" xml:space="preserve">
+  <data name="ShipStats_FullPowerForward" xml:space="preserve">
     <value>Forward</value>
   </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
@@ -619,13 +619,13 @@
     <value>Attack cooldown</value>
   </data>
   <data name="ShipStats_CruisingSpeed" xml:space="preserve">
-    <value>Cruising speed</value>
+      <value>Cruising</value>
   </data>
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomb in inner ellipse</value>
   </data>
   <data name="ShipStats_MaxNumberOnDeck" xml:space="preserve">
-    <value>Max planes on deck</value>
+      <value>Max on deck</value>
   </data>
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Max speed</value>
@@ -637,9 +637,9 @@
     <value>Aircraft per attack</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
-    <value>Aircraft in a squadron</value>
+      <value>In squadron</value>
   </data>
-  <data name="ShipStats_PlaneHP" xml:space="preserve">
+  <data name="ShipStats_PlaneHp" xml:space="preserve">
     <value>Hp per plane</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
@@ -652,19 +652,19 @@
     <value>Bombs per plane</value>
   </data>
   <data name="ShipStats_DropTime" xml:space="preserve">
-    <value>Drop time</value>
+      <value>Drop</value>
   </data>
   <data name="ShipStats_FlyAwayTime" xml:space="preserve">
-    <value>Time to arrive</value>
+      <value>To arrive</value>
   </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
-    <value>Maximum range</value>
+      <value>Max</value>
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Max drop length</value>
   </data>
   <data name="ShipStats_MinimumDistance" xml:space="preserve">
-    <value>Minimum range</value>
+      <value>Min</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Number of charges</value>
@@ -757,10 +757,10 @@
     <value>Error during the loading of the build</value>
   </data>
   <data name="ShipStats_JatoDuration" xml:space="preserve">
-    <value>Initial boost duration</value>
+      <value>Duration</value>
   </data>
   <data name="ShipStats_JatoSpeedMultiplier" xml:space="preserve">
-    <value>Initial boost speed multiplier</value>
+      <value>Speed boost</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Time to switch ammo</value>
@@ -796,24 +796,24 @@
     <value>Damage taken during attack</value>
   </data>
   <data name="ShipStats_PostAttackInvulnerabilityDuration" xml:space="preserve">
-    <value>Post attack invulnerability time</value>
+      <value>Post attack invulnerability</value>
   </data>
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Preparation time</value>
   </data>
   <data name="ShipStats_TimeToFullyAimed" xml:space="preserve">
-    <value>Time to fully aimed</value>
+      <value>To fully aimed</value>
   </data>
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedo Launchers</value>
   </data>
-  <data name="ShipStats_Aiming" xml:space="preserve">
+  <data name="ShipStats_AimingRateMoving" xml:space="preserve">
     <value>During aiming</value>
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Drop area change rate while manoeuvring</value>
   </data>
-  <data name="ShipStats_Preparation" xml:space="preserve">
+  <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>During preparation</value>
   </data>
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
@@ -850,7 +850,7 @@
     <value>The selected custom data path is not valid.</value>
   </data>
   <data name="DispersionGraphWindow_SelectShell" xml:space="preserve">
-    <value>Select a shell</value>
+      <value>Select shells type</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>has more than one shell. Select the one you want the ballistic of. Assuming the same caliber, the shell order below is HE-&gt;SAP-&gt;AP.</value>
@@ -868,10 +868,10 @@
     <value>Copy versions</value>
   </data>
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
-    <value>Concealment by sub at periscope depth</value>
+      <value>At periscope depth</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-    <value>Concealment by sub at operating depth</value>
+      <value>At operating depth</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Show dispersion and ballistics graphs</value>
@@ -987,23 +987,23 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Mass</value>
   </data>
-  <data name="ShipStats_PotentialFPM" xml:space="preserve">
+  <data name="ShipStats_PotentialFpm" xml:space="preserve">
     <value>Potential FPM </value>
   </data>
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
-    <value>Fire chance per salvo</value>
+      <value>Full salvo</value>
   </data>
   <data name="ShipStats_ExplosionRadius" xml:space="preserve">
-    <value>Explosion radius</value>
+      <value>Radius</value>
   </data>
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
-    <value>Blast penetration</value>
+      <value>Penetration</value>
   </data>
   <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
-    <value>Engine blast protection</value>
+      <value>Engine</value>
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
-    <value>Rudder blast protection</value>
+      <value>Rudder</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>If "module blast protection" + "armament blast penetration" &gt; 0 
@@ -1090,7 +1090,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
     <value>The selected custom build image path is invalid.</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalent" xml:space="preserve">
-    <value>Skill &amp; Talents</value>
+      <value>Skills &amp; Talents</value>
   </data>
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>With the following slider and toggles, you can enable or disable certain conditional skill effects. You can also select how many times to trigger the talent effect, if possible. Note that not all skill/talents will have an effect on the ship statistics.</value>
@@ -1119,7 +1119,7 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ShipStats_TrueReloadTooltip" xml:space="preserve">
       <value>The server updates only every 0.142857142857 seconds. This means that reloads falling between multiples of this number will be moved to the tick after. The value represented here shows the true reload you are getting, that can be different than the theoretical reload above.</value>
   </data>
-  <data name="ShipStats_TheoreticalTrueDPM" xml:space="preserve">
+  <data name="ShipStats_TheoreticalTrueDpm" xml:space="preserve">
     <value>Server-side DPM</value>
   </data>
   <data name="ShipStats_TrueRoF" xml:space="preserve">
@@ -1182,6 +1182,21 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ChartsWeb_AddRemoveShips" xml:space="preserve">
+      <value>Add/Remove Ships/Shells</value>
+  </data>
+  <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
+      <value>Dispersion Charts</value>
+  </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Ballistic Charts</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>Select Ships and Shells</value>
+  </data>
+  <data name="ShipAndShellSelectionDialogWeb_Loading" xml:space="preserve">
+      <value>Loading...</value>
+  </data>
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1192,6 +1207,220 @@ If "module blast protection" + "armament blast penetration" &lt;= 0
       <value>Deepwater</value>
   </data>
   <data name="Consumable_HpPerHeal" xml:space="preserve">
-      <value>Hp per heal</value>
+      <value>Max HP per heal</value>
+  </data>
+  <data name="DispersionGraphWindow_Range" xml:space="preserve">
+      <value>Range [km]:</value>
+  </data>
+  <data name="DispersionGrapghWindow_Height" xml:space="preserve">
+      <value>Height</value>
+  </data>
+  <data name="ShipStats_ShowShellTrajectoryGraph" xml:space="preserve">
+      <value>Show shell trajectory graph</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromShips" xml:space="preserve">
+      <value>From ships</value>
+  </data>
+  <data name="ShipStats_ConcealmentFromPlanes" xml:space="preserve">
+      <value>From planes</value>
+  </data>
+  <data name="ShipStats_SpottingOnShips" xml:space="preserve">
+      <value>On ships</value>
+  </data>
+  <data name="ShipStats_SpottingOnPlanes" xml:space="preserve">
+      <value>On planes</value>
+  </data>
+  <data name="ShipStats_SpottingOnTorps" xml:space="preserve">
+      <value>On torpedoes</value>
+  </data>
+  <data name="ShipStats_MaxViewDistance" xml:space="preserve">
+      <value>Max view distance on ships</value>
+  </data>
+  <data name="ShipStats_Consumables" xml:space="preserve">
+      <value>Consumables</value>
+  </data>
+  <data name="ShipStats_AircraftAmount" xml:space="preserve">
+      <value>Aircraft amount</value>
+  </data>
+  <data name="ShipStats_AircraftInAttackGroup" xml:space="preserve">
+      <value>In attack group</value>
+  </data>
+  <data name="ShipStats_SquadronHp" xml:space="preserve">
+      <value>Squadron</value>
+  </data>
+  <data name="ShipStats_AttackGroupHp" xml:space="preserve">
+      <value>Attack group</value>
+  </data>
+  <data name="ShipStats_Max" xml:space="preserve">
+      <value>Max</value>
+  </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>Min</value>
+  </data>
+  <data name="ShipStats_AttackTimings" xml:space="preserve">
+      <value>Attack timings</value>
+  </data>
+  <data name="ShipStats_Aiming" xml:space="preserve">
+      <value>Aiming</value>
+  </data>
+  <data name="ShipStats_Preparation" xml:space="preserve">
+      <value>Preparation</value>
+  </data>
+  <data name="ShipStats_InitialBoost" xml:space="preserve">
+      <value>Initial boost</value>
+  </data>
+  <data name="ShipStats_SpeedBoost" xml:space="preserve">
+      <value>Speed boost</value>
+  </data>
+  <data name="ModifierConverter_MaxEngagementDuration" xml:space="preserve">
+      <value>Max engagement duration</value>
+  </data>
+  <data name="ModifierConverter_MaxKillsAmount" xml:space="preserve">
+      <value>Max kills amount</value>
+  </data>
+  <data name="CaptainSkillSelector_CurrentArBonus" xml:space="preserve">
+      <value>Adrenaline Rush HP: </value>
+  </data>
+  <data name="ShipStats_Fire" xml:space="preserve">
+      <value>Fire</value>
+  </data>
+  <data name="ShipStats_Flooding" xml:space="preserve">
+      <value>Flooding</value>
+  </data>
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Protection</value>
+  </data>
+  <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
+      <value>Max together</value>
+  </data>
+  <data name="ShipStats_FromSubs" xml:space="preserve">
+      <value>From Subs</value>
+  </data>
+  <data name="ShipStats_Sea" xml:space="preserve">
+      <value>Sea</value>
+  </data>
+  <data name="ShipStats_Air" xml:space="preserve">
+      <value>Air</value>
+  </data>
+  <data name="ShipStats_Timings" xml:space="preserve">
+      <value>Timings</value>
+  </data>
+  <data name="ShipStats_ReloadTime" xml:space="preserve">
+      <value>Reload</value>
+  </data>
+  <data name="ShipStats_ShellFireChance" xml:space="preserve">
+      <value>Single shell</value>
+  </data>
+  <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueHeDpm" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueApDpm" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_TheoreticalTrueSapDpm" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_HP" xml:space="preserve">
+      <value>HP</value>
+  </data>
+  <data name="ShipStats_RocketType" xml:space="preserve">
+      <value>Rocket type</value>
+  </data>
+  <data name="ShipStats_TorpedoType" xml:space="preserve">
+      <value>Torpedo Type</value>
+  </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>There has been an error during the data update. This may cause data to be invalid or not up to date. To try again, restart the application. For more information, check the application log.</value>
+  </data>
+  <data name="DataUpdate_ErrorTitle" xml:space="preserve">
+      <value>Data Update Error</value>
+  </data>
+  <data name="NotificationService_UpdateActive" xml:space="preserve">
+      <value>App update running in background...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>There was an error during the app update. Check the log file for more details.</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>The app has been updated in the background. A restart is required to apply the update. Click to restart.</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>The app has been updated, do you want to restart to apply the changes?</value>
+  </data>
+  <data name="UpdateMessageBox_Title" xml:space="preserve">
+      <value>App updated</value>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+      <value>---</value>
+  </data>
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Splash</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Radius</value>
+  </data>
+  <data name="ShipStats_SplashDmg" xml:space="preserve">
+      <value>Damage</value>
+  </data>
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>These parameters only affect submarines.
+They do not have any effect on surface ships.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Explosion radius</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Detonation Timer</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Sink Speed</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Detonation Depth</value>
+  </data>
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>Blast</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>Show Damage Distribution Chart</value>
+  </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>Citadel section</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>Bow section</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>Repairable damage</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>Stern section</value>
+  </data>
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>Superstructure section</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>Casemate section</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>Hull section</value>
+  </data>
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>Auxiliary rooms section</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>Ship HP</value>
+  </data>
+  <data name="Consumable_RightClickToggle" xml:space="preserve">
+      <value>Right-click an icon to toggle effects</value>
   </data>
 </root>

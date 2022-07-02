@@ -54,7 +54,7 @@ namespace WoWsShipBuilder.UI.Views
                 ViewModel?.ShutdownInteraction.RegisterHandler(interaction =>
                 {
                     interaction.SetOutput(Unit.Default);
-                    (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+                    (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
                 });
 
                 ViewModel?.CloseInteraction.RegisterHandler(interaction =>

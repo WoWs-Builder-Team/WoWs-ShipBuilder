@@ -4,8 +4,11 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
+using Squirrel;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.UserControls;
@@ -76,7 +79,8 @@ namespace WoWsShipBuilder.UI.Views
         private void Control_PointerReleased(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
         {
             var window = new TestWindow();
-            window.DataContext = new TestWindowViewModel();
+
+            // window.DataContext = new TestWindowViewModel();
             window.Show();
         }
 
@@ -89,6 +93,19 @@ namespace WoWsShipBuilder.UI.Views
         private void LoadBuild(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             ViewModel?.LoadBuild();
+        }
+
+        private async void OnUpdateCompletedIconClicked(object? sender, PointerPressedEventArgs e)
+        {
+            var result = await UpdateHelpers.ShowUpdateRestartDialog(this);
+            if (result == MessageBox.MessageBoxResult.Yes)
+            {
+                Logging.Logger.Info("User decided to restart after update.");
+                if (OperatingSystem.IsWindows())
+                {
+                    UpdateManager.RestartApp();
+                }
+            }
         }
     }
 }

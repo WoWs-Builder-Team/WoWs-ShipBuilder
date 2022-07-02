@@ -10,6 +10,7 @@ using Moq.Protected;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
+using WoWsShipBuilder.Core.Services;
 
 namespace WoWsShipBuilder.Core.Test.HttpTest
 {
@@ -22,12 +23,15 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
 
         private DesktopAppDataService appDataHelper = default!;
 
+        private IDataService mockDataService = default!;
+
         [SetUp]
         public void Setup()
         {
             messageHandlerMock = new Mock<HttpMessageHandler>();
             mockFileSystem = new MockFileSystem();
-            appDataHelper = new DesktopAppDataService(mockFileSystem);
+            mockDataService = new DesktopDataService(mockFileSystem);
+            appDataHelper = new DesktopAppDataService(mockFileSystem, mockDataService, new());
             messageHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
@@ -39,8 +43,8 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         [Test]
         public async Task DownloadFile_LocalDirectoryDoesNotExist()
         {
-            var client = new AwsClient(mockFileSystem, appDataHelper, messageHandlerMock.Object);
-            var filePath = @"C:\json\live\VersionInfo.json";
+            var client = new AwsClient(mockDataService, appDataHelper, messageHandlerMock.Object);
+            var filePath = @"json/live/VersionInfo.json";
             var requestUri = new Uri("https://cloudfront/api/live/VersionInfo.json");
             mockFileSystem.FileExists(filePath).Should().BeFalse();
 
@@ -61,8 +65,8 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new AwsClient(mockFileSystem, appDataHelper, messageHandlerMock.Object);
-            var filePath = @"C:\json\live\VersionInfo.json";
+            var client = new AwsClient(mockDataService, appDataHelper, messageHandlerMock.Object);
+            var filePath = @"json/live/VersionInfo.json";
             var requestUri = new Uri("https://cloudfront/api/live/VersionInfo.json");
             mockFileSystem.FileExists(filePath).Should().BeFalse();
 

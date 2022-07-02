@@ -42,18 +42,22 @@
                                     <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Server}" VerticalAlignment="Center" />
                                     <ComboBox VerticalAlignment="Center" Items="{Binding Servers}" SelectedItem="{Binding SelectedServer}" />
 
-                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_ResetSettings}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_ResetSettings}" TextWrapping="Wrap"
+                                               VerticalAlignment="Center" />
                                     <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding ResetSettings}"
                                             Content="{x:Static translations:Translation.SettingsWindow_Reset}" />
 
-                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_CleanAppData}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_CleanAppData}" TextWrapping="Wrap"
+                                               VerticalAlignment="Center" />
                                     <Button HorizontalAlignment="Stretch" Padding="0,5" FontSize="13" Command="{Binding CleanAppData}"
                                             Content="{x:Static translations:Translation.SettingsWindow_Clean}" />
 
-                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_AutoUpdate}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_AutoUpdate}" TextWrapping="Wrap"
+                                               VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding AutoUpdate}" />
 
-                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TelemetryEnabled}" TextWrapping="Wrap"
+                                               VerticalAlignment="Center" />
                                     <CheckBox IsChecked="{Binding TelemetryDataEnabled}" />
 
                                     <TextBlock Text="{x:Static translations:Translation.SettingsWindow_OpenExplorerAfterImageSave}" TextWrapping="Wrap"
@@ -82,7 +86,8 @@
                                     <CheckBox IsChecked="{Binding IsCustomBuildImagePathEnabled}" />
 
                                     <TextBox IsEnabled="{Binding IsCustomBuildImagePathEnabled}" Grid.ColumnSpan="2"
-                                             Watermark="{x:Static translations:Translation.SettingsWindow_BuildImagePath}" Text="{Binding CustomBuildImagePath}">
+                                             Watermark="{x:Static translations:Translation.SettingsWindow_BuildImagePath}"
+                                             Text="{Binding CustomBuildImagePath}">
                                         <TextBox.InnerRightContent>
                                             <Button Content="..." Command="{Binding SelectBuildImagePath}" Margin="5,0,0,0" />
                                         </TextBox.InnerRightContent>
@@ -132,7 +137,8 @@
                                 <Separator />
                                 <TextBlock Text="{x:Static translations:Translation.SettingsWindow_DevelopedBy}" />
                                 <Grid ColumnDefinitions="Auto, *" RowDefinitions="*,*,*,*,*,*,*" ShowGridLines="False" Margin="10,0,0,0">
-                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" />
+                                    <TextBlock Text="{x:Static translations:Translation.SettingsWindow_LeadDevs}" Grid.Row="0" Grid.Column="0"
+                                               Margin="0,0,10,0" />
                                     <TextBlock Text="floribe2000" Grid.Row="0" Grid.Column="1" />
                                     <TextBlock Text="Yesod30" Grid.Row="1" Grid.Column="1" />
                                     <TextBlock Text="{x:Static translations:Translation.SettingsWindow_Devs}" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" />
@@ -153,34 +159,41 @@
 
                     <!-- Credits Tab -->
                     <TabItem Header="{x:Static translations:Translation.SettingsWindow_Credits}">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Spacing="5" Margin="5">
-                            <StackPanel.Styles>
-                                <Style Selector="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                    <Setter Property="TextAlignment" Value="Center" />
-                                </Style>
-                            </StackPanel.Styles>
-                            <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap" />
-                            <TextBlock>Taro_</TextBlock>
-                            <TextBlock>dmc531</TextBlock>
-                            <TextBlock>caduzanon</TextBlock>
-                            <TextBlock>Korbolko TR</TextBlock>
-                            <TextBlock>Marco Picchietti</TextBlock>
-                            <TextBlock>Sakura Isayeki</TextBlock>
-                            <TextBlock>Beneath_a_steel_sky</TextBlock>
-                            <TextBlock>EdibleBug</TextBlock>
-                            <TextBlock>Östland</TextBlock>
-                            <TextBlock>antitank240814</TextBlock>
-                            <TextBlock>REEEdamel</TextBlock>
-                            <TextBlock>Gitaristing</TextBlock>
-                            <TextBlock>BloodyTakao</TextBlock>
-                            <TextBlock>iDiego</TextBlock>
-                            <TextBlock>Commander Cornflakes</TextBlock>
-                            <TextBlock>PrinceNorris</TextBlock>
-                            <TextBlock>ThePolishDj</TextBlock>
-                            <TextBlock>Tommy Tommy</TextBlock>
-                            <TextBlock>StaK_1980</TextBlock>
-                        </StackPanel>
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Spacing="5" Margin="5">
+                                <StackPanel.Styles>
+                                    <Style Selector="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                    </Style>
+                                </StackPanel.Styles>
+                                <TextBlock Text="{x:Static translations:Translation.SettingsWindow_TranslationCredits}" Margin="0 0 0 10" TextWrapping="Wrap" />
+                                <TextBlock>akhundahl</TextBlock>
+                                <TextBlock>Antitank_WoWs</TextBlock>
+                                <TextBlock>Beneath_a_steel_sky</TextBlock><!-- darbiter -->
+                                <TextBlock>BloodyTakao</TextBlock>
+                                <TextBlock>caduzanon</TextBlock>
+                                <TextBlock>Ch0m1n</TextBlock>
+                                <TextBlock>Commander Cornflakes</TextBlock>
+                                <TextBlock>dmc531</TextBlock>
+                                <TextBlock>iDiego</TextBlock>
+                                <TextBlock>EdibleBug</TextBlock>
+                                <TextBlock>ephrs</TextBlock>
+                                <TextBlock>fatihahmety</TextBlock>
+                                <TextBlock>Gitaristing</TextBlock>
+                                <TextBlock>StaK_1980</TextBlock>
+                                <TextBlock>Korbolko TR</TextBlock>
+                                <TextBlock>Marco Picchietti</TextBlock>
+                                <TextBlock>missiltiger2</TextBlock>
+                                <TextBlock>Salem__1</TextBlock>
+                                <TextBlock>PrinceNorris</TextBlock>
+                                <TextBlock>REEEdamel</TextBlock>
+                                <TextBlock>Sakura Akeno Isayeki</TextBlock>
+                                <TextBlock>Taro_</TextBlock>
+                                <TextBlock>ThePolishDJ</TextBlock>
+                                <TextBlock>Yohane1</TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
                 </TabControl>
                 <!--Right panel-->

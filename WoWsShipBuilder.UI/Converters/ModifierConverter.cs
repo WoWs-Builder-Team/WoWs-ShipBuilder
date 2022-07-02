@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using WoWsShipBuilder.Core.DataProvider;
+using Splat;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Converters
 {
     public class ModifierConverter : IMultiValueConverter
     {
+        private readonly ILocalizer localizer;
+
+        public ModifierConverter()
+        {
+            localizer = AppSettingsHelper.LocalizerInstance;
+        }
+
         private enum ReturnFilter
         {
             All,
@@ -23,8 +33,8 @@ namespace WoWsShipBuilder.UI.Converters
             Justification = "<The code is a fucking mess otherwise>")]
         public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            string value = "";
-            string description = "";
+            var value = "";
+            var description = "";
             var prefix = "PARAMS_MODIFIER_";
 
             var returnFilter = ReturnFilter.All;
@@ -74,6 +84,15 @@ namespace WoWsShipBuilder.UI.Converters
 
                 switch (localizerKey)
                 {
+                    // defAA modifiers
+                    case { } str when str.Contains("bubbleDamageMultiplier"):
+                        value = $"+{(modifier - 1) * 100} {Translation.Unit_PerCent}";
+                        break;
+
+                    case { } str when str.Contains("areaDamageMultiplier"):
+                        value = $"+{(modifier - 1) * 100} {Translation.Unit_PerCent}";
+                        break;
+
                     // custom modifier to show hp per heal
                     case { } str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
                         value = $"+{(int)modifier}";
@@ -85,19 +104,19 @@ namespace WoWsShipBuilder.UI.Converters
                         break;
 
                     case { } str when str.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{(int)modifier}%";
+                        value = $"+{(int)modifier} {Translation.Unit_PerCent}";
                         break;
 
                     // this is for Vigilance for BBs
                     case { } str when str.Contains("uwCoeffBonus", StringComparison.InvariantCultureIgnoreCase) ||
                                              str.Contains("ignorePTZBonus", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{(int)modifier}%";
+                        value = $"+{(int)modifier} {Translation.Unit_PerCent}";
                         break;
 
                     // This is for IFHE. At the start because of DE sharing similar modifier name
                     case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
                                              str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"-{(int)Math.Round(modifier * 100)}%";
+                        value = $"-{(int)Math.Round(modifier * 100)} {Translation.Unit_PerCent}";
                         break;
 
                     // this is for HP module
@@ -106,7 +125,7 @@ namespace WoWsShipBuilder.UI.Converters
                                       str.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase):
                     {
                         var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        value = numericValue > 0 ? $"+{numericValue} {Translation.Unit_PerCent}" : $"{numericValue} {Translation.Unit_PerCent}";
                         break;
                     }
 
@@ -114,26 +133,26 @@ namespace WoWsShipBuilder.UI.Converters
                     case { } str when str.Contains("planeForsageDrainRate", StringComparison.InvariantCultureIgnoreCase):
                     {
                         double numericValue = Math.Round(((1 / modifier) - 1) * 100, 2);
-                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        value = numericValue > 0 ? $"+{numericValue} {Translation.Unit_PerCent}" : $"{numericValue} {Translation.Unit_PerCent}";
                         break;
                     }
 
                     // this is for midway leg mod. more accurate numbers
                     case { } str when str.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) ||
                                       str.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase):
-                        value = modifier > 1 ? $"+{Math.Round((modifier - 1) * 100, 2)}%" : $"-{Math.Round((1 - modifier) * 100, 2)}%";
+                        value = modifier > 1 ? $"+{Math.Round((modifier - 1) * 100, 2)} {Translation.Unit_PerCent}" : $"-{Math.Round((1 - modifier) * 100, 2)} {Translation.Unit_PerCent}";
                         break;
 
                     // this is for aiming time of CV planes
                     case { } str when str.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase):
-                        value = modifier > 0 ? $"+{modifier}{Translation.Unit_S}" : $"{modifier}{Translation.Unit_S}";
+                        value = modifier > 0 ? $"+{modifier} {Translation.Unit_S}" : $"{modifier} {Translation.Unit_S}";
                         break;
 
                     // This is the anti detonation stuff
                     case { } str when str.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase):
                     {
                         var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                        value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                        value = numericValue > 0 ? $"+{numericValue} {Translation.Unit_PerCent}" : $"{numericValue} {Translation.Unit_PerCent}";
                         break;
                     }
 
@@ -145,7 +164,7 @@ namespace WoWsShipBuilder.UI.Converters
                                       str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                                       (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
                     {
-                        value = $"+{Math.Round(modifier * 100, 1)}%";
+                        value = $"+{Math.Round(modifier * 100, 1)} {Translation.Unit_PerCent}";
                         if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                         {
                                 value += $"/{Translation.Unit_S}";
@@ -156,7 +175,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // This is Adrenaline Rush
                     case { } str when str.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"-{modifier}%";
+                        value = $"-{modifier} {Translation.Unit_PerCent}";
                         break;
 
                     // Something in Last stand. Not sure what make of it tho.
@@ -177,16 +196,37 @@ namespace WoWsShipBuilder.UI.Converters
 
                     // Speed boost modifier
                     case { } str when str.Equals("boostCoeff", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"+{Math.Round(modifier * 100)}%";
+                        value = $"+{Math.Round(modifier * 100)} {Translation.Unit_PerCent}";
                         break;
 
+                    // fighters modifiers
                     case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier}";
+                        break;
+
+                    case { } str when str.Contains("cruisingSpeed", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_Knots}";
+                        break;
+
+                    case { } str when str.Contains("maxViewDistance", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_KM}";
+                        break;
+
+                    case { } str when str.Contains("concealment", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_KM}";
+                        break;
+
+                    case { } str when str.Contains("dogFightTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_S}";
+                        break;
+
+                    case { } str when str.Contains("maxKills", StringComparison.InvariantCultureIgnoreCase):
                         value = $"{modifier}";
                         break;
 
                     // this is the modifier
                     case { } str when str.Contains("CALLFIGHTERStimeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
-                        value = $"-{Math.Round((1 - modifier) * 100)}%";
+                        value = $"-{Math.Round((1 - modifier) * 100)} {Translation.Unit_PerCent}";
                         break;
 
                     // this is the actual value
@@ -194,6 +234,7 @@ namespace WoWsShipBuilder.UI.Converters
                         value = $"{modifier} {Translation.Unit_S}";
                         prefix += "CALLFIGHTERS";
                         break;
+
                     case { } str when str.Contains("radius"):
                         value = $"{Math.Round(modifier * 30 / 1000, 1)} {Translation.Unit_KM}";
                         break;
@@ -209,16 +250,21 @@ namespace WoWsShipBuilder.UI.Converters
                         if (modifier > 1)
                         {
                             var modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
-                            value = $"+{modifierValue}%";
+                            value = $"+{modifierValue} {Translation.Unit_PerCent}";
                         }
                         else
                         {
                             var modifierValue = (decimal)Math.Round((1 - modifier) * 100, 2);
-                            value = $"-{modifierValue}%";
+                            value = $"-{modifierValue} {Translation.Unit_PerCent}";
                         }
 
                         break;
                     }
+
+                    // this is for TRB
+                    case { } str when str.Contains("torpedoReloadTime", StringComparison.InvariantCultureIgnoreCase):
+                        value = $"{modifier} {Translation.Unit_S}";
+                        break;
 
                     default:
                         // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
@@ -259,33 +305,28 @@ namespace WoWsShipBuilder.UI.Converters
                 localizerKey = $"{prefix}{localizerKey}";
 
                 bool found;
-                (found, description) = Localizer.Instance[localizerKey.ToUpper()];
+                (found, description) = localizer.GetGameLocalization(localizerKey.ToUpper());
 
                 // We need this to deal with the consumable mod of slot 5
                 var moduleFallback = "";
 
-                if (description.Equals("Reload time") || description.Equals("Consumable reload time") || description.Equals("Consumable action time") ||
-                    description.Equals("Number of Shell Explosions"))
+                if (localizerKey.Contains("ReloadCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("AAEXTRABUBBLES", StringComparison.InvariantCultureIgnoreCase) ||
+                    localizerKey.Contains("callFightersAdditionalConsumables", StringComparison.InvariantCultureIgnoreCase))
                 {
                     moduleFallback = description;
-                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_SKILL"];
+                    (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_SKILL");
                 }
 
                 if (!found)
                 {
-                    (found, description) = Localizer.Instance[$"{localizerKey.ToUpper()}_MODERNIZATION"];
+                    (found, description) = localizer.GetGameLocalization($"{localizerKey.ToUpper()}_MODERNIZATION");
                 }
 
                 if (!found)
                 {
-                    if (!string.IsNullOrEmpty(moduleFallback))
-                    {
-                        description = moduleFallback;
-                    }
-                    else
-                    {
-                        description = "";
-                    }
+                    description = !string.IsNullOrEmpty(moduleFallback) ? moduleFallback : "";
                 }
 
                 if (localizerKey.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase))
@@ -295,27 +336,52 @@ namespace WoWsShipBuilder.UI.Converters
 
                 if (localizerKey.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_CALLFIGHTERSAPPEARDELAY").Localization;
                 }
 
                 if (localizerKey.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description += "/s";
+                    description += $"/{Translation.Unit_S}";
                 }
 
                 if (localizerKey.Contains("SHIPSPEEDCOEFF", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_SHIPSPEEDCOEFFFORRIBBONS").Localization;
                 }
 
                 if (localizerKey.Contains("burnProbabilityBonus", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    description = Localizer.Instance["PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE"].Localization;
+                    description = localizer.GetGameLocalization("PARAMS_MODIFIER_MAINGAUGEBURNPROBABILITYFORCAPTURE").Localization;
                 }
 
                 if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
                 {
                     description = Translation.Consumable_HpPerHeal;
+                }
+
+                if (localizerKey.Contains("dogFightTime", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ModifierConverter_MaxEngagementDuration;
+                }
+
+                if (localizerKey.Contains("maxKills", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ModifierConverter_MaxKillsAmount;
+                }
+
+                if (localizerKey.Contains("cruisingSpeed", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_Speed;
+                }
+
+                if (localizerKey.Contains("maxViewDistance", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_MaxViewDistance;
+                }
+
+                if (localizerKey.Contains("concealment", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    description = Translation.ShipStats_Concealment;
                 }
 
                 if (returnFilter == ReturnFilter.Description)
@@ -330,12 +396,10 @@ namespace WoWsShipBuilder.UI.Converters
             {
                 return "";
             }
-            else
-            {
-                // Remove [HIDDEN] text from some skills modifiers.
-                description = description.Replace("[HIDDEN]", "");
-                return value + " " + description.Trim();
-            }
+
+            // Remove [HIDDEN] text from some skills modifiers.
+            description = description.Replace("[HIDDEN]", "");
+            return value + " " + description.Trim();
         }
     }
 }

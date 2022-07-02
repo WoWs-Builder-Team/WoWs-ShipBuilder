@@ -15,9 +15,11 @@
         MinWidth="1000" MinHeight="800">
     <Window.Styles>
         <Style Selector="oxy|TrackerControl">
-            <Setter Property="Background" Value="{StaticResource ThemeBackgroundBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource ThemeForegroundLowBrush}" />
-            <Setter Property="LineStroke" Value="{StaticResource ThemeForegroundLowBrush}" />
+            <Setter Property="Background" Value="{StaticResource ThemeBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ThemeForegroundLowBrush}"/>
+            <Setter Property="LineStroke" Value="{StaticResource ThemeForegroundLowBrush}"/>
+            <Setter Property="HorizontalLineVisibility" Value="False"/>
+            <Setter Property="VerticalLineVisibility" Value="False"/>
         </Style>
         <Style Selector="TabItem:selected">
             <Setter Property="Background" Value="Gray"/>
@@ -66,7 +68,46 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
                         <StackPanel Orientation="Vertical">
                             <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding HorizontalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
-                            <oxy:PlotView Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            <Panel>
+                                <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 10 14 0">
+                                    <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_PlotPlane}" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                    <ComboBox Items="{Binding VerticalDispPlanesList}" SelectedItem="{Binding SelectedVerticalDispPlane}"
+                                              BorderBrush="Gray" BorderThickness="1" HorizontalContentAlignment="Center" MinWidth="131">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource Localizer}, ConverterParameter=resx}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Panel Width="27" Height="27" Margin="10 0 0 0">
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 0 0 L 0 -5 Z"
+                                              IsVisible="{Binding !IsVerticalDispOnPerpendicularToWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 0 0 M 0 5 H 5 Z"
+                                              IsVisible="{Binding !IsVerticalDispOnWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="Gray" StrokeThickness="2"
+                                              Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
+                                              IsVisible="{Binding !IsVerticalDispAtImpactAngle}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 0 0 L 0 -5 Z"
+                                              IsVisible="{Binding IsVerticalDispOnPerpendicularToWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 0 0 M 0 5 H 5 Z"
+                                              IsVisible="{Binding IsVerticalDispOnWater}">
+                                        </Path>
+                                        <Path Stretch="Fill" Stroke="DarkRed" StrokeThickness="2"
+                                              Data="M 5 -5 M 0 0 L 0,0 4,-4 Z"
+                                              IsVisible="{Binding IsVerticalDispAtImpactAngle}">
+                                        </Path>
+                                    </Panel>
+                                </StackPanel>
+                                <oxy:PlotView Height="700" ZIndex="1" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding VerticalModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                            </Panel>
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
@@ -133,7 +174,7 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
-                            <Button Command="{Binding RefreshPlot}" Content="{x:Static translations:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
+                            <Button Command="{Binding RefreshDispersionPlot}" Content="{x:Static translations:Translation.DispersionGraphWindow_RefreshDispPlot}" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10 4 10 7"/>
                         </Grid>
                         <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="{x:Static translations:Translation.DispersionGraphWindow_DispPlotExplanation}" FontSize="15" ExpandDirection="Down" IsExpanded="False" Margin="10 10 10 0" Padding="5" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
                             <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_DispPlotDescription}"/>
@@ -278,6 +319,17 @@
                             <oxy:PlotView IsVisible="{Binding ShowImpactVelocity}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactVelocityModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
                             <oxy:PlotView IsVisible="{Binding ShowImpactAngle}" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Model="{Binding ImpactAngleModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
                         </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="{x:Static translations:Translation.DispersionGraphWindow_ShellsPath}">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="5" Padding="0,0,10,0">
+                        <Panel>
+                            <StackPanel ZIndex="2" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 10 14 0">
+                                <TextBlock Text="{x:Static translations:Translation.DispersionGraphWindow_Range}" Margin="0 0 5 0" VerticalAlignment="Center"/>
+                                <NumericUpDown Minimum="1" HorizontalAlignment="Stretch" Value="{Binding ShootingRange}" VerticalAlignment="Center" Padding="0 0 0 0"/>
+                            </StackPanel>
+                            <oxy:PlotView  ZIndex="1" Height="700" IsMouseWheelEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Top" Model="{Binding ShellTrajectoryModel}"  Background="{StaticResource ThemeBackgroundBrush}"/>
+                        </Panel>
                     </ScrollViewer>
                 </TabItem>
             </TabControl>

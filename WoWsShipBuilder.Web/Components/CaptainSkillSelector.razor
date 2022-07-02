@@ -1,0 +1,258 @@
+﻿@using WoWsShipBuilder.ViewModels.ShipVm
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Core.DataProvider
+@using System.Text
+@using System.Collections.Specialized
+@using System.Reflection
+@using System.Reflection.Metadata.Ecma335
+@using ChartJs.Blazor.Util
+@using NLog.LayoutRenderers
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.Localization
+@inherits ReactiveComponentBase<CaptainSkillSelectorViewModel>
+@inject ILocalizer localizer
+
+@if (ViewModel is not null)
+{
+    <MudPaper Outlined="true" Class="pa-2">
+        <MudGrid Class="align-center" Justify="Justify.Center">
+            <MudItem xs="12">
+                <MudText Align="Align.Center">@Translation.CaptainSkillSelector_Points @ViewModel.AssignedPoints/21 </MudText>
+            </MudItem>
+            <MudItem xs="5">
+                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
+                    @foreach (var captain in ViewModel.CaptainList!)
+                    {
+                        <MudSelectItem Value="captain">
+                            <MudText Color="Color.Secondary">@localizer.GetGameLocalization(captain.Name).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="4" Style="text-align: center">
+                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">@Translation.CaptainSkillSelector_SkillTalent</MudButton>
+            </MudItem>
+            <MudItem xs="3">
+                <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
+            </MudItem>
+            @foreach (var (skillName, skill) in ViewModel.SkillList!)
+            {
+                <MudItem Class="d-flex justify-center" xs="2" Style="@GetOrder(skill.Skill.Tiers.Single())">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                        <ChildContent>
+                            <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
+                                <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
+                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))">
+                                        <MudImage Width="50" Height="50" ObjectFit="ObjectFit.ScaleDown" Style="" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
+                                    </MudButton>
+                                </MudBadge>
+                            </MudBadge>
+                        </ChildContent>
+                        <TooltipContent>
+                            <MudPaper Outlined="true">
+                                <MudStack Spacing="0" Class="pa-2">
+                                    <MudText Align="Align.Center" Typo="Typo.h6" >@localizer.GetGameLocalization("SKILL_" + ToSnakeCase(skillName)).Localization</MudText>
+                                    @{
+                                        // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
+                                        var localization = @localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
+                                        if (!string.IsNullOrWhiteSpace(localization))
+                                        {
+                                            <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
+                                        }
+                                    }
+                                    @if (skill.Skill.Modifiers is {Count: > 0 })
+                                    {
+                                        <MudDivider Light="true" Class="ma-1"/>
+                                        @foreach (var (modifierName, modifierValue) in skill.Skill.Modifiers)
+                                        {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, localizer);
+                                            @if (!string.IsNullOrWhiteSpace(modifierString))
+                                            {
+                                                <MudText Align="Align.Left" Typo="Typo.body2" >@modifierString</MudText>
+                                            }
+                                        }
+                                    }
+                                    @if (skill.Skill.ConditionalModifiers is {Count: > 0 })
+                                    {
+                                        <MudDivider Light="true" Class="ma-1"/>
+                                        @foreach (var (modifierName, modifierValue) in skill.Skill.ConditionalModifiers)
+                                        {
+                                            // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, localizer);
+                                            @if (!string.IsNullOrWhiteSpace(modifierString))
+                                            {
+                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                            }
+                                        }
+                                    }
+                                </MudStack>
+                            </MudPaper >
+                        </TooltipContent>
+                    </MudTooltip>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudPaper>
+
+    <MudDialog @bind-IsVisible="@ViewModel.SkillActivationPopupOpen" Options="@dialogOptions">
+        <TitleContent>
+            <MudText> @Translation.CaptainSkillSelector_SkillTalent</MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudContainer Style="overflow-y: auto; max-height: 500px">
+                <MudGrid Class="pa-2" >
+                                <MudItem xs="12">
+                                    <MudText>@Translation.CaptainSkillSelector_SkillTalentDescription</MudText>
+                                </MudItem>
+                                @if (ViewModel.ShowArHpSelection)
+                                {
+                                    <MudItem xs="12">
+                                        <MudDivider Light="true"/>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudText Style="font-weight: bold">@(Translation.CaptainSkillSelector_CurrentArBonus + ViewModel.ArHpPercentage + " %")</MudText>
+                                    </MudItem>
+                                    <MudItem xs="6">
+                                        <MudSlider Min="0" Max="100" Step="1" @bind-Value="@ViewModel.ArHpPercentage" Immediate="true" Variant="Variant.Filled" Color="Color.Info"></MudSlider>
+                                    </MudItem>
+                                }
+                                @if (ViewModel.ConditionalModifiersList.Count > 0)
+                                {
+                                    <MudItem xs="12">
+                                        <MudDivider Light="true"/>
+                                    </MudItem>
+                                    @foreach (var modifier in ViewModel.ConditionalModifiersList)
+                                    {
+                                        <MudItem xs="7">
+                                            <MudText Style="font-weight: bold">@localizer.GetGameLocalization("SKILL_" + ToSnakeCase(modifier.SkillName)).Localization</MudText>
+                                        </MudItem>
+                                        <MudItem xs="5" Class="d-flex justify-end align-center">
+                                            @if (modifier.MaximumActivations > 0)
+                                            {
+                                                <MudNumericField Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="@modifier.ActivationNumbers" Min="1" Max="modifier.MaximumActivations"/>
+                                            }
+                                            <MudSwitch @bind-Checked="@modifier.Status" Color="Color.Info" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
+                                        </MudItem>
+                                    }
+                                }
+                                @if (ViewModel.CaptainTalentsList.Count > 0)
+                                {
+                                    <MudItem xs="12">
+                                        <MudDivider Light="true"/>
+                                    </MudItem>
+                                    @foreach (var talent in ViewModel.CaptainTalentsList)
+                                    {
+                                        <MudItem xs="7">
+                                            <MudStack>
+                                                <MudText Style="font-weight: bold">@localizer.GetGameLocalization(talent.SkillName).Localization</MudText>
+                                                <MudText>@localizer.GetGameLocalization(talent.Description).Localization</MudText>
+                                                @foreach (var (modifierName, modifierValue) in talent.Modifiers)
+                                                {
+                                                    // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                                    var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, localizer);
+                                                    @if (!string.IsNullOrEmpty(modifierString))
+                                                    {
+                                                        <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                                    }
+                                                }
+                                            </MudStack>
+                                        </MudItem>
+                                        <MudItem xs="5" Class="d-flex justify-end align-center">
+                                            @if (talent.MaximumActivations > 0)
+                                            {
+                                                <MudNumericField Variant="Variant.Outlined" @bind-Value="@talent.ActivationNumbers" Min="1" Max="talent.MaximumActivations"/>
+                                            }
+                                            <MudSwitch @bind-Checked="@talent.Status" Color="Color.Info" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
+                                        </MudItem>
+                                    }
+                                }
+                            </MudGrid>
+            </MudContainer>
+        </DialogContent>
+    </MudDialog>
+}
+
+@code {
+    
+    private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
+
+    private DialogOptions dialogOptions = new()
+    {
+        FullWidth = true,
+    };
+    
+    private static string ToSnakeCase(string camelCaseString)
+    {
+        if (camelCaseString == null)
+        {
+            throw new ArgumentNullException(nameof(camelCaseString));
+        }
+
+        if (camelCaseString.Length < 2)
+        {
+            return camelCaseString;
+        }
+
+        var sb = new StringBuilder();
+        sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+        for (var i = 1; i < camelCaseString.Length; ++i)
+        {
+            char c = camelCaseString[i];
+            if (char.IsUpper(c))
+            {
+                sb.Append('_');
+                sb.Append(char.ToLowerInvariant(c));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private string GetOrder(SkillPosition single)
+    {
+        return $"order: {single.Tier * 10 + single.XPosition};";
+    }
+
+    private bool ShouldShowBadge(Skill skill)
+    {
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skill.SkillNumber));
+    }
+
+    private Color GetColorFromState(SkillItemViewModel skillItem)
+    {
+        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            return Color.Error;
+        }
+        else if (!skillItem.CanExecute)
+        {
+            return Color.Primary;
+        }
+        else
+        {
+            return Color.Secondary;
+        }
+    }
+    
+    private void OnSkillClick(SkillItemViewModel skillItem)
+    {
+        if (!skillItem.CanExecute) return;
+        ViewModel!.AddSkill(skillItem.Skill);
+    }
+
+    private string GetImageStyle(SkillItemViewModel skillItem)
+    {
+        if (!skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            return @"opacity: 0.4";
+        }
+        return string.Empty;
+    }
+
+}

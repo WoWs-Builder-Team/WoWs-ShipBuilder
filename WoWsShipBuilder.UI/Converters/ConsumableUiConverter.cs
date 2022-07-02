@@ -6,7 +6,7 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.DataUI;
+using WoWsShipBuilder.Core.DataContainers;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -19,13 +19,13 @@ namespace WoWsShipBuilder.UI.Converters
                 return "";
             }
 
-            if (values[0] is List<ConsumableUI> consumables && values[1] is CustomObservableCollection<ConsumableUI> selectedConsumables)
+            if (values[0] is List<ConsumableDataContainer> consumables && values[1] is CustomObservableCollection<ConsumableDataContainer> selectedConsumables)
             {
                 switch (parameter)
                 {
                     case "image":
                     {
-                        ConsumableUI? selectedConsumable = consumables.FirstOrDefault(consumable =>
+                        ConsumableDataContainer? selectedConsumable = consumables.FirstOrDefault(consumable =>
                             selectedConsumables.Any(selected => selected.IconName.Equals(consumable.IconName)));
                         return new ImagePathConverter().Convert(selectedConsumable, typeof(Bitmap), null!, CultureInfo.CurrentCulture);
                     }
@@ -37,7 +37,7 @@ namespace WoWsShipBuilder.UI.Converters
 
                     case "data":
                     {
-                        ConsumableUI? selectedConsumable = consumables
+                        ConsumableDataContainer? selectedConsumable = consumables
                             .FirstOrDefault(consumable => selectedConsumables.Any(selected => selected.IconName.Equals(consumable.IconName)));
                         return selectedConsumable != null ? selectedConsumable : "";
                     }

@@ -2,9 +2,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Newtonsoft.Json;
+using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 
 namespace WoWsShipBuilder.UI.Settings
@@ -15,36 +18,35 @@ namespace WoWsShipBuilder.UI.Settings
     {
         private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
 
-        public static void SaveSettings()
-        {
-            string settingString = JsonConvert.SerializeObject(AppData.Settings);
-            File.WriteAllText(SettingFile, settingString);
-        }
+        public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
+
+        public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DataHelper.DemoLocalizer;
+
+        public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(Settings, SettingFile);
 
         public static void LoadSettings()
         {
             if (File.Exists(SettingFile))
             {
                 Logging.Logger.Info("Trying to load settings from settings file...");
-                string jsonSettings = File.ReadAllText(SettingFile);
-                var settings = JsonConvert.DeserializeObject<AppSettings>(jsonSettings);
+                var settings = Locator.Current.GetServiceSafe<IDataService>().Load<AppSettings>(SettingFile);
                 if (settings == null)
                 {
                     Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");
                     settings = new();
                 }
 
-                AppData.Settings = settings;
+                Settings.UpdateFromSettings(settings);
             }
             else
             {
                 Logging.Logger.Info("No settings file found, creating new settings...");
-                AppData.Settings = new();
+                Settings.UpdateFromSettings(new());
             }
 
             AppData.IsInitialized = true;
             Logging.Logger.Info("Settings initialized.");
-            UpdateThreadCulture(AppData.Settings.SelectedLanguage.CultureInfo);
+            UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
         }
 
         private static void UpdateThreadCulture(CultureInfo cultureInfo)
