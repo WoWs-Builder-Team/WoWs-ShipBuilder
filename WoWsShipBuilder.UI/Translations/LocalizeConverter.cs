@@ -6,7 +6,6 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.Translations

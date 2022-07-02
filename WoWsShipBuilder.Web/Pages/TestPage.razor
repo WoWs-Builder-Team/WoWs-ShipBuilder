@@ -8,10 +8,10 @@
 @inject IDataService dataService
 @inject IAppDataService appDataService
 @inject AppSettingsHelper appSettingsHelper
-@inject NavigationManager navigationManager
 @inject AppSettings appSettings
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
+@inject TurretAngleVisualizerJsInterop VisualizerInterop
 
 <MudText Typo="Typo.h2">Test Page</MudText>
 
@@ -23,8 +23,7 @@
 </MudSelect>
 <MudButton OnClick="SaveCultureChangeAsync" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
 <MudText>@Localizer.GetAppLocalization(nameof(Translation.Battleship))</MudText>
-
-
+<canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas>
 @code {
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
@@ -41,4 +40,14 @@
         await appSettingsHelper.SaveSettings(appSettings);
         RefreshNotifierService.NotifyRefreshRequested();
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        // if (firstRender)
+        // {
+            await VisualizerInterop.DrawVisualizerAsync();
+        // }
+    }
+
 }

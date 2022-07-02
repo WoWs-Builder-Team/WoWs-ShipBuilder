@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="566"
         x:Class="WoWsShipBuilder.UI.Views.SplashScreen"
-        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:vm="clr-namespace:WoWsShipBuilder.ViewModels.Other;assembly=WoWsShipBuilder.ViewModels"
         Title="SplashScreenWindow"
         Name="SplashScreenWindow"

@@ -1432,4 +1432,19 @@ They do not have any effect on surface ships.</value>
   <data name="ChartsWeb_ShowCharts" xml:space="preserve">
       <value>Show Dispersion and Ballistic Charts</value>
   </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>Application Info</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Current data version:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Selected Language</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Open Shells and Torps expanders by default</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Settings Saved</value>
+  </data>
 </root>

@@ -24,16 +24,16 @@
                         <MudIcon Icon="@Icons.Filled.Info"/>
                     </CardHeaderAvatar>
                     <CardHeaderContent>
-                        <MudText Typo="Typo.h6">Application Info</MudText>
+                        <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ApplicationInfo)).Localization</MudText>
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudCardContent>
-                    Current data version: @AppData.DataVersion
+                    @Localizer.GetAppLocalization(nameof(Translation.WebApp_CurrentVersion)).Localization @AppData.DataVersion
                 </MudCardContent>
             </MudCard>
         </MudItem>
         <MudItem xs="12">
-            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="Selected Language">
+            <MudSelect @bind-Value="selectedCulture" Style="max-width: 500px;" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SelectedLanguage)).Localization">
                 @foreach (var culture in AppConstants.SupportedLanguages)
                 {
                     <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
@@ -41,7 +41,7 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12">
-            <MudSwitch @bind-Checked="@openExpandersByDefault" Label="Open Expanders by default" Color="Color.Info"/>
+            <MudSwitch @bind-Checked="@openExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Info"/>
         </MudItem>
         <MudItem xs="12"/>
         <MudItem xs="3">
@@ -109,7 +109,7 @@
         AppSettings.ClearSettings();
         await AppSettingsHelper.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-        Snackbar.Add("Settings cleared", Severity.Success, config => { config.CloseAfterNavigation = true; });
+        Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
     }
 
