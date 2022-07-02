@@ -74,8 +74,8 @@
 
     private void GoToShipPage()
     {
-        string index = selectedShips.First();
-        NavManager.NavigateTo("/ship?shipIndex=" + index);
+        string indexes = string.Join(",", selectedShips);
+        NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
     }
 
     private void GoToChartPage()
