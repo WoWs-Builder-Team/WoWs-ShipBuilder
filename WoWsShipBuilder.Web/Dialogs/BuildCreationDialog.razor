@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Core.Localization
-@using WoWsShipBuilder.Core.Settings
+﻿@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.BuildCreator
 @using WoWsShipBuilder.Core.Data
@@ -88,11 +87,11 @@
     private string buildName = string.Empty;
     private string buildString = string.Empty;
 
-    private ShipModuleViewModel shipModuleVm = new();
-    private ConsumableViewModel consumableVm = new();
-    private CaptainSkillSelectorViewModel captainVm = new();
-    private UpgradePanelViewModelBase upgradesVm = default!;
-    private SignalSelectorViewModel signalVm = default!;
+    private ShipModuleViewModel? shipModuleVm;
+    private ConsumableViewModel? consumableVm;
+    private CaptainSkillSelectorViewModel? captainVm;
+    private UpgradePanelViewModelBase? upgradesVm;
+    private SignalSelectorViewModel? signalVm;
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,7 +140,7 @@
             return;
         }
         
-        BuildVmCollection vmCollection = new(buildName, ShipIndex, shipModuleVm, consumableVm, captainVm, upgradesVm, signalVm);
+        BuildVmCollection vmCollection = new(buildName, ShipIndex, shipModuleVm!, consumableVm!, captainVm!, upgradesVm!, signalVm!);
 
         Snackbar.Add("Build successfully applied", Severity.Success);
         MudDialog.Close(DialogResult.Ok(vmCollection));
