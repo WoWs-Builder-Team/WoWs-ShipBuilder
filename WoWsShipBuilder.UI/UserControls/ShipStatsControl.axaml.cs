@@ -89,5 +89,16 @@ namespace WoWsShipBuilder.UI.UserControls
 
             e.Handled = true;
         }
+
+        public void OpenDpmAngleVisualizer(object sender, PointerReleasedEventArgs e)
+        {
+            var dc = (ShipStatsControlViewModelBase)DataContext!;
+            var win = new DpmAngleWindow
+            {
+                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData),
+            };
+            win.Show((Window)this.GetVisualRoot());
+            e.Handled = true;
+        }
     }
 }

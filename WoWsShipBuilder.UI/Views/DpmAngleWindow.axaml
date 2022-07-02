@@ -1,0 +1,26 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
+        xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="WoWsShipBuilder.UI.Views.DpmAngleWindow"
+        CanResize="True" WindowStartupLocation="CenterScreen"
+        MinHeight="640" MinWidth="580"
+        Height="640" Width="580">
+    <Grid RowDefinitions="30,*" ColumnDefinitions="2*,*">
+        <userControls:AppHeader Grid.Row="0" Grid.ColumnSpan="2" ShowMaximizeButton="True"/>
+        <customControls:DpmAngleVisualizer Margin="10" Grid.Column="0" Grid.Row="1" Turrets="{Binding Turrets}" TorpModule="{Binding TorpModule}"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10" Spacing="10">
+            <TextBlock TextWrapping="Wrap" Text="{x:Static translations:Translation.FiringAngleWindow_AngleExplanation}" HorizontalAlignment="Center"/>
+            <Border BorderBrush="White" BorderThickness="1">
+                <Image Source="/Assets/discord.png" Width="150" Cursor="Hand"/>
+            </Border>
+            <Border BorderBrush="White" BorderThickness="1">
+                <Image Source="/Assets/Github.png" Width="150" Cursor="Hand"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>

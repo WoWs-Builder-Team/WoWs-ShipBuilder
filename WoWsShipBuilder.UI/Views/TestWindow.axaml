@@ -9,6 +9,6 @@
         Title="TestWindow">
     <Grid RowDefinitions="30,auto,*">
         <userControls:AppHeader Grid.Row="0"/>
-        <customControls:DpmAnglesChart Grid.Row="2"/>
+        <customControls:DpmAngleVisualizer Grid.Row="2"/>
     </Grid>
 </Window>

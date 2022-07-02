@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -204,6 +204,8 @@
                         </DockPanel>
                         <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_TurretAngles}"
                                    PointerReleased="OpenTurretAnglesWindow" TextDecorations="Underline" Margin="0 8 0 0" />
+                        <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_DpmAngles}"
+                                   PointerReleased="OpenDpmAngleVisualizer" TextDecorations="Underline" Margin="0 8 0 0" />
                         <TextBlock Text="{x:Static translations:Translation.ShipStats_Shells}" Classes="FormattedText" />
                         <ItemsControl Items="{Binding ShellData}">
                             <ItemsControl.ItemsPanel>
