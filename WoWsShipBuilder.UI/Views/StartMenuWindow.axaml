@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="800"
         x:Class="WoWsShipBuilder.UI.Views.StartMenuWindow"
-        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:utilities="clr-namespace:WoWsShipBuilder.UI.Utilities"

@@ -5,7 +5,7 @@ using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using DynamicData;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.UI.Settings;
 
 namespace WoWsShipBuilder.UI.CustomControls;

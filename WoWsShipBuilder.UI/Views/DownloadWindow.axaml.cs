@@ -7,7 +7,7 @@ using Avalonia.Threading;
 using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
 

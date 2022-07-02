@@ -7,7 +7,7 @@
         xmlns:oxy="http://oxyplot.org/avalonia"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
-        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
         xmlns:dispersionPlot="clr-namespace:WoWsShipBuilder.UI.ViewModels.DispersionPlot"
         WindowStartupLocation="CenterScreen" CanResize="True"

@@ -10,7 +10,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;

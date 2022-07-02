@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.DataContainers;
 
