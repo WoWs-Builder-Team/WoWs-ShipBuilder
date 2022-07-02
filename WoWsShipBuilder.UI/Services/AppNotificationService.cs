@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Threading;
 using ReactiveUI;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.UI.Services;

@@ -20,7 +20,6 @@ using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;

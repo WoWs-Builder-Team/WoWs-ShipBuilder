@@ -6,7 +6,6 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Other;
