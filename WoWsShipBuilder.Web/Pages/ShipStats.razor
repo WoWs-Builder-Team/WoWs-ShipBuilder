@@ -6,13 +6,13 @@
 @using WoWsShipBuilder.Core.Data
 @using Prometheus
 @using WoWsShipBuilder.Core.ConverterHelpers
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.BuildCreator
-
-@inherits ReactiveComponentBase<ShipViewModel>
+@using System.Collections.ObjectModel
+@using System.Collections.Specialized
+@using DynamicData
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -20,80 +20,109 @@
 @inject AppSettings AppSettings
 @inject IHostEnvironment Environment
 @inject IMetricsService MetricsService
+@inject ILogger<ShipStats> Logger
+@inject ISnackbar Snackbar
+
+@implements IDisposable
 
 <PageTitle>Ship stats</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.False" Class="mt-3">
-    <MudGrid>
-        <MudItem xs="12">
-            <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
-                @if (ViewModel.PreviousShip is not null)
-                {
-                    <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ViewModel.PreviousShip))">
-                        <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
-                        <MudStack Row="true" Justify="Justify.Center">
-                            <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
-                            <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index).Localization</MudText>
-                        </MudStack>
-                    </MudStack>
-                }
-                <MudStack Class="px-2">
-                    <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
-                    <MudStack Row="true" Justify="Justify.Center">
-                        <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
-                        <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex).Localization</MudText>
-                    </MudStack>
-                </MudStack>
-                @if (ViewModel.NextShips is not null)
-                {
-                    @foreach (var ship in ViewModel.NextShips)
-                    {
-                        <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => GoToShip(ship))">
-                            <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
-                            <MudStack Row="true" Justify="Justify.Center">
-                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
-                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index).Localization</MudText>
-                            </MudStack>
-                        </MudStack>
-                    }
-                }
-            </MudPaper>
-        </MudItem>
-        @if (!(initialized && SettingsInitialized))
+@* HideSlider is set to true because of a bug. see https://github.com/MudBlazor/MudBlazor/issues/4742 *@
+<MudDynamicTabs Color="Color.Primary" Position="Position.Top" KeepPanelsAlive AddTab="AddTab" HideSlider="true" CloseTab="RemoveTab" @ref="mudTabs">
+    @foreach (var viewModel in tabs)
+    {
+        if (viewModel is not null)
         {
-            <MudItem xs="12" md="6" lg="4" xl="3">
-                <MudStack>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12" md="6" lg="8" xl="9">
-                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-            </MudItem>
+            <MudTabPanel Text="@Localizer.GetGameLocalization(viewModel.CurrentShipIndex!).Localization" ID="@viewModel.CurrentShipIndex">
+                <MudContainer MaxWidth="MaxWidth.False" Class="mt-3">
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
+                                @if (viewModel.PreviousShip is not null)
+                                {
+                                    <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => UpdateToShip(viewModel.CurrentShipIndex, viewModel.PreviousShip))">
+                                        <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + viewModel.PreviousShip.Index + ".png")"/>
+                                        <MudStack Row="true" Justify="Justify.Center">
+                                            <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(viewModel.PreviousShip.ShipClass, viewModel.PreviousShip.Category)"/>
+                                            <MudText Align="Align.Center">@Localizer.GetGameLocalization(viewModel.PreviousShip.Index).Localization</MudText>
+                                        </MudStack>
+                                    </MudStack>
+                                }
+                                <MudStack Class="px-2">
+                                    <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + viewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(viewModel.CurrentShip.Nation, viewModel.CurrentShipIndex)"/>
+                                    <MudStack Row="true" Justify="Justify.Center">
+                                        <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(viewModel.CurrentShip.ShipClass, viewModel.CurrentShip.Category)"/>
+                                        <MudText Align="Align.Center">@Localizer.GetGameLocalization(viewModel.CurrentShipIndex).Localization</MudText>
+                                    </MudStack>
+                                </MudStack>
+                                @if (viewModel.NextShips is not null)
+                                {
+                                    @foreach (var ship in viewModel.NextShips)
+                                    {
+                                        <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => UpdateToShip(viewModel.CurrentShipIndex, ship))">
+                                            <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
+                                            <MudStack Row="true" Justify="Justify.Center">
+                                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index).Localization</MudText>
+                                            </MudStack>
+                                        </MudStack>
+                                    }
+                                }
+                            </MudPaper>
+                        </MudItem>
+                        @if (!(initialized && SettingsInitialized))
+                        {
+                            <MudItem xs="12" md="6" lg="4" xl="3">
+                                <MudStack>
+                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                                </MudStack>
+                            </MudItem>
+                            <MudItem xs="12" md="6" lg="8" xl="9">
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="12" md="6" lg="4" xl="3">
+                                <MudStack>
+                                    <ShipModulesSelector ViewModel="@viewModel?.ShipModuleViewModel"/>
+                                    <ShipUpgradeSelector ViewModel="@viewModel?.UpgradePanelViewModel"/>
+                                    <ConsumableSelector ViewModel="@viewModel?.ConsumableViewModel"/>
+                                    <CaptainSkillSelector ViewModel="@viewModel?.CaptainSkillSelectorViewModel" ShipClass="@viewModel.CurrentShip.ShipClass"/>
+                                    <SignalSelector ViewModel="@viewModel?.SignalSelectorViewModel"/>
+                                </MudStack>
+                            </MudItem>
+                            <MudItem xs="12" md="6" lg="8" xl="9">
+                                @if (viewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
+                                {
+                                    <ShipStatsComponent ViewModel="@viewModel?.ShipStatsControlViewModel"/>
+                                }
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudContainer>
+            </MudTabPanel>
         }
         else
         {
-            <MudItem xs="12" md="6" lg="4" xl="3">
-                <MudStack>
-                    <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
-                    <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
-                    <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
-                    <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
-                    <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12" md="6" lg="8" xl="9">
-                @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-                {
-                    <ShipStatsComponent ViewModel="@ViewModel?.ShipStatsControlViewModel"/>
-                }
-            </MudItem>
+            <MudTabPanel Text="Adding new ship" ID="@NewShipsTabId">
+                <MudGrid Justify="Justify.Center">
+                    <MudItem xs="12">
+                        <ShipSelector SelectedShips="@selectedShips"/>
+                    </MudItem>
+                    <MudItem xs="12" sm="8" Class="d-flex justify-center">
+                        <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@AddShips">
+                            Add ships
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudTabPanel>
         }
-    </MudGrid>
-</MudContainer>
-
+    }
+</MudDynamicTabs>
 
 @code {
 
@@ -101,7 +130,11 @@
     private Breakpoint Breakpoint { get; set; }
     
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
+        
+    private const string NewShipsTabId = "NewShips";
 
+    MudTabs mudTabs;
+    
     private bool initialized;
 
     private bool skipNextLocationChange;
@@ -109,19 +142,33 @@
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
 
+    private List<ShipViewModel?> tabs = new();
+    
+    private readonly ObservableCollection<string> selectedShips = new();
+
+    private bool updateTab;
+
+    private string tabId = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
         MetricsService.ShipPageCount.Inc();
         initialized = false;
-        NavManager.TryGetQueryString("shipIndex", out string shipIndex);
-        NavManager.LocationChanged += HandleLocationChanged;
-        await LoadShipViewModel(shipIndex);
-        await ViewModel!.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+        NavManager.TryGetQueryString("shipIndexes", out string shipIndexes);
+        var indexes = shipIndexes.Split(",");
+
+        foreach (var shipIndex in indexes)
+        {
+            var vm = await LoadShipViewModel(shipIndex);
+            await vm!.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+            tabs.Add(vm);
+        }
         initialized = true;
     }
-
-    private async Task LoadShipViewModel(string shipIndex)
+    
+    private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipCount.WithLabels(shipIndex).Inc();
         Build? build = null;
@@ -131,7 +178,7 @@
             {
                 build = Build.CreateBuildFromString(buildString, Localizer);
                 skipNextLocationChange = true;
-                NavManager.NavigateTo($"/ship?shipIndex={shipIndex}", false, true);
+                NavManager.NavigateTo($"/ship?shipIndexes={shipIndex}", false, true);
             }
 
             var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
@@ -139,37 +186,30 @@
             var ship = await AppDataService.GetShipFromSummary(shipSummary);
             var vmParams = new MainViewModelParams(ship!, shipSummary, build);
 
-            ViewModel = new(null!, AppDataService, Localizer, AppSettings, vmParams);
-            await ViewModel.InitializeData(vmParams);
+            ShipViewModel vm = new(null!, AppDataService, Localizer, AppSettings, vmParams);
+            await vm.InitializeData(vmParams);
+            return vm;
         }
     }
 
-    private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    protected override void OnAfterRender(bool firstRender)
     {
-        if (skipNextLocationChange)
+        if(updateTab)
         {
-            skipNextLocationChange = false;
-            return;
-        }
-        string uri = NavManager.Uri;
-        if (uri.Contains("/ship"))
-        {
-            initialized = false;
-            NavManager.TryGetQueryString("shipIndex", out string shipIndex);
-            await LoadShipViewModel(shipIndex);
-            initialized = true;
+            mudTabs.ActivatePanel(tabId);
+            updateTab = false;
             StateHasChanged();
         }
-        else
-        {
-            NavManager.LocationChanged -= HandleLocationChanged;
-        }
     }
-
+    
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
     // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
-        string imgName = File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
+        string imgName = shipIndex;
+        if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
+        {
+            imgName = shipNation.ToString();
+        }
         return $"background-image: url(\"/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
     }
 
@@ -181,9 +221,21 @@
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 
-    private void GoToShip(ShipSummary? shipSummary)
+    private async Task UpdateToShip(string currentIndex, ShipSummary? updateToShipSummary)
     {
-        NavManager.NavigateTo($"/ship?shipIndex={shipSummary!.Index}");
+        if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("The ship is already present in another tab", Severity.Error, config => { config.CloseAfterNavigation = true; });
+            return;
+        }
+        var vm = await LoadShipViewModel(updateToShipSummary!.Index);
+        await vm!.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+
+        var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
+        tabs[index] = vm;
+        
+        UpdateUrl();
     }
 
     private int GetImageWidth(bool isCurrentShip)
@@ -193,9 +245,74 @@
             case Breakpoint.Xs:
             case Breakpoint.Sm:
                 return isCurrentShip ? 100 : 70;
+                break;
             default:
                 return isCurrentShip ? 150 : 105;
+                break;
         }
+    }
+
+    private void RemoveTab(MudTabPanel panel)
+    {
+        if (panel.ID.Equals(NewShipsTabId))
+        {
+            tabs.Remove(null);
+        }
+        else
+        {
+            var index = tabs.FindIndex(tab => tab is not null && tab.CurrentShipIndex == (string)panel.ID);
+            tabs.RemoveAt(index);
+        }
+    }
+
+    private void AddTab()
+    {
+        if (!tabs.Contains(null))
+        {
+            tabs.Add(null);
+            //the tab becomes available after it is rendered. Hence, we can't set the index here. We do it in the After render method.
+            updateTab = true;
+            tabId = NewShipsTabId;
+        }
+        else
+        {
+            mudTabs.ActivatePanel(NewShipsTabId);
+        }
+    }
+
+    private async Task AddShips()
+    {
+        // we need to remove the ship addition tab (the "null" tab) first to avoid having an empty tab content.
+        tabs.Remove(null);
+        var uniqueSelectedShips = selectedShips.Where(ship => !tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(ship))).ToList();
+        foreach (string shipIndex in uniqueSelectedShips)
+        {
+            var vm = await LoadShipViewModel(shipIndex);
+            await vm!.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+            tabs.Add(vm);
+        }
+        updateTab = true;
+        tabId = uniqueSelectedShips.Last();
+        selectedShips.Clear();
+
+        UpdateUrl();
+    }
+
+    private void UpdateUrl()
+    {
+        var allShipsIndexes = tabs.Select(x => x!.CurrentShipIndex).ToList();
+        var shipsString = string.Join(",", allShipsIndexes);
+        NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
+    }
+    
+    private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+    
+    public void Dispose()
+    {
+        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
     }
 
 }
