@@ -5,8 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="270"
         x:Class="WoWsShipBuilder.UI.Views.DispersionShipRemovalDialog"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:dispersionPlot="clr-namespace:WoWsShipBuilder.UI.ViewModels.DispersionPlot"
         WindowStartupLocation="CenterOwner" CanResize="False" Width="600" Height="270">
     <Design.DataContext>

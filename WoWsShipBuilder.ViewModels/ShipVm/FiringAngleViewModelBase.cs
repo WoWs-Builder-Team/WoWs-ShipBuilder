@@ -1,6 +1,6 @@
 using ReactiveUI;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
