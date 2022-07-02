@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
+using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
@@ -45,6 +48,8 @@ public class ShipComparisonViewModel : ViewModelBase
     public ObservableCollection<Nation> SelectedNations { get; } = new();
 
     public ObservableCollection<ShipCategory> SelectedCategories { get; } = new();
+
+    public ObservableCollection<BuildVmCollection> CustomBuilds { get; } = new();
 
     public IEnumerable<ShipClass> AvailableClasses { get; } = Enum.GetValues<ShipClass>().Except(new [] { ShipClass.Auxiliary });
 
@@ -211,6 +216,25 @@ public class ShipComparisonViewModel : ViewModelBase
     public void RemoveSelectedShip(Ship ship)
     {
         SelectedShipList.Remove(ship);
+    }
+
+    public void AddBuild(BuildVmCollection build)
+    {
+        RemoveBuild(build);
+        CustomBuilds.Add(build);
+    }
+
+    public void RemoveBuild(BuildVmCollection build) => RemoveBuild(build.ShipIndex);
+    public void RemoveBuild(string shipIndex)
+    {
+        if (ContainsBuild(shipIndex))
+        {
+            CustomBuilds.Remove(CustomBuilds.First(x=> x.ShipIndex.Equals(shipIndex)));
+        }
+    }
+    public bool ContainsBuild(string shipIndex)
+    {
+        return CustomBuilds.Select(x => x.ShipIndex).Contains(shipIndex);
     }
 
     #endregion

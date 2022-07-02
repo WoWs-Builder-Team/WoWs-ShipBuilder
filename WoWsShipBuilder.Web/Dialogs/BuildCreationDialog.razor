@@ -6,13 +6,17 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.ViewModels.ShipVm
 @inherits ReactiveComponentBase<ShipViewModel>
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
 @inject IMetricsService MetricsService
+@inject ISnackbar Snackbar
 
-<MudDialog Style="overflow-y: auto; max-height: 700px">
+<MudDialog Style="overflow-y: auto; max-height: 70vh">
     <TitleContent>
         <MudItem Class="d-flex align-center" Style="justify-content: center">
             <MudStack Row="true" Justify="Justify.SpaceEvenly" Class="mt-n1">
@@ -31,18 +35,18 @@
     <DialogContent>
         <MudStack Row="true" Style="@SetWrapping()">
             <MudStack>
-                <ShipModulesSelector ViewModel="@ViewModel?.ShipModuleViewModel"/>
-                <ShipUpgradeSelector ViewModel="@ViewModel?.UpgradePanelViewModel"/>
-                <ConsumableSelector ViewModel="@ViewModel?.ConsumableViewModel"/>
-                <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
+                <ShipModulesSelector ViewModel="@shipModuleVm"/>
+                <ShipUpgradeSelector ViewModel="@upgradesVm"/>
+                <ConsumableSelector ViewModel="@consumableVm"/>
+                <SignalSelector ViewModel="@signalVm"/>
             </MudStack>
-            <div style="SetMaxWidth()">
-                <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
-                <MudTextField Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
+            <div style="@SetMaxWidth()">
+                <CaptainSkillSelector ViewModel="@captainVm" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
+                <MudTextField @bind-Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
                 <MudStack Row="true" Class="mt-3">
                     <MudTextField @bind-Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1" OnClick="() => LoadShipViewModel(ShipIndex)">
-                        Load build
+                    <MudButton Disabled="@string.IsNullOrWhiteSpace(buildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="mt-1" OnClick="() => ImportBuild(ShipIndex)">
+                        Import
                     </MudButton>
                 </MudStack>
             </div>
@@ -52,7 +56,7 @@
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Info" OnClick="ReturnSelectedShells" Variant="Variant.Filled" Disabled="@string.IsNullOrWhiteSpace(buildName)">
+        <MudButton Color="Color.Info" OnClick="ReturnBuild" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
                 @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
             </MudText>
@@ -77,21 +81,47 @@
     [Parameter]
     public string ShipImagePath { get; set; } = default!;
     [Parameter]
+    public ShipComparisonViewModel ShipComparisonVm { get; set; } = new();
+    [Parameter]
     public Breakpoint Breakpoint { get; set; }
 
-    private string buildName = default!;
+    private string buildName = string.Empty;
     private string buildString = string.Empty;
-    
+
+    private ShipModuleViewModel shipModuleVm = new();
+    private ConsumableViewModel consumableVm = new();
+    private CaptainSkillSelectorViewModel captainVm = new();
+    private UpgradePanelViewModelBase upgradesVm = default!;
+    private SignalSelectorViewModel signalVm = default!;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await LoadShipViewModel(ShipIndex);
+        await LoadShipViewModel(ShipIndex); 
+        if (ShipComparisonVm.ContainsBuild(ShipIndex))
+        {
+            var build = ShipComparisonVm.CustomBuilds.First(x => x.ShipIndex.Equals(ShipIndex));
+            shipModuleVm = build.ModulesVm;
+            consumableVm = build.ConsumableVm;
+            captainVm = build.CaptainVm;
+            upgradesVm = build.UpgradesVm;
+            signalVm = build.SignalVm;
+        }
+        else
+        {
+            Console.WriteLine("ok");
+            shipModuleVm = ViewModel?.ShipModuleViewModel!;
+            consumableVm = ViewModel?.ConsumableViewModel!;
+            captainVm = ViewModel?.CaptainSkillSelectorViewModel!;
+            upgradesVm = ViewModel?.UpgradePanelViewModel!;
+            signalVm = ViewModel?.SignalSelectorViewModel!;
+        }
     }
 
     private async Task LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipCount.WithLabels(shipIndex).Inc();
-        Build? build = string.IsNullOrWhiteSpace(buildString) ? null : Build.CreateBuildFromString(buildString, Localizer);
+        var build = string.IsNullOrWhiteSpace(buildString) ? null : Build.CreateBuildFromString(buildString, Localizer);
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
@@ -103,12 +133,38 @@
         }
     }
     
-    private void ReturnSelectedShells()
+    private void ReturnBuild()
     {
-        string build = default!;
-        MudDialog.Close(DialogResult.Ok(build));
+        if (string.IsNullOrWhiteSpace(buildName))
+        {
+            Snackbar.Add("Missing build name", Severity.Error);
+            return;
+        }
+        
+        BuildVmCollection vmCollection = new(buildName, ShipIndex, shipModuleVm, consumableVm, captainVm, upgradesVm, signalVm);
+
+        Snackbar.Add("Build successfully applied", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(vmCollection));
     }
     
+    private void RemoveBuild()
+    {
+        MudDialog.Close(DialogResult.Ok("Removed"));
+    }
+
+    private async Task ImportBuild(string shipIndex)
+    {
+        try
+        {
+            await LoadShipViewModel(shipIndex);
+            Snackbar.Add("Build successfully imported", Severity.Success);
+        }
+        catch (FormatException)
+        {
+            Snackbar.Add("Failed to import build", Severity.Error);
+        }
+    }
+
     private void Cancel()
     {
         MudDialog.Cancel();

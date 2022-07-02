@@ -4,11 +4,13 @@
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Extensions
+@using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.Web.Dialogs
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 @inject IHostEnvironment Environment;
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
 @if (ViewModel is not null)
@@ -52,7 +54,7 @@
                 {
                     bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleClassSelection(shipClass))">
-                        @shipClass
+                        @Localizer.GetAppLocalization(shipClass.ToString()).Localization
                     </MudButton>
                 }
             </MudButtonGroup>
@@ -72,7 +74,7 @@
                 {
                     bool isSelected = ViewModel.SelectedNations.Contains(nation);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleNationSelection(nation))">
-                        @nation
+                        @Localizer.GetAppLocalization(nation.ToString()).Localization
                     </MudButton>
                 }
             </MudButtonGroup>
@@ -92,7 +94,7 @@
                 {
                     bool isSelected = ViewModel.SelectedCategories.Contains(category);
                     <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleCategorySelection(category))">
-                        @category
+                        @Localizer.GetAppLocalization(category.ToString()).Localization
                     </MudButton>
                 }
             </MudButtonGroup>
@@ -101,7 +103,7 @@
             <MudTable Items="ViewModel!.SelectedShipList" Hover="true" Outlined="true" Dense="true" HorizontalScrollbar="true" FixedHeader="true" Height="@(ViewModel!.SelectedShipList.Count > 4 ? "258px" : "")">
                 <ToolBarContent>
                     <MudText Style="font-size: x-large" Class="mt-n3">
-                            Filtered Ships:
+                            Selected Ships:
                         </MudText>
                     <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
                 </ToolBarContent>
@@ -131,7 +133,7 @@
                         <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
                     </MudTd>
                     <MudTd DataLabel="ApplyBuild" Style="text-align: center">
-                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied("")" @onclick="() => OpenBuildEditorDialog(context)"/>
+                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied(context.Index)" @onclick="() => EditBuild(context)"/>
                     </MudTd>
                     <MudTd DataLabel="RemoveShip" Style="text-align: center" @onclick="() => ViewModel!.RemoveSelectedShip(context)">
                         <MudIcon Icon="@Icons.Filled.Cancel" Size="Size.Medium"/>
@@ -139,7 +141,7 @@
                 </RowTemplate>
             </MudTable>
             <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel!.ShowFilteredOnly)" Color="GetColorFromBool(ViewModel!.ShowFilteredOnly)" OnClick="ViewModel!.ToggleShowFilteredOnly">
-                Display only filtered ships
+                Display only selected ships
             </MudButton>
         </MudStack>
     </MudStack>
@@ -154,7 +156,7 @@
         </ToolBarContent>
         <HeaderContent>
             <MudTh Style="text-align: center">
-                <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="MudBlazor.SortDirection.Ascending">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="SortDirection.Ascending">
                     Filter
                 </MudTableSortLabel>
             </MudTh>
@@ -162,7 +164,7 @@
                 Image
             </MudTh>
             <MudTh Style="text-align: center">
-                <MudTableSortLabel SortBy="new Func<Ship, object>(x => Localizer.GetGameLocalization(x.Index).Localization)" InitialDirection="MudBlazor.SortDirection.Ascending">
+                <MudTableSortLabel SortBy="new Func<Ship, object>(x => Localizer.GetGameLocalization(x.Index).Localization)" InitialDirection="SortDirection.Ascending">
                     Name
                 </MudTableSortLabel>
             </MudTh>
@@ -226,8 +228,6 @@
 
     private bool isDialogOpen;
     private string searchString = default!;
-    
-    private Dictionary<string, bool> buildApplied = new();
 
     protected override void OnInitialized()
     {
@@ -237,7 +237,7 @@
 
     private Color IsCustomBuildApplied(string shipIndex)
     {
-        return !string.IsNullOrEmpty(shipIndex) ? buildApplied[shipIndex] ? Color.Info : Color.Default : Color.Default;
+        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.CustomBuilds.Select(x => x.ShipIndex).Contains(shipIndex) ? Color.Info : Color.Default : Color.Default;
     }
     
     private Color IsShipSelected(string shipIndex)
@@ -269,7 +269,7 @@
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
     
-    private async Task<DialogResult?> OpenBuildEditorDialog(Ship ship)
+    private async Task EditBuild(Ship ship)
     {
         isDialogOpen = true;
         DialogOptions options = new()
@@ -283,12 +283,27 @@
             ["ShipIconPath"] = GetIconFromClass(ship.ShipClass, ship.ShipCategory),
             ["ShipNationFlagPath"] = GetNationFlag(ship.ShipNation, ship.Index),
             ["ShipImagePath"] = $"{BaseAddress}{ship.Index}.png",
+            ["ShipComparisonVm"] = ViewModel,
             ["Breakpoint"] = Breakpoint,
         };
         var dialog = DialogService.Show<BuildCreationDialog>("BuildCreationDialog", parameters, options);
         var result = await dialog.Result;
         isDialogOpen = false;
-        return result;
+        if (result.Cancelled)
+        {
+            return;
+        }
+        switch (result.Data)
+        {
+            case BuildVmCollection build:
+                ViewModel!.AddBuild(build);
+                Snackbar.Add("Build successfully applied", Severity.Success);
+                break;
+            case "Removed":
+                ViewModel!.RemoveBuild(ship.Index);
+                Snackbar.Add("Build successfully removed", Severity.Success);
+                break;
+        }
     }
     
     private bool Search(Ship ship) => Research(ship, searchString);
