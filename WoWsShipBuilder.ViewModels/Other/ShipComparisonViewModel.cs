@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
 using DynamicData;
 using ReactiveUI;
-using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
@@ -216,15 +214,15 @@ public class ShipComparisonViewModel : ViewModelBase
     public void RemoveSelectedShip(Ship ship)
     {
         SelectedShipList.Remove(ship);
+        RemoveBuild(ship.Index);
     }
 
     public void AddBuild(BuildVmCollection build)
     {
-        RemoveBuild(build);
+        RemoveBuild(build.ShipIndex);
         CustomBuilds.Add(build);
     }
 
-    public void RemoveBuild(BuildVmCollection build) => RemoveBuild(build.ShipIndex);
     public void RemoveBuild(string shipIndex)
     {
         if (ContainsBuild(shipIndex))

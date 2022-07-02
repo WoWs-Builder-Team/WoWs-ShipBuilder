@@ -1,7 +1,6 @@
 ﻿@page "/shipComparison"
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.ViewModels.Helper
@@ -115,6 +114,7 @@
                     <MudTh Style="text-align: center">Nation</MudTh>
                     <MudTh Style="text-align: center">Build</MudTh>
                     <MudTh></MudTh>
+                    <MudTh></MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="ShipImage" Style="text-align: center">
@@ -133,10 +133,24 @@
                         <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
                     </MudTd>
                     <MudTd DataLabel="ApplyBuild" Style="text-align: center">
-                        <MudIcon Icon="@Icons.Filled.Build" Size="Size.Medium" Color="@IsCustomBuildApplied(context.Index)" @onclick="() => EditBuild(context)"/>
+                        @if (ViewModel.ContainsBuild(context.Index))
+                        {
+                            <MudText>
+                                @ViewModel.CustomBuilds.First(x => x.ShipIndex.Equals(context.Index)).BuildName
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText>
+                                Default
+                            </MudText>
+                        }
+                    </MudTd>
+                    <MudTd DataLabel="ApplyBuild" Style="text-align: center">
+                        <MudIcon Icon="@Icons.Filled.Handyman" Size="Size.Medium" Color="@IsCustomBuildApplied(context.Index)" @onclick="() => EditBuild(context)"/>
                     </MudTd>
                     <MudTd DataLabel="RemoveShip" Style="text-align: center" @onclick="() => ViewModel!.RemoveSelectedShip(context)">
-                        <MudIcon Icon="@Icons.Filled.Cancel" Size="Size.Medium"/>
+                        <MudIcon Icon="@Icons.Filled.HighlightOff" Size="Size.Medium"/>
                     </MudTd>
                 </RowTemplate>
             </MudTable>
@@ -157,7 +171,7 @@
         <HeaderContent>
             <MudTh Style="text-align: center">
                 <MudTableSortLabel SortBy="new Func<Ship, object>(x => ViewModel!.SelectedShipList.Contains(x))" SortDirection="SortDirection.Ascending">
-                    Filter
+                    Select
                 </MudTableSortLabel>
             </MudTh>
             <MudTh Style="text-align: center">
@@ -186,7 +200,7 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Filter" Style="text-align: center">
-                <MudIcon Icon="@Icons.Filled.FilterAlt" Size="Size.Medium" Color="@IsShipSelected(context.Index)" @onclick="() => ViewModel!.SelectShip(context)"/>
+                <MudIcon Icon="@IsShipSelectedIcon(context.Index)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Index)" @onclick="() => ViewModel!.SelectShip(context)" Class="mt-2"/>
             </MudTd>
             <MudTd DataLabel="ShipImage" Style="text-align: center">
                 <MudImage Src="@(BaseAddress + context.Index + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
@@ -237,14 +251,19 @@
 
     private Color IsCustomBuildApplied(string shipIndex)
     {
-        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.CustomBuilds.Select(x => x.ShipIndex).Contains(shipIndex) ? Color.Info : Color.Default : Color.Default;
+        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.CustomBuilds.Select(x => x.ShipIndex).Contains(shipIndex) ? Color.Warning : Color.Default : Color.Default;
     }
     
-    private Color IsShipSelected(string shipIndex)
+    private Color IsShipSelectedColor(string shipIndex)
     {
-        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.SelectedShipList.Select(x => x.Index).Contains(shipIndex) ? Color.Info : Color.Default : Color.Default;
+        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.SelectedShipList.Select(x => x.Index).Contains(shipIndex) ? Color.Warning : Color.Default : Color.Default;
     }
 
+    private string IsShipSelectedIcon(string shipIndex)
+    {
+        return !string.IsNullOrEmpty(shipIndex) ? ViewModel!.SelectedShipList.Select(x => x.Index).Contains(shipIndex) ? @Icons.Filled.Star : Icons.Filled.StarBorder : Icons.Filled.StarBorder;
+    }
+    
     private static Variant GetVariantFromBool(bool active)
     {
         return active ? Variant.Filled : Variant.Outlined;
@@ -297,11 +316,15 @@
         {
             case BuildVmCollection build:
                 ViewModel!.AddBuild(build);
-                Snackbar.Add("Build successfully applied", Severity.Success);
+                Snackbar.Add($"Build successfully applied to {Localizer.GetGameLocalization(build.ShipIndex).Localization}", Severity.Success);
                 break;
             case "Removed":
                 ViewModel!.RemoveBuild(ship.Index);
-                Snackbar.Add("Build successfully removed", Severity.Success);
+                Snackbar.Add($"Build successfully removed from {Localizer.GetGameLocalization(ship.Index).Localization}", Severity.Success);
+                break;
+            case "NoBuild":
+                ViewModel!.RemoveBuild(ship.Index);
+                Snackbar.Add($"{Localizer.GetGameLocalization(ship.Index).Localization} had no build applied", Severity.Warning);
                 break;
         }
     }
