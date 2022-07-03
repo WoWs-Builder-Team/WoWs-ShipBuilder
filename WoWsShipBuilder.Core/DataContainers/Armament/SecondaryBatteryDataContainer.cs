@@ -91,7 +91,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                     TurretSetup = new(arrangementString, turretName, AreValuesKeys: true),
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
-                    RoF = Math.Round(rof, 1),
+                    RoF = Math.Round(rof * barrelCount, 1),
                     Sigma = secondary.Sigma,
                 };
 
