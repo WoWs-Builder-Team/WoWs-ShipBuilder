@@ -127,7 +127,7 @@
                         @context.Tier.ToTierString()
                     </MudTd>
                     <MudTd DataLabel="ShipClass" Style="text-align: center">
-                        <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
+                        <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                     </MudTd>
                     <MudTd DataLabel="ShipNation" Style="text-align: center">
                         <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
@@ -237,7 +237,7 @@
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Filter" Style="text-align: center">
-                <MudIcon Icon="@IsShipSelectedIcon(context.Index)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Index)" @onclick="() => ViewModel!.SelectShip(context)" Class="mt-2"/>
+                <MudIcon Icon="@IsShipSelectedIcon(context.Index)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Index)" @onclick="() => ViewModel!.SelectShip(context)" ViewBox="0 0 24 24"/>
             </MudTd>
             <MudTd DataLabel="ShipImage" Style="text-align: center">
                 <MudImage Src="@(BaseAddress + context.Index + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
@@ -249,7 +249,7 @@
                 @context.Tier.ToTierString()
             </MudTd>
             <MudTd DataLabel="ShipClass" Style="text-align: center">
-                <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" Class="mt-3 mb-n3"/>
+                <MudIcon Icon="@(GetIconFromClass(context.ShipClass, context.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
             </MudTd>
             <MudTd DataLabel="ShipNation" Style="text-align: center">
                 <MudImage Src="@(GetNationFlag(context.ShipNation, context.Index))" Height="37"/>
