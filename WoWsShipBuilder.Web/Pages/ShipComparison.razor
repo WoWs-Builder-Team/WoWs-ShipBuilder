@@ -166,7 +166,7 @@
             </MudText>
             <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
             <MudSpacer/>
-            <MudTextField @bind-Value="searchString" Placeholder="Search ship" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
+            <MudTextField @bind-Value="ViewModel.SearchString" Placeholder="Search ship" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
         </ToolBarContent>
         <HeaderContent>
             <MudTh Style="text-align: center">
@@ -241,7 +241,6 @@
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool isDialogOpen;
-    private string searchString = default!;
 
     protected override void OnInitialized()
     {
@@ -329,7 +328,7 @@
         }
     }
     
-    private bool Search(Ship ship) => Research(ship, searchString);
+    private bool Search(Ship ship) => Research(ship, ViewModel!.SearchString);
 
     private bool Research(Ship ship, string researchedString)
     {
