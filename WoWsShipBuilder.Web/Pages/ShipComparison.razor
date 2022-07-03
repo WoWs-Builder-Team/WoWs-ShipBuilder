@@ -157,41 +157,20 @@
             <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel!.ShowFilteredOnly)" Color="GetColorFromBool(ViewModel!.ShowFilteredOnly)" OnClick="ViewModel!.ToggleShowFilteredOnly">
                 Display only selected ships
             </MudButton>
-            <MudCard Outlined="true" Square="true">
-                <MudExpansionPanels Square="true">
-                    <MudExpansionPanel Text="Categories">
-                        <TitleContent>
-                            <MudText Style="font-size: x-large">
-                                Categories
-                            </MudText>
-                        </TitleContent>
-                        <ChildContent>
-                            <MudTreeView T="string" Hover="true">
-                                <MudTreeViewItem Value="@("General")"/>
-                                    <MudTreeViewItem Value="@("Planes")">
-                                        <MudTreeViewItem Value="@("Rocket planes")"/>
-                                        <MudTreeViewItem Value="@("Torpedo bombers")"/>
-                                        <MudTreeViewItem Value="@("Bombers")"/>
-                                    </MudTreeViewItem>
-                                    <MudTreeViewItem Value="@("Main Battery")">
-                                        <MudTreeViewItem Value="@("HE shells")"/>
-                                        <MudTreeViewItem Value="@("SAP shells")"/>
-                                        <MudTreeViewItem Value="@("AP shells")"/>
-                                    </MudTreeViewItem>
-                                    <MudTreeViewItem Value="@("Torpedo")"/>
-                                    <MudTreeViewItem Value="@("Secondaries")"/>
-                                    <MudTreeViewItem Value="@("Anti-Air")"/>
-                                    <MudTreeViewItem Value="@("Depth Charges")"/>
-                                    <MudTreeViewItem Value="@("Maneuverability")"/>
-                                    <MudTreeViewItem Value="@("Concealment")"/>
-                                    <MudTreeViewItem Value="@("Survivability")"/>
-                                    <MudTreeViewItem Value="@("Consumables")"/>
-                                <MudTreeViewItem Value="@("Pinger gun")"/>
-                            </MudTreeView>
-                        </ChildContent>
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </MudCard>
+            <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Section
+                </MudText>
+                <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var dataSection in Enum.GetValues(typeof(ShipComparisonViewModel.DataSections)).Cast<ShipComparisonViewModel.DataSections>())
+                    {
+                        bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
+                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel!.ToggleDataSection(dataSection))">
+                            @dataSection.ToString()
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+            </MudPaper>
         </MudStack>
     </MudStack>
     <MudTable ref="table" Items="ViewModel!.GetShipsToBeDisplayedDictionary()" Hover="true" LoadingProgressColor="Color.Info" Outlined="true" Striped="true" Bordered="true" Dense="true" Breakpoint="Breakpoint.None" HorizontalScrollbar="true" Virtualize="true" FixedHeader="true" Filter="new Func<Ship,bool>(Search)">
@@ -364,7 +343,7 @@
                 break;
         }
     }
-    
+
     private bool Search(Ship ship) => Research(ship, ViewModel!.SearchString);
 
     private bool Research(Ship ship, string researchedString)

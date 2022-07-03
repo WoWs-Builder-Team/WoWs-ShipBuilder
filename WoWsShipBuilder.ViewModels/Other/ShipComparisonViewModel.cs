@@ -39,6 +39,14 @@ public class ShipComparisonViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref selectedShipList, value);
     }
 
+    private DataSections selectedDataSection = DataSections.General;
+
+    public DataSections SelectedDataSection
+    {
+        get => selectedDataSection;
+        set => this.RaiseAndSetIfChanged(ref selectedDataSection, value);
+    }
+
     public ObservableCollection<int> SelectedTiers { get; } = new();
 
     public ObservableCollection<ShipClass> SelectedClasses { get; } = new();
@@ -230,10 +238,38 @@ public class ShipComparisonViewModel : ViewModelBase
             CustomBuilds.Remove(CustomBuilds.First(x=> x.ShipIndex.Equals(shipIndex)));
         }
     }
+
     public bool ContainsBuild(string shipIndex)
     {
         return CustomBuilds.Select(x => x.ShipIndex).Contains(shipIndex);
     }
 
+    public enum DataSections
+    {
+        General,
+        MainBattery,
+        He,
+        Sap,
+        Ap,
+        RocketPlanes,
+        TorpedoBombers,
+        DiveBombers,
+        PingerGun,
+        Torpedo,
+        SecondaryBattery,
+        AntiAir,
+        AirStrike,
+        AswStrike,
+        DepthCharge,
+        Maneuverability,
+        Concealment,
+        Survivability,
+    }
+
     #endregion
+
+    public void ToggleDataSection(DataSections dataSection)
+    {
+        selectedDataSection = dataSection;
+    }
 }
