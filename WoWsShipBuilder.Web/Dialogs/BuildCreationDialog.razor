@@ -40,7 +40,7 @@
                 <SignalSelector ViewModel="@signalVm"/>
             </MudStack>
             <div style="@SetMaxWidth()">
-                <CaptainSkillSelector ViewModel="@captainVm" ShipClass="@ViewModel!.CurrentShip!.ShipClass" ShowCaptainSkillsTalentsButton="false"/>
+                <CaptainSkillSelector ViewModel="@captainVm" ShipClass="@ViewModel!.CurrentShip!.ShipClass"/>
                 <MudTextField @bind-Value="buildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-3"/>
                 <MudStack Row="true" Class="mt-3">
                     <MudTextField @bind-Value="buildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
