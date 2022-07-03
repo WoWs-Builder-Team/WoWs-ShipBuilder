@@ -22,7 +22,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// <summary>
         /// StyledProperty for the <see cref="TorpedoModule"/> of the ship.
         /// </summary>
-        public static readonly StyledProperty<TorpedoModule> TorpedoProperty = AvaloniaProperty.Register<DpmAngleVisualizer, TorpedoModule>(nameof(TorpModule));
+        public static readonly StyledProperty<TorpedoModule> TorpModuleProperty = AvaloniaProperty.Register<DpmAngleVisualizer, TorpedoModule>(nameof(TorpModule));
 
         // private readonly List<(Gun gun, Geometry geometry, Point center)> turretGeometries = new();
         static DpmAngleVisualizer()
@@ -43,8 +43,8 @@ namespace WoWsShipBuilder.UI.CustomControls
         /// </summary>
         public TorpedoModule TorpModule
         {
-            get => GetValue(TorpedoProperty);
-            set => SetValue(TorpedoProperty, value);
+            get => GetValue(TorpModuleProperty);
+            set => SetValue(TorpModuleProperty, value);
         }
 
         private static EllipseGeometry GetEllipse(Point location, Size size, bool centered = true)
