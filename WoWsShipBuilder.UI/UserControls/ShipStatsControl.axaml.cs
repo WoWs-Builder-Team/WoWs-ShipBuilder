@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModelBase)DataContext!;
             var win = new DpmAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData),
+                DataContext = new DpmAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData, dc.CurrentShipStats!.TorpedoArmamentDataContainer!.OriginalTorpedoLauncherData),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;

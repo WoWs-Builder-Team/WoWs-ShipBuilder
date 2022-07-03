@@ -5,9 +5,9 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    internal class DpmAngleViewModel : ViewModelBase
+    public class DpmAngleViewModelBase : ViewModelBase
     {
-        public DpmAngleViewModel(TurretModule turrets, TorpedoModule torpModule)
+        public DpmAngleViewModelBase(TurretModule turrets, TorpedoModule torpModule)
         {
             Turrets = turrets;
             TorpModule = torpModule;
