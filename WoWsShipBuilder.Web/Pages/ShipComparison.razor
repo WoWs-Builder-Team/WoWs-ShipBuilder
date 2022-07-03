@@ -102,8 +102,8 @@
             <MudTable Items="ViewModel!.SelectedShipList" Hover="true" Outlined="true" Dense="true" HorizontalScrollbar="true" FixedHeader="true" Height="@(ViewModel!.SelectedShipList.Count > 4 ? "258px" : "")">
                 <ToolBarContent>
                     <MudText Style="font-size: x-large" Class="mt-n3">
-                            Selected Ships:
-                        </MudText>
+                        Selected Ships:
+                    </MudText>
                     <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
                 </ToolBarContent>
                 <HeaderContent>
@@ -157,6 +157,41 @@
             <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel!.ShowFilteredOnly)" Color="GetColorFromBool(ViewModel!.ShowFilteredOnly)" OnClick="ViewModel!.ToggleShowFilteredOnly">
                 Display only selected ships
             </MudButton>
+            <MudCard Outlined="true" Square="true">
+                <MudExpansionPanels Square="true">
+                    <MudExpansionPanel Text="Categories">
+                        <TitleContent>
+                            <MudText Style="font-size: x-large">
+                                Categories
+                            </MudText>
+                        </TitleContent>
+                        <ChildContent>
+                            <MudTreeView T="string" Hover="true">
+                                <MudTreeViewItem Value="@("General")"/>
+                                    <MudTreeViewItem Value="@("Planes")">
+                                        <MudTreeViewItem Value="@("Rocket planes")"/>
+                                        <MudTreeViewItem Value="@("Torpedo bombers")"/>
+                                        <MudTreeViewItem Value="@("Bombers")"/>
+                                    </MudTreeViewItem>
+                                    <MudTreeViewItem Value="@("Main Battery")">
+                                        <MudTreeViewItem Value="@("HE shells")"/>
+                                        <MudTreeViewItem Value="@("SAP shells")"/>
+                                        <MudTreeViewItem Value="@("AP shells")"/>
+                                    </MudTreeViewItem>
+                                    <MudTreeViewItem Value="@("Torpedo")"/>
+                                    <MudTreeViewItem Value="@("Secondaries")"/>
+                                    <MudTreeViewItem Value="@("Anti-Air")"/>
+                                    <MudTreeViewItem Value="@("Depth Charges")"/>
+                                    <MudTreeViewItem Value="@("Maneuverability")"/>
+                                    <MudTreeViewItem Value="@("Concealment")"/>
+                                    <MudTreeViewItem Value="@("Survivability")"/>
+                                    <MudTreeViewItem Value="@("Consumables")"/>
+                                <MudTreeViewItem Value="@("Pinger gun")"/>
+                            </MudTreeView>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            </MudCard>
         </MudStack>
     </MudStack>
     <MudTable ref="table" Items="ViewModel!.GetShipsToBeDisplayedDictionary()" Hover="true" LoadingProgressColor="Color.Info" Outlined="true" Striped="true" Bordered="true" Dense="true" Breakpoint="Breakpoint.None" HorizontalScrollbar="true" Virtualize="true" FixedHeader="true" Filter="new Func<Ship,bool>(Search)">
@@ -165,7 +200,9 @@
                 Ships:
             </MudText>
             <MudTablePager InfoFormat="@("{all_items}")" HorizontalAlignment="HorizontalAlignment.Left" HidePageNumber="false" HidePagination="true" HideRowsPerPage="true" Style="font-size: x-large" Class="mt-n3"/>
-            <MudSpacer/>
+            <div style="width: 60%">
+                <MudSpacer/>
+            </div>
             <MudTextField @bind-Value="ViewModel.SearchString" Placeholder="Search ship" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
         </ToolBarContent>
         <HeaderContent>

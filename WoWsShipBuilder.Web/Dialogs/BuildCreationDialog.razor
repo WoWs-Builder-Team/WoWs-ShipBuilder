@@ -151,14 +151,7 @@
     
     private void RemoveBuild()
     {
-        if (ShipComparisonVm.ContainsBuild(ShipIndex))
-        {
-            MudDialog.Close(DialogResult.Ok("Removed"));
-        }
-        else
-        {
-            MudDialog.Close(DialogResult.Ok("NoBuild"));   
-        }
+        MudDialog.Close(ShipComparisonVm.ContainsBuild(ShipIndex) ? DialogResult.Ok("Removed") : DialogResult.Ok("NoBuild"));
     }
 
     private async Task ImportBuild(string shipIndex)
