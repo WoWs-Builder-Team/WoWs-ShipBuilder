@@ -28,7 +28,7 @@
 <PageTitle>Ship stats</PageTitle>
 
 @* HideSlider is set to true because of a bug. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-<MudDynamicTabs Color="Color.Primary" Position="Position.Top" KeepPanelsAlive AddTab="AddTab" HideSlider="true" CloseTab="RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Centered Outlined Border Class="pt-3">
+<MudDynamicTabs Color="Color.Primary" Position="Position.Top" KeepPanelsAlive AddTab="AddTab" HideSlider="true" CloseTab="RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
     @foreach (var viewModel in tabs)
     {
         if (viewModel is not null)
