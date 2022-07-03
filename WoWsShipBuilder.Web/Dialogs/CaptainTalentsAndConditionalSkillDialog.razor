@@ -1,0 +1,120 @@
+﻿@using Microsoft.AspNetCore.Components
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.ViewModels.ShipVm
+@using System.Text
+
+@inject ILocalizer Localizer
+
+<MudDialog>
+    <TitleContent>
+        <MudText> @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Style="overflow-y: auto; max-height: 500px">
+            <MudGrid Class="pa-2" Style="align-items: center">
+                            <MudItem xs="12">
+                                <MudText>@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalentDescription)).Localization</MudText>
+                            </MudItem>
+                            @if (ViewModel.ShowArHpSelection)
+                            {
+                                <MudItem xs="12">
+                                    <MudDivider Light="true"/>
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudText Style="font-weight: bold">@(Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_CurrentArBonus)).Localization + ViewModel.ArHpPercentage + " %")</MudText>
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudSlider Min="0" Max="100" Step="1" @bind-Value="@ViewModel.ArHpPercentage" Immediate="true" Variant="Variant.Filled" Color="Color.Info"></MudSlider>
+                                </MudItem>
+                            }
+                            @if (ViewModel.ConditionalModifiersList.Count > 0)
+                            {
+                                <MudItem xs="12">
+                                    <MudDivider Light="true"/>
+                                </MudItem>
+                                @foreach (var modifier in ViewModel.ConditionalModifiersList)
+                                {
+                                    <MudItem xs="7">
+                                        <MudText Style="font-weight: bold">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(modifier.SkillName)).Localization</MudText>
+                                    </MudItem>
+                                    <MudItem xs="5" Class="d-flex justify-end align-center">
+                                        @if (modifier.MaximumActivations > 0)
+                                        {
+                                            <MudNumericField Margin="Margin.Dense" Variant="Variant.Outlined" @bind-Value="@modifier.ActivationNumbers" Min="1" Max="modifier.MaximumActivations"/>
+                                        }
+                                        <MudSwitch @bind-Checked="@modifier.Status" Color="Color.Info" Class="ml-1" Label="@(modifier.Status ? "On" : "Off")"/>
+                                    </MudItem>
+                                }
+                            }
+                            @if (ViewModel.CaptainTalentsList.Count > 0)
+                            {
+                                <MudItem xs="12">
+                                    <MudDivider Light="true"/>
+                                </MudItem>
+                                @foreach (var talent in ViewModel.CaptainTalentsList)
+                                {
+                                    <MudItem xs="7">
+                                        <MudStack>
+                                            <MudText Style="font-weight: bold">@Localizer.GetGameLocalization(talent.SkillName).Localization</MudText>
+                                            <MudText>@Localizer.GetGameLocalization(talent.Description).Localization</MudText>
+                                            @foreach (var (modifierName, modifierValue) in talent.Modifiers)
+                                            {
+                                                // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                                                var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                                @if (!string.IsNullOrEmpty(modifierString))
+                                                {
+                                                    <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
+                                                }
+                                            }
+                                        </MudStack>
+                                    </MudItem>
+                                    <MudItem xs="5" Class="d-flex justify-end align-center">
+                                        @if (talent.MaximumActivations > 0)
+                                        {
+                                            <MudNumericField Variant="Variant.Outlined" @bind-Value="@talent.ActivationNumbers" Min="1" Max="talent.MaximumActivations"/>
+                                        }
+                                        <MudSwitch @bind-Checked="@talent.Status" Color="Color.Info" Class="ml-1" Label="@(talent.Status ? "On" : "Off")"/>
+                                    </MudItem>
+                                }
+                            }
+                        </MudGrid>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [Parameter]
+    public CaptainSkillSelectorViewModel ViewModel { get; set; }
+
+    private static string ToSnakeCase(string camelCaseString)
+    {
+        if (camelCaseString == null)
+        {
+            throw new ArgumentNullException(nameof(camelCaseString));
+        }
+
+        if (camelCaseString.Length < 2)
+        {
+            return camelCaseString;
+        }
+
+        var sb = new StringBuilder();
+        sb.Append(char.ToLowerInvariant(camelCaseString[0]));
+        for (var i = 1; i < camelCaseString.Length; ++i)
+        {
+            char c = camelCaseString[i];
+            if (char.IsUpper(c))
+            {
+                sb.Append('_');
+                sb.Append(char.ToLowerInvariant(c));
+            }
+            else
+            {
+                sb.Append(c);
+            }
+        }
+
+        return sb.ToString();
+    }
+}
