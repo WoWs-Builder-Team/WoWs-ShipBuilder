@@ -39,7 +39,7 @@
                             <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
                                 @if (viewModel.PreviousShip is not null)
                                 {
-                                    <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => UpdateToShip(viewModel.CurrentShipIndex, viewModel.PreviousShip))">
+                                    <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, viewModel.CurrentShipIndex, viewModel.PreviousShip))" @oncontextmenu:preventDefault="true">
                                         <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + viewModel.PreviousShip.Index + ".png")"/>
                                         <MudStack Row="true" Justify="Justify.Center">
                                             <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(viewModel.PreviousShip.ShipClass, viewModel.PreviousShip.Category)"/>
@@ -58,7 +58,7 @@
                                 {
                                     @foreach (var ship in viewModel.NextShips)
                                     {
-                                        <MudStack Class="px-2 cursor-pointer" @onclick="@(_ => UpdateToShip(viewModel.CurrentShipIndex, ship))">
+                                        <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, viewModel.CurrentShipIndex, ship))" @oncontextmenu:preventDefault="true">
                                             <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                             <MudStack Row="true" Justify="Justify.Center">
                                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -221,7 +221,7 @@
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 
-    private async Task UpdateToShip(string currentIndex, ShipSummary? updateToShipSummary)
+    private async Task UpdateToShip(MouseEventArgs args, string currentIndex, ShipSummary? updateToShipSummary)
     {
         if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
         {
@@ -233,9 +233,19 @@
         var vm = await LoadShipViewModel(updateToShipSummary!.Index);
         await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
 
-        var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
-        tabs[index] = vm;
-        
+        Console.WriteLine(args.Button);
+        if (args.Button == 2)
+        {
+            tabs.Add(vm);
+            updateTab = true;
+            tabId = updateToShipSummary.Index;
+        }
+        else
+        {
+            var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
+            tabs[index] = vm;   
+        }
+
         UpdateUrl();
     }
 
