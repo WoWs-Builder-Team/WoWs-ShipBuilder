@@ -150,18 +150,7 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
-        {
-            return Color.Error;
-        }
-        else if (!skillItem.CanExecute)
-        {
-            return Color.Primary;
-        }
-        else
-        {
-            return Color.Secondary;
-        }
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? Color.Error : !skillItem.CanExecute ? Color.Primary : Color.Secondary;
     }
     
     private void OnSkillClick(SkillItemViewModel skillItem)
@@ -172,16 +161,12 @@
 
     private string GetImageStyle(SkillItemViewModel skillItem)
     {
-        if (!skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
-        {
-            return @"opacity: 0.4";
-        }
-        return string.Empty;
+        return !skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? @"opacity: 0.4" : string.Empty;
     }
 
     private string GetSkillOrTalentsEnabledIndicator()
     {
-        return (ViewModel.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled) ? "border: #BF0000FF solid 1px" : string.Empty;
+        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? "border: #BF0000FF solid 1px" : string.Empty;
     }
     
     private int GetImageSize()
@@ -191,10 +176,8 @@
             case Breakpoint.Xs:
             case Breakpoint.Sm:
                 return 25;
-                break;
             default:
                 return 40;
-                break;
         }
     }
     
@@ -205,10 +188,8 @@
             case Breakpoint.Xs:
             case Breakpoint.Sm:
                 return "min-width: 40px; width: 40px; height: 40px;";
-                break;
             default:
                 return "min-width: 55px; width: 55px; height: 55px;";
-                break;
         }
     }
 
@@ -230,5 +211,4 @@
         await dialog.Result;
         ViewModel!.SkillActivationPopupOpen = false;
     }
-
 }

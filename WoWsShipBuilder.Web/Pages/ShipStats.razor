@@ -20,7 +20,6 @@
 @inject AppSettings AppSettings
 @inject IHostEnvironment Environment
 @inject IMetricsService MetricsService
-@inject ILogger<ShipStats> Logger
 @inject ISnackbar Snackbar
 
 @implements IDisposable
@@ -123,6 +122,9 @@
         }
     }
 </MudDynamicTabs>
+<MudScrollToTop TopOffset="100" Style="z-index:2001">
+    <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+</MudScrollToTop>
 
 @code {
 
@@ -142,7 +144,7 @@
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
 
-    private List<ShipViewModel?> tabs = new();
+    private readonly List<ShipViewModel?> tabs = new();
     
     private readonly ObservableCollection<string> selectedShips = new();
 
@@ -162,7 +164,7 @@
         foreach (var shipIndex in indexes)
         {
             var vm = await LoadShipViewModel(shipIndex);
-            await vm!.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+            await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
             tabs.Add(vm);
         }
         initialized = true;
@@ -194,12 +196,10 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if(updateTab)
-        {
-            mudTabs.ActivatePanel(tabId);
-            updateTab = false;
-            StateHasChanged();
-        }
+        if (!updateTab) return;
+        mudTabs.ActivatePanel(tabId);
+        updateTab = false;
+        StateHasChanged();
     }
     
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
@@ -225,12 +225,13 @@
     {
         if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
         {
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
-            Snackbar.Add("The ship is already present in another tab", Severity.Error, config => { config.CloseAfterNavigation = true; });
+            Snackbar.Add("The ship is already open in another tab", Severity.Warning, config => { config.CloseAfterNavigation = true; });
+            tabId = tabs.First(x => x!.CurrentShipIndex!.Equals(updateToShipSummary!.Index))!.CurrentShipIndex!;
+            updateTab = true;
             return;
         }
         var vm = await LoadShipViewModel(updateToShipSummary!.Index);
-        await vm!.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+        await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
 
         var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
         tabs[index] = vm;
@@ -254,7 +255,7 @@
     {
         if (panel.ID.Equals(NewShipsTabId))
         {
-            tabs.Remove(null);
+            tabs.RemoveAt(tabs.Count-1);
         }
         else
         {
@@ -282,18 +283,16 @@
     {
         // we need to remove the ship addition tab (the "null" tab) first to avoid having an empty tab content.
         tabs.Remove(null);
-        selectedShips!.RemoveMany(tabs.Select(x => x!.CurrentShipIndex));
+        string lastSelectedShip = selectedShips.Last();
+        selectedShips!.RemoveMany(tabs.Where(x=> x is not null).Select(x => x!.CurrentShipIndex));
         foreach (string shipIndex in selectedShips)
         {
             var vm = await LoadShipViewModel(shipIndex);
             await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
-            tabs.Add(vm);
+            tabs.Add(vm);   
         }
         updateTab = true;
-        if (selectedShips.Count > 0)
-        {
-            tabId = selectedShips.Last();
-        }
+        tabId = lastSelectedShip;
         selectedShips.Clear();
 
         UpdateUrl();
@@ -315,5 +314,4 @@
     {
         selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
     }
-
 }
