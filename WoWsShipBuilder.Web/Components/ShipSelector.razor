@@ -5,7 +5,7 @@
 @using WoWsShipBuilder.Core.Localization
 @inject ILocalizer Localizer
 
-<MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
+<MudGrid Justify="Justify.Center" Spacing="2">
     <MudItem xs="6" md="3">
         <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)

@@ -1,39 +1,22 @@
 ﻿@page "/ship"
 
 @using WoWsShipBuilder.Web.Utility
-@using System.Collections.ObjectModel
-@using System.Collections.Specialized
 @using DynamicData
+@using WoWsShipBuilder.Web.Dialogs
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
-
-@implements IDisposable
+@inject IDialogService DialogService
 
 <PageTitle>Ship stats</PageTitle>
 
 @* HideSlider is set to true because of a bug. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-<MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="AddTab" CloseTab="RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
+<MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
     @foreach (var shipIndex in shipIndexes)
     {
         <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex).Localization" ID="@shipIndex" @key="shipIndex">
             <ShipStatsContainer ShipIndex="@shipIndex"/>
         </MudTabPanel>
-    }
-    @if (showNewShipTab)
-    {
-        <MudTabPanel Text="Adding new ship" Style="@(GetStyle(NewShipsTabId))" ID="@NewShipsTabId" @key="@NewShipsTabId">
-            <MudGrid Class="flex-column align-center">
-                <MudItem xs="12" sm="8">
-                    <ShipSelector SelectedShips="@selectedShips"/>
-                </MudItem>
-                <MudItem xs="6" sm="4" Class="mt-3">
-                    <MudButton Disabled="@(selectedShips.Count == 0)" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@AddShips" FullWidth="true" >
-                        Add ships
-                    </MudButton>
-                </MudItem>
-            </MudGrid>
-        </MudTabPanel>   
     }
 </MudDynamicTabs>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
@@ -42,25 +25,17 @@
 
 @code {
     
-    private const string NewShipsTabId = "NewShips";
+    private MudTabs mudTabs = default!;
     
-    private MudTabs mudTabs;
+    private readonly List<string> shipIndexes = new();
     
-    private readonly ObservableCollection<string> shipIndexes = new();
-    
-    private readonly ObservableCollection<string> selectedShips = new();
-
     private bool updateTab;
 
-    private string tabId = string.Empty;
-
-    private bool showNewShipTab;
+    private string selectedTabId = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
-        // shipIndexes.CollectionChanged += UpdateTabs;
         NavManager.TryGetQueryString("shipIndexes", out string ships);
         if (!string.IsNullOrWhiteSpace(ships))
         {
@@ -71,7 +46,7 @@
     protected override void OnAfterRender(bool firstRender)
     {
         if (!updateTab) return;
-        mudTabs.ActivatePanel(tabId);
+        mudTabs.ActivatePanel(selectedTabId);
         updateTab = false;
         StateHasChanged();
 
@@ -80,14 +55,7 @@
     private void RemoveTab(MudTabPanel panel)
     {
         int index = shipIndexes.IndexOf(panel.ID);
-        if (panel.ID.Equals(NewShipsTabId))
-        {
-            showNewShipTab = false;
-        }
-        else
-        {
-            shipIndexes.Remove((string) panel.ID);
-        }
+        shipIndexes.Remove((string) panel.ID);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
@@ -103,57 +71,34 @@
             {
                 mudTabs.ActivatePanel(shipIndexes.Last());
             }
-            else if (showNewShipTab)
-            {
-                mudTabs.ActivatePanel(NewShipsTabId);
-            }
         }
         UpdateUrl();
     }
 
-    private void AddTab()
+    private async Task OpenAddDialogAsync()
     {
-        if (!showNewShipTab)
+        var options = new DialogOptions
         {
-            showNewShipTab = true;
-            //the tab becomes available after it is rendered. Hence, we can't set the index here. We do it in the After render method.
+            MaxWidth = MaxWidth.Large,
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = false,
+        };
+        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
+        if (!result.Cancelled && result.Data is List<string> newIndexes)
+        {
+            newIndexes.Remove(shipIndexes);
+            shipIndexes.AddRange(newIndexes);
+            selectedTabId = newIndexes.FirstOrDefault() ?? selectedTabId;
             updateTab = true;
-            tabId = NewShipsTabId;
+            
+            UpdateUrl();
         }
-        else
-        {
-            mudTabs.ActivatePanel(NewShipsTabId);
-        }
-    }
-
-    private void AddShips()
-    {
-        // we need to remove the ship addition tab first to avoid having an empty tab content.
-        showNewShipTab = false;
-        string lastSelectedShip = selectedShips.Last();
-        selectedShips.Remove(shipIndexes);
-        shipIndexes.AddRange(selectedShips);
-        updateTab = true;
-        tabId = lastSelectedShip;
-        selectedShips.Clear();
-
-        UpdateUrl();
     }
 
     private void UpdateUrl()
     {
         var shipsString = string.Join(",", shipIndexes);
         NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
-    }
-    
-    private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        StateHasChanged();
-    }
-    
-    public void Dispose()
-    {
-        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
     }
     
     private string GetStyle(string shipIndex)
