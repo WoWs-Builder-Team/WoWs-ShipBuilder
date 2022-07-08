@@ -11,11 +11,11 @@
 <PageTitle>Ship stats</PageTitle>
 
 @* HideSlider is set to true because of a bug. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-<MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
+<MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
     @foreach (var shipIndex in shipIndexes)
     {
-        <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex).Localization" ID="@shipIndex" @key="shipIndex">
-            <ShipStatsContainer ShipIndex="@shipIndex"/>
+        <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
+            <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged"/>
         </MudTabPanel>
     }
 </MudDynamicTabs>
@@ -24,14 +24,18 @@
 </MudScrollToTop>
 
 @code {
-    
+
     private MudTabs mudTabs = default!;
-    
+
     private readonly List<string> shipIndexes = new();
-    
+
     private bool updateTab;
 
     private string selectedTabId = string.Empty;
+
+    private int idCount;
+
+    private readonly Dictionary<string, string> indexIdMapper = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,30 +43,57 @@
         NavManager.TryGetQueryString("shipIndexes", out string ships);
         if (!string.IsNullOrWhiteSpace(ships))
         {
-            shipIndexes.AddRange(ships.Split(","));
+            AddNewIndexes(ships.Split(","));
         }
     }
-    
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (!updateTab) return;
-        mudTabs.ActivatePanel(selectedTabId);
+        mudTabs.ActivatePanel(selectedTabId, true);
         updateTab = false;
         StateHasChanged();
-
     }
-    
+
+    private bool OnShipIndexChanged(string? oldIndex, string newIndex)
+    {
+        var update = false;
+        if (!indexIdMapper.ContainsKey(newIndex))
+        {
+            if (oldIndex is not null)
+            {
+                shipIndexes.Replace(oldIndex, newIndex);
+                indexIdMapper[newIndex] = indexIdMapper[oldIndex];
+                indexIdMapper.Remove(oldIndex);
+                update = true;
+            }
+            else
+            {
+                shipIndexes.Add(newIndex);
+                indexIdMapper[newIndex] = (idCount++).ToString();
+            }
+            UpdateUrl();
+        }
+
+        selectedTabId = newIndex;
+        updateTab = true;
+        StateHasChanged();
+        return update;
+    }
+
     private void RemoveTab(MudTabPanel panel)
     {
-        int index = shipIndexes.IndexOf(panel.ID);
-        shipIndexes.Remove((string) panel.ID);
+        string shipIndex = (string)panel.Tag;
+        int index = shipIndexes.IndexOf(shipIndex);
+        shipIndexes.Remove(shipIndex);
+        indexIdMapper.Remove(shipIndex);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
-            // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
-            // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
-            // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
-            // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
+    // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
+    // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
+    // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
+    // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
             if (shipIndexes.Count > index && index != -1)
             {
                 mudTabs.ActivatePanel(shipIndexes[index]);
@@ -86,12 +117,23 @@
         var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
         if (!result.Cancelled && result.Data is List<string> newIndexes)
         {
-            newIndexes.Remove(shipIndexes);
-            shipIndexes.AddRange(newIndexes);
+            AddNewIndexes(newIndexes);
             selectedTabId = newIndexes.FirstOrDefault() ?? selectedTabId;
             updateTab = true;
-            
+
             UpdateUrl();
+            StateHasChanged();
+        }
+    }
+
+    private void AddNewIndexes(IEnumerable<string> indexList)
+    {
+        List<string> newIndexes = indexList.ToList();
+        newIndexes.Remove(shipIndexes);
+        shipIndexes.AddRange(newIndexes);
+        foreach (string newIndex in newIndexes)
+        {
+            indexIdMapper[newIndex] = (idCount++).ToString();
         }
     }
 
@@ -100,10 +142,10 @@
         var shipsString = string.Join(",", shipIndexes);
         NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
     }
-    
+
     private string GetStyle(string shipIndex)
     {
-        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.ID.Equals(shipIndex))
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(shipIndex))
         {
             return " background-color: rgba(0, 0, 0, 0.4);";
         }

@@ -393,7 +393,7 @@
                         {
                             @DataElementFragment((data, Localizer))
                         }
-                        @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers)
+                        @foreach (var modifier in ViewModel.CurrentShipStats.SpecialAbilityDataContainer.Modifiers ?? new())
                         {
                             <div class="ml-3 d-flex justify-space-between">
                                 <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@ModifierProcessor.GetUiModifierString(modifier.Key, modifier.Value, ReturnFilter.Description, Localizer)</MudText>
