@@ -28,6 +28,7 @@ public static class SetupExtensions
         services.AddScoped<AppSettings>();
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
+        services.AddScoped<MouseEventInterop>();
         services.AddScoped<TurretAngleVisualizerJsInterop>();
 
         return services;

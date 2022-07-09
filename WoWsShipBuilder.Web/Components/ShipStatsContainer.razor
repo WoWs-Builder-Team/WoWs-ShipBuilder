@@ -8,12 +8,14 @@
 @using Prometheus
 @using ReactiveUI
 @using WoWsShipBuilder.Core.Services
+@using DynamicData
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
 @inject IMetricsService MetricsService
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
+@inject MouseEventInterop MouseEventInterop
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -24,7 +26,7 @@
             <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
                 @if (ViewModel.PreviousShip is not null)
                 {
-                    <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" @oncontextmenu:preventDefault="true" AlignItems="AlignItems.Center">
+                    <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
                         <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                         <MudStack Row="true" Justify="Justify.Center">
                             <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -43,7 +45,7 @@
                 {
                     @foreach (var ship in ViewModel.NextShips)
                     {
-                        <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" @oncontextmenu:preventDefault="true" AlignItems="AlignItems.Center">
+                        <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
                             <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                             <MudStack Row="true" Justify="Justify.Center">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -119,6 +121,27 @@
         ViewModel = await LoadShipViewModel(ShipIndex);
         await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         initialized = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (ViewModel is not null)
+        {
+            if (ViewModel.PreviousShip is not null)
+            {
+                await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
+            }
+            if (ViewModel.NextShips is not null)
+            {
+                foreach (var ship in ViewModel.NextShips)
+                {
+                    await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ship.Index);
+                }   
+            }
+        }
+        
+        
     }
 
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
