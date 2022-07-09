@@ -62,9 +62,9 @@
         {
             var data = await response.Content.ReadFromJsonAsync<WgResponse>();
             
-            if (data is not null && data.status.Equals("ok"))
+            if (data is not null && data.Status.Equals("ok"))
             {
-                return data.data.First().Value._private.gold is not null;
+                return data.Data.First().Value.Private?.Gold is not null;
             }
         }
         
@@ -73,20 +73,23 @@
 
     private class WgResponse
     {
-        public string status { get; set; }
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = string.Empty;
 
-        public Dictionary<string,Data> data { get; set; }
+        [JsonPropertyName("data")]
+        public Dictionary<string, Data> Data { get; set; } = new();
     }
 
     private class Data
     {
         [JsonPropertyName("private")]
-        public Private _private { get; set; }
+        public Private? Private { get; set; }
     }
 
     private class Private
     {
-        public int? gold { get; set; }
+        [JsonPropertyName("gold")]
+        public int? Gold { get; set; }
     }
 
 }

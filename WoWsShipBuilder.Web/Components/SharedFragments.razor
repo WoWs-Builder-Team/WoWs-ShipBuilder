@@ -1,11 +1,11 @@
 ﻿@using WoWsShipBuilder.DataElements.DataElements
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.ConverterHelpers
 
 @code {
 
-    // ReSharper disable once InconsistentNaming
-    public static RenderFragment<(IDataElement dataElement, ILocalizer localizer)> DataElementFragment = group => __builder =>
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(IDataElement dataElement, ILocalizer localizer)> DataElementFragment = group => __builder =>
     {
         switch (group.dataElement)
         {
@@ -15,7 +15,7 @@
                     <div class="ml-3">
                         @foreach (var child in element.Children)
                         {
-                            @DataElementFragment((child, group.localizer))
+                            @DataElementFragment?.Invoke((child, group.localizer)) // Invoke necessary due to msbuild warning
                         }
                     </div>
                 </div>
@@ -65,7 +65,7 @@
         {
             return FormattedTextHelper.ConvertFormattedText(formattedTextDataElement, localizer);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return "Error";
         }

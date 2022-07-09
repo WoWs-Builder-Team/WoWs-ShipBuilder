@@ -47,6 +47,7 @@
                 };
                 await SettingsHelper.SaveSettings(settings);
             }
+            settings.WebAppSettings ??= new();
             AppSettings.UpdateFromSettings(settings);
             settingsInitialized = true;
             RefreshNotifierService.NotifyRefreshRequested();

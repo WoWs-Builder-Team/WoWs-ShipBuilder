@@ -85,7 +85,7 @@
 @code {
 
     [Parameter]
-    public CaptainSkillSelectorViewModel ViewModel { get; set; }
+    public CaptainSkillSelectorViewModel ViewModel { get; set; } = default!;
 
     private static string ToSnakeCase(string camelCaseString)
     {

@@ -42,7 +42,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private ConsumableViewModel consumableViewModel = null!;
 
-    private string? currentShipIndex = "_default";
+    private string currentShipIndex = "_default";
 
     private int? currentShipTier;
 
@@ -50,7 +50,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private List<ShipSummary>? nextShips = new();
 
-    private ShipSummary? currentShip;
+    private ShipSummary currentShip = default!;
 
     private ShipSummary? previousShip;
 
@@ -81,7 +81,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
     }
 
-    public string? CurrentShipIndex
+    public string CurrentShipIndex
     {
         get => currentShipIndex;
         set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
@@ -93,7 +93,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
     }
 
-    public ShipSummary? CurrentShip
+    public ShipSummary CurrentShip
     {
         get => currentShip;
         set => this.RaiseAndSetIfChanged(ref currentShip, value);
