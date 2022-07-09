@@ -14,6 +14,13 @@ FROM build AS publish
 RUN dotnet publish "WoWsShipBuilder.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
+ENV APPLICATION_USER_ID 1001
+ENV APPLICATION_USER appuser
+RUN groupadd --gid $APPLICATION_USER_ID $APPLICATION_USER \
+    && useradd --uid $APPLICATION_USER_ID --gid $APPLICATION_USER_ID -m $APPLICATION_USER
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish --chown=$APPLICATION_USER /app/publish .
+
+USER $APPLICATION_USER
 ENTRYPOINT ["dotnet", "WoWsShipBuilder.Web.dll"]
