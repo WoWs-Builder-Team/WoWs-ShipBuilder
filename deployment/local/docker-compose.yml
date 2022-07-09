@@ -12,9 +12,8 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - type: bind
-        source: ./prometheus.yml
-        target: /etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
     ports:
       - "9090:9090"
     networks: 
@@ -32,4 +31,5 @@ services:
 networks:
   local:
 volumes: 
-  grafana-data:
+  prometheus-data:
+    external: true

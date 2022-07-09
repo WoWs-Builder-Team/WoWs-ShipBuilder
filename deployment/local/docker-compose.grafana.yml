@@ -8,3 +8,5 @@
       - grafana-data:/var/lib/grafana
     networks:
       - local
+volumes:
+  grafana-data:
