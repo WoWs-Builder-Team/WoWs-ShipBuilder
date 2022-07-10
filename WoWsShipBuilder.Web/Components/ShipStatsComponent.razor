@@ -8,10 +8,12 @@
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Services
 @inherits ReactiveComponentBase<ShipStatsControlViewModelBase>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings
+@inject DepthChargeDamageDistributionChartInterop DepthChargeInterop
 
 @if (ViewModel is not null)
 {
@@ -329,7 +331,16 @@
                         {
                             @DataElementFragment((data, Localizer))
                         }
-                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                        <MudTooltip Style="width: 250px; height: 250px">
+                            <ChildContent>
+                                <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                            </ChildContent>
+                            <TooltipContent>
+                                <div>
+                                    <canvas id="@("DepthCharges_" + @ViewModel.CurrentShipStats.Index)"></canvas>
+                                </div>
+                            </TooltipContent>
+                        </MudTooltip>
                     </MudStack>
                 </MudExpansionPanel>
             }
@@ -410,6 +421,12 @@
 }
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + @ViewModel.CurrentShipStats.Index, new DepthChargeDamageDistributionChartRecord(ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge as DepthChargeDataContainer));
+    }
 
     private void NavigateToGraph(string shipIndex, string shellIndex)
     {
