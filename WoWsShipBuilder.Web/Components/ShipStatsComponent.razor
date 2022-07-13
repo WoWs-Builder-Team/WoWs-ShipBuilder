@@ -13,7 +13,6 @@
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings
-@inject DepthChargeDamageDistributionChartInterop DepthChargeInterop
 
 @if (ViewModel is not null)
 {
@@ -312,7 +311,14 @@
                         </MudStack>
                         @if (ViewModel.CurrentShipStats.AirstrikeDataContainer.WeaponType.Equals(ProjectileType.DepthCharge.ToString()))
                         {
-                            <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                            <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
+                                <ChildContent>
+                                    <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                                </ChildContent>
+                                <TooltipContent>
+                                    <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DepthCharge="@(ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge! as DepthChargeDataContainer)"/>
+                                </TooltipContent>
+                            </MudTooltip>
                         }
                     </MudStack>
                 </MudExpansionPanel>
@@ -331,20 +337,17 @@
                         {
                             @DataElementFragment((data, Localizer))
                         }
-                        <MudTooltip Style="width: 250px; height: 250px">
+                        <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
                             <ChildContent>
-                                <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                                <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
                             </ChildContent>
                             <TooltipContent>
-                                <div>
-                                    <canvas id="@("DepthCharges_" + @ViewModel.CurrentShipStats.Index)"></canvas>
-                                </div>
+                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DepthCharge="@(ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge! as DepthChargeDataContainer)"/>
                             </TooltipContent>
                         </MudTooltip>
                     </MudStack>
                 </MudExpansionPanel>
             }
-
         </MudStack>
     </MudItem>
 
@@ -421,12 +424,6 @@
 }
 
 @code {
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + @ViewModel.CurrentShipStats.Index, new DepthChargeDamageDistributionChartRecord(ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge as DepthChargeDataContainer));
-    }
 
     private void NavigateToGraph(string shipIndex, string shellIndex)
     {
