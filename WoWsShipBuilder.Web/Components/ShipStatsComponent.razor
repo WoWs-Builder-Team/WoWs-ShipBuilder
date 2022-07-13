@@ -315,6 +315,33 @@
                     </MudStack>
                 </MudExpansionPanel>
             }
+            
+            @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
+            {
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                    <MudStack Spacing="2" Class="expander-content-padding">
+                        @foreach (var data in ViewModel.CurrentShipStats.AswAirstrikeDataContainer.DataElements)
+                        {
+                            @DataElementFragment((data, Localizer))
+                        }
+                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Weapon)).Localization</MudText>
+                        <MudStack Spacing="1" Class="ml-3">
+                            <div class="d-flex justify-space-between">
+                                <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Type)).Localization</MudText>
+                                <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.WeaponType).Localization</MudText>
+                            </div>
+                            @foreach (var weaponData in ViewModel.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon?.DataElements ?? new())
+                            {
+                                @DataElementFragment((weaponData,Localizer))
+                            }
+                        </MudStack>
+                        @if (ViewModel.CurrentShipStats.AswAirstrikeDataContainer.WeaponType.Equals(ProjectileType.DepthCharge.ToString()))
+                        {
+                            <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                        }
+                    </MudStack>
+                </MudExpansionPanel>
+            }
 
             <!--Depth charges-->
             @if (ViewModel.CurrentShipStats?.DepthChargeLauncherDataContainer is not null)
@@ -333,7 +360,6 @@
                     </MudStack>
                 </MudExpansionPanel>
             }
-
         </MudStack>
     </MudItem>
 
