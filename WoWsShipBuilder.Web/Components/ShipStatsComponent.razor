@@ -337,7 +337,7 @@
                                 <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
                             </ChildContent>
                             <TooltipContent>
-                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DepthCharge="@(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Weapon as DepthChargeDataContainer)"/>
+                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
                             </TooltipContent>
                         </MudTooltip>
                     </MudStack>
@@ -362,7 +362,7 @@
                                 <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
                             </ChildContent>
                             <TooltipContent>
-                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DepthCharge="@(ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge! as DepthChargeDataContainer)"/>
+                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
                             </TooltipContent>
                         </MudTooltip>
                     </MudStack>
@@ -444,6 +444,14 @@
 }
 
 @code {
+
+    private DepthChargeDataContainer? dcDataContext;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        dcDataContext = ViewModel?.CurrentShipStats?.DepthChargeLauncherDataContainer?.DepthCharge as DepthChargeDataContainer ?? ViewModel?.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer;
+    }
 
     private void NavigateToGraph(string shipIndex, string shellIndex)
     {

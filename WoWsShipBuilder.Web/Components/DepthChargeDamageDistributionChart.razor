@@ -13,14 +13,14 @@
     [Parameter]
     public string ShipIndex { get; set; } = default!;
     [Parameter]
-    public DepthChargeDataContainer? DepthCharge { get; set; }
+    public DepthChargeDamageDistributionChartRecord? DataRecord { get; set; }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (DepthCharge is not null)
+        if (DataRecord is not null)
         {
-            await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + ShipIndex, new(DepthCharge));
+            await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + ShipIndex, DataRecord);
         }
     }
 }
