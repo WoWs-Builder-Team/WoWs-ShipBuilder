@@ -9,7 +9,7 @@
     const splashRadius = dataRecord.splashRadius
     const pointsOfDmg = dataRecord.pointsOfDmg
     const mapLength = Object.keys(pointsOfDmg).length
-    Object.keys(pointsOfDmg).reverse().forEach((key, index) =>
+    Object.keys(pointsOfDmg).sort().forEach((key, index) =>
         drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius)
     )
     drawExtraElements(ctx, centre)
@@ -21,16 +21,15 @@ function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, sp
     ctx.ellipse(centre, centre, radius, radius, 0, 0, 2 * Math.PI)
     ctx.fill()
     ctx.stroke()
-
-    const offset = 2
+    
     const rad = radius * Math.sqrt(2) / 2
-    ctx.font = "11px Roboto"
+    ctx.font = "10px Roboto"
     ctx.fillStyle = "white"
     ctx.textAlign="end"
     ctx.textBaseline="top"
-    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, centre + rad - offset, centre - rad + offset)
+    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, centre + rad - 4, centre - rad + 4)
     ctx.textBaseline="bottom"
-    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, centre - rad - offset, centre - rad - offset)
+    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, centre - rad - 1, centre - rad - 1)
 }
 function drawExtraElements(ctx, centre){
     const offset = 5
