@@ -114,3 +114,125 @@ div.child-header-border.mud-panel-expanded > .mud-expand-panel-header {
     margin-bottom: 8px;
     border-bottom: solid 1px rgba(255, 255, 255, .5);
 }
+
+img.kofiimg {
+    display: initial ;
+    vertical-align: middle;
+    height: 13px ;
+    width: 20px ;
+    padding-top: 0 ;
+    padding-bottom: 0 ;
+    border: none;
+    margin: 0 5px 3px 0;
+    content: url('https://storage.ko-fi.com/cdn/cup-border.png')
+}
+
+.kofiimg:after {
+    vertical-align: middle;
+    height: 25px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: none;
+    margin: 0 6px 4px 0;
+    content: url('https://storage.ko-fi.com/cdn/whitelogo.svg')
+}
+
+.btn-container {
+    display: inline-block ;
+    white-space: nowrap;
+    padding-right: 1em;
+}
+
+span.kofitext {
+    color: #dedede ;
+    letter-spacing: -0.15px ;
+    text-wrap: none;
+    vertical-align: middle;
+    line-height: 33px ;
+    padding: 0;
+    text-align: center;
+    text-decoration: none ;
+    text-shadow: 0 1px 1px rgba(34, 34, 34, 0.05);
+}
+
+.kofitext a {
+    color: #dedede ;
+    text-decoration: none ;
+}
+
+.kofitext a:hover {
+    color: #dedede ;
+    text-decoration: none
+}
+
+a.kofi-button {
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+    line-height: 36px ;
+    display: inline-block ;
+    padding: 2px 12px ;
+    text-align: center ;
+    border-radius: 7px;
+    color: #dedede;
+    cursor: pointer;
+    overflow-wrap: break-word;
+    vertical-align: middle;
+    border: 0 none #dedede ;
+    font-family: 'Roboto','Helvetica','Arial','sans-serif';
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 400 ;
+    font-size: 14px 
+}
+
+a.kofi-button:visited {
+    color: #dedede ;
+    text-decoration: none 
+}
+
+a.kofi-button:hover {
+    opacity: .85;
+    color: #f5f5f5 ;
+    text-decoration: none 
+}
+
+a.kofi-button:active {
+    color: #f5f5f5 ;
+    text-decoration: none;
+}
+
+.kofitext img.kofiimg {
+    height: 15px ;
+    width: 22px ;
+    display: initial;
+    animation: kofi-wiggle 3s infinite;
+}
+
+@keyframes kofi-wiggle {
+    0% {
+        transform: rotate(0) scale(1)
+    }
+    60% {
+        transform: rotate(0) scale(1)
+    }
+    75% {
+        transform: rotate(0) scale(1.12)
+    }
+    80% {
+        transform: rotate(0) scale(1.1)
+    }
+    84% {
+        transform: rotate(-10deg) scale(1.1)
+    }
+    88% {
+        transform: rotate(10deg) scale(1.1)
+    }
+    92% {
+        transform: rotate(-10deg) scale(1.1)
+    }
+    96% {
+        transform: rotate(10deg) scale(1.1)
+    }
+    100% {
+        transform: rotate(0) scale(1)
+    }
+}
