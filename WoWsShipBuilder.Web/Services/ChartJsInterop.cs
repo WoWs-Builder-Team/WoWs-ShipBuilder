@@ -15,10 +15,10 @@ public class ChartJsInterop : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async Task SetupGlobalChartConfigAsync()
+    public async Task SetupGlobalChartConfigAsync(double aspectRatio)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("SetupGlobalChartConfig");
+        await module.InvokeVoidAsync("SetupGlobalChartConfig", aspectRatio);
     }
 
     public async Task CreateChartAsync(string chartId, string title, string xLabel, string yLabel, string xUnit, string yUnit)

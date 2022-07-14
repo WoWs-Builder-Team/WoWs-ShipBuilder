@@ -38,7 +38,7 @@
             <canvas id="@HorizontalDispersionId"></canvas>
         </div>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="2" md="1" Style="position: absolute; align-self: flex-end; min-width: 185px">
+            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end; min-width: 185px;")">
                 <MudSelect Style="min-width: 185px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
                     @foreach (var item in ellipsePlanesList)
                     {
@@ -57,7 +57,7 @@
 
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization">
-        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
+        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -73,7 +73,7 @@
             }
         </MudButton>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="2" md="1" Style="position: absolute; align-self: flex-end">
+            <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end;")">
                 <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
             </MudItem>
             <MudItem Class="z-10" xs="12">
@@ -116,6 +116,9 @@
 
 @code
 {
+    [CascadingParameter]
+    public Breakpoint Breakpoint { get; set; }
+
         private const string HorizontalDispersionId = "horizontal-dispersion";
         private const string VerticalDispersionId = "vertical-dispersion";
         private const string TrajectoryId = "trajectory";
@@ -247,7 +250,13 @@
         string degree = Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization;
         string mps = Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization;
 
-        await ChartJsInterop.SetupGlobalChartConfigAsync();
+        double aspectRatio = 3;
+        if (Breakpoint == Breakpoint.Sm || Breakpoint == Breakpoint.Xs)
+        {
+            aspectRatio = 1.2;
+        }
+        
+        await ChartJsInterop.SetupGlobalChartConfigAsync(aspectRatio);
 
         await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
         await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
@@ -399,6 +408,16 @@
             ImpactAngleId,
         };
         return chartIds;
+    }
+
+    private string GetPositionStyleForSelector()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            return "margin-right: auto !important;";
+        }
+
+        return "position: absolute;";
     }
 
     //Convenience method to call StateHasChanged after setting processing to false. Needed for chrome to correctly update the Ship/Shell selection button.
