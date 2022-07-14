@@ -1,4 +1,4 @@
-# Update 1.5.1
+# Update 1.5.2
 
 ## Additions
 - Add ability to change plot plane for vertical dispersion chart.
@@ -12,6 +12,7 @@
 - The gamedata updater no longer downloads data that is not supported by the current application version. 
 - Engine power timings now take into account the game time scaling.
 - Remove server side reload time, rate of fire and DPM parameters because the server tick rate issue has been fixed.
+- Remove camo modifier from ship stat calculation
 
 ## Bugfixes
 - Fix "Skills & Talents" button not enabling when loading a build with conditional skills selected.

@@ -277,7 +277,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
         CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
-        CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
     }
 
     private void HandleCaptainParamsChange(bool newValue)

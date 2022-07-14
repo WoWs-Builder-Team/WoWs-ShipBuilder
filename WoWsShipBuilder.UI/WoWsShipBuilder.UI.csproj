@@ -9,7 +9,7 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.5.1</VersionPrefix>
+        <VersionPrefix>1.5.2</VersionPrefix>
 <!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
