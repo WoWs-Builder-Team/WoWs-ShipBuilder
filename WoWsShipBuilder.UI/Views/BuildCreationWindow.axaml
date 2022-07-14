@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="390" d:DesignHeight="175"
         x:Class="WoWsShipBuilder.UI.Views.BuildCreationWindow"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
+        xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:helper="clr-namespace:WoWsShipBuilder.ViewModels.Helper;assembly=WoWsShipBuilder.ViewModels"
         CanResize="False" Width="390" WindowStartupLocation="CenterOwner" SizeToContent="Height"
         Title="BuildCreationWindow">

@@ -7,8 +7,7 @@
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
              x:Class="WoWsShipBuilder.UI.UserControls.CaptainSkillSelector"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Translations;assembly=WoWsShipBuilder.Core"
-             xmlns:viewModels1="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
              x:Name="Control">
     <Design.DataContext>
@@ -123,8 +122,6 @@
                         </Grid>
                     </Border>                  
                 </Popup>
-                <CheckBox Grid.Row="1" IsChecked="{Binding CamoEnabled}" Grid.Column="2" 
-                          Content="{x:Static translations:Translation.CaptainSkillSelector_Camo}" HorizontalAlignment="Right" Margin="0,5,10,0" IsVisible="{Binding !ScreenshotMode}"/>
             </Grid>
             <ItemsControl Name="SkillContainer" HorizontalAlignment="Center" Classes="SkillContainer" Items="{Binding SkillList}" DockPanel.Dock="Bottom">
                 <ItemsControl.ItemsPanel>

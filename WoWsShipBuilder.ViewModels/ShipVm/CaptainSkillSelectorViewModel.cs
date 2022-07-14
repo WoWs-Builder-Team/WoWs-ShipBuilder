@@ -8,10 +8,10 @@ using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.Core.Translations;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
@@ -138,6 +138,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         /// <summary>
         /// Gets or sets a value indicating whether the camo bonuses should be applied.
         /// </summary>
+        [Obsolete("No longer needed as camos don't have economic bonuses anymore.")]
         public bool CamoEnabled
         {
             get => camoEnabled;
@@ -480,11 +481,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 .SelectMany(m => m.Modifiers)
                 .Select(effect => (effect.Key, effect.Value))
                 .ToList();
-
-            if (CamoEnabled)
-            {
-                modifiers.Add(("visibilityFactor", 0.97f));
-            }
 
             if (SkillOrderList.Any(skill => skill.SkillNumber == 14))
             {

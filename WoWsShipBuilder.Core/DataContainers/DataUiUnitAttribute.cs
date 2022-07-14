@@ -1,5 +1,5 @@
 using System;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {

@@ -9,7 +9,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.Core.Translations;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Helper

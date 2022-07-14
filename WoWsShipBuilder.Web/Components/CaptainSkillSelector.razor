@@ -34,7 +34,7 @@
                 <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => { ViewModel.SkillActivationPopupOpen = true; })">@Translation.CaptainSkillSelector_SkillTalent</MudButton>
             </MudItem>
             <MudItem xs="3">
-                <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox>
+                @* <MudCheckBox @bind-Checked="@ViewModel.CamoEnabled" T="bool">@Translation.CaptainSkillSelector_Camo</MudCheckBox> *@
             </MudItem>
             @foreach (var (skillName, skill) in ViewModel.SkillList!)
             {

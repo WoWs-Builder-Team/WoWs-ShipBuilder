@@ -1,5 +1,4 @@
 ﻿using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.Core.Translations;
 
 namespace WoWsShipBuilder.Core.Localization;
 
