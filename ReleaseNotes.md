@@ -1,25 +1,13 @@
-# Update 1.5.2
+# Update 1.5.3 - pre
 
 ## Additions
-- Add ability to change plot plane for vertical dispersion chart.
-- Allow to include consumable effects in ship statistics. (#141)
-- Add additional parameters for depth charges.
-- Add damage distribution chart for depth charges.
-- Add HP and amount of repairable damage parameters for each ship section.
-- Add ships nation flags.
+
 
 ## Changes
-- The gamedata updater no longer downloads data that is not supported by the current application version. 
-- Engine power timings now take into account the game time scaling.
-- Remove server side reload time, rate of fire and DPM parameters because the server tick rate issue has been fixed.
-- Remove camo modifier from ship stat calculation
+
 
 ## Bugfixes
-- Fix "Skills & Talents" button not enabling when loading a build with conditional skills selected.
-- Fix torpedo reload time parameter being displayed incorrectly in the torpedo reload booster consumable.
-- Fix tier 1 ships names sometimes being displayed incorrectly.
-- Fix an error during the initialization of the localization data for server type PTS.
-- Fix an error when opening a ship after switching the server type of the application.
+- Fix application error when opening I-56
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

@@ -41,7 +41,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-        public static async Task<ShipDataContainer> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
+        public static async Task<ShipDataContainer> FromShipAsync(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
         {
             var shipDataContainer = new ShipDataContainer(ship.Index)
             {

@@ -14,7 +14,7 @@
              xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Core.DataContainers;assembly=WoWsShipBuilder.Core">
 
     <Design.DataContext>
-        <shipVm:ShipStatsControlViewModel />
+        <shipVm:ShipStatsControlPreviewViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
