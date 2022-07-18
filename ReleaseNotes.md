@@ -1,10 +1,10 @@
-# Update 1.5.3 - pre
+# Update 1.5.3
 
 ## Additions
 
 
 ## Changes
-
+- Minor translation updates
 
 ## Bugfixes
 - Fix application error when opening I-56
