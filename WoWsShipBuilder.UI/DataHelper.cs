@@ -55,7 +55,7 @@ namespace WoWsShipBuilder.UI
         public static TurretModule GetPreviewTurretModule(ShipClass shipClass, int tier, Nation nation)
         {
             var testData = LoadPreviewShip(shipClass, tier, nation);
-            var currentShipStats = ShipDataContainer.FromShip(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance, DemoLocalizer).Result;
+            var currentShipStats = ShipDataContainer.FromShipAsync(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance).Result;
             return currentShipStats.MainBatteryDataContainer!.OriginalMainBatteryData;
         }
 

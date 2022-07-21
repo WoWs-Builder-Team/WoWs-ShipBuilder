@@ -58,7 +58,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private ShipModuleViewModel shipModuleViewModel = null!;
 
-    private ShipStatsControlViewModelBase? shipStatsControlViewModel;
+    private ShipStatsControlViewModel? shipStatsControlViewModel;
 
     private SignalSelectorViewModel? signalSelectorViewModel;
 
@@ -123,7 +123,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
     }
 
-    public ShipStatsControlViewModelBase? ShipStatsControlViewModel
+    public ShipStatsControlViewModel? ShipStatsControlViewModel
     {
         get => shipStatsControlViewModel;
         set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
@@ -240,7 +240,8 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, appSettings));
         ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
 
-        ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService, localizer);
+        ShipStatsControlViewModel = new(EffectiveShipData, appDataService);
+        await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)
         {
