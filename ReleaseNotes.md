@@ -1,13 +1,13 @@
-# Update 1.5.3
+# Update 1.5.4 - pre
 
 ## Additions
 
 
 ## Changes
-- Minor translation updates
+
 
 ## Bugfixes
-- Fix application error when opening I-56
+
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
