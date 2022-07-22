@@ -20,6 +20,12 @@ public class MouseEventInterop : IAsyncDisposable
         await module.InvokeVoidAsync("PreventMiddleClickDefault", id);
     }
 
+    public async Task PreventMiddleClickDefaultBatched(IEnumerable<string> ids)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("PreventMiddleClickDefaultBatched", ids);
+    }
+
     [MemberNotNull(nameof(module))]
     private async Task InitializeModule()
     {

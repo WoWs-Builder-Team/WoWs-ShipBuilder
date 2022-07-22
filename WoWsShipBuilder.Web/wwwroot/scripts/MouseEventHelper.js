@@ -1,5 +1,16 @@
 ﻿export function PreventMiddleClickDefault(id) {
-   const element = document.getElementById(id);
-   element.addEventListener("mousedown", function(e){ if(e.button === 1){ e.preventDefault(); return false;} });
+    const element = document.getElementById(id);
+    element.removeEventListener("mousedown", handleMiddleClick);
+    element.addEventListener("mousedown", handleMiddleClick);
 }
 
+function handleMiddleClick(event) {
+    if (event.button === 1) {
+        event.preventDefault();
+        return false;
+    }
+}
+
+export function PreventMiddleClickDefaultBatched(ids) {
+    ids.forEach(id => PreventMiddleClickDefault(id));
+}

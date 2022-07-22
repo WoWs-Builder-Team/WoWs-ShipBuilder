@@ -143,19 +143,19 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (ViewModel is not null)
+        if (shipChanged && ViewModel is not null)
         {
+            shipChanged = false;
+            var elementIds = new List<string>();
             if (ViewModel.PreviousShip is not null)
             {
-                await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
+                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
             }
             if (ViewModel.NextShips is not null)
             {
-                foreach (var ship in ViewModel.NextShips)
-                {
-                    await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ship.Index);
-                }   
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index));
             }
+            await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
         }
     }
 
