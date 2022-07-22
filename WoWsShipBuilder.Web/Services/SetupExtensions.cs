@@ -30,6 +30,7 @@ public static class SetupExtensions
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<TurretAngleVisualizerJsInterop>();
+        services.AddScoped<IClipboardService, WebClipboardService>();
 
         return services;
     }

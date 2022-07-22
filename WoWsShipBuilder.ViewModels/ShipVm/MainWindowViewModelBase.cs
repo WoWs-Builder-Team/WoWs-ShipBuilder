@@ -169,8 +169,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
-    public abstract void OpenSaveBuild();
-
     // Handle(true) closes this window too
     public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
@@ -217,6 +215,14 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     public async Task InitializeData(MainViewModelParams viewModelParams)
     {
         await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+    }
+
+    public Build CreateBuild(string? buildName)
+    {
+        return new(CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList())
+        {
+            BuildName = buildName ?? string.Empty,
+        };
     }
 
     private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
