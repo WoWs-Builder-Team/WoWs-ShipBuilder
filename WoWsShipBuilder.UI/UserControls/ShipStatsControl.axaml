@@ -256,6 +256,8 @@
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding DataElements}" />
+                        <TextBlock Classes="Clickable" Text="{x:Static translations:Translation.ShipStats_TurretAngles}"
+                                   PointerReleased="ShowTorpedoAngles" TextDecorations="Underline" Margin="0 8 0 0" />
                         <TextBlock Text="{x:Static translations:Translation.ShipStats_Torpedo}" Margin="0 8 0 0" />
                         <ItemsControl Items="{Binding Torpedoes}">
                             <ItemsControl.ItemTemplate>
