@@ -8,6 +8,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Components;
@@ -227,12 +228,10 @@ public class FiringAngleVisualizer : TemplatedControl
     /// <returns><see langword="true"/> if the difference is greater than 180 degrees, <see langword="false"/> otherwise.</returns>
     private static bool IsLargeArc(double startAngle, double endAngle)
     {
-        return startAngle switch
-        {
-            <= 0 when endAngle < 0 => Math.Abs(startAngle) + (endAngle + 360) > 180,
-            < 0 when endAngle > 0 => Math.Abs(startAngle) + endAngle > 180,
-            _ => endAngle - startAngle > 180,
-        };
+        startAngle += startAngle < 0 ? 360 : 0;
+        endAngle += endAngle <= 0 ? 360 : 0;
+        double diff = endAngle - startAngle;
+        return diff < 0 ? diff + 360 > 180 : endAngle - startAngle > 180;
     }
 
     /// <summary>
@@ -291,6 +290,7 @@ public class FiringAngleVisualizer : TemplatedControl
         Point startPoint = PolarToCartesian(startAngle, radius, center);
         if (Math.Abs(startAngle - endAngle) < 0.01)
         {
+            Logging.Logger.Warn("Using fallback angle draw implementation");
             double middleAngle = startAngle < 179 ? 180 : 0;
             Point middlePoint = PolarToCartesian(middleAngle, radius, center);
             geometryContext.BeginFigureFluent(startPoint, true)
@@ -350,6 +350,17 @@ public class FiringAngleVisualizer : TemplatedControl
         }
 
         return geometry;
+    }
+
+    private static double NormalizeAngle(double angle)
+    {
+        angle %= 360;
+        if (angle > 180)
+        {
+            angle -= 360;
+        }
+
+        return angle;
     }
 
     /// <summary>
@@ -629,38 +640,22 @@ public class FiringAngleVisualizer : TemplatedControl
     private void DrawTurretAngles(DrawingContext context, IGun shipTurret, Point center, Rect shipRect)
     {
         double radius = CalculateRadius(shipRect) * RadiusFactor;
-        double startAngle = decimal.ToDouble(shipTurret.HorizontalSector[0]);
-        double endAngle = decimal.ToDouble(shipTurret.HorizontalSector[1]);
-
-        if (endAngle < 0)
-        {
-            endAngle += 360;
-        }
-
-        if (startAngle > 180)
-        {
-            startAngle -= 360;
-        }
-
-        startAngle += decimal.ToDouble(shipTurret.BaseAngle);
-        endAngle += decimal.ToDouble(shipTurret.BaseAngle);
+        var startAngle = decimal.ToDouble(shipTurret.HorizontalSector[0] + shipTurret.BaseAngle);
+        var endAngle = decimal.ToDouble(shipTurret.HorizontalSector[1] + shipTurret.BaseAngle);
         bool facingBackwards = shipTurret.BaseAngle > 0;
 
-        startAngle %= 360;
-        endAngle %= 360;
+        startAngle = NormalizeAngle(startAngle);
+        endAngle = NormalizeAngle(endAngle);
 
         var drawingGroup = new DrawingGroup();
         drawingGroup.AddChild(CreateArcs(startAngle, endAngle, radius, center), TurretAngleColor, new SolidColorBrush(Colors.DarkGray));
 
         foreach (decimal[] deadZone in shipTurret.HorizontalDeadZones ?? Array.Empty<decimal[]>())
         {
-            var zoneStart = decimal.ToDouble(deadZone[0]);
-            var zoneEnd = decimal.ToDouble(deadZone[1]);
-            if (facingBackwards)
-            {
-                zoneStart += 180;
-                zoneEnd += 180;
-            }
+            var zoneStart = decimal.ToDouble(deadZone[0] + shipTurret.BaseAngle);
+            var zoneEnd = decimal.ToDouble(deadZone[1] + shipTurret.BaseAngle);
+            zoneStart = NormalizeAngle(zoneStart);
+            zoneEnd = NormalizeAngle(zoneEnd);
 
             var arcGeometry = CreateArcs(zoneStart, zoneEnd, radius, center);
             drawingGroup.AddChild(arcGeometry, DeadZoneColor, DeadZoneColor);
