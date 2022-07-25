@@ -122,9 +122,7 @@ public static class ChartsHelper
         ImpactVelocity,
         ImpactAngle,
     }
-
-}
-
 // lowercase needed for chartjs to recognize to which axis the data belongs
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-public sealed record Point(double x, double y);
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public sealed record Point(double x, double y);
+}

@@ -142,7 +142,7 @@
                 artilleryData.Add(shellIndex, new());
             }
         }
-        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, -1);
+        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, -1, -1);
         ShipList.Add(wrapper);
     }
 
@@ -170,6 +170,7 @@
                 newData.Shell = shell;
                 newData.DispersionValues = gun.DispersionValues;
                 data.MaxRange = (double) gun.MaxRange;
+                data.Sigma = (double) gun.Sigma;
             }
         }
         selections.AddRange(ShipList.Where(x => oldStillSelectedUnchanged.Select(y => y.Key).Contains(x.ShipIndex)));

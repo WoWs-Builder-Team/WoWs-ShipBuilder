@@ -29,6 +29,7 @@ public static class SetupExtensions
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
+        services.AddScoped<DispersionPlotInterop>();
         services.AddScoped<TurretAngleVisualizerJsInterop>();
         services.AddScoped<IClipboardService, WebClipboardService>();
 
