@@ -19,11 +19,7 @@
     ctx.ellipse( width / 2, height /2, shipWidth/2, shipHeight /2, 0, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-    console.log(width)
-    console.log(height)
-    console.log(canvas.width)
-    console.log(canvas.height)
-    console.log("----------")
+    
     drawGun(ctx, width / 2, 200, Math.PI/4);
 
     drawSlice(ctx, -Math.PI/3, Math.PI * 24/18, width / 2, 200);
