@@ -54,57 +54,69 @@
             </MudItem>
         </MudGrid>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" OnClick="@(() => dispPlot.DrawDispersionPlot())">
-        <MudExpansionPanels>
-            <MudExpansionPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotExplanation)).Localization" Dense="true">
-                @Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotDescription)).Localization
-            </MudExpansionPanel>
-        </MudExpansionPanels>
-        <MudStack Row="true">
-            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
-                @if (processing)
-                {
-                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                    <MudText Class="ms-2" Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.button">
-                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                    </MudText>
-                }
-            </MudButton>
-            <MudNumericField Value="aimingRange" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotRange" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
-            <MudNumericField Value="shotsNumber" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShotsNumber)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotShotsNumber" T="int" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="10" Max="300" Step="1"/>
-            <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.2" Max="4" Step="0.1"/>
-            <MudButtonGroup OverrideStyles="false" DisableElevation="true" Class="gap-1">
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(verticalDispPlot, true)" Color="GetColorFromBool(verticalDispPlot, true)" OnClick="@(_ => SetHorizontalDispersionPlot())">
-                    @Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization">
+        <MudStack>
+             <MudExpansionPanels>
+                 <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                     <TitleContent>
+                         <div class="d-flex">
+                             <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                             <MudText Style="font-size: large">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotExplanation)).Localization</MudText>
+                         </div>
+                     </TitleContent>
+                     <ChildContent>
+                         <div style="white-space: break-spaces">
+                             <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotDescription)).Localization</MudText>
+                         </div>
+                     </ChildContent>
+                 </MudExpansionPanel>
+            </MudExpansionPanels>
+            <MudStack Row="true" Style="flex-wrap: wrap">
+                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation>
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                        </MudText>
+                    }
                 </MudButton>
-                <MudButton DisableElevation="true" Variant="GetVariantFromBool(verticalDispPlot, false)" Color="GetColorFromBool(verticalDispPlot, false)" OnClick="@(_ => SetVerticalDispersionPlot())">
-                    @Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization
-                </MudButton>
-            </MudButtonGroup>
-            <MudSelect Style="min-width: 185px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => dispPlot.DrawDispersionPlot())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                @foreach (var item in ellipsePlanesList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                <MudNumericField Value="aimingRange" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotRange" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+                <MudNumericField Value="shotsNumber" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShotsNumber)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotShotsNumber" T="int" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="500" Step="1"/>
+                <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.1" Max="4" Step="0.1"/>
+                <MudSelect Style="min-width: 196px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotOrientation)).Localization" Variant="Variant.Outlined" T="bool" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(_ => SetVerticalDispersionPlot(!verticalDispPlot))">
+                    <MudSelectItem Value="@false">
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_Horizontal).Localization</MudText>
                     </MudSelectItem>
-                }
-            </MudSelect>
-            <MudSelect Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DrawFusoReference)).Localization" @bind-Value="@selectedFusoPosition" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => dispPlot.DrawDispersionPlot())" T="DispersionPlot.FusoPositions" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
-                @foreach (var item in fusoPositionsList)
-                {
-                    <MudSelectItem Value="@item">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                    <MudSelectItem Value="@true">
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_Vertical).Localization</MudText>
                     </MudSelectItem>
-                }
-            </MudSelect>
+                </MudSelect>
+                <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in ellipsePlanesList)
+                    {
+                        <MudSelectItem Value="@item">
+                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect Style="min-width: 194px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DrawFusoReference)).Localization" @bind-Value="@selectedFusoPosition" Variant="Variant.Outlined" T="DispersionPlot.FusoPositions" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in fusoPositionsList)
+                    {
+                        <MudSelectItem Value="@item">
+                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+            <DispersionPlot @ref="dispPlot" Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling"/>
         </MudStack>
-        <DispersionPlot @ref="dispPlot" Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling"/>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
@@ -182,7 +194,7 @@
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = { };
-
+    
     private bool processing;
     private double range = 10;
     private double aimingRange = 10;
@@ -488,54 +500,36 @@
             StateHasChanged();
         }
     }
-    
-    private async Task UpdateDispersionPlotRange(double selectedValue)
+
+    private void UpdateDispersionPlotParameters()
     {
-        SetProcessing(true);
+        List<DispersionEllipse> data = dispPlotShips.Select(dispersionEllipse => DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionEllipse.Name, dispersionEllipse.DispersionData, dispersionEllipse.Shell, dispersionEllipse.MaxRange, aimingRange * 1000, dispersionEllipse.Sigma, shotsNumber)).ToList();
+        dispPlotShips.Clear();
+        dispPlotShips.AddRange(data);
+        StateHasChanged();
+    }
+
+    private void UpdateDispersionPlotRange(double selectedValue)
+    {
         aimingRange = selectedValue;
-        await dispPlot.DrawDispersionPlot();
-        SetProcessing(false);
+        UpdateDispersionPlotParameters();
     }
     
-    private async Task UpdateDispersionPlotShotsNumber(int selectedValue)
+    private void UpdateDispersionPlotShotsNumber(int selectedValue)
     {
-        SetProcessing(true);
         shotsNumber = selectedValue;
-        await dispPlot.DrawDispersionPlot();
-        SetProcessing(false);
+        UpdateDispersionPlotParameters();
     }
     
-    private async Task UpdateDispersionPlotScaling(double selectedValue)
+    private void UpdateDispersionPlotScaling(double selectedValue)
     {
-        SetProcessing(true);
-        dispPlotScaling = selectedValue;
-        await dispPlot.DrawDispersionPlot();
-        SetProcessing(false);
-    }
-    
-    private static Variant GetVariantFromBool(bool active, bool reverse)
-    {
-        return reverse ? !active ? Variant.Filled : Variant.Outlined : active ? Variant.Filled : Variant.Outlined;
+        dispPlotScaling = Math.Round(selectedValue, 1);
+        StateHasChanged();
     }
 
-    private static Color GetColorFromBool(bool active, bool reverse)
+    private void SetVerticalDispersionPlot(bool active)
     {
-        return reverse ? !active ? Color.Primary : Color.Secondary : active ? Color.Primary : Color.Secondary;
-    }
-
-    private async Task SetHorizontalDispersionPlot()
-    {
-        SetProcessing(true);
-        verticalDispPlot = false;
-        await dispPlot.DrawDispersionPlot();
-        SetProcessing(false);
-    }
-    
-    private async Task SetVerticalDispersionPlot()
-    {
-        SetProcessing(true);
-        verticalDispPlot = true;
-        await dispPlot.DrawDispersionPlot();
-        SetProcessing(false);
+        verticalDispPlot = active;
+        StateHasChanged();
     }
 }

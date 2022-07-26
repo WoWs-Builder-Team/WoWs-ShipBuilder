@@ -5,7 +5,7 @@
 @inject DispersionPlotInterop DispersionPlotInterop
 @inject ILocalizer Localizer
 
-<MudContainer Style="overflow-x: scroll" MaxWidth="MaxWidth.False" Class="py-3">
+<div class="d-flex ma-auto">
     <MudStack Row="IsVertical" Justify="Justify.Center" AlignItems="AlignItems.Center">
         @foreach (var dispersionEllipse in Ships)
         {
@@ -31,7 +31,7 @@
             <MudDivider Vertical="IsVertical" Light Absolute/>
         }
     </MudStack>
-</MudContainer>
+</div>
 
 @code {
 
@@ -46,12 +46,16 @@
     [Parameter]
     public bool IsVertical { get; set; }
 
-    private bool initialised;
-
-    public async Task DrawDispersionPlot()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await DrawDispersionPlot();
+    }
+    
+    private async Task DrawDispersionPlot()
     {
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
-        await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference());   
+        await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference());
     }
 
     public enum FusoPositions
