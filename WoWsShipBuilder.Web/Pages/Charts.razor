@@ -506,7 +506,6 @@
         List<DispersionEllipse> data = dispPlotShips.Select(dispersionEllipse => DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionEllipse.Name, dispersionEllipse.DispersionData, dispersionEllipse.Shell, dispersionEllipse.MaxRange, aimingRange * 1000, dispersionEllipse.Sigma, shotsNumber)).ToList();
         dispPlotShips.Clear();
         dispPlotShips.AddRange(data);
-        StateHasChanged();
     }
 
     private void UpdateDispersionPlotRange(double selectedValue)
@@ -524,13 +523,11 @@
     private void UpdateDispersionPlotScaling(double selectedValue)
     {
         dispPlotScaling = Math.Round(selectedValue, 1);
-        StateHasChanged();
     }
 
     private void SetVerticalDispersionPlot(bool active)
     {
         verticalDispPlot = active;
-        StateHasChanged();
     }
 
     public enum ChartsTabs
