@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Web.Services
 @using DynamicData
+@using WoWsShipBuilder.Web.Pages
 @using WoWsShipBuilder.Web.Utility
 @inject DispersionPlotInterop DispersionPlotInterop
 @inject ILocalizer Localizer
@@ -28,10 +29,10 @@
                     </MudPaper>
                 }
             </MudStack>
-            <MudDivider Vertical="IsVertical" Light Absolute/>
         }
     </MudStack>
 </div>
+<MudDivider Vertical="IsVertical" Light/>
 
 @code {
 
@@ -45,11 +46,16 @@
     public FusoPositions FusoPosition { get; set; }
     [Parameter]
     public bool IsVertical { get; set; }
+    [Parameter]
+    public Charts.ChartsTabs Tab { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        await DrawDispersionPlot();
+        if (Tab == Charts.ChartsTabs.DispersionPlot)
+        {
+            await DrawDispersionPlot();
+        }
     }
     
     private async Task DrawDispersionPlot()
@@ -156,9 +162,8 @@
         }
         return new(xRadius, yRadius);
     }
-
+    
     public sealed record DrawingData(double XRadiusOuterEllipse, double YRadiusOuterEllipse, double XRadiusInnerEllipse, double YRadiusInnerEllipse, List<ChartsHelper.Point> HitPoints);
 
     public sealed record Size(double Width, double Length);
-
 }

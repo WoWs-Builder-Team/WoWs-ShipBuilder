@@ -16,8 +16,8 @@
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" Outlined Border KeepPanelsAlive>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization">
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -54,7 +54,7 @@
             </MudItem>
         </MudGrid>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsTabs.DispersionPlot">
         <MudStack>
              <MudExpansionPanels>
                  <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
@@ -115,10 +115,10 @@
                     }
                 </MudSelect>
             </MudStack>
-            <DispersionPlot @ref="dispPlot" Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling"/>
+            <DispersionPlot Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
         </MudStack>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -147,7 +147,7 @@
             <canvas id="@ImpactAngleId"></canvas>
         </div>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
             @if (processing)
             {
@@ -206,7 +206,7 @@
     private ChartsHelper.EllipsePlanes selectedDispPlotPlane = ChartsHelper.EllipsePlanes.HorizontalPlane;
     private DispersionPlot.FusoPositions selectedFusoPosition = DispersionPlot.FusoPositions.DontShow;
 
-    private DispersionPlot dispPlot = default!;
+    private MudTabs chartsTabs = default!;
     private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
     private readonly List<DispersionEllipse> dispPlotShips = new();
     private readonly Dictionary<string, (IEnumerable<ChartsHelper.Point> verticalDispersionAtImpactAngle, IEnumerable<ChartsHelper.Point> verticalDispersionOnWater, IEnumerable<ChartsHelper.Point> verticalDispersionOnPerpendicularToWater)> verticalDispersionsCache = new();
@@ -531,5 +531,13 @@
     {
         verticalDispPlot = active;
         StateHasChanged();
+    }
+
+    public enum ChartsTabs
+    {
+        DispersionCharts,
+        DispersionPlot,
+        BallisticCharts,
+        TrajectoryChart,
     }
 }
