@@ -26,6 +26,7 @@
         const right = width - ellipseOffset / 2;
         const left = ellipseOffset / 2;
 
+        ctx.clearRect(0, 0, width, height);
         ctx.lineWidth  = 1;
         ctx.strokeStyle="gray";
         ctx.beginPath();
