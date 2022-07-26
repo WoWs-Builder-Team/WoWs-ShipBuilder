@@ -258,8 +258,8 @@
         
         await ChartJsInterop.SetupGlobalChartConfigAsync(aspectRatio);
 
-        await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-        await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+        await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+        await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
         await ChartJsInterop.CreateChartAsync(TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
         await ChartJsInterop.CreateChartAsync(PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
         await ChartJsInterop.CreateChartAsync(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
