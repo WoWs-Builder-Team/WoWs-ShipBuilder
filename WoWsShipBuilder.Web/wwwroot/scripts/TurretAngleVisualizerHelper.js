@@ -19,8 +19,12 @@
     ctx.ellipse( width / 2, height /2, shipWidth/2, shipHeight /2, 0, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-    
-    drawGun(ctx, width / 2, 200);
+    console.log(width)
+    console.log(height)
+    console.log(canvas.width)
+    console.log(canvas.height)
+    console.log("----------")
+    drawGun(ctx, width / 2, 200, Math.PI/4);
 
     drawSlice(ctx, -Math.PI/3, Math.PI * 24/18, width / 2, 200);
  
@@ -43,7 +47,7 @@ function getScaling()
     return 10;
 }
 
-function drawGun(context, x, y)
+function drawGun(context, x, y, angle)
 {
     const turret = getTurretPath();
     const turretWidth = 11.37708;
@@ -55,11 +59,15 @@ function drawGun(context, x, y)
     context.strokeStyle = "black";
     context.lineWidth  = 1 / scaling;
     
-    const xTranslation = x - (turretWidth * scaling /2);
-    const yTranslation = y- (turretHeight * scaling /2);
+    const xTranslation = x - (turretWidth * 0.5 * scaling);
+    const yTranslation = y - (turretHeight * 0.5 * scaling);
 
+    context.translate(xTranslation, yTranslation);
+    context.scale(scaling, scaling);
+    context.translate(turretWidth * 0.5 , turretWidth * 0.5 );
+    context.rotate(angle);
+    context.translate(-turretWidth* 0.5 , -turretWidth* 0.5 );
     
-    context.setTransform(scaling, 0, 0, scaling, xTranslation, yTranslation)
     context.fill(turret);
     
     context.stroke(turret);
