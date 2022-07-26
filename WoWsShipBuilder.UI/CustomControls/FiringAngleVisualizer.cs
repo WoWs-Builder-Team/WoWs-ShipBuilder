@@ -8,7 +8,6 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
-using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Components;
@@ -278,38 +277,6 @@ public class FiringAngleVisualizer : TemplatedControl
     }
 
     /// <summary>
-    /// Helper method to draw an arc on a StreamGeometryContext. Modifies the provided geometryContext.
-    /// </summary>
-    /// <param name="geometryContext">The context to draw on.</param>
-    /// <param name="startAngle">The start angle of the arc.</param>
-    /// <param name="endAngle">The end angle of the arc.</param>
-    /// <param name="radius">The radius of the arc.</param>
-    /// <param name="center">The center of the arc.</param>
-    private static void DrawArcFigure(StreamGeometryContext geometryContext, double startAngle, double endAngle, double radius, Point center)
-    {
-        Point startPoint = PolarToCartesian(startAngle, radius, center);
-        if (Math.Abs(startAngle - endAngle) < 0.01)
-        {
-            Logging.Logger.Warn("Using fallback angle draw implementation");
-            double middleAngle = startAngle < 179 ? 180 : 0;
-            Point middlePoint = PolarToCartesian(middleAngle, radius, center);
-            geometryContext.BeginFigureFluent(startPoint, true)
-                .ArcToFluent(middlePoint, new(radius, radius), 0.0, IsLargeArc(startAngle, middleAngle), SweepDirection.Clockwise)
-                .ArcToFluent(startPoint, new(radius, radius), 0.0, IsLargeArc(middleAngle, endAngle), SweepDirection.Clockwise)
-                .EndFigure(true);
-        }
-        else
-        {
-            Point endPoint = PolarToCartesian(endAngle, radius, center);
-            geometryContext.BeginFigureFluent(center, true)
-                .LineToFluent(startPoint)
-                .ArcToFluent(endPoint, new(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
-                .LineToFluent(center)
-                .EndFigure(true);
-        }
-    }
-
-    /// <summary>
     /// Helper method that draws a firing sector between two angles.
     /// </summary>
     /// <param name="startAngle">The start angle.</param>
@@ -352,6 +319,38 @@ public class FiringAngleVisualizer : TemplatedControl
         return geometry;
     }
 
+    /// <summary>
+    /// Helper method to draw an arc on a StreamGeometryContext. Modifies the provided geometryContext.
+    /// </summary>
+    /// <param name="geometryContext">The context to draw on.</param>
+    /// <param name="startAngle">The start angle of the arc.</param>
+    /// <param name="endAngle">The end angle of the arc.</param>
+    /// <param name="radius">The radius of the arc.</param>
+    /// <param name="center">The center of the arc.</param>
+    private static void DrawArcFigure(StreamGeometryContext geometryContext, double startAngle, double endAngle, double radius, Point center)
+    {
+        var startPoint = PolarToCartesian(startAngle, radius, center);
+        if (Math.Abs(startAngle - endAngle) < 0.01)
+        {
+            // Required for 360 degree turrets, otherwise this will only draw a single line and not an arc
+            double middleAngle = startAngle < 179 ? 180 : 0;
+            var middlePoint = PolarToCartesian(middleAngle, radius, center);
+            geometryContext.BeginFigureFluent(startPoint, true)
+                .ArcToFluent(middlePoint, new(radius, radius), 0.0, IsLargeArc(startAngle, middleAngle), SweepDirection.Clockwise)
+                .ArcToFluent(startPoint, new(radius, radius), 0.0, IsLargeArc(middleAngle, endAngle), SweepDirection.Clockwise)
+                .EndFigure(true);
+        }
+        else
+        {
+            var endPoint = PolarToCartesian(endAngle, radius, center);
+            geometryContext.BeginFigureFluent(center, true)
+                .LineToFluent(startPoint)
+                .ArcToFluent(endPoint, new(radius, radius), 0.0, IsLargeArc(startAngle, endAngle), SweepDirection.Clockwise)
+                .LineToFluent(center)
+                .EndFigure(true);
+        }
+    }
+
     private static double NormalizeAngle(double angle)
     {
         angle %= 360;
@@ -361,6 +360,29 @@ public class FiringAngleVisualizer : TemplatedControl
         }
 
         return angle;
+    }
+
+    /// <summary>
+    /// Creates a transform group with scale, rotate and translate transforms to move turret or launcher icons to their target position.
+    /// </summary>
+    /// <param name="turretScale">The scaling to apply to the target of the transform.</param>
+    /// <param name="degrees">The rotation angle in degrees.</param>
+    /// <param name="center">The center for the rotation.</param>
+    /// <param name="xOffset">The horizontal offset for the translation.</param>
+    /// <param name="yOffset">The vertical offset for the translation.</param>
+    /// <returns>A <see cref="TransformGroup"/> containing the transforms to move the geometry to its target position.</returns>
+    private static TransformGroup CreateTransformGroup(double turretScale, double degrees, Point center, double xOffset, double yOffset)
+    {
+        var scaling = new ScaleTransform(turretScale, turretScale);
+        var rotation = new RotateTransform(degrees, xOffset, yOffset);
+        var translation = new TranslateTransform(center.X - xOffset, center.Y - yOffset);
+
+        var transformGroup = new TransformGroup();
+        transformGroup.Children.Add(scaling);
+        transformGroup.Children.Add(rotation);
+        transformGroup.Children.Add(translation);
+
+        return transformGroup;
     }
 
     /// <summary>
@@ -565,7 +587,7 @@ public class FiringAngleVisualizer : TemplatedControl
         }
         else if (shipTurret is TorpedoLauncher)
         {
-            DrawTorpedoLauncherIcons(shipTurret, center, context);
+            DrawTorpedoLauncherIcons(radius, shipTurret, center, context);
         }
 
         var startAngle = decimal.ToDouble(shipTurret.HorizontalSector[0]);
@@ -585,49 +607,54 @@ public class FiringAngleVisualizer : TemplatedControl
         }
     }
 
-    private void DrawTorpedoLauncherIcons(IGun shipTurret, Point center, DrawingContext context)
+    private void DrawTorpedoLauncherIcons(double radius, IGun shipTurret, Point center, DrawingContext context)
     {
-        const int ellipseRadius = 15;
-        const int ellipseSize = ellipseRadius * 2;
-        var geometry = new EllipseGeometry(new(center.X - ellipseRadius, center.Y - ellipseRadius, ellipseSize, ellipseSize));
-        context.DrawGeometry(TurretColor, DefaultPen, geometry);
-        turretGeometries.Add((shipTurret, geometry, center));
+        var launcherGeometry = PathGeometry.Parse("M 0,9.7895832 H 8.4666666 M 0,8.2020833 H 8.4666666 M 0,4.4979166 c 0.52916666,0 8.4666666,0 8.4666666,0 M " +
+                                                  "0,1.5875 H 8.4666666 M 6.4771355,9.926714 V 1.6184604 c 0.2645833,-1.71052293 1.8520833,-1.71052293 " +
+                                                  "2.1166667,0 V 9.926714 c -0.7804407,0.807197 -1.4665162,0.597218 -2.1166667,0 z m -2.1166667,0 V 1.6184604 c " +
+                                                  "0.2645833,-1.71052293 1.8520833,-1.71052293 2.1166667,0 V 9.926714 c -0.6966683,0.689771 -1.4018189,0.721197 " +
+                                                  "-2.1166667,0 z m -2.1166667,0 V 1.6184604 c 0.2645833,-1.71052293 1.8520833,-1.71052293 2.1166667,0 V " +
+                                                  "9.926714 c -0.6925275,0.682249 -1.3971989,0.728549 -2.1166667,0 z m -2.1166666,0 V 1.6184604 c " +
+                                                  "0.26458333,-1.71052296 1.8520833,-1.71052296 2.1166667,0 V 9.926714 c -0.6978745,0.691941 -1.40312901,0.719063 -2.1166667,0 z");
+        launcherGeometry.FillRule = FillRule.NonZero;
+
+        double turretScale = radius / launcherGeometry.Bounds.Width;
+        double halfWidth = launcherGeometry.Bounds.Width * turretScale / 2;
+        double halfHeight = launcherGeometry.Bounds.Height * turretScale / 2;
+
+        launcherGeometry.Transform = CreateTransformGroup(turretScale, decimal.ToDouble(shipTurret.BaseAngle), center, halfWidth, halfHeight);
+        turretGeometries.Add((shipTurret, launcherGeometry, center));
+
+        var pen = new Pen
+        {
+            Brush = Brushes.DarkGray,
+        };
+        context.DrawGeometry(TurretColor, pen, launcherGeometry);
     }
 
     private void DrawArtilleryTurretIcons(double radius, IGun shipTurret, Point center, DrawingContext context)
     {
         var drawingGroup = new DrawingGroup();
-        PathGeometry turretGeometry = PathGeometry.Parse("M 10.451042,11.377083 9.525,12.170833 H 3.4395833 l -0.79375,-0.79375 h -1.5875 v -1.322916 h " +
-                                                         "0.79375 V 8.4666667 c 0,-0.5291667 0.3002661,-1.3683176 0.9634748,-1.6052961 0.449291,-0.1888714 " +
-                                                         "0.8886086,-0.2467873 1.4177752,-0.2467873 l 0,-4.7625 h 1.5875 l 0,4.7625 h 1.5875 l 0,-4.7625 h " +
-                                                         "1.5875 l 0,4.7625 c 0.5291667,0 1.2930047,0.095838 1.8008907,0.4810755 0.402385,0.3919374 " +
-                                                         "0.580359,1.1064245 0.580359,1.5319045 v 1.4266037 h 0.79375 v 1.322916 z");
-
-        PathGeometry turretOutlines = PathGeometry.Parse("m 7.4083332,6.6145832 v 1.0583334 h 1.5875 V 6.6145832 m -4.7624999,0 v 1.0583334 h 1.5875 V 6.6145832");
+        var turretGeometry = PathGeometry.Parse("M 9.5250002,9.6572912 8.5989582,10.451041 H 2.5135415 l -0.79375,-0.7937498 h -1.5875 v -1.322916 h " +
+                                                "0.79375 V 6.7468749 c 0,-0.5291667 0.3002661,-1.3683176 0.9634748,-1.6052961 0.449291,-0.1888714 " +
+                                                "0.8886086,-0.2467873 1.4177752,-0.2467873 v -4.7625 h 1.5875 v 4.7625 h 1.5875 v -4.7625 h 1.5875 v " +
+                                                "4.7625 c 0.5291667,0 1.2930047,0.095838 1.8008907,0.4810755 0.4023848,0.3919374 0.5803588,1.1064245 " +
+                                                "0.5803588,1.5319045 v 1.4266037 h 0.79375 v 1.322916 z");
         turretGeometry.FillRule = FillRule.NonZero;
-        double turretScale = radius * 2 / turretGeometry.Bounds.Width;
-        double xOffset = turretGeometry.Bounds.Left * turretScale;
-        double yOffset = turretGeometry.Bounds.Top * turretScale;
-        var matrix = Matrix.CreateScale(turretScale, turretScale);
-        if (shipTurret.BaseAngle > 0)
-        {
-            matrix *= Matrix.CreateRotation(decimal.ToDouble(shipTurret.BaseAngle) * (Math.PI / 180));
-            matrix *= Matrix.CreateTranslation(center.X + ((turretGeometry.Bounds.Width * turretScale) / 2) + xOffset, center.Y + (turretGeometry.Bounds.Width * turretScale * 0.75) + yOffset);
-        }
-        else
-        {
-            matrix *= Matrix.CreateTranslation(center.X - ((turretGeometry.Bounds.Width * turretScale) / 2) - xOffset, center.Y - (turretGeometry.Bounds.Width * turretScale * 0.75) - yOffset);
-        }
 
-        turretGeometry.Transform = new MatrixTransform(matrix);
-        turretOutlines.Transform = new MatrixTransform(matrix);
+        var turretOutlines = PathGeometry.Parse("m 6.4822914,4.8947915 v 1.0583334 h 1.5875 V 4.8947915 m -4.7624999,0 v 1.0583334 h 1.5875 V 4.8947915");
+        double turretScale = radius * 2 / turretGeometry.Bounds.Width;
+        double turretWidth = turretGeometry.Bounds.Width * turretScale;
+        double turretHeight = turretGeometry.Bounds.Height * turretScale;
+
+        var transformGroup = CreateTransformGroup(turretScale, decimal.ToDouble(shipTurret.BaseAngle), center, turretWidth * 0.5, turretHeight * 0.75);
+        turretGeometry.Transform = transformGroup;
+        turretOutlines.Transform = transformGroup;
+        turretGeometries.Add((shipTurret, turretGeometry, center));
 
         drawingGroup.AddChild(turretGeometry, TurretColor, Brushes.DarkGray);
         drawingGroup.AddChild(turretOutlines, Brushes.Transparent, Brushes.DarkGray);
-
         drawingGroup.Draw(context);
-
-        turretGeometries.Add((shipTurret, turretGeometry, center));
     }
 
     /// <summary>
