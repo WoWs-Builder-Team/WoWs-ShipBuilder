@@ -17,7 +17,7 @@
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 
 <MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsTabs.DispersionCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsHelper.ChartsTabs.DispersionCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -54,7 +54,7 @@
             </MudItem>
         </MudGrid>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsTabs.DispersionPlot">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsHelper.ChartsTabs.DispersionPlot">
         <MudStack>
              <MudExpansionPanels>
                  <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
@@ -102,7 +102,10 @@
                     @foreach (var item in ellipsePlanesList)
                     {
                         <MudSelectItem Value="@item">
-                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                            <MudStack Row AlignItems="AlignItems.Center">
+                                <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
+                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                            </MudStack>
                         </MudSelectItem>
                     }
                 </MudSelect>
@@ -115,10 +118,10 @@
                     }
                 </MudSelect>
             </MudStack>
-            <DispersionPlot Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+            <DispersionPlot Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsHelper.ChartsTabs)chartsTabs.ActivePanel.ID)"/>
         </MudStack>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsTabs.BallisticCharts">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsHelper.ChartsTabs.BallisticCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -147,7 +150,7 @@
             <canvas id="@ImpactAngleId"></canvas>
         </div>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsTabs.TrajectoryChart">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsHelper.ChartsTabs.TrajectoryChart">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
             @if (processing)
             {
@@ -528,13 +531,5 @@
     private void SetVerticalDispersionPlot(bool active)
     {
         verticalDispPlot = active;
-    }
-
-    public enum ChartsTabs
-    {
-        DispersionCharts,
-        DispersionPlot,
-        BallisticCharts,
-        TrajectoryChart,
     }
 }

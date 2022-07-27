@@ -47,12 +47,12 @@
     [Parameter]
     public bool IsVertical { get; set; }
     [Parameter]
-    public Charts.ChartsTabs Tab { get; set; }
+    public ChartsHelper.ChartsTabs Tab { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (Tab == Charts.ChartsTabs.DispersionPlot)
+        if (Tab == ChartsHelper.ChartsTabs.DispersionPlot)
         {
             await DrawDispersionPlot();
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
 using WoWsShipBuilder.Core.DataContainers;
@@ -122,6 +123,36 @@ public static class ChartsHelper
         ImpactVelocity,
         ImpactAngle,
     }
+
+    public enum ChartsTabs
+    {
+        DispersionCharts,
+        DispersionPlot,
+        BallisticCharts,
+        TrajectoryChart,
+    }
+
+    public static string GetPlaneIcon(EllipsePlanes selectedPlane)
+    {
+        var impactAnglePath = "<path style=\"stroke:#808080;stroke-width:1\" d=\"M 0 24 L 19 5 Z\"/>";
+        if (EllipsePlanes.RealPlane == selectedPlane)
+        {
+            impactAnglePath = "<path style=\"stroke:#FF2E2E;stroke-width:1\" d=\"M 0 24 L 19 5 Z\"/>";
+        }
+        var horizontalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
+        if (EllipsePlanes.HorizontalPlane == selectedPlane)
+        {
+            horizontalPath = "<path style=\"stroke:#FF2E2E;stroke-width:2\" d=\"M 0 24 H 24 Z\"/>";
+        }
+        var verticalPath = "<path style=\"stroke:#808080;stroke-width:2\" d=\"M 0 24 V -24 Z\"/>";
+        if (EllipsePlanes.VerticalPlane == selectedPlane)
+        {
+            verticalPath = "<path style=\"stroke:#FF2E2E;stroke-width:2\" d=\"M 0 24 V -24 Z\"/>";
+        }
+
+        return impactAnglePath + verticalPath + horizontalPath;
+    }
+
 // lowercase needed for chartjs to recognize to which axis the data belongs
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public sealed record Point(double x, double y);
