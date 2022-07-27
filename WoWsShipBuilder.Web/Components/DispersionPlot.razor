@@ -74,6 +74,17 @@
             $"50{perCent} {hits} {horizontal}",
             $"{m}",
         };
+        if (IsVertical)
+        {
+            text = new []
+            {
+                $"{max} {horizontal}",
+                $"{max} {vertical}",
+                $"50{perCent} {hits} {horizontal}",
+                $"50{perCent} {hits} {vertical}",
+                $"{m}",
+            };
+        }
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
         await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference(), text);
     }

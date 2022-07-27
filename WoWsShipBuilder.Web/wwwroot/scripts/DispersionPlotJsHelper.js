@@ -23,13 +23,13 @@
         const topText = `${text[2]} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
         const bottomText = `${text[0]} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
         const leftText  = `${text[1]} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
-        const rightText = `${text[3]} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
+        const rightText = `${text[3]} ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
         const minSize = ctx.measureText(
             [topText, bottomText, leftText, rightText].reduce(
                 function (a, b) {
                     return a.length > b.length ? a : b;
                 }
-        )).width + rulersOffset / 4;
+        )).width;
         if(canvas.width < minSize){
             canvas.width = minSize;
         }
