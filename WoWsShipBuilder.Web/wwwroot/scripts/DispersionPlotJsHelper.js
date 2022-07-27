@@ -154,12 +154,10 @@
         ctx.restore();
         
         ctx.fillStyle = "rgb(255 , 46 , 46)";
-        ctx.textBaseline = "bottom";
         ctx.fillText(topText, centerX, canvasTop - rulersOffset - 10);
 
         ctx.translate(canvasRight + rulersOffset + 10, centerY);
         ctx.rotate(Math.PI / 2);
-        ctx.textBaseline = "bottom";
         ctx.fillText(rightText, 0, 0);
         ctx.restore();
     }
