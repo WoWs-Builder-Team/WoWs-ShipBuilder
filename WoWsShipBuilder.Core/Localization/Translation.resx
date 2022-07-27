@@ -1450,4 +1450,7 @@ They do not have any effect on surface ships.</value>
   <data name="Consumable_HoldToggle" xml:space="preserve">
       <value>Hold an icon to toggle effects</value>
   </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Hits</value>
+  </data>
 </root>

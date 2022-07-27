@@ -1,4 +1,4 @@
-﻿export function DrawDispersionPlotBatched(data, scaling, fusoReference){
+﻿export function DrawDispersionPlotBatched(data, scaling, fusoReference, text){
     for(const key in data){
         const canvas = document.getElementById(key);
         const ctx = canvas.getContext("2d");
@@ -7,6 +7,7 @@
         
         const ellipseOffset = 100;
         const rulersOffset = 20;
+        
         canvas.width = drawingData.xRadiusOuterEllipse * 2 + ellipseOffset;
         canvas.height = drawingData.yRadiusOuterEllipse * 2 + ellipseOffset;
         if (Object.values(fusoReference)[0] !== 0 && Object.values(fusoReference)[1] !== 0){
@@ -17,12 +18,25 @@
                 canvas.height = Object.values(fusoReference)[1] * 2 + ellipseOffset;
             }
         }
-        if(canvas.width < 156){
-            canvas.width = 156;
+        
+        ctx.font = "14px Roboto";
+        const topText = `${text[2]} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
+        const bottomText = `${text[0]} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
+        const leftText  = `${text[1]} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
+        const rightText = `${text[3]} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
+        const minSize = ctx.measureText(
+            [topText, bottomText, leftText, rightText].reduce(
+                function (a, b) {
+                    return a.length > b.length ? a : b;
+                }
+        )).width + rulersOffset / 4;
+        if(canvas.width < minSize){
+            canvas.width = minSize;
         }
-        if(canvas.height < 156){
-            canvas.height = 156;
+        if(canvas.height < minSize){
+            canvas.height = minSize;
         }
+        
         const width = canvas.width;
         const height = canvas.height;
         const centerX = width / 2;
@@ -126,27 +140,26 @@
         ctx.lineTo(canvasRight + rulersOffset - 10, innerEllipseBottom);
         ctx.stroke();
         
-        ctx.font = "13px Roboto";
         ctx.fillStyle = "grey";
         ctx.textBaseline = "top";
         ctx.textAlign = "center";
-        ctx.fillText(`Max Vertical: ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} m`, centerX, canvasBottom + rulersOffset + 10);
+        ctx.fillText(bottomText, centerX, canvasBottom + rulersOffset + 10);
 
         ctx.save();
         ctx.translate(canvasLeft - rulersOffset - 10, centerY);
         ctx.rotate(-Math.PI / 2);
         ctx.textBaseline = "bottom";
-        ctx.fillText(`Max Horizontal: ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} m`, 0, 0);
+        ctx.fillText(leftText, 0, 0);
         ctx.restore();
         
         ctx.fillStyle = "rgb(255 , 46 , 46)";
         ctx.textBaseline = "bottom";
-        ctx.fillText(`50% Hits Vertical: ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} m`, centerX, canvasTop - rulersOffset - 10);
+        ctx.fillText(topText, centerX, canvasTop - rulersOffset - 10);
 
         ctx.translate(canvasRight + rulersOffset + 10, centerY);
         ctx.rotate(Math.PI / 2);
         ctx.textBaseline = "bottom";
-        ctx.fillText(`50% Hits Horizontal: ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} m`, 0, 0);
+        ctx.fillText(rightText, 0, 0);
         ctx.restore();
     }
 }

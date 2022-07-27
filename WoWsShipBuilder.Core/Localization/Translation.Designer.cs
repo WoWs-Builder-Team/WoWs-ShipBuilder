@@ -781,6 +781,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hits.
+        /// </summary>
+        public static string DispersionPlot_Hits {
+            get {
+                return ResourceManager.GetString("DispersionPlot_Hits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal:.
         /// </summary>
         public static string DispersionPlot_Horizontal {

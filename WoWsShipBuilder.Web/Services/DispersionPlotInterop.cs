@@ -15,10 +15,10 @@ public class DispersionPlotInterop : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async Task DrawDispersionPlotBatched(Dictionary<string, DispersionPlot.DrawingData> data, double plotScaling,DispersionPlot.Size fusoReference)
+    public async Task DrawDispersionPlotBatched(Dictionary<string, DispersionPlot.DrawingData> data, double plotScaling, DispersionPlot.Size fusoReference, string[] text)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("DrawDispersionPlotBatched", data, plotScaling, fusoReference);
+        await module.InvokeVoidAsync("DrawDispersionPlotBatched", data, plotScaling, fusoReference, text);
     }
 
     [MemberNotNull(nameof(module))]

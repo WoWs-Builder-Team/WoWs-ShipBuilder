@@ -60,8 +60,22 @@
     
     private async Task DrawDispersionPlot()
     {
+        string vertical = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Vertical)).Localization;
+        string horizontal = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Horizontal)).Localization;
+        string max = Localizer.GetAppLocalization(nameof(Translation.ShipStats_Max)).Localization;
+        string hits = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Hits)).Localization;
+        string perCent = Localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization;
+        string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
+        string[] text =
+        {
+            $"{max} {vertical}",
+            $"{max} {horizontal}",
+            $"50{perCent} {hits} {vertical}",
+            $"50{perCent} {hits} {horizontal}",
+            $"{m}",
+        };
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
-        await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference());
+        await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference(), text);
     }
 
     public enum FusoPositions
