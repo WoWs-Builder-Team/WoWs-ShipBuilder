@@ -1,6 +1,7 @@
 ﻿@using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Web.Services
 @using DynamicData
+@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Pages
 @using WoWsShipBuilder.Web.Utility
 @inject DispersionPlotInterop DispersionPlotInterop
@@ -66,15 +67,19 @@
         string hits = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Hits)).Localization;
         string perCent = Localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization;
         string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
-        string[] text =
+        string[] text;
+        if (!IsVertical)
         {
-            $"{max} {vertical}",
-            $"{max} {horizontal}",
-            $"50{perCent} {hits} {vertical}",
-            $"50{perCent} {hits} {horizontal}",
-            $"{m}",
-        };
-        if (IsVertical)
+            text = new[]
+            {
+                $"{max} {vertical}",
+                $"{max} {horizontal}",
+                $"50{perCent} {hits} {vertical}",
+                $"50{perCent} {hits} {horizontal}",
+                $"{m}",
+            };
+        }
+        else
         {
             text = new []
             {
