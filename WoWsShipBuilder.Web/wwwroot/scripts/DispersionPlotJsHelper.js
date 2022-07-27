@@ -10,12 +10,13 @@
         
         canvas.width = drawingData.xRadiusOuterEllipse * 2 + ellipseOffset;
         canvas.height = drawingData.yRadiusOuterEllipse * 2 + ellipseOffset;
-        if (Object.values(fusoReference)[0] !== 0 && Object.values(fusoReference)[1] !== 0){
-            if(Object.values(fusoReference)[0] > drawingData.xRadiusOuterEllipse){
-                canvas.width = Object.values(fusoReference)[0] * 2 + ellipseOffset;
+
+        if (fusoReference.width !== 0 && fusoReference.length !== 0){
+            if(fusoReference.width > drawingData.xRadiusOuterEllipse){
+                canvas.width = fusoReference.width * 2 + ellipseOffset;
             }
-            if(Object.values(fusoReference)[1] > drawingData.yRadiusOuterEllipse){
-                canvas.height = Object.values(fusoReference)[1] * 2 + ellipseOffset;
+            if(fusoReference.length > drawingData.yRadiusOuterEllipse){
+                canvas.height = fusoReference.length * 2 + ellipseOffset;
             }
         }
         
@@ -65,12 +66,12 @@
         ctx.lineTo(outerEllipseRight, centerY);
         ctx.stroke();
 
-        if (Object.values(fusoReference)[0] !== 0 && Object.values(fusoReference)[1] !== 0){
+        if (fusoReference.width !== 0 && fusoReference.length !== 0){
             ctx.lineWidth = 4;
             ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
             ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
             ctx.beginPath();
-            ctx.ellipse(centerX, centerY, Object.values(fusoReference)[0], Object.values(fusoReference)[1], 0, 0, 2 * Math.PI);
+            ctx.ellipse(centerX, centerY, fusoReference.width, fusoReference.length, 0, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
         }
@@ -98,9 +99,9 @@
         if(scaling < 1){
             pointRadius *= scaling;
         }
-        drawingData.hitPoints.forEach(function (point){
+        drawingData.hitPoints.forEach((point) => {
             ctx.beginPath();
-            ctx.ellipse(centerX - Object.values(point)[0], centerY - Object.values(point)[1], pointRadius, pointRadius, 0, 0, 2 * Math.PI);
+            ctx.ellipse(centerX - point.x, centerY - point.y, pointRadius, pointRadius, 0, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
         });
