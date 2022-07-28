@@ -67,29 +67,18 @@
         string hits = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Hits)).Localization;
         string perCent = Localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization;
         string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
-        string[] text;
-        if (!IsVertical)
+        string[] text = {
+            $"{max} {vertical}",
+            $"{max} {horizontal}",
+            $"50{perCent} {hits} {vertical}",
+            $"50{perCent} {hits} {horizontal}",
+            $"{m}",
+        };
+        if (IsVertical)
         {
-            text = new[]
-            {
-                $"{max} {vertical}",
-                $"{max} {horizontal}",
-                $"50{perCent} {hits} {vertical}",
-                $"50{perCent} {hits} {horizontal}",
-                $"{m}",
-            };
+            (text[0], text[1], text[2], text[3]) = (text[1], text[0], text[3], text[2]);
         }
-        else
-        {
-            text = new []
-            {
-                $"{max} {horizontal}",
-                $"{max} {vertical}",
-                $"50{perCent} {hits} {horizontal}",
-                $"50{perCent} {hits} {vertical}",
-                $"{m}",
-            };
-        }
+
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
         await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference(), text);
     }

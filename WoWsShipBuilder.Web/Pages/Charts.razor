@@ -72,7 +72,7 @@
                  </MudExpansionPanel>
             </MudExpansionPanels>
             <MudStack Row="true" Style="flex-wrap: wrap">
-                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation>
+                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
                     @if (processing)
                     {
                         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -531,5 +531,10 @@
     private void SetVerticalDispersionPlot(bool active)
     {
         verticalDispPlot = active;
+    }
+    
+    private bool SetFullWidth()
+    {
+        return Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
     }
 }

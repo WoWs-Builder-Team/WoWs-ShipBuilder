@@ -146,19 +146,17 @@
         ctx.textAlign = "center";
         ctx.fillText(bottomText, centerX, canvasBottom + rulersOffset + 10);
 
-        ctx.save();
+        ctx.textBaseline = "bottom";
         ctx.translate(canvasLeft - rulersOffset - 10, centerY);
         ctx.rotate(-Math.PI / 2);
-        ctx.textBaseline = "bottom";
         ctx.fillText(leftText, 0, 0);
-        ctx.restore();
+        ctx.resetTransform();
         
         ctx.fillStyle = "rgb(255 , 46 , 46)";
         ctx.fillText(topText, centerX, canvasTop - rulersOffset - 10);
-
         ctx.translate(canvasRight + rulersOffset + 10, centerY);
         ctx.rotate(Math.PI / 2);
         ctx.fillText(rightText, 0, 0);
-        ctx.restore();
+        ctx.resetTransform();
     }
 }
