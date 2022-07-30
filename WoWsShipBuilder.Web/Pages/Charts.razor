@@ -92,10 +92,10 @@
                 <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.1" Max="4" Step="0.1"/>
                 <MudSelect Style="min-width: 196px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotOrientation)).Localization" Variant="Variant.Outlined" T="bool" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(_ => SetVerticalDispersionPlot(!verticalDispPlot))">
                     <MudSelectItem Value="@false">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_Horizontal).Localization</MudText>
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization</MudText>
                     </MudSelectItem>
                     <MudSelectItem Value="@true">
-                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_Vertical).Localization</MudText>
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization</MudText>
                     </MudSelectItem>
                 </MudSelect>
                 <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
@@ -104,7 +104,7 @@
                         <MudSelectItem Value="@item">
                             <MudStack Row AlignItems="AlignItems.Center">
                                 <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
-                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
                             </MudStack>
                         </MudSelectItem>
                     }
@@ -113,7 +113,7 @@
                     @foreach (var item in fusoPositionsList)
                     {
                         <MudSelectItem Value="@item">
-                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
                         </MudSelectItem>
                     }
                 </MudSelect>
