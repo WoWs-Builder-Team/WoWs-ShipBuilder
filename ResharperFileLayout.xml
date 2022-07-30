@@ -188,6 +188,17 @@
                 <Kind Is="Operator"/>
             </Entry.Match>
         </Entry>
+        <Entry DisplayName="Static methods">
+            <Entry.Match>
+                <And>
+                    <Kind Is="Method" />
+                    <Static/>
+                </And>
+            </Entry.Match>
+            <Entry.SortBy>
+                <Access/>
+            </Entry.SortBy>
+        </Entry>
         <Entry Priority="100" DisplayName="Interface Implementations">
             <Entry.Match>
                 <And>
@@ -202,7 +213,6 @@
         <Entry DisplayName="All other members">
             <Entry.SortBy>
                 <Access/>
-                <Static/>
             </Entry.SortBy>
         </Entry>
         <Entry DisplayName="Nested Types">

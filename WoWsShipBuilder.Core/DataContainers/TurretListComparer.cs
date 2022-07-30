@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Components;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
-    public class TurretListComparer : IComparer<Gun>
+    public class TurretListComparer : IComparer<IGun>
     {
-        public int Compare(Gun? firstGun, Gun? secondGun)
+        public int Compare(IGun? firstGun, IGun? secondGun)
         {
             if (firstGun == null || secondGun == null)
             {

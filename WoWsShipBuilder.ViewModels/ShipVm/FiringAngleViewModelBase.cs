@@ -1,26 +1,33 @@
+using System.Collections.Generic;
 using ReactiveUI;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.DataStructures.Components;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
     public class FiringAngleViewModelBase : ViewModelBase
     {
-        public FiringAngleViewModelBase(TurretModule turrets)
+        private IEnumerable<IGun> guns;
+
+        private bool permaText = true;
+
+        private string permaTextButton = Translation.FiringAngleWindow_PermaTextOff;
+
+        private bool showAllText;
+
+        private string showAllTextButton = Translation.FiringAngleWindow_ShowAll;
+
+        public FiringAngleViewModelBase(IEnumerable<IGun> guns)
         {
-            Turrets = turrets;
+            this.guns = guns;
         }
 
-        private TurretModule turret = null!;
-
-        public TurretModule Turrets
+        public IEnumerable<IGun> Guns
         {
-            get => turret;
-            set => this.RaiseAndSetIfChanged(ref turret, value);
+            get => guns;
+            set => this.RaiseAndSetIfChanged(ref guns, value);
         }
-
-        private bool showAllText = false;
 
         public bool ShowAllText
         {
@@ -28,23 +35,17 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref showAllText, value);
         }
 
-        private string showAllTextButton = Translation.FiringAngleWindow_ShowAll;
-
         public string ShowAllTextButton
         {
             get => showAllTextButton;
             set => this.RaiseAndSetIfChanged(ref showAllTextButton, value);
         }
 
-        private bool permaText = true;
-
         public bool PermaText
         {
             get => permaText;
             set => this.RaiseAndSetIfChanged(ref permaText, value);
         }
-
-        private string permaTextButton = Translation.FiringAngleWindow_PermaTextOff;
 
         public string PermaTextButton
         {
