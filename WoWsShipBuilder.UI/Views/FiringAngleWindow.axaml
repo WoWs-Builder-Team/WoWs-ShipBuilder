@@ -12,7 +12,7 @@
         Height="640" Width="580">
     <Grid RowDefinitions="30,*" ColumnDefinitions="2*,*">
         <userControls:AppHeader Grid.Row="0" Grid.ColumnSpan="2" ShowMaximizeButton="True"/>
-        <customControls:FiringAngleVisualizer Margin="10" Grid.Column="0" Grid.Row="1" Turrets="{Binding Turrets}"
+        <customControls:FiringAngleVisualizer Margin="10" Grid.Column="0" Grid.Row="1" Turrets="{Binding Guns}"
                 ShowAllAngles="{Binding ShowAllText}" PermanentAngleText="{Binding PermaText}"
                 Foreground="{StaticResource ThemeBackgroundBrush}"/>
         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10" Spacing="10">
