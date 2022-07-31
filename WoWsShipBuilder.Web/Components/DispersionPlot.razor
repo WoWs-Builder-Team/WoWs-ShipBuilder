@@ -67,17 +67,17 @@
         string hits = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Hits)).Localization;
         string perCent = Localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization;
         string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
-        string[] text = {
-            $"{max} {vertical}",
-            $"{max} {horizontal}",
-            $"50{perCent} {hits} {vertical}",
-            $"50{perCent} {hits} {horizontal}",
-            $"{m}",
-        };
+        var outerVertical = $"{max} {vertical}";
+        var outerHorizontal = $"{max} {horizontal}";
+        string innerVertical = $"50{perCent} {hits} {vertical}";
+        string innerHorizontal = $"50{perCent} {hits} {horizontal}";
+        
         if (IsVertical)
         {
-            (text[0], text[1], text[2], text[3]) = (text[1], text[0], text[3], text[2]);
+            (outerVertical, outerHorizontal, innerVertical, innerHorizontal) = (outerHorizontal, outerVertical, innerHorizontal, innerVertical);
         }
+
+        var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
         await DispersionPlotInterop.DrawDispersionPlotBatched(data, PlotScaling, GetFusoReference(), text);
@@ -185,4 +185,7 @@
     public sealed record DrawingData(double XRadiusOuterEllipse, double YRadiusOuterEllipse, double XRadiusInnerEllipse, double YRadiusInnerEllipse, List<ChartsHelper.Point> HitPoints);
 
     public sealed record Size(double Width, double Length);
+
+    public sealed record DispPlotAxisLabels(string BottomLabel, string LeftLabel, string TopLabel, string RightLabel, string Meters);
+
 }

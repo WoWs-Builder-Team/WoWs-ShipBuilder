@@ -21,10 +21,10 @@
         }
         
         ctx.font = "14px Roboto";
-        const topText = `${text[2]} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
-        const bottomText = `${text[0]} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
-        const leftText  = `${text[1]} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text[4]}`;
-        const rightText = `${text[3]} ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} ${text[4]}`;
+        const topText = `${text.topLabel} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text.meters}`;
+        const bottomText = `${text.bottomLabel} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
+        const leftText  = `${text.leftLabel} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
+        const rightText = `${text.rightLabel} ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} ${text.meters}`;
         const minSize = ctx.measureText(
             [topText, bottomText, leftText, rightText].reduce(
                 function (a, b) {

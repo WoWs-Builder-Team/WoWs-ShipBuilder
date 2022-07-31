@@ -4,7 +4,6 @@
 @using System.Collections.Specialized
 @using DynamicData
 @using System.Linq
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @inject ILocalizer Localizer
@@ -149,10 +148,13 @@
     private async Task ReturnSelectedShells()
     {
         processing = true;
-        List<ShellSelectionWrapper> selections = ShipList.Where(x => x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
-        List<KeyValuePair<string, string>> oldStillSelected = (from selection in ShipList.Where(x => !x.MaxRange.Equals(-1) && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
-            from t in selection.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected)
-            select new KeyValuePair<string, string>(selection.ShipIndex, t.Key)).ToList();
+        List<ShellSelectionWrapper> selections = ShipList.Where(x => Math.Abs(x.MaxRange - -1) < 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<KeyValuePair<string, string>> oldStillSelected = ShipList
+            .Where(x => Math.Abs(x.MaxRange - -1) > 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
+            .SelectMany(
+                selection => selection.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected), 
+                (selection, t) => new KeyValuePair<string, string>(selection.ShipIndex, t.Key))
+            .ToList();
         List<KeyValuePair<string, string>> oldStillSelectedUnchanged = alreadyDisplayedShips.Intersect(oldStillSelected).ToList();
         oldStillSelected.RemoveMany(oldStillSelectedUnchanged);
         selections.AddRange(ShipList.Where(x => oldStillSelected.Select(y => y.Key).Contains(x.ShipIndex)));
@@ -169,8 +171,8 @@
                 var newData = data.ArtilleryDataDictionary[shellIndex];
                 newData.Shell = shell;
                 newData.DispersionValues = gun.DispersionValues;
-                data.MaxRange = (double) gun.MaxRange;
-                data.Sigma = (double) gun.Sigma;
+                data.MaxRange = decimal.ToDouble(gun.MaxRange);
+                data.Sigma = decimal.ToDouble(gun.Sigma);
             }
         }
         selections.AddRange(ShipList.Where(x => oldStillSelectedUnchanged.Select(y => y.Key).Contains(x.ShipIndex)));
