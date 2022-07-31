@@ -1,0 +1,53 @@
+﻿@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
+@implements IAsyncDisposable
+
+@inject TurretAngleVisualizerJsInterop TurretAngleInterop
+
+<MudDialog>
+    <DialogContent>
+        <canvas style="min-height: 300px; width: 100%; height: 70vh;" id="visualizer"></canvas>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    public MudDialogInstance DialogInstance { get; set; } = default!;
+
+    [Parameter]
+    public IEnumerable<GunDataContainer> GunDataContainers { get; set; } = default!;
+    
+    [Parameter]
+    public bool IsArtillery { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        DialogInstance.Options.CloseOnEscapeKey = true;
+        DialogInstance.Options.DisableBackdropClick = false;
+        DialogInstance.Options.FullWidth = true;
+        DialogInstance.Options.MaxWidth = MaxWidth.Medium;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await TurretAngleInterop.DrawVisualizerAsync(GunDataContainers, IsArtillery);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await TurretAngleInterop.CleanupSubscriptions();
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
+
+}
