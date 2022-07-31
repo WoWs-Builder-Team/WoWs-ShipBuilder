@@ -77,7 +77,7 @@ function redraw() {
     ctx.fillStyle = "black";
     texts.forEach(txt => {
         ctx.fillText(txt.text, txt.x, txt.y);
-    })
+    });
 }
 
 /**
