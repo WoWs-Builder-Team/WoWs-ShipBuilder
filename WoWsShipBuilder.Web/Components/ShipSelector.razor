@@ -50,9 +50,7 @@
         </MudSelect>
     </MudItem>
     <MudItem xs="12" md="@(LargerList ? 6 : 4)">
-        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-        </MudFocusTrap>
+        <MudTextField AutoFocus T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">

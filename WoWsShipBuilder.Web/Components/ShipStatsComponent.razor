@@ -8,10 +8,14 @@
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures.Components
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Dialogs
 @inherits ReactiveComponentBase<ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings
+@inject IDialogService DialogService
 
 @if (ViewModel is not null)
 {
@@ -67,8 +71,9 @@
                                 </MudPaper>
                             </TooltipContent>
                         </MudTooltip>
-                        @* TODO redirect/open the turret angle visualizer *@
-                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization</MudText>
+                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                        </MudText>
 
                         <!--Shell data-->
                         <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
@@ -113,6 +118,9 @@
                         {
                             @DataElementFragment((data,Localizer))
                         }
+                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                        </MudText>
                         <!--Torpedo data-->
                         <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
                         <MudStack>
@@ -315,7 +323,7 @@
                     </MudStack>
                 </MudExpansionPanel>
             }
-            
+
             @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
             {
                 <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
@@ -396,7 +404,7 @@
                         }
                     </MudStack>
                 </ChildContent>
-                
+
             </MudExpansionPanel>
 
             <!--T11 abilities-->
@@ -447,4 +455,28 @@
         var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
         return $"<path d=\"{path}\"/>";
     }
+
+    private void OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
+    {
+        var records = guns
+            .OrderBy(gun => gun, new TurretListComparer())
+            .Select(gun =>
+            {
+                var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
+                var deadZones = gun.HorizontalDeadZones?.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+                return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
+            });
+        var parameters = new DialogParameters
+        {
+            { nameof(FiringAngleDialog.IsArtillery), isArtillery },
+            { nameof(FiringAngleDialog.GunDataContainers), records },
+        };
+        var options = new DialogOptions
+        {
+            NoHeader = true,
+            CloseButton = false,
+        };
+        DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+    }
+
 }

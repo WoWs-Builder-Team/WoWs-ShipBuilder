@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
+using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -14,10 +15,16 @@ public class TurretAngleVisualizerJsInterop : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async Task DrawVisualizerAsync()
+    public async Task DrawVisualizerAsync(IEnumerable<GunDataContainer> gunDataContainers, bool isArtillery)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("DrawVisualizer");
+        await module.InvokeVoidAsync("drawVisualizer", gunDataContainers, isArtillery);
+    }
+
+    public async Task CleanupSubscriptions()
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("cleanSubscriptions");
     }
 
     [MemberNotNull(nameof(module))]
