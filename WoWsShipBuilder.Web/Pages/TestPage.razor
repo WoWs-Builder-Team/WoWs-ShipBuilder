@@ -14,7 +14,7 @@
 @inject AppSettings appSettings
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
-@inject TurretAngleVisualizerJsInterop VisualizerInterop
+@* @inject TurretAngleVisualizerJsInterop VisualizerInterop *@
 @inject IDialogService DialogService
 
 <MudText Typo="Typo.h2">Test Page</MudText>
@@ -28,7 +28,7 @@
 <MudButton OnClick="SaveCultureChangeAsync" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
 <MudText>@Localizer.GetAppLocalization(nameof(Translation.Battleship))</MudText>
 <MudButton OnClick="OpenFiringAngles">Open angle dialog</MudButton>
-<canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas>
+@* <canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas> *@
 @code {
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
@@ -60,7 +60,7 @@
                 return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
             });
             
-            await VisualizerInterop.DrawVisualizerAsync(records, true);
+            // await VisualizerInterop.DrawVisualizerAsync(records, true);
         }
     }
     

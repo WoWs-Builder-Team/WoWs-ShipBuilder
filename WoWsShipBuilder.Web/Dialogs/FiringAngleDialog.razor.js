@@ -67,7 +67,8 @@ function redraw() {
         if (endDegrees > 180) {
             endDegrees -= 360;
         }
-        texts.push({text: `${startDegrees}° to ${endDegrees}°`, x: horizontalPosition, y: verticalPosition})
+        console.log(startDegrees, endDegrees);
+        texts.push({text: `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`, x: horizontalPosition, y: verticalPosition})
     });
 
     ctx.resetTransform();

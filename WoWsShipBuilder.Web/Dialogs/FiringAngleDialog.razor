@@ -2,7 +2,7 @@
 @using WoWsShipBuilder.Web.Services
 @implements IAsyncDisposable
 
-@inject TurretAngleVisualizerJsInterop TurretAngleInterop
+@inject IJSRuntime Runtime
 
 <MudDialog>
     <DialogContent>
@@ -17,9 +17,11 @@
 
     [Parameter]
     public IEnumerable<GunDataContainer> GunDataContainers { get; set; } = default!;
-    
+
     [Parameter]
     public bool IsArtillery { get; set; }
+
+    private IJSObjectReference? module;
 
     protected override void OnInitialized()
     {
@@ -35,18 +37,23 @@
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender)
         {
-            await TurretAngleInterop.DrawVisualizerAsync(GunDataContainers, IsArtillery);
+            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/FiringAngleDialog.razor.js");
+            await module.InvokeVoidAsync("drawVisualizer", GunDataContainers, IsArtillery);
         }
     }
 
     public async ValueTask DisposeAsync()
     {
-        try
+        if (module is not null)
         {
-            await TurretAngleInterop.CleanupSubscriptions();
-        }
-        catch (JSDisconnectedException)
-        {
+            try
+            {
+                await module.InvokeVoidAsync("cleanSubscriptions");
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
         }
     }
 
