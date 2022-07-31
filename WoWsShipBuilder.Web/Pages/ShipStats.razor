@@ -15,7 +15,7 @@
     @foreach (var shipIndex in shipIndexes)
     {
         <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
-            <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged"/>
+            <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@shipBuildMapper.GetValueOrDefault(shipIndex, null)"/>
         </MudTabPanel>
     }
 </MudDynamicTabs>
@@ -29,6 +29,8 @@
 
     private readonly List<string> shipIndexes = new();
 
+    private readonly Dictionary<string, string?> shipBuildMapper = new();
+
     private bool updateTab;
 
     private string selectedTabId = string.Empty;
@@ -41,10 +43,14 @@
     {
         await base.OnInitializedAsync();
         NavManager.TryGetQueryString("shipIndexes", out string ships);
+        NavManager.TryGetQueryString("build", out string buildString);
         if (!string.IsNullOrWhiteSpace(ships))
         {
-            AddNewIndexes(ships.Split(","));
+            string[] indexes = ships.Split(",");
+            shipBuildMapper[indexes[0]] = buildString;
+            AddNewIndexes(indexes);
         }
+        UpdateUrl();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -63,6 +69,7 @@
             if (oldIndex is not null)
             {
                 shipIndexes.Replace(oldIndex, newIndex);
+                shipBuildMapper.Remove(oldIndex);
                 indexIdMapper[newIndex] = indexIdMapper[oldIndex];
                 indexIdMapper.Remove(oldIndex);
                 update = true;
@@ -87,6 +94,7 @@
         int index = shipIndexes.IndexOf(shipIndex);
         shipIndexes.Remove(shipIndex);
         indexIdMapper.Remove(shipIndex);
+        shipBuildMapper.Remove(shipIndex);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {

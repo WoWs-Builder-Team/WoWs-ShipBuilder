@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.UI.Views
 
         private void DonateButton_OnClick(object? sender, RoutedEventArgs e)
         {
-            const string url = "https://www.buymeacoffee.com/WoWsShipBuilder";
+            const string url = "https://ko-fi.com/wowsshipbuilder";
 
             Process.Start(new ProcessStartInfo
             {

@@ -103,7 +103,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
             }
 
-            var suoConfiguration = ship.FireControlList[shipConfiguration.First(c => c.UcType == ComponentType.Suo).Components[ComponentType.Suo].First()];
+            var suoName = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Suo)?.Components[ComponentType.Suo].First();
+            var suoConfiguration = suoName is not null ? ship.FireControlList[suoName] : null;
 
             List<(int BarrelCount, int TurretCount, string GunName)> arrangementList = mainBattery.Guns
                 .GroupBy(gun => gun.NumBarrels)
@@ -141,7 +142,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
             // Range modifiers
             var rangeModifiers = modifiers.FindModifiers("GMMaxDist");
-            decimal gunRange = mainBattery.MaxRange * suoConfiguration.MaxRangeModifier;
+            decimal gunRange = mainBattery.MaxRange * (suoConfiguration?.MaxRangeModifier ?? 1);
             decimal range = rangeModifiers.Aggregate(gunRange, (current, modifier) => current * (decimal)modifier);
             var consumableRangeModifiers = modifiers.FindModifiers("artilleryDistCoeff");
             range = consumableRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier);

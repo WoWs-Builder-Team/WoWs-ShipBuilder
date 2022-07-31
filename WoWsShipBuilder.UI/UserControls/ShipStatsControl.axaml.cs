@@ -47,10 +47,10 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
         {
-            var dc = (ShipStatsControlViewModelBase)DataContext!;
+            var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData),
+                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
@@ -58,7 +58,7 @@ namespace WoWsShipBuilder.UI.UserControls
 
         private async Task OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
         {
-            var dc = DataContext as ShipStatsControlViewModelBase;
+            var dc = DataContext as ShipStatsControlViewModel;
             var mainBattery = dc!.CurrentShipStats!.MainBatteryDataContainer!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.UI.UserControls
 
         public void OpenDepthChargeDamageDistributionChart(object sender, PointerReleasedEventArgs e)
         {
-            if (DataContext is not ShipStatsControlViewModelBase vm)
+            if (DataContext is not ShipStatsControlViewModel vm)
             {
                 e.Handled = true;
                 return;
@@ -88,6 +88,19 @@ namespace WoWsShipBuilder.UI.UserControls
             }
 
             e.Handled = true;
+        }
+
+        private void ShowTorpedoAngles(object? sender, PointerReleasedEventArgs e)
+        {
+            if (DataContext is ShipStatsControlViewModel viewModel)
+            {
+                var win = new FiringAngleWindow
+                {
+                    DataContext = new FiringAngleViewModelBase(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
+                };
+                win.Show((Window)this.GetVisualRoot());
+                e.Handled = true;
+            }
         }
     }
 }

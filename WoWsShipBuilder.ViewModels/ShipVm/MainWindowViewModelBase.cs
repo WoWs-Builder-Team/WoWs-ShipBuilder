@@ -58,7 +58,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private ShipModuleViewModel shipModuleViewModel = null!;
 
-    private ShipStatsControlViewModelBase? shipStatsControlViewModel;
+    private ShipStatsControlViewModel? shipStatsControlViewModel;
 
     private SignalSelectorViewModel? signalSelectorViewModel;
 
@@ -123,7 +123,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
     }
 
-    public ShipStatsControlViewModelBase? ShipStatsControlViewModel
+    public ShipStatsControlViewModel? ShipStatsControlViewModel
     {
         get => shipStatsControlViewModel;
         set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
@@ -168,8 +168,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     public Interaction<BuildCreationWindowViewModel, BuildCreationResult?> BuildCreationInteraction { get; } = new();
 
     public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
-
-    public abstract void OpenSaveBuild();
 
     // Handle(true) closes this window too
     public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
@@ -219,6 +217,14 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
 
+    public Build CreateBuild(string? buildName)
+    {
+        return new(CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList())
+        {
+            BuildName = buildName ?? string.Empty,
+        };
+    }
+
     private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
     {
         Logging.Logger.Info("Loading data for ship {0}", ship.Index);
@@ -240,7 +246,8 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
         ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
 
-        ShipStatsControlViewModel = new(EffectiveShipData, ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList(), appDataService, localizer);
+        ShipStatsControlViewModel = new(EffectiveShipData, appDataService);
+        await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)
         {
@@ -277,7 +284,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         CaptainSkillSelectorViewModel.WhenAnyValue(x => x.SkillActivationPopupOpen).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
         CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CaptainWithTalents).Subscribe(HandleCaptainParamsChange).DisposeWith(disposables);
-        CaptainSkillSelectorViewModel.WhenAnyValue(x => x.CamoEnabled).Subscribe(_ => UpdateStatsViewModel()).DisposeWith(disposables);
     }
 
     private void HandleCaptainParamsChange(bool newValue)

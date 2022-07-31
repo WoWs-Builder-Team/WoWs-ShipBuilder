@@ -9,6 +9,8 @@
 @using ReactiveUI
 @using WoWsShipBuilder.Core.Services
 @using DynamicData
+@using WoWsShipBuilder.Web.Dialogs
+@using System.Net
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -16,6 +18,9 @@
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
 @inject MouseEventInterop MouseEventInterop
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+@inject IClipboardService ClipboardService
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -23,37 +28,47 @@
 {
     <MudGrid>
         <MudItem xs="12">
-            <MudPaper Outlined="true" Class="d-flex justify-center align-end pa-1">
-                @if (ViewModel.PreviousShip is not null)
-                {
-                    <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
-                        <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
-                        <MudStack Row="true" Justify="Justify.Center">
-                            <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
-                            <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
-                        </MudStack>
-                    </MudStack>
-                }
-                <MudStack Class="px-2" AlignItems="AlignItems.Center">
-                    <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
-                    <MudStack Row="true" Justify="Justify.Center">
-                        <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
-                        <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
-                    </MudStack>
-                </MudStack>
-                @if (ViewModel.NextShips is not null)
-                {
-                    @foreach (var ship in ViewModel.NextShips)
-                    {
-                        <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
-                            <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
+            <MudPaper Outlined="true" Class="pa-1">
+                <MudGrid Justify="Justify.Center">
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert>
+                        <MudItem xs="0" md="2"/>
+                    </MudHidden>
+                    <MudItem xs="12" md="8" Class="d-flex justify-center align-end">
+                        @if (ViewModel.PreviousShip is not null)
+                        {
+                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
+                                <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
+                                <MudStack Row="true" Justify="Justify.Center">
+                                    <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
+                                    <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
+                                </MudStack>
+                            </MudStack>
+                        }
+                        <MudStack Class="px-2" AlignItems="AlignItems.Center">
+                            <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                             <MudStack Row="true" Justify="Justify.Center">
-                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
-                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
+                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
+                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
-                    }
-                }
+                        @if (ViewModel.NextShips is not null)
+                        {
+                            @foreach (var ship in ViewModel.NextShips)
+                            {
+                                <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
+                                    <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
+                                    <MudStack Row="true" Justify="Justify.Center">
+                                        <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                        <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
+                                    </MudStack>
+                                </MudStack>
+                            }
+                        }
+                    </MudItem>
+                    <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
+                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Share" OnClick="@OnShareBuildClicked">Share Build</MudButton>
+                    </MudItem>
+                </MudGrid>
             </MudPaper>
         </MudItem>
         @if (!(initialized && SettingsInitialized))
@@ -96,7 +111,7 @@
     [Parameter]
     [EditorRequired]
     public string ShipIndex { get; set; } = default!;
-    
+
     [Parameter]
     public Func<string?, string, bool>? OnShipChanged { get; set; }
 
@@ -105,13 +120,15 @@
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
-    
+
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
-    
+        
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
-    
+
     private bool initialized;
+
+    private bool shipChanged;
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,22 +143,20 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (ViewModel is not null)
+        if (shipChanged && ViewModel is not null)
         {
+            shipChanged = false;
+            var elementIds = new List<string>();
             if (ViewModel.PreviousShip is not null)
             {
-                await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
+                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
             }
             if (ViewModel.NextShips is not null)
             {
-                foreach (var ship in ViewModel.NextShips)
-                {
-                    await MouseEventInterop.PreventMiddleClickDefault(ViewModel.CurrentShipIndex + "_" + ship.Index);
-                }   
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index));
             }
+            await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
         }
-        
-        
     }
 
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
@@ -153,6 +168,7 @@
             if (!string.IsNullOrWhiteSpace(BuildString))
             {
                 build = Build.CreateBuildFromString(BuildString, Localizer);
+                BuildString = null;
             }
 
             var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
@@ -162,6 +178,7 @@
 
             ShipViewModel vm = new(null!, AppDataService, Localizer, AppSettings, vmParams);
             await vm.InitializeData(vmParams);
+            shipChanged = true;
             return vm;
         }
     }
@@ -184,7 +201,7 @@
         string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
-    
+
     private int GetImageWidth(bool isCurrentShip)
     {
         switch (Breakpoint)
@@ -196,7 +213,7 @@
                 return isCurrentShip ? 150 : 105;
         }
     }
-    
+
     private async Task UpdateToShip(MouseEventArgs args, string currentIndex, ShipSummary? updateToShipSummary)
     {
         if (updateToShipSummary is not null)
@@ -214,29 +231,43 @@
                 StateHasChanged();
             }
         }
-        // if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
-        // {
-        //     Snackbar.Add("The ship is already open in another tab", Severity.Warning, config => { config.CloseAfterNavigation = true; });
-        //     tabId = tabs.First(x => x!.CurrentShipIndex!.Equals(updateToShipSummary!.Index))!.CurrentShipIndex!;
-        //     updateTab = true;
-        //     return;
-        // }
-        // var vm = await LoadShipViewModel(updateToShipSummary!.Index);
-        // await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
-        //
-        // Console.WriteLine(args.Button);
-        // if (args.Button == 2)
-        // {
-        //     tabs.Add(vm);
-        //     updateTab = true;
-        //     tabId = updateToShipSummary.Index;
-        // }
-        // else
-        // {
-        //     var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
-        //     tabs[index] = vm;   
-        // }
-        //
-        // UpdateUrl();
+
+    // if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
+    // {
+    //     Snackbar.Add("The ship is already open in another tab", Severity.Warning, config => { config.CloseAfterNavigation = true; });
+    //     tabId = tabs.First(x => x!.CurrentShipIndex!.Equals(updateToShipSummary!.Index))!.CurrentShipIndex!;
+    //     updateTab = true;
+    //     return;
+    // }
+    // var vm = await LoadShipViewModel(updateToShipSummary!.Index);
+    // await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
+    //
+    // Console.WriteLine(args.Button);
+    // if (args.Button == 2)
+    // {
+    //     tabs.Add(vm);
+    //     updateTab = true;
+    //     tabId = updateToShipSummary.Index;
+    // }
+    // else
+    // {
+    //     var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
+    //     tabs[index] = vm;   
+    // }
+    //
+    // UpdateUrl();
+    }
+
+    private async Task OnShareBuildClicked()
+    {
+        var dialog = DialogService.Show<BuildShareDialog>();
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data is string buildName)
+        {
+            var build = ViewModel!.CreateBuild(buildName);
+            var buildString = build.CreateStringFromBuild();
+            var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+            await ClipboardService.SetTextAsync(buildUrl);
+        }
     }
 }

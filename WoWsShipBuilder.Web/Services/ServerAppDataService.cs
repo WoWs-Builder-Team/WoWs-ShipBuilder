@@ -30,7 +30,7 @@ public class ServerAppDataService : IAppDataService
     {
         AppData.ShipDictionary = new();
 
-        var onlineVersionInfo = await awsClient.DownloadVersionInfo(ServerType.Live);
+        var onlineVersionInfo = await awsClient.DownloadVersionInfo(ServerType.Dev1);
         if (onlineVersionInfo.CurrentVersion is not null)
         {
             AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
@@ -40,7 +40,7 @@ public class ServerAppDataService : IAppDataService
             AppData.DataVersion = "undefined";
         }
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
-        await awsClient.DownloadFiles(ServerType.Live, files);
+        await awsClient.DownloadFiles(ServerType.Dev1, files);
     }
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)

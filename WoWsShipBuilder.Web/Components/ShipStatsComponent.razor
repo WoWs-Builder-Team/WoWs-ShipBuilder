@@ -8,11 +8,15 @@
 @using Microsoft.Extensions.Logging.Console
 @using System.Text
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures.Components
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
-@inherits ReactiveComponentBase<ShipStatsControlViewModelBase>
+@inherits ReactiveComponentBase<ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
 @inject AppSettings AppSettings
+@inject IDialogService DialogService
 
 @if (ViewModel is not null)
 {
@@ -68,8 +72,9 @@
                                 </MudPaper>
                             </TooltipContent>
                         </MudTooltip>
-                        @* TODO redirect/open the turret angle visualizer *@
-                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization</MudText>
+                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.MainBatteryDataContainer.OriginalMainBatteryData.Guns, true))">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                        </MudText>
 
                         <!--Shell data-->
                         <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
@@ -114,6 +119,9 @@
                         {
                             @DataElementFragment((data,Localizer))
                         }
+                        <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                        </MudText>
                         <!--Torpedo data-->
                         <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
                         <MudStack>
@@ -345,6 +353,33 @@
                 </MudExpansionPanel>
             }
 
+            @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
+            {
+                <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Header).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                    <MudStack Spacing="2" Class="expander-content-padding">
+                        @foreach (var data in ViewModel.CurrentShipStats.AswAirstrikeDataContainer.DataElements)
+                        {
+                            @DataElementFragment((data, Localizer))
+                        }
+                        <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Weapon)).Localization</MudText>
+                        <MudStack Spacing="1" Class="ml-3">
+                            <div class="d-flex justify-space-between">
+                                <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Type)).Localization</MudText>
+                                <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@Localizer.GetAppLocalization(ViewModel.CurrentShipStats.AswAirstrikeDataContainer.WeaponType).Localization</MudText>
+                            </div>
+                            @foreach (var weaponData in ViewModel.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon?.DataElements ?? new())
+                            {
+                                @DataElementFragment((weaponData,Localizer))
+                            }
+                        </MudStack>
+                        @if (ViewModel.CurrentShipStats.AswAirstrikeDataContainer.WeaponType.Equals(ProjectileType.DepthCharge.ToString()))
+                        {
+                            <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
+                        }
+                    </MudStack>
+                </MudExpansionPanel>
+            }
+
             <!--Depth charges-->
             @if (ViewModel.CurrentShipStats?.DepthChargeLauncherDataContainer is not null)
             {
@@ -406,7 +441,7 @@
                         }
                     </MudStack>
                 </ChildContent>
-                
+
             </MudExpansionPanel>
 
             <!--T11 abilities-->
@@ -457,4 +492,28 @@
         var path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
         return $"<path d=\"{path}\"/>";
     }
+
+    private void OpenAngleDialog(IEnumerable<IGun> guns, bool isArtillery)
+    {
+        var records = guns
+            .OrderBy(gun => gun, new TurretListComparer())
+            .Select(gun =>
+            {
+                var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
+                var deadZones = gun.HorizontalDeadZones?.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+                return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
+            });
+        var parameters = new DialogParameters
+        {
+            { nameof(FiringAngleDialog.IsArtillery), isArtillery },
+            { nameof(FiringAngleDialog.GunDataContainers), records },
+        };
+        var options = new DialogOptions
+        {
+            NoHeader = true,
+            CloseButton = false,
+        };
+        DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+    }
+
 }

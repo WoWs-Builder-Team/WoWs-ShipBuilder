@@ -3,7 +3,6 @@
 @using System.Collections.Specialized
 @using System.Net
 @using WoWsShipBuilder.Core.BuildCreator
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Web.Services
 @inject NavigationManager NavManager
 @inject RefreshNotifierService NotifierService
@@ -95,7 +94,7 @@
         try
         {
             var build = Build.CreateBuildFromString(buildString, Localizer);
-            NavManager.NavigateTo($"/ship?shipIndex={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
+            NavManager.NavigateTo($"/ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}");
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Build loaded", Severity.Success);
         }

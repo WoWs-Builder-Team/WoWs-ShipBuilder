@@ -1,13 +1,14 @@
 ﻿/**
  * @description Setup global charts configurations.
  */
-export function SetupGlobalChartConfig()
+export function SetupGlobalChartConfig(aspectRatio)
 {
     let defaults = Chart.defaults;
     defaults.responsive = true;
     defaults.maintainAspectRatio = true;
     defaults.datasets.spanGaps = true;
     defaults.animation = false;
+    defaults.aspectRatio = aspectRatio;
     
     //colors settings
     defaults.color = '#a9a9a9';
@@ -138,7 +139,6 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
             type: 'line',
             options:
                 {
-                    aspectRatio: 3,
                     parsing: false,
                     scales:
                         {
