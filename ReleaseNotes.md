@@ -7,7 +7,7 @@
 
 
 ## Bugfixes
-
+- Fixed wrong modifier calculation for smoke dispersion time
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
