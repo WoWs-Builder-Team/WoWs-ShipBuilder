@@ -383,7 +383,7 @@
             <!--Depth charges-->
             @if (ViewModel.CurrentShipStats?.DepthChargeLauncherDataContainer is not null)
             {
-                var dcDataContext = ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge;
+                var dcDataContext = ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DepthCharge!;
                 <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_DepthChargesLauncher)).Localization" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var data in ViewModel.CurrentShipStats.DepthChargeLauncherDataContainer.DataElements)
