@@ -26,8 +26,13 @@ export function drawVisualizer(gunContainers, isArtillery) {
     canvas = document.getElementById("visualizer");
     window.removeEventListener("resize", redraw, false);
     window.addEventListener("resize", redraw, false);
+    
+    let myFont = new FontFace('RobotoBold', 'url(/assets/font/roboto/roboto-v29-latin_cyrillic-700.woff2)');
 
-    redraw();
+    myFont.load().then(function(font) {
+        document.fonts.add(font);
+        redraw();
+    });
 }
 
 export function cleanSubscriptions() {
@@ -72,7 +77,7 @@ function redraw() {
     });
 
     ctx.resetTransform();
-    ctx.font = "bold 18px Roboto";
+    ctx.font = "18px RobotoBold";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "black";
