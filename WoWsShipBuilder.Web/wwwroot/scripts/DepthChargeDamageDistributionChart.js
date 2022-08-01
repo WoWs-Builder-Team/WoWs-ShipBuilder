@@ -27,13 +27,18 @@ function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, sp
     
     const rad = radius * Math.sqrt(2) / 2
     ctx.scale(ratio, ratio);
-    ctx.font = "10px Roboto"
+    ctx.font = "13px Roboto"
     ctx.fillStyle = "white"
-    ctx.textAlign="end"
+    ctx.textAlign="center"
     ctx.textBaseline="top"
-    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, (centre + rad - 4) / ratio, (centre - rad + 4) / ratio)
+    ctx.translate((centre + rad - 4) / ratio, (centre - rad + 4) / ratio)
+    ctx.rotate(Math.PI/4)
+    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, 0, 0)
+    ctx.resetTransform();
     ctx.textBaseline="bottom"
-    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, (centre - rad - 1) / ratio, (centre - rad - 1) / ratio)
+    ctx.translate((centre - rad - 1) / ratio, (centre - rad - 1) / ratio)
+    ctx.rotate(-Math.PI/4)
+    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, 0, 0)
     ctx.resetTransform();
 }
 function drawExtraElements(ctx, centre){
@@ -45,6 +50,7 @@ function drawExtraElements(ctx, centre){
     ctx.fill()
     ctx.lineWidth  = 1
     ctx.setLineDash([3, 5])
+    ctx.fillStyle = "rgba(128,128,128,0.5)"
     ctx.beginPath()
     ctx.moveTo(centre, offset)
     ctx.lineTo(centre, end)
