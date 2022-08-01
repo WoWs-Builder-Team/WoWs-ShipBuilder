@@ -654,7 +654,6 @@
   <data name="ShipStats_DropTime" xml:space="preserve">
       <value>Сброс</value>
   </data>
-  
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
       <value>Макс</value>
   </data>
@@ -990,12 +989,9 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Полный залп</value>
   </data>
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Бронепробитие</value>
   </data>
-  
-  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &gt; 0 
      Модуль может быть выведен из строя.
@@ -1278,7 +1274,6 @@
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Затоп</value>
   </data>
-  
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
       <value>Макс. пожаров</value>
   </data>
@@ -1351,26 +1346,7 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Урон</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
