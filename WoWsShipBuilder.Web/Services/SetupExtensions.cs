@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using NLog;
@@ -6,6 +7,7 @@ using NLog.Config;
 using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
+using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -23,6 +25,12 @@ public static class SetupExtensions
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<IMetricsService, MetricsService>();
         services.AddSingleton<CircuitHandler, MetricCircuitHandler>();
+        services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
+        {
+            AutomaticDecompression = DecompressionMethods.All,
+        }));
+        services.AddSingleton<IAwsClient, ServerAwsClient>();
+        services.AddSingleton<IAppDataService, ServerAppDataService>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();

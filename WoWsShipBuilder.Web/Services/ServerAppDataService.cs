@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Core.DataProvider;
+﻿using Sentry;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -28,6 +29,7 @@ public class ServerAppDataService : IAppDataService
 
     public async Task FetchData()
     {
+        const string undefinedMarker = "undefined";
         AppData.ShipDictionary = new();
 
         var onlineVersionInfo = await awsClient.DownloadVersionInfo(ServerType.Dev1);
@@ -37,8 +39,15 @@ public class ServerAppDataService : IAppDataService
         }
         else
         {
-            AppData.DataVersion = "undefined";
+            AppData.DataVersion = undefinedMarker;
         }
+
+        SentrySdk.ConfigureScope(scope =>
+        {
+            scope.SetTag("data.version", onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3) ?? undefinedMarker);
+            scope.SetTag("data.iteration", onlineVersionInfo.CurrentVersion?.DataIteration.ToString() ?? undefinedMarker);
+            scope.SetTag("data.server", onlineVersionInfo.CurrentVersion?.VersionType.ToString() ?? undefinedMarker);
+        });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
         await awsClient.DownloadFiles(ServerType.Dev1, files);
     }
