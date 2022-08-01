@@ -1,7 +1,10 @@
 ﻿export function DrawDepthChargeDamageDistributionChart(id, dataRecord){
-    const canvas = document.getElementById(id)
+    const canvas = document.getElementById(id);
+    let ratio = window.devicePixelRatio;
+    canvas.width = canvas.clientWidth * ratio;
+    canvas.height = canvas.clientHeight * ratio;
+    const width = canvas.width;
     const ctx = canvas.getContext("2d")
-    const width = canvas.clientWidth
     ctx.strokeStyle = "white"
     ctx.lineWidth  = 2
     const centre = width / 2
@@ -10,11 +13,11 @@
     const pointsOfDmg = dataRecord.pointsOfDmg
     const mapLength = Object.keys(pointsOfDmg).length
     Object.keys(pointsOfDmg).sort().forEach((key, index) =>
-        drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius)
+        drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius, ratio)
     )
     drawExtraElements(ctx, centre)
 }
-function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius){
+function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius, ratio){
     const radius = radiusCoeff * 150
     ctx.fillStyle = `rgba(70,130,180,${opacity})`
     ctx.beginPath()
@@ -23,13 +26,15 @@ function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, sp
     ctx.stroke()
     
     const rad = radius * Math.sqrt(2) / 2
+    ctx.scale(ratio, ratio);
     ctx.font = "10px Roboto"
     ctx.fillStyle = "white"
     ctx.textAlign="end"
     ctx.textBaseline="top"
-    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, centre + rad - 4, centre - rad + 4)
+    ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, (centre + rad - 4) / ratio, (centre - rad + 4) / ratio)
     ctx.textBaseline="bottom"
-    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, centre - rad - 1, centre - rad - 1)
+    ctx.fillText(`${Math.round(splashRadius * radiusCoeff)} m`, (centre - rad - 1) / ratio, (centre - rad - 1) / ratio)
+    ctx.resetTransform();
 }
 function drawExtraElements(ctx, centre){
     const offset = 5
