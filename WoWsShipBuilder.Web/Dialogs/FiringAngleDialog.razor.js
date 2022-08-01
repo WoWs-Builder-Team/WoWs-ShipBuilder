@@ -44,9 +44,9 @@ export function cleanSubscriptions() {
 function redraw() {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    configureCanvas(canvas);
+    let ratio = window.devicePixelRatio;
+    configureCanvas(canvas, ratio);
     const shipRect = drawBasics(ctx);
-
     const radius = shipRect.width * 0.25;
     const scale = radius * 2 / (isArtilleryCache ? artilleryIconWidth : radius * 2 / torpedoIconWidth);
     let texts = [];
@@ -72,28 +72,30 @@ function redraw() {
         if (endDegrees > 180) {
             endDegrees -= 360;
         }
-        console.log(startDegrees, endDegrees);
         texts.push({text: `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`, x: horizontalPosition, y: verticalPosition})
     });
 
     ctx.resetTransform();
+    ctx.scale(ratio,ratio)
     ctx.font = "18px RobotoBold";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "black";
     texts.forEach(txt => {
-        ctx.fillText(txt.text, txt.x, txt.y);
+        ctx.fillText(txt.text, txt.x / ratio, txt.y / ratio);
     });
+    ctx.resetTransform();
 }
 
 /**
  * Configures the html canvas element.
  *
  * @param {HTMLCanvasElement} canvas The canvas element to configure.
+ * @param {number} ratio The ration from the devicePixelRation to use for better text rendering.
  */
-function configureCanvas(canvas) {
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
+function configureCanvas(canvas, ratio) {
+    canvas.width = canvas.clientWidth * ratio;
+    canvas.height = canvas.clientHeight * ratio;
 }
 
 /**
