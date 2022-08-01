@@ -192,8 +192,6 @@
   <data name="SettingsWindow_Data" xml:space="preserve">
     <value>Konwersja danych:</value>
   </data>
-  
-  
   <data name="SettingsWindow_Save" xml:space="preserve">
     <value>Zapisz</value>
   </data>
@@ -206,12 +204,9 @@
   <data name="MainWindow_CommanderXp" xml:space="preserve">
     <value>PD Dowódcy:</value>
   </data>
-  
   <data name="MainWindow_FreeXp" xml:space="preserve">
     <value>Wolne PD:</value>
   </data>
-  
-  
   <data name="MainWindow_XpBonus" xml:space="preserve">
     <value>PD bonus %</value>
   </data>
@@ -278,12 +273,9 @@
   <data name="Spain" xml:space="preserve">
     <value>Hiszpania</value>
   </data>
-  
   <data name="Submarine" xml:space="preserve">
     <value>Okręt podwodny</value>
   </data>
-  
-  
   <data name="UnitedKingdom" xml:space="preserve">
     <value>Zjednoczone Królestwo</value>
   </data>
@@ -314,44 +306,33 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Brak okrętów pasujących do kryteriów filtrowania</value>
   </data>
-  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Czas obrotu o 180°</value>
   </data>
-  
   <data name="ShipStats_Range" xml:space="preserve">
     <value>Zasięg</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>Szybkostrzelność</value>
   </data>
-  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>Sigma</value>
   </data>
-  
-  
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>Początkowa prędkość pocisku</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Waga pocisku</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FireChance" xml:space="preserve">
     <value>Narażenie na pożar</value>
   </data>
-  
-  
   <data name="ShipStats_Penetration" xml:space="preserve">
     <value>Penetracja</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>Kąty rykoszetu</value>
   </data>
-  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>PW samolotu</value>
   </data>
@@ -361,7 +342,6 @@
   <data name="ShipStats_BombType" xml:space="preserve">
     <value>Typ bomby</value>
   </data>
-  
   <data name="ShipStats_ConstantDamage" xml:space="preserve">
     <value>Stałe uszkodzenia</value>
   </data>
@@ -374,18 +354,15 @@
   <data name="ShipStats_Detectability" xml:space="preserve">
     <value>Zasięg wykrywania</value>
   </data>
-  
   <data name="ShipStats_FlakDamage" xml:space="preserve">
     <value>Uszkodzenia plot</value>
   </data>
   <data name="ShipStats_HitChance" xml:space="preserve">
     <value>Szansa na trafienie</value>
   </data>
-  
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>Bateria główna</value>
   </data>
-  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>Torpeda</value>
   </data>
@@ -404,15 +381,12 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>DPS na pożar</value>
   </data>
-  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Redukcja szansy na pożar</value>
   </data>
-  
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>DPS na zalanie</value>
   </data>
-  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Prawdopodobieństwo zalania</value>
   </data>
@@ -434,15 +408,12 @@
   <data name="MessageBox_Error" xml:space="preserve">
     <value>Błąd</value>
   </data>
-  
-  
   <data name="ShipStats_Type" xml:space="preserve">
     <value>Typ</value>
   </data>
   <data name="ShipStats_TurretAngles" xml:space="preserve">
     <value>Pokaż kąty obrotu wieży</value>
   </data>
-  
   <data name="FiringAngleWindow_HideAll" xml:space="preserve">
     <value>Zwiń wszystkie kąty</value>
   </data>
@@ -455,53 +426,36 @@
   <data name="FiringAngleWindow_ShowAll" xml:space="preserve">
     <value>Rozwiń wszystkie kąty</value>
   </data>
-  
   <data name="MainWindow_Signals" xml:space="preserve">
     <value>Sygnały</value>
   </data>
   <data name="ShipStats_Name" xml:space="preserve">
     <value>Nazwa</value>
   </data>
-  
   <data name="ShipStats_ArmingDistance" xml:space="preserve">
     <value>Odległość uzbrojenia</value>
   </data>
   <data name="ShipStats_CanHitClasses" xml:space="preserve">
     <value>Może trafić</value>
   </data>
-  
-  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Gdy w ogniu</value>
   </data>
-  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Gdy w ogniu</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Po wystrzeleniu w dymie</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Ochrona torpedowa</value>
   </data>
-  
-  
-  
-  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maks. Prędkość</value>
   </data>
   <data name="ShipStats_ManeuverabilityRudderShiftTime" xml:space="preserve">
     <value>Czas przestawiania steru</value>
   </data>
-  
-  
-  
-  
-  
   <data name="Bomb" xml:space="preserve">
     <value>Bomba</value>
   </data>
@@ -511,69 +465,36 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Prędkość</value>
   </data>
-  
   <data name="SkipBomb" xml:space="preserve">
     <value>Bomba skacząca</value>
   </data>
   <data name="Torpedo" xml:space="preserve">
     <value>Torpeda</value>
   </data>
-  
-  
-  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bomba w wewnętrznej elipsie</value>
   </data>
-  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maks. Prędkość</value>
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Min. Prędkość</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>Wizualizacja rozrzutu</value>
   </data>
-  
-  
-  
   <data name="ShipStats_PingerGun" xml:space="preserve">
     <value>Sonar</value>
   </data>
-  
-  
-  
   <data name="ShipStats_Shells" xml:space="preserve">
     <value>Pociski</value>
   </data>
-  
-  
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
-  
-  
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>Zapisz i wyjdź</value>
   </data>
-  
-  
-  
-  
   <data name="BuildImport_Import" xml:space="preserve">
     <value>Importuj</value>
   </data>
@@ -583,160 +504,54 @@
   <data name="BuildImport_ImportSave" xml:space="preserve">
     <value>Importuj i zapisz</value>
   </data>
-  
-  
   <data name="Cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  
-  
-  
-  
-  
   <data name="ShipStats_Duration" xml:space="preserve">
     <value>Czas trwania</value>
   </data>
-  
-  
-  
-  
-  
   <data name="DownloadWindow_Downloading" xml:space="preserve">
     <value>Pobieranie danych...</value>
   </data>
   <data name="ShipStats_AimingTime" xml:space="preserve">
     <value>Czas celowania</value>
   </data>
-  
-  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Czas przygotowania</value>
   </data>
-  
-  
-  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Współczynnik zmiany obszaru zrzutu podczas manewrowania</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="MainWindow_WGPremiumAccount" xml:space="preserve">
     <value>Konto premium WG</value>
   </data>
   <data name="MainWindow_WoWsPremiumAccount" xml:space="preserve">
     <value>Konto premium WoWs</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Wykresy balistyczne</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Broadside" xml:space="preserve">
     <value>Burta</value>
   </data>
   <data name="DontShow" xml:space="preserve">
     <value>Ukryj</value>
   </data>
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetracja</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Dialog_Save" xml:space="preserve">
     <value>Zapisz</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
-  
-  
   <data name="Dialog_Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
@@ -755,7 +570,6 @@
   <data name="Unit_S" xml:space="preserve">
     <value>s</value>
   </data>
-  
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
@@ -774,92 +588,10 @@
   <data name="Unit_ShotsPerMinute" xml:space="preserve">
     <value>strzały/min</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_HP" xml:space="preserve">
       <value>PW</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Uszkodzenia</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>
