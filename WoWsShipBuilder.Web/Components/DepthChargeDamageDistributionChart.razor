@@ -18,7 +18,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (DataRecord is not null && firstRender)
+        if (firstRender && DataRecord is not null)
         {
             await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + ShipIndex, DataRecord);
         }

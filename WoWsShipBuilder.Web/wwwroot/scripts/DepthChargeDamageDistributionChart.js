@@ -18,7 +18,7 @@
     drawExtraElements(ctx, centre)
 }
 function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius, ratio){
-    const radius = radiusCoeff * 150
+    const radius = radiusCoeff * 150 * ratio
     ctx.fillStyle = `rgba(70,130,180,${opacity})`
     ctx.beginPath()
     ctx.ellipse(centre, centre, radius, radius, 0, 0, 2 * Math.PI)
