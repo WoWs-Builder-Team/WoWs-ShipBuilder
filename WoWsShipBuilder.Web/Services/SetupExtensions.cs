@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using System.Reflection;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using NLog;
 using NLog.Config;
@@ -61,6 +62,21 @@ public static class SetupExtensions
             configuration.AddRule(LogLevel.Info, LogLevel.Fatal, logLoki);
         }
 
+        var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
+        var release = $"{version.Major}.{version.Minor}.{version.Build}";
+        configuration.AddSentry(o =>
+        {
+            o.Release = release;
+            o.Layout = "${message}";
+            o.BreadcrumbLayout = "${logger}: ${message}";
+            o.MinimumBreadcrumbLevel = LogLevel.Info;
+            o.MinimumEventLevel = LogLevel.Error;
+            o.AddTag("logger", "${logger}");
+
+            o.SendDefaultPii = false;
+        });
+
         LogManager.Configuration = configuration;
+        LogManager.ReconfigExistingLoggers();
     }
 }
