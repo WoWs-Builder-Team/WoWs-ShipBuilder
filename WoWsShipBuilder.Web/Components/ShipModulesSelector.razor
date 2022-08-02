@@ -6,8 +6,8 @@
 
 @if (ViewModel is not null)
 {
-    <MudCard Outlined="true" Class="pa-2">
-        <MudStack Row="true" Justify="Justify.SpaceAround" >
+    <MudCard Outlined="true" Class="py-2">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" Style="overflow-x: scroll">
             @foreach (var columnUpgrade in ViewModel.ShipUpgrades)
             {
                 <MudStack>
