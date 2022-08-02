@@ -2,13 +2,12 @@
     for(const key in data){
         const canvas = document.getElementById(key);
         const ctx = canvas.getContext("2d");
-        const ratio = window.devicePixelRatio;
-        
+
         const drawingData = data[key];
-        
+
         const ellipseOffset = 100;
         const rulersOffset = 20;
-        
+
         canvas.width = drawingData.xRadiusOuterEllipse * 2 + ellipseOffset;
         canvas.height = drawingData.yRadiusOuterEllipse * 2 + ellipseOffset;
 
@@ -20,31 +19,27 @@
                 canvas.height = fusoReference.length * 2 + ellipseOffset;
             }
         }
-        
+
         ctx.font = "14px Roboto";
         const topText = `${text.topLabel} ${Math.round(drawingData.xRadiusInnerEllipse * 2 / scaling)} ${text.meters}`;
         const bottomText = `${text.bottomLabel} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
         const leftText  = `${text.leftLabel} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
         const rightText = `${text.rightLabel} ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} ${text.meters}`;
-        const textMeasurement = ctx.measureText(
+        const minSize = ctx.measureText(
             [topText, bottomText, leftText, rightText].reduce(
                 function (a, b) {
                     return a.length > b.length ? a : b;
                 }
-            ));
-        //this makes it so there is always enough space for the texts to not overlap. it takes the text width and add the text height (multiplied by 2 because we have texts on both side of the longest text)
-        const minSize = textMeasurement.width * ratio + (textMeasurement.fontBoundingBoxAscent * 2) * ratio;
+            )).width;
         if(canvas.width < minSize){
             canvas.width = minSize;
         }
         if(canvas.height < minSize){
             canvas.height = minSize;
         }
+
         const width = canvas.width;
         const height = canvas.height;
-        canvas.style.width = width / ratio + "px";
-        canvas.style.height = height / ratio + "px";
-                
         const centerX = width / 2;
         const centerY = height / 2;
         const canvasTop = ellipseOffset / 2;
@@ -61,7 +56,7 @@
         const innerEllipseLeft = centerX - drawingData.xRadiusInnerEllipse;
 
         ctx.clearRect(0, 0, width, height);
-        
+
         ctx.lineWidth = 1;
         ctx.strokeStyle = "gray";
         ctx.beginPath();
@@ -80,7 +75,7 @@
             ctx.fill();
             ctx.stroke();
         }
-        
+
         ctx.lineWidth = 4;
         ctx.strokeStyle = "gray";
         ctx.fillStyle = "rgba(128, 128, 128, 0.1)";
@@ -110,7 +105,7 @@
             ctx.fill();
             ctx.stroke();
         });
-        
+
         ctx.lineWidth = 1;
         ctx.strokeStyle = "gray";
         ctx.beginPath();
@@ -146,24 +141,20 @@
         ctx.lineTo(canvasRight + rulersOffset - 10, innerEllipseBottom);
         ctx.stroke();
 
-        ctx.font = "14px Roboto";
-        ctx.scale(ratio, ratio);
         ctx.fillStyle = "grey";
         ctx.textBaseline = "top";
         ctx.textAlign = "center";
-        ctx.fillText(bottomText, centerX / ratio, (canvasBottom + rulersOffset + 10) / ratio);
+        ctx.fillText(bottomText, centerX, canvasBottom + rulersOffset + 10);
 
         ctx.textBaseline = "bottom";
-        ctx.translate((canvasLeft - rulersOffset - 10) / ratio, centerY / ratio );
+        ctx.translate(canvasLeft - rulersOffset - 10, centerY);
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(leftText, 0, 0);
         ctx.resetTransform();
 
-        
-        ctx.scale(ratio, ratio);
         ctx.fillStyle = "rgb(255 , 46 , 46)";
-        ctx.fillText(topText, centerX/ ratio, (canvasTop - rulersOffset - 10) / ratio);
-        ctx.translate((canvasRight + rulersOffset + 10) / ratio, centerY / ratio );
+        ctx.fillText(topText, centerX, canvasTop - rulersOffset - 10);
+        ctx.translate(canvasRight + rulersOffset + 10, centerY);
         ctx.rotate(Math.PI / 2);
         ctx.fillText(rightText, 0, 0);
         ctx.resetTransform();
