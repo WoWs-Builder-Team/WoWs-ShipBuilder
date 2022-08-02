@@ -33,6 +33,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application
-        run: dotnet build --no-restore -c Release
+        run: dotnet build --no-restore -c Release -p:TreatWarningsAsErrors=true
       - name: Test application
         run: dotnet test --no-build -c Release --verbosity normal

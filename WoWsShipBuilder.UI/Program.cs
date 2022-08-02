@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
+using WoWsShipBuilder.UI.Utilities;
 
 namespace WoWsShipBuilder.UI
 {
@@ -17,7 +18,7 @@ namespace WoWsShipBuilder.UI
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, new());
+            LoggingSetup.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, new());
             if (OperatingSystem.IsWindows())
             {
                 Logging.Logger.Debug("Operating system is windows.");

@@ -225,7 +225,7 @@
                     <MudStack Spacing="2" Class="expander-content-padding">
                         @foreach (var secondary in ViewModel.CurrentShipStats.SecondaryBatteryUiDataContainer.Secondaries)
                         {
-                            <MudExpansionPanel Dense DisableGutters Text="@(ConvertFormattedText(secondary.TurretSetup, Localizer))" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="child-expander rounded-0 my-2 mx-1">
+                            <MudExpansionPanel Dense DisableGutters Text="@(ConvertFormattedText(secondary.TurretSetup, Localizer))" IsInitiallyExpanded="true" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
                                 <MudStack Spacing="2" Class="expander-content-padding">
                                     @foreach (var secondaryData in secondary.DataElements)
                                     {
@@ -234,7 +234,7 @@
                                     <!--Shell data-->
                                     <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
                                     <!--Border bottom initial needed to fix the first expander having a wrong color when closed-->
-                                    <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(secondary.Shell?.Name ?? "").Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllExpandersByDefault ?? true)" Style="border-bottom: initial" Class="mx-1 mb-2 child-expander rounded-0">
+                                    <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(secondary.Shell?.Name ?? "").Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllExpandersByDefault ?? true)" Style="border-bottom: initial" Class="mb-1 child-expander rounded-0">
                                         <MudStack Spacing="2" Class="expander-content-padding mb-n3">
                                             @foreach (var data in secondary.Shell?.DataElements ?? new())
                                             {
