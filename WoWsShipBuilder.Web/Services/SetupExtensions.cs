@@ -1,10 +1,13 @@
 ﻿using System.IO.Abstractions;
+using System.Net;
+using System.Reflection;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
+using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -22,6 +25,12 @@ public static class SetupExtensions
         services.AddSingleton<ILocalizationProvider, LocalizationProvider>();
         services.AddSingleton<IMetricsService, MetricsService>();
         services.AddSingleton<CircuitHandler, MetricCircuitHandler>();
+        services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
+        {
+            AutomaticDecompression = DecompressionMethods.All,
+        }));
+        services.AddSingleton<IAwsClient, ServerAwsClient>();
+        services.AddSingleton<IAppDataService, ServerAppDataService>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();
@@ -29,8 +38,8 @@ public static class SetupExtensions
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
-        services.AddScoped<TurretAngleVisualizerJsInterop>();
         services.AddScoped<IClipboardService, WebClipboardService>();
+        services.AddScoped<DepthChargeDamageDistributionChartInterop>();
 
         return services;
     }
@@ -61,6 +70,21 @@ public static class SetupExtensions
             configuration.AddRule(LogLevel.Info, LogLevel.Fatal, logLoki);
         }
 
+        var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
+        var release = $"{version.Major}.{version.Minor}.{version.Build}";
+        configuration.AddSentry(o =>
+        {
+            o.Release = release;
+            o.Layout = "${message}";
+            o.BreadcrumbLayout = "${logger}: ${message}";
+            o.MinimumBreadcrumbLevel = LogLevel.Info;
+            o.MinimumEventLevel = LogLevel.Error;
+            o.AddTag("logger", "${logger}");
+
+            o.SendDefaultPii = false;
+        });
+
         LogManager.Configuration = configuration;
+        LogManager.ReconfigExistingLoggers();
     }
 }

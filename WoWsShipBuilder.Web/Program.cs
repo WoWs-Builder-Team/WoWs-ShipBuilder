@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Net;
 using MudBlazor;
 using MudBlazor.Services;
 using NLog.Web;
@@ -8,7 +7,6 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Services;
@@ -31,14 +29,7 @@ resolver.InitializeSplat();
 resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
 builder.Services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
-
 builder.Services.AddShipBuilderServerServices();
-builder.Services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
-{
-    AutomaticDecompression = DecompressionMethods.All,
-}));
-builder.Services.AddSingleton<IAwsClient, ServerAwsClient>();
-builder.Services.AddSingleton<IAppDataService, ServerAppDataService>();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();

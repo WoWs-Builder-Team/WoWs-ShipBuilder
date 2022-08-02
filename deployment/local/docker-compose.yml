@@ -9,6 +9,8 @@ services:
     networks:
       - local
     container_name: "wowssb-app"
+    environment:
+      SENTRY_DSN:
   prometheus:
     image: prom/prometheus
     volumes:

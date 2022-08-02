@@ -42,7 +42,13 @@ public class AppSettingsHelper : IAsyncDisposable
     {
         if (module is not null)
         {
-            await module.DisposeAsync();
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
 #if DEBUG
     private const string ShipBuilderName = "WoWsShipBuilderDev";
 #else
-        private const string ShipBuilderName = "WoWsShipBuilder";
+    private const string ShipBuilderName = "WoWsShipBuilder";
 #endif
 
 #pragma warning disable CS8603

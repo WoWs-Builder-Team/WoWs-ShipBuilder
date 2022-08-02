@@ -5,6 +5,7 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Linq
+@using MudBlazor.Services
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Web.Services
 @inject NavigationManager NavManager
@@ -13,9 +14,9 @@
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
+@inject IBreakpointService BreakpointService
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-
 <MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsHelper.ChartsTabs.DispersionCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
@@ -184,8 +185,7 @@
 
 @code
 {
-    [CascadingParameter]
-    public Breakpoint Breakpoint { get; set; }
+    private Breakpoint Breakpoint { get; set; }
 
     private const string HorizontalDispersionId = "horizontal-dispersion";
     private const string VerticalDispersionId = "vertical-dispersion";
@@ -239,6 +239,7 @@
         if (firstRender)
         {
             SetProcessing(true);
+            await BreakpointService.Subscribe(breakpoint => Breakpoint = breakpoint);
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
@@ -335,8 +336,8 @@
         
         await ChartJsInterop.SetupGlobalChartConfigAsync(aspectRatio);
 
-        await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-        await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization + " " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+        await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
+        await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
         await ChartJsInterop.CreateChartAsync(TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
         await ChartJsInterop.CreateChartAsync(PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
         await ChartJsInterop.CreateChartAsync(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);

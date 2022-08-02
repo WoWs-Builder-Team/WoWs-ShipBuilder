@@ -11,6 +11,7 @@
 @using DynamicData
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Net
+@using System.Diagnostics
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -38,17 +39,17 @@
                         {
                             <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
-                                <MudStack Row="true" Justify="Justify.Center">
+                                <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
-                                    <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
+                                    <MudText Align="Align.Center">@GetShipTier(ViewModel.PreviousShip.Tier) @Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
                                 </MudStack>
                             </MudStack>
                         }
                         <MudStack Class="px-2" AlignItems="AlignItems.Center">
                             <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
-                            <MudStack Row="true" Justify="Justify.Center">
+                            <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
-                                <MudText Align="Align.Center">@Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
+                                <MudText Align="Align.Center" >@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
                         @if (ViewModel.NextShips is not null)
@@ -57,9 +58,9 @@
                             {
                                 <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
-                                    <MudStack Row="true" Justify="Justify.Center">
+                                    <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                         <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
-                                        <MudText Align="Align.Center">@Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
+                                        <MudText Align="Align.Center">@GetShipTier(ship.Tier) @Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
                                     </MudStack>
                                 </MudStack>
                             }
@@ -212,6 +213,26 @@
             default:
                 return isCurrentShip ? 150 : 105;
         }
+    }
+
+    private string GetShipTier(int tier)
+    {
+        string t = tier switch
+        {
+            1 => "I",
+            2 => "II",
+            3 => "III",
+            4 => "IV",
+            5 => "V",
+            6 => "VI",
+            7 => "VII",
+            8 => "VIII",
+            9 => "IX",
+            10 => "X",
+            11 => "XI",
+            _ => "NaN",
+        };
+        return t;
     }
 
     private async Task UpdateToShip(MouseEventArgs args, string currentIndex, ShipSummary? updateToShipSummary)

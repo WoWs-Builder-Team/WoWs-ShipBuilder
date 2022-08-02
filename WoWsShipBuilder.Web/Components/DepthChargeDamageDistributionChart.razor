@@ -1,0 +1,26 @@
+﻿@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.DataStructures
+@inject DepthChargeDamageDistributionChartInterop DepthChargeInterop
+
+
+<MudPaper Outlined="true">
+    <canvas id="@("DepthCharges_" + ShipIndex)" style="width: 350px; height: 350px;"></canvas>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public string ShipIndex { get; set; } = default!;
+    [Parameter]
+    public DepthChargeDamageDistributionChartRecord? DataRecord { get; set; }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && DataRecord is not null)
+        {
+            await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + ShipIndex, DataRecord);
+        }
+    }
+}
