@@ -88,7 +88,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public List<ShellSelectionWrapper> ShipList { get; set; } = new();
+    public List<ChartsRenderingDataWrapper> ShipList { get; set; } = new();
 
     private readonly ObservableCollection<string> selectedShips = new();
     private readonly List<KeyValuePair<string, string>> alreadyDisplayedShips = new();
@@ -141,14 +141,14 @@
                 artilleryData.Add(shellIndex, new());
             }
         }
-        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, -1, -1);
+        ChartsRenderingDataWrapper wrapper = new(shipIndex, artilleryData);
         ShipList.Add(wrapper);
     }
 
     private async Task ReturnSelectedShells()
     {
         processing = true;
-        List<ShellSelectionWrapper> selections = ShipList.Where(x => Math.Abs(x.MaxRange - -1) < 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => Math.Abs(x.MaxRange - -1) < 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
         List<KeyValuePair<string, string>> oldStillSelected = ShipList
             .Where(x => Math.Abs(x.MaxRange - -1) > 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
             .SelectMany(
@@ -180,13 +180,13 @@
         MudDialog.Close(DialogResult.Ok(selections));
     }
 
-    private void RemoveShip(ShellSelectionWrapper ship)
+    private void RemoveShip(ChartsRenderingDataWrapper ship)
     {
         ShipList.Remove(ship);
         selectedShips.Remove(ship.ShipIndex);
     }
 
-    private void ToggleSelection(ShellSelectionWrapper ship, string shellIndex)
+    private void ToggleSelection(ChartsRenderingDataWrapper ship, string shellIndex)
     {
         ship.ArtilleryDataDictionary[shellIndex].ShellSelected = !ship.ArtilleryDataDictionary[shellIndex].ShellSelected;
         StateHasChanged();

@@ -1,6 +1,5 @@
 ﻿@using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @inject ILocalizer Localizer
@@ -80,7 +79,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public List<ShellSelectionWrapper> ShipList { get; set; } = new();
+    public List<ChartsRenderingDataWrapper> ShipList { get; set; } = new();
     
     private bool processing;
 
@@ -92,7 +91,7 @@
     private async Task ReturnSelectedShells()
     {
         processing = true;
-        List<ShellSelectionWrapper> selections = ShipList.Where(x => x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
         foreach (var data in selections)
         {
             var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(data.ShipIndex));
@@ -106,7 +105,8 @@
                 var newData = data.ArtilleryDataDictionary[shellIndex];
                 newData.Shell = shell;
                 newData.DispersionValues = gun.DispersionValues;
-                data.MaxRange = (double) gun.MaxRange;
+                data.MaxRange = decimal.ToDouble(gun.MaxRange);
+                data.Sigma = decimal.ToDouble(gun.Sigma);
             }
         }
         processing = false;
@@ -123,13 +123,13 @@
         return active ? Color.Primary : Color.Secondary;
     }
 
-    private void ToggleSelection(ShellSelectionWrapper ship, string shellIndex)
+    private void ToggleSelection(ChartsRenderingDataWrapper ship, string shellIndex)
     {
         ship.ArtilleryDataDictionary[shellIndex].ShellSelected = !ship.ArtilleryDataDictionary[shellIndex].ShellSelected;
         StateHasChanged();
     }
 
-    private void RemoveShip(ShellSelectionWrapper ship)
+    private void RemoveShip(ChartsRenderingDataWrapper ship)
     {
         ShipList.Remove(ship);
         StateHasChanged();

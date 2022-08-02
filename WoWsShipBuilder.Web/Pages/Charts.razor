@@ -210,7 +210,7 @@
     private DispersionPlot.FusoPositions selectedFusoPosition = DispersionPlot.FusoPositions.DontShow;
 
     private MudTabs chartsTabs = default!;
-    private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
+    private readonly Dictionary<string, ChartsRenderingDataWrapper> displayedShips = new();
     private readonly List<DispersionEllipse> dispPlotShips = new();
     private readonly Dictionary<string, (IEnumerable<ChartsHelper.Point> verticalDispersionAtImpactAngle, IEnumerable<ChartsHelper.Point> verticalDispersionOnWater, IEnumerable<ChartsHelper.Point> verticalDispersionOnPerpendicularToWater)> verticalDispersionsCache = new();
     private readonly Dictionary<string, Dictionary<double, Ballistic>> ballisticCache = new();
@@ -242,7 +242,7 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                List<ShellSelectionWrapper> selectedShipList = new();
+                List<ChartsRenderingDataWrapper> selectedShipList = new();
 
                 if (shellIndexFromUrl.Any())
                 {
@@ -266,13 +266,13 @@
                             artilleryData.Add(shellIndex, new());
                         }
                     }
-                    ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, (double)gun.MaxRange, (double)gun.Sigma);
+                    ChartsRenderingDataWrapper wrapper = new(shipIndex, artilleryData, decimal.ToDouble(gun.MaxRange), decimal.ToDouble(gun.Sigma));
 
                     selectedShipList.Add(wrapper);
                 }
                 else
                 {
-                    List<ShellSelectionWrapper> shipList = new();
+                    List<ChartsRenderingDataWrapper> shipList = new();
                     foreach (string shipIndex in shipIndexesFromUrl)
                     {
                         var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
@@ -287,7 +287,7 @@
                             }
                         }
 
-                        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, -1, -1);
+                        ChartsRenderingDataWrapper wrapper = new(shipIndex, artilleryData);
                         shipList.Add(wrapper);
                     }
 
@@ -309,7 +309,7 @@
                         SetProcessing(false);
                         return;
                     }
-                    selectedShipList = ((IEnumerable<ShellSelectionWrapper>)result.Data).ToList();
+                    selectedShipList = ((IEnumerable<ChartsRenderingDataWrapper>)result.Data).ToList();
                 }
                 await UpdateShipsBatchAsync(selectedShipList);
             }
@@ -345,7 +345,7 @@
         await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, range / 4 * 1000);
     }
 
-    private async Task UpdateShipsBatchAsync(List<ShellSelectionWrapper> shipList)
+    private async Task UpdateShipsBatchAsync(List<ChartsRenderingDataWrapper> shipList)
     {
         List<string> chartIds = GetChartsIdList();
 
@@ -456,7 +456,7 @@
             return;
         }
 
-        await UpdateShipsBatchAsync(((IEnumerable<ShellSelectionWrapper>)selectedShipList.Data).ToList());
+        await UpdateShipsBatchAsync(((IEnumerable<ChartsRenderingDataWrapper>)selectedShipList.Data).ToList());
         SetProcessing(false);
     }
 
