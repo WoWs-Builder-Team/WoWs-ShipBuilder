@@ -2,6 +2,7 @@
     for(const key in data){
         const canvas = document.getElementById(key);
         const ctx = canvas.getContext("2d");
+        const ratio = window.devicePixelRatio;
         
         const drawingData = data[key];
         
@@ -30,16 +31,18 @@
                 function (a, b) {
                     return a.length > b.length ? a : b;
                 }
-        )).width;
+        )).width * ratio;
         if(canvas.width < minSize){
             canvas.width = minSize;
         }
         if(canvas.height < minSize){
             canvas.height = minSize;
         }
-        
         const width = canvas.width;
         const height = canvas.height;
+        canvas.style.width = width / ratio + "px";
+        canvas.style.height = height / ratio + "px";
+                
         const centerX = width / 2;
         const centerY = height / 2;
         const canvasTop = ellipseOffset / 2;
@@ -140,21 +143,23 @@
         ctx.moveTo(canvasRight + rulersOffset + 10, innerEllipseBottom);
         ctx.lineTo(canvasRight + rulersOffset - 10, innerEllipseBottom);
         ctx.stroke();
-        
+
+        ctx.scale(ratio, ratio);
         ctx.fillStyle = "grey";
         ctx.textBaseline = "top";
         ctx.textAlign = "center";
-        ctx.fillText(bottomText, centerX, canvasBottom + rulersOffset + 10);
+        ctx.fillText(bottomText, centerX / ratio, (canvasBottom + rulersOffset + 10) / ratio);
 
         ctx.textBaseline = "bottom";
-        ctx.translate(canvasLeft - rulersOffset - 10, centerY);
+        ctx.translate((canvasLeft - rulersOffset - 10) / ratio, centerY / ratio );
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(leftText, 0, 0);
         ctx.resetTransform();
-        
+
+        ctx.scale(ratio, ratio);
         ctx.fillStyle = "rgb(255 , 46 , 46)";
-        ctx.fillText(topText, centerX, canvasTop - rulersOffset - 10);
-        ctx.translate(canvasRight + rulersOffset + 10, centerY);
+        ctx.fillText(topText, centerX/ ratio, (canvasTop - rulersOffset - 10) / ratio);
+        ctx.translate((canvasRight + rulersOffset + 10) / ratio, centerY / ratio );
         ctx.rotate(Math.PI / 2);
         ctx.fillText(rightText, 0, 0);
         ctx.resetTransform();
