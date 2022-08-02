@@ -83,6 +83,7 @@
         var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => "DispersionPlot_" + dispersionEllipse.Name, SetupData);
+        
         module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("DrawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
     }
