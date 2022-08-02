@@ -26,12 +26,13 @@
         const bottomText = `${text.bottomLabel} ${Math.round(drawingData.xRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
         const leftText  = `${text.leftLabel} ${Math.round(drawingData.yRadiusOuterEllipse * 2 / scaling)} ${text.meters}`;
         const rightText = `${text.rightLabel} ${Math.round(drawingData.yRadiusInnerEllipse * 2 / scaling)} ${text.meters}`;
-        const minSize = ctx.measureText(
+        const textMeasurement = ctx.measureText(
             [topText, bottomText, leftText, rightText].reduce(
                 function (a, b) {
                     return a.length > b.length ? a : b;
                 }
-        )).width * ratio;
+            ));
+        const minSize = textMeasurement.width * ratio + 25 * ratio;
         if(canvas.width < minSize){
             canvas.width = minSize;
         }
@@ -144,6 +145,7 @@
         ctx.lineTo(canvasRight + rulersOffset - 10, innerEllipseBottom);
         ctx.stroke();
 
+        ctx.font = "14px Roboto";
         ctx.scale(ratio, ratio);
         ctx.fillStyle = "grey";
         ctx.textBaseline = "top";
@@ -156,6 +158,7 @@
         ctx.fillText(leftText, 0, 0);
         ctx.resetTransform();
 
+        
         ctx.scale(ratio, ratio);
         ctx.fillStyle = "rgb(255 , 46 , 46)";
         ctx.fillText(topText, centerX/ ratio, (canvasTop - rulersOffset - 10) / ratio);
