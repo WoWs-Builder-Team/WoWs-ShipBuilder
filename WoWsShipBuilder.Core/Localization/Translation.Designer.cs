@@ -3962,6 +3962,16 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The 0° angle is at the top. Positive is clockwise, negative is counter clockwise. The red angles are the dead zones of the armament (can rotate to but not shoot).
+        ///      .
+        /// </summary>
+        public static string WebApp_ArtilleryAngleExplanation {
+            get {
+                return ResourceManager.GetString("WebApp_ArtilleryAngleExplanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current data version:.
         /// </summary>
         public static string WebApp_CurrentVersion {

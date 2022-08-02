@@ -3,10 +3,11 @@
 @implements IAsyncDisposable
 
 @inject IJSRuntime Runtime
-
+@inject ILocalizer Localizer
 <MudDialog>
     <DialogContent>
         <canvas style="min-height: 300px; width: 100%; height: 70vh;" id="visualizer"></canvas>
+        <MudText>@Localizer.GetAppLocalization(nameof(Translation.WebApp_ArtilleryAngleExplanation)).Localization</MudText>
     </DialogContent>
 </MudDialog>
 
