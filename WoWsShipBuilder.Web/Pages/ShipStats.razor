@@ -10,15 +10,17 @@
 
 <PageTitle>Ship stats</PageTitle>
 
-@* HideSlider is set to true because of a bug. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-<MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="pa-6" Outlined Border Class="pt-3">
-    @foreach (var shipIndex in shipIndexes)
-    {
-        <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
-            <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@shipBuildMapper.GetValueOrDefault(shipIndex, null)"/>
-        </MudTabPanel>
-    }
-</MudDynamicTabs>
+<MudBreakpointProvider>
+    @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+        @foreach (var shipIndex in shipIndexes)
+        {
+            <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
+                <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@shipBuildMapper.GetValueOrDefault(shipIndex, null)"/>
+            </MudTabPanel>
+        }
+    </MudDynamicTabs>
+</MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>

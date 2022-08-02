@@ -5,6 +5,7 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Linq
+@using MudBlazor.Services
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Web.Services
@@ -14,9 +15,9 @@
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
+@inject IBreakpointService BreakpointService
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-
 <MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" Outlined Border KeepPanelsAlive>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
@@ -113,19 +114,17 @@
         </div>
     </MudTabPanel>
 </MudTabs>
-
 @code
 {
-    [CascadingParameter]
-    public Breakpoint Breakpoint { get; set; }
+    private Breakpoint Breakpoint { get; set; }
 
-        private const string HorizontalDispersionId = "horizontal-dispersion";
-        private const string VerticalDispersionId = "vertical-dispersion";
-        private const string TrajectoryId = "trajectory";
-        private const string PenetrationId = "penetration";
-        private const string FlightTimeId = "flight-time";
-        private const string ImpactVelocityId = "impact-velocity";
-        private const string ImpactAngleId = "impact-angle";
+    private const string HorizontalDispersionId = "horizontal-dispersion";
+    private const string VerticalDispersionId = "vertical-dispersion";
+    private const string TrajectoryId = "trajectory";
+    private const string PenetrationId = "penetration";
+    private const string FlightTimeId = "flight-time";
+    private const string ImpactVelocityId = "impact-velocity";
+    private const string ImpactAngleId = "impact-angle";
 
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = { };
@@ -162,6 +161,7 @@
         if (firstRender)
         {
             SetProcessing(true);
+            await BreakpointService.Subscribe(breakpoint => Breakpoint = breakpoint);
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
