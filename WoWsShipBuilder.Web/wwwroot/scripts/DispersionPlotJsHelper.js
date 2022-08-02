@@ -32,7 +32,8 @@
                     return a.length > b.length ? a : b;
                 }
             ));
-        const minSize = textMeasurement.width * ratio + 25 * ratio;
+        //this makes it so there is always enough space for the texts to not overlap. it takes the text width and add the text height (multiplied by 2 because we have texts on both side of the longest text)
+        const minSize = textMeasurement.width * ratio + (textMeasurement.fontBoundingBoxAscent * 2) * ratio;
         if(canvas.width < minSize){
             canvas.width = minSize;
         }
