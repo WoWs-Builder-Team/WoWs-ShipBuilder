@@ -1,0 +1,210 @@
+﻿@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Web.Services
+@using DynamicData
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Pages
+@using WoWsShipBuilder.Web.Utility
+@implements IAsyncDisposable
+@inject IJSRuntime Runtime
+@inject ILocalizer Localizer
+
+<div class="d-flex ma-auto">
+    <MudStack Row="IsVertical" Justify="Justify.Center" AlignItems="AlignItems.Center">
+        @foreach (var dispersionEllipse in Ships)
+        {
+            <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <MudText Style="font-size: x-large">
+                    @($"{Localizer.GetGameLocalization($"{dispersionEllipse.Name}_FULL").Localization} - {Localizer.GetGameLocalization(dispersionEllipse.Shell.Name).Localization}")
+                </MudText>
+                @if (dispersionEllipse.IsValid)
+                {
+                    <div>
+                        <canvas id="@($"DispersionPlot_{dispersionEllipse.Name}-{dispersionEllipse.Shell.Name}")"></canvas>
+                    </div>
+                }
+                else
+                {
+                    <MudPaper Outlined Elevation="0" Style="border-color: red" Square Class="pa-5">
+                        <MudText Color="Color.Error">
+                             @Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_NoRange)).Localization
+                        </MudText>
+                    </MudPaper>
+                }
+            </MudStack>
+        }
+    </MudStack>
+</div>
+<MudDivider Light/>
+
+@code {
+
+    [Parameter]
+    public List<DispersionEllipse> Ships { get; set; } = default!;
+    [Parameter]
+    public double PlotScaling { get; set; }
+    [Parameter]
+    public ChartsHelper.EllipsePlanes EllipsePlane { get; set; }
+    [Parameter]
+    public FusoPositions FusoPosition { get; set; }
+    [Parameter]
+    public bool IsVertical { get; set; }
+    [Parameter]
+    public ChartsHelper.ChartsTabs Tab { get; set; }
+    
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (Tab == ChartsHelper.ChartsTabs.DispersionPlot)
+        {
+            await DrawDispersionPlot();
+        }
+    }
+    
+    private async Task DrawDispersionPlot()
+    {
+        string vertical = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Vertical)).Localization;
+        string horizontal = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Horizontal)).Localization;
+        string max = Localizer.GetAppLocalization(nameof(Translation.ShipStats_Max)).Localization;
+        string hits = Localizer.GetAppLocalization(nameof(Translation.DispersionPlot_Hits)).Localization;
+        string perCent = Localizer.GetAppLocalization(nameof(Translation.Unit_PerCent)).Localization;
+        string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
+        var outerVertical = $"{max} {vertical}";
+        var outerHorizontal = $"{max} {horizontal}";
+        string innerVertical = $"50{perCent} {hits} {vertical}";
+        string innerHorizontal = $"50{perCent} {hits} {horizontal}";
+        
+        if (IsVertical)
+        {
+            (outerVertical, outerHorizontal, innerVertical, innerHorizontal) = (outerHorizontal, outerVertical, innerHorizontal, innerVertical);
+        }
+
+        var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
+
+        Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}-{dispersionEllipse.Shell.Name}", SetupData);
+        
+        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
+        await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
+    }
+
+    public enum FusoPositions
+    {
+        DontShow,
+        Broadside,
+        BowIn,
+    }
+
+    private DrawingData SetupData(DispersionEllipse dispersionEllipse)
+    {
+        var outerEllipse = GetOuterEllipse(dispersionEllipse);
+        var innerEllipse = GetInnerEllipse(dispersionEllipse);
+        return new(outerEllipse.xRadius, outerEllipse.yRadius, innerEllipse.xRadius, innerEllipse.yRadius, GetHitPoints(dispersionEllipse));
+    }
+    
+    private (double xRadius, double yRadius) GetOuterEllipse(DispersionEllipse dispersionEllipse)
+    {
+        double xRadius = EllipsePlane switch
+        {
+            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadius,
+            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadius,
+            _ => dispersionEllipse.ProjectedOnPerpendicularToWaterVerticalRadius,
+        };
+
+        xRadius *= PlotScaling;
+        double yRadius = dispersionEllipse.HorizontalRadius * PlotScaling;
+
+        if (IsVertical)
+        {
+            (xRadius, yRadius) = (yRadius, xRadius);
+        }
+        return (xRadius, yRadius);
+    }
+    
+    private List<ChartsHelper.Point> GetHitPoints(DispersionEllipse dispersionEllipse)
+    {
+        List<(double x, double y)> hitPoints = EllipsePlane switch
+        {
+            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.OnWaterHitPoints,
+            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.RealHitPoints,
+            _ => dispersionEllipse.PerpendicularToWaterHitPoints,
+        };
+
+        return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.x * PlotScaling, point.y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.y * PlotScaling, point.x * PlotScaling)).ToList();
+    }
+    
+    private (double xRadius, double yRadius) GetInnerEllipse(DispersionEllipse dispersionEllipse)
+    {
+        double xRadius = EllipsePlane switch
+        {
+            ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.ProjectedOnWaterVerticalRadiusHalfHitPoints,
+            ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.VerticalRadiusHalfHitPoints,
+            _ => dispersionEllipse.ProjectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints,
+        };
+
+        xRadius *= PlotScaling;
+        double yRadius = dispersionEllipse.HorizontalRadiusHalfHitPoints * PlotScaling;
+
+        if (IsVertical)
+        {
+            (xRadius, yRadius) = (yRadius, xRadius);
+        }
+        return (xRadius, yRadius);
+    }
+    
+    private Size GetFusoReference()
+    {
+        if (FusoPosition == FusoPositions.DontShow)
+        {
+            return new(0, 0);
+        }
+        
+        const double length = 212.7;
+        const double width = 32.2;
+        const int height = 45;
+
+        double yRadius = width;
+        double xRadius = length;
+
+        if (FusoPosition == FusoPositions.Broadside)
+        {
+            xRadius = width;
+            yRadius = length;
+        }
+
+        if (EllipsePlane == ChartsHelper.EllipsePlanes.VerticalPlane)
+        {
+            xRadius = height;
+        }
+
+        xRadius *= PlotScaling;
+        yRadius *= PlotScaling;
+
+        if (IsVertical)
+        {
+            (xRadius, yRadius) = (yRadius, xRadius);
+        }
+        return new(xRadius, yRadius);
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
+    
+    private sealed record DrawingData(double XRadiusOuterEllipse, double YRadiusOuterEllipse, double XRadiusInnerEllipse, double YRadiusInnerEllipse, List<ChartsHelper.Point> HitPoints);
+
+    private sealed record Size(double Width, double Length);
+
+    private sealed record DispPlotAxisLabels(string BottomLabel, string LeftLabel, string TopLabel, string RightLabel, string Meters);
+
+}

@@ -1,14 +1,9 @@
 ﻿@page "/charts"
 @using WoWsShipBuilder.Web.Utility
-@using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Web.Dialogs
-@using System.Linq
 @using MudBlazor.Services
-@using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Web.Services
+
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IAppDataService WebAppDataService
@@ -18,8 +13,8 @@
 @inject IBreakpointService BreakpointService
 
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
-<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" Outlined Border KeepPanelsAlive>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization">
+<MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsHelper.ChartsTabs.DispersionCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -55,36 +50,75 @@
                 </div>
             </MudItem>
         </MudGrid>
-
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization">
-        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                </MudText>
-            }
-        </MudButton>
-        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end;")">
-                <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
-            </MudItem>
-            <MudItem Class="z-10" xs="12">
-                <div>
-                    <canvas id="@TrajectoryId"></canvas>
-                </div>
-            </MudItem>
-        </MudGrid>
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispersionPlot)).Localization" ID="ChartsHelper.ChartsTabs.DispersionPlot">
+        <MudStack>
+             <MudExpansionPanels>
+                 <MudExpansionPanel Dense="true" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+                     <TitleContent>
+                         <div class="d-flex">
+                             <MudIcon Icon="@Icons.Material.Filled.Info" class="mr-3"></MudIcon>
+                             <MudText Style="font-size: large">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotExplanation)).Localization</MudText>
+                         </div>
+                     </TitleContent>
+                     <ChildContent>
+                         <div style="white-space: break-spaces">
+                             <MudText>@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DispPlotDescription)).Localization</MudText>
+                         </div>
+                     </ChildContent>
+                 </MudExpansionPanel>
+            </MudExpansionPanels>
+            <MudStack Row="true" Style="flex-wrap: wrap">
+                <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing" DisableElevation FullWidth="@SetFullWidth()">
+                    @if (processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                        <MudText Class="ms-2" Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.button">
+                            @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                        </MudText>
+                    }
+                </MudButton>
+                <MudNumericField Value="aimingRange" Label="@($"{Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization} ({Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization})")" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotRange" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="50" Step="0.5"/>
+                <MudNumericField Value="shotsNumber" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShotsNumber)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotShotsNumber" T="int" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="1" Max="500" Step="1"/>
+                <MudNumericField Value="dispPlotScaling" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotScaling)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateDispersionPlotScaling" T="double" DebounceInterval="500" Disabled="processing" Margin="Margin.Dense" Min="0.1" Max="4" Step="0.1"/>
+                <MudSelect Style="min-width: 196px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotOrientation)).Localization" Variant="Variant.Outlined" T="bool" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="@(_ => SetVerticalDispersionPlot(!verticalDispPlot))">
+                    <MudSelectItem Value="@false">
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization</MudText>
+                    </MudSelectItem>
+                    <MudSelectItem Value="@true">
+                        <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization</MudText>
+                    </MudSelectItem>
+                </MudSelect>
+                <MudSelect Style="min-width: 254px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedDispPlotPlane" Variant="Variant.Outlined" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in ellipsePlanesList)
+                    {
+                        <MudSelectItem Value="@item">
+                            <MudStack Row AlignItems="AlignItems.Center">
+                                <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
+                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
+                            </MudStack>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+                <MudSelect Style="min-width: 194px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_DrawFusoReference)).Localization" @bind-Value="@selectedFusoPosition" Variant="Variant.Outlined" T="DispersionPlot.FusoPositions" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var item in fusoPositionsList)
+                    {
+                        <MudSelectItem Value="@item">
+                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(item.ToString()).Localization</MudText>
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudStack>
+            <DispersionPlot Ships="dispPlotShips" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsHelper.ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+        </MudStack>
     </MudTabPanel>
-    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization">
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsHelper.ChartsTabs.BallisticCharts">
         <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
             @if (processing)
             {
@@ -113,320 +147,34 @@
             <canvas id="@ImpactAngleId"></canvas>
         </div>
     </MudTabPanel>
+    <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsHelper.ChartsTabs.TrajectoryChart">
+        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                </MudText>
+            }
+        </MudButton>
+        <MudGrid Class="d-inline-flex" Style="flex-direction: column">
+            <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end;")">
+                <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
+            </MudItem>
+            <MudItem Class="z-10" xs="12">
+                <div>
+                    <canvas id="@TrajectoryId"></canvas>
+                </div>
+            </MudItem>
+        </MudGrid>
+    </MudTabPanel>
 </MudTabs>
-@code
-{
-    private Breakpoint Breakpoint { get; set; }
-
-    private const string HorizontalDispersionId = "horizontal-dispersion";
-    private const string VerticalDispersionId = "vertical-dispersion";
-    private const string TrajectoryId = "trajectory";
-    private const string PenetrationId = "penetration";
-    private const string FlightTimeId = "flight-time";
-    private const string ImpactVelocityId = "impact-velocity";
-    private const string ImpactAngleId = "impact-angle";
-
-    private string shellIndexFromUrl = string.Empty;
-    private string[] shipIndexesFromUrl = { };
-
-    private bool processing;
-    private double range = 10;
-    private int counter;
-
-    private readonly Dictionary<string, ShellSelectionWrapper> displayedShips = new();
-    private ChartsHelper.EllipsePlanes selectedVertDispersionPlane = ChartsHelper.EllipsePlanes.RealPlane;
-    private readonly Dictionary<string, (IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater)> verticalDispersionsCache = new();
-    private readonly Dictionary<string, Dictionary<double, Ballistic>> ballisticCache = new();
-    private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        MetricsService.BallisticPageCount.Inc();
-
-        if (NavManager.TryGetQueryString("shellIndex", out string shellIndex))
-        {
-            shellIndexFromUrl = shellIndex;
-        }
-        if (NavManager.TryGetQueryString("shipIndex", out string shipIndex))
-        {
-            shipIndexesFromUrl = shipIndex.Split(',');
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            SetProcessing(true);
-            await BreakpointService.Subscribe(breakpoint => Breakpoint = breakpoint);
-            await SetupChartsAsync();
-            if (shipIndexesFromUrl.Any())
-            {
-                List<ShellSelectionWrapper> selectedShipList = new();
-
-                if (shellIndexFromUrl.Any())
-                {
-                    string shipIndex = shipIndexesFromUrl.First();
-                    var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-                    var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
-
-                    var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
-                    Dictionary<string, ArtilleryData> artilleryData = new();
-                    IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(g => g.AmmoList)).Distinct();
-                    foreach (string shellIndex in shellIndexes)
-                    {
-                        if (shellIndex.Equals(shellIndexFromUrl))
-                        {
-                            var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
-                            ArtilleryData data = new(shell, gun.DispersionValues, true);
-                            artilleryData.Add(shellIndexFromUrl, data);
-                        }
-                        else
-                        {
-                            artilleryData.Add(shellIndex, new());
-                        }
-                    }
-                    ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, (double)gun.MaxRange);
-
-                    selectedShipList.Add(wrapper);
-                }
-                else
-                {
-                    List<ShellSelectionWrapper> shipList = new();
-                    foreach (string shipIndex in shipIndexesFromUrl)
-                    {
-                        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-                        var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
-                        Dictionary<string, ArtilleryData> artilleryData = new();
-                        if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
-                        {
-                            IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
-                            foreach (string shellIndex in shellIndexes)
-                            {
-                                artilleryData.Add(shellIndex, new());
-                            }
-                        }
-
-                        ShellSelectionWrapper wrapper = new(shipIndex, artilleryData, -1);
-                        shipList.Add(wrapper);
-                    }
-
-                    DialogOptions options = new()
-                    {
-                        MaxWidth = MaxWidth.Small,
-                        FullWidth = true,
-                    };
-
-                    var parameters = new DialogParameters
-                    {
-                        ["shipList"] = shipList,
-                    };
-
-                    var dialog = DialogService.Show<ShellSelectionDialog>("ShellSelectionDialog", parameters, options);
-                    var result = await dialog.Result;
-                    if (result is null || result.Cancelled)
-                    {
-                        SetProcessing(false);
-                        return;
-                    }
-                    selectedShipList = ((IEnumerable<ShellSelectionWrapper>)result.Data).ToList();
-                }
-                await UpdateShipsBatchAsync(selectedShipList);
-            }
-            SetProcessing(false);
-        }
-    }
-
-    private async Task SetupChartsAsync()
-    {
-        string km = Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization;
-        string m = Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization;
-        string rangeString = Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization;
-        string s = Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization;
-        string mm = Localizer.GetAppLocalization(nameof(Translation.Unit_MM)).Localization;
-        string degree = Localizer.GetAppLocalization(nameof(Translation.Unit_Degree)).Localization;
-        string mps = Localizer.GetAppLocalization(nameof(Translation.Unit_MPS)).Localization;
-
-        double aspectRatio = 3;
-        if (Breakpoint == Breakpoint.Sm || Breakpoint == Breakpoint.Xs)
-        {
-            aspectRatio = 1.2;
-        }
-        
-        await ChartJsInterop.SetupGlobalChartConfigAsync(aspectRatio);
-
-        await ChartJsInterop.CreateChartAsync(HorizontalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Horizontal)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-        await ChartJsInterop.CreateChartAsync(VerticalDispersionId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_Vertical)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization, km, m);
-        await ChartJsInterop.CreateChartAsync(TrajectoryId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ShellsPath)).Localization, rangeString, Localizer.GetAppLocalization(Translation.ChartsWeb_Height).Localization, km, m);
-        await ChartJsInterop.CreateChartAsync(PenetrationId, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Penetration)).Localization, km, mm);
-        await ChartJsInterop.CreateChartAsync(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
-        await ChartJsInterop.CreateChartAsync(ImpactVelocityId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, km, mps);
-        await ChartJsInterop.CreateChartAsync(ImpactAngleId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, km, degree);
-        await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, range / 4 * 1000);
-    }
-
-    private async Task UpdateShipsBatchAsync(List<ShellSelectionWrapper> shipList)
-    {
-        List<string> chartIds = GetChartsIdList();
-
-    //IEnumerable<Point> is a single dataset. The middle List contains all datasets of a certain chart. The outermost List contains the list of datasets of each chart.
-        List<List<IEnumerable<Point>>> data = new();
-        List<int> indexes = new();
-        List<string> labelNames = new();
-        List<string> newLabels = new();
-
-        foreach (var selectedShip in shipList)
-        {
-            string shipName = Localizer.GetGameLocalization($"{selectedShip.ShipIndex}_FULL").Localization;
-            foreach ((string shellIndex, (var shell, var dispersionValues, bool shellSelected)) in selectedShip.ArtilleryDataDictionary)
-            {
-                if (!shellSelected) continue;
-
-                string shellName = Localizer.GetGameLocalization(shellIndex).Localization;
-                var labelName = $"{shipName} - {shellName}";
-                labelNames.Add(labelName);
-
-                if (displayedShips.ContainsKey(labelName)) continue;
-
-                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(labelName, shell, selectedShip.MaxRange);
-
-                List<IEnumerable<Point>> shipData = new()
-                {
-                    ChartsHelper.CreateHorizontalDispersionSeries(dispersionValues, selectedShip.MaxRange),
-                    GetVerticalDispersion(labelName, dispersionValues, selectedShip.MaxRange, ballisticSeries),
-                    ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity),
-                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
-                };
-                data.Add(shipData);
-                newLabels.Add(labelName);
-                indexes.Add(counter);
-                counter++;
-
-                displayedShips.Add(labelName, selectedShip);
-            }
-        }
-
-        await ChartJsInterop.BatchAddDataAsync(chartIds, newLabels, data, indexes);
-
-        List<string> removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key)).Select(x => x.Key).ToList();
-        foreach (string labelName in removedShips)
-        {
-            displayedShips.Remove(labelName);
-        }
-
-        await ChartJsInterop.BatchRemoveDataAsync(chartIds, removedShips);
-    }
-
-    private Dictionary<double, Ballistic> GetBallistic(string label, ArtilleryShell shell, double maxRange)
-    {
-        if (ballisticCache.ContainsKey(label))
-        {
-            return ballisticCache[label];
-        }
-        var ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
-        ballisticCache.Add(label, ballisticSeries);
-        return ballisticSeries;
-    }
-
-    private IEnumerable<Point> GetVerticalDispersion(string label, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
-    {
-        (IEnumerable<Point> verticalDispersionAtImpactAngle, IEnumerable<Point> verticalDispersionOnWater, IEnumerable<Point> verticalDispersionOnPerpendicularToWater) verticalDispersions;
-        if (verticalDispersionsCache.ContainsKey(label))
-        {
-            verticalDispersions = verticalDispersionsCache[label];
-        }
-        else
-        {
-            verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
-            verticalDispersionsCache.Add(label, verticalDispersions);
-        }
-        return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispersionPlane);
-    }
-
-    private async Task ChangeVerticalDispPlaneAsync()
-    {
-        SetProcessing(true);
-        List<IEnumerable<Point>> selectedVerticals = displayedShips.Select(item => ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache[item.Key], selectedVertDispersionPlane)).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, displayedShips.Keys.ToList(), selectedVerticals);
-        SetProcessing(false);
-    }
-
-    private async Task UpdateTrajectoryAsync(double aimingRange)
-    {
-        SetProcessing(true);
-        range = aimingRange;
-        List<IEnumerable<Point>> trajectoryData = displayedShips.Select(item => ChartsHelper.CreateTrajectoryDataset(ballisticCache[item.Key], range)).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, displayedShips.Keys.ToList(), trajectoryData);
-        await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, aimingRange / 4 * 1000);
-        SetProcessing(false);
-    }
-
-    private async Task EditChartsAsync()
-    {
-        SetProcessing(true);
-        var selectedShipList = await GetSelectedShipsAsync();
-        if (selectedShipList is null || selectedShipList.Cancelled)
-        {
-            SetProcessing(false);
-            return;
-        }
-
-        await UpdateShipsBatchAsync(((IEnumerable<ShellSelectionWrapper>)selectedShipList.Data).ToList());
-        SetProcessing(false);
-    }
-
-    private async Task<DialogResult?> GetSelectedShipsAsync()
-    {
-        DialogOptions options = new()
-        {
-            MaxWidth = MaxWidth.ExtraLarge,
-        };
-        var parameters = new DialogParameters
-        {
-            ["shipList"] = displayedShips.Values.DistinctBy(x => x.ShipIndex).ToList(),
-        };
-        var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
-        return await dialog.Result;
-    }
-
-    private static List<string> GetChartsIdList()
-    {
-        List<string> chartIds = new()
-        {
-            HorizontalDispersionId,
-            VerticalDispersionId,
-            TrajectoryId,
-            PenetrationId,
-            FlightTimeId,
-            ImpactVelocityId,
-            ImpactAngleId,
-        };
-        return chartIds;
-    }
-
-    private string GetPositionStyleForSelector()
-    {
-        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
-        {
-            return "margin-right: auto !important;";
-        }
-
-        return "position: absolute;";
-    }
-
-    //Convenience method to call StateHasChanged after setting processing to false. Needed for chrome to correctly update the Ship/Shell selection button.
-    private void SetProcessing(bool newProcessing)
-    {
-        processing = newProcessing;
-        if (!newProcessing)
-        {
-            StateHasChanged();
-        }
-    }
-}
+@* <MudScrollToTop TopOffset="100" Style="z-index:2001"> *@
+@*     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/> *@
+@* </MudScrollToTop> *@

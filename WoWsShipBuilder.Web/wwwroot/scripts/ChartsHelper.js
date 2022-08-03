@@ -262,7 +262,5 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
                                 }
                         }
                 },
-            
-                
         });
 }

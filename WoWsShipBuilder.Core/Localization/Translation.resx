@@ -1450,6 +1450,9 @@ They do not have any effect on surface ships.</value>
   <data name="Consumable_HoldToggle" xml:space="preserve">
       <value>Hold an icon to toggle effects</value>
   </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Hits</value>
+  </data>
   <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
       <value>The 0° angle is at the top. Positive is clockwise, negative is counter clockwise. The red angles are the dead zones of the armament (can rotate to but not shoot).
       </value>
