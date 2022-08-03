@@ -1,7 +1,7 @@
 ﻿@using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.DataStructures
-@inject DepthChargeDamageDistributionChartInterop DepthChargeInterop
+@inject IJSRuntime Runtime
 
 
 <MudPaper Outlined="true">
@@ -15,12 +15,30 @@
     [Parameter]
     public DepthChargeDamageDistributionChartRecord? DataRecord { get; set; }
     
+    private IJSObjectReference? module;
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
         if (firstRender && DataRecord is not null)
         {
-            await DepthChargeInterop.DrawDepthChargeDamageDistributionChart("DepthCharges_" + ShipIndex, DataRecord);
+            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DepthChargeDamageDistributionChart.razor.js");
+            await module.InvokeVoidAsync("DrawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
+        }
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.InvokeVoidAsync("cleanSubscriptions");
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
         }
     }
 }

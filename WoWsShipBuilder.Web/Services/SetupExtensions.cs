@@ -39,7 +39,6 @@ public static class SetupExtensions
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<IClipboardService, WebClipboardService>();
-        services.AddScoped<DepthChargeDamageDistributionChartInterop>();
 
         return services;
     }

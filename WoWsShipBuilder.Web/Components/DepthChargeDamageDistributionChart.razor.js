@@ -24,7 +24,7 @@ function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, sp
     ctx.ellipse(centre, centre, radius, radius, 0, 0, 2 * Math.PI)
     ctx.fill()
     ctx.stroke()
-    
+
     const rad = radius * Math.sqrt(2) / 2
     ctx.scale(ratio, ratio);
     ctx.font = "13px Roboto"
