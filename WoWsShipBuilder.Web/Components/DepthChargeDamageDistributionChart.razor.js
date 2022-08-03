@@ -1,5 +1,8 @@
 ﻿export function DrawDepthChargeDamageDistributionChart(id, dataRecord){
     const canvas = document.getElementById(id);
+    if(canvas === null){
+        return;
+    }
     let ratio = window.devicePixelRatio;
     canvas.width = canvas.clientWidth * ratio;
     canvas.height = canvas.clientHeight * ratio;
