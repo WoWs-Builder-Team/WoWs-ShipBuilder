@@ -21,7 +21,7 @@
                                 </MudButton>
                             </ChildContent>
                             <TooltipContent>
-                                <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
+                                <MudPaper Outlined="true" Style="max-width: 500px">
                                     <MudStack Spacing="0" Class="pa-2">
                                     @{
                                         var currentMod = GetSelectedModernization(columnModernizations, ViewModel.SelectedModernizationList);
@@ -44,7 +44,7 @@
                                                 var modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                                 @if (!string.IsNullOrWhiteSpace(modifier))
                                                 {
-                                                    <MudText Align="Align.Start" Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
+                                                    <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: nowrap" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
                                                 }
                                             }
                                         }
@@ -64,7 +64,7 @@
                                             <MudImage Width="@GetImageSize(true)" Height="@GetImageSize(true)" Src="@GetUpgradeIcon(modernization)"/>
                                         </ChildContent>
                                         <TooltipContent>
-                                            <MudPaper Outlined="true" Style="min-width: 300px; max-width: 500px">
+                                            <MudPaper Outlined="true" Style="max-width: 500px">
                                                 <MudStack Spacing="0" Class="pa-2">
                                                     @if (modernization.Name.Equals("PlaceholderMod", StringComparison.InvariantCultureIgnoreCase))
                                                     {
@@ -85,7 +85,7 @@
                                                             var modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                                             @if (!string.IsNullOrWhiteSpace(modifier))
                                                             {
-                                                                <MudText Align="Align.Left" Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
+                                                                <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: nowrap" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
                                                             }
                                                         }
                                                     }
@@ -113,9 +113,8 @@
     {
         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
         selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
-        string path;
-        
-        path = selectedMod.Index != null ? $"/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+
+        string path = selectedMod.Index != null ? $"/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
 
         return path;
     }
@@ -154,5 +153,4 @@
                 return "min-width: 60px; width: 60px; height: 60px; padding: 2px;";
         }
     }
-
 }
