@@ -1,4 +1,4 @@
-﻿export function DrawDispersionPlotBatched(data, scaling, fusoReference, text){
+﻿export function drawDispersionPlotBatched(data, scaling, fusoReference, text){
     const ratio = window.devicePixelRatio;
     const ellipseOffset = 100;
     const rulersOffset = 20;

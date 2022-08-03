@@ -85,7 +85,7 @@
         Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}-{dispersionEllipse.Shell.Name}", SetupData);
         
         module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
-        await module.InvokeVoidAsync("DrawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
+        await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
     }
 
     public enum FusoPositions
@@ -193,7 +193,6 @@
         {
             try
             {
-                await module.InvokeVoidAsync("cleanSubscriptions");
                 await module.DisposeAsync();
             }
             catch (JSDisconnectedException)
