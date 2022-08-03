@@ -364,7 +364,7 @@
                 if (!shellSelected) continue;
 
                 string shellName = Localizer.GetGameLocalization(shellIndex).Localization;
-                var labelName = $"{shipName} - {shellName}";
+                var labelName = $"{selectedShip.ShipIndex} - {shellIndex}";
                 labelNames.Add(labelName);
 
                 if (displayedShips.ContainsKey(labelName)) continue;
@@ -387,11 +387,12 @@
                 counter++;
 
                 displayedShips.Add(labelName, selectedShip);
-                dispPlotShips.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(labelName, dispersionValues, shell, selectedShip.MaxRange, aimingRange * 1000, selectedShip.Sigma, shotsNumber));
+                dispPlotShips.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(selectedShip.ShipIndex, dispersionValues, shell, selectedShip.MaxRange, aimingRange * 1000, selectedShip.Sigma, shotsNumber));
             }
         }
 
-        await ChartJsInterop.BatchAddDataAsync(chartIds, newLabels, data, indexes);
+        List<string> localizedLabels = newLabels.Select(x => $"{Localizer.GetGameLocalization($"{x[..x.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(x[(x.IndexOf(" - ", StringComparison.Ordinal) + 3)..]).Localization}").ToList();
+        await ChartJsInterop.BatchAddDataAsync(chartIds, localizedLabels, data, indexes);
 
         List<string> removedShips = displayedShips.Where(x => !labelNames.Contains(x.Key)).Select(x => x.Key).ToList();
         foreach (string labelName in removedShips)
@@ -400,7 +401,8 @@
             dispPlotShips.Remove(dispPlotShips.First(x => x.Name.Equals(labelName)));
         }
 
-        await ChartJsInterop.BatchRemoveDataAsync(chartIds, removedShips);
+        List<string> removedShipsLocalizedLabels = removedShips.Select(x => $"{Localizer.GetGameLocalization($"{x[..x.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(x[(x.IndexOf(" - ", StringComparison.Ordinal) + 3)..]).Localization}").ToList();
+        await ChartJsInterop.BatchRemoveDataAsync(chartIds, removedShipsLocalizedLabels);
     }
 
     private Dictionary<double, Ballistic> GetBallistic(string label, ArtilleryShell shell, double maxRange)
@@ -409,7 +411,7 @@
         {
             return ballisticCache[label];
         }
-        var ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
+        Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange);
         ballisticCache.Add(label, ballisticSeries);
         return ballisticSeries;
     }
@@ -433,7 +435,8 @@
     {
         SetProcessing(true);
         List<IEnumerable<ChartsHelper.Point>> selectedVerticals = displayedShips.Select(item => ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache[item.Key], selectedVertDispersionPlane)).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, displayedShips.Keys.ToList(), selectedVerticals);
+        List<string> localizedLabels = displayedShips.Keys.Select(x => $"{Localizer.GetGameLocalization($"{x[..x.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(x[(x.IndexOf(" - ", StringComparison.Ordinal) + 3)..]).Localization}").ToList();
+        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, localizedLabels, selectedVerticals);
         SetProcessing(false);
     }
 
@@ -442,7 +445,8 @@
         SetProcessing(true);
         range = selectedRange;
         List<IEnumerable<ChartsHelper.Point>> trajectoryData = displayedShips.Select(item => ChartsHelper.CreateTrajectoryDataset(ballisticCache[item.Key], range)).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, displayedShips.Keys.ToList(), trajectoryData);
+        List<string> localizedLabels = displayedShips.Keys.Select(x => $"{Localizer.GetGameLocalization($"{x[..x.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(x[(x.IndexOf(" - ", StringComparison.Ordinal) + 3)..]).Localization}").ToList();
+        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, localizedLabels, trajectoryData);
         await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }
