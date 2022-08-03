@@ -30,7 +30,7 @@
                         <MudItem Class="d-flex" Style="flex-direction: column">
                             <MudItem Class="d-flex mt-2" Style="justify-content: space-between">
                                 <MudText Typo="Typo.caption" Class="my-auto">
-                                    @Localizer[ship.ShipIndex + "_FULL"].Localization
+                                    @Localizer.GetGameLocalization($"{ship.ShipIndex}_FULL").Localization
                                 </MudText>
                                 <MudIconButton Icon="@Icons.Material.Filled.Clear" Color="Color.Primary" Size="Size.Small" OnClick="@(() => RemoveShip(ship))"/>
                             </MudItem>
@@ -40,7 +40,7 @@
                                     @foreach ((string shellIndex, (_,_, bool isShellSelected)) in ship.ArtilleryDataDictionary)
                                     {
                                         <MudButton Color="GetColorFromBool(isShellSelected)" Variant="GetVariantFromBool(isShellSelected)" DisableElevation="true" OnClick="@(() => ToggleSelection(ship, shellIndex))">
-                                            @Localizer[shellIndex].Localization
+                                            @Localizer.GetGameLocalization(shellIndex).Localization
                                         </MudButton>
                                     }
                                 </MudButtonGroup>
@@ -148,9 +148,9 @@
     private async Task ReturnSelectedShells()
     {
         processing = true;
-        List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => Math.Abs(x.MaxRange - -1) < 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => !x.IsFullyConfigured && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
         List<KeyValuePair<string, string>> oldStillSelected = ShipList
-            .Where(x => Math.Abs(x.MaxRange - -1) > 0.001 && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
+            .Where(x => x.IsFullyConfigured && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true))
             .SelectMany(
                 selection => selection.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected), 
                 (selection, t) => new KeyValuePair<string, string>(selection.ShipIndex, t.Key))
@@ -158,23 +158,29 @@
         List<KeyValuePair<string, string>> oldStillSelectedUnchanged = alreadyDisplayedShips.Intersect(oldStillSelected).ToList();
         oldStillSelected.RemoveMany(oldStillSelectedUnchanged);
         selections.AddRange(ShipList.Where(x => oldStillSelected.Select(y => y.Key).Contains(x.ShipIndex)));
-        foreach (var data in selections)
+        List<ChartsRenderingDataWrapper> newData = new();
+        foreach ((string shipIndex, Dictionary<string, ArtilleryData> artilleryDataDictionary, _, _) in selections)
         {
-            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(data.ShipIndex));
+            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
             var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
-            IEnumerable<string> shellIndexes = data.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
+            double maxRange = -1;
+            double sigma = -1;
+            IEnumerable<string> shellIndexes = artilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
             foreach (string shellIndex in shellIndexes)
             {
                 var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
                 var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
 
-                var newData = data.ArtilleryDataDictionary[shellIndex];
-                newData.Shell = shell;
-                newData.DispersionValues = gun.DispersionValues;
-                data.MaxRange = decimal.ToDouble(gun.MaxRange);
-                data.Sigma = decimal.ToDouble(gun.Sigma);
+                var newArtilleryData = artilleryDataDictionary[shellIndex];
+                newArtilleryData.Shell = shell;
+                newArtilleryData.DispersionValues = gun.DispersionValues;
+                maxRange = decimal.ToDouble(gun.MaxRange);
+                sigma = decimal.ToDouble(gun.Sigma);
             }
+            newData.Add(new(shipIndex, artilleryDataDictionary, maxRange, sigma));
         }
+        selections.Clear();
+        selections.AddRange(newData);
         selections.AddRange(ShipList.Where(x => oldStillSelectedUnchanged.Select(y => y.Key).Contains(x.ShipIndex)));
         processing = false;
         MudDialog.Close(DialogResult.Ok(selections));

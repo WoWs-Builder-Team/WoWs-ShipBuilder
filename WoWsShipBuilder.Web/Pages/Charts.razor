@@ -469,7 +469,7 @@
         };
         var parameters = new DialogParameters
         {
-            ["shipList"] = displayedShips.Values.DistinctBy(x => x.ShipIndex).ToList(),
+            ["shipList"] = displayedShips.OrderBy(x => x.Key).Select(x => x.Value).DistinctBy(x => x.ShipIndex).ToList(),
         };
         var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;

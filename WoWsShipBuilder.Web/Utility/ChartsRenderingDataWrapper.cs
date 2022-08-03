@@ -4,8 +4,7 @@ namespace WoWsShipBuilder.Web.Utility;
 
 public sealed record ChartsRenderingDataWrapper(string ShipIndex, Dictionary<string, ArtilleryData> ArtilleryDataDictionary, double MaxRange = -1, double Sigma = -1)
 {
-    public double MaxRange { get; set; } = MaxRange;
-    public double Sigma { get; set; } = Sigma;
+    public bool IsFullyConfigured { get; } = Math.Abs(MaxRange - -1) > 0.001;
 }
 
 public sealed record ArtilleryData(ArtilleryShell Shell, Dispersion DispersionValues, bool ShellSelected)
