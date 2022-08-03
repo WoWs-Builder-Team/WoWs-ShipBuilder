@@ -358,12 +358,10 @@
 
         foreach (var selectedShip in shipList)
         {
-            string shipName = Localizer.GetGameLocalization($"{selectedShip.ShipIndex}_FULL").Localization;
             foreach ((string shellIndex, (var shell, var dispersionValues, bool shellSelected)) in selectedShip.ArtilleryDataDictionary)
             {
                 if (!shellSelected) continue;
-
-                string shellName = Localizer.GetGameLocalization(shellIndex).Localization;
+                
                 var labelName = $"{selectedShip.ShipIndex} - {shellIndex}";
                 labelNames.Add(labelName);
 
