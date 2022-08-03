@@ -2,11 +2,13 @@
 using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Components.Server.Circuits;
+using Microsoft.JSInterop;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Loki;
 using NLog.Targets;
+using Sentry;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
@@ -79,6 +81,7 @@ public static class SetupExtensions
             o.MinimumBreadcrumbLevel = LogLevel.Info;
             o.MinimumEventLevel = LogLevel.Error;
             o.AddTag("logger", "${logger}");
+            o.AddExceptionFilterForType<JSDisconnectedException>();
 
             o.SendDefaultPii = false;
         });
