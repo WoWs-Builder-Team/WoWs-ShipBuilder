@@ -239,7 +239,7 @@
         if (firstRender)
         {
             SetProcessing(true);
-            await BreakpointService.Subscribe(breakpoint => Breakpoint = breakpoint);
+            Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
