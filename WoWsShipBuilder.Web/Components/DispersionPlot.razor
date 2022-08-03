@@ -14,12 +14,12 @@
         {
             <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                 <MudText Style="font-size: x-large">
-                    @($"{Localizer.GetGameLocalization($"{dispersionEllipse.Name}_FULL").Localization} - {Localizer.GetGameLocalization(dispersionEllipse.Shell.Name).Localization}")
+                    @($"{Localizer.GetGameLocalization($"{dispersionEllipse.Name[..dispersionEllipse.Name.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(dispersionEllipse.Shell.Name).Localization}")
                 </MudText>
                 @if (dispersionEllipse.IsValid)
                 {
                     <div>
-                        <canvas id="@($"DispersionPlot_{dispersionEllipse.Name}-{dispersionEllipse.Shell.Name}")"></canvas>
+                        <canvas id="@($"DispersionPlot_{dispersionEllipse.Name}")"></canvas>
                     </div>
                 }
                 else
@@ -82,7 +82,7 @@
 
         var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
-        Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}-{dispersionEllipse.Shell.Name}", SetupData);
+        Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}", SetupData);
         
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);

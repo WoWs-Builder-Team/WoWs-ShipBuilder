@@ -211,7 +211,7 @@ public partial class Charts
                 counter++;
 
                 displayedShips.Add(labelName, selectedShip);
-                dispPlotShips.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(selectedShip.ShipIndex, dispersionValues, shell, selectedShip.MaxRange, aimingRange * 1000, selectedShip.Sigma, shotsNumber));
+                dispPlotShips.Add(DispersionPlotHelper.CalculateDispersionPlotParameters(labelName, dispersionValues, shell, selectedShip.MaxRange, aimingRange * 1000, selectedShip.Sigma, shotsNumber));
             }
         }
 
@@ -297,7 +297,7 @@ public partial class Charts
         };
         var parameters = new DialogParameters
         {
-            ["shipList"] = displayedShips.OrderBy(x => x.Key).Select(x => x.Value).DistinctBy(x => x.ShipIndex).ToList(),
+            ["shipList"] = displayedShips.OrderBy(x => Localizer.GetGameLocalization($"{x.Key[..x.Key.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization).Select(x => x.Value).DistinctBy(x => x.ShipIndex).ToList(),
         };
         var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
