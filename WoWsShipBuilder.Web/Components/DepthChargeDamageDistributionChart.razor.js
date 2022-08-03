@@ -1,4 +1,4 @@
-﻿export function DrawDepthChargeDamageDistributionChart(id, dataRecord){
+﻿export function drawDepthChargeDamageDistributionChart(id, dataRecord){
     const canvas = document.getElementById(id);
     if(canvas === null){
         return;

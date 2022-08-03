@@ -23,7 +23,7 @@
         if (firstRender && DataRecord is not null)
         {
             module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DepthChargeDamageDistributionChart.razor.js");
-            await module.InvokeVoidAsync("DrawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
+            await module.InvokeVoidAsync("drawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
         }
     }
     
@@ -33,7 +33,6 @@
         {
             try
             {
-                await module.InvokeVoidAsync("cleanSubscriptions");
                 await module.DisposeAsync();
             }
             catch (JSDisconnectedException)
