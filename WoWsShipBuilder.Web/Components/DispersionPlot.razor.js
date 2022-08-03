@@ -2,6 +2,7 @@
     const ratio = window.devicePixelRatio;
     const ellipseOffset = 100;
     const rulersOffset = 20;
+    let pointRadius = 6;
     for(const key in data){
         const canvas = document.getElementById(key);
         const ctx = canvas.getContext("2d");
@@ -103,7 +104,6 @@
         ctx.lineWidth = 1;
         ctx.strokeStyle = "transparent";
         ctx.fillStyle = "rgba(218,165,32, 0.33)";
-        let pointRadius = 6;
         if(scaling < 1){
             pointRadius *= scaling;
         }
