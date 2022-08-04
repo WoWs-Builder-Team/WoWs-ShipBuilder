@@ -34,12 +34,15 @@
             <canvas id="@HorizontalDispersionId"></canvas>
         </div>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end; min-width: 185px;")">
-                <MudSelect Style="min-width: 185px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
+            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end; min-width: 220px;")">
+                <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
                     @foreach (var item in ellipsePlanesList)
                     {
                         <MudSelectItem Value="@item">
-                            <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                            <MudStack Row AlignItems="AlignItems.Center">
+                                <MudIcon Icon="@ChartsHelper.GetPlaneIcon(item)" Style="width: 20px; height: 20px; margin-bottom: 3px"/>
+                                <MudText Color="Color.Secondary">@Localizer.GetAppLocalization(Translation.ResourceManager.GetString(item.ToString())!).Localization</MudText>
+                            </MudStack>
                         </MudSelectItem>
                     }
                 </MudSelect>
