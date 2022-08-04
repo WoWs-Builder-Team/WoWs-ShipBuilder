@@ -47,9 +47,10 @@ function redraw() {
     let ratio = window.devicePixelRatio;
     configureCanvas(canvas, ratio);
     const shipRect = drawBasics(ctx);
-    const radius = shipRect.width * 0.25;
-    const scale = radius * 2 / (isArtilleryCache ? artilleryIconWidth : radius * 2 / torpedoIconWidth);
+    const radius = shipRect.width * 0.225;
+    const scale = radius * 0.8 * 2 / (isArtilleryCache ? artilleryIconWidth : torpedoIconWidth);
     let texts = [];
+    let data = [];
     gunContainerCache.forEach(gun => {
         const maxHeight = shipRect.height - (2 * radius);
         const verticalPosition = ((maxHeight / 8) * (gun.vPos + 1.5)) + verticalOffset + radius;
@@ -57,8 +58,7 @@ function redraw() {
         if (gun.hPos === 1) {
             horizontalPosition = shipRect.left + (shipRect.width / 2);
         }
-
-        drawGun(ctx, scale, horizontalPosition, verticalPosition, degreeToRadian(gun.baseAngle), isArtilleryCache);
+        
         drawSlice(ctx, gun.sector[0], gun.sector[1], horizontalPosition, verticalPosition, radius, gun.baseAngle, scale, false);
         gun.deadZones.forEach(deadZone => {
             drawSlice(ctx, deadZone[0], deadZone[1], horizontalPosition, verticalPosition, radius, gun.baseAngle, scale, true);
@@ -73,8 +73,13 @@ function redraw() {
             endDegrees -= 360;
         }
         texts.push({text: `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`, x: horizontalPosition, y: verticalPosition})
+        data.push({x: horizontalPosition, y: verticalPosition, gunBaseAngle: gun.baseAngle})
     });
-    
+
+    data.forEach(gun => {
+        drawGun(ctx, scale, gun.x, gun.y, degreeToRadian(gun.gunBaseAngle), isArtilleryCache);
+    });
+
     ctx.resetTransform();
     ctx.scale(ratio,ratio)
     ctx.font = "18px RobotoBold";
