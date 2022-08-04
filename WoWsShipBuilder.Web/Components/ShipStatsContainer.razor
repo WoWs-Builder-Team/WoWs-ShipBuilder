@@ -34,7 +34,7 @@
                     <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert>
                         <MudItem xs="0" md="2"/>
                     </MudHidden>
-                    <MudItem xs="12" md="8" Class="d-flex justify-center align-end">
+                    <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
                         {
                             <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
@@ -214,6 +214,11 @@
                 return isCurrentShip ? 150 : 105;
         }
     }
+    
+    private string GetShipAlign()
+    {
+        return (Breakpoint == Breakpoint.Xs || Breakpoint == Breakpoint.Sm) ? "align-start" : "align-end";
+    }
 
     private string GetShipTier(int tier)
     {
@@ -253,30 +258,6 @@
             }
         }
 
-    // if (tabs.Any(x => x is not null && x.CurrentShipIndex!.Equals(updateToShipSummary!.Index)))
-    // {
-    //     Snackbar.Add("The ship is already open in another tab", Severity.Warning, config => { config.CloseAfterNavigation = true; });
-    //     tabId = tabs.First(x => x!.CurrentShipIndex!.Equals(updateToShipSummary!.Index))!.CurrentShipIndex!;
-    //     updateTab = true;
-    //     return;
-    // }
-    // var vm = await LoadShipViewModel(updateToShipSummary!.Index);
-    // await vm.ShipStatsControlViewModel!.UpdateShipStats(vm.ShipModuleViewModel.SelectedModules.ToList(), new());
-    //
-    // Console.WriteLine(args.Button);
-    // if (args.Button == 2)
-    // {
-    //     tabs.Add(vm);
-    //     updateTab = true;
-    //     tabId = updateToShipSummary.Index;
-    // }
-    // else
-    // {
-    //     var index = tabs.FindIndex(x => x is not null && x.CurrentShipIndex!.Equals(currentIndex));
-    //     tabs[index] = vm;   
-    // }
-    //
-    // UpdateUrl();
     }
 
     private async Task OnShareBuildClicked()
