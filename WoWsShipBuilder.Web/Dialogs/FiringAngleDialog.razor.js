@@ -74,7 +74,7 @@ function redraw() {
         }
         texts.push({text: `${parseFloat(startDegrees.toFixed(2))}° to ${parseFloat(endDegrees.toFixed(2))}°`, x: horizontalPosition, y: verticalPosition})
     });
-
+    
     ctx.resetTransform();
     ctx.scale(ratio,ratio)
     ctx.font = "18px RobotoBold";
@@ -113,7 +113,9 @@ function drawBasics(ctx) {
     const horizontalCenter = ctx.canvas.width / 2;
     const verticalCenter = ctx.canvas.height / 2;
 
-    ctx.fillStyle = "lightskyblue";
+    // ctx.fillStyle = "lightskyblue";
+    ctx.fillStyle = "#0c1791";
+    ctx.strokeStyle = "#b3b3b3";
     ctx.beginPath();
     ctx.ellipse(horizontalCenter, verticalCenter, shipWidth / 2, shipHeight / 2, 0, 0, 2 * Math.PI);
     ctx.fill();
@@ -217,6 +219,7 @@ function drawSlice(ctx, startDegrees, endDegrees, x, y, radius, baseAngle, scali
 
     ctx.beginPath();
     ctx.fillStyle = !isDeadZone ? "rgba(180,180,180,0.65)" : "rgba(220, 0, 0, 0.50)";
+
     ctx.moveTo(x, y);
 
     if (startDegrees === endDegrees) {
