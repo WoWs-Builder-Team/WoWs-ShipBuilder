@@ -5,8 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <VersionPrefix>1.0.0</VersionPrefix>
-        <VersionSuffix>alpha</VersionSuffix>
+        <VersionPrefix>1.0.1</VersionPrefix>
+        <VersionSuffix>beta</VersionSuffix>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,14 +1,20 @@
-﻿using Sentry;
+﻿using Microsoft.Extensions.Options;
+using Sentry;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;
 
 public class ServerAppDataService : IAppDataService
 {
     private readonly IAwsClient awsClient;
+
+    private readonly CdnOptions options;
+
+    private readonly ILogger<ServerAppDataService> logger;
 
     private VersionInfo? versionInfo;
 
@@ -18,9 +24,11 @@ public class ServerAppDataService : IAppDataService
 
     public string AppDataImageDirectory { get; }
 
-    public ServerAppDataService(IAwsClient awsClient)
+    public ServerAppDataService(IAwsClient awsClient, IOptions<CdnOptions> options, ILogger<ServerAppDataService> logger)
     {
         this.awsClient = awsClient;
+        this.options = options.Value;
+        this.logger = logger;
         DefaultAppDataDirectory = string.Empty;
         AppDataDirectory = string.Empty;
         AppDataImageDirectory = string.Empty;
@@ -28,17 +36,20 @@ public class ServerAppDataService : IAppDataService
 
     public async Task FetchData()
     {
+        logger.LogInformation("Starting to fetch data with server type {server}...", options.Server);
         const string undefinedMarker = "undefined";
         AppData.ShipDictionary = new();
 
-        var onlineVersionInfo = await awsClient.DownloadVersionInfo(ServerType.Dev1);
+        var onlineVersionInfo = await awsClient.DownloadVersionInfo(options.Server);
         if (onlineVersionInfo.CurrentVersion is not null)
         {
             AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
+            logger.LogInformation("Found online version info with version {version}", AppData.DataVersion);
         }
         else
         {
             AppData.DataVersion = undefinedMarker;
+            logger.LogWarning("Online version info not available");
         }
 
         SentrySdk.ConfigureScope(scope =>
@@ -48,7 +59,8 @@ public class ServerAppDataService : IAppDataService
             scope.SetTag("data.server", onlineVersionInfo.CurrentVersion?.VersionType.ToString() ?? undefinedMarker);
         });
         var files = onlineVersionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();
-        await awsClient.DownloadFiles(ServerType.Dev1, files);
+        await awsClient.DownloadFiles(options.Server, files);
+        logger.LogInformation("Finished fetching data");
     }
 
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
