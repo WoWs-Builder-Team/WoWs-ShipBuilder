@@ -6,7 +6,6 @@ using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Web.Services;
 
-// TODO: implement properly
 public class ServerAppDataService : IAppDataService
 {
     private readonly IAwsClient awsClient;

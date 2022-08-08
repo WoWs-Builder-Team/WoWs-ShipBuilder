@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.Core;
@@ -7,28 +8,30 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Web.Data;
 
 namespace WoWsShipBuilder.Web.Services;
 
 public class ServerAwsClient : IAwsClient
 {
-    private const string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
-
     private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
     private readonly HttpClient httpClient;
 
     private readonly SemaphoreSlim semaphore = new(1);
 
-    public ServerAwsClient(HttpClient httpClient)
+    private readonly CdnOptions options;
+
+    public ServerAwsClient(HttpClient httpClient, IOptions<CdnOptions> options)
     {
         this.httpClient = httpClient;
+        this.options = options.Value;
     }
 
     public async Task<VersionInfo> DownloadVersionInfo(ServerType serverType)
     {
-        string url = @$"{Host}/api/{serverType.StringName()}/VersionInfo.json";
-        var stringContent = await httpClient.GetStringAsync(url);
+        var url = @$"{options.Host}/api/{serverType.StringName()}/VersionInfo.json";
+        string stringContent = await httpClient.GetStringAsync(url);
         return JsonConvert.DeserializeObject<VersionInfo>(stringContent) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
 
         // return await httpClient.GetFromJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
@@ -36,7 +39,7 @@ public class ServerAwsClient : IAwsClient
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
     {
-        string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
+        string baseUrl = @$"{options.Host}/api/{serverType.StringName()}/";
         var taskList = new List<Task>();
         int totalFiles = relativeFilePaths.Count;
         var finished = 0;
@@ -71,7 +74,7 @@ public class ServerAwsClient : IAwsClient
 
     public async Task<Dictionary<string, string>> DownloadLocalization(string language, ServerType serverType)
     {
-        string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
+        string baseUrl = @$"{options.Host}/api/{serverType.StringName()}/";
         return await httpClient.GetFromJsonAsync<Dictionary<string, string>>($"{baseUrl}Localization/{language}.json") ?? throw new InvalidOperationException();
     }
 

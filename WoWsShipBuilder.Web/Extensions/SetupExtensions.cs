@@ -14,9 +14,10 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.Services;
 using LogLevel = NLog.LogLevel;
 
-namespace WoWsShipBuilder.Web.Services;
+namespace WoWsShipBuilder.Web.Extensions;
 
 public static class SetupExtensions
 {
@@ -88,5 +89,12 @@ public static class SetupExtensions
 
         LogManager.Configuration = configuration;
         LogManager.ReconfigExistingLoggers();
+    }
+
+    public static WebApplicationBuilder ConfigureShipBuilderOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<AdminOptions>(builder.Configuration.GetSection(AdminOptions.SectionName));
+        builder.Services.Configure<CdnOptions>(builder.Configuration.GetSection(CdnOptions.SectionName));
+        return builder;
     }
 }

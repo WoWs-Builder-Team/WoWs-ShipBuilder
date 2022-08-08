@@ -19,8 +19,8 @@
       <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.0" />
       <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
       <PackageReference Include="ReactiveUI.Blazor" Version="17.1.50" />
-      <PackageReference Include="MudBlazor" Version="6.0.11" />
-      <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
+      <PackageReference Include="MudBlazor" Version="6.0.14" />
+      <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
       <PackageReference Include="Sentry.NLog" Version="3.20.1" />
       <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="14.1.45" />
     </ItemGroup>

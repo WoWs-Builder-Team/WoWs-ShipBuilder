@@ -13,11 +13,12 @@
 
     [Parameter]
     public string ShipIndex { get; set; } = default!;
+
     [Parameter]
     public DepthChargeDamageDistributionChartRecord? DataRecord { get; set; }
-    
+
     private IJSObjectReference? module;
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -27,7 +28,7 @@
             await module.InvokeVoidAsync("drawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
         }
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         if (module is not null)
@@ -41,4 +42,5 @@
             }
         }
     }
+
 }

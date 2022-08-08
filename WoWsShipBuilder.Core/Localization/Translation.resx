@@ -1457,4 +1457,7 @@ They do not have any effect on surface ships.</value>
       <value>The 0° angle is at the top. Positive is clockwise, negative is counter clockwise. The red angles are the dead zones of the armament (can rotate to but not shoot).
       </value>
   </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Copy build url</value>
+  </data>
 </root>

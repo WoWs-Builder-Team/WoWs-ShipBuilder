@@ -9,6 +9,7 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false });
