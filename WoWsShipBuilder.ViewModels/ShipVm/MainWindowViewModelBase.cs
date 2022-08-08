@@ -42,7 +42,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private ConsumableViewModel consumableViewModel = null!;
 
-    private string? currentShipIndex = "_default";
+    private string currentShipIndex = "_default";
 
     private int? currentShipTier;
 
@@ -50,7 +50,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private List<ShipSummary>? nextShips = new();
 
-    private ShipSummary? currentShip;
+    private ShipSummary currentShip = default!;
 
     private ShipSummary? previousShip;
 
@@ -81,7 +81,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
     }
 
-    public string? CurrentShipIndex
+    public string CurrentShipIndex
     {
         get => currentShipIndex;
         set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
@@ -93,7 +93,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
     }
 
-    public ShipSummary? CurrentShip
+    public ShipSummary CurrentShip
     {
         get => currentShip;
         set => this.RaiseAndSetIfChanged(ref currentShip, value);
@@ -169,8 +169,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     public Interaction<string, Unit> BuildCreatedInteraction { get; } = new();
 
-    public abstract void OpenSaveBuild();
-
     // Handle(true) closes this window too
     public Interaction<Unit, Unit> CloseChildrenInteraction { get; } = new();
 
@@ -210,7 +208,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         disposables.Clear();
         var ship = await appDataService.GetShipFromSummary(summary);
-        await appDataService.LoadNationFiles(summary.Nation);
 
         await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
     }
@@ -220,10 +217,19 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
 
+    public Build CreateBuild(string? buildName)
+    {
+        return new(CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList())
+        {
+            BuildName = buildName ?? string.Empty,
+        };
+    }
+
     private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
     {
         Logging.Logger.Info("Loading data for ship {0}", ship.Index);
         Logging.Logger.Info("Build is null: {0}", build is null);
+        await appDataService.LoadNationFiles(ship.ShipNation);
 
         ShipDataContainer.ExpanderStateMapper.Clear();
 
@@ -237,7 +243,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings));
         CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-        UpgradePanelViewModel = new(RawShipData, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, appSettings));
+        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
         ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
 
         ShipStatsControlViewModel = new(EffectiveShipData, appDataService);

@@ -30,7 +30,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         {
             // Arrange
             var versionInfo = CreateTestVersionInfo(1);
-            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+            appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddDirectory(@"json/live/Ability");
             var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
 
@@ -54,7 +54,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                     { "Ship", new() { new("Japan.json", versionCode, checksum), new("Germany.json", versionCode, checksum) } },
                 },
                 versionCode);
-            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+            appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Germany.json", new("test"));
@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         {
             // Arrange
             var versionInfo = CreateTestVersionInfo(1);
-            appDataHelper.Setup(x => x.GetLocalVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
+            appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new MockFileData("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new MockFileData("test"));
             var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());

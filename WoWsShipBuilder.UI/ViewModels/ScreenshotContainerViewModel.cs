@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation).Result, true);
             SignalSelectorViewModel = new(SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings).Result);
-            UpgradePanelViewModel = new UpgradePanelViewModel(ship, UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings).Result);
+            UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
             LoadBuilds(new("Test-build"));
         }
 
@@ -77,7 +77,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             {
                 CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
                 SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings)),
-                UpgradePanelViewModel = new UpgradePanelViewModel(ship, await UpgradePanelViewModelBase.LoadParamsAsync(appDataService, AppSettingsHelper.Settings)),
+                UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
                 ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),
             };
             vm.LoadBuilds(build);

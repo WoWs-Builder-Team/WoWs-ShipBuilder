@@ -82,7 +82,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var win = new DepthChargeDamageDistributionChartWindow
                 {
-                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext),
+                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext.Damage, dataContext.DcSplashRadius, dataContext.PointsOfDmg),
                 };
                 win.Show((Window)this.GetVisualRoot());
             }

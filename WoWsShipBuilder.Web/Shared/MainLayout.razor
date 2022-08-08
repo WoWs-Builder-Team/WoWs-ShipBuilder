@@ -1,11 +1,10 @@
-@using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
 @inherits LayoutComponentBase
-@inject IDataService dataService
-@inject ISnackbar snackbar
-@inject AppSettingsHelper settingsHelper
-@inject AppSettings appSettings
+@inject AppSettingsHelper SettingsHelper
+@inject AppSettings AppSettings
+@inject RefreshNotifierService RefreshNotifierService
 
 <MudThemeProvider Theme="theme" IsDarkMode="true"/>
 <MudDialogProvider/>
@@ -19,7 +18,9 @@
 <MudLayout>
     <TopMenu/>
     <MudMainContent Class="px-2">
-        @Body
+        <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
+            @Body
+        </CascadingValue>
     </MudMainContent>
     <footer style="margin-top: 16px;">
         <ShipBuilderFooter/>
@@ -28,16 +29,28 @@
 
 @code
 {
-    protected override async Task OnInitializedAsync()
+    private bool settingsInitialized;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        var settings = await settingsHelper.LoadSettings();
-        if (settings == null)
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-            settings = new();
-            await settingsHelper.SaveSettings(settings);
+            var settings = await SettingsHelper.LoadSettings();
+            if (settings == null)
+            {
+                settings = new()
+                {
+                    WebAppSettings = new(),
+                };
+                await SettingsHelper.SaveSettings(settings);
+            }
+            settings.WebAppSettings ??= new();
+            AppSettings.UpdateFromSettings(settings);
+            settingsInitialized = true;
+            RefreshNotifierService.NotifyRefreshRequested();
+            StateHasChanged();
         }
-        appSettings.UpdateFromSettings(settings);
     }
 
     private readonly MudTheme theme = new()

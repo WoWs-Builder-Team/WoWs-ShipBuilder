@@ -1,0 +1,46 @@
+﻿@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.DataStructures
+@implements IAsyncDisposable
+@inject IJSRuntime Runtime
+
+
+<MudPaper Outlined="true">
+    <canvas id="@("DepthCharges_" + ShipIndex)" style="width: 350px; height: 350px;"></canvas>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public string ShipIndex { get; set; } = default!;
+
+    [Parameter]
+    public DepthChargeDamageDistributionChartRecord? DataRecord { get; set; }
+
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender && DataRecord is not null)
+        {
+            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DepthChargeDamageDistributionChart.razor.js");
+            await module.InvokeVoidAsync("drawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
+
+}

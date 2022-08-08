@@ -14,8 +14,5 @@ public class ShipViewModel : MainWindowViewModelBase
     {
     }
 
-    public override void OpenSaveBuild()
-    {
-        throw new NotImplementedException();
-    }
+
 }

@@ -6,18 +6,18 @@ namespace WoWsShipBuilder.Core.DataContainers
 {
     public static class BallisticHelper
     {
-        // Physical Constants                               Description                  | Units
-        private const double G = 9.8;                    // Gravitational Constant       | m/(s^2)
-        private const double T0 = 288.15;                // Temperature at Sea Level     | K
-        private const double L = 0.0065;                 // Atmospheric Lapse Rate       | C/m
-        private const double P0 = 101325;                // Pressure at Sea Level        | Pa
-        private const double R = 8.31447;                // Ideal Gas Constant           | J/(mol K)
-        private const double M = 0.0289644;              // Molarity of Air at Sea Level | kg/mol
+        // Physical Constants                                                       Description                  | Units
+        private const double G = 9.8;                                            // Gravitational Constant       | m/(s^2)
+        private const double T0 = 288.15;                                        // Temperature at Sea Level     | K
+        private const double L = 0.0065;                                         // Atmospheric Lapse Rate       | C/m
+        private const double P0 = 101325;                                        // Pressure at Sea Level        | Pa
+        private const double R = 8.31447;                                        // Ideal Gas Constant           | J/(mol K)
+        private const double M = 0.0289644;                                      // Molarity of Air at Sea Level | kg/mol
 
         // Calculation Parameters
-        private const double MaxAngles = 600;            // Max Angle                    | degrees
-        private const double AngleStep = 0.00174533;     // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
-        private const double Dt = 0.02;                  // Time step                    | s
+        private const double MaxAngles = 600;                                    // Max Angle                    | degrees
+        private const double AngleStep = 0.00174533;                             // Angle Step                   | degrees    60 * Math.PI / 180. / n_angle //ELEV. ANGLES 0-30 deg, at launch
+        private const double Dt = 0.02;                                          // Time step                    | s
         private static List<double> calculationAngles = new();
 
         /// <summary>

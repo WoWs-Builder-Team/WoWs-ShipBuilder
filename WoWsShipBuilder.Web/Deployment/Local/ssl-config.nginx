@@ -1,2 +1,0 @@
-ssl_certificate /etc/ssl/certs/nginx-testing.crt;
-ssl_certificate_key /etc/ssl/certs/nginx-testing.key;

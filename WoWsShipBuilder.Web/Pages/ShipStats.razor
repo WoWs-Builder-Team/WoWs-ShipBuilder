@@ -1,100 +1,165 @@
 ﻿@page "/ship"
-@using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Services
+
 @using WoWsShipBuilder.Web.Utility
-@using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.Localization
-@using WoWsShipBuilder.Core.Settings
-@inherits ReactiveComponentBase<ShipViewModel>
-@inject NavigationManager navManager
-@inject ILocalizer localizer
-@inject IAppDataService appDataService
-@inject AppSettings appSettings
+@using DynamicData
+@using WoWsShipBuilder.Web.Dialogs
+
+@inject NavigationManager NavManager
+@inject ILocalizer Localizer
+@inject IDialogService DialogService
 
 <PageTitle>Ship stats</PageTitle>
 
-<MudPaper Outlined="true" Class="d-flex justify-center align-center ma-5">
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-    <MudImage Src="@(baseAddress + "_default.png")"/>
-</MudPaper>
-
-<MudContainer MaxWidth="MaxWidth.False">
-    @if (!initialized)
-    {
-        <MudGrid>
-            <MudItem xs="4">
-                <MudStack>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="400px"/>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="8">
-                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-            </MudItem>
-        </MudGrid>
-    }
-    else
-    {
-        <MudGrid>
-        <MudItem xs="4">
-            <MudStack>
-                <CaptainSkillSelector ViewModel="@ViewModel?.CaptainSkillSelectorViewModel"/>
-                <SignalSelector ViewModel="@ViewModel?.SignalSelectorViewModel"/>
-            </MudStack>
-        </MudItem>
-        <MudItem xs="8">
-            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-            {
-                @*@foreach (var (name, value) in ViewModel?.ShipStatsControlViewModel?.CurrentShipStats?.MainBatteryUI?.PropertyValueMapper ?? new())
-                {
-                    <MudStack Row="true">
-                        <MudText>@Translation.ResourceManager.GetString(name)</MudText>
-                        <MudText>@value</MudText>
-                    </MudStack>
-                }*@
-            }
-        </MudItem>
-    </MudGrid>
-    }
-</MudContainer>
-
+<MudBreakpointProvider>
+    @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+        @foreach (var shipIndex in shipIndexes)
+        {
+            <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
+                <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@shipBuildMapper.GetValueOrDefault(shipIndex, null)"/>
+            </MudTabPanel>
+        }
+    </MudDynamicTabs>
+</MudBreakpointProvider>
+@* <MudScrollToTop Selector="#test" TopOffset="100" Style="z-index:2001"> *@
+@*     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/> *@
+@* </MudScrollToTop> *@
 
 @code {
 
-    private string baseAddress = @"https://wows-shipbuilder-data.s3.eu-central-1.amazonaws.com/images/ship/";
+    private MudTabs mudTabs = default!;
 
-    private bool initialized = false;
-    
+    private readonly List<string> shipIndexes = new();
+
+    private readonly Dictionary<string, string?> shipBuildMapper = new();
+
+    private bool updateTab;
+
+    private string selectedTabId = string.Empty;
+
+    private int idCount;
+
+    private readonly Dictionary<string, string> indexIdMapper = new();
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        navManager.TryGetQueryString("shipIndex", out string shipIndex);
-        navManager.LocationChanged += HandleLocationChanged;
-        await LoadShipViewModel(shipIndex);
-        await (ViewModel?.ShipStatsControlViewModel?.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new()) ?? Task.CompletedTask);
-        // this.WhenAnyValue(x => x.ViewModel.ShipStatsControlViewModel.CurrentShipStats).Subscribe(_ => StateHasChanged());
-        initialized = true;
-    }
-    
-    private async Task LoadShipViewModel(string shipIndex)
-    {
-        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-        await appDataService.LoadNationFiles(shipSummary.Nation);
-        var ship = await appDataService.GetShipFromSummary(shipSummary);
-        var vmParams = new MainViewModelParams(ship!, shipSummary, null);
-        ViewModel = new(null!, appDataService, localizer, appSettings, vmParams);
-        await ViewModel.InitializeData(vmParams);
+        NavManager.TryGetQueryString("shipIndexes", out string ships);
+        NavManager.TryGetQueryString("build", out string buildString);
+        if (!string.IsNullOrWhiteSpace(ships))
+        {
+            string[] indexes = ships.Split(",");
+            shipBuildMapper[indexes[0]] = buildString;
+            AddNewIndexes(indexes);
+        }
+        UpdateUrl();
     }
 
-    private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    protected override void OnAfterRender(bool firstRender)
     {
-        var uri = navManager.Uri;
-        if (uri.Contains("/ship"))
+        if (!updateTab) return;
+        mudTabs.ActivatePanel(selectedTabId, true);
+        updateTab = false;
+        StateHasChanged();
+    }
+
+    private bool OnShipIndexChanged(string? oldIndex, string newIndex)
+    {
+        var update = false;
+        if (!indexIdMapper.ContainsKey(newIndex))
         {
-            navManager.TryGetQueryString("shipIndex", out string shipIndex);
-            await LoadShipViewModel(shipIndex);
+            if (oldIndex is not null)
+            {
+                shipIndexes.Replace(oldIndex, newIndex);
+                shipBuildMapper.Remove(oldIndex);
+                indexIdMapper[newIndex] = indexIdMapper[oldIndex];
+                indexIdMapper.Remove(oldIndex);
+                update = true;
+            }
+            else
+            {
+                shipIndexes.Add(newIndex);
+                indexIdMapper[newIndex] = (idCount++).ToString();
+            }
+            UpdateUrl();
+        }
+
+        selectedTabId = newIndex;
+        updateTab = true;
+        StateHasChanged();
+        return update;
+    }
+
+    private void RemoveTab(MudTabPanel panel)
+    {
+        string shipIndex = (string)panel.Tag;
+        int index = shipIndexes.IndexOf(shipIndex);
+        shipIndexes.Remove(shipIndex);
+        indexIdMapper.Remove(shipIndex);
+        shipBuildMapper.Remove(shipIndex);
+
+        if (mudTabs.ActivePanel.ID.Equals(panel.ID))
+        {
+    // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
+    // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
+    // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
+    // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
+            if (shipIndexes.Count > index && index != -1)
+            {
+                mudTabs.ActivatePanel(shipIndexes[index]);
+            }
+            else if (shipIndexes.Count > 0)
+            {
+                mudTabs.ActivatePanel(shipIndexes.Last());
+            }
+        }
+        UpdateUrl();
+    }
+
+    private async Task OpenAddDialogAsync()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = false,
+        };
+        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
+        if (!result.Cancelled && result.Data is List<string> newIndexes)
+        {
+            AddNewIndexes(newIndexes);
+            selectedTabId = newIndexes.FirstOrDefault() ?? selectedTabId;
+            updateTab = true;
+
+            UpdateUrl();
             StateHasChanged();
         }
     }
+
+    private void AddNewIndexes(IEnumerable<string> indexList)
+    {
+        List<string> newIndexes = indexList.ToList();
+        newIndexes.Remove(shipIndexes);
+        shipIndexes.AddRange(newIndexes);
+        foreach (string newIndex in newIndexes)
+        {
+            indexIdMapper[newIndex] = (idCount++).ToString();
+        }
+    }
+
+    private void UpdateUrl()
+    {
+        var shipsString = string.Join(",", shipIndexes);
+        NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
+    }
+
+    private string GetStyle(string shipIndex)
+    {
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(shipIndex))
+        {
+            return " background-color: rgba(0, 0, 0, 0.4);";
+        }
+        return string.Empty;
+    }
+
 }

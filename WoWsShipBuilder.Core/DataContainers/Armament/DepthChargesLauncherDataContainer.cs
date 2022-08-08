@@ -28,7 +28,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValue)]
         public int BombsPerCharge { get; set; }
 
-        public ProjectileDataContainer? DepthCharge { get; set; }
+        public DepthChargeDataContainer? DepthCharge { get; set; }
 
         public static async Task<DepthChargesLauncherDataContainer?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers, IAppDataService appDataService)
         {

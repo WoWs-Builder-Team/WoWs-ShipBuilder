@@ -10,14 +10,25 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
     {
         private readonly CaptainSkillSelectorViewModel parent;
 
-        private readonly int skillTier;
-
         private bool canExecute;
 
-        public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent)
+        private readonly ShipClass shipClass;
+
+        public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass)
         {
             Skill = skill;
-            skillTier = skill.Tiers.First().Tier;
+            SkillTier = skill.Tiers.First(x => x.ShipClass == shipClass).Tier;
+            SkillXPosition = skill.Tiers.First(x => x.ShipClass == shipClass).XPosition;
+            if (skill.Modifiers is not null)
+            {
+                Modifiers = skill.Modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
+            }
+
+            if (skill.ConditionalModifiers is not null)
+            {
+                ConditionalModifiers = skill.ConditionalModifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
+            }
+            this.shipClass = shipClass;
             this.parent = parent;
             CanExecuteChanged();
         }
@@ -30,6 +41,14 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public static Dictionary<int, bool> CanRemoveCache { get; } = new();
 
         public Skill Skill { get; }
+
+        public int SkillTier { get; }
+
+        public int SkillXPosition { get; }
+
+        public Dictionary<string, float> Modifiers { get; } = new();
+
+        public Dictionary<string, float> ConditionalModifiers { get; } = new();
 
         public bool CanExecute
         {
@@ -44,51 +63,51 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             // Can add skill
             if (!parent.SkillOrderList.Contains(Skill))
             {
-                if (CanAddCache.TryGetValue(skillTier, out bool canAdd))
+                if (CanAddCache.TryGetValue(SkillTier, out bool canAdd))
                 {
                     CanExecute = canAdd;
                     return;
                 }
 
                 // If the points would go over 21, can't add the skill
-                if (parent.AssignedPoints + skillTier + 1 > 21)
+                if (parent.AssignedPoints + SkillTier + 1 > 21)
                 {
                     result = false;
                 }
 
                 // If it's a skill of the first tier, i can always add it
-                else if (skillTier == 0)
+                else if (SkillTier == 0)
                 {
                     result = true;
                 }
                 else
                 {
                     // If it's not, i search the skill of the previous tier. If at least one exist, i can add it
-                    result = parent.SkillOrderList.Select(s => s.Tiers.First().Tier).Any(cost => cost == skillTier - 1);
+                    result = parent.SkillOrderList.Select(s => s.Tiers.First(x => x.ShipClass == shipClass).Tier).Any(cost => cost == SkillTier - 1);
                 }
 
-                CanAddCache[skillTier] = result;
+                CanAddCache[SkillTier] = result;
             }
 
             // Can remove skill
             else
             {
                 // If the skill tier is 4 (tier 3, since our index start from 0), can always remove
-                if (skillTier == 3)
+                if (SkillTier == 3)
                 {
                     result = true;
                 }
                 else
                 {
-                    if (CanRemoveCache.TryGetValue(skillTier, out bool canRemove))
+                    if (CanRemoveCache.TryGetValue(SkillTier, out bool canRemove))
                     {
                         CanExecute = canRemove;
                         return;
                     }
 
-                    List<int> skillTiers = parent.SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First().Tier).ToList();
-                    int nextTierSkillCount = skillTiers.Count(skillCost => skillCost > skillTier);
-                    int sameTierSkillCount = skillTiers.Count(skillCost => skillCost == skillTier);
+                    List<int> skillTiers = parent.SkillOrderList.Select(iteratedSkill => iteratedSkill.Tiers.First(x => x.ShipClass == shipClass).Tier).ToList();
+                    int nextTierSkillCount = skillTiers.Count(skillCost => skillCost > SkillTier);
+                    int sameTierSkillCount = skillTiers.Count(skillCost => skillCost == SkillTier);
 
                     if (nextTierSkillCount > 0)
                     {
@@ -99,7 +118,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                         result = true;
                     }
 
-                    CanRemoveCache[skillTier] = result;
+                    CanRemoveCache[SkillTier] = result;
                 }
             }
 

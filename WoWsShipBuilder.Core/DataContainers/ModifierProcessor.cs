@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Core.DataContainers;
@@ -12,9 +13,7 @@ public enum ReturnFilter
 
 public static class ModifierProcessor
 {
-    private static string prefix = "PARAMS_MODIFIER_";
-
-    private static string GetUiModifierValue(float modifier, string localizerKey, ReturnFilter returnFilter)
+    private static string GetUiModifierValue(float modifier, string localizerKey, ReturnFilter returnFilter, ILocalizer localizer)
     {
         string value;
 
@@ -79,7 +78,7 @@ public static class ModifierProcessor
 
             // this is for aiming time of CV planes
             case { } str when str.Contains("AimingTime", StringComparison.InvariantCultureIgnoreCase):
-                value = modifier > 0 ? $"+{modifier}{Translation.Unit_S}" : $"{modifier}{Translation.Unit_S}";
+                value = modifier > 0 ? $"+{modifier}{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}" : $"{modifier}{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 break;
 
             // This is the anti detonation stuff
@@ -101,7 +100,7 @@ public static class ModifierProcessor
                 value = $"+{Math.Round(modifier * 100, 1)}%";
                 if (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase))
                 {
-                        value += $"/{Translation.Unit_S}";
+                        value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 }
 
                 break;
@@ -119,13 +118,13 @@ public static class ModifierProcessor
 
             // Incoming fire alert. Range is in BigWorld Unit
             case { } str when str.Contains("artilleryAlertMinDistance", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{(modifier * 30) / 1000} {Translation.Unit_KM}";
+                value = $"{(modifier * 30) / 1000} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
 
             // Radar and hydro spotting distances
             case { } str when str.Contains("distShip", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("distTorpedo", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{Math.Round(modifier * 30) / 1000} {Translation.Unit_KM}";
+                value = $"{Math.Round(modifier * 30) / 1000} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
 
             // Speed boost modifier
@@ -145,19 +144,14 @@ public static class ModifierProcessor
             // this is the actual value
             case { } str when str.Contains("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
                 value = $"{modifier} {Translation.Unit_S}";
-                prefix += "CALLFIGHTERS";
                 break;
             case { } str when str.Contains("radius"):
-                value = $"{Math.Round(modifier * 30 / 1000, 1)} {Translation.Unit_KM}";
-                break;
-
-            case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
-                                     str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
-                value = $"{modifier} {Translation.Unit_S}";
+                value = $"{Math.Round(modifier * 30 / 1000, 1)} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}";
                 break;
 
             case { } str when Math.Abs(modifier % 1) > (double.Epsilon * 100) ||
-                                     str.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase):
+                                     str.Contains("WorkTimeCoeff", StringComparison.InvariantCultureIgnoreCase) ||
+                                     str.Contains("smokeGeneratorLifeTime"):
             {
                 if (modifier > 1)
                 {
@@ -173,9 +167,14 @@ public static class ModifierProcessor
                 break;
             }
 
+            case { } str when str.Contains("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
+                              str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase):
+                value = $"{modifier} {localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
+                break;
+
             default:
                 // If Modifier is higher than 1000, we can assume it's in meter, so we convert it to Km for display purposes
-                value = modifier > 1000 ? $"+{modifier / 1000} {Translation.Unit_KM}" : $"+{(int)modifier}";
+                value = modifier > 1000 ? $"+{modifier / 1000} {localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization}" : $"+{(int)modifier}";
                 break;
         }
 
@@ -184,7 +183,7 @@ public static class ModifierProcessor
 
     private static string GetUiModifierDescription(string localizerKey, ILocalizer localizer)
     {
-        string description;
+        string prefix = "PARAMS_MODIFIER_";
 
         if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase))
         {
@@ -212,10 +211,14 @@ public static class ModifierProcessor
             localizerKey = "ConsumablesWorkTime";
         }
 
+        if (localizerKey.Equals("timeDelayAttack", StringComparison.InvariantCultureIgnoreCase))
+        {
+            localizerKey = $"CALLFIGHTERS{localizerKey}";
+        }
+
         localizerKey = $"{prefix}{localizerKey}";
 
-        bool found;
-        (found, description) = localizer.GetGameLocalization(localizerKey.ToUpper());
+        (bool found, string description) = localizer.GetGameLocalization(localizerKey.ToUpper());
 
         // We need this to deal with the consumable mod of slot 5
         var moduleFallback = "";
@@ -273,7 +276,7 @@ public static class ModifierProcessor
 
         if (localizerKey.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase))
         {
-           description = Translation.Consumable_HpPerHeal;
+           description = localizer.GetAppLocalization(nameof(Translation.Consumable_HpPerHeal)).Localization;
         }
 
         return description;
@@ -281,12 +284,12 @@ public static class ModifierProcessor
 
     public static string GetUiModifierString(string localizerKey, float modifier, ReturnFilter returnFilter, ILocalizer localizer)
     {
-        string value = string.Empty;
-        string description = string.Empty;
+        var value = string.Empty;
+        var description = string.Empty;
 
         if (returnFilter is ReturnFilter.Value or ReturnFilter.All)
         {
-            value = GetUiModifierValue(modifier, localizerKey, returnFilter);
+            value = GetUiModifierValue(modifier, localizerKey, returnFilter, localizer);
         }
 
         if (returnFilter is ReturnFilter.Description or ReturnFilter.All)
