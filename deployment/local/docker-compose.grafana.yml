@@ -1,4 +1,5 @@
-﻿services: 
+﻿version: "2.4"
+services: 
   grafana:
     image: grafana/grafana-oss
     ports:
