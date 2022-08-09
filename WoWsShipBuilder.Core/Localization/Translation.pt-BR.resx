@@ -1421,6 +1421,43 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
       <value>HP do Navio</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
-      <value>Clique com o botão direto em um ícone para alternar os efeitos</value>
+      <value>Clique com o botão direto em um ícone para ativar os efeitos</value>
+  </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Mostrar gráfico de trajetória</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Altura </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Mostrar gráficos de dispersão e balística</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>Informações do app</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Versão atual dos dados:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Idioma selecionado</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Abrir blocos de Projéteis e Torpedos por padrão</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Configurações Salvas</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>Segure um ícone para ativar os efeitos</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Acertos</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>O ângulo de 0° está no topo. Positivo é o sentido horário, negativo é o sentido anti-horário. Os ângulos vermelhos são as zonas mortas do armamento (pode girar mas não atirar).
+      </value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Copiar URL da build</value>
   </data>
 </root>
