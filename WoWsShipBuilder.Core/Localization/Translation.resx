@@ -1441,7 +1441,7 @@ They do not have any effect on surface ships.</value>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Selected Language</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
       <value>Open Shells and Torps expanders by default</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
@@ -1459,5 +1459,14 @@ They do not have any effect on surface ships.</value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copy build url</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Open all main expander by default</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>Open all secondaries and AA expanders by default</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>Expander settings</value>
   </data>
 </root>

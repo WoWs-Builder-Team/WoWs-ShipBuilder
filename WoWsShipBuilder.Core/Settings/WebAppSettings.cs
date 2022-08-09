@@ -2,5 +2,9 @@
 
 public record WebAppSettings
 {
-    public bool OpenAllExpandersByDefault { get; set; } = true;
+    public bool OpenAllMainExpandersByDefault { get; set; } = true;
+
+    public bool OpenAllAmmoExpandersByDefault { get; set; } = true;
+
+    public bool OpenSecondariesAndAAExpandersByDefault { get; set; } = true;
 }
