@@ -1,3 +1,4 @@
+version: "2.4"
 services: 
   app:
     build: 
@@ -11,6 +12,7 @@ services:
     container_name: "wowssb-app"
     environment:
       SENTRY_DSN:
+    mem_limit: 4G
   prometheus:
     image: prom/prometheus
     volumes:
