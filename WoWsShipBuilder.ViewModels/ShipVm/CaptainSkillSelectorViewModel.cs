@@ -134,17 +134,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref captainList, value);
         }
 
-        private bool camoEnabled = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the camo bonuses should be applied.
-        /// </summary>
-        public bool CamoEnabled
-        {
-            get => camoEnabled;
-            set => this.RaiseAndSetIfChanged(ref camoEnabled, value);
-        }
-
         private int assignedPoints;
 
         /// <summary>
@@ -486,11 +475,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
                 .Select(effect => (effect.Key, effect.Value))
                 .ToList();
-
-            if (CamoEnabled)
-            {
-                modifiers.Add(("visibilityFactor", 0.97f));
-            }
 
             if (SkillOrderList.Any(skill => skill.SkillNumber == 14))
             {
