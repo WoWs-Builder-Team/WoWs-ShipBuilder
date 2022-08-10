@@ -412,7 +412,7 @@
                          {
                              @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[i], Localizer))
                          }
-                        <MudExpansionPanel DisableGutters Text="Ship Section HP" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
+                        <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShipSectionsHp)).Localization" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
                             <MudStack Spacing="1" Class="expander-content-padding mb-n3">
                                 @for (int i = 1; i < ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements.Count - 2; i++)
                                 {

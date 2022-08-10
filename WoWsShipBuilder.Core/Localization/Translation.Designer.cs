@@ -3114,6 +3114,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship sections hp.
+        /// </summary>
+        public static string ShipStats_ShipSectionsHp {
+            get {
+                return ResourceManager.GetString("ShipStats_ShipSectionsHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Short range aura.
         /// </summary>
         public static string ShipStats_ShortAura {

@@ -1469,4 +1469,7 @@ They do not have any effect on surface ships.</value>
   <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
       <value>Expander settings</value>
   </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>Ship sections hp</value>
+  </data>
 </root>
