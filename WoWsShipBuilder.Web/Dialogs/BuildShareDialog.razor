@@ -9,7 +9,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.GetAppLocalization(nameof(Translation.Build_CopyUrl))</MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.GetAppLocalization(nameof(Translation.Build_CopyUrl)).Localization</MudButton>
     </DialogActions>
 </MudDialog>
 

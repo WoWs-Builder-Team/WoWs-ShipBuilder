@@ -15,3 +15,4 @@ buildInfo.txt
 
 */wwwroot/lib/
 deployment/local/.env
+appsettings.local.json
