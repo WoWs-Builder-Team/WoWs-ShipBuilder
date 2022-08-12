@@ -36,10 +36,10 @@
                     <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization</MudText>
                 </MudButton>
             </MudItem>
-            @foreach (var (skillName, skill) in ViewModel.SkillList!)
+            @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent"  Delay="750">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
@@ -50,12 +50,12 @@
                             </MudBadge>
                         </ChildContent>
                         <TooltipContent>
-                            <MudPaper Outlined="true">
+                            <MudPaper Outlined="true" Style="max-width: 300px">
                                 <MudStack Spacing="0" Class="pa-2">
-                                    <MudText Align="Align.Center" Typo="Typo.h6" >@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(skillName)).Localization</MudText>
+                                    <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(skillName)).Localization</MudText>
                                     @{
                                         // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
-                                        var localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
+                                        string localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
                                         if (!string.IsNullOrWhiteSpace(localization))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
@@ -64,23 +64,23 @@
                                     @if (skill.Modifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        @foreach (var (modifierName, modifierValue) in skill.Modifiers)
+                                        @foreach ((string modifierName, float modifierValue) in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                             @if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
-                                                <MudText Align="Align.Left" Typo="Typo.body2" >@modifierString</MudText>
+                                                <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }
                                         }
                                     }
                                     @if (skill.ConditionalModifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        @foreach (var (modifierName, modifierValue) in skill.ConditionalModifiers)
+                                        @foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                            var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                            string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                             @if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
@@ -88,7 +88,7 @@
                                         }
                                     }
                                 </MudStack>
-                            </MudPaper >
+                            </MudPaper>
                         </TooltipContent>
                     </MudTooltip>
                 </MudItem>
@@ -138,32 +138,18 @@
         return sb.ToString();
     }
 
-    private int getColumnSize(int column)
+    private int GetColumnSize(int column)
     {
         if (ShipClass != ShipClass.Submarine)
         {
             return 2;
         }
-        else
-        {
-            if (column == 0 || column == 4)
-            {
-                return 3;
-            }
-            else
-            {
-                return 2;
-            }
-        }
+        return column is 0 or 4 ? 3 : 2;
     }
 
     private string GetSubFix()
     {
-        if (ShipClass != ShipClass.Submarine)
-        {
-            return "";
-        }
-        return "flex-basis: 20%; max-width: 20%;";
+        return ShipClass != ShipClass.Submarine ? "" : "flex-basis: 20%; max-width: 20%;";
     }
 
     private string GetOrder(SkillPosition single)
