@@ -3114,7 +3114,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ship sections hp.
+        ///   Looks up a localized string similar to Ship sections HP.
         /// </summary>
         public static string ShipStats_ShipSectionsHp {
             get {
@@ -3979,7 +3979,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open Shells and Torps expanders by default.
+        ///   Looks up a localized string similar to Open Shells, Torps and Planes expanders by default.
         /// </summary>
         public static string WebApp_AmmoExpanderSetting {
             get {
@@ -4034,7 +4034,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open all secondaries and AA expanders by default.
+        ///   Looks up a localized string similar to Open all secondaries, plane weapons and AA expanders by default.
         /// </summary>
         public static string WebApp_SecondariesAndAAExpanderSetting {
             get {
