@@ -122,10 +122,10 @@
                             @DataElementFragment((data,Localizer))
                         }
                         <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))">
-                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowLaunchersAngles)).Localization
                         </MudText>
                         <!--Torpedo data-->
-                        <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Torpedo)).Localization</MudText>
                         <MudStack>
                             @foreach (var torpedo in ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.Torpedoes)
                             {
@@ -343,14 +343,12 @@
                                 @DataElementFragment((weaponData,Localizer))
                             }
                         </MudStack>
-                        <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
-                            <ChildContent>
-                                <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
-                            </ChildContent>
-                            <TooltipContent>
-                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
-                            </TooltipContent>
-                        </MudTooltip>
+                        <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                            @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
+                        </MudText>
+                        <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
+                            <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
+                        </div>
                     </MudStack>
                 </MudExpansionPanel>
             }
@@ -369,14 +367,12 @@
                         {
                             @DataElementFragment((data, Localizer))
                         }
-                        <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
-                            <ChildContent>
-                                <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
-                            </ChildContent>
-                            <TooltipContent>
-                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
-                            </TooltipContent>
-                        </MudTooltip>
+                        <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                            @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
+                        </MudText>
+                        <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
+                            <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
+                        </div>
                     </MudStack>
                 </MudExpansionPanel>
             }
@@ -457,6 +453,8 @@
 
 @code {
 
+    private bool showDepthChargeDamageDistributionChart;
+
     private void NavigateToGraph(string shipIndex, string shellIndex)
     {
         NavManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
@@ -489,6 +487,16 @@
             CloseButton = false,
         };
         DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+    }
+
+    private void SetDepthChargeDamageDistributionChartVisibility()
+    {
+        showDepthChargeDamageDistributionChart = !showDepthChargeDamageDistributionChart;
+    }
+
+    private string GetDepthChargeDamageDistributionChartVisibility()
+    {
+        return showDepthChargeDamageDistributionChart ? "align-content: center; visibility: visible" : "max-height: 0px; visibility: hidden";
     }
 
 }

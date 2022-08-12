@@ -2511,6 +2511,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Damage Distribution Chart.
+        /// </summary>
+        public static string ShipStats_HideDcDamageDistribution {
+            get {
+                return ResourceManager.GetString("ShipStats_HideDcDamageDistribution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hit chance.
         /// </summary>
         public static string ShipStats_HitChance {
@@ -3155,6 +3164,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ShowDispPlot {
             get {
                 return ResourceManager.GetString("ShipStats_ShowDispPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Launchers Angles.
+        /// </summary>
+        public static string ShipStats_ShowLaunchersAngles {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowLaunchersAngles", resourceCulture);
             }
         }
         

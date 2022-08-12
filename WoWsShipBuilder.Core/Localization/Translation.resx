@@ -1460,4 +1460,10 @@ They do not have any effect on surface ships.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copy build url</value>
   </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Hide Damage Distribution Chart</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Show Launchers Angles</value>
+  </data>
 </root>
