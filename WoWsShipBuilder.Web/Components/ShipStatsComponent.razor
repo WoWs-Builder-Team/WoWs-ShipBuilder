@@ -254,7 +254,7 @@
                         <!--Long range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.LongRangeAura is not null)
                         {
-                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_LongAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.LongRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
+                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_LongAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.LongRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 mt-1">
                                 <MudStack Spacing="1" Class="expander-content-padding mb-n3">
                                     @foreach (var longData in ViewModel.CurrentShipStats.AntiAirDataContainer.LongRangeAura.DataElements)
                                     {
@@ -267,7 +267,7 @@
                         <!--Medium range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.MediumRangeAura is not null)
                         {
-                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_MediumAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.MediumRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
+                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_MediumAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.MediumRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 mt-2">
                                 <MudStack Spacing="1" Class="expander-content-padding mb-n3">
                                     @foreach (var longData in ViewModel.CurrentShipStats.AntiAirDataContainer.MediumRangeAura.DataElements)
                                     {
@@ -280,7 +280,7 @@
                         <!--Short range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura is not null)
                         {
-                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShortAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 mt-1">
+                            <MudExpansionPanel DisableGutters IsInitiallyExpanded="@AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault" Text="@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShortAura)).Localization + " : " + ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura.Range + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_KM)).Localization)" Style="border-bottom: initial" Class="child-expander rounded-0 mt-2">
                                 <MudStack Spacing="1" Class="expander-content-padding mb-n3">
                                         @foreach (var longData in ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura.DataElements)
                                     {
