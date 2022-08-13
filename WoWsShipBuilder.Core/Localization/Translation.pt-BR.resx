@@ -1460,4 +1460,10 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copiar URL da build</value>
   </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Ocultar Gráfico de Distribuição de Dano</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Mostrar Ângulos dos Lançadores</value>
+  </data>
 </root>
