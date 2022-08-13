@@ -5,9 +5,7 @@
 @inject IJSRuntime Runtime
 
 
-<MudPaper Outlined="true">
-    <canvas id="@("DepthCharges_" + ShipIndex)" style="width: 350px; height: 350px;"></canvas>
-</MudPaper>
+<canvas id="@("DepthCharges_" + ShipIndex)" style="width: 350px; height: 350px"></canvas>
 
 @code {
 
@@ -22,9 +20,9 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender && DataRecord is not null)
+        if (DataRecord is not null)
         {
-            module = await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DepthChargeDamageDistributionChart.razor.js");
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DepthChargeDamageDistributionChart.razor.js");
             await module.InvokeVoidAsync("drawDepthChargeDamageDistributionChart", "DepthCharges_" + ShipIndex, DataRecord);
         }
     }

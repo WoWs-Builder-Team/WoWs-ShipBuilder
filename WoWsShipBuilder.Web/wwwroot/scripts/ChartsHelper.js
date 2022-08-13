@@ -117,6 +117,10 @@ export function BatchUpdateData(chartId, labels, newDatas)
 export function ChangeSuggestedMax(chartId, newSuggestedMax)
 {
     const chart = Chart.getChart(chartId);
+    if (chart == null)
+    {
+        return;
+    }
     chart.options.scales['y'].suggestedMax = newSuggestedMax;
     chart.update();
 }

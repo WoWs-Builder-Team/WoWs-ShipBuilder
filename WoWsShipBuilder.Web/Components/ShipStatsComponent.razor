@@ -40,15 +40,16 @@
                             <ChildContent>
                                 <div class="ml-3 d-flex justify-space-between">
                                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDisp)).Localization</MudText>
-                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDisp + " " + @Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
+                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
+                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
                                 </div>
                             </ChildContent>
                             <TooltipContent>
                                 <MudPaper Outlined="true" Class="pa-2">
                                     <MudStack Style="max-width: 500px">
-                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " <= " + @ViewModel.CurrentShipStats.MainBatteryDataContainer.TaperDist + ":")</MudText>
+                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " <= " + ViewModel.CurrentShipStats.MainBatteryDataContainer.TaperDist + ":")</MudText>
                                         <MudText Typo="Typo.body2">@ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDispFormulaAtShortRange</MudText>
-                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " > " + @ViewModel.CurrentShipStats.MainBatteryDataContainer.TaperDist + ":")</MudText>
+                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " > " + ViewModel.CurrentShipStats.MainBatteryDataContainer.TaperDist + ":")</MudText>
                                         <MudText Typo="Typo.body2">@ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDispFormula</MudText>
                                     </MudStack>
                                 </MudPaper>
@@ -58,15 +59,16 @@
                             <ChildContent>
                                 <div class="ml-3 d-flex justify-space-between">
                                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_VerticalDisp)).Localization</MudText>
-                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.VerticalDisp + " " + @Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
+                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
+                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.VerticalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
                                 </div>
                             </ChildContent>
                             <TooltipContent>
                                 <MudPaper Outlined="true" Class="pa-2">
                                     <MudStack Style="max-width: 500px">
-                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " < " + @ViewModel.CurrentShipStats.MainBatteryDataContainer.DelimDist + ":")</MudText>
+                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " < " + ViewModel.CurrentShipStats.MainBatteryDataContainer.DelimDist + ":")</MudText>
                                         <MudText Typo="Typo.body2">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.VerticalCoeffFormulaAtShortRange + " * " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDispersionX)).Localization)</MudText>
-                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " >= " + @ViewModel.CurrentShipStats.MainBatteryDataContainer.DelimDist + ":")</MudText>
+                                        <MudText Typo="Typo.body2">@(Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispFormulaTooltip)).Localization + " >= " + ViewModel.CurrentShipStats.MainBatteryDataContainer.DelimDist + ":")</MudText>
                                         <MudText Typo="Typo.body2">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.VerticalCoeffFormula + " * " + Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDispersionX)).Localization)</MudText>
                                     </MudStack>
                                 </MudPaper>
@@ -120,10 +122,10 @@
                             @DataElementFragment((data,Localizer))
                         }
                         <MudText Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer;" Typo="Typo.body2" @onclick="@(_ => OpenAngleDialog(ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.TorpedoLaunchers, false))">
-                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_TurretAngles)).Localization
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowLaunchersAngles)).Localization
                         </MudText>
                         <!--Torpedo data-->
-                        <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Shells)).Localization</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Torpedo)).Localization</MudText>
                         <MudStack>
                             @foreach (var torpedo in ViewModel.CurrentShipStats.TorpedoArmamentDataContainer.Torpedoes)
                             {
@@ -332,14 +334,12 @@
                                     @DataElementFragment((weaponData,Localizer))
                                 }
                             </MudStack>
-                            <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
-                                <ChildContent>
-                                    <MudText Class="expander-content-padding" Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
-                                </ChildContent>
-                                <TooltipContent>
+                            <MudText Class="expander-content-padding" Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                            @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
+                                </MudText>
+                                <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
                                     <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
-                                </TooltipContent>
-                            </MudTooltip>
+                                </div>
                         </MudExpansionPanel>
                     </MudStack>
                 </MudExpansionPanel>
@@ -359,14 +359,12 @@
                         {
                             @DataElementFragment((data, Localizer))
                         }
-                        <MudTooltip Style="width: 250px; height: 250px" Color="Color.Transparent" Placement="Placement.Bottom" RootStyle="width: 100%">
-                            <ChildContent>
-                                <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization</MudText>
-                            </ChildContent>
-                            <TooltipContent>
-                                <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
-                            </TooltipContent>
-                        </MudTooltip>
+                        <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                            @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
+                        </MudText>
+                        <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
+                            <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
+                        </div>
                     </MudStack>
                 </MudExpansionPanel>
             }
@@ -456,6 +454,8 @@
 
 @code {
 
+    private bool showDepthChargeDamageDistributionChart;
+
     private void NavigateToGraph(string shipIndex, string shellIndex)
     {
         NavManager.NavigateTo($"/charts?shipIndex={shipIndex}&shellIndex={shellIndex}");
@@ -488,6 +488,16 @@
             CloseButton = false,
         };
         DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
+    }
+
+    private void SetDepthChargeDamageDistributionChartVisibility()
+    {
+        showDepthChargeDamageDistributionChart = !showDepthChargeDamageDistributionChart;
+    }
+
+    private string GetDepthChargeDamageDistributionChartVisibility()
+    {
+        return showDepthChargeDamageDistributionChart ? "align-content: center; visibility: visible" : "max-height: 0px; visibility: hidden";
     }
 
 }
