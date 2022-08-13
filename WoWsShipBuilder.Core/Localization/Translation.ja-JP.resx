@@ -1459,4 +1459,10 @@
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>ビルドのURLをコピー</value>
   </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>ダメージ分布図を非表示</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>発射管の角度を表示</value>
+  </data>
 </root>
