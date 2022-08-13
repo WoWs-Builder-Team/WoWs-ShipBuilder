@@ -28,6 +28,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private readonly Logger logger;
 
+        private readonly Dictionary<int, bool> canAddSkillCache = new();
+
+        private readonly Dictionary<int, bool> canRemoveSkillCache = new();
+
         public CaptainSkillSelectorViewModel()
             : this(ShipClass.Cruiser, LoadParamsAsync(DesktopAppDataService.PreviewInstance, new(), Nation.Usa).Result)
         {
@@ -284,7 +288,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
 
-            var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass));
+            var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
             logger.Info("Found {0} skills", dictionary.Count);
             return dictionary;
         }
@@ -300,8 +304,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 return;
             }
 
-            SkillItemViewModel.CanAddCache.Clear();
-            SkillItemViewModel.CanRemoveCache.Clear();
+            canAddSkillCache.Clear();
+            canRemoveSkillCache.Clear();
             foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
             {
                 skill.Value.CanExecuteChanged();
