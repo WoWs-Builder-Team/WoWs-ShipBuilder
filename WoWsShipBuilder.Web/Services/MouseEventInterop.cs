@@ -3,21 +3,27 @@ using Microsoft.JSInterop;
 
 namespace WoWsShipBuilder.Web.Services;
 
-public class TurretAngleVisualizerJsInterop : IAsyncDisposable
+public class MouseEventInterop : IAsyncDisposable
 {
     private readonly IJSRuntime runtime;
 
     private IJSObjectReference? module;
 
-    public TurretAngleVisualizerJsInterop(IJSRuntime runtime)
+    public MouseEventInterop(IJSRuntime runtime)
     {
         this.runtime = runtime;
     }
 
-    public async Task DrawVisualizerAsync()
+    public async Task PreventMiddleClickDefault(string id)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("DrawVisualizer");
+        await module.InvokeVoidAsync("PreventMiddleClickDefault", id);
+    }
+
+    public async Task PreventMiddleClickDefaultBatched(IEnumerable<string> ids)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("PreventMiddleClickDefaultBatched", ids);
     }
 
     [MemberNotNull(nameof(module))]
@@ -25,7 +31,7 @@ public class TurretAngleVisualizerJsInterop : IAsyncDisposable
     {
         // module is not null after this method but apparently, Roslyn does not want to recognize that.
 #pragma warning disable CS8774
-        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/TurretAngleVisualizerHelper.js");
+        module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/MouseEventHelper.js");
 #pragma warning restore CS8774
     }
 

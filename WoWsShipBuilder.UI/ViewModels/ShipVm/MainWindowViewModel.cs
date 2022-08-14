@@ -34,15 +34,10 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
         {
         }
 
-        public override async void OpenSaveBuild()
+        public async void OpenSaveBuild()
         {
             Logging.Logger.Info("Saving build");
-            var currentBuild = new Build(CurrentShipIndex!, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
-            if (CurrentBuildName != null)
-            {
-                currentBuild.BuildName = CurrentBuildName;
-            }
-
+            var currentBuild = CreateBuild(CurrentBuildName);
             string shipName = Locator.Current.GetServiceSafe<ILocalizer>().GetGameLocalization(CurrentShipIndex!).Localization;
             var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, currentBuild, shipName)) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)

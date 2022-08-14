@@ -14,3 +14,5 @@ WoWsShipBuilder.UI/Settings/*_ApplicationOptions.json
 buildInfo.txt
 
 */wwwroot/lib/
+deployment/local/.env
+appsettings.local.json

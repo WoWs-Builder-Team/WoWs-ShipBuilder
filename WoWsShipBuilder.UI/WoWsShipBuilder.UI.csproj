@@ -9,8 +9,8 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.5.1</VersionPrefix>
-<!--        <VersionSuffix>pre</VersionSuffix>-->
+        <VersionPrefix>1.5.4</VersionPrefix>
+        <VersionSuffix>pre</VersionSuffix>
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
@@ -61,6 +61,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Sentry.NLog" Version="3.20.1" />
         <PackageReference Include="Splat.Autofac" Version="14.1.45" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
             <PrivateAssets>all</PrivateAssets>

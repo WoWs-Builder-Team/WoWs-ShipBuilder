@@ -14,11 +14,17 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private readonly ShipClass shipClass;
 
-        public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass)
+        private readonly Dictionary<int, bool> canAddCache;
+
+        private readonly Dictionary<int, bool> canRemoveCache;
+
+        public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass, Dictionary<int, bool> canAddCache, Dictionary<int, bool> canRemoveCache)
         {
             Skill = skill;
             SkillTier = skill.Tiers.First(x => x.ShipClass == shipClass).Tier;
             SkillXPosition = skill.Tiers.First(x => x.ShipClass == shipClass).XPosition;
+            this.canAddCache = canAddCache;
+            this.canRemoveCache = canRemoveCache;
             if (skill.Modifiers is not null)
             {
                 Modifiers = skill.Modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + shipClass)).ToDictionary(x => x.Key, x => x.Value);
@@ -33,12 +39,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             CanExecuteChanged();
         }
 
-        /// <summary>
-        /// Gets a dictionary that can be used to share the result of the <see cref="CanExecuteChanged"/> check for skills that are not currently selected.
-        /// </summary>
-        public static Dictionary<int, bool> CanAddCache { get; } = new();
-
-        public static Dictionary<int, bool> CanRemoveCache { get; } = new();
 
         public Skill Skill { get; }
 
@@ -63,7 +63,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             // Can add skill
             if (!parent.SkillOrderList.Contains(Skill))
             {
-                if (CanAddCache.TryGetValue(SkillTier, out bool canAdd))
+                if (canAddCache.TryGetValue(SkillTier, out bool canAdd))
                 {
                     CanExecute = canAdd;
                     return;
@@ -86,7 +86,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     result = parent.SkillOrderList.Select(s => s.Tiers.First(x => x.ShipClass == shipClass).Tier).Any(cost => cost == SkillTier - 1);
                 }
 
-                CanAddCache[SkillTier] = result;
+                canAddCache[SkillTier] = result;
             }
 
             // Can remove skill
@@ -99,7 +99,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 }
                 else
                 {
-                    if (CanRemoveCache.TryGetValue(SkillTier, out bool canRemove))
+                    if (canRemoveCache.TryGetValue(SkillTier, out bool canRemove))
                     {
                         CanExecute = canRemove;
                         return;
@@ -118,7 +118,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                         result = true;
                     }
 
-                    CanRemoveCache[SkillTier] = result;
+                    canRemoveCache[SkillTier] = result;
                 }
             }
 

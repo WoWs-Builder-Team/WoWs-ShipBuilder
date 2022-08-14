@@ -10,27 +10,27 @@
     <MudPaper Outlined="true" Class="pa-3">
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Typo="Typo.body2" Align="Align.Center">@(Localizer.GetAppLocalization(nameof(Translation.SignalSelector_Flags)).Localization + ViewModel.SignalsNumber + "/8")</MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">@(Localizer.GetAppLocalization(nameof(Translation.MainWindow_Signals)).Localization + " " + ViewModel.SignalsNumber + "/8")</MudText>
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {
 
                 <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="750">
                         <ChildContent>
                             <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@(@GetImageBreakpointStyle() + GetImageStyle(signal))">
                                 <MudImage ObjectFit="ObjectFit.ScaleDown" Width="@GetImageSize()" Height="@GetImageSize()" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>
                             </MudButton>
                         </ChildContent>
                         <TooltipContent>
-                            <MudPaper Outlined="true">
+                            <MudPaper Outlined="true" Style="max-width: 300px">
                                 <MudStack Spacing="0" Class="pa-2">
                                     <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization(signal.Signal.Name).Localization</MudText>
                                     <MudDivider Light="true" Class="ma-1"/>
-                                    @foreach (var (modifierName, modifierValue) in signal.Signal.Modifiers)
+                                    @foreach ((string? modifierName, double modifierValue) in signal.Signal.Modifiers)
                                     {
                                         // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
-                                        var modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
+                                        string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
                                         @if (!string.IsNullOrWhiteSpace(modifierString))
                                         {
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@modifierString</MudText>
@@ -95,10 +95,8 @@
             case Breakpoint.Xs:
             case Breakpoint.Sm:
                 return 25;
-                break;
             default:
                 return 40;
-                break;
         }
     }
     
@@ -109,10 +107,8 @@
             case Breakpoint.Xs:
             case Breakpoint.Sm:
                 return "min-width: 40px; width: 40px; height: 40px;";
-                break;
             default:
                 return "min-width: 55px; width: 55px; height: 55px;";
-                break;
         }
     }
 

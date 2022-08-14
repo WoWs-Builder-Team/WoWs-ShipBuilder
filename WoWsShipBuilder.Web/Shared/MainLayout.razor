@@ -16,13 +16,11 @@
 @* } *@
 
 <MudLayout>
-    <TopMenu />
+    <TopMenu/>
     <MudMainContent Class="px-2">
-        <MudBreakpointProvider>
-            <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
-                @Body
-            </CascadingValue>
-        </MudBreakpointProvider>
+        <CascadingValue Name="SettingsInitialized" Value="@settingsInitialized">
+            @Body
+        </CascadingValue>
     </MudMainContent>
     <footer style="margin-top: 16px;">
         <ShipBuilderFooter/>
@@ -47,6 +45,7 @@
                 };
                 await SettingsHelper.SaveSettings(settings);
             }
+            settings.WebAppSettings ??= new();
             AppSettings.UpdateFromSettings(settings);
             settingsInitialized = true;
             RefreshNotifierService.NotifyRefreshRequested();

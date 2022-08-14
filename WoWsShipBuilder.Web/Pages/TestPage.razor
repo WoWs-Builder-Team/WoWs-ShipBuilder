@@ -1,17 +1,19 @@
 ﻿@page "/test"
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
-@inject IDataService dataService
-@inject IAppDataService appDataService
-@inject AppSettingsHelper appSettingsHelper
-@inject AppSettings appSettings
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Dialogs
+@inject IAppDataService AppDataService
+@inject AppSettingsHelper AppSettingsHelper
+@inject AppSettings AppSettings
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
-@inject TurretAngleVisualizerJsInterop VisualizerInterop
+@* @inject TurretAngleVisualizerJsInterop VisualizerInterop *@
+@inject IDialogService DialogService
 
 <MudText Typo="Typo.h2">Test Page</MudText>
 
@@ -21,9 +23,10 @@
         <MudSelectItem Value="@culture">@culture.CultureInfo.DisplayName</MudSelectItem>
     }
 </MudSelect>
-<MudButton OnClick="SaveCultureChangeAsync" Disabled="appSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
+<MudButton OnClick="SaveCultureChangeAsync" Disabled="AppSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
 <MudText>@Localizer.GetAppLocalization(nameof(Translation.Battleship))</MudText>
-<canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas>
+<MudButton OnClick="OpenFiringAngles">Open angle dialog</MudButton>
+@* <canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas> *@
 @code {
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
@@ -31,23 +34,69 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        selectedCulture = appSettings.SelectedLanguage;
+        selectedCulture = AppSettings.SelectedLanguage;
     }
 
     private async Task SaveCultureChangeAsync()
     {
-        appSettings.SelectedLanguage = selectedCulture;
-        await appSettingsHelper.SaveSettings(appSettings);
+        AppSettings.SelectedLanguage = selectedCulture;
+        await AppSettingsHelper.SaveSettings(AppSettings);
         RefreshNotifierService.NotifyRefreshRequested();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     await base.OnAfterRenderAsync(firstRender);
+    //     if (firstRender)
+    //     {
+    //         var (ship, config) = await LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
+    //         var data = await MainBatteryDataContainer.FromShip(ship, config, new(), AppDataService);
+    //         var records = data!.OriginalMainBatteryData.Guns.Select(gun =>
+    //         {
+    //             var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
+    //             var deadZones = gun.HorizontalDeadZones?.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+    //             return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
+    //         });
+    //         
+    //         // await VisualizerInterop.DrawVisualizerAsync(records, true);
+    //     }
+    // }
+    
+    private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        // if (firstRender)
-        // {
-            await VisualizerInterop.DrawVisualizerAsync();
-        // }
+        var ship = await AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
+        
+        var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
+            .Select(entry => entry.Value.FirstOrDefault())
+            .Where(item => item != null)
+            .Cast<ShipUpgrade>()
+            .ToList();
+
+        return (ship, configuration);
+    }
+
+    private async Task OpenFiringAngles()
+    {
+        var (ship, config) = await LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
+        var data = await MainBatteryDataContainer.FromShip(ship, config, new(), AppDataService);
+        var records = data!.OriginalMainBatteryData.Guns.Select(gun =>
+        {
+            var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
+            var deadZones = gun.HorizontalDeadZones?.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+            return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
+        });
+        
+        var parameters = new DialogParameters
+        {
+            { nameof(FiringAngleDialog.IsArtillery), true },
+            { nameof(FiringAngleDialog.GunDataContainers), records },
+        };
+        var options = new DialogOptions
+        {
+            NoHeader = true,
+            CloseButton = false,
+        };
+        DialogService.Show<FiringAngleDialog>("FiringAngles", parameters, options);
     }
 
 }

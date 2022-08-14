@@ -5,7 +5,7 @@
 @using WoWsShipBuilder.Core.Localization
 @inject ILocalizer Localizer
 
-<MudGrid Justify="Justify.Center" Class="mt-3" Spacing="2">
+<MudGrid Justify="Justify.Center" Spacing="2">
     <MudItem xs="6" md="3">
         <MudSelect T="string" Variant="Variant.Outlined" @bind-Value="@SelectedTier" Placeholder="@(Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_TierFilter)).Localization + "...")" Clearable="true" AnchorOrigin="Origin.BottomCenter">
             @foreach (var item in tierList)
@@ -50,7 +50,7 @@
         </MudSelect>
     </MudItem>
     <MudItem xs="12" md="@(LargerList ? 6 : 4)">
-        <MudTextField T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+        <MudTextField AutoFocus T="string" Variant="Variant.Outlined" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" @bind-Text="@InputText" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
         <MudPaper Style="max-height: 300px; min-height: 300px; overflow:auto" Outlined="true">
             <MudList @ref="mudList" Clickable="true" SelectedValueChanged="AddShip">
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">

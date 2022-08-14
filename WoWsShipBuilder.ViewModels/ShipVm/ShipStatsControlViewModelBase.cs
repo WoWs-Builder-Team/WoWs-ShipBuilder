@@ -2,42 +2,36 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm
+namespace WoWsShipBuilder.ViewModels.ShipVm;
+
+public class ShipStatsControlViewModel : ViewModelBase
 {
-    public class ShipStatsControlViewModelBase : ViewModelBase
+    private readonly IAppDataService appDataService;
+
+    public ShipStatsControlViewModel(Ship ship, IAppDataService appDataService)
     {
-        private readonly IAppDataService appDataService;
+        this.appDataService = appDataService;
+        BaseShipStats = ship;
+    }
 
-        private readonly ILocalizer localizer;
+    private ShipDataContainer? currentShipStats;
 
-        public ShipStatsControlViewModelBase(Ship ship, List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers, IAppDataService appDataService, ILocalizer localizer)
-        {
-            this.appDataService = appDataService;
-            this.localizer = localizer;
-            BaseShipStats = ship;
-            Task.Run(async () => currentShipStats = await ShipDataContainer.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
-        }
+    public ShipDataContainer? CurrentShipStats
+    {
+        get => currentShipStats;
+        set => this.RaiseAndSetIfChanged(ref currentShipStats, value);
+    }
 
-        private ShipDataContainer? currentShipStats;
+    // this is the ship base stats. do not modify after creation
+    private Ship BaseShipStats { get; set; }
 
-        public ShipDataContainer? CurrentShipStats
-        {
-            get => currentShipStats;
-            set => this.RaiseAndSetIfChanged(ref currentShipStats, value);
-        }
-
-        // this is the ship base stats. do not modify after creation
-        private Ship BaseShipStats { get; set; }
-
-        public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
-        {
-            ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.FromShip(BaseShipStats, selectedConfiguration, modifiers, appDataService, localizer));
-            CurrentShipStats = shipStats;
-        }
+    public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
+    {
+        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.FromShipAsync(BaseShipStats, selectedConfiguration, modifiers, appDataService));
+        CurrentShipStats = shipStats;
     }
 }

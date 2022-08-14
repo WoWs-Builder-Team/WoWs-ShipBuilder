@@ -1,13 +1,14 @@
 ﻿/**
  * @description Setup global charts configurations.
  */
-export function SetupGlobalChartConfig()
+export function SetupGlobalChartConfig(aspectRatio)
 {
     let defaults = Chart.defaults;
     defaults.responsive = true;
     defaults.maintainAspectRatio = true;
     defaults.datasets.spanGaps = true;
     defaults.animation = false;
+    defaults.aspectRatio = aspectRatio;
     
     //colors settings
     defaults.color = '#a9a9a9';
@@ -116,6 +117,10 @@ export function BatchUpdateData(chartId, labels, newDatas)
 export function ChangeSuggestedMax(chartId, newSuggestedMax)
 {
     const chart = Chart.getChart(chartId);
+    if (chart == null)
+    {
+        return;
+    }
     chart.options.scales['y'].suggestedMax = newSuggestedMax;
     chart.update();
 }
@@ -138,7 +143,6 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
             type: 'line',
             options:
                 {
-                    aspectRatio: 3,
                     parsing: false,
                     scales:
                         {
@@ -262,7 +266,5 @@ export function CreateChart(chartId, title, xLabel, yLabel, xUnit, yUnit)
                                 }
                         }
                 },
-            
-                
         });
 }

@@ -1,6 +1,5 @@
 ﻿@using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @inject ILocalizer Localizer
@@ -80,7 +79,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public List<ShellSelectionWrapper> ShipList { get; set; } = new();
+    public List<ChartsRenderingDataWrapper> ShipList { get; set; } = new();
     
     private bool processing;
 
@@ -92,23 +91,30 @@
     private async Task ReturnSelectedShells()
     {
         processing = true;
-        List<ShellSelectionWrapper> selections = ShipList.Where(x => x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
-        foreach (var data in selections)
+        List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
+        List<ChartsRenderingDataWrapper> newData = new();
+        foreach ((string shipIndex, Dictionary<string, ArtilleryData> artilleryDataDictionary, _, _) in selections)
         {
-            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(data.ShipIndex));
+            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
             var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
-            IEnumerable<string> shellIndexes = data.ArtilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
+            double maxRange = -1;
+            double sigma = -1;
+            IEnumerable<string> shellIndexes = artilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
             foreach (string shellIndex in shellIndexes)
             {
                 var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
                 var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
 
-                var newData = data.ArtilleryDataDictionary[shellIndex];
-                newData.Shell = shell;
-                newData.DispersionValues = gun.DispersionValues;
-                data.MaxRange = (double) gun.MaxRange;
+                var newArtilleryData = artilleryDataDictionary[shellIndex];
+                newArtilleryData.Shell = shell;
+                newArtilleryData.DispersionValues = gun.DispersionValues;
+                maxRange = decimal.ToDouble(gun.MaxRange);
+                sigma = decimal.ToDouble(gun.Sigma);
             }
+            newData.Add(new(shipIndex, artilleryDataDictionary, maxRange, sigma));
         }
+        selections.Clear();
+        selections.AddRange(newData);
         processing = false;
         MudDialog.Close(DialogResult.Ok(selections));
     }
@@ -123,13 +129,13 @@
         return active ? Color.Primary : Color.Secondary;
     }
 
-    private void ToggleSelection(ShellSelectionWrapper ship, string shellIndex)
+    private void ToggleSelection(ChartsRenderingDataWrapper ship, string shellIndex)
     {
         ship.ArtilleryDataDictionary[shellIndex].ShellSelected = !ship.ArtilleryDataDictionary[shellIndex].ShellSelected;
         StateHasChanged();
     }
 
-    private void RemoveShip(ShellSelectionWrapper ship)
+    private void RemoveShip(ChartsRenderingDataWrapper ship)
     {
         ShipList.Remove(ship);
         StateHasChanged();

@@ -2,21 +2,9 @@
 
 namespace WoWsShipBuilder.Web.Utility;
 
-public class ShellSelectionWrapper
+public sealed record ChartsRenderingDataWrapper(string ShipIndex, Dictionary<string, ArtilleryData> ArtilleryDataDictionary, double MaxRange = -1, double Sigma = -1)
 {
-    public ShellSelectionWrapper(string shipIndex, Dictionary<string, ArtilleryData> artilleryData, double maxRange)
-    {
-        ShipIndex = shipIndex;
-        ArtilleryDataDictionary = artilleryData;
-        MaxRange = maxRange;
-    }
-
-    public string ShipIndex { get; }
-
-    public double MaxRange { get; set; }
-
-    public Dictionary<string, ArtilleryData> ArtilleryDataDictionary { get; }
-
+    public bool IsFullyConfigured { get; } = Math.Abs(MaxRange - -1) > 0.001;
 }
 
 public sealed record ArtilleryData(ArtilleryShell Shell, Dispersion DispersionValues, bool ShellSelected)

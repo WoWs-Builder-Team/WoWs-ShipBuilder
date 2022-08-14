@@ -4,15 +4,17 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Services;
 
-namespace WoWsShipBuilder.Web.Server.Test;
+namespace WoWsShipBuilder.Web.Test;
 
 [TestFixture]
 public class ServerAwsClientTest
@@ -46,7 +48,9 @@ public class ServerAwsClientTest
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage { Content = new StringContent(JsonConvert.SerializeObject(shipDictionary)) });
 
-        var client = new ServerAwsClient(new(messageHandlerMock.Object));
+        var cdnOptions = new CdnOptions { Host = "https://example.com"};
+        IOptions<CdnOptions>? options = Options.Create(cdnOptions);
+        var client = new ServerAwsClient(new(messageHandlerMock.Object), options);
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);
         var files = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();

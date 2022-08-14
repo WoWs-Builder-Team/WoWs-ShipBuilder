@@ -15,10 +15,10 @@ public class ChartJsInterop : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async Task SetupGlobalChartConfigAsync()
+    public async Task SetupGlobalChartConfigAsync(double aspectRatio)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("SetupGlobalChartConfig");
+        await module.InvokeVoidAsync("SetupGlobalChartConfig", aspectRatio);
     }
 
     public async Task CreateChartAsync(string chartId, string title, string xLabel, string yLabel, string xUnit, string yUnit)
@@ -33,7 +33,7 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
-    public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<Point>>> data, List<int> indexes)
+    public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
@@ -45,7 +45,7 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
     }
 
-    public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<Point>> datas)
+    public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);

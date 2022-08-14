@@ -1,8 +1,11 @@
 ﻿@page "/admin"
 @using WoWsShipBuilder.Web.Utility
 @using System.Text.Json.Serialization
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Web.Data
 @inject NavigationManager NavigationManager
 @inject HttpClient Client
+@inject IOptions<AdminOptions> AdminOptions
 
 <MudText Class="ma-2" Align="Align.Center" Typo="Typo.h4">Administration page</MudText>
 
@@ -27,16 +30,14 @@
     private string accountId = string.Empty;
 
     private string accessToken = string.Empty;
-
-    private static readonly List<string> AllowedIds = new() {"534767817", "537376379", "534769513"};
-
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         if (NavigationManager.TryGetQueryString("status", out status) && status.Equals("ok"))
         {
             NavigationManager.TryGetQueryString("account_id", out accountId);
-            if (AllowedIds.Contains(accountId))
+            if (AdminOptions.Value.AllowedUsers.Contains(accountId))
             {
                 NavigationManager.TryGetQueryString("access_token", out accessToken);
                 authorized = await ValidateAuth();
@@ -46,14 +47,14 @@
     
     private void TryWgAuth()
     {
-        var pageUrl = @"https://localhost:7034/admin";
-        var url = @$"https://api.worldoftanks.eu/wot/auth/login/?application_id=6d563fd75651dbf9de009418d3ee7f56&redirect_uri={pageUrl}";
+        var pageUrl = $"{NavigationManager.BaseUri}admin";
+        var url = @$"https://api.worldoftanks.eu/wot/auth/login/?application_id={AdminOptions.Value.WgApiKey}&redirect_uri={pageUrl}";
         NavigationManager.NavigateTo(url);
     }
 
     private async Task<bool> ValidateAuth()
     {
-        var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id=6d563fd75651dbf9de009418d3ee7f56&account_id={accountId}&access_token={accessToken}&fields=private.gold";
+        var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id={AdminOptions.Value.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private.gold";
         
         var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
         var response = await Client.SendAsync(request);
@@ -62,9 +63,9 @@
         {
             var data = await response.Content.ReadFromJsonAsync<WgResponse>();
             
-            if (data is not null && data.status.Equals("ok"))
+            if (data is not null && data.Status.Equals("ok"))
             {
-                return data.data.First().Value._private.gold is not null;
+                return data.Data.First().Value.Private?.Gold is not null;
             }
         }
         
@@ -73,20 +74,23 @@
 
     private class WgResponse
     {
-        public string status { get; set; }
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = string.Empty;
 
-        public Dictionary<string,Data> data { get; set; }
+        [JsonPropertyName("data")]
+        public Dictionary<string, Data> Data { get; set; } = new();
     }
 
     private class Data
     {
         [JsonPropertyName("private")]
-        public Private _private { get; set; }
+        public Private? Private { get; set; }
     }
 
     private class Private
     {
-        public int? gold { get; set; }
+        [JsonPropertyName("gold")]
+        public int? Gold { get; set; }
     }
 
 }

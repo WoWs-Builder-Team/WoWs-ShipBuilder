@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Net;
 using MudBlazor;
 using MudBlazor.Services;
 using NLog.Web;
@@ -8,16 +7,23 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+});
 
-// Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor(options =>
+{
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(10);
+});
+builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false });
@@ -31,14 +37,7 @@ resolver.InitializeSplat();
 resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
 builder.Services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
-
 builder.Services.AddShipBuilderServerServices();
-builder.Services.AddSingleton<HttpClient>(_ => new(new HttpClientHandler
-{
-    AutomaticDecompression = DecompressionMethods.All,
-}));
-builder.Services.AddSingleton<IAwsClient, ServerAwsClient>();
-builder.Services.AddSingleton<IAppDataService, ServerAppDataService>();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();
@@ -47,9 +46,6 @@ app.Services.UseMicrosoftDependencyResolver();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
