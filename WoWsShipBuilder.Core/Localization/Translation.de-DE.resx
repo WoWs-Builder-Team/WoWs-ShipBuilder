@@ -385,7 +385,7 @@
     <value>Durchschlagskraft</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ricochet-Winkel</value>
+    <value>Abprallwinkel</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
     <value>Luftabwehr</value>
@@ -832,13 +832,13 @@
     <value>Einschlaggeschwindigkeit</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Zeige Penetrationsgraph</value>
+    <value>Zeige Durchschlagskraftgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
     <value>Zeige Flugzeitgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Zeige Einschlangwinkelgraph</value>
+    <value>Zeige Einschlagwinkelgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
     <value>Zeige Einschlaggeschwindigkeitsgraph</value>
