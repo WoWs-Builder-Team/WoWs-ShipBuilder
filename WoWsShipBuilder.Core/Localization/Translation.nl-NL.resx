@@ -330,7 +330,6 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Geen schepen die aan de filtercriteria voldoen</value>
   </data>
-  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° draaitijd</value>
   </data>
@@ -361,7 +360,6 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Granaat gewicht</value>
   </data>
-  
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Bewapening overgangsdrempel</value>
   </data>
@@ -446,7 +444,6 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>Schade per seconde per brand</value>
   </data>
-  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Vuurkans vermindering</value>
   </data>
@@ -456,7 +453,6 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>Schade per seconde per overstroming</value>
   </data>
-  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Overstromingskans</value>
   </data>
@@ -526,29 +522,21 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Detecteerbaarheid</value>
   </data>
-  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Als het schip in brand staat</value>
   </data>
-  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Als het schip in brand staat</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Na het schieten vanuit rookgordijn</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedo bescherming</value>
   </data>
-  
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Lange bereik aura</value>
   </data>
-  
-  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maximumsnelheid</value>
   </data>
@@ -594,11 +582,9 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Aanval Afkoeltijd</value>
   </data>
-  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bom in binnenste ellips</value>
   </data>
-  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximumsnelheid</value>
   </data>
@@ -608,8 +594,6 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Vliegtuigen per aanval</value>
   </data>
-  
-  
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Hersteltijd</value>
   </data>
@@ -619,13 +603,9 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Bommen per vliegtuig</value>
   </data>
-  
-  
-  
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Maximaal bereik</value>
   </data>
-  
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Aantal verbruiksartikelen</value>
   </data>
@@ -716,8 +696,6 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Fout tijdens het laden van de build</value>
   </data>
-  
-  
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Tijd om van munitie te wisselen</value>
   </data>
@@ -751,19 +729,15 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Schade ontvangen tijdens de aanval</value>
   </data>
-  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Voorbereidingstijd</value>
   </data>
-  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedolanceerbuizen</value>
   </data>
-  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Verandering van richtgebied tijdens het manoeuvreren</value>
   </data>
-  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Tijd tot maximumsnelheid</value>
   </data>
@@ -797,7 +771,6 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Het gekozen bestandslocatie is ongeldig.</value>
   </data>
-  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>heeft meer dan één granaattype. Selecteer die waar je de ballistische gegevens van wil bekijken. Uitgaande van het zelfde kaliber is de volgorde hieronder HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -813,8 +786,6 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Versies kopiëren</value>
   </data>
-  
-  
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Toon verspreiding en ballistische grafieken</value>
   </data>
@@ -845,7 +816,6 @@
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Horizontale verspreiding[X]</value>
   </data>
-  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballistische grafieken</value>
   </data>
@@ -927,14 +897,9 @@ Schepen in het spel zijn twee keer zo groot als de omgeving, dus een 200 meter l
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Massa</value>
   </data>
-  
-  
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Penetratie</value>
   </data>
-  
-  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Als "module explosie bescherming" + "bewapening explosie penetratie" &gt; 0 
      De module kan beschadigd worden.
@@ -1019,7 +984,6 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Het aangepaste bestandspad voor build afbeelding is ongeldig.</value>
   </data>
-  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Met de volgende slider en toggles kunt je bepaalde conditionele vaardigheden en talenten aan of uit zetten. Indien mogelijk kun je ook selecteren hoe vaak je het talent effect wilt activeren. Let op dat niet alle vaardigheden/talenten van invloed zullen zijn op de scheepsstatistieken.</value>
   </data>
@@ -1044,8 +1008,6 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Server-side Herlaad Tijd</value>
   </data>
-  
-  
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Server-side Schiet ratio</value>
   </data>
@@ -1106,11 +1068,6 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SPD</value>
   </data>
-  
-  
-  
-  
-  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standaard</value>
   </data>
@@ -1120,41 +1077,6 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Diepwater</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>BR</value>
   </data>
@@ -1176,36 +1098,7 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   <data name="ShipStats_HP" xml:space="preserve">
       <value>HP</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schade</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

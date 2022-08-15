@@ -28,6 +28,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private readonly Logger logger;
 
+        private readonly Dictionary<int, bool> canAddSkillCache = new();
+
+        private readonly Dictionary<int, bool> canRemoveSkillCache = new();
+
         public CaptainSkillSelectorViewModel()
             : this(ShipClass.Cruiser, LoadParamsAsync(DesktopAppDataService.PreviewInstance, new(), Nation.Usa).Result)
         {
@@ -46,7 +50,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var capList = new Dictionary<string, Captain> { { Translation.CaptainSkillSelector_StandardCaptain, defaultCaptain } };
 
             var nationCaptains = vmParams.Item2;
-            if (nationCaptains is {Count: > 0})
+            if (nationCaptains is { Count: > 0 })
             {
                 capList = capList.Union(nationCaptains).ToDictionary(x => x.Key, x => x.Value);
             }
@@ -64,6 +68,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         {
             TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status);
         }
+
         private void ConditionalModifiersListOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || ConditionalModifiersList.Any(skill => skill.Status);
@@ -81,7 +86,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 var newCaptain = value ?? selectedCaptain;
                 this.RaiseAndSetIfChanged(ref selectedCaptain, newCaptain);
-                SkillList = GetSkillsForClass(currentClass, newCaptain);
+                SkillList = ConvertSkillToViewModel(currentClass, newCaptain);
                 CaptainTalentsList.Clear();
 
                 if (newCaptain!.UniqueSkills != null)
@@ -133,18 +138,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             set => this.RaiseAndSetIfChanged(ref captainList, value);
         }
 
-        private bool camoEnabled = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the camo bonuses should be applied.
-        /// </summary>
-        [Obsolete("No longer needed as camos don't have economic bonuses anymore.")]
-        public bool CamoEnabled
-        {
-            get => camoEnabled;
-            set => this.RaiseAndSetIfChanged(ref camoEnabled, value);
-        }
-
         private int assignedPoints;
 
         /// <summary>
@@ -182,7 +175,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             get => showArHpSelection;
             set
             {
-                this. RaiseAndSetIfChanged(ref showArHpSelection, value);
+                this.RaiseAndSetIfChanged(ref showArHpSelection, value);
                 TalentOrConditionalSkillEnabled = showArHpSelection && ArHpPercentage < 100 || CaptainTalentsList.Any(talent => talent.Status) || ConditionalModifiersList.Any(skill => skill.Status);
             }
         }
@@ -260,9 +253,26 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public static async Task<(Captain, Dictionary<string, Captain>?)> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings, Nation nation)
         {
-            var defaultCaptain = (await appDataService.ReadLocalJsonData<Captain>(Nation.Common, appSettings.SelectedServerType))!.Single().Value;
-            var nationCaptains = await appDataService.ReadLocalJsonData<Captain>(nation, appSettings.SelectedServerType);
-            return (defaultCaptain, nationCaptains);
+            var defaultCaptain = (await appDataService.GetCaptains(Nation.Common, appSettings.SelectedServerType)).Single().Value;
+            var nationCaptains = await appDataService.GetCaptains(nation, appSettings.SelectedServerType);
+
+            // Copy the default captain object to trigger an update on the ComboBox selection.
+            // Necessary because it only updates when the item itself is changed.
+            return (ShallowCopyCaptain(defaultCaptain), nationCaptains);
+        }
+
+        private static Captain ShallowCopyCaptain(Captain original)
+        {
+            return new()
+            {
+                Id = original.Id,
+                Index = original.Index,
+                Name = original.Name,
+                HasSpecialSkills = original.HasSpecialSkills,
+                Skills = original.Skills,
+                UniqueSkills = original.UniqueSkills,
+                Nation = original.Nation,
+            };
         }
 
         /// <summary>
@@ -271,33 +281,16 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         /// <param name="shipClass"> The <see cref="ShipClass"/> for which to take the skills.</param>
         /// <param name="captain"> The <see cref="Captain"/> from which to take the skills.</param>
         /// <returns>A dictionary containing the skill for the class from the captain.</returns>
-        private Dictionary<string, SkillItemViewModel> GetSkillsForClass(ShipClass shipClass, Captain? captain)
+        private Dictionary<string, SkillItemViewModel> ConvertSkillToViewModel(ShipClass shipClass, Captain? captain)
         {
             logger.Info("Getting skill for class {0} from captain {1}", shipClass.ToString(), captain!.Name);
             var skills = captain.Skills;
 
             var filteredSkills = skills.Where(x => x.Value.LearnableOn.Contains(shipClass)).ToList();
-            filteredSkills.ForEach(skill =>
-            {
-                // Get only the tier for the relevant class
-                var classSkill = skill.Value.Tiers.Where(x => x.ShipClass == shipClass).ToList();
-                skill.Value.Tiers = classSkill;
 
-                // Get only the value for the relevant class
-                Dictionary<string, float> modifierClassSkill = skill.Value.Modifiers
-                    ?.Where(x => x.Key.Contains(shipClass.ToString()))
-                    .ToDictionary(x => x.Key, x => x.Value) ?? new Dictionary<string, float>();
-
-                // If Count is 0, the skill has universal value. If Count is > 0, the skill has values divided by class
-                if (modifierClassSkill.Count > 0)
-                {
-                    skill.Value.Modifiers = modifierClassSkill;
-                }
-            });
-            Console.WriteLine(@"SKILLS: " + skills.Count);
-            var filteredDictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this));
-            logger.Info("Found {0} skills", filteredDictionary.Count);
-            return filteredDictionary;
+            var dictionary = filteredSkills.ToDictionary(x => x.Key, x => new SkillItemViewModel(x.Value, this, shipClass, canAddSkillCache, canRemoveSkillCache));
+            logger.Info("Found {0} skills", dictionary.Count);
+            return dictionary;
         }
 
         /// <summary>
@@ -311,8 +304,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 return;
             }
 
-            SkillItemViewModel.CanAddCache.Clear();
-            SkillItemViewModel.CanRemoveCache.Clear();
+            canAddSkillCache.Clear();
+            canRemoveSkillCache.Clear();
             foreach (KeyValuePair<string, SkillItemViewModel> skill in SkillList)
             {
                 skill.Value.CanExecuteChanged();
@@ -329,14 +322,14 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 SkillOrderList.Remove(skill);
                 ReorderSkillList();
-                int pointCost = skill.Tiers.First().Tier + 1;
+                int pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
                 AssignedPoints -= pointCost;
                 if (skill.SkillNumber == ArSkillNumber || skill.SkillNumber == ArSkillNumberSubs)
                 {
                     ShowArHpSelection = false;
                 }
 
-                if (skill.ConditionalModifiers is {Count: > 0})
+                if (skill.ConditionalModifiers is { Count: > 0 })
                 {
                     var skillName = SkillList!.Single(x => x.Value.Skill.Equals(skill)).Key;
                     ConditionalModifiersList.Remove(ConditionalModifiersList.Single(x => x.SkillName.Equals(skillName)));
@@ -347,14 +340,14 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             else
             {
                 SkillOrderList.Add(skill);
-                var pointCost = skill.Tiers.First().Tier + 1;
+                var pointCost = skill.Tiers.First(x => x.ShipClass == currentClass).Tier + 1;
                 AssignedPoints += pointCost;
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)
                 {
                     ShowArHpSelection = true;
                 }
 
-                if (skill.ConditionalModifiers is {Count: > 0})
+                if (skill.ConditionalModifiers is { Count: > 0 })
                 {
                     ConditionalModifiersList.Add(CreateItemViewModelForSkill(skill));
                 }
@@ -396,7 +389,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
             var supportList = SkillOrderList.ToList();
-            var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First().Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First().Tier).ToList();
+            var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier).ToList();
 
             // Tier 0 skill reordering
             var tier0Skills = groups[0];
@@ -421,8 +414,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             if (groups.Count > 2)
             {
                 var tier1Skills = groups[1];
-                var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 0);
-                var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 2);
+                var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
+                var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 2);
 
                 var tier1SkillFirst = false;
 
@@ -446,8 +439,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             if (groups.Count > 3)
             {
                 var tier1Skills = groups[2];
-                var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 1);
-                var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First().Tier == 3);
+                var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
+                var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 3);
 
                 var tier1SkillFirst = false;
 
@@ -479,6 +472,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var modifiers = SkillOrderList.ToList()
                 .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
                 .SelectMany(m => m.Modifiers)
+                .Select(effect => (effect.Key, effect.Value))
+                .ToList();
+
+            //filter out modifiers that are class specific
+            modifiers = modifiers.Where(x => !x.Key.Contains('_') || x.Key.Contains("_" + currentClass))
                 .Select(effect => (effect.Key, effect.Value))
                 .ToList();
 
@@ -563,7 +561,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
             var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
             SkillOrderList.AddRange(skills);
-            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First().Tier + 1);
+            AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == currentClass).Tier + 1);
             foreach (var skill in SkillOrderList)
             {
                 if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)

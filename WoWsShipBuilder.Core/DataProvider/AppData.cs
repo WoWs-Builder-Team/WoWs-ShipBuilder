@@ -69,11 +69,11 @@ public static class AppData
     /// <seealso cref="DesktopAppDataService.GetAircraft"/>
     public static ConcurrentDictionary<Nation, Dictionary<string, Aircraft>> AircraftCache { get; } = new();
 
-    public static Dictionary<Nation, Dictionary<string, Exterior>> ExteriorCache { get; } = new();
+    public static ConcurrentDictionary<Nation, Dictionary<string, Exterior>> ExteriorCache { get; } = new();
 
-    public static Dictionary<Nation, Dictionary<string, Captain>> CaptainCache { get; } = new();
+    public static ConcurrentDictionary<Nation, Dictionary<string, Captain>> CaptainCache { get; } = new();
 
-    public static Dictionary<string, Modernization> ModernizationCache { get; } = new();
+    public static Dictionary<string, Modernization>? ModernizationCache { get; set; }
 
     /// <summary>
     /// Gets or sets the list of <see cref="ShipSummary">ship summaries</see> that are currently available.
@@ -104,6 +104,7 @@ public static class AppData
     {
         ShipSummaryList = null;
         ConsumableList = null;
+        ModernizationCache = null;
         ProjectileCache.Clear();
         AircraftCache.Clear();
         ShipDictionary = null;

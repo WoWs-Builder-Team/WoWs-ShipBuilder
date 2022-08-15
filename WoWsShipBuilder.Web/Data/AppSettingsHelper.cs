@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core.Settings;
 
-public class AppSettingsHelper
+public class AppSettingsHelper : IAsyncDisposable
 {
     private readonly IJSRuntime runtime;
 
@@ -36,5 +36,19 @@ public class AppSettingsHelper
 #pragma warning disable CS8774
         module ??= await runtime.InvokeAsync<IJSObjectReference>("import", "/scripts/settingsHelper.js");
 #pragma warning restore CS8774
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
     }
 }

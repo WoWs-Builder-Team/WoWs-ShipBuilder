@@ -844,7 +844,7 @@
     <value>Mostra grafico velocità d'impatto</value>
   </data>
   <data name="ShipStats_OpenBallistic" xml:space="preserve">
-    <value>Mostra grafici ballistici</value>
+    <value>Mostra grafici balistici</value>
   </data>
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Il percorso personalizzato selezionato non è valido.</value>
@@ -853,7 +853,7 @@
       <value>Seleziona un proiettile</value>
   </data>
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
-    <value>ha più di un proiettile. Seleziona quello di cui vuoi la ballistica. Assumendo lo stesso calibro, l'ordine dei proiettili qui sotto è -&gt;SAP-&gt;AP.</value>
+    <value>ha più di un proiettile. Seleziona quello di cui vuoi la balistica. Assumendo lo stesso calibro, l'ordine dei proiettili qui sotto è -&gt;SAP-&gt;AP.</value>
   </data>
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>Account normale</value>
@@ -874,7 +874,7 @@
       <value>Occultamento dai sottomarini ad altezza operativa</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
-    <value>Mostra grafici di dispersione e ballistici</value>
+    <value>Mostra grafici di dispersione e balistici</value>
   </data>
   <data name="DispersionPlot_Vertical" xml:space="preserve">
     <value>Verticale:</value>
@@ -907,7 +907,7 @@
       <value>Distanza di mira (km)</value>
   </data>
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
-    <value>Grafici ballistici</value>
+    <value>Grafici balistici</value>
   </data>
   <data name="DispersionGraphWindow_DispersionGraphs" xml:space="preserve">
     <value>Grafici dispersione</value>
@@ -1422,5 +1422,48 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
       <value>Fare clic con il tasto destro su un'icona per attivare gli effetti</value>
+  </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Grafico traiettoria proiettile</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Altezza </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Mostra grafici di dispersione e balistici</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>Informazioni applicazione</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Versione dati attuale:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Lingua selezionata</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Apri tendina dei proiettili e siluri all'inizio</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Impostazioni salvate</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>Tieni premuta un'icona per attivare/disattivare gli effetti</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Colpi</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>L'angolo 0° è in alto. Positivo è in senso orario, negativo è in senso antiorario. Gli angoli rossi sono le zone morte dell'armamento (può ruotare a, ma non sparare).
+      </value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Copia url build</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Nascondi grafico della distribuzione dei danni</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Mostra angoli dei lanciasiluri</value>
   </data>
 </root>

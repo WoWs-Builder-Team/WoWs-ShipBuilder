@@ -34,6 +34,8 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public List<TorpedoDataContainer> Torpedoes { get; set; } = new();
 
+        public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
+
         public static async Task<TorpedoArmamentDataContainer?> FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Torpedoes);
@@ -87,6 +89,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 TorpedoArea = torpedoArea,
                 Torpedoes = torpedoes,
                 TimeToSwitch = Math.Round(torpedoModule.TimeToChangeAmmo,  1),
+                TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
             };
 
             torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;

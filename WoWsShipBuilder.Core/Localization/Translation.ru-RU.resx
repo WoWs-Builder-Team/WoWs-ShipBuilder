@@ -654,7 +654,9 @@
   <data name="ShipStats_DropTime" xml:space="preserve">
       <value>Сброс</value>
   </data>
-  
+  <data name="ShipStats_FlyAwayTime" xml:space="preserve">
+      <value>Для прилета</value>
+  </data>
   <data name="ShipStats_MaximumDistance" xml:space="preserve">
       <value>Макс</value>
   </data>
@@ -990,12 +992,18 @@
   <data name="ShipStats_FireChancePerSalvo" xml:space="preserve">
       <value>Полный залп</value>
   </data>
-  
-  <data name="ShipStats_SplashCoeff" xml:space="preserve">
-      <value>Бронепробитие</value>
+  <data name="ShipStats_ExplosionRadius" xml:space="preserve">
+      <value>Радиус</value>
   </data>
-  
-  
+  <data name="ShipStats_SplashCoeff" xml:space="preserve">
+      <value>Пробитие</value>
+  </data>
+  <data name="ShipStats_EngineBlastProtection" xml:space="preserve">
+      <value>Двигатель</value>
+  </data>
+  <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
+      <value>Рули</value>
+  </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Если "защита модуля от взрывов" + "Пробитие взрывом вооружения" &gt; 0 
      Модуль может быть выведен из строя.
@@ -1278,9 +1286,11 @@
   <data name="ShipStats_Flooding" xml:space="preserve">
       <value>Затоп</value>
   </data>
-  
+  <data name="ShipStats_BlastProtection" xml:space="preserve">
+      <value>Защита</value>
+  </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-      <value>Макс. пожаров</value>
+      <value>Макс одновременно</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
       <value>С подлодок</value>
@@ -1351,26 +1361,108 @@
   <data name="Placeholder" xml:space="preserve">
       <value>---</value>
   </data>
-  
-  
+  <data name="ShipStats_Splash" xml:space="preserve">
+      <value>Сплеш</value>
+  </data>
+  <data name="ShipStats_SplashRadius" xml:space="preserve">
+      <value>Радиус</value>
+  </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Урон</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>Эти параметры влияют только на подводные лодки.
+Они не влияют на поверхностные корабли.</value>
+  </data>
+  <data name="ShipStats_DcSplashRadius" xml:space="preserve">
+      <value>Радиус взрыва</value>
+  </data>
+  <data name="ShipStats_DetonationTimer" xml:space="preserve">
+      <value>Таймер детонации</value>
+  </data>
+  <data name="ShipStats_SinkSpeed" xml:space="preserve">
+      <value>Скорость погружения</value>
+  </data>
+  <data name="ShipStats_DetonationDepth" xml:space="preserve">
+      <value>Глубина детонации</value>
+  </data>
+  <data name="ShipStats_Blast" xml:space="preserve">
+      <value>Взрыв</value>
+  </data>
+  <data name="ShipStats_ShowDcDamageDistribution" xml:space="preserve">
+      <value>Показать график распределения урона</value>
+  </data>
+  <data name="ShipStats_Citadel" xml:space="preserve">
+      <value>Секция цитадели</value>
+  </data>
+  <data name="ShipStats_Bow" xml:space="preserve">
+      <value>Носовая секция</value>
+  </data>
+  <data name="ShipStats_RegenRatio" xml:space="preserve">
+      <value>Ремонтопригодный урон</value>
+  </data>
+  <data name="ShipStats_Stern" xml:space="preserve">
+      <value>Кормовая секция</value>
+  </data>
+  <data name="ShipStats_Superstructure" xml:space="preserve">
+      <value>Секция надстроек</value>
+  </data>
+  <data name="ShipStats_Casemate" xml:space="preserve">
+      <value>Секция каземата</value>
+  </data>
+  <data name="ShipStats_Hull" xml:space="preserve">
+      <value>Секция корпуса</value>
+  </data>
+  <data name="ShipStats_AuxiliaryRooms" xml:space="preserve">
+      <value>Секция вспомогательных помещений</value>
+  </data>
+  <data name="ShipStats_ShipHp" xml:space="preserve">
+      <value>ХП Корабля</value>
+  </data>
+  <data name="Consumable_RightClickToggle" xml:space="preserve">
+      <value>ПКМ для переключения эффектов</value>
+  </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Диаграмма Траектории Снаряда</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Высота </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Показать графики разброса и баллистики</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>Сведения о приложении</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Текущая версия данных:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Выбранный язык</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Открывать подробное описание снарядов и торпед по умолчанию</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Настройки сохранены</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>Удерживайте значок для переключения эффектов</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Попадания</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>Угол 0° наверху. Положительный по часовой стрелке, отрицательный — против. Красные углы - это мертвые зоны вооружения (могут вращаться, но не стрелять).
+      </value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Копировать ссылку на билд</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Скрыть график распределения урона</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Показать углы запуска</value>
+  </data>
 </root>

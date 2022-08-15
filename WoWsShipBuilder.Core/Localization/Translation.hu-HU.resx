@@ -330,7 +330,9 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Ilyen keresési feltételeknek egyik hajó sem felel meg</value>
   </data>
-  
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Hajókereső...</value>
+  </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180°-os fordulási idő</value>
   </data>
@@ -361,7 +363,9 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Lőszertömeg</value>
   </data>
-  
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
+    <value>Elméleti percenkénti sebzés</value>
+  </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Élesedési küszöb</value>
   </data>
@@ -446,7 +450,9 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>Tűz általi másodpercenkénti sebzés</value>
   </data>
-  
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+      <value>Égési idő</value>
+  </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Tűzvédelem</value>
   </data>
@@ -456,7 +462,9 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>Vízbetörés általi másodpercenkénti sebzés</value>
   </data>
-  
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+      <value>Égési idő</value>
+  </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Vízbetörés valószínűsége</value>
   </data>
@@ -526,29 +534,21 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Felderítési távolság</value>
   </data>
-  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Felderítési távolság, lángolva, levegőből</value>
   </data>
-  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Felderítési távolság, lángolva, vizen</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Felderítési távolság, füstből lövés után</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Torpedóvédelem</value>
   </data>
-  
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Nagy hatótávolságú légvédelmi aura</value>
   </data>
-  
-  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maximális sebesség</value>
   </data>
@@ -594,11 +594,9 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Támadási utáni pihenőidő</value>
   </data>
-  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombák a belső körben</value>
   </data>
-  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Maximális sebesség</value>
   </data>
@@ -608,8 +606,6 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Gépek egy támadásban</value>
   </data>
-  
-  
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Helyreállítási idő</value>
   </data>
@@ -619,13 +615,9 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Bombák gépenként</value>
   </data>
-  
-  
-  
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Max. vetőtávolság</value>
   </data>
-  
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Töltetek száma</value>
   </data>
@@ -716,8 +708,9 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Hiba a felépítés betöltése közben</value>
   </data>
-  
-  
+  <data name="ShipStats_JatoDuration" xml:space="preserve">
+      <value>Égési idő</value>
+  </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Lőszercsere időtartama</value>
   </data>
@@ -751,19 +744,15 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Támadás során elszenvedett sebzés</value>
   </data>
-  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Felkészítési idő</value>
   </data>
-  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Torpedóvetők</value>
   </data>
-  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Pontosságváltozás manőverezés miatt</value>
   </data>
-  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Idő a teljes teljesítményig</value>
   </data>
@@ -797,7 +786,6 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>A kiválasztott útvonal nem érvényes.</value>
   </data>
-  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>egynél több lőszertípusa van. Válassza ki azt, amelyiket elemezni szeretné. Ugyanazt a kalibert feltételezve az alábbi a sorrend: HE-&gt;SAP-&gt;AP.</value>
   </data>
@@ -813,8 +801,6 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Verziók másolása</value>
   </data>
-  
-  
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
@@ -839,11 +825,9 @@
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Szóráskép mutatása</value>
   </data>
-  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Vízszintes szórás [X]</value>
   </data>
-  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Ballisztikus ábrák</value>
   </data>
@@ -925,14 +909,9 @@ A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 m�
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Tömeg</value>
   </data>
-  
-  
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Átütés</value>
   </data>
-  
-  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Ha a "modul robbanás elleni védelem" + "fegyverzet átütése" &gt; 0
       A modul működésképtelenné válhat.
@@ -1017,7 +996,6 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>A kiválasztott képútvonal hibás.</value>
   </data>
-  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>A következő csúszkákkal és kapcsolókkal engedélyezhet vagy letilthat bizonyos feltételes képességeffektusokat. Kiválaszthatja azt is, hogy hányszor aktiválja a tehetségeffektust, ha lehetséges. Vegye figyelembe, hogy nem minden képesség/tehetség lesz hatással a hajóstatisztikákra.</value>
   </data>
@@ -1042,8 +1020,6 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Szerver-oldali újratöltési idő</value>
   </data>
-  
-  
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Szerver-oldali tűzgyorsaság</value>
   </data>
@@ -1104,11 +1080,6 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>Félig páncéltörő</value>
   </data>
-  
-  
-  
-  
-  
   <data name="ShipStats_TorpedoStandard" xml:space="preserve">
       <value>Standard</value>
   </data>
@@ -1118,41 +1089,6 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TorpedoDeepWater" xml:space="preserve">
       <value>Mélyvizi</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>Repeszromboló</value>
   </data>
@@ -1174,36 +1110,7 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_HP" xml:space="preserve">
       <value>Életerő</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Sebzés</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

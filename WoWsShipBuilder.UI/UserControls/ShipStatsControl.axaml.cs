@@ -50,7 +50,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData),
+                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
@@ -82,12 +82,25 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var win = new DepthChargeDamageDistributionChartWindow
                 {
-                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext),
+                    DataContext = new DepthChargeDamageDistributionChartRecord(dataContext.Damage, dataContext.DcSplashRadius, dataContext.PointsOfDmg),
                 };
                 win.Show((Window)this.GetVisualRoot());
             }
 
             e.Handled = true;
+        }
+
+        private void ShowTorpedoAngles(object? sender, PointerReleasedEventArgs e)
+        {
+            if (DataContext is ShipStatsControlViewModel viewModel)
+            {
+                var win = new FiringAngleWindow
+                {
+                    DataContext = new FiringAngleViewModelBase(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
+                };
+                win.Show((Window)this.GetVisualRoot());
+                e.Handled = true;
+            }
         }
     }
 }

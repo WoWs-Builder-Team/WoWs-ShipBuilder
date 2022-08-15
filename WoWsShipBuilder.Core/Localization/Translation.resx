@@ -1423,4 +1423,59 @@ They do not have any effect on surface ships.</value>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
       <value>Right-click an icon to toggle effects</value>
   </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Shell Trajectory Chart</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Height </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Show Dispersion and Ballistic Charts</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>Application Info</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Current data version:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Selected Language</value>
+  </data>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>Open Shells, Torps and Planes expanders by default</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Settings Saved</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>Hold an icon to toggle effects</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Hits</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>The 0° angle is at the top. Positive is clockwise, negative is counter clockwise. The red angles are the dead zones of the armament (can rotate to but not shoot).
+      </value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Copy build url</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Open all main expander by default</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>Open all secondaries, plane weapons and AA expanders by default</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>Expander settings</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>Ship sections HP</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Hide Damage Distribution Chart</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Show Launchers Angles</value>
+  </data>
 </root>

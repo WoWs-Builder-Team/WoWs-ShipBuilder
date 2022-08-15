@@ -1,12 +1,26 @@
-﻿FROM nginx
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-COPY ./Deployment/Local/ssl-config.nginx /etc/nginx/snippets/ssl-config.conf
-COPY ./Deployment/Local/nginx-testing.crt /etc/ssl/certs/nginx-testing.crt
-COPY ./Deployment/Local/nginx-testing.key /etc/ssl/certs/nginx-testing.key
-COPY ./Deployment/Local/nginx.local.nginx /etc/nginx/conf.d/default.conf
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet restore "WoWsShipBuilder.Web/WoWsShipBuilder.Web.csproj"
+WORKDIR "/src/WoWsShipBuilder.Web"
+RUN dotnet build "WoWsShipBuilder.Web.csproj" -c Release -o /app/build
 
-#RUN sudo apt-add-repository -y ppa:hda-me/nginx-stable
-#RUN sudo apt-get update
-#RUN sudo apt-get install brotli nginx nginx-module-brotli
+FROM build AS publish
+RUN dotnet publish "WoWsShipBuilder.Web.csproj" -c Release -o /app/publish
 
-COPY ./bin/Release/net6.0/publish/wwwroot /usr/share/nginx/html
+FROM base AS final
+ENV APPLICATION_USER_ID 1001
+ENV APPLICATION_USER appuser
+RUN groupadd --gid $APPLICATION_USER_ID $APPLICATION_USER \
+    && useradd --uid $APPLICATION_USER_ID --gid $APPLICATION_USER_ID -m $APPLICATION_USER
+
+WORKDIR /app
+COPY --from=publish --chown=$APPLICATION_USER /app/publish .
+
+USER $APPLICATION_USER
+ENTRYPOINT ["dotnet", "WoWsShipBuilder.Web.dll"]

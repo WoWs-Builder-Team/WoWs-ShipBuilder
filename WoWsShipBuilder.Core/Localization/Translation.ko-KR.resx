@@ -330,32 +330,27 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>검색 조건에 맞는 함선이 없습니다</value>
   </data>
-  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180° 선회 시간</value>
   </data>
-  
   <data name="ShipStats_Range" xml:space="preserve">
     <value>사거리</value>
   </data>
   <data name="ShipStats_RoF" xml:space="preserve">
     <value>연사 속도</value>
   </data>
-  
   <data name="ShipStats_Sigma" xml:space="preserve">
     <value>시그마</value>
   </data>
   <data name="ShipStats_TraverseSpeed" xml:space="preserve">
     <value>선회 속도</value>
   </data>
-  
   <data name="ShipStats_ShellVelocity" xml:space="preserve">
     <value>포구 속도</value>
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>포탄 중량</value>
   </data>
-  
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>신관 작동 거리</value>
   </data>
@@ -377,7 +372,6 @@
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
     <value>도탄 각</value>
   </data>
-  
   <data name="ShipStats_AircraftHP" xml:space="preserve">
     <value>항공기 내구도</value>
   </data>
@@ -417,7 +411,6 @@
   <data name="ShipStats_MainBattery" xml:space="preserve">
     <value>주포</value>
   </data>
-  
   <data name="ShipStats_Torpedo" xml:space="preserve">
     <value>어뢰</value>
   </data>
@@ -436,7 +429,6 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>각 화재의 DPS</value>
   </data>
-  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>화재율 감소</value>
   </data>
@@ -446,7 +438,6 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>각 침수의 DPS</value>
   </data>
-  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>침수 확률</value>
   </data>
@@ -468,8 +459,6 @@
   <data name="MessageBox_Error" xml:space="preserve">
     <value>오류</value>
   </data>
-  
-  
   <data name="ShipStats_Type" xml:space="preserve">
     <value>유형</value>
   </data>
@@ -512,29 +501,21 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>피탐 거리</value>
   </data>
-  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>화재 발생시</value>
   </data>
-  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>화재 발생시</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>연막 내 포격 후</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>방뢰</value>
   </data>
-  
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>장거리 대공 아우라</value>
   </data>
-  
-  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>최고 속도</value>
   </data>
@@ -565,7 +546,6 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>속도</value>
   </data>
-  
   <data name="SkipBomb" xml:space="preserve">
     <value>물수제비 폭탄</value>
   </data>
@@ -578,11 +558,9 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>공격 대기 시간</value>
   </data>
-  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>내부 조준원 명중 확률</value>
   </data>
-  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>최고 속도</value>
   </data>
@@ -592,8 +570,6 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>공격시 항공기 수</value>
   </data>
-  
-  
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>회복 시간</value>
   </data>
@@ -603,22 +579,15 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>각 항공기에 장착된 폭탄</value>
   </data>
-  
-  
-  
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>최대 투하 거리</value>
   </data>
-  
-  
-  
   <data name="DepthCharge" xml:space="preserve">
     <value>폭뢰</value>
   </data>
   <data name="DispersionWindow_Title" xml:space="preserve">
     <value>분산도 시각화</value>
   </data>
-  
   <data name="ShipStats_FirstPingDuration" xml:space="preserve">
     <value>첫 핑 지속 시간</value>
   </data>
@@ -649,8 +618,6 @@
   <data name="SettingsWindow_Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
-  
-  
   <data name="SettingsWindow_SaveExit" xml:space="preserve">
     <value>저장 후 종료</value>
   </data>
@@ -690,8 +657,6 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>빌드 불러오는 중 오류</value>
   </data>
-  
-  
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>탄두 변경 시간</value>
   </data>
@@ -725,17 +690,12 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>공격 중 입은 피해</value>
   </data>
-  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>준비 시간</value>
   </data>
-  
-  
-  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>기동 중 투하 면적 변동률</value>
   </data>
-  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>최대 마력 도달 시간</value>
   </data>
@@ -763,10 +723,6 @@
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
     <value>입사 속도 그래프 보기</value>
   </data>
-  
-  
-  
-  
   <data name="MainWindow_NormalAccount" xml:space="preserve">
     <value>일반 계정</value>
   </data>
@@ -779,96 +735,21 @@
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>버전 정보 복사</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="RealPlane" xml:space="preserve">
     <value>입사 각도</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>관통</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Dialog_Save" xml:space="preserve">
     <value>저장</value>
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
-  
-  
   <data name="Dialog_Ok" xml:space="preserve">
     <value>확인</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="Unit_MPS" xml:space="preserve">
     <value>m/s</value>
   </data>
@@ -887,7 +768,6 @@
   <data name="Unit_S" xml:space="preserve">
     <value>초</value>
   </data>
-  
   <data name="Unit_DegreePerSecond" xml:space="preserve">
     <value>°/s</value>
   </data>
@@ -903,93 +783,13 @@
   <data name="Unit_M" xml:space="preserve">
     <value>m</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
+      <value>함선 및 포탄 선택</value>
+  </data>
   <data name="ShipStats_HP" xml:space="preserve">
       <value>체력</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>피해</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

@@ -1,0 +1,209 @@
+﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.ViewModels.ShipVm
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.DataElements.DataElements
+@using WoWsShipBuilder.Core.ConverterHelpers
+@inherits ReactiveComponentBase<ConsumableViewModel>
+@inject ILocalizer Localizer
+
+@if (ViewModel is not null)
+{
+    <MudCard Outlined="true" Class="pa-2">
+        <MudStack Spacing="1">
+            <MudStack Row="true" Justify="Justify.Center">
+                @foreach (var consumableSlot in ViewModel.ConsumableSlots)
+                {
+                    if (consumableSlot.ConsumableData.Count > 1)
+                    {
+                        <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0">
+                            <ActivatorContent>
+                                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="750">
+                                    <ChildContent>
+                                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(@GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
+                                            <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
+                                        </MudButton>
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        @tooltipFragment((consumableSlot.SelectedConsumable, Localizer))
+                                    </TooltipContent>
+                                </MudTooltip>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <MudPaper Outlined="true">
+                                    @foreach (var consumable in consumableSlot.ConsumableData)
+                                    {
+                                        <MudMenuItem Style="padding: 0;" OnClick="@(_ => SwapConsumable(consumableSlot, consumable))">
+                                            <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                                                <ChildContent>
+                                                    <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumable)"/>
+                                                </ChildContent>
+                                                <TooltipContent>
+                                                    @tooltipFragment((consumable, Localizer))
+                                                </TooltipContent>
+                                            </MudTooltip>
+                                        </MudMenuItem>
+                                    }
+                                </MudPaper>
+                            </ChildContent>
+                        </MudMenu>
+                    }
+                    else
+                    {
+                        <MudTooltip Delay="750" Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true">
+                            <ChildContent>
+                                <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
+                            </ChildContent>
+                            <TooltipContent>
+                                @tooltipFragment((consumableSlot.SelectedConsumable, Localizer))
+                            </TooltipContent>
+                        </MudTooltip>
+                    }
+                }
+            </MudStack>
+            <MudText Align="Align.Center" Typo="Typo.caption">@(Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? Localizer.GetAppLocalization(nameof(Translation.Consumable_HoldToggle)).Localization : Localizer.GetAppLocalization(nameof(Translation.Consumable_RightClickToggle)).Localization)</MudText>
+        </MudStack>
+    </MudCard>
+}
+
+@code {
+
+    [CascadingParameter]
+    private Breakpoint Breakpoint { get; set; }
+
+    private CancellationTokenSource tokenSource = new();
+
+    private readonly SemaphoreSlim semaphore = new(1, 1);
+
+    // ReSharper disable once InconsistentNaming
+    private static RenderFragment<(ConsumableDataContainer consumableData, ILocalizer localizer)> tooltipFragment = pair => __builder =>
+    {
+        <MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
+            <MudStack Spacing="0" Class="pa-2">
+                <MudText Align="Align.Center" Typo="Typo.h6">@pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@pair.localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + pair.consumableData.Name).Localization</MudText>
+                <MudDivider Light="true" Class="ma-1"/>
+                @foreach (var data in pair.consumableData.DataElements)
+                {
+                    @SharedFragments.DataElementFragment((data, pair.localizer))
+                }
+                <div style="margin-top: 6px"></div>
+                @foreach ((string modifierName, float modifierValue) in pair.consumableData.Modifiers)
+                {
+                    // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
+                    string modifierDesc = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Description, pair.localizer);
+                    string modifierValueString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Value, pair.localizer);
+                    @if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
+                    {
+                        <div class="d-flex justify-space-between">
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifierDesc</MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@modifierValueString</MudText>
+                        </div>
+                    }
+                }
+            </MudStack>
+        </MudPaper>
+    };
+
+    private string GetConsumableIcon(ConsumableDataContainer consumable)
+    {
+        string iconName = string.IsNullOrEmpty(consumable.IconName) ? consumable.Name : consumable.IconName;
+        return $"/assets/consumable_icons/consumable_{iconName}.png";
+    }
+
+    private void SwapConsumable(ConsumableSlotViewModel viewModel, ConsumableDataContainer consumableData)
+    {
+        viewModel.SelectedIndex = viewModel.ConsumableData.IndexOf(consumableData);
+    }
+
+    private void ActivateConsumable(MouseEventArgs args, ConsumableSlotViewModel viewModel)
+    {
+        if (args.Button == 2)
+        {
+            viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+        }
+    }
+
+    private void StopTimer()
+    {
+        tokenSource.Cancel();
+        tokenSource.Dispose();
+    }
+
+    private async void StartTimer(ConsumableSlotViewModel viewModel)
+    {
+        tokenSource = new();
+        CancellationToken token = tokenSource.Token;
+
+        await InvokeAsync(
+            async () =>
+            {
+                try
+                {
+                    await Task.Delay(750, token);
+                    if (!token.IsCancellationRequested)
+                    {
+                        await semaphore.WaitAsync(token);
+                        viewModel.ConsumableActivated = !viewModel.ConsumableActivated;
+                        StateHasChanged();
+                        semaphore.Release();
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            });
+    }
+
+    private string GetColorFromStatus(ConsumableSlotViewModel viewModel, bool isButton)
+    {
+        if (viewModel.ConsumableActivated)
+        {
+            return isButton ? "border-color: #FFD700;" : $"border: 1px solid; border-color: #FFD700;";
+        }
+        return isButton ? $"border-color: {Color.Default};" : $"border: 1px solid; border-color: transparent;";
+    }
+
+    private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)
+    {
+        return !isValueKey ? value : (isAppLocalizationKey ? localizer.GetAppLocalization(value) : localizer.GetGameLocalization(value)).Localization;
+    }
+
+    private static string ConvertFormattedText(FormattedTextDataElement formattedTextDataElement, ILocalizer localizer)
+    {
+        try
+        {
+            return FormattedTextHelper.ConvertFormattedText(formattedTextDataElement, localizer);
+        }
+        catch (Exception)
+        {
+            return "Error";
+        }
+    }
+
+    private int GetImageSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return 50;
+            default:
+                return 60;
+        }
+    }
+
+    private string GetImageBreakpointStyle()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                return "min-width: 50px; width: 50px; height: 50px;";
+            default:
+                return "min-width: 60px; width: 60px; height: 60px;";
+        }
+    }
+
+}

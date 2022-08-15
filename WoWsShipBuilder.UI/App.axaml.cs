@@ -52,7 +52,7 @@ namespace WoWsShipBuilder.UI
                 container = SetupDependencyInjection();
 
                 AppSettingsHelper.LoadSettings();
-                Logging.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, AppSettingsHelper.Settings, true);
+                LoggingSetup.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, AppSettingsHelper.Settings, true);
                 desktop.Exit += OnExit;
                 desktop.MainWindow = new SplashScreen();
                 Logging.Logger.Info($"AutoUpdate Enabled: {AppSettingsHelper.Settings.AutoUpdateEnabled}");

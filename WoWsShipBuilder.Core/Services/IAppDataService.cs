@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WoWsShipBuilder.Core.BuildCreator;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 
@@ -43,20 +42,11 @@ namespace WoWsShipBuilder.Core.Services
         }
 
         /// <summary>
-        /// Read a dictionary from the local app data directory.
-        /// </summary>
-        /// <param name="nation">The selected nation.</param>
-        /// <param name="serverType">The selected server type.</param>
-        /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
-        /// <returns>A dictionary containing the deserialized file content.</returns>
-        Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType);
-
-        /// <summary>
         /// Read the current version info from the app data directory.
         /// </summary>
         /// <param name="serverType">The selected server type.</param>
         /// <returns>The local VersionInfo or null if none was found.</returns>
-        Task<VersionInfo?> GetLocalVersionInfo(ServerType serverType);
+        Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType);
 
         Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
@@ -93,6 +83,10 @@ namespace WoWsShipBuilder.Core.Services
         /// <returns>The requested aircraft.</returns>
         /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
         Task<Aircraft> GetAircraft(string aircraftName);
+
+        Task<Dictionary<string, Exterior>> GetExteriorList(Nation nation, ServerType serverType);
+
+        Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType);
 
         Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 

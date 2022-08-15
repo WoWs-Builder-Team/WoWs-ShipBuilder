@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -61,11 +57,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
                 this.RaisePropertyChanged(nameof(SelectedModernizationList));
             };
-        }
-
-        public static async Task<Dictionary<string, Modernization>> LoadParamsAsync(IAppDataService appDataService, AppSettings appSettings)
-        {
-            return await appDataService.ReadLocalJsonData<Modernization>(Nation.Common, appSettings.SelectedServerType) ?? new Dictionary<string, Modernization>();
         }
 
         public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }
