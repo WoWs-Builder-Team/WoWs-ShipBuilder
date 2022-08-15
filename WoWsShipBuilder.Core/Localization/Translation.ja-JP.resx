@@ -1423,4 +1423,46 @@
   <data name="Consumable_RightClickToggle" xml:space="preserve">
       <value>アイコンを右クリックして効果を切り替える</value>
   </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>弾道チャート</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>高度 </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>散布界と弾道のグラフを表示する</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>アプリ情報</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>現在のデータバージョン:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>選択された言語</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>砲弾と魚雷の角度をデフォルトで表示</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>設定を保存しました</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>アイコンを長押しして効果を切り替える</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>命中数</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>画面上部が0°です。時計回りが正、反時計回りが負です。 赤い角度は兵装のデッドゾーン（指向できるが射撃不可能）です。      </value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>ビルドのURLをコピー</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>ダメージ分布図を非表示</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>発射管の角度を表示</value>
+  </data>
 </root>
