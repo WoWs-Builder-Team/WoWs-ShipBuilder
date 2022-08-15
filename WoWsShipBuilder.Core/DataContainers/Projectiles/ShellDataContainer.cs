@@ -16,14 +16,14 @@ namespace WoWsShipBuilder.Core.DataContainers
     {
         public string Name { get; set; } = default!;
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KG")]
-        public decimal Mass { get; set; }
-
         [DataElementType(DataElementTypes.KeyValue, IsValueLocalizationKey = true, IsValueAppLocalization = true)]
         public string Type { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValue)]
         public decimal Damage { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KG")]
+        public decimal Mass { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.Tooltip, GroupKey = "Splash", TooltipKey = "SplashExplanation", UnitKey = "M")]
         public decimal SplashRadius { get; set; }

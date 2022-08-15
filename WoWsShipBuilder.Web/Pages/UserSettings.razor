@@ -40,7 +40,15 @@
             </MudSelect>
         </MudItem>
         <MudItem xs="12">
-            <MudSwitch @bind-Checked="@openExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Info"/>
+            <MudStack>
+                <MudText Typo="Typo.h6">@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSettingHeader)).Localization</MudText>
+                <MudStack Row>
+                    <MudSwitch @bind-Checked="@openMainExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_ExpanderSetting)).Localization" Color="Color.Info"/>
+                    <MudSwitch @bind-Checked="@openAmmoExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_AmmoExpanderSetting)).Localization" Color="Color.Info"/>
+                    <MudSwitch @bind-Checked="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Info"/>
+                </MudStack>
+            </MudStack>
+            
         </MudItem>
         <MudItem xs="12"/>
         <MudItem xs="3">
@@ -59,7 +67,11 @@
 
     private CultureDetails selectedCulture = AppConstants.DefaultCultureDetails;
 
-    private bool openExpandersByDefault = true;
+    private bool openMainExpandersByDefault = true;
+    
+    private bool openAmmoExpandersByDefault = true;
+
+    private bool openSecondariesAndAaExpandersByDefault = true;
 
     protected override void OnInitialized()
     {
@@ -71,7 +83,10 @@
     private void UpdateSettingsValues()
     {
         selectedCulture = AppSettings.SelectedLanguage;
-        openExpandersByDefault = AppSettings.WebAppSettings?.OpenAllExpandersByDefault ?? true;
+        openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
+        openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
+        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAAExpandersByDefault ?? true;
+
         StateHasChanged();
     }
 
@@ -86,8 +101,14 @@
             settingsChanged = true;
         }
 
-        settingsChanged = settingsChanged || openExpandersByDefault != AppSettings.WebAppSettings.OpenAllExpandersByDefault;
-        AppSettings.WebAppSettings.OpenAllExpandersByDefault = openExpandersByDefault;
+        settingsChanged = settingsChanged || openAmmoExpandersByDefault != AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault;
+        AppSettings.WebAppSettings.OpenAllAmmoExpandersByDefault = openAmmoExpandersByDefault;
+        
+        settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
+        AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
+        
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault;
+        AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
         await AppSettingsHelper.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;

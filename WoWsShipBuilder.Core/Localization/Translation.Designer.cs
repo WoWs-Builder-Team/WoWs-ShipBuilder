@@ -3123,6 +3123,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship sections HP.
+        /// </summary>
+        public static string ShipStats_ShipSectionsHp {
+            get {
+                return ResourceManager.GetString("ShipStats_ShipSectionsHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Short range aura.
         /// </summary>
         public static string ShipStats_ShortAura {
@@ -3988,6 +3997,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Shells, Torps and Planes expanders by default.
+        /// </summary>
+        public static string WebApp_AmmoExpanderSetting {
+            get {
+                return ResourceManager.GetString("WebApp_AmmoExpanderSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application Info.
         /// </summary>
         public static string WebApp_ApplicationInfo {
@@ -4016,11 +4034,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open Shells and Torps expanders by default.
+        ///   Looks up a localized string similar to Open all main expander by default.
         /// </summary>
         public static string WebApp_ExpanderSetting {
             get {
                 return ResourceManager.GetString("WebApp_ExpanderSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expander settings.
+        /// </summary>
+        public static string WebApp_ExpanderSettingHeader {
+            get {
+                return ResourceManager.GetString("WebApp_ExpanderSettingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open all secondaries, plane weapons and AA expanders by default.
+        /// </summary>
+        public static string WebApp_SecondariesAndAAExpanderSetting {
+            get {
+                return ResourceManager.GetString("WebApp_SecondariesAndAAExpanderSetting", resourceCulture);
             }
         }
         
