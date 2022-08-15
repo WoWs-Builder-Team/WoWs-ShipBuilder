@@ -1460,4 +1460,10 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copia url build</value>
   </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Nascondi grafico della distribuzione dei danni</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Mostra angoli dei lanciasiluri</value>
+  </data>
 </root>
