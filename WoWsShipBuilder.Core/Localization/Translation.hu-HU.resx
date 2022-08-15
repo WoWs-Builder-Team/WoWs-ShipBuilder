@@ -330,6 +330,9 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Ilyen keresési feltételeknek egyik hajó sem felel meg</value>
   </data>
+  <data name="ShipSelectionWindow_SearchShip" xml:space="preserve">
+      <value>Hajókereső...</value>
+  </data>
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>180°-os fordulási idő</value>
   </data>
@@ -359,6 +362,9 @@
   </data>
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Lőszertömeg</value>
+  </data>
+  <data name="ShipStats_TheoreticalDpm" xml:space="preserve">
+    <value>Elméleti percenkénti sebzés</value>
   </data>
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Élesedési küszöb</value>
@@ -444,6 +450,9 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>Tűz általi másodpercenkénti sebzés</value>
   </data>
+  <data name="ShipStats_FireDuration" xml:space="preserve">
+      <value>Égési idő</value>
+  </data>
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Tűzvédelem</value>
   </data>
@@ -452,6 +461,9 @@
   </data>
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>Vízbetörés általi másodpercenkénti sebzés</value>
+  </data>
+  <data name="ShipStats_FloodDuration" xml:space="preserve">
+      <value>Égési idő</value>
   </data>
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Vízbetörés valószínűsége</value>
@@ -695,6 +707,9 @@
   </data>
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Hiba a felépítés betöltése közben</value>
+  </data>
+  <data name="ShipStats_JatoDuration" xml:space="preserve">
+      <value>Égési idő</value>
   </data>
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Lőszercsere időtartama</value>
