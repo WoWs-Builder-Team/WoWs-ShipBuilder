@@ -1188,6 +1188,9 @@ Se "Protezione dell'esplosione del modulo" + "Penetrazione dell'esplosione dell'
   <data name="ChartsWeb_DispersionCharts" xml:space="preserve">
       <value>Grafici dispersione</value>
   </data>
+  <data name="ChartsWeb_BallisticCharts" xml:space="preserve">
+      <value>Grafici balistici</value>
+  </data>
   <data name="ShipAndShellSelectionDialogWeb_SelectShipsAndShells" xml:space="preserve">
       <value>Seleziona navi e proiettili</value>
   </data>
@@ -1425,6 +1428,9 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   </data>
   <data name="ChartsWeb_Height" xml:space="preserve">
       <value>Altezza </value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Mostra grafici di dispersione e balistici</value>
   </data>
   <data name="WebApp_ApplicationInfo" xml:space="preserve">
       <value>Informazioni applicazione</value>
