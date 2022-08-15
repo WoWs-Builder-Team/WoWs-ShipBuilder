@@ -1290,7 +1290,7 @@
       <value>Защита</value>
   </data>
   <data name="ShipStats_MaxAtTheSameTime" xml:space="preserve">
-      <value>Макс. пожаров</value>
+      <value>Макс одновременно</value>
   </data>
   <data name="ShipStats_FromSubs" xml:space="preserve">
       <value>С подлодок</value>
@@ -1458,5 +1458,11 @@
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Копировать ссылку на билд</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Скрыть график распределения урона</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Показать углы запуска</value>
   </data>
 </root>
