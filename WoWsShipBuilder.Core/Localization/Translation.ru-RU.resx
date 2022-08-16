@@ -1440,9 +1440,6 @@
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Выбранный язык</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Открывать подробное описание снарядов и торпед по умолчанию</value>
-  </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Настройки сохранены</value>
   </data>
