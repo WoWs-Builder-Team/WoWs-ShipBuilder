@@ -1441,8 +1441,8 @@
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>選択された言語</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>砲弾と魚雷の角度をデフォルトで表示</value>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>砲弾、魚雷、艦載機の詳細をデフォルトで展開表示</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>設定を保存しました</value>
@@ -1458,6 +1458,18 @@
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>ビルドのURLをコピー</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>全ての詳細表示をデフォルトで展開</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>副砲、艦載機兵装、対空砲の詳細をデフォルトで展開表示</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>詳細の展開表示設定</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>区画HP</value>
   </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>ダメージ分布図を非表示</value>
