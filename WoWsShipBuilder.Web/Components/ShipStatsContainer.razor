@@ -162,7 +162,7 @@
 
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
-        MetricsService.ShipCount.WithLabels(shipIndex).Inc();
+        MetricsService.ShipCount.WithLabels(Localizer.GetGameLocalization(shipIndex, AppConstants.DefaultCultureDetails).Localization).Inc();
         Build? build = null;
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
