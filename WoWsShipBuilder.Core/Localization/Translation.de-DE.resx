@@ -1441,9 +1441,6 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Ausgewählte Sprache</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
-  </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Einstellungen gespeichert</value>
   </data>
