@@ -8,7 +8,7 @@ public class MetricsService : IMetricsService
 
     public Counter ShipCount { get; } = Metrics.CreateCounter("ship_requests_total", "Number of viewed ships.", new CounterConfiguration
     {
-        LabelNames = new[] { "ship_index" },
+        LabelNames = new[] { "ship_index", "ship_name" },
     });
 
     public Counter BallisticPageCount { get; } = Metrics.CreateCounter("ballistics_page_requests_total", "Number of ballistics page requests");
