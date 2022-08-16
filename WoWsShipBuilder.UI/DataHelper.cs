@@ -88,6 +88,11 @@ namespace WoWsShipBuilder.UI
             public LocalizationResult GetGameLocalization(string key) => new(true, key);
 
             public LocalizationResult GetAppLocalization(string key) => new(true, key);
+
+            public LocalizationResult GetGameLocalization(string key, CultureDetails language) => new(true, key);
+
+            public LocalizationResult GetAppLocalization(string key, CultureDetails language) => new(true, key);
+
         }
     }
 }
