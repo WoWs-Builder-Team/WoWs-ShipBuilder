@@ -1441,9 +1441,6 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Lingua selezionata</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Apri tendina dei proiettili e siluri all'inizio</value>
-  </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Impostazioni salvate</value>
   </data>
