@@ -49,10 +49,10 @@
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+        <PackageReference Include="Avalonia" Version="0.10.18" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
         <PackageReference Include="Clowd.Squirrel" Version="2.8.40" />
         <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -62,12 +62,12 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Sentry.NLog" Version="3.20.1" />
-        <PackageReference Include="Splat.Autofac" Version="14.1.45" />
+        <PackageReference Include="Splat.Autofac" Version="14.4.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="16.1.10" />
+        <PackageReference Include="System.IO.Abstractions" Version="17.1.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
