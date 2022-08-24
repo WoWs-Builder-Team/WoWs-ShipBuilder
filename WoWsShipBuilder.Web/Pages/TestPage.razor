@@ -70,19 +70,13 @@
             var accelerationData = GetAccelerationData(ship);
             dataList.Add(accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList());
             
-            
-            
-            var (ship2, _) = await LoadPreviewShip(ShipClass.Cruiser, 10, Nation.UnitedKingdom);
-            
+            var (ship2, _) = await LoadPreviewShip("PBSC110");
             names.Add(Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization);
+            var accelerationData2 = GetAccelerationData(ship2);
+            var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
-            var accelerationData2 = GetAccelerationData(ship);
-            dataList.Add(accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList());
-            
-            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>>();
-            containerList.Add(dataList);
-            var indexList = new List<int>();
-            indexList.Add(0);
+            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> { dataList, dataList2 };
+            var indexList = new List<int> { 0, 1 };
 
             await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
         }
@@ -93,7 +87,20 @@
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
         var speed = ( 1+ engine.SpeedCoef) * hull.MaxSpeed;
-        return AccelerationHelper.CalculateAcceleration((double)speed, 1, hull.EnginePower, hull.Tonnage, ship.ShipClass, (double)engine.ForwardEngineForsag, (double)engine.BackwardEngineForsag, (double)engine.ForwardEngineUpTime);
+        return AccelerationHelper.CalculateAcceleration(decimal.ToDouble(speed), 1, hull.EnginePower, hull.Tonnage, ship.ShipClass,  decimal.ToDouble(engine.ForwardEngineForsagMaxSpeed), decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed), decimal.ToDouble(engine.ForwardEngineUpTime));
+    }
+    
+    private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(string shipIndex)
+    {
+        var ship = await AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
+        
+        var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
+            .Select(entry => entry.Value.FirstOrDefault())
+            .Where(item => item != null)
+            .Cast<ShipUpgrade>()
+            .ToList();
+
+        return (ship, configuration);
     }
 
     private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)

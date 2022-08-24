@@ -31,7 +31,7 @@ public class ServerAwsClientTest
     [Test]
     public async Task DownloadFiles()
     {
-        var testVersionInfo = new VersionInfo(new() { { "Ship", new() { new("Germany.json", 1) } } });
+        var testVersionInfo = new VersionInfo(new() { { "Ship", new() { new("Germany.json", 1) } } }, 1, GameVersion.Default);
         const string testShipKey = "PGSA001";
         var shipDictionary = new Dictionary<string, Ship> { { testShipKey, new Ship { Index = testShipKey, Id = 1234 } } };
 

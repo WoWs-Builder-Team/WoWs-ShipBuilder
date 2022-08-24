@@ -53,7 +53,8 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
                     { "Ability", new() { new("Common.json", versionCode, checksum) } },
                     { "Ship", new() { new("Japan.json", versionCode, checksum), new("Germany.json", versionCode, checksum) } },
                 },
-                versionCode);
+                versionCode,
+                GameVersion.Default);
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new("test"));
