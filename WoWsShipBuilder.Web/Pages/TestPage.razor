@@ -60,26 +60,40 @@
             var id = new List<string>();
             id.Add("test");
 
-            var (ship, config) = await LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa);
-            
-            var name = new List<string>();
-            name.Add(ship.Index);
-
             var dataList = new List<IEnumerable<ChartsHelper.Point>>();
 
-            var speed = ( 1+ ship.Engines.First().Value.SpeedCoef) * ship.Hulls.First().Value.MaxSpeed;
+            var (ship, _) = await LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa);
+            
+            var names = new List<string>();
+            names.Add(Localizer.GetGameLocalization(ship.Index + "_FULL").Localization);
 
-            var accelerationData = AccelerationHelper.CalculateAcceleration((double)speed, 1, 120000, 20950, ShipClass.Cruiser, 2.5, 2.5, 40.0);
-
+            var accelerationData = GetAccelerationData(ship);
             dataList.Add(accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList());
+            
+            
+            
+            var (ship2, _) = await LoadPreviewShip(ShipClass.Cruiser, 10, Nation.UnitedKingdom);
+            
+            names.Add(Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization);
+
+            var accelerationData2 = GetAccelerationData(ship);
+            dataList.Add(accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList());
             
             var containerList = new List<List<IEnumerable<ChartsHelper.Point>>>();
             containerList.Add(dataList);
             var indexList = new List<int>();
             indexList.Add(0);
 
-            await ChartJsInterop.BatchAddDataAsync(id, name, containerList, indexList);
+            await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
         }
+    }
+
+    private List<AccelerationHelper.AccelerationPoints> GetAccelerationData(Ship ship)
+    {
+        var engine = ship.Engines.First().Value;
+        var hull = ship.Hulls.First().Value;
+        var speed = ( 1+ engine.SpeedCoef) * hull.MaxSpeed;
+        return AccelerationHelper.CalculateAcceleration((double)speed, 1, hull.EnginePower, hull.Tonnage, ship.ShipClass, (double)engine.ForwardEngineForsag, (double)engine.BackwardEngineForsag, (double)engine.ForwardEngineUpTime);
     }
 
     private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)

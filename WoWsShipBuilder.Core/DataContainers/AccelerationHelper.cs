@@ -15,7 +15,7 @@ public static class AccelerationHelper
         ShipClass shipClass,
         double forwardEngineForsag,
         double backwardEngineForsag,
-        double fullPowerForwardModifier,
+        double fullPowerForwardTime,
         double engineForwardForsageMaxSpeed = 1,
         double engineBackwardForsageMaxSpeed = 1,
         double engineForwardForsagePower = 1,
@@ -31,7 +31,7 @@ public static class AccelerationHelper
         var powerForward = Math.Pow(powerRatio, 0.4) * Math.Pow(speedMultiplier, 2);
         var powerBackwards = (powerForward / GetPfToPbRatio(shipClass)) * Math.Pow(speedMultiplier, 2);
 
-        var TF = fullPowerForwardModifier / ((double)Constants.TimeScale) / engineBackwardUpTime / engineBackwardUpTime;
+        var TF = fullPowerForwardTime / ((double)Constants.TimeScale) / engineBackwardUpTime / engineBackwardUpTime;
 
         var forsageForward = forwardEngineForsag * engineForwardForsageMaxSpeed;
         var forsageBackwards = backwardEngineForsag * engineBackwardForsageMaxSpeed;
