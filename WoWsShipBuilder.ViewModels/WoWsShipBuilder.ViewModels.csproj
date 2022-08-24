@@ -10,4 +10,8 @@
       <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ReactiveUI" Version="18.3.1" />
+    </ItemGroup>
+
 </Project>
