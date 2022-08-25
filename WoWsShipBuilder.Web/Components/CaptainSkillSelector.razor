@@ -39,7 +39,7 @@
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent"  Delay="750">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="400">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">

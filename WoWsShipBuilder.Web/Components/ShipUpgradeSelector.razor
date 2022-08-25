@@ -14,7 +14,7 @@
             {
                 <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0" >
                     <ActivatorContent>
-                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="750">
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right">
                             <ChildContent>
                                 <MudButton Style="@GetImageBreakpointStyle()" Variant="Variant.Outlined" >
                                     <MudImage Width="@GetImageSize(false)" Height="@GetImageSize(false)" Src="@GetSelectedUpgradeIcon(columnModernizations, ViewModel.SelectedModernizationList)"/>
@@ -59,7 +59,7 @@
                             @foreach (var modernization in columnModernizations)
                             {
                                 <MudMenuItem Style="padding: 2px 4px;" OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
-                                     <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="750">
+                                     <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
                                         <ChildContent>
                                             <MudImage Width="@GetImageSize(true)" Height="@GetImageSize(true)" Src="@GetUpgradeIcon(modernization)"/>
                                         </ChildContent>
