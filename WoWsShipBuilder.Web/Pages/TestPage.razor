@@ -62,15 +62,20 @@
             
             var names = new List<string>();
 
-            var (ship, _) = await LoadPreviewShip("PASC020");
+            var (ship, _) = await LoadPreviewShip("PASB110");
             names.Add(Localizer.GetGameLocalization(ship.Index + "_FULL").Localization);
             var accelerationData = GetAccelerationData(ship);
             var dataList = new List<IEnumerable<ChartsHelper.Point>> { accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
-            var (ship2, _) = await LoadPreviewShip("PBSC110");
+            var (ship2, _) = await LoadPreviewShip("PASB017");
             names.Add(Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization);
             var accelerationData2 = GetAccelerationData(ship2);
             var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
+            
+            var (ship4, _) = await LoadPreviewShip("PRSB110");
+            names.Add(Localizer.GetGameLocalization(ship4.Index + "_FULL").Localization);
+            var accelerationData4 = GetAccelerationData(ship4);
+            var dataList4 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData4.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
             
             var (ship3, _) = await LoadPreviewShip("PASC020");
             names.Add(Localizer.GetGameLocalization(ship3.Index + "_FULL").Localization + " + Leg mod");
