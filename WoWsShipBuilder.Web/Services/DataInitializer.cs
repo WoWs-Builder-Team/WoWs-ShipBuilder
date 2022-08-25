@@ -8,7 +8,7 @@ namespace WoWsShipBuilder.Web.Services;
 
 public class DataInitializer
 {
-    private readonly IOptions<CdnOptions> cdnOptions;
+    private readonly CdnOptions cdnOptions;
 
     private readonly ILocalizationProvider localizationProvider;
 
@@ -16,18 +16,25 @@ public class DataInitializer
 
     public DataInitializer(IOptions<CdnOptions> cdnOptions, ILocalizationProvider localizationProvider, IAppDataService appDataService)
     {
-        this.cdnOptions = cdnOptions;
+        this.cdnOptions = cdnOptions.Value;
         this.localizationProvider = localizationProvider;
         this.appDataService = appDataService;
     }
 
     public async Task InitializeData()
     {
-        await localizationProvider.RefreshDataAsync(cdnOptions.Value.Server, AppConstants.SupportedLanguages.ToArray());
+        await localizationProvider.RefreshDataAsync(cdnOptions.Server, AppConstants.SupportedLanguages.ToArray());
         if (appDataService is ServerAppDataService serverAppDataService)
         {
-            await serverAppDataService.FetchData();
-            AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(cdnOptions.Value.Server);
+            if (cdnOptions.UseLocalFiles)
+            {
+                await serverAppDataService.LoadLocalFiles();
+            }
+            else
+            {
+                await serverAppDataService.FetchData();
+            }
+            AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(cdnOptions.Server);
         }
     }
 }

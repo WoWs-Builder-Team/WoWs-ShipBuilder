@@ -333,13 +333,13 @@
                                 {
                                     @DataElementFragment((weaponData,Localizer))
                                 }
-                            </MudStack>
-                            <MudText Class="expander-content-padding" Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
-                            @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
+                                <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(SetDepthChargeDamageDistributionChartVisibility)">
+                                    @(showDepthChargeDamageDistributionChart ? Localizer.GetAppLocalization(nameof(Translation.ShipStats_HideDcDamageDistribution)).Localization : Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowDcDamageDistribution)).Localization)
                                 </MudText>
                                 <div style="@GetDepthChargeDamageDistributionChartVisibility()" class="ma-auto">
                                     <DepthChargeDamageDistributionChart ShipIndex="@ViewModel.CurrentShipStats!.Index" DataRecord="@(new(dcDataContext.Damage, dcDataContext.DcSplashRadius, dcDataContext.PointsOfDmg))"/>
                                 </div>
+                            </MudStack>
                         </MudExpansionPanel>
                     </MudStack>
                 </MudExpansionPanel>
