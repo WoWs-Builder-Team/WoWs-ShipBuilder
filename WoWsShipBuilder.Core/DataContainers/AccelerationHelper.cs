@@ -35,12 +35,12 @@ public static class AccelerationHelper
         var backwardEngineForsagMaxSpeed = decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed);
 
         // calculate other stats
-        var forwardSpeed = baseShipSpeed * speedMultiplier;
-        var reverseSpeed = ((baseShipSpeed / 4) + 4.9) * speedMultiplier;
+        var maxForwardSpeed = baseShipSpeed * speedMultiplier;
+        var maxReverseSpeed = ((baseShipSpeed / 4) + 4.9) * speedMultiplier;
 
         var powerRatio = horsepower / tonnage;
-        var powerForward = Math.Pow(powerRatio, 0.4) * Math.Pow(speedMultiplier, 2);
-        var powerBackwards = (powerForward / GetPfToPbRatio(shipClass)) * Math.Pow(speedMultiplier, 2);
+        var maxPowerForward = Math.Pow(powerRatio, 0.4) * Math.Pow(speedMultiplier, 2);
+        var maxPowerBackwards = (maxPowerForward / GetPfToPbRatio(shipClass)) * Math.Pow(speedMultiplier, 2);
 
         var timeForward = (fullPowerForwardTime / timeConstant) * engineForwardUpTimeModifiers;
         var timeBackward = (fullPowerBackwardTime / timeConstant) * engineBackwardUpTimeModifiers;
@@ -66,56 +66,57 @@ public static class AccelerationHelper
         result.Add(new(speed, time));
 
         // we go forward!
-        while (speed < forwardSpeed)
+        while (speed < maxForwardSpeed)
         {
             if (time > 180)
             {
+                break;
                 throw new OverflowException("Acceleration phase is taking too much time");
             }
 
             var acc = 0;
 
-            var speedLimit = GetSpeedLimit(throttle, forwardSpeed, reverseSpeed);
+            var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
             if (speedLimit > speed)
             {
                 var firstPower = Math.Max(power, 0);
-                var powerTimeRatio = powerForward / timeForward;
+                var powerTimeRatio = maxPowerForward / timeForward;
                 var secondPower = dt * powerTimeRatio;
                 var coeff = Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating);
-                power = Math.Min(firstPower + secondPower, powerForward * coeff);
+                power = Math.Min(firstPower + secondPower, maxPowerForward * coeff);
                 acc = 1;
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * powerBackwards / timeBackward), -powerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
                 acc = -1;
             }
             else
             {
                 if (speed > 0)
                 {
-                    power = powerForward * Math.Pow(throttle / 4, 2);
+                    power = maxPowerForward * Math.Pow(throttle / 4, 2);
                 }
                 else
                 {
-                    power = -powerBackwards;
+                    power = -maxPowerBackwards;
                 }
 
                 acc = 0;
             }
 
-            var drag = GetDrag(speed, forwardSpeed, powerForward, reverseSpeed, powerBackwards);
+            var drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
             var acceleration = (power + drag) * Math.Abs(acc);
 
             // apply mods
             if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
             {
-                acceleration = (powerForward * forsageForward) - drag;
+                acceleration = (maxPowerForward * forsageForward) - drag;
             }
 
             if (speed > -forsageBackwardsMaxSpeed && speed <= 0 && power < 0)
             {
-                acceleration = (-powerBackwards * forsageBackwards) + drag;
+                acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
             }
 
             var previousSpeed = speed;
@@ -145,53 +146,54 @@ public static class AccelerationHelper
         {
             if (time > 360)
             {
+                break;
                 throw new OverflowException("Deceleration phase is taking too much time");
             }
 
             var acc = 0;
 
-            var speedLimit = GetSpeedLimit(throttle, forwardSpeed, reverseSpeed);
+            var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
             if (speedLimit > speed)
             {
-                power = Math.Min(Math.Max(power, 0) + (dt * powerForward / timeForward), powerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+                power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
                 acc = 1;
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * powerBackwards / timeBackward), -powerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
                 acc = -1;
             }
             else
             {
                 if (speed > 0)
                 {
-                    power = powerForward * Math.Pow(throttle / 4, 2);
+                    power = maxPowerForward * Math.Pow(throttle / 4, 2);
                 }
                 else
                 {
-                    power = -powerBackwards;
+                    power = -maxPowerBackwards;
                 }
 
                 acc = 0;
             }
 
-            var drag = GetDrag(speed, forwardSpeed, powerForward, reverseSpeed, powerBackwards);
+            var drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
             var acceleration = (power + drag) * Math.Abs(acc);
 
             // apply mods
             if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
             {
-                acceleration = (powerForward * forsageForward) - drag;
+                acceleration = (maxPowerForward * forsageForward) - drag;
             }
 
             if (speed > -forsageBackwardsMaxSpeed && speed <= 0 && power < 0)
             {
-                acceleration = (-powerBackwards * forsageBackwards) + drag;
+                acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
             }
 
             var previousSpeed = speed;
 
-            speed += dt * acceleration;
+            speed += Math.Round(dt * acceleration, 1);
 
             if (speedLimit < speed && acc == 1 && power * previousSpeed > 0)
             {
@@ -228,37 +230,37 @@ public static class AccelerationHelper
     }
 
     // Calculate water resistance
-    private static double GetDrag(double speed, double forwardSpeed, double powerForward, double reverseSpeed, double powerBackwards)
+    private static double GetDrag(double speed, double maxForwardSpeed, double maxPowerForward, double maxReverseSpeed, double maxPowerBackwards)
     {
         // drag=@(x) (-x.*abs(x)/(Vmax)^2*PF).*(x>0) + (-x.*abs(x)/(Vmin)^2*PB).*(x<0);
         // first part if x > 0, second if x < 0
         double result;
         if (speed > 0)
         {
-            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(forwardSpeed, 2);
-            result = speedRatio * powerForward;
+            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxForwardSpeed, 2);
+            result = speedRatio * maxPowerForward;
         }
         else
         {
-            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(reverseSpeed, 2);
-            result = -speedRatio * powerBackwards;
+            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxReverseSpeed, 2);
+            result = -speedRatio * maxPowerBackwards;
         }
 
         return result;
     }
 
-    private static double GetSpeedLimit(double throttle, double forwardSpeed, double reverseSpeed)
+    private static double GetSpeedLimit(double throttle, double maxForwardSpeed, double maxReverseSpeed)
     {
         // speed_limit=@(x) x/4*Vmax*(x>=0)-Vmin*(x<0);
         // first part if x > 0, second if x < 0
         double result;
         if (throttle >= 0)
         {
-            result = throttle / 4 * forwardSpeed;
+            result = throttle / 4 * maxForwardSpeed;
         }
         else
         {
-            result = -reverseSpeed;
+            result = -maxReverseSpeed;
         }
 
         return result;
