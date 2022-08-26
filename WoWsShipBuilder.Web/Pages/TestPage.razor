@@ -79,7 +79,7 @@
             
             var (ship3, _) = await LoadPreviewShip("PASC020");
             names.Add(Localizer.GetGameLocalization(ship3.Index + "_FULL").Localization + " + Leg mod");
-            
+
             var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024") || x.Key.Equals("PCM052")).SelectMany(x => x.Value.Effect).ToList();
             var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
             var engineBackwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
@@ -93,8 +93,8 @@
                 engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier );
             var dataList3 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData3.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
-            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> { dataList, dataList2, dataList3 };
-            var indexList = new List<int> { 0, 1, 2 };
+            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> { dataList, dataList2, dataList3, dataList4 };
+            var indexList = new List<int> { 0, 1, 2, 3 };
 
             await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
         }
