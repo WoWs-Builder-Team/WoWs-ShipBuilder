@@ -68,6 +68,11 @@ public static class AccelerationHelper
         // we go forward!
         while (speed < forwardSpeed)
         {
+            if (time > 180)
+            {
+                throw new OverflowException("Acceleration phase is taking too much time");
+            }
+
             var acc = 0;
 
             var speedLimit = GetSpeedLimit(throttle, forwardSpeed, reverseSpeed);
@@ -138,6 +143,11 @@ public static class AccelerationHelper
         throttle = 0;
         while (speed > 0)
         {
+            if (time > 360)
+            {
+                throw new OverflowException("Deceleration phase is taking too much time");
+            }
+
             var acc = 0;
 
             var speedLimit = GetSpeedLimit(throttle, forwardSpeed, reverseSpeed);
