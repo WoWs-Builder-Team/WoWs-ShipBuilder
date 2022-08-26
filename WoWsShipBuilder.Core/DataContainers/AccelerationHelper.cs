@@ -80,7 +80,7 @@ public static class AccelerationHelper
             if (speedLimit > speed)
             {
                 var firstPower = Math.Max(power, 0);
-                var powerTimeRatio = maxPowerForward / timeForward;
+                var powerTimeRatio = maxPowerForward / timeForward * 2;
                 var secondPower = dt * powerTimeRatio;
                 var coeff = Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating);
                 power = Math.Min(firstPower + secondPower, maxPowerForward * coeff);
@@ -88,7 +88,7 @@ public static class AccelerationHelper
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / (timeBackward * 2) * 2), -maxPowerBackwards);
                 acc = -1;
             }
             else
@@ -155,12 +155,12 @@ public static class AccelerationHelper
             var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
             if (speedLimit > speed)
             {
-                power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+                power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward * 2), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
                 acc = 1;
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / (timeBackward * 2) * 2), -maxPowerBackwards);
                 acc = -1;
             }
             else
