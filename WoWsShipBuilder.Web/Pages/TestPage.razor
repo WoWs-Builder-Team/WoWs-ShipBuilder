@@ -68,19 +68,19 @@
             var dataList = new List<IEnumerable<ChartsHelper.Point>> { accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
             var (ship2, _) = await LoadPreviewShip("PASB017");
-            names.Add(Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization);
-            var accelerationData2 = GetAccelerationData(ship2);
-            var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
+            names.Add($"{Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization} + eng. mod. + flag + brisk");
+            //var accelerationData2 = GetAccelerationData(ship2);
+            //var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
             
-            var (ship4, _) = await LoadPreviewShip("PRSB110");
-            names.Add(Localizer.GetGameLocalization(ship4.Index + "_FULL").Localization);
-            var accelerationData4 = GetAccelerationData(ship4);
-            var dataList4 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData4.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
-            
-            var (ship3, _) = await LoadPreviewShip("PASC020");
-            names.Add(Localizer.GetGameLocalization(ship3.Index + "_FULL").Localization + " + Leg mod");
+            // var (ship4, _) = await LoadPreviewShip("PRSB110");
+            // names.Add(Localizer.GetGameLocalization(ship4.Index + "_FULL").Localization);
+            // var accelerationData4 = GetAccelerationData(ship4);
+            // var dataList4 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData4.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
+            //
+            // var (ship3, _) = await LoadPreviewShip("PASC020");
+            // names.Add(Localizer.GetGameLocalization(ship3.Index + "_FULL").Localization + " + Leg mod");
 
-            var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024") || x.Key.Equals("PCM052")).SelectMany(x => x.Value.Effect).ToList();
+            var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024")).SelectMany(x => x.Value.Effect).ToList(); // || x.Key.Equals("PCM052")
             var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
             var engineBackwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
             var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
@@ -89,12 +89,12 @@
             var engineBackwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
 
             
-            var accelerationData3 = AccelerationHelper.CalculateAcceleration(ship3.Hulls.First().Value, ship3.Engines.First().Value, ship.ShipClass, 1, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
+            var accelerationData2 = AccelerationHelper.CalculateAcceleration(ship2.Index, ship2.Hulls.First().Value, ship2.Engines.First().Value, ship2.ShipClass, 1.155, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
                 engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier );
-            var dataList3 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData3.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
+            var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
-            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> { dataList, dataList2, dataList3, dataList4 };
-            var indexList = new List<int> { 0, 1, 2, 3 };
+            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> {dataList, dataList2};
+            var indexList = new List<int> { 0, 1};
 
             await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
         }
@@ -104,7 +104,7 @@
     {
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
-        return AccelerationHelper.CalculateAcceleration(hull, engine, ship.ShipClass);
+        return AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass);
     }
     
     private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(string shipIndex)

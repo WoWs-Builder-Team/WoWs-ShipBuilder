@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.DataContainers;
@@ -8,6 +7,7 @@ namespace WoWsShipBuilder.Core.DataContainers;
 public static class AccelerationHelper
 {
     public static List<AccelerationPoints> CalculateAcceleration(
+        string shipIndex,
         Hull hull,
         Engine engine,
         ShipClass shipClass,
@@ -20,12 +20,11 @@ public static class AccelerationHelper
         double engineBackwardForsagePowerModifier = 1)
     {
         var result = new List<AccelerationPoints>();
-        var sailingTime = 3;
 
         // get starting stats
         var baseShipSpeed = decimal.ToDouble((1 + engine.SpeedCoef) * hull.MaxSpeed);
         var horsepower = decimal.ToDouble(hull.EnginePower);
-        var tonnage = hull.Tonnage;
+        int tonnage = hull.Tonnage;
         var fullPowerForwardTime = decimal.ToDouble(engine.ForwardEngineUpTime);
         var fullPowerBackwardTime = decimal.ToDouble(engine.BackwardEngineUpTime);
         var timeConstant = decimal.ToDouble(Constants.TimeScale);
@@ -35,24 +34,24 @@ public static class AccelerationHelper
         var backwardEngineForsagMaxSpeed = decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed);
 
         // calculate other stats
-        var maxForwardSpeed = baseShipSpeed * speedMultiplier;
-        var maxReverseSpeed = ((baseShipSpeed / 4) + 4.9) * speedMultiplier;
+        double maxForwardSpeed = baseShipSpeed * speedMultiplier;
+        double maxReverseSpeed = ((baseShipSpeed / 4) + 4.9) * speedMultiplier;
 
-        var powerRatio = horsepower / tonnage;
-        var maxPowerForward = Math.Pow(powerRatio, 0.4) * Math.Pow(speedMultiplier, 2);
-        var maxPowerBackwards = (maxPowerForward / GetPfToPbRatio(shipClass)) * Math.Pow(speedMultiplier, 2);
+        double powerRatio = horsepower / tonnage;
+        double maxPowerForward = Math.Pow(powerRatio, 0.42) * Math.Pow(speedMultiplier, 2);
+        double maxPowerBackwards = (maxPowerForward / GetPfToPbRatio(shipClass)) * Math.Pow(speedMultiplier, 2);
 
-        var timeForward = (fullPowerForwardTime / timeConstant) * engineForwardUpTimeModifiers;
-        var timeBackward = (fullPowerBackwardTime / timeConstant) * engineBackwardUpTimeModifiers;
+        double timeForward = (fullPowerForwardTime / timeConstant) * engineForwardUpTimeModifiers;
+        double timeBackward = (fullPowerBackwardTime / timeConstant) * engineBackwardUpTimeModifiers;
 
-        var forsageForward = forwardEngineForsag * engineForwardForsagePowerModifier;
-        var forsageBackwards = backwardEngineForsag * engineBackwardForsagePowerModifier;
+        double forsageForward = forwardEngineForsag * engineForwardForsagePowerModifier;
+        double forsageBackwards = backwardEngineForsag * engineBackwardForsagePowerModifier;
 
-        var forsageForwardMaxSpeed = forwardEngineForsagMaxSpeed * engineForwardForsageMaxSpeedModifier;
-        var forsageBackwardsMaxSpeed = backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier;
+        double forsageForwardMaxSpeed = forwardEngineForsagMaxSpeed * engineForwardForsageMaxSpeedModifier;
+        double forsageBackwardsMaxSpeed = backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier;
 
         // begin the pain, aka the math
-        var dt = 0.01;
+        const double dt = 0.01;
 
         double speed = 0;
         double time = 0;
@@ -65,25 +64,16 @@ public static class AccelerationHelper
 
         result.Add(new(speed, time));
 
+        double speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
+
         // we go forward!
-        while (Math.Round(speed, 2) < maxForwardSpeed)
+        while (speed < maxForwardSpeed - 0.1)
         {
-            // if (time > 50)
-            // {
-            //     break;
-            //     throw new OverflowException("Acceleration phase is taking too much time");
-            // }
-
-            var acc = 0;
-
-            var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
+            int acc;
             if (speedLimit > speed)
             {
-                var firstPower = Math.Max(power, 0);
-                var powerTimeRatio = maxPowerForward / timeForward;
-                var secondPower = dt * powerTimeRatio;
-                var coeff = Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating);
-                power = Math.Min(firstPower + secondPower, maxPowerForward * coeff);
+                power = shipIndex.Equals("PASB110") || shipIndex.Equals("PFSD210") ? maxPowerForward : Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+
                 acc = 1;
             }
             else if (speedLimit < speed)
@@ -105,8 +95,8 @@ public static class AccelerationHelper
                 acc = 0;
             }
 
-            var drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
-            var acceleration = (power + drag) * Math.Abs(acc);
+            double drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
+            double acceleration = (power + drag) * Math.Abs(acc);
 
             // apply mods
             if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
@@ -119,7 +109,7 @@ public static class AccelerationHelper
                 acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
             }
 
-            var previousSpeed = speed;
+            double previousSpeed = speed;
 
             speed += dt * acceleration;
 
@@ -134,26 +124,31 @@ public static class AccelerationHelper
             }
 
             time += dt;
+
             result.Add(new (speed, time));
         }
 
-        time += sailingTime;
+        result.Add(new(maxForwardSpeed, time += dt));
 
         // and now we sail for a bit and then stop!
-        result.Add(new (speed, time));
-        throttle = 0;
         bool decelerate = false;
+        if (decelerate)
+        {
+            const int sailingTime = 3;
+            time += sailingTime;
+            result.Add(new (speed, time));
+            throttle = 0;
+            speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
+        }
+
         while (speed > 0 && decelerate)
         {
             if (time > 360)
             {
                 break;
-                throw new OverflowException("Deceleration phase is taking too much time");
             }
 
-            var acc = 0;
-
-            var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
+            int acc;
             if (speedLimit > speed)
             {
                 power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
@@ -178,8 +173,8 @@ public static class AccelerationHelper
                 acc = 0;
             }
 
-            var drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
-            var acceleration = (power + drag) * Math.Abs(acc);
+            double drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
+            double acceleration = (power + drag) * Math.Abs(acc);
 
             // apply mods
             if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
@@ -192,7 +187,7 @@ public static class AccelerationHelper
                 acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
             }
 
-            var previousSpeed = speed;
+            double previousSpeed = speed;
 
             speed += Math.Round(dt * acceleration, 1);
 
@@ -238,12 +233,12 @@ public static class AccelerationHelper
         double result;
         if (speed > 0)
         {
-            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxForwardSpeed, 2);
+            double speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxForwardSpeed, 2);
             result = speedRatio * maxPowerForward;
         }
         else
         {
-            var speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxReverseSpeed, 2);
+            double speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxReverseSpeed, 2);
             result = -speedRatio * maxPowerBackwards;
         }
 
