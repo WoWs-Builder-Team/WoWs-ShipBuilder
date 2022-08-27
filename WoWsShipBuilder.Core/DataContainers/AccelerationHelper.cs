@@ -52,7 +52,7 @@ public static class AccelerationHelper
         var forsageBackwardsMaxSpeed = backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier;
 
         // begin the pain, aka the math
-        var dt = 0.5;
+        var dt = 0.01;
 
         double speed = 0;
         double time = 0;
@@ -66,13 +66,13 @@ public static class AccelerationHelper
         result.Add(new(speed, time));
 
         // we go forward!
-        while (speed < maxForwardSpeed)
+        while (Math.Round(speed, 2) < maxForwardSpeed)
         {
-            if (time > 180)
-            {
-                break;
-                throw new OverflowException("Acceleration phase is taking too much time");
-            }
+            // if (time > 50)
+            // {
+            //     break;
+            //     throw new OverflowException("Acceleration phase is taking too much time");
+            // }
 
             var acc = 0;
 
@@ -80,7 +80,7 @@ public static class AccelerationHelper
             if (speedLimit > speed)
             {
                 var firstPower = Math.Max(power, 0);
-                var powerTimeRatio = maxPowerForward / timeForward * 2;
+                var powerTimeRatio = maxPowerForward / timeForward;
                 var secondPower = dt * powerTimeRatio;
                 var coeff = Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating);
                 power = Math.Min(firstPower + secondPower, maxPowerForward * coeff);
@@ -88,7 +88,7 @@ public static class AccelerationHelper
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / (timeBackward * 2) * 2), -maxPowerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
                 acc = -1;
             }
             else
@@ -142,7 +142,8 @@ public static class AccelerationHelper
         // and now we sail for a bit and then stop!
         result.Add(new (speed, time));
         throttle = 0;
-        while (speed > 0)
+        bool decelerate = false;
+        while (speed > 0 && decelerate)
         {
             if (time > 360)
             {
@@ -155,12 +156,12 @@ public static class AccelerationHelper
             var speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
             if (speedLimit > speed)
             {
-                power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward * 2), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+                power = Math.Min(Math.Max(power, 0) + (dt * maxPowerForward / timeForward), maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
                 acc = 1;
             }
             else if (speedLimit < speed)
             {
-                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / (timeBackward * 2) * 2), -maxPowerBackwards);
+                power = Math.Max(Math.Min(power, 0) - (dt * maxPowerBackwards / timeBackward), -maxPowerBackwards);
                 acc = -1;
             }
             else
