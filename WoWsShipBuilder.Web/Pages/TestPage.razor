@@ -62,10 +62,15 @@
             
             var names = new List<string>();
 
-            var (ship, _) = await LoadPreviewShip("PFSD210");
+            var (ship, _) = await LoadPreviewShip("PBSC110");
             names.Add(Localizer.GetGameLocalization(ship.Index + "_FULL").Localization);
             var accelerationData = GetAccelerationData(ship, 1, new());
             var dataList = new List<IEnumerable<ChartsHelper.Point>> { accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
+            
+            var (ship1, _) = await LoadPreviewShip("PASB110");
+            names.Add(Localizer.GetGameLocalization(ship1.Index + "_FULL").Localization);
+            var accelerationData1 = GetAccelerationData(ship1, 1, new());
+            var dataList1 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData1.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
             var (ship2, _) = await LoadPreviewShip("PFSD110");
             names.Add($"{Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization}");
@@ -75,8 +80,8 @@
             var accelerationData2 = GetAccelerationData(ship2, 1, new());
             var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
 
-            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> {dataList, dataList2};
-            var indexList = new List<int> { 0, 1};
+            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> {dataList, dataList1, dataList2};
+            var indexList = new List<int> { 0, 1, 2};
 
             await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
         }
