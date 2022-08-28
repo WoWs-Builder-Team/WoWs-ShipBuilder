@@ -75,7 +75,7 @@
             var (ship2, _) = await LoadPreviewShip("PFSD110");
             names.Add($"{Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization}");
 
-            var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024") || x.Key.Equals("PCM052")).SelectMany(x => x.Value.Effect).ToList(); // || x.Key.Equals("PCM052")
+            var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024") || x.Key.Equals("PCM052")).SelectMany(x => x.Value.Effect).ToList();
 
             var accelerationData2 = GetAccelerationData(ship2, 1, new());
             var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
