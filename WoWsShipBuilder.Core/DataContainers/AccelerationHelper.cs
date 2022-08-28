@@ -6,11 +6,10 @@ namespace WoWsShipBuilder.Core.DataContainers;
 
 public static class AccelerationHelper
 {
-    private const string VermontId = "PASB110";
     private const string MarceuId = "PFSD210";
     private const string CaraccioloId = "PISB107";
     private const double Dt = 0.01;
-    const int SailingTime = 3;
+    private const int SailingTime = 3;
 
     public static AccelerationData CalculateAcceleration(
         string shipIndex,
@@ -76,11 +75,11 @@ public static class AccelerationHelper
         // we go forward!
         while (speed < maxForwardSpeed - 0.1)
         {
-            DoIteration(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+            GenerateAccelerationChartData(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
         }
 
         // set the power to max of the current throttle and add a point at max speed. This is done because the speed function is asymptotic to MaxSpeed, so we force it to finish slightly earlier.
-        power = (throttle >= 0) ? maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating) : maxPowerBackwards;
+        power = throttle >= 0 ? maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating) : maxPowerBackwards;
         result.Add(new(maxForwardSpeed, time += Dt));
         double timeToFullForward = time;
 
@@ -96,7 +95,7 @@ public static class AccelerationHelper
 
             while (speed > 0)
             {
-                DoIteration(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                GenerateAccelerationChartData(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
             }
         }
 
@@ -164,8 +163,8 @@ public static class AccelerationHelper
         return result;
     }
 
-    private static void DoIteration(
-        List<AccelerationPoints> pointList,
+    private static void GenerateAccelerationChartData(
+        ICollection<AccelerationPoints> pointList,
         string shipIndex,
         double throttle,
         double isDecelerating,
@@ -187,7 +186,7 @@ public static class AccelerationHelper
         int acc;
         if (speedLimit > speed)
         {
-            power = shipIndex.Equals(VermontId) || shipIndex.Equals(MarceuId) ? maxPowerForward : Math.Min(Math.Max(power, 0) + powerIncreaseForward, maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+            power = shipIndex.Equals(MarceuId) ? maxPowerForward : Math.Min(Math.Max(power, 0) + powerIncreaseForward, maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
 
             acc = 1;
         }
@@ -213,15 +212,19 @@ public static class AccelerationHelper
         double drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
         double acceleration = (power + drag) * Math.Abs(acc);
 
-        // apply mods
+        // forsage part
+        bool isForsageForward = false;
+        bool isForsageBackward = false;
         if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
         {
             acceleration = (maxPowerForward * forsageForward) - drag;
+            isForsageForward = true;
         }
 
         if (speed > -forsageBackwardsMaxSpeed && speed <= 0 && power < 0)
         {
             acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
+            isForsageBackward = true;
         }
 
         double previousSpeed = speed;
@@ -232,10 +235,17 @@ public static class AccelerationHelper
         {
             speed = speedLimit;
         }
-
-        if (speedLimit > speed && acc == -1 && power * previousSpeed > 0)
+        else if (speedLimit > speed && acc == -1 && power * previousSpeed > 0)
         {
             speed = speedLimit;
+        }
+        else if (isForsageForward && speed > forsageForwardMaxSpeed)
+        {
+            speed = forsageForwardMaxSpeed;
+        }
+        else if (isForsageBackward && speed < -forsageBackwardsMaxSpeed)
+        {
+            speed = -forsageBackwardsMaxSpeed;
         }
 
         time += Dt;
