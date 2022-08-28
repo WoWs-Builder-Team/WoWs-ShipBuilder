@@ -17,6 +17,7 @@ export function SetupGlobalChartConfig(aspectRatio)
     //title settings
     defaults.plugins.title.display = true;
     defaults.plugins.title.font.size = 30; 
+    
     //tooltip settings
     defaults.interaction.mode = 'nearest';
     defaults.interaction.intersect = true;
@@ -26,10 +27,14 @@ export function SetupGlobalChartConfig(aspectRatio)
     defaults.plugins.tooltip.caretSize = 10;
     defaults.plugins.tooltip.usePointStyle = true;
     defaults.plugins.tooltip.boxPadding = 5;
+    
     //point settings
     defaults.elements.point.radius = 0;
     defaults.elements.point.hitRadius = 5;
     defaults.elements.point.hoverRadius = 5;
+    
+    //line settings
+    defaults.elements.line.borderJoinStyle = "bevel";
     
     const autocolors = window['chartjs-plugin-autocolors'];
     Chart.register(autocolors);
