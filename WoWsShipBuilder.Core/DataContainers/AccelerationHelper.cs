@@ -6,10 +6,39 @@ namespace WoWsShipBuilder.Core.DataContainers;
 
 public static class AccelerationHelper
 {
-    private const string MarceuId = "PFSD210";
     private const string CaraccioloId = "PISB107";
     private const double Dt = 0.01;
 
+    /// <summary>
+    /// Create <see cref="AccelerationData"/> for the given ship and parameter.
+    /// Sources for all the math and behaviours are the following:
+    /// <list type="bullet">
+    /// <item>
+    /// <term>Base info</term>
+    /// <description> https://bbs.nga.cn/read.php?tid=26933715</description>
+    /// </item>
+    /// <item>
+    /// <term>Advanced info</term>
+    /// <description> https://bbs.nga.cn/read.php?tid=27647748</description>
+    /// </item>
+    /// <item>
+    /// <term>Speed boost info</term>
+    /// <description> https://bbs.nga.cn/read.php?tid=31558840</description>
+    /// </item>
+    /// </list>
+    /// </summary>
+    /// <param name="shipIndex">Index of the ship.</param>
+    /// <param name="hull">Hull module of the ship.</param>
+    /// <param name="engine">Engine module of the ship.</param>
+    /// <param name="shipClass">Class of the ship.</param>
+    /// <param name="speedMultiplier">Multiplier for the base speed to apply.</param>
+    /// <param name="engineForwardUpTimeModifiers">Multipliers for the engine forward up time to apply.</param>
+    /// <param name="engineBackwardUpTimeModifiers">Multipliers for the engine backwards up time to apply.</param>
+    /// <param name="engineForwardForsageMaxSpeedModifier">Multipliers for the forward forsage max speed to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="engineBackwardForsageMaxSpeedModifier">Multipliers the backward forsage max speed to  to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <returns>The data regarding acceleration.</returns>
     public static AccelerationData CalculateAcceleration(
         string shipIndex,
         Hull hull,
@@ -65,7 +94,7 @@ public static class AccelerationHelper
         var powerIncreaseBackward = Dt * maxPowerBackwards / timeBackward;
 
         // begin the pain, aka the math
-        int isDecelerating = 0;
+        int isReversingDirection = 0;
 
         result.Add(new(speed, time));
 
@@ -76,19 +105,19 @@ public static class AccelerationHelper
         {
             while (speed < speedLimit - 0.05)
             {
-                GenerateAccelerationPoints(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                GenerateAccelerationPoints(result, throttle, isReversingDirection, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
             }
         }
         else
         {
             while (speed > speedLimit + 0.05)
             {
-                GenerateAccelerationPoints(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                GenerateAccelerationPoints(result, throttle, isReversingDirection, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
             }
         }
 
         // set the power to max of the current throttle. This is done because the speed function is asymptotic to MaxSpeed, so we force it to finish slightly earlier.
-        power = throttle >= 0 ? maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating) : maxPowerBackwards;
+        power = throttle >= 0 ? maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isReversingDirection) : maxPowerBackwards;
         double timeToFullForward = time;
 
         // and now we sail for a bit and then stop!
@@ -99,7 +128,7 @@ public static class AccelerationHelper
 
             while (speed > 0)
             {
-                GenerateAccelerationPoints(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                GenerateAccelerationPoints(result, throttle, isReversingDirection, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
             }
         }
         else
@@ -109,7 +138,7 @@ public static class AccelerationHelper
 
             while (speed < 0)
             {
-                GenerateAccelerationPoints(result, shipIndex, throttle, isDecelerating, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, true);
+                GenerateAccelerationPoints(result, throttle, isReversingDirection, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, true);
             }
         }
 
@@ -118,7 +147,13 @@ public static class AccelerationHelper
         return new(timeToFullForward, timeToFullBackward, result);
     }
 
-    // this ratio is about 4 for battleships (exception is 3 for Caracciolo), 3 for cruiser, and 2 for destroyers
+    /// <summary>
+    /// Returns the ratio between power forward and power backward. General value is 4 for BBs, 3 for cruiser, 2 for destroyers.<br/>
+    /// Caracciolo is the only current exception, with a value of 3.
+    /// </summary>
+    /// <param name="shipClass">Class of the ship.</param>
+    /// <param name="shipIndex">Index of the ship.</param>
+    /// <returns>The value of the ratio.</returns>
     private static int GetPfToPbRatio(ShipClass shipClass, string shipIndex)
     {
         if (shipIndex.Equals(CaraccioloId))
@@ -135,7 +170,15 @@ public static class AccelerationHelper
         };
     }
 
-    // Calculate water resistance
+    /// <summary>
+    /// Calculate the drag, aka water resistance, for the current speed.
+    /// </summary>
+    /// <param name="speed">The current ship speed.</param>
+    /// <param name="maxForwardSpeed">The ship maximum speed forward.</param>
+    /// <param name="maxPowerForward">The ship engine maximum power forward.</param>
+    /// <param name="maxReverseSpeed">The ship maximum speed backwards.</param>
+    /// <param name="maxPowerBackwards">The ship engine maximum power backwards.</param>
+    /// <returns>The value of the drag.</returns>
     private static double GetDrag(double speed, double maxForwardSpeed, double maxPowerForward, double maxReverseSpeed, double maxPowerBackwards)
     {
         // drag=@(x) (-x.*abs(x)/(Vmax)^2*PF).*(x>0) + (-x.*abs(x)/(Vmin)^2*PB).*(x<0);
@@ -155,6 +198,13 @@ public static class AccelerationHelper
         return drag;
     }
 
+    /// <summary>
+    /// Get the speed limit based on the throttle.
+    /// </summary>
+    /// <param name="throttle">The current throttle.</param>
+    /// <param name="maxForwardSpeed">The maximum speed forward.</param>
+    /// <param name="maxReverseSpeed">The maximum speed backwards.</param>
+    /// <returns>The speed limit.</returns>
     private static double GetSpeedLimit(double throttle, double maxForwardSpeed, double maxReverseSpeed)
     {
         // speed_limit=@(x) x/4*Vmax*(x>=0)-Vmin*(x<0);
@@ -172,11 +222,31 @@ public static class AccelerationHelper
         return speedLimit;
     }
 
+    /// <summary>
+    /// Calculate a single iteration for the acceleration.
+    /// </summary>
+    /// <param name="pointList">List to which to add the calculated point.</param>
+    /// <param name="throttle">Current throttle.</param>
+    /// <param name="isReversingDirection">If the ship is reversing direction from forward to backward.</param>
+    /// <param name="time">Current time, passed as ref. Will get modified.</param>
+    /// <param name="speed">Current speed, passed as ref. Will get modified.</param>
+    /// <param name="speedLimit">Current speed limit.</param>
+    /// <param name="power">Current power, passed as ref. Will get modified.</param>
+    /// <param name="powerIncreaseForward">Increase of power when going forward.</param>
+    /// <param name="maxPowerForward">Maximum power forward.</param>
+    /// <param name="maxForwardSpeed">Maximum speed forward.</param>
+    /// <param name="forsageForwardMaxSpeed">Maximum forsage speed forward.</param>
+    /// <param name="forsageForward">Forsage forward.</param>
+    /// <param name="powerIncreaseBackward">Increase of power when going backwards.</param>
+    /// <param name="maxPowerBackwards">Maximum power backwards.</param>
+    /// <param name="maxReverseSpeed">Maximum speed backwards.</param>
+    /// <param name="forsageBackwardsMaxSpeed">Maximum forsage speed backwards.</param>
+    /// <param name="forsageBackwards">Forsage backwards.</param>
+    /// <param name="stoppingFromBackward">If the ship is stopping from backward.</param>
     private static void GenerateAccelerationPoints(
         ICollection<AccelerationPoints> pointList,
-        string shipIndex,
         double throttle,
-        double isDecelerating,
+        double isReversingDirection,
         ref double time,
         ref double speed,
         double speedLimit,
@@ -196,7 +266,7 @@ public static class AccelerationHelper
         int acc;
         if (speedLimit > speed)
         {
-            power = shipIndex.Equals(MarceuId) ? maxPowerForward : Math.Min(Math.Max(power, 0) + powerIncreaseForward, maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isDecelerating));
+            power = Math.Min(Math.Max(power, 0) + powerIncreaseForward, maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isReversingDirection));
             acc = 1;
         }
         else if (speedLimit < speed)
