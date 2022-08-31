@@ -29,7 +29,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task ValidateData_LocalVersionInfoNoFiles_False()
         {
             // Arrange
-            var versionInfo = CreateTestVersionInfo(1);
+            var versionInfo = CreateTestVersionInfo(1, GameVersion.Default);
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddDirectory(@"json/live/Ability");
             var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
@@ -72,7 +72,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task ValidateData_LocalVersionInfoOneFileMissing_False()
         {
             // Arrange
-            var versionInfo = CreateTestVersionInfo(1);
+            var versionInfo = CreateTestVersionInfo(1, GameVersion.Default);
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new MockFileData("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new MockFileData("test"));
