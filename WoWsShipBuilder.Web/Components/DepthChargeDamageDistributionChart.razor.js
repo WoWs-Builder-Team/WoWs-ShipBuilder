@@ -16,12 +16,14 @@
     const pointsOfDmg = dataRecord.pointsOfDmg
     const mapLength = Object.keys(pointsOfDmg).length
     Object.keys(pointsOfDmg).sort().forEach((key, index) =>
-        drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius, ratio, width)
+        drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius, ratio)
     )
     drawExtraElements(ctx, centre)
+    ctx.resetTransform()
 }
-function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius, ratio, width){
-    const radius = radiusCoeff * Math.abs((width / ratio) - 200) * ratio
+function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius, ratio){
+    const offset = 25;
+    const radius = radiusCoeff * Math.abs(centre - offset)
     ctx.fillStyle = `rgba(70,130,180,${opacity})`
     ctx.beginPath()
     ctx.ellipse(centre, centre, radius, radius, 0, 0, 2 * Math.PI)
