@@ -16,7 +16,7 @@
             {
 
                 <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="750">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="400">
                         <ChildContent>
                             <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(signal))" OnClick="@(() => OnSignalClick(signal))" Style="@(@GetImageBreakpointStyle() + GetImageStyle(signal))">
                                 <MudImage ObjectFit="ObjectFit.ScaleDown" Width="@GetImageSize()" Height="@GetImageSize()" Src="@("/assets/signal_flags/" + signal.Signal.Name + ".png")"/>

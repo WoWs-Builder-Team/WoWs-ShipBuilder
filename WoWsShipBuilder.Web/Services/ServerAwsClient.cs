@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.Utility;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -17,8 +17,6 @@ public class ServerAwsClient : IAwsClient
     private static readonly Logger Logger = Logging.GetLogger("AwsClient");
 
     private readonly HttpClient httpClient;
-
-    private readonly SemaphoreSlim semaphore = new(1);
 
     private readonly CdnOptions options;
 
@@ -80,81 +78,8 @@ public class ServerAwsClient : IAwsClient
 
     private async Task DownloadFileAsync(Uri uri, string category, string fileName)
     {
-        var parseResult = Enum.TryParse(fileName.Replace(".json", string.Empty).Replace("_", string.Empty), true, out Nation nation);
-        if (!parseResult)
-        {
-            throw new InvalidOperationException();
-        }
-
-        var type = category.ToLowerInvariant() switch
-        {
-            "ability" => typeof(Dictionary<string, Consumable>),
-            "aircraft" => typeof(Dictionary<string, Aircraft>),
-            "crew" => typeof(Dictionary<string, Captain>),
-            "exterior" => typeof(Dictionary<string, Exterior>),
-            "modernization" => typeof(Dictionary<string, Modernization>),
-            "projectile" => typeof(Dictionary<string, Projectile>),
-            "ship" => typeof(Dictionary<string, Ship>),
-            "unit" => typeof(Dictionary<string, Module>),
-            "summary" => typeof(List<ShipSummary>),
-            _ => throw new InvalidOperationException(),
-        };
-
         var str = await httpClient.GetStringAsync(uri);
-        var jsonObject = JsonConvert.DeserializeObject(str, type);
-
-        await semaphore.WaitAsync();
-        switch (category.ToLowerInvariant())
-        {
-            case "ability":
-                if (jsonObject is Dictionary<string, Consumable> consumables)
-                {
-                    AppData.ConsumableList = consumables;
-                }
-
-                break;
-            case "aircraft":
-                AppData.AircraftCache.SetIfNotNull(nation, (Dictionary<string, Aircraft>?)jsonObject);
-                break;
-            case "crew":
-                AppData.CaptainCache.SetIfNotNull(nation, (Dictionary<string, Captain>?)jsonObject);
-                break;
-            case "exterior":
-                AppData.ExteriorCache.SetIfNotNull(nation, (Dictionary<string, Exterior>?)jsonObject);
-                break;
-            case "modernization":
-                if (jsonObject is Dictionary<string, Modernization> modernizations)
-                {
-                    AppData.ModernizationCache = modernizations;
-                }
-
-                break;
-            case "projectile":
-                AppData.ProjectileCache.SetIfNotNull(nation, (Dictionary<string, Projectile>?)jsonObject);
-                break;
-            case "ship":
-                if (jsonObject is Dictionary<string, Ship> ships)
-                {
-                    foreach (var ship in ships)
-                    {
-                        AppData.ShipDictionary!.Add(ship.Key, ship.Value);
-                    }
-                }
-
-                break;
-            case "unit":
-                // TODO: add once unit is actually needed
-                break;
-            case "summary":
-                if (jsonObject is List<ShipSummary> shipSummaries)
-                {
-                    AppData.ShipSummaryList = shipSummaries;
-                }
-
-                break;
-        }
-
-        semaphore.Release();
+        await DataCacheHelper.AddToCache(fileName, category, str);
     }
 
     public Task DownloadImages(ImageType type, IFileSystem fileSystem, string? fileName = null)

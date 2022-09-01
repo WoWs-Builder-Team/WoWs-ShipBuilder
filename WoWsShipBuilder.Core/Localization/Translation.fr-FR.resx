@@ -330,7 +330,6 @@
   <data name="ShipSelectionWindow_NoResultsFound" xml:space="preserve">
     <value>Aucun navire ne correspond aux critères de filtrage</value>
   </data>
-  
   <data name="ShipStats_TurnTime" xml:space="preserve">
     <value>Temps de giration à 180°</value>
   </data>
@@ -361,7 +360,6 @@
   <data name="ShipStats_ShellWeight" xml:space="preserve">
     <value>Masse de l'obus</value>
   </data>
-  
   <data name="ShipStats_ArmingThreshold" xml:space="preserve">
     <value>Seuil d'armement</value>
   </data>
@@ -446,7 +444,6 @@
   <data name="ShipStats_FireDPS" xml:space="preserve">
     <value>DPS par incendie</value>
   </data>
-  
   <data name="ShipStats_FireReduction" xml:space="preserve">
     <value>Réduction de chance d'incendie</value>
   </data>
@@ -456,7 +453,6 @@
   <data name="ShipStats_FloodDPS" xml:space="preserve">
     <value>DPS par inondation</value>
   </data>
-  
   <data name="ShipStats_FloodProbability" xml:space="preserve">
     <value>Probabilité d'inondation</value>
   </data>
@@ -526,29 +522,21 @@
   <data name="ShipStats_Concealment" xml:space="preserve">
     <value>Dissimulation</value>
   </data>
-  
   <data name="ShipStats_ConcealmentByAirFire" xml:space="preserve">
     <value>Quand en feu</value>
   </data>
-  
   <data name="ShipStats_ConcealmentBySeaFire" xml:space="preserve">
     <value>Quand en feu</value>
   </data>
   <data name="ShipStats_ConcealmentBySeaFiringSmoke" xml:space="preserve">
     <value>Après avoir tiré depuis un écran de fumée</value>
   </data>
-  
-  
-  
   <data name="ShipStats_FloodTorpedoProtection" xml:space="preserve">
     <value>Protection contre les torpilles</value>
   </data>
-  
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura longue portée</value>
   </data>
-  
-  
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Vitesse max</value>
   </data>
@@ -579,7 +567,6 @@
   <data name="ShipStats_Speed" xml:space="preserve">
     <value>Vitesse</value>
   </data>
-  
   <data name="SkipBomb" xml:space="preserve">
     <value>Bombe à ricochet</value>
   </data>
@@ -592,11 +579,9 @@
   <data name="ShipStats_AttackCd" xml:space="preserve">
     <value>Temps de recharge par attaque</value>
   </data>
-  
   <data name="ShipStats_InnerBombPercentage" xml:space="preserve">
     <value>Bombe dans l'ellipse intérieure</value>
   </data>
-  
   <data name="ShipStats_MaxSpeed" xml:space="preserve">
     <value>Vitesse max</value>
   </data>
@@ -606,8 +591,6 @@
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
     <value>Avions par attaque</value>
   </data>
-  
-  
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Temps de restauration</value>
   </data>
@@ -617,13 +600,9 @@
   <data name="ShipStats_BombsPerPlane" xml:space="preserve">
     <value>Bombes par avion</value>
   </data>
-  
-  
-  
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Longueur de largage max</value>
   </data>
-  
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Nombre de charges</value>
   </data>
@@ -715,8 +694,6 @@
   <data name="StartMenu_BuildLoadingError" xml:space="preserve">
     <value>Erreur lors du chargement de la composition</value>
   </data>
-  
-  
   <data name="ShipStats_TimeToSwitch" xml:space="preserve">
     <value>Délai de changement de munitions</value>
   </data>
@@ -750,19 +727,15 @@
   <data name="ShipStats_DamageTakenDuringAttack" xml:space="preserve">
     <value>Dégâts reçus pendant l'attaque</value>
   </data>
-  
   <data name="ShipStats_PreparationTime" xml:space="preserve">
     <value>Temps de préparation</value>
   </data>
-  
   <data name="ShipStats_TorpedoLaunchers" xml:space="preserve">
     <value>Tubes lance-torpilles</value>
   </data>
-  
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Taux de changement de zone de largage lors de la manœuvre</value>
   </data>
-  
   <data name="ShipStats_FullPowerTime" xml:space="preserve">
     <value>Temps de pleine puissance</value>
   </data>
@@ -796,7 +769,6 @@
   <data name="SettingsWindow_InvalidCustomPath" xml:space="preserve">
     <value>Les données du chemin personnalisé sont invalides.</value>
   </data>
-  
   <data name="DispersionGraphWindow_SelectShellDesc" xml:space="preserve">
     <value>a plus d'un obus; Sélectionnez celui dont vous voulez savoir la balistique
 En assumant que c'est le même calibre, l'ordre des obus est ci-dessous:
@@ -814,8 +786,6 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="SettingsWindow_CopyVersions" xml:space="preserve">
     <value>Copier les versions</value>
   </data>
-  
-  
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Afficher les graphiques de dispersion et de balistique</value>
   </data>
@@ -840,11 +810,9 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="ShipStats_ShowDispPlot" xml:space="preserve">
     <value>Afficher le tracé de dispersion</value>
   </data>
-  
   <data name="ShipStats_HorizontalDispersionX" xml:space="preserve">
     <value>Dispersion Horizontale[X]</value>
   </data>
-  
   <data name="DispersionGraphWindow_BallisticGraphs" xml:space="preserve">
     <value>Graphes balistiques</value>
   </data>
@@ -926,14 +894,9 @@ Les navires dans le jeu sont deux fois plus gros que l'environnement qui les ent
   <data name="ShipStats_Mass" xml:space="preserve">
     <value>Masse</value>
   </data>
-  
-  
-  
   <data name="ShipStats_SplashCoeff" xml:space="preserve">
       <value>Pénétration</value>
   </data>
-  
-  
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
     <value>Si « protection de projection de module » + « pénétration de projection d'armement » &gt; 0 
      Le module peut être incapacité.
@@ -1018,7 +981,6 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="SettingsWindow_BuildImagePathInvalid" xml:space="preserve">
     <value>Les données du chemin personnalisé sont invalides.</value>
   </data>
-  
   <data name="CaptainSkillSelector_SkillTalentDescription" xml:space="preserve">
     <value>Avec le curseur et les boutons suivants, vous pouvez activer ou désactiver certains effets de compétences conditionnelles. Vous pouvez aussi choisir le nombre de fois pour déclencher l'effet de talent, si possible. Notez que toutes les compétences/talents n'auront pas d'effet sur les statistiques du navire.</value>
   </data>
@@ -1043,8 +1005,6 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_TrueReload" xml:space="preserve">
     <value>Temps de recharge côté serveur</value>
   </data>
-  
-  
   <data name="ShipStats_TrueRoF" xml:space="preserve">
     <value>Cadence de tir côté serveur</value>
   </data>
@@ -1105,49 +1065,6 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1169,36 +1086,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_HP" xml:space="preserve">
       <value>PV</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Dégâts</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 </root>

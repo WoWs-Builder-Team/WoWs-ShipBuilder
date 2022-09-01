@@ -5,7 +5,7 @@
     }
     let ratio = window.devicePixelRatio;
     canvas.width = canvas.clientWidth * ratio;
-    canvas.height = canvas.clientHeight * ratio;
+    canvas.height = canvas.clientWidth * ratio;
     const width = canvas.width;
     const ctx = canvas.getContext("2d")
     ctx.strokeStyle = "white"
@@ -19,9 +19,11 @@
         drawDistribution(ctx, pointsOfDmg[key][0], 1 / (mapLength - index), centre, dcDmg, key, splashRadius, ratio)
     )
     drawExtraElements(ctx, centre)
+    ctx.resetTransform()
 }
 function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, splashRadius, ratio){
-    const radius = radiusCoeff * 150 * ratio
+    const offset = 25;
+    const radius = radiusCoeff * Math.abs(centre - offset)
     ctx.fillStyle = `rgba(70,130,180,${opacity})`
     ctx.beginPath()
     ctx.ellipse(centre, centre, radius, radius, 0, 0, 2 * Math.PI)
@@ -38,6 +40,7 @@ function drawDistribution(ctx, radiusCoeff, opacity, centre, dcDmg, dmgCoeff, sp
     ctx.rotate(Math.PI/4)
     ctx.fillText(`${Math.round(dcDmg * dmgCoeff)}`, 0, 0)
     ctx.resetTransform();
+    ctx.scale(ratio, ratio);
     ctx.textBaseline="bottom"
     ctx.translate((centre - rad - 1) / ratio, (centre - rad - 1) / ratio)
     ctx.rotate(-Math.PI/4)

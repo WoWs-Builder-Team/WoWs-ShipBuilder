@@ -43,6 +43,8 @@ public static class SetupExtensions
         services.AddScoped<MouseEventInterop>();
         services.AddScoped<IClipboardService, WebClipboardService>();
 
+        services.AddTransient<DataInitializer>();
+
         return services;
     }
 

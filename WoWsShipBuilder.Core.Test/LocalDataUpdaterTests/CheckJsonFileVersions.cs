@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task CheckJsonFileVersion_NoExistingData_AllFilesMarkedForDownload()
         {
             // Arrange
-            var testVersionInfo = CreateTestVersionInfo(1);
+            var testVersionInfo = CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
 
@@ -66,7 +67,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task CheckJsonFileVersion_ExistingData_NoDownloads()
         {
             // Arrange
-            var testVersionInfo = CreateTestVersionInfo(1);
+            var testVersionInfo = CreateTestVersionInfo(1, new(Version.Parse("0.11.0"), GameVersionType.Live, 1));
             awsClientMock.Setup(x => x.DownloadVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);

@@ -6,14 +6,12 @@ using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+builder.Host.ConfigureAppConfiguration((_, config) =>
 {
     config.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 });
@@ -72,14 +70,8 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;
 Thread.CurrentThread.CurrentCulture = culture;
 Thread.CurrentThread.CurrentUICulture = culture;
 
-// AppData.ShipSummaryList ??= await app.Services.GetRequiredService<IAppDataService>().GetShipSummaryList(ServerType.Live);
-await app.Services.GetRequiredService<ILocalizationProvider>().RefreshDataAsync(ServerType.Live, AppConstants.SupportedLanguages.ToArray());
-var appDataService = app.Services.GetRequiredService<IAppDataService>();
-if (appDataService is ServerAppDataService serverAppDataService)
-{
-    await serverAppDataService.FetchData();
-    AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(ServerType.Live);
-}
+var dataInitializer = app.Services.GetRequiredService<DataInitializer>();
+await dataInitializer.InitializeData();
 
 try
 {

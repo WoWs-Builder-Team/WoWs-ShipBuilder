@@ -385,7 +385,7 @@
     <value>Durchschlagskraft</value>
   </data>
   <data name="ShipStats_RicochetAngles" xml:space="preserve">
-    <value>Ricochet-Winkel</value>
+    <value>Abprallwinkel</value>
   </data>
   <data name="ShipStats_AADefense" xml:space="preserve">
     <value>Luftabwehr</value>
@@ -832,13 +832,13 @@
     <value>Einschlaggeschwindigkeit</value>
   </data>
   <data name="DispersionGraphWindow_ShowPenetrationGraph" xml:space="preserve">
-    <value>Zeige Penetrationsgraph</value>
+    <value>Zeige Durchschlagskraftgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowFlightTimeGraph" xml:space="preserve">
     <value>Zeige Flugzeitgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactAngleGraph" xml:space="preserve">
-    <value>Zeige Einschlangwinkelgraph</value>
+    <value>Zeige Einschlagwinkelgraph</value>
   </data>
   <data name="DispersionGraphWindow_ShowImpactVelocityGraph" xml:space="preserve">
     <value>Zeige Einschlaggeschwindigkeitsgraph</value>
@@ -1422,5 +1422,47 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="Consumable_RightClickToggle" xml:space="preserve">
       <value>Rechts-Klick auf ein Verbrauchsmaterial-Symbol, um die Effekte zu aktivieren</value>
+  </data>
+  <data name="ChartsWeb_ShellTrajectoryChart" xml:space="preserve">
+      <value>Granatenflugbahn-Diagramm</value>
+  </data>
+  <data name="ChartsWeb_Height" xml:space="preserve">
+      <value>Höhe</value>
+  </data>
+  <data name="ChartsWeb_ShowCharts" xml:space="preserve">
+      <value>Streuungs- und Ballistikdiagramme zeigen</value>
+  </data>
+  <data name="WebApp_ApplicationInfo" xml:space="preserve">
+      <value>App-Info</value>
+  </data>
+  <data name="WebApp_CurrentVersion" xml:space="preserve">
+      <value>Aktuelle Datenversion:</value>
+  </data>
+  <data name="WebApp_SelectedLanguage" xml:space="preserve">
+      <value>Ausgewählte Sprache</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
+  </data>
+  <data name="WebApp_SettingsSaved" xml:space="preserve">
+      <value>Einstellungen gespeichert</value>
+  </data>
+  <data name="Consumable_HoldToggle" xml:space="preserve">
+      <value>Halte ein Symbol gedrückt, um die Effekte zu aktivieren</value>
+  </data>
+  <data name="DispersionPlot_Hits" xml:space="preserve">
+      <value>Treffer</value>
+  </data>
+  <data name="WebApp_ArtilleryAngleExplanation" xml:space="preserve">
+      <value>Der 0° Winkel ist oben. Positive Winkel sind im Uhrzeigersinn, negative Winkel gegen den Uhrzeigersinn. The roten Winkel sind Bereiche, in denen Türme nicht feuern können, auch wenn sie durch diesen Bereich rotieren.</value>
+  </data>
+  <data name="Build_CopyUrl" xml:space="preserve">
+      <value>Build-URL kopieren</value>
+  </data>
+  <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
+      <value>Schadensverteilungs-Diagramm ausblenden</value>
+  </data>
+  <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
+      <value>Zeige Torpedowerfer-Winkel</value>
   </data>
 </root>

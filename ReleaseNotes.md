@@ -1,4 +1,4 @@
-# Update 1.5.4 - pre
+# Update 1.5.5 - pre
 
 ## Additions
 
@@ -7,8 +7,7 @@
 
 
 ## Bugfixes
-- Fixed wrong modifier calculation for smoke dispersion time
-- Selecting skills does no longer affect their status in other tabs
+- Fixed inability to choose amount of activations for the Improved Repair Party Readiness SkillNumber
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
