@@ -1475,4 +1475,7 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>Mostrar Ângulos dos Lançadores</value>
   </data>
+  <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
+      <value>Duração máxima do Impulso de Motor</value>
+  </data>
 </root>
