@@ -1,0 +1,43 @@
+﻿@page "/test2"
+@using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+
+@inject IDialogService DialogService
+@inject IAppDataService AppDataService
+
+<MudButton OnClick="@Callback">Show build configuration dialog</MudButton>
+
+@code {
+
+    private readonly List<ShipBuildContainer> ships = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var shipList = await Task.WhenAll(AppData.ShipSummaryList!
+            .Where(s => s.Tier == 10 && s.ShipClass == ShipClass.Cruiser)
+            .Take(15)
+            .Select(summary => AppDataService.GetShipFromSummary(summary, false)));
+        ships.AddRange(shipList.Select(s => ShipBuildContainer.CreateNew(s!, null, new List<int> { 1 })));
+    }
+
+    private async Task Callback()
+    {
+        var options = new DialogOptions { MaxWidth = MaxWidth.Large, FullWidth = true, NoHeader = true };
+        var parameters = new DialogParameters
+        {
+            ["ImagesBaseAddress"] = "https://cdn.wowssb.com/images/individual/",
+            ["Ships"] = ships,
+        };
+        var reference = DialogService.Show<BuildConfigurationDialog>("Configure builds", parameters, options);
+        var result = await reference.Result;
+        if (result.Data is List<ShipBuildContainer> buildList)
+        {
+            Console.WriteLine(buildList);
+        }
+    }
+
+}

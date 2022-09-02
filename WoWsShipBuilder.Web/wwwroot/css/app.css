@@ -205,3 +205,8 @@ a.kofi-button:active {
     width: 22px ;
     display: initial;
 }
+
+/* Workaround for tab panel expanding too far */
+.tab-header-limited-height .mud-tabs-toolbar-inner {
+    max-height: 80vh;
+}
