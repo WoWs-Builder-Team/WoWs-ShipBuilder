@@ -1,16 +1,15 @@
 ﻿@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.BuildCreator
-@using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.DataProvider
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Data
 @using System.Collections.Concurrent
+@using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
 
-@inherits ReactiveComponentBase<ShipViewModel>
+@inherits ReactiveComponentBase<ShipBuildViewModel>
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject AppSettings AppSettings
@@ -19,155 +18,36 @@
 @inject ISnackbar Snackbar
 
 <MudDialog Style="overflow-y: auto; max-height: 90vh;">
-    @* <TitleContent> *@
-    @*     <MudItem Class="d-flex align-center" Style="justify-content: center"> *@
-    @*         <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1"> *@
-    @*             <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/> *@
-    @*             <MudText Style="font-size: x-large"> *@
-    @*                 @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization *@
-    @*             </MudText> *@
-    @*             <MudText Style="font-size: x-large"> *@
-    @*                 @SelectedContainer.Ship.Tier *@
-    @*             </MudText> *@
-    @*             <MudIcon Icon="@GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/> *@
-    @*             <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/> *@
-    @*         </MudStack> *@
-    @*     </MudItem> *@
-    @* </TitleContent> *@
     <DialogContent>
-        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-            <MudTabs Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height">
-                @foreach (var shipData in Ships)
-                {
-                    <MudTabPanel Text="@Localizer.GetGameLocalization(shipData.Ship.Index + "_FULL").Localization">
-                        <MudGrid>
-                            @if (ViewModel is not null)
-                            {
-                                <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
-                                    <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
-                                        <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
-                                        <MudText Style="font-size: x-large">
-                                            @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
-                                        </MudText>
-                                        <MudText Style="font-size: x-large">
-                                            @SelectedContainer.Ship.Tier
-                                        </MudText>
-                                        <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
-                                        <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack>
-                                        <div class="mt-0 mb-auto">
-                                            <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
-                                        </div>
-                                        <div class="mt-0 mb-0">
-                                            <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
-                                        </div>
-                                        <div class="mt-0" style="margin-bottom: -2px">
-                                            <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
-                                        </div>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack>
-                                        <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip.ShipClass"/>
-                                        <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack Row="true" Class="mt-n1 mb-0">
-                                        <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                                        <MudButton Disabled="@string.IsNullOrWhiteSpace(currentBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
-                                            Import
-                                        </MudButton>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudTextField @bind-Value="currentBuildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
-                                </MudItem>
-                            }
-                            else
-                            {
-                                <MudItem xs="12">
-                                    <MudSkeleton Height="69px"/>
-                                </MudItem>
-                                <MudItem xs="12">
-                                    <MudSkeleton Height="600px"></MudSkeleton>
-                                </MudItem>
-                            }
-                        </MudGrid>
-                    </MudTabPanel>
-                }
-            </MudTabs>
-        </MudHidden>
-        <MudHidden Breakpoint="Breakpoint.MdAndUp">
-            <MudTabs Position="Position.Top" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged">
-                @foreach (var shipData in Ships)
-                {
-                    <MudTabPanel Text="@Localizer.GetGameLocalization(shipData.Ship.Index + "_FULL").Localization">
-                        <MudGrid>
-                            @if (ViewModel is not null)
-                            {
-                                <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
-                                    <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
-                                        <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
-                                        <MudText Style="font-size: x-large">
-                                            @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
-                                        </MudText>
-                                        <MudText Style="font-size: x-large">
-                                            @SelectedContainer.Ship.Tier
-                                        </MudText>
-                                        <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
-                                        <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack>
-                                        <div class="mt-0 mb-auto">
-                                            <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
-                                        </div>
-                                        <div class="mt-0 mb-0">
-                                            <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
-                                        </div>
-                                        <div class="mt-0" style="margin-bottom: -2px">
-                                            <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
-                                        </div>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack>
-                                        <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip.ShipClass"/>
-                                        <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudStack Row="true" Class="mt-n1 mb-0">
-                                        <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                                        <MudButton Disabled="@string.IsNullOrWhiteSpace(currentBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
-                                            Import
-                                        </MudButton>
-                                    </MudStack>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudTextField @bind-Value="currentBuildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
-                                </MudItem>
-                            }
-                            else
-                            {
-                                <MudItem xs="12">
-                                    <MudSkeleton Height="69px"/>
-                                </MudItem>
-                                <MudItem xs="12">
-                                    <MudSkeleton Height="600px"></MudSkeleton>
-                                </MudItem>
-                            }
-                        </MudGrid>
-                    </MudTabPanel>
-                }
-            </MudTabs>
-        </MudHidden>
-
+        <MudBreakpointProvider>
+            <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudGrid>
+                    <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
+                        <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
+                            <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                            <MudText Style="font-size: x-large">
+                                @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
+                            </MudText>
+                            <MudText Style="font-size: x-large">
+                                @SelectedContainer.Ship.Tier
+                            </MudText>
+                            <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
+                            <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                        </MudStack>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudTabs PanelClass="ml-6" Outlined Border Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height">
+                            @tabContent
+                        </MudTabs>
+                    </MudItem>
+                </MudGrid>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudTabs  Position="Position.Top" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged">
+                    @tabContent
+                </MudTabs>
+            </MudHidden>
+        </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
@@ -178,7 +58,7 @@
                 Reset build
             </MudText>
         </MudButton>
-        <MudButton Color="Color.Success" OnClick="SaveBuilds" Variant="Variant.Filled">
+        <MudButton Color="Color.Success" OnClick="@SaveBuilds" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
                 Confirm changes
             </MudText>
@@ -191,26 +71,101 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
 
-    [CascadingParameter]
-    Breakpoint Breakpoint { get; set; }
-
     [Parameter, EditorRequired]
     public IReadOnlyList<ShipBuildContainer> Ships { get; set; } = default!;
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string ImagesBaseAddress { get; set; } = default!;
 
     private int selectedTab;
 
     private ShipBuildContainer SelectedContainer => Ships[selectedTab];
 
-    private readonly ConcurrentDictionary<Guid, ShipViewModel> vmCache = new();
+    private readonly ConcurrentDictionary<Guid, ShipBuildViewModel> vmCache = new();
 
     private readonly Dictionary<Guid, string> buildNameMapper = new();
 
     private string currentBuildName = string.Empty;
 
     private string currentBuildString = string.Empty;
+
+    private readonly RenderFragment tabContent;
+
+    public BuildConfigurationDialog()
+    {
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+        tabContent = __builder =>
+        {
+            foreach (var shipData in Ships)
+            {
+                <MudTabPanel Text="@Localizer.GetGameLocalization(shipData.Ship.Index + "_FULL").Localization">
+                    <MudGrid Class="align-content-space-between">
+                        @if (ViewModel is not null)
+                        {
+                            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                                <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
+                                    <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
+                                        <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                                        <MudText Style="font-size: x-large">
+                                            @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
+                                        </MudText>
+                                        <MudText Style="font-size: x-large">
+                                            @SelectedContainer.Ship.Tier
+                                        </MudText>
+                                        <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
+                                        <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                                    </MudStack>
+                                </MudItem>
+                            </MudHidden>
+                            <MudItem xs="12" md="6">
+                                <MudStack>
+                                    <div class="mt-0 mb-auto">
+                                        <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
+                                    </div>
+                                    <div class="mt-0 mb-0">
+                                        <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
+                                    </div>
+                                    <div class="mt-0" style="margin-bottom: -2px">
+                                        <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
+                                    </div>
+                                    @if (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null))
+                                    {
+                                        <MudSwitch T="bool" Label="Activate special ability"/>
+                                    }
+                                </MudStack>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudStack>
+                                    <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip.ShipClass"/>
+                                    <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
+                                </MudStack>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudStack Row="true" Class="mt-n1 mb-0">
+                                    <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
+                                    <MudButton Disabled="@string.IsNullOrWhiteSpace(currentBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
+                                        Import
+                                    </MudButton>
+                                </MudStack>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="currentBuildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
+                            </MudItem>
+                        }
+                        else
+                        {
+                            <MudItem xs="12">
+                                <MudSkeleton Height="69px"/>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudSkeleton Height="600px"></MudSkeleton>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </MudTabPanel>
+            }
+        };
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -221,7 +176,7 @@
         {
             foreach (var container in Ships.Skip(1))
             {
-                var vm = await LoadShipViewModel(container.Ship, container.Build);
+                var vm = await LoadShipViewModel(container.Ship, container.Build, container.ActivatedConsumableSlots);
                 vmCache.TryAdd(container.Id, vm);
             }
         });
@@ -233,55 +188,66 @@
         if (vmCache.TryGetValue(SelectedContainer.Id, out var vm))
         {
             ViewModel = vm;
-            return;
+        }
+        else
+        {
+            ViewModel = await LoadShipViewModel(SelectedContainer.Ship, SelectedContainer.Build, SelectedContainer.ActivatedConsumableSlots);
+            vmCache.TryAdd(SelectedContainer.Id, ViewModel);
         }
 
-        ViewModel = await LoadShipViewModel(SelectedContainer.Ship, SelectedContainer.Build);
-        vmCache.TryAdd(SelectedContainer.Id, ViewModel);
         buildNameMapper.TryGetValue(SelectedContainer.Id, out var buildName);
         currentBuildName = buildName ?? SelectedContainer.Build?.BuildName ?? string.Empty;
     }
 
-    private async Task<ShipViewModel> LoadShipViewModel(Ship ship, Build? build)
+    private async Task<ShipBuildViewModel> LoadShipViewModel(Ship ship, Build? build, IEnumerable<int>? activeConsumableSlots)
     {
         MetricsService.ShipCount.WithLabels(ship.Index).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(ship.Index));
-            var vmParams = new MainViewModelParams(ship, shipSummary, build);
-            var vm = new ShipViewModel(null!, AppDataService, Localizer, AppSettings, vmParams);
-            await vm.InitializeData(vmParams);
+            var vm = await ShipBuildViewModel.CreateAsync(ship, build, AppDataService, AppSettings);
+            foreach (int slot in activeConsumableSlots ?? Array.Empty<int>())
+            {
+                vm.ConsumableViewModel.ConsumableSlots[slot].ConsumableActivated = true;
+            }
             return vm;
         }
     }
 
-    private void SaveBuilds()
+    private async Task SaveBuilds()
     {
+        buildNameMapper[SelectedContainer.Id] = currentBuildName;
         var result = new List<ShipBuildContainer>();
         foreach (var container in Ships)
         {
             if (vmCache.TryGetValue(container.Id, out var vm))
             {
                 buildNameMapper.TryGetValue(container.Id, out var buildName);
-                var build = vm.CreateBuild(buildName ?? string.Empty);
+                var build = vm.DumpToBuild(buildName ?? string.Empty);
                 var activatedConsumables = vm.ConsumableViewModel.ActivatedSlots.Any() ? vm.ConsumableViewModel.ActivatedSlots.ToList() : null;
-                result.Add(container with { Build = build, ActivatedConsumableSlots = activatedConsumables });
+                result.Add(container with { Build = build, ActivatedConsumableSlots = activatedConsumables, ShipDataContainer = await vm.CreateDataContainerAsync() });
+            }
+            else
+            {
+                result.Add(container);
             }
         }
 
         MudDialog.Close(DialogResult.Ok(result));
     }
 
-    private void ResetBuild()
+    private async Task ResetBuild()
     {
-        ViewModel?.ResetBuild();
+        var vm = await LoadShipViewModel(SelectedContainer.Ship, SelectedContainer.Build, null);
+        ViewModel = vm;
+        vmCache[SelectedContainer.Id] = vm;
+        currentBuildName = string.Empty;
     }
 
     private async Task ImportBuild(Ship ship)
     {
         try
         {
-            ViewModel = await LoadShipViewModel(ship, Build.CreateBuildFromString(currentBuildString, Localizer));
+            ViewModel = await LoadShipViewModel(ship, Build.CreateBuildFromString(currentBuildString, Localizer), null);
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
@@ -294,7 +260,6 @@
 
     private void Cancel()
     {
-        Console.WriteLine(Breakpoint);
         MudDialog.Cancel();
     }
 
