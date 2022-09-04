@@ -17,4 +17,9 @@ public class MetricsService : IMetricsService
     {
         MaxAge = TimeSpan.FromSeconds(10),
     });
+
+    public Counter RefCount { get; } = Metrics.CreateCounter("ship_page_refs_total", "Number of refs for ship page requests", new CounterConfiguration
+    {
+        LabelNames = new[] { "referrer", "path" },
+    });
 }
