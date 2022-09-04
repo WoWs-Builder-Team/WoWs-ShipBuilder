@@ -21,7 +21,7 @@ public class ReferrerTrackingMiddleware
         context.Request.Query.TryGetValue(ReferrerQueryParamName, out var refValue);
         if (!string.IsNullOrWhiteSpace(refValue))
         {
-            metricsService.RefCount.WithLabels(refValue, context.Request.Path);
+            metricsService.RefCount.WithLabels(refValue, context.Request.Path).Inc();
         }
 
         await next(context);
