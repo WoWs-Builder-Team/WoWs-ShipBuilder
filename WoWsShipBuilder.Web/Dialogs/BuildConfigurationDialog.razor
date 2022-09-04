@@ -35,8 +35,28 @@
                             <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
                         </MudStack>
                     </MudItem>
-                    <MudItem xs="12">
-                        <MudTabs PanelClass="ml-6" Outlined Border Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height">
+                    <MudItem xs="2">
+                        <MudList @bind-SelectedValue="selectedListValue" Clickable Style="max-height: 75vh; overflow-y: scroll;">
+                            @for (var i = 0; i < Ships.Count; i++)
+                            {
+                                int index = i;
+                                var shipData = Ships[index];
+                                <MudListItem Value="index" OnClick="@(() => desktopTabs.ActivatePanel(index))">
+                                    <MudText>
+                                        @Localizer.GetGameLocalization(Ships[index].Ship.Index).Localization
+                                    </MudText>
+                                    @if (!string.IsNullOrWhiteSpace(shipData.Build?.BuildName))
+                                    {
+                                        <MudText Typo="Typo.body2">
+                                            Build: @shipData.Build.BuildName
+                                        </MudText>
+                                    }
+                                </MudListItem>
+                            }
+                        </MudList>
+                    </MudItem>
+                    <MudItem xs="10">
+                        <MudTabs Position="Position.Left" HideSlider ActivePanelIndexChanged="@OnActivePanelChanged" Class="tab-header-limited-height" @ref="desktopTabs">
                             @tabContent
                         </MudTabs>
                     </MudItem>
@@ -90,6 +110,10 @@
     private string currentBuildString = string.Empty;
 
     private readonly RenderFragment tabContent;
+
+    private MudTabs desktopTabs = default!;
+
+    private object selectedListValue = 0;
 
     public BuildConfigurationDialog()
     {

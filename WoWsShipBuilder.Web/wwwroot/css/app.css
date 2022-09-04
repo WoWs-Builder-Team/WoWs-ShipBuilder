@@ -206,11 +206,6 @@ a.kofi-button:active {
     display: initial;
 }
 
-/* Workaround for tab panel expanding too far */
-.tab-header-limited-height .mud-tabs-toolbar-inner {
-    max-height: 75vh;
+.tab-header-limited-height .mud-tabs-toolbar {
+    display: none;
 }
-
-/*.tab-header-limited-height .mud-tabs-toolbar {*/
-/*    display: none;*/
-/*}*/
