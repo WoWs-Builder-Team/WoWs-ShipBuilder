@@ -178,9 +178,19 @@
                         <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Build" SortBy="@(x => x.Build is not null ? x.Build.BuildName : ViewModel.DefaultBuildName)">
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())">
                     <CellTemplate>
-                        @(string.IsNullOrEmpty(context.Item.Build?.BuildName) ? ViewModel.DefaultBuildName : context.Item.Build!.BuildName)
+                        <MudImage Src="@(GetNationFlag(context.Item.Ship.ShipNation, context.Item.Ship.Index))" Height="37"/>
+                    </CellTemplate>
+                </Column>
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Class" SortBy="@(x => x.Ship.ShipCategory.ToString())">
+                    <CellTemplate>
+                        <MudIcon Icon="@(GetIconFromClass(context.Item.Ship.ShipClass, context.Item.Ship.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                    </CellTemplate>
+                </Column>
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Tier" SortBy="@(x => x.Ship.Tier)">
+                    <CellTemplate>
+                        @context.Item.Ship.Tier.ToTierString()
                     </CellTemplate>
                 </Column>
                 <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Image" SortBy="@(x => Localizer.GetGameLocalization(x.Ship.Index).Localization)">
@@ -193,19 +203,9 @@
                         @Localizer.GetGameLocalization(context.Item.Ship.Index).Localization
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Tier" SortBy="@(x => x.Ship.Tier)">
+                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Build" SortBy="@(x => x.Build is not null ? x.Build.BuildName : ViewModel.DefaultBuildName)">
                     <CellTemplate>
-                        @context.Item.Ship.Tier.ToTierString()
-                    </CellTemplate>
-                </Column>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Class" SortBy="@(x => x.Ship.ShipCategory.ToString())">
-                    <CellTemplate>
-                        <MudIcon Icon="@(GetIconFromClass(context.Item.Ship.ShipClass, context.Item.Ship.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
-                    </CellTemplate>
-                </Column>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())">
-                    <CellTemplate>
-                        <MudImage Src="@(GetNationFlag(context.Item.Ship.ShipNation, context.Item.Ship.Index))" Height="37"/>
+                        @(string.IsNullOrEmpty(context.Item.Build?.BuildName) ? ViewModel.DefaultBuildName : context.Item.Build!.BuildName)
                     </CellTemplate>
                 </Column>
             </Columns>
