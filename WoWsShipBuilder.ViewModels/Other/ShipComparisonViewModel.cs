@@ -18,59 +18,25 @@ namespace WoWsShipBuilder.ViewModels.Other;
 
 public class ShipComparisonViewModel : ViewModelBase
 {
-    #region Properties
-
     private readonly IAppDataService appDataService;
 
     private readonly ILocalizer localizer;
 
-    private List<Ship> fullShipList = new(AppData.ShipDictionary!.Values);
-
-    public List<Ship> FullShipList
-    {
-        get => fullShipList;
-        set => this.RaiseAndSetIfChanged(ref fullShipList, value);
-    }
+    private readonly IEnumerable<Ship> fullShipList = AppData.ShipDictionary!.Values;
 
     private List<ShipComparisonDataWrapper> filteredShipList = new();
 
     public List<ShipComparisonDataWrapper> FilteredShipList
     {
         get => filteredShipList;
-        set => this.RaiseAndSetIfChanged(ref filteredShipList, value);
+        private set => this.RaiseAndSetIfChanged(ref filteredShipList, value);
     }
 
-    private List<ShipComparisonDataWrapper> selectedShipList = new();
+    public List<ShipComparisonDataWrapper> SelectedShipList { get; } = new();
 
-    public List<ShipComparisonDataWrapper> SelectedShipList
-    {
-        get => selectedShipList;
-        set => this.RaiseAndSetIfChanged(ref selectedShipList, value);
-    }
+    public List<ShipComparisonDataWrapper> PinnedShipList { get; } = new();
 
-    private List<ShipComparisonDataWrapper> wrappersCache = new();
-
-    public List<ShipComparisonDataWrapper> WrappersCache
-    {
-        get => wrappersCache;
-        set => this.RaiseAndSetIfChanged(ref wrappersCache, value);
-    }
-
-    private List<ShipComparisonDataWrapper> pinnedShipList = new();
-
-    public List<ShipComparisonDataWrapper> PinnedShipList
-    {
-        get => pinnedShipList;
-        set => this.RaiseAndSetIfChanged(ref pinnedShipList, value);
-    }
-
-    private DataSections selectedDataSection = DataSections.General;
-
-    public DataSections SelectedDataSection
-    {
-        get => selectedDataSection;
-        set => this.RaiseAndSetIfChanged(ref selectedDataSection, value);
-    }
+    public DataSections SelectedDataSection { get; private set; } = DataSections.General;
 
     public ObservableCollection<int> SelectedTiers { get; } = new();
 
@@ -88,13 +54,9 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public readonly string DefaultBuildName = "Default";
 
-    private List<Ship> searchedShips = new();
+    private readonly List<ShipComparisonDataWrapper> wrappersCache = new();
 
-    public List<Ship> SearchedShips
-    {
-        get => searchedShips;
-        set => this.RaiseAndSetIfChanged(ref searchedShips, value);
-    }
+    public List<Ship> SearchedShips { get; } = new();
 
     private string searchShip = string.Empty;
 
@@ -122,7 +84,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool ShowPinnedShipsOnly
     {
         get => showPinnedShipsOnly;
-        set
+        private set
         {
             GetShipsToBeDisplayedList();
             this.RaiseAndSetIfChanged(ref showPinnedShipsOnly, value);
@@ -134,7 +96,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool PinAllShips
     {
         get => pinAllShips;
-        set => this. RaiseAndSetIfChanged(ref pinAllShips, value);
+        private set => this. RaiseAndSetIfChanged(ref pinAllShips, value);
     }
 
     private bool selectAllShips;
@@ -142,7 +104,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool SelectAllShips
     {
         get => selectAllShips;
-        set => this. RaiseAndSetIfChanged(ref selectAllShips, value);
+        private set => this. RaiseAndSetIfChanged(ref selectAllShips, value);
     }
 
     private bool useUpgradedModules;
@@ -150,10 +112,8 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool UseUpgradedModules
     {
         get => useUpgradedModules;
-        set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
+        private set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
     }
-
-    #endregion
 
     public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer)
     {
@@ -164,19 +124,24 @@ public class ShipComparisonViewModel : ViewModelBase
     private async Task<List<ShipComparisonDataWrapper>> ApplyFilters()
     {
         List<ShipComparisonDataWrapper> list = new();
+
+        list.AddRange(PinnedShipList);
+
         List<ShipComparisonDataWrapper> filteredShips = FilteredShipList.Where(data => SelectedTiers.Contains(data.Ship.Tier) &&
                                                                                        SelectedClasses.Contains(data.Ship.ShipClass) &&
                                                                                        SelectedNations.Contains(data.Ship.ShipNation) &&
                                                                                        SelectedCategories.Contains(data.Ship.ShipCategory)).ToList();
-        list.AddRange(filteredShips);
 
-        List<ShipComparisonDataWrapper> cachedWrappers = WrappersCache.Where(data => SelectedTiers.Contains(data.Ship.Tier) &&
+        list.AddRange(filteredShips.Where(x => !ContainsWrapper(x, list)));
+
+        List<ShipComparisonDataWrapper> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Ship.Tier) &&
                                                                        SelectedClasses.Contains(data.Ship.ShipClass) &&
                                                                        SelectedNations.Contains(data.Ship.ShipNation) &&
                                                                        SelectedCategories.Contains(data.Ship.ShipCategory)).ToList();
-        list.AddRange(cachedWrappers);
 
-        list.AddRange(await InitialiseShipComparisonDataWrapper(FullShipList
+        list.AddRange(cachedWrappers.Where(x => !ContainsWrapper(x, list)));
+
+        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList
             .Where(data => !ContainsShipIndex(data.Index) &&
                            !ContainsShipIndex(data.Index, cachedWrappers) &&
                            SelectedTiers.Contains(data.Tier) &&
@@ -185,11 +150,10 @@ public class ShipComparisonViewModel : ViewModelBase
                            SelectedCategories.Contains(data.ShipCategory))
             .ToList()));
 
-        cachedWrappers.ForEach(x => WrappersCache.Remove(x));
+        cachedWrappers.ForEach(x => wrappersCache.Remove(x));
         filteredShips.ForEach(x => FilteredShipList.Remove(x));
-        FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
-        FilteredShipList.Where(x => ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => PinnedShipList.Remove(x));
-        WrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, WrappersCache)));
+        FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList) && !ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
+        wrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, wrappersCache)));
 
         if (list.Count == 0)
         {
@@ -342,9 +306,9 @@ public class ShipComparisonViewModel : ViewModelBase
                 PinnedShipList.Add(wrapper);
             }
 
-            if (ContainsWrapper(wrapper, WrappersCache))
+            if (ContainsWrapper(wrapper, wrappersCache))
             {
-                WrappersCache.Replace(WrappersCache.First(x => x.Id.Equals(wrapper.Id)), wrapper);
+                wrappersCache.Replace(wrappersCache.First(x => x.Id.Equals(wrapper.Id)), wrapper);
             }
 
             if (ContainsWrapper(wrapper, SelectedShipList))
@@ -367,9 +331,9 @@ public class ShipComparisonViewModel : ViewModelBase
                 {
                     PinnedShipList.Remove(wrapper);
                 }
-                if (ContainsWrapper(wrapper, WrappersCache))
+                if (ContainsWrapper(wrapper, wrappersCache))
                 {
-                    WrappersCache.Replace(SelectWrapper(wrapper, WrappersCache), wrapper);
+                    wrappersCache.Replace(SelectWrapper(wrapper, wrappersCache), wrapper);
                 }
             }
             else
@@ -387,7 +351,7 @@ public class ShipComparisonViewModel : ViewModelBase
         return warning;
     }
 
-    public void AddPinnedShip(ShipComparisonDataWrapper wrapper)
+    public async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
     {
         List<ShipComparisonDataWrapper> list = GetShipsToBeDisplayedList();
         if (!ContainsWrapper(wrapper, PinnedShipList))
@@ -397,7 +361,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
         else
         {
-            RemovePinnedShip(wrapper);
+            await RemovePinnedShip(wrapper);
             PinAllShips = ShowPinnedShipsOnly || PinnedShipList.Count == 0 && false;
             if (ShowPinnedShipsOnly)
             {
@@ -407,9 +371,10 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public void RemovePinnedShip(ShipComparisonDataWrapper wrapper)
+    private async  Task RemovePinnedShip(ShipComparisonDataWrapper wrapper)
     {
         PinnedShipList.Remove(wrapper);
+        FilteredShipList = await ApplyFilters();
     }
 
     public void AddSelectedShip(ShipComparisonDataWrapper wrapper)
@@ -432,7 +397,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public void RemoveSelectedShip(ShipComparisonDataWrapper wrapper)
+    private void RemoveSelectedShip(ShipComparisonDataWrapper wrapper)
     {
         SelectedShipList.Remove(wrapper);
     }
@@ -455,7 +420,7 @@ public class ShipComparisonViewModel : ViewModelBase
         return list.First(x => x.Id.Equals(wrapper.Id));
     }
 
-    public async Task<List<ShipComparisonDataWrapper>> InitialiseShipComparisonDataWrapper(List<Ship> ships)
+    private async Task<List<ShipComparisonDataWrapper>> InitialiseShipComparisonDataWrapper(List<Ship> ships)
     {
         List<ShipComparisonDataWrapper> list = new();
         foreach (var ship in ships)
@@ -466,7 +431,7 @@ public class ShipComparisonViewModel : ViewModelBase
         return list;
     }
 
-    public async Task<List<ShipComparisonDataWrapper>> ChangeModulesBatch(List<ShipComparisonDataWrapper> wrappers)
+    private async Task<List<ShipComparisonDataWrapper>> ChangeModulesBatch(List<ShipComparisonDataWrapper> wrappers)
     {
         List<ShipComparisonDataWrapper> list = new();
         foreach (var wrapper in wrappers)
@@ -519,11 +484,12 @@ public class ShipComparisonViewModel : ViewModelBase
         Maneuverability,
         Concealment,
         Survivability,
+        Consumables,
     }
 
     public void ToggleDataSection(DataSections dataSection)
     {
-        selectedDataSection = dataSection;
+        SelectedDataSection = dataSection;
     }
 
     public void SelectAllDisplayedShips()
@@ -574,8 +540,8 @@ public class ShipComparisonViewModel : ViewModelBase
         {
             return;
         }
-        searchedShips.Clear();
-        searchedShips.AddRange(FullShipList.Where(ship => CultureInfo.CurrentCulture.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index).Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
+        SearchedShips.Clear();
+        SearchedShips.AddRange(fullShipList.Where(ship => CultureInfo.CurrentCulture.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index).Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
     }
 
     public void DuplicateSelectedShips()
