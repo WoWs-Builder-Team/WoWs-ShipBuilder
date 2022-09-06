@@ -8,20 +8,47 @@
 @inject IDialogService DialogService
 @inject IAppDataService AppDataService
 
+<MudRadioGroup @bind-SelectedOption="selectedTier">
+    @for (var i = 1; i <= 11; i++)
+    {
+        int tier = i;
+        <MudRadio Option="@tier">Tier @tier</MudRadio>
+    }
+</MudRadioGroup>
+
 <MudButton OnClick="@Callback">Show build configuration dialog</MudButton>
 
 @code {
 
     private List<ShipBuildContainer> ships = new();
 
+    private int selectedTier = 10;
+
+    private int lastTier = 10;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await UpdateShipList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (lastTier != selectedTier)
+        {
+            lastTier = selectedTier;
+            await UpdateShipList();
+        }
+    }
+
+    private async Task UpdateShipList()
+    {
         var shipList = await Task.WhenAll(AppData.ShipSummaryList!
-            .Where(s => s.Tier == 10 && s.ShipClass == ShipClass.Cruiser)
+            .Where(s => s.Tier == selectedTier && s.ShipClass == ShipClass.Cruiser)
             .Take(25)
             .Select(summary => AppDataService.GetShipFromSummary(summary, false)));
-        ships.AddRange(shipList.Select(s => ShipBuildContainer.CreateNew(s!, null, new List<int> { 1 })));
+        ships = shipList.Select(s => ShipBuildContainer.CreateNew(s!, null, new List<int> { 1 })).ToList();
     }
 
     private async Task Callback()

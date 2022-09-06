@@ -97,6 +97,9 @@
     [Parameter, EditorRequired]
     public string ImagesBaseAddress { get; set; } = default!;
 
+    [Parameter]
+    public bool SpecialAbilityDisabled { get; set; }
+
     private int selectedTab;
 
     private ShipBuildContainer SelectedContainer => Ships[selectedTab];
@@ -104,10 +107,14 @@
     private readonly ConcurrentDictionary<Guid, ShipBuildViewModel> vmCache = new();
 
     private readonly Dictionary<Guid, string> buildNameMapper = new();
+    
+    private readonly Dictionary<Guid, bool> specialAbilityMapper = new();
 
     private string currentBuildName = string.Empty;
 
     private string currentBuildString = string.Empty;
+
+    private bool currentSpecialAbilityActive;
 
     private readonly RenderFragment tabContent;
 
@@ -126,7 +133,7 @@
                     <MudGrid Class="align-content-space-between">
                         @if (ViewModel is not null)
                         {
-                            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                            <MudHidden Breakpoint="Breakpoint.MdAndUp"> // Header with ship name and nation is only rendered within the tabs on mobile
                                 <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
                                     <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
                                         <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
@@ -152,9 +159,9 @@
                                     <div class="mt-0" style="margin-bottom: -2px">
                                         <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                                     </div>
-                                    @if (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null))
+                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null)))
                                     {
-                                        <MudSwitch T="bool" Label="Activate special ability"/>
+                                        <MudSwitch T="bool" @bind-Checked="currentSpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
                                 </MudStack>
                             </MudItem>
@@ -221,6 +228,12 @@
 
         buildNameMapper.TryGetValue(SelectedContainer.Id, out var buildName);
         currentBuildName = buildName ?? SelectedContainer.Build?.BuildName ?? string.Empty;
+        if (!specialAbilityMapper.TryGetValue(SelectedContainer.Id, out var abilityActive))
+        {
+            abilityActive = SelectedContainer.SpecialAbilityActive;
+        }
+        
+        currentSpecialAbilityActive = abilityActive;
     }
 
     private async Task<ShipBuildViewModel> LoadShipViewModel(Ship ship, Build? build, IEnumerable<int>? activeConsumableSlots)
@@ -240,15 +253,21 @@
     private async Task SaveBuilds()
     {
         buildNameMapper[SelectedContainer.Id] = currentBuildName;
+        specialAbilityMapper[SelectedContainer.Id] = currentSpecialAbilityActive;
         var result = new List<ShipBuildContainer>();
         foreach (var container in Ships)
         {
             if (vmCache.TryGetValue(container.Id, out var vm))
             {
                 buildNameMapper.TryGetValue(container.Id, out var buildName);
+                if (!specialAbilityMapper.TryGetValue(container.Id, out bool abilityActive))
+                {
+                    abilityActive = container.SpecialAbilityActive;
+                }
+                
                 var build = vm.DumpToBuild(buildName ?? string.Empty);
                 var activatedConsumables = vm.ConsumableViewModel.ActivatedSlots.Any() ? vm.ConsumableViewModel.ActivatedSlots.ToList() : null;
-                result.Add(container with { Build = build, ActivatedConsumableSlots = activatedConsumables, ShipDataContainer = await vm.CreateDataContainerAsync() });
+                result.Add(container with { Build = build, ActivatedConsumableSlots = activatedConsumables, ShipDataContainer = await vm.CreateDataContainerAsync(), SpecialAbilityActive = abilityActive });
             }
             else
             {
@@ -265,6 +284,7 @@
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
         currentBuildName = string.Empty;
+        currentSpecialAbilityActive = false;
     }
 
     private async Task ImportBuild(Ship ship)
@@ -298,6 +318,7 @@
         ViewModel = null;
         StateHasChanged();
         buildNameMapper[SelectedContainer.Id] = currentBuildName;
+        specialAbilityMapper[SelectedContainer.Id] = currentSpecialAbilityActive;
         currentBuildString = string.Empty;
         selectedTab = newIndex;
         await UpdateViewModel();
