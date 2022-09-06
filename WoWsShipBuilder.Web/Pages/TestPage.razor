@@ -89,6 +89,7 @@
 
     private List<AccelerationHelper.AccelerationPoints> GetAccelerationData(Ship ship, double speedMultiplier, List<KeyValuePair<string,double>> modifiers)
     {
+        List<int> throttleList = new() {AccelerationHelper.ThreeQuarter, AccelerationHelper.OneQuarter, AccelerationHelper.FullAhead, AccelerationHelper.Zero, AccelerationHelper.Half};
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
         var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
@@ -97,7 +98,7 @@
         var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
         var engineForwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
         var engineBackwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        return AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
+        return AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleList, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
             engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier).AccelerationPointsList;
     }
     
