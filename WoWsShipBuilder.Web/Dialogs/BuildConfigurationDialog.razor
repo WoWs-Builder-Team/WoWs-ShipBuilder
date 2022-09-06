@@ -24,7 +24,7 @@
                 <MudGrid>
                     <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
                         <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
-                            <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                            <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
                             <MudText Style="font-size: x-large">
                                 @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
                             </MudText>
@@ -91,15 +91,23 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
 
+    /// <summary>
+    /// A read-only collection of <see cref="ShipBuildContainer"/> objects that contain the base data for the dialog.
+    /// </summary>
     [Parameter, EditorRequired]
     public IReadOnlyList<ShipBuildContainer> Ships { get; set; } = default!;
 
+    /// <summary>
+    /// The base path to use for ship images, assuming an image path matches the pattern {ImageBasePath}/{ShipIndex}.png with ImageBasePath containing also the protocol (https or http).
+    /// <br/>
+    /// <b>Note that the path should not end with a slash.</b>
+    /// </summary>
     [Parameter, EditorRequired]
-    public string ImagesBaseAddress { get; set; } = default!;
+    public string ImageBasePath { get; set; } = default!;
 
     [Parameter]
     public bool SpecialAbilityDisabled { get; set; }
-
+    
     private int selectedTab;
 
     private ShipBuildContainer SelectedContainer => Ships[selectedTab];
@@ -136,7 +144,7 @@
                             <MudHidden Breakpoint="Breakpoint.MdAndUp"> // Header with ship name and nation is only rendered within the tabs on mobile
                                 <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
                                     <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
-                                        <MudImage Src="@($"{ImagesBaseAddress}{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                                        <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
                                         <MudText Style="font-size: x-large">
                                             @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
                                         </MudText>
@@ -159,7 +167,7 @@
                                     <div class="mt-0" style="margin-bottom: -2px">
                                         <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                                     </div>
-                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null)))
+                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList?.Any(module => module.Value.BurstModeAbility is not null) ?? false)))
                                     {
                                         <MudSwitch T="bool" @bind-Checked="currentSpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
@@ -214,6 +222,13 @@
         StateHasChanged();
     }
 
+    /// <summary>
+    /// Updates the currently active viewmodel.
+    /// When possible, the new viewmodel will be retrieved from the <see cref="vmCache"/>.
+    /// If it does not exist already, a new one will be created and added to the cache.
+    /// <br/>
+    /// This method will also update the build name field and the status of the special ability switch (only affects super ships).
+    /// </summary>
     private async Task UpdateViewModel()
     {
         if (vmCache.TryGetValue(SelectedContainer.Id, out var vm))

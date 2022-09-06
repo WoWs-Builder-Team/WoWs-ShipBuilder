@@ -1,0 +1,56 @@
+﻿@using WoWsShipBuilder.Web.Data
+@using Microsoft.Extensions.Options
+
+@inject IDialogService DialogService
+@inject IOptions<CdnOptions> CdnOptions
+
+@code {
+
+    /// <summary>
+    /// A read-only collection of <see cref="ShipBuildContainer"/> objects that contain the base data for the dialog.
+    /// </summary>
+    [Parameter, EditorRequired]
+    public IReadOnlyCollection<ShipBuildContainer> ShipBuildContainers { get; set; } = default!;
+    
+    /// <summary>
+    /// The base path to use for ship images, assuming an image path matches the pattern {ImageBasePath}/{ShipIndex}.png with ImageBasePath containing also the protocol (https or http).
+    /// <br/>
+    /// <b>Note that the path should not end with a slash.</b>
+    /// <br/>
+    /// Defaults to {Host}{ShipImagePath} from configured <see cref="CdnOptions"/>.
+    /// </summary>
+    [Parameter]
+    public string? ImageBasePath { get; set; }
+
+    [Parameter]
+    public MaxWidth MaxWidth { get; set; } = MaxWidth.Large;
+    
+    [Parameter]
+    public bool FullWidth { get; set; }
+    
+    [Parameter]
+    public bool NoHeader { get; set; }
+    
+    [Parameter]
+    public bool DisableBackdropClick { get; set; }
+
+    public async Task<IEnumerable<ShipBuildContainer>?> ShowDialogAsync()
+    {
+        var options = new DialogOptions { MaxWidth = MaxWidth, FullWidth = FullWidth, NoHeader = NoHeader, DisableBackdropClick = DisableBackdropClick };
+        var cdnOptions = CdnOptions.Value;
+        var parameters = new DialogParameters
+        {
+            ["ImageBasePath"] = ImageBasePath ?? $"{cdnOptions.Host}{cdnOptions.ShipImagePath}",
+            ["Ships"] = ShipBuildContainers,
+        };
+        
+        var dialogResult = await DialogService.Show<BuildConfigurationDialog>("Configure builds", parameters, options).Result;
+        if (dialogResult.Data is List<ShipBuildContainer> buildContainers)
+        {
+            return buildContainers;
+        }
+
+        return null;
+    }
+
+}
