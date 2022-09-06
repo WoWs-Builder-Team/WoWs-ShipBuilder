@@ -4,8 +4,8 @@
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Web.Data
 @using System.Collections.Concurrent
+@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
 
@@ -114,15 +114,7 @@
 
     private readonly ConcurrentDictionary<Guid, ShipBuildViewModel> vmCache = new();
 
-    private readonly Dictionary<Guid, string> buildNameMapper = new();
-    
-    private readonly Dictionary<Guid, bool> specialAbilityMapper = new();
-
-    private string currentBuildName = string.Empty;
-
     private string currentBuildString = string.Empty;
-
-    private bool currentSpecialAbilityActive;
 
     private readonly RenderFragment tabContent;
 
@@ -169,7 +161,7 @@
                                     </div>
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList?.Any(module => module.Value.BurstModeAbility is not null) ?? false)))
                                     {
-                                        <MudSwitch T="bool" @bind-Checked="currentSpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
+                                        <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
                                 </MudStack>
                             </MudItem>
@@ -188,7 +180,7 @@
                                 </MudStack>
                             </MudItem>
                             <MudItem xs="12" md="6">
-                                <MudTextField @bind-Value="currentBuildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
+                                <MudTextField @bind-Value="ViewModel.BuildName" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Build Name" Placeholder="Enter build name" Variant="Variant.Outlined" Class="mt-auto mb-0"/>
                             </MudItem>
                         }
                         else
@@ -215,7 +207,7 @@
         {
             foreach (var container in Ships.Skip(1))
             {
-                var vm = await LoadShipViewModel(container.Ship, container.Build, container.ActivatedConsumableSlots);
+                var vm = await LoadShipViewModel(container);
                 vmCache.TryAdd(container.Id, vm);
             }
         });
@@ -237,27 +229,18 @@
         }
         else
         {
-            ViewModel = await LoadShipViewModel(SelectedContainer.Ship, SelectedContainer.Build, SelectedContainer.ActivatedConsumableSlots);
+            ViewModel = await LoadShipViewModel(SelectedContainer);
             vmCache.TryAdd(SelectedContainer.Id, ViewModel);
         }
-
-        buildNameMapper.TryGetValue(SelectedContainer.Id, out var buildName);
-        currentBuildName = buildName ?? SelectedContainer.Build?.BuildName ?? string.Empty;
-        if (!specialAbilityMapper.TryGetValue(SelectedContainer.Id, out var abilityActive))
-        {
-            abilityActive = SelectedContainer.SpecialAbilityActive;
-        }
-        
-        currentSpecialAbilityActive = abilityActive;
     }
 
-    private async Task<ShipBuildViewModel> LoadShipViewModel(Ship ship, Build? build, IEnumerable<int>? activeConsumableSlots)
+    private async Task<ShipBuildViewModel> LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(ship.Index).Inc();
+        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = await ShipBuildViewModel.CreateAsync(ship, build, AppDataService, AppSettings);
-            foreach (int slot in activeConsumableSlots ?? Array.Empty<int>())
+            var vm = await ShipBuildViewModel.CreateAsync(shipBuildContainer, AppDataService, AppSettings);
+            foreach (int slot in shipBuildContainer.ActivatedConsumableSlots ?? Array.Empty<int>())
             {
                 vm.ConsumableViewModel.ConsumableSlots[slot].ConsumableActivated = true;
             }
@@ -267,22 +250,12 @@
 
     private async Task SaveBuilds()
     {
-        buildNameMapper[SelectedContainer.Id] = currentBuildName;
-        specialAbilityMapper[SelectedContainer.Id] = currentSpecialAbilityActive;
         var result = new List<ShipBuildContainer>();
         foreach (var container in Ships)
         {
             if (vmCache.TryGetValue(container.Id, out var vm))
             {
-                buildNameMapper.TryGetValue(container.Id, out var buildName);
-                if (!specialAbilityMapper.TryGetValue(container.Id, out bool abilityActive))
-                {
-                    abilityActive = container.SpecialAbilityActive;
-                }
-                
-                var build = vm.DumpToBuild(buildName ?? string.Empty);
-                var activatedConsumables = vm.ConsumableViewModel.ActivatedSlots.Any() ? vm.ConsumableViewModel.ActivatedSlots.ToList() : null;
-                result.Add(container with { Build = build, ActivatedConsumableSlots = activatedConsumables, ShipDataContainer = await vm.CreateDataContainerAsync(), SpecialAbilityActive = abilityActive });
+                result.Add(await vm.CreateShipBuildContainerAsync(container));
             }
             else
             {
@@ -295,18 +268,16 @@
 
     private async Task ResetBuild()
     {
-        var vm = await LoadShipViewModel(SelectedContainer.Ship, SelectedContainer.Build, null);
+        var vm = await LoadShipViewModel(SelectedContainer with {Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
-        currentBuildName = string.Empty;
-        currentSpecialAbilityActive = false;
     }
 
     private async Task ImportBuild(Ship ship)
     {
         try
         {
-            ViewModel = await LoadShipViewModel(ship, Build.CreateBuildFromString(currentBuildString, Localizer), null);
+            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString, Localizer), null));
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
@@ -332,8 +303,6 @@
     {
         ViewModel = null;
         StateHasChanged();
-        buildNameMapper[SelectedContainer.Id] = currentBuildName;
-        specialAbilityMapper[SelectedContainer.Id] = currentSpecialAbilityActive;
         currentBuildString = string.Empty;
         selectedTab = newIndex;
         await UpdateViewModel();
