@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Core.Settings;
+﻿using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Settings;
 
 namespace WoWsShipBuilder.Core.Localization;
 
@@ -25,6 +26,18 @@ public class Localizer : ILocalizer
     public LocalizationResult GetAppLocalization(string key)
     {
         string? result = Translation.ResourceManager.GetString(key, appSettings.SelectedLanguage.CultureInfo);
+        return new(result != null, result ?? key);
+    }
+
+    public LocalizationResult GetGameLocalization(string key, CultureDetails language)
+    {
+        string? result = gameLocalizationProvider.GetString(key, language);
+        return new(result != null, result ?? key);
+    }
+
+    public LocalizationResult GetAppLocalization(string key, CultureDetails language)
+    {
+        string? result = Translation.ResourceManager.GetString(key, language.CultureInfo);
         return new(result != null, result ?? key);
     }
 }

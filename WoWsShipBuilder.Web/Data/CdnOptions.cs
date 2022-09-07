@@ -11,4 +11,6 @@ public class CdnOptions
     public ServerType Server { get; set; }
 
     public bool UseLocalFiles { get; set; }
+
+    public string ShipImagePath { get; set; } = string.Empty;
 }
