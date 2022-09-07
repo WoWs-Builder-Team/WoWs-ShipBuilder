@@ -1833,6 +1833,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AP.
+        /// </summary>
+        public static string ShipStats_ApSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_ApSalvo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arming distance.
         /// </summary>
         public static string ShipStats_ArmingDistance {
@@ -2502,11 +2511,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full salvo damage.
+        /// </summary>
+        public static string ShipStats_FullSalvoDamage {
+            get {
+                return ResourceManager.GetString("ShipStats_FullSalvoDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fuse timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
             get {
                 return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HE.
+        /// </summary>
+        public static string ShipStats_HeSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_HeSalvo", resourceCulture);
             }
         }
         
@@ -3056,6 +3083,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_RudderBlastProtection {
             get {
                 return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SAP.
+        /// </summary>
+        public static string ShipStats_SapSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_SapSalvo", resourceCulture);
             }
         }
         

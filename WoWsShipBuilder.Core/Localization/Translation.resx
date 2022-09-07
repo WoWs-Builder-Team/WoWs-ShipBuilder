@@ -1481,4 +1481,16 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Max engine boost duration</value>
   </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Full salvo damage</value>
+  </data>
 </root>
