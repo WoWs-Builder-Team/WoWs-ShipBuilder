@@ -12,4 +12,10 @@ public static class Helpers
         string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
         return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
+
+    public static string GetNationFlag(IHostEnvironment environment, Nation shipNation, string shipIndex)
+    {
+        string imgName = File.Exists(Path.Combine(environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
+        return $"/assets/nation_flags/flag_{imgName}.png";
+    }
 }

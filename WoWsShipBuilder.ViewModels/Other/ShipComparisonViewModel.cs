@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 
@@ -52,7 +48,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new[] {ShipCategory.Disabled, ShipCategory.Clan});
 
-    public readonly string DefaultBuildName = "Default";
+    public static readonly string DefaultBuildName = "Default";
 
     private readonly List<ShipComparisonDataWrapper> wrappersCache = new();
 
@@ -318,9 +314,9 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public async Task<List<string>> RemoveBuilds()
+    public async Task<List<ShipComparisonDataWrapper>> RemoveBuilds()
     {
-        List<string> warning = new();
+        List<ShipComparisonDataWrapper> warning = new();
         List<ShipComparisonDataWrapper> list = new(SelectedShipList);
         foreach (var wrapper in list)
         {
@@ -340,12 +336,18 @@ public class ShipComparisonViewModel : ViewModelBase
             {
                 if (wrapper.Build is not null)
                 {
-                    EditBuilds(new(){new(wrapper.Ship, await GetShipConfiguration(wrapper.Ship), null, wrapper.Id)});
+                    ShipComparisonDataWrapper err = new(wrapper.Ship, await GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
+                    EditBuilds(new(){err});
+                    warning.Add(err);
                 }
-                warning.Add(wrapper.Ship.Index);
+                else
+                {
+                    warning.Add(wrapper);
+                }
             }
         }
         SelectedShipList.Clear();
+        SelectedShipList.AddRange(warning);
         selectAllShips = false;
 
         return warning;

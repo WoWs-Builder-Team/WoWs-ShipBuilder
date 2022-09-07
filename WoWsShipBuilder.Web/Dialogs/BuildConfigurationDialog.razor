@@ -17,7 +17,7 @@
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
 
-<MudDialog Style="overflow-y: auto; max-height: 90vh;">
+<MudDialog Style="overflow-y: auto; max-height: 100vh;">
     <DialogContent>
         <MudBreakpointProvider>
             <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
@@ -32,7 +32,7 @@
                                 @SelectedContainer.Ship.Tier
                             </MudText>
                             <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
-                            <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                            <MudImage Src="@Helpers.GetNationFlag(Environment, SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">
@@ -144,7 +144,7 @@
                                             @SelectedContainer.Ship.Tier
                                         </MudText>
                                         <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
-                                        <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                                        <MudImage Src="@Helpers.GetNationFlag(Environment, SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
                                     </MudStack>
                                 </MudItem>
                             </MudHidden>
@@ -236,7 +236,7 @@
 
     private async Task<ShipBuildViewModel> LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index).Inc();
+        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = await ShipBuildViewModel.CreateAsync(shipBuildContainer, AppDataService, AppSettings);
@@ -293,12 +293,6 @@
         MudDialog.Cancel();
     }
 
-    private string GetNationFlag(Nation shipNation, string shipIndex)
-    {
-        string imgName = File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
-        return $"/assets/nation_flags/flag_{imgName}.png";
-    }
-
     private async Task OnActivePanelChanged(int newIndex)
     {
         ViewModel = null;
@@ -307,5 +301,4 @@
         selectedTab = newIndex;
         await UpdateViewModel();
     }
-
 }
