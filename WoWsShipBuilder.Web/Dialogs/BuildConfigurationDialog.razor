@@ -48,7 +48,7 @@
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index).Localization
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="ml-2">
-                                        Build: @(buildNameDictionary.ContainsKey(shipData.Id) ? buildNameDictionary[shipData.Id] : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : "Default")
+                                        Build: @(buildNameDictionary.ContainsKey(shipData.Id) ? buildNameDictionary[shipData.Id] : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)
                                     </MudText>
                                 </MudListItem>
                             }
@@ -210,7 +210,7 @@
             {
                 var vm = await LoadShipViewModel(container);
                 vmCache.TryAdd(container.Id, vm);
-                buildNameDictionary[container.Id] = !string.IsNullOrEmpty(container.Build?.BuildName) ? container.Build.BuildName : "Default";
+                buildNameDictionary[container.Id] = !string.IsNullOrEmpty(container.Build?.BuildName) ? container.Build.BuildName : ShipComparisonViewModel.DefaultBuildName;
             }
         });
         StateHasChanged();
@@ -297,7 +297,7 @@
 
     private async Task OnActivePanelChanged(int newIndex)
     {
-        buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName.Trim()) ? "Default" : ViewModel.BuildName.Trim();
+        buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName.Trim()) ? ShipComparisonViewModel.DefaultBuildName : ViewModel.BuildName.Trim();
         ViewModel = null;
         StateHasChanged();
         currentBuildString = string.Empty;

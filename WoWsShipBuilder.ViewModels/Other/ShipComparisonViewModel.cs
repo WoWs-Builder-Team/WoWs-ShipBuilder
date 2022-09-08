@@ -16,6 +16,8 @@ public class ShipComparisonViewModel : ViewModelBase
 {
     public const string DataNotAvailable = "N/A";
 
+    public static readonly string DefaultBuildName = "Default";
+
     private readonly IAppDataService appDataService;
 
     private readonly ILocalizer localizer;
@@ -49,8 +51,6 @@ public class ShipComparisonViewModel : ViewModelBase
     public IEnumerable<Nation> AvailableNations { get; } = Enum.GetValues<Nation>().Except(new[] {Nation.Common});
 
     public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new[] {ShipCategory.Disabled, ShipCategory.Clan});
-
-    public static readonly string DefaultBuildName = "Default";
 
     private readonly List<ShipComparisonDataWrapper> wrappersCache = new();
 
