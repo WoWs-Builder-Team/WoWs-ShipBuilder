@@ -49,7 +49,7 @@ public class ShipBuildViewModel : ViewModelBase
 
     public string BuildName
     {
-        get => buildName;
+        get => buildName.Trim();
         set => this.RaiseAndSetIfChanged(ref buildName, value);
     }
 
