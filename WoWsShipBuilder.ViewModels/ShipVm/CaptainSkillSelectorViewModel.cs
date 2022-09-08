@@ -24,6 +24,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private const int FuriousSkillNumber = 81;
 
+        private const int ImprovedRepairPartyReadinessSkillNumber = 44;
+
         private readonly ShipClass currentClass;
 
         private readonly Logger logger;
@@ -366,6 +368,10 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             {
                 result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 4);
             }
+            else if (skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber)
+            {
+                result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false, 99);
+            }
             else
             {
                 result = new(skillName, skill.SkillNumber, skill.ConditionalModifiers, false);
@@ -470,7 +476,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public List<(string, float)> GetModifiersList()
         {
             var modifiers = SkillOrderList.ToList()
-                .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber)
+                .Where(skill => skill.Modifiers != null && skill.SkillNumber != ArSkillNumber && skill.SkillNumber != ArSkillNumberSubs && skill.SkillNumber != FuriousSkillNumber && skill.SkillNumber != ImprovedRepairPartyReadinessSkillNumber)
                 .SelectMany(m => m.Modifiers)
                 .Select(effect => (effect.Key, effect.Value))
                 .ToList();
@@ -505,6 +511,15 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 {
                     var multiplier = (float)Math.Round(1 - (furiousSkillModifier.ActivationNumbers * (1 - furiousSkill.ConditionalModifiers["GMShotDelay"])), 2);
                     modifiers.Add(("GMShotDelay", multiplier));
+                }
+
+                //Custom handling for Improved Repair Party Readiness Skill
+                var improvedRepairPartyReadinessSkill = SkillOrderList.SingleOrDefault(skill => skill.SkillNumber is ImprovedRepairPartyReadinessSkillNumber);
+                var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
+                if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
+                {
+                    var multiplier = (float)Math.Round(1 - (improvedRepairPartyReadinessSkillModifier.ActivationNumbers * (1 - improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"])), 2);
+                    modifiers.Add(("regenCrewReloadCoeff", multiplier));
                 }
             }
 

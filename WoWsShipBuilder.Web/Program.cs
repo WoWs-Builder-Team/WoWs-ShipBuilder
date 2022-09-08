@@ -9,9 +9,10 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
+using WoWsShipBuilder.Web.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+builder.Host.ConfigureAppConfiguration((_, config) =>
 {
     config.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 });
@@ -55,6 +56,7 @@ app.UseHttpMetrics(options =>
 {
     options.AddCustomLabel("path", context => context.Request.Path);
 });
+app.UseReferrerTracking();
 
 app.UseEndpoints(endpoints =>
 {

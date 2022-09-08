@@ -27,7 +27,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetDataPath(ServerType.Live)).Returns(@"AppData/live");
         }
 
-        private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion? gameVersion = null)
+        private VersionInfo CreateTestVersionInfo(int versionCode, GameVersion gameVersion)
         {
             return new(
                 new()

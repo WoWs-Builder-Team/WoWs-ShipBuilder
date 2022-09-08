@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Sentry;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.Utility;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -63,6 +65,32 @@ public class ServerAppDataService : IAppDataService
         logger.LogInformation("Finished fetching data");
     }
 
+    public async Task LoadLocalFiles()
+    {
+        AppData.ShipDictionary = new();
+        const string shipBuilderDirectory = "WoWsShipBuilderDev";
+        string dataRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", options.Server.StringName());
+
+        string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
+        var localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(versionInfoContent)!;
+        AppData.DataVersion = localVersionInfo.CurrentVersion!.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+
+        var dataRootInfo = new DirectoryInfo(dataRoot);
+        DirectoryInfo[] categories = dataRootInfo.GetDirectories();
+        foreach (var category in categories)
+        {
+            if (category.Name.Contains("Localization", StringComparison.InvariantCultureIgnoreCase))
+            {
+                continue;
+            }
+            foreach (var file in category.GetFiles())
+            {
+                string content = await File.ReadAllTextAsync(file.FullName);
+                await DataCacheHelper.AddToCache(file.Name, category.Name, content);
+            }
+        }
+    }
+
     public async Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType)
     {
         versionInfo ??= await awsClient.DownloadVersionInfo(serverType);
@@ -108,6 +136,20 @@ public class ServerAppDataService : IAppDataService
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
+        if (options.UseLocalFiles)
+        {
+            const string shipBuilderDirectory = "WoWsShipBuilderDev";
+            string localizationRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", options.Server.StringName(), "Localization");
+            string file = Path.Join(localizationRoot, $"{language}.json");
+            if (!File.Exists(file))
+            {
+                return new();
+            }
+
+            string fileContent = await File.ReadAllTextAsync(Path.Join(localizationRoot, $"{language}.json"));
+            return JsonConvert.DeserializeObject<Dictionary<string, string>>(fileContent);
+        }
+
         if (awsClient is ServerAwsClient serverAwsClient)
         {
             return await serverAwsClient.DownloadLocalization(language, serverType);

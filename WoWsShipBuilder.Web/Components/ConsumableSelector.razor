@@ -18,7 +18,7 @@
                     {
                         <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0">
                             <ActivatorContent>
-                                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="750">
+                                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
                                     <ChildContent>
                                         <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(@GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        <MudTooltip Delay="750" Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true">
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Delay="400">
                             <ChildContent>
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                             </ChildContent>

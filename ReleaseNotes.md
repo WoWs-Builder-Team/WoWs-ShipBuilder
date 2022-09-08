@@ -1,15 +1,14 @@
-# Update 1.5.4
+# Update 1.5.5
 
 ## Additions
-- Added Torpedo launcher angles.
-- Torpedo launchers and turrets are now rotated based on their initial positioning in the angle visualizer.
+
 
 ## Changes
-- Added indentation for burst fire modifiers
+
 
 ## Bugfixes
-- Fixed wrong modifier calculation for smoke dispersion time
-- Selecting skills does no longer affect their status in other tabs
+- Fixed inability to choose amount of activations for the Improved Repair Party Readiness SkillNumber
+- Update outdated consumable icons
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

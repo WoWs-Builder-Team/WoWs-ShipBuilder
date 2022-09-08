@@ -205,3 +205,7 @@ a.kofi-button:active {
     width: 22px ;
     display: initial;
 }
+
+.tab-header-limited-height .mud-tabs-toolbar {
+    display: none;
+}
