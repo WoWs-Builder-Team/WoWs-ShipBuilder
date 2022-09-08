@@ -153,11 +153,8 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList) && !ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
         wrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, wrappersCache)));
 
-        if (list.Count == 0)
-        {
-            SelectAllShips = false;
-            PinAllShips = false;
-        }
+        SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
+        PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
 
         return list;
     }
@@ -282,7 +279,7 @@ public class ShipComparisonViewModel : ViewModelBase
         return ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
     }
 
-    public void EditBuilds(List<ShipComparisonDataWrapper> newWrappers)
+    public void EditBuilds(List<ShipComparisonDataWrapper> newWrappers, bool clearCache = false)
     {
         foreach (var wrapper in newWrappers)
         {
@@ -304,7 +301,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 PinnedShipList.Add(wrapper);
             }
 
-            if (ContainsWrapper(wrapper, wrappersCache))
+            if (!clearCache && ContainsWrapper(wrapper, wrappersCache))
             {
                 wrappersCache.Replace(wrappersCache.First(x => x.Id.Equals(wrapper.Id)), wrapper);
             }
@@ -313,6 +310,10 @@ public class ShipComparisonViewModel : ViewModelBase
             {
                 SelectedShipList.Replace(SelectedShipList.First(x => x.Id.Equals(wrapper.Id)), wrapper);
             }
+        }
+        if (clearCache)
+        {
+            wrappersCache.Clear();
         }
     }
 
@@ -353,6 +354,12 @@ public class ShipComparisonViewModel : ViewModelBase
         selectAllShips = false;
 
         return warning;
+    }
+
+    public async Task ResetAllBuilds()
+    {
+        ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is not null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
+        EditBuilds(list.ToList(), true);
     }
 
     public async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
@@ -435,15 +442,10 @@ public class ShipComparisonViewModel : ViewModelBase
         return list;
     }
 
-    private async Task<List<ShipComparisonDataWrapper>> ChangeModulesBatch(List<ShipComparisonDataWrapper> wrappers)
+    private async Task ChangeModulesBatch()
     {
-        List<ShipComparisonDataWrapper> list = new();
-        foreach (var wrapper in wrappers)
-        {
-            list.Add(wrapper with {ShipDataContainer = await GetShipConfiguration(wrapper.Ship)});
-        }
-
-        return list;
+        ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
+        EditBuilds(list.ToList());
     }
 
     public async Task<ShipDataContainer> GetShipConfiguration(Ship ship)
@@ -465,7 +467,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public async Task ToggleUpgradedModules()
     {
         UseUpgradedModules = !UseUpgradedModules;
-        EditBuilds(await ChangeModulesBatch(FilteredShipList));
+        await ChangeModulesBatch();
     }
 
     public enum DataSections

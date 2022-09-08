@@ -125,7 +125,7 @@
                         Display only pinned ships
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
-                        Use upgraded modules
+                        Use upgraded modules on ships without custom build
                     </MudButton>
                 </MudStack>
                 <MudStack Row>
@@ -135,14 +135,23 @@
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
                         @GetPinAllButtonText()
                     </MudButton>
-                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
-                        Duplicate selected ships
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                        Duplicate
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="EditBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
-                        Edit selected ships builds
+                        Edit build
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
-                        Remove selected ships builds
+                        Remove build
+                    </MudButton>
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.ResetAllBuilds">
+                        Reset all builds
+                    </MudButton>
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                        Compare dispersion
+                    </MudButton>
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                        Compare acceleration
                     </MudButton>
                 </MudStack>
                 <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
@@ -261,9 +270,8 @@
 
     private async Task EditBuilds()
     {
-        if (ViewModel!.SelectedShipList.Count == 0)
+        if (!IsAnyShipSelected())
         {
-            Snackbar.Add("No ship selected.", Severity.Warning);
             return;   
         }
         
@@ -279,16 +287,16 @@
 
     private async Task RemoveBuilds()
     {
-        if (ViewModel!.SelectedShipList.Count == 0)
+        if (!IsAnyShipSelected())
         {
-            Snackbar.Add("No ship selected.", Severity.Warning);
             return;   
         }
         
         List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds();
         if (warnings.Count > 0)
         {
-            warnings.ForEach(x => Snackbar.Add($"The build on the ship < {Localizer.GetGameLocalization(x.ShipIndex).Localization} > has been removed but at least one instance of this ship must remain.", Severity.Warning));
+            string shipNames = string.Join(", ", warnings.Select(x => Localizer.GetGameLocalization(x.ShipIndex).Localization));
+            Snackbar.Add($"The build on < {shipNames} > has been removed", Severity.Success);
         }
     }
 
@@ -338,7 +346,26 @@
         if (string.IsNullOrWhiteSpace(ViewModel!.SearchString))
             return true;
 
-        return CultureInfo.CurrentCulture.CompareInfo.IndexOf(Localizer.GetGameLocalization(x.Ship.Index).Localization, ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1; //TODO change this search method for the server
+        //TODO change this search method for the server
+        return CultureInfo.CurrentCulture.CompareInfo.IndexOf(Localizer.GetGameLocalization(x.Ship.Index).Localization, ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
     };
-     
+
+    private void DuplicateSelectedShips()
+    {
+        if (!IsAnyShipSelected())
+        {
+            return;   
+        }
+        ViewModel!.DuplicateSelectedShips();
+    }
+
+    private bool IsAnyShipSelected()
+    {
+        if (ViewModel!.SelectedShipList.Count != 0)
+        {
+            return true;
+        }
+        Snackbar.Add("No ship selected.", Severity.Warning);
+        return false;
+    }
 }
