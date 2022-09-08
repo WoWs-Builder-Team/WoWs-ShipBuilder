@@ -144,7 +144,7 @@
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                         Remove build
                     </MudButton>
-                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.ResetAllBuilds">
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetAllBuilds">
                         Reset all builds
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
@@ -292,7 +292,7 @@
             return;   
         }
         
-        List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds();
+        List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
         if (warnings.Count > 0)
         {
             string shipNames = string.Join(", ", warnings.Select(x => Localizer.GetGameLocalization(x.ShipIndex).Localization));
@@ -347,7 +347,7 @@
             return true;
 
         //TODO change this search method for the server
-        return CultureInfo.CurrentCulture.CompareInfo.IndexOf(Localizer.GetGameLocalization(x.Ship.Index).Localization, ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+        return CultureInfo.CurrentCulture.CompareInfo.IndexOf(Localizer.GetGameLocalization(x.ShipIndex).Localization, ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
     };
 
     private void DuplicateSelectedShips()
@@ -357,6 +357,7 @@
             return;   
         }
         ViewModel!.DuplicateSelectedShips();
+        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of {Localizer.GetGameLocalization(ship.Key).Localization}"))} > duplicated.", Severity.Success);
     }
 
     private bool IsAnyShipSelected()
@@ -368,4 +369,11 @@
         Snackbar.Add("No ship selected.", Severity.Warning);
         return false;
     }
+
+    private async Task ResetAllBuilds()
+    {
+        await ViewModel!.ResetAllBuilds();
+        Snackbar.Add("All builds have been reset.", Severity.Success);
+    }
+
 }

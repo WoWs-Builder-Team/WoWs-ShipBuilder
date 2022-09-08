@@ -153,8 +153,7 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList) && !ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
         wrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, wrappersCache)));
 
-        SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
-        PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
+        SetSelectAndPinAllButtonsStatus(list);
 
         return list;
     }
@@ -169,8 +168,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
         else
         {
-            PinAllShips = FilteredShipList.All(x => ContainsWrapper(x, PinnedShipList));
-            SelectAllShips = FilteredShipList.All(x => ContainsWrapper(x, SelectedShipList));
+            SetSelectAndPinAllButtonsStatus();
         }
     }
 
@@ -317,10 +315,10 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public async Task<List<ShipComparisonDataWrapper>> RemoveBuilds()
+    public async Task<List<ShipComparisonDataWrapper>> RemoveBuilds(IEnumerable<ShipComparisonDataWrapper> builds)
     {
         List<ShipComparisonDataWrapper> warning = new();
-        List<ShipComparisonDataWrapper> list = new(SelectedShipList);
+        List<ShipComparisonDataWrapper> list = new(builds);
         foreach (var wrapper in list)
         {
             if (FilteredShipList.FindAll(x => x.Ship.Index.Equals(wrapper.Ship.Index)).Count > 1)
@@ -351,13 +349,16 @@ public class ShipComparisonViewModel : ViewModelBase
         }
         SelectedShipList.Clear();
         SelectedShipList.AddRange(warning);
-        selectAllShips = false;
+
+        SetSelectAndPinAllButtonsStatus();
 
         return warning;
     }
 
     public async Task ResetAllBuilds()
     {
+        await RemoveBuilds(FilteredShipList);
+        SelectedShipList.Clear();
         ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is not null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
         EditBuilds(list.ToList(), true);
     }
@@ -561,6 +562,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 PinnedShipList.Add(newWrapper);
             }
         }
+        SetSelectAndPinAllButtonsStatus();
     }
 
     public void AddShip(object? obj)
@@ -576,5 +578,12 @@ public class ShipComparisonViewModel : ViewModelBase
         SelectAllShips = FilteredShipList.Intersect(PinnedShipList).All(x => ContainsWrapper(x, SelectedShipList));
         SearchShip = string.Empty;
         SearchedShips.Clear();
+    }
+
+    private void SetSelectAndPinAllButtonsStatus(IReadOnlyCollection<ShipComparisonDataWrapper>? list = null)
+    {
+        list ??= FilteredShipList;
+        SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
+        PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
     }
 }
