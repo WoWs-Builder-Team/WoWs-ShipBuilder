@@ -80,12 +80,20 @@ public class ShipBuildViewModel : ViewModelBase
         return vm;
     }
 
-    public Build DumpToBuild()
+    public Build? DumpToBuild()
     {
-        return new(CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList())
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(BuildName) || ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
+                             UpgradePanelViewModel.SelectedModernizationList.Any() || ConsumableViewModel.ActivatedSlots.Any() ||
+                             CaptainSkillSelectorViewModel.SkillOrderList.Any() || SignalSelectorViewModel.SelectedSignals.Any();
+        if (isCustomBuild)
         {
-            BuildName = BuildName,
-        };
+            return new(CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList())
+            {
+                BuildName = BuildName,
+            };
+        }
+
+        return null;
     }
 
     public async Task<ShipBuildContainer> CreateShipBuildContainerAsync(ShipBuildContainer baseContainer)

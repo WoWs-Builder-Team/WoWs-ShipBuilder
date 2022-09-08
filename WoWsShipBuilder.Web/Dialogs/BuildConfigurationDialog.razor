@@ -238,7 +238,7 @@
 
     private async Task<ShipBuildViewModel> LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index).Localization).Inc();
+        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = await ShipBuildViewModel.CreateAsync(shipBuildContainer, AppDataService, AppSettings);
