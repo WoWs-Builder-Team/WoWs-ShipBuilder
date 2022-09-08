@@ -60,6 +60,33 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration.
+        /// </summary>
+        public static string AccelerationChart_Acceleration {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Acceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string AccelerationChart_Time {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AccelerationGraph_Acceleration {
+            get {
+                return ResourceManager.GetString("AccelerationGraph_Acceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircraft Carrier.
         /// </summary>
         public static string AirCarrier {

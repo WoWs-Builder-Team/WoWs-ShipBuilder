@@ -1481,4 +1481,13 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
       <value>Reverse</value>
   </data>
+  <data name="AccelerationGraph_Acceleration" xml:space="preserve">
+      <value />
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Acceleration</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Time</value>
+  </data>
 </root>

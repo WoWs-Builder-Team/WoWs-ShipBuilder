@@ -1,0 +1,221 @@
+@page "/acceleration-chart"
+@using System.Collections.ObjectModel
+@using System.Collections.Specialized
+@using System.Net
+@using MudBlazor.Services
+@using WoWsShipBuilder.Core.BuildCreator
+@using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Web.Utility
+
+@inject NavigationManager NavManager
+@inject ILocalizer Localizer
+@inject IAppDataService WebAppDataService
+@inject IDialogService DialogService
+@inject ChartJsInterop ChartJsInterop
+@inject IMetricsService MetricsService
+@inject IBreakpointService BreakpointService
+
+
+<PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
+
+<MudStack Row Class="mt-2">
+    <MudButton OnClick="AddShips" Variant="Variant.Filled" Color="Color.Primary" Class="mx-auto" >
+        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+    </MudButton>
+    <MudDivider Vertical FlexItem Light/>
+    <MudSelect Variant="Variant.Outlined" T="int" Label="Initial Gear" @bind-Value="@firstGear">
+        <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    </MudSelect>
+    <MudSelect Variant="Variant.Outlined" T="int" Label="Second Gear" @bind-Value="@secondGear">
+       <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+       <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    </MudSelect>
+    <MudSelect Variant="Variant.Outlined" T="int" Label="Third Gear" @bind-Value="@thirdGear">
+        <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.Half"><MudText Color="Color.Secondary">2/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
+        <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
+    </MudSelect>
+</MudStack>
+
+<div>
+    <canvas id="@AccelerationId"></canvas>
+</div>
+
+@code
+{
+    private const string AccelerationId = "acceleration";
+    
+    private string[] shipIndexesFromUrl = { };
+
+    private Breakpoint Breakpoint {get; set; }
+
+    private readonly List<ShipBuildContainer> shipBuildList = new();
+
+    private int firstGear = AccelerationHelper.Zero;
+
+    private int secondGear = AccelerationHelper.FullAhead;
+
+    private int thirdGear = AccelerationHelper.FullReverse;
+    
+    private int counter = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MetricsService.AccelerationPageCount.Inc();
+        
+        if (NavManager.TryGetQueryString("shipIndexes", out string shipIndex))
+        {
+            shipIndexesFromUrl = shipIndex.Split(',');
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            Breakpoint = await BreakpointService.GetBreakpoint();
+            await SetupChartAsync();
+
+            if (shipIndexesFromUrl.Any())
+            {
+                foreach (string shipIndex in shipIndexesFromUrl)
+                {
+                    var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
+                    var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+                    
+                    var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null, false);
+                    
+                    shipBuildList.Add(shipContainer);
+                }
+            }
+            
+            await AddShipsBatchAsync(shipBuildList);
+        }
+    }
+    
+    private async Task AddShipsBatchAsync(List<ShipBuildContainer> shipList)
+    {
+        List<string> chartIds = new()
+        {
+            AccelerationId,
+        };
+        List<int> throttleList = new()
+        {
+            firstGear,
+            secondGear,
+            thirdGear,
+        };
+        //IEnumerable<Point> is a single dataset. The middle List contains all datasets of a certain chart. The outermost List contains the list of datasets of each chart.
+        List<List<IEnumerable<ChartsHelper.Point>>> data = new();
+        List<int> indexes = new();
+        List<string> labelNames = new();
+
+        foreach (var shipWrapper in shipList)
+        {
+            indexes.Add(counter);
+            counter++;
+
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
+            if (shipWrapper.Build is not null)
+            {
+                label += " - " + shipWrapper.Build.BuildName;
+            }
+            labelNames.Add(label);
+            
+            List<IEnumerable<ChartsHelper.Point>> shipData = new()
+            {
+                GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList),
+            };
+            data.Add(shipData);
+        }
+        
+        await ChartJsInterop.BatchAddDataAsync(chartIds, labelNames, data, indexes);
+    }
+    
+    private async Task SetupChartAsync()
+    {
+        string knots = Localizer.GetAppLocalization(nameof(Translation.Unit_Knots)).Localization;
+        string s = Localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization;
+
+
+        double aspectRatio = 3;
+        if (Breakpoint is Breakpoint.Sm or Breakpoint.Xs)
+        {
+            aspectRatio = 1.2;
+        }
+
+        await ChartJsInterop.SetupGlobalChartConfigAsync(aspectRatio);
+        await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
+    }
+    
+    private IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, List<(string modifierName, float ModifierValue)> modifiers, List<int> throttleList)
+    {
+        var engine = ship.Engines.First().Value;
+        var hull = ship.Hulls.First().Value;
+
+        var speedMultiplier = modifiers.Where(x => x.modifierName.Equals("speedCoef")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("shipSpeedCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
+        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("boostCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
+        
+        
+        //TODO manage case of speedBoost overriding some of the following modifiers
+        var engineForwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var engineBackwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var engineForwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var engineBackwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleList, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
+            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier).AccelerationPointsList;
+        return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
+    }
+
+    private async Task AddShips()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Large,
+            CloseOnEscapeKey = true,
+            DisableBackdropClick = false,
+        };
+        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
+        
+        if (!result.Cancelled && result.Data is List<string> newIndexes)
+        {
+            List<ShipBuildContainer> newShipList = new();
+            foreach (string shipIndex in newIndexes)
+            {
+                var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
+                var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+                    
+                var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null, false);
+                    
+                newShipList.Add(shipContainer);
+                shipBuildList.Add(shipContainer);
+            }
+
+            await AddShipsBatchAsync(newShipList);
+        }
+    }
+}
