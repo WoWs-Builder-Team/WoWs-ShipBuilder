@@ -21,23 +21,24 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public ShipClass ShipClass => Ship.ShipClass;
     public ShipCategory ShipCategory => Ship.ShipCategory;
     public int ShipTier => Ship.Tier;
-    public string BuildName { get; } = string.IsNullOrEmpty(Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : Build.BuildName;
+    public string? BuildName { get; } = Build?.BuildName;
 
     //Main battery
-    public string MainBatteryCaliber { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.GunCaliber}";
-    public string MainBatteryBarrelCount { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.BarrelsCount}";
-    public string MainBatteryRange { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.Range}";
-    public string MainBatteryTurnTime { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.TurnTime}";
-    public string MainBatteryTraverseSpeed { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.TraverseSpeed}";
-    public string MainBatteryReload { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.Reload}";
-    public string MainBatteryRoF { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.RoF}";
-    public string MainBatteryHeDpm { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplayHeDpm ? $"{ShipDataContainer.MainBatteryDataContainer.TheoreticalHeDpm}" : "N/A";
-    public string MainBatterySapDpm { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplaySapDpm ? $"{ShipDataContainer.MainBatteryDataContainer.TheoreticalSapDpm}" : "N/A";
-    public string MainBatteryApDpm { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplayApDpm ? $"{ShipDataContainer.MainBatteryDataContainer.TheoreticalApDpm}" : "N/A";
-    public string MainBatteryHeSalvo { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplayHeDpm ? $"{ShipDataContainer.MainBatteryDataContainer.HeSalvo}" : "N/A";
-    public string MainBatterySapSalvo { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplaySapDpm ? $"{ShipDataContainer.MainBatteryDataContainer.SapSalvo}" : "N/A";
-    public string MainBatteryApSalvo { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplayApDpm ? $"{ShipDataContainer.MainBatteryDataContainer.ApSalvo}" : "N/A";
-    public string MainBatteryFpm { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : ShipDataContainer.MainBatteryDataContainer.DisplayHeDpm ? $"{ShipDataContainer.MainBatteryDataContainer.PotentialFpm}" : "N/A";
-    public string MainBatterySigma { get; } = ShipDataContainer.MainBatteryDataContainer is null ? "N/A" : $"{ShipDataContainer.MainBatteryDataContainer.Sigma}";
+    public decimal? MainBatteryCaliber { get; } = ShipDataContainer.MainBatteryDataContainer?.GunCaliber;
+    public int? MainBatteryBarrelCount { get; } = ShipDataContainer.MainBatteryDataContainer?.BarrelsCount;
+    public string? MainBatteryBarrelsLayout { get; } = ShipDataContainer.MainBatteryDataContainer?.BarrelsLayout;
+    public decimal? MainBatteryRange { get; } = ShipDataContainer.MainBatteryDataContainer?.Range;
+    public decimal? MainBatteryTurnTime { get; } = ShipDataContainer.MainBatteryDataContainer?.TurnTime;
+    public decimal? MainBatteryTraverseSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.TraverseSpeed;
+    public decimal? MainBatteryReload { get; } = ShipDataContainer.MainBatteryDataContainer?.Reload;
+    public decimal? MainBatteryRoF { get; } = ShipDataContainer.MainBatteryDataContainer?.RoF;
+    public string? MainBatteryHeDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalHeDpm;
+    public string? MainBatterySapDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalSapDpm;
+    public string? MainBatteryApDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalApDpm;
+    public string? MainBatteryHeSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.HeSalvo;
+    public string? MainBatterySapSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.SapSalvo;
+    public string? MainBatteryApSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.ApSalvo;
+    public decimal? MainBatteryFpm { get; } = ShipDataContainer.MainBatteryDataContainer?.PotentialFpm;
+    public decimal? MainBatterySigma { get; } = ShipDataContainer.MainBatteryDataContainer?.Sigma;
 
 }

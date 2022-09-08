@@ -1,18 +1,18 @@
 ﻿@page "/shipComparison"
-@using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
 @using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Web.Utility
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
+
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
+
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
-@inject IDialogService DialogService
 @inject IAppDataService AppDataService
 @inject ISnackbar Snackbar
 
@@ -38,7 +38,7 @@
                     {
                         int tier = i;
                         bool isSelected = ViewModel.SelectedTiers.Contains(tier);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel.ToggleTierSelection(tier))">
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleTierSelection(tier))">
                             @tier.ToTierString()
                         </MudButton>
                     }
@@ -58,7 +58,7 @@
                     @foreach (var shipClass in ViewModel!.AvailableClasses)
                     {
                         bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel.ToggleClassSelection(shipClass))">
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleClassSelection(shipClass))">
                             @Localizer.GetAppLocalization(shipClass.ToString()).Localization
                         </MudButton>
                     }
@@ -78,7 +78,7 @@
                     @foreach (var nation in ViewModel!.AvailableNations)
                     {
                         bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel.ToggleNationSelection(nation))">
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleNationSelection(nation))">
                             @Localizer.GetAppLocalization(nation.ToString()).Localization
                         </MudButton>
                     }
@@ -98,14 +98,14 @@
                     @foreach (var category in ViewModel!.AvailableShipCategories)
                     {
                         bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                        <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel.ToggleCategorySelection(category))">
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleCategorySelection(category))">
                             @Localizer.GetAppLocalization(category.ToString()).Localization
                         </MudButton>
                     }
                 </MudButtonGroup>
             </MudPaper>
             <MudStack Style="width: 100%">
-                <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search Ship" @bind-Text="@ViewModel.SearchShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+                <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.SearchShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
                 @if (!string.IsNullOrEmpty(ViewModel.SearchShip))
                 {
                     <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
@@ -121,10 +121,10 @@
                     </MudPaper>
                 }
                 <MudStack Row>
-                    <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel.ShowPinnedShipsOnly)" Color="GetColorFromBool(ViewModel.ShowPinnedShipsOnly)" OnClick="ToggleShowPinnedShipOnly">
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.ShowPinnedShipsOnly, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.ShowPinnedShipsOnly, Color.Primary, Color.Secondary)" OnClick="ToggleShowPinnedShipOnly">
                         Display only pinned ships
                     </MudButton>
-                    <MudButton FullWidth="true" DisableElevation="true" Variant="GetVariantFromBool(ViewModel.UseUpgradedModules)" Color="GetColorFromBool(ViewModel.UseUpgradedModules)" OnClick="ToggleUpgradedModules">
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
                         Use upgraded modules
                     </MudButton>
                 </MudStack>
@@ -153,7 +153,7 @@
                         @foreach (var dataSection in Enum.GetValues(typeof(ShipComparisonViewModel.DataSections)).Cast<ShipComparisonViewModel.DataSections>())
                         {
                             bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
-                            <MudButton DisableElevation="true" Variant="GetVariantFromBool(isSelected)" Color="GetColorFromBool(isSelected)" OnClick="@(() => ViewModel.ToggleDataSection(dataSection))">
+                            <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleDataSection(dataSection))">
                                 @dataSection.ToString()
                             </MudButton>
                         }
@@ -182,15 +182,15 @@
                 </Column>
                 <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())">
                     <CellTemplate>
-                        <MudImage Src="@(GetNationFlag(context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
+                        <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipCategory.ToString())">
+                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())">
                     <CellTemplate>
-                        <MudIcon Icon="@(GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                        <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" SortBy="@(x => x.Ship.Tier)">
+                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier">
                     <CellTemplate>
                         @context.Item.ShipTier.ToTierString()
                     </CellTemplate>
@@ -205,8 +205,12 @@
                         @Localizer.GetGameLocalization(context.Item.ShipIndex).Localization
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" SortBy="@(x => x.BuildName)"/>
-                @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer));
+                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build">
+                    <CellTemplate>
+                        @(string.IsNullOrEmpty(context.Item.BuildName) ? ShipComparisonViewModel.DefaultBuildName : context.Item.BuildName)
+                    </CellTemplate>
+                </Column>
+                @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
             <PagerContent>
                 <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="new[] {25, 50, 75, 100}"/>
@@ -215,7 +219,7 @@
                 <MudText>No matching ships found</MudText>
             </NoRecordsContent>
         </MudDataGrid>
-        <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+        <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => Localizer.GetGameLocalization(x.Ship.Index).Localization).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
         <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
             <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
         </MudScrollToTop>
@@ -254,36 +258,12 @@
     {
         return ViewModel!.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
     }
-    
-    private static Variant GetVariantFromBool(bool active)
-    {
-        return active ? Variant.Filled : Variant.Outlined;
-    }
 
-    private static Color GetColorFromBool(bool active)
-    {
-        return active ? Color.Primary : Color.Secondary;
-    }
-    
-    private string GetNationFlag(Nation shipNation, string shipIndex)
-    {
-        string imgName = File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
-        return $"/assets/nation_flags/flag_{imgName}.png";
-    }
-    
-    private static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
-    {
-        string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
-        string stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
-        string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
-        return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
-    }
-    
     private async Task EditBuilds()
     {
         if (ViewModel!.SelectedShipList.Count == 0)
         {
-            Snackbar.Add($"No ship selected.", Severity.Warning);
+            Snackbar.Add("No ship selected.", Severity.Warning);
             return;   
         }
         
@@ -301,7 +281,7 @@
     {
         if (ViewModel!.SelectedShipList.Count == 0)
         {
-            Snackbar.Add($"No ship selected.", Severity.Warning);
+            Snackbar.Add("No ship selected.", Severity.Warning);
             return;   
         }
         
@@ -336,9 +316,9 @@
         StateHasChanged();
     }
 
-    private async Task AddSearchedShip(object? obj)
+    private void AddSearchedShip(object? obj)
     {
-        await ViewModel!.AddShip(obj);
+        ViewModel!.AddShip(obj);
         StateHasChanged();
     }
 

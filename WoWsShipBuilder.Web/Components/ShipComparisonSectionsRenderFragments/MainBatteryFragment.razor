@@ -8,26 +8,110 @@
     public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> MainBatteryDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonViewModel.DataSections.MainBattery;
+        
         NumberFormatInfo nfi = default!;
         if (!hide)
         {
             nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = "'";
         }
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.GunCaliber ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryBarrelCount" Title="Barrels" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.BarrelsCount ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRange" Title="Range (km)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.Range ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTurnTime" Title="180° turn time (s)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.TurnTime ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTraverseSpeed" Title="Traverse speed (°/s)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.TraverseSpeed ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryReload" Title="Reload (s)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.Reload ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRoF" Title="RoF (shots/min)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.RoF ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeDpm" Title="HE DPM" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.TheoreticalHeDpm ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApDpm" Title="AP DPM" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.TheoreticalApDpm ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapDpm" Title="SAP DPM" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.TheoreticalSapDpm ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeSalvo" Title="HE Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.HeSalvo ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApSalvo" Title="AP Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.ApSalvo ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapSalvo" Title="SAP Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer.MainBatteryDataContainer?.SapSalvo ?? "0", NumberStyles.AllowThousands, nfi))"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryFpm" Title="FPM (fires/min)" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.PotentialFpm ?? 0)"/>
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySigma" Title="Sigma" SortBy="@(x => x.ShipDataContainer.MainBatteryDataContainer?.Sigma ?? 0)"/>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)">
+            <CellTemplate>
+                @(context.Item.MainBatteryCaliber is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryCaliber)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryBarrelCount" Title="Barrels" SortBy="@(x => x.MainBatteryBarrelCount ?? 0)">
+            <CellTemplate>
+                <MudText Typo="Typo.body2">
+                    @(context.Item.MainBatteryBarrelCount is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryBarrelCount)
+                </MudText>
+                @if (context.Item.MainBatteryBarrelsLayout is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @($"({context.Item.MainBatteryBarrelsLayout})")
+                    </MudText>   
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRange" Title="Range (km)">
+            <CellTemplate>
+                @(context.Item.MainBatteryRange is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryRange)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTurnTime" Title="180° turn (s)">
+            <CellTemplate>
+                @(context.Item.MainBatteryTurnTime is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryTurnTime)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTraverseSpeed" Title="Traverse speed (°/s)">
+            <CellTemplate>
+                @(context.Item.MainBatteryTraverseSpeed is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryTraverseSpeed)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryReload" Title="Reload (s)">
+            <CellTemplate>
+                @(context.Item.MainBatteryReload is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryReload)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRoF" Title="RoF (shots/min)">
+            <CellTemplate>
+                @(context.Item.MainBatteryRoF is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryRoF)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeDpm" Title="HE DPM" SortBy="@(x => int.Parse(x.MainBatteryHeDpm ?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatteryHeDpm) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryHeDpm)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApDpm" Title="AP DPM" SortBy="@(x => int.Parse(x.MainBatteryApDpm ?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatteryApDpm) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryApDpm)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapDpm" Title="SAP DPM" SortBy="@(x => int.Parse(x.MainBatterySapDpm?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatterySapDpm) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatterySapDpm)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeSalvo" Title="HE Salvo" SortBy="@(x => int.Parse(x.MainBatteryHeSalvo ?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatteryHeSalvo) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryHeSalvo)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApSalvo" Title="AP Salvo" SortBy="@(x => int.Parse(x.MainBatteryApSalvo ?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatteryApSalvo) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryApSalvo)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapSalvo" Title="SAP Salvo" SortBy="@(x => int.Parse(x.MainBatterySapSalvo ?? "0", NumberStyles.AllowThousands, nfi))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.MainBatterySapSalvo) ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatterySapSalvo)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryFpm" Title="FPM (fires/min)">
+            <CellTemplate>
+                @(context.Item.MainBatteryFpm is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryFpm != 0 ? context.Item.MainBatteryFpm : ShipComparisonViewModel.DataNotAvailable)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySigma" Title="Sigma">
+            <CellTemplate>
+                @(context.Item.MainBatterySigma is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatterySigma)
+            </CellTemplate>
+        </Column>
     };
 }
