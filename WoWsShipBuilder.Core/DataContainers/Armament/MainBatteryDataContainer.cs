@@ -132,7 +132,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
             int barrelCount = arrangementList.Select(item => item.TurretCount * item.BarrelCount).Sum();
 
-            var barrelLayout = "";
+            var barrelLayout = new string[arrangementList.Count];
             var arrangementString = "";
             var turretNames = new List<string>();
 
@@ -141,7 +141,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var current = arrangementList[i];
                 turretNames.Add(current.GunName);
                 arrangementString += $"{current.TurretCount}x{current.BarrelCount} {{{i}}}\n";
-                barrelLayout += $"{current.TurretCount}x{current.BarrelCount} + ";
+                barrelLayout[i] = $"{current.TurretCount}x{current.BarrelCount}";
             }
 
             var gun = mainBattery.Guns.First();
@@ -222,7 +222,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 DisplaySapDpm = shellData.Select(x => x.Type).Contains($"ArmamentType_{ShellType.SAP}"),
                 GunCaliber = Math.Round(gun.BarrelDiameter * 1000),
                 BarrelsCount = barrelCount,
-                BarrelsLayout = barrelLayout[..^3],
+                BarrelsLayout = string.Join(" + ", barrelLayout),
             };
 
             if (mainBatteryDataContainer.DisplayHeDpm)
