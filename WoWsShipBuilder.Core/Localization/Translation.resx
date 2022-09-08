@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long range aura</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Backward</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Forward</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Max speed</value>
   </data>
@@ -815,9 +809,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>During preparation</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Full power time</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data version:</value>
@@ -1480,5 +1471,14 @@ They do not have any effect on surface ships.</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Max engine boost duration</value>
+  </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Time for max speed</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Full Ahead</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Reverse</value>
   </data>
 </root>

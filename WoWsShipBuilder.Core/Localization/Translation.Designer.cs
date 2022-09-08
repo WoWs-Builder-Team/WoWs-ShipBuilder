@@ -2466,38 +2466,20 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full Ahead.
+        /// </summary>
+        public static string ShipStats_ForwardMaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardMaxSpeedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From Subs.
         /// </summary>
         public static string ShipStats_FromSubs {
             get {
                 return ResourceManager.GetString("ShipStats_FromSubs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Backward.
-        /// </summary>
-        public static string ShipStats_FullPowerBackward {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerBackward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Forward.
-        /// </summary>
-        public static string ShipStats_FullPowerForward {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerForward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full power time.
-        /// </summary>
-        public static string ShipStats_FullPowerTime {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
             }
         }
         
@@ -2750,6 +2732,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_MaxSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_MaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time for max speed.
+        /// </summary>
+        public static string ShipStats_MaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxSpeedTime", resourceCulture);
             }
         }
         
@@ -3020,6 +3011,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_RestorationTime {
             get {
                 return ResourceManager.GetString("ShipStats_RestorationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse.
+        /// </summary>
+        public static string ShipStats_ReverseMaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ReverseMaxSpeedTime", resourceCulture);
             }
         }
         

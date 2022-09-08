@@ -736,9 +736,6 @@
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Taux de changement de zone de largage lors de la manœuvre</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Temps de pleine puissance</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Version des données:</value>
   </data>

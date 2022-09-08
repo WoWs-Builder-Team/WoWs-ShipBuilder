@@ -738,9 +738,6 @@
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Verandering van richtgebied tijdens het manoeuvreren</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tijd tot maximumsnelheid</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data versie:</value>
   </data>
