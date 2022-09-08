@@ -1,4 +1,4 @@
-# Update 1.5.5
+# Update 1.5.6
 
 ## Additions
 
@@ -7,8 +7,7 @@
 
 
 ## Bugfixes
-- Fixed inability to choose amount of activations for the Improved Repair Party Readiness SkillNumber
-- Update outdated consumable icons
+
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
