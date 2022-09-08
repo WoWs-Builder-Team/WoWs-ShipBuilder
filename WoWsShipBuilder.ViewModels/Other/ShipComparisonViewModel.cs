@@ -14,6 +14,8 @@ namespace WoWsShipBuilder.ViewModels.Other;
 
 public class ShipComparisonViewModel : ViewModelBase
 {
+    public const string DataNotAvailable = "N/A";
+
     private readonly IAppDataService appDataService;
 
     private readonly ILocalizer localizer;
@@ -548,8 +550,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public void DuplicateSelectedShips()
     {
-        List<ShipComparisonDataWrapper> list = SelectedShipList;
-        foreach (var selectedShip in list)
+        foreach (var selectedShip in SelectedShipList)
         {
             ShipComparisonDataWrapper newWrapper = new(selectedShip.Ship, selectedShip.ShipDataContainer, selectedShip.Build);
             FilteredShipList.Add(newWrapper);
@@ -560,46 +561,15 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public async Task AddShip(object? obj)
+    public void AddShip(object? obj)
     {
         if (obj is not Ship ship) return;
-
-        var reApplyFilters = false;
-
-        if (!SelectedTiers.Contains(ship.Tier))
-        {
-            SelectedTiers.Add(ship.Tier);
-            reApplyFilters = true;
-        }
-
-        if (!SelectedNations.Contains(ship.ShipNation))
-        {
-            SelectedNations.Add(ship.ShipNation);
-            reApplyFilters = true;
-        }
-
-        if (!SelectedClasses.Contains(ship.ShipClass))
-        {
-            SelectedClasses.Add(ship.ShipClass);
-            reApplyFilters = true;
-        }
-
-        if (!SelectedCategories.Contains(ship.ShipCategory))
-        {
-            SelectedCategories.Add(ship.ShipCategory);
-            reApplyFilters = true;
-        }
-
-        if (reApplyFilters)
-        {
-            FilteredShipList = await ApplyFilters();
-        }
 
         PinnedShipList.Where(x => x.Ship.Index.Equals(ship.Index)).ToList().ForEach(x => PinnedShipList.Remove(x));
         PinnedShipList.AddRange(FilteredShipList.Where(x => x.Ship.Index.Equals(ship.Index)));
 
         SearchString = string.Empty;
-        ShowPinnedShipsOnly = true;
+        //ShowPinnedShipsOnly = true;
         PinAllShips = true;
         SelectAllShips = FilteredShipList.Intersect(PinnedShipList).All(x => ContainsWrapper(x, SelectedShipList));
         SearchShip = string.Empty;
