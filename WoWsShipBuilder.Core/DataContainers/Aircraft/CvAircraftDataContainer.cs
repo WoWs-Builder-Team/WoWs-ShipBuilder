@@ -35,6 +35,15 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Speed", UnitKey = "Knots")]
         public decimal MinSpeed { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        public decimal MaxEngineBoostDuration { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "InitialBoost", UnitKey = "S")]
+        public decimal JatoDuration { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "InitialBoost", UnitKey = "PerCent")]
+        public decimal JatoSpeedMultiplier { get; set; }
+
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "HP", UnitKey = "HP")]
         public int PlaneHp { get; set; }
 
@@ -64,12 +73,6 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "AttackTimings", UnitKey = "S")]
         public decimal AttackCd { get; set; }
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "InitialBoost", UnitKey = "S")]
-        public decimal JatoDuration { get; set; }
-
-        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "InitialBoost", UnitKey = "PerCent")]
-        public decimal JatoSpeedMultiplier { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Concealment", UnitKey = "KM")]
         public decimal ConcealmentFromShips { get; set; }
@@ -250,6 +253,9 @@ namespace WoWsShipBuilder.Core.DataContainers
             var maxSpeedModifiers = modifiers.FindModifiers("planeMaxSpeedMultiplier");
             maxSpeedMultiplier = maxSpeedModifiers.Aggregate(maxSpeedMultiplier, (current, modifier) => current * modifier);
 
+            var maxEngineBoostDurationModifiers = modifiers.FindModifiers("planeForsageTimeCoeff");
+            var maxEngineBoostDuration = maxEngineBoostDurationModifiers.Aggregate(plane.MaxEngineBoostDuration, (current, modifier) => current * modifier);
+
             var planesConcealmentModifiers = modifiers.FindModifiers("planeVisibilityFactor").ToList();
             planesConcealmentFromShips = planesConcealmentModifiers.Aggregate(planesConcealmentFromShips, (current, modifier) => current * modifier);
             planesConcealmentFromPlanes = planesConcealmentModifiers.Aggregate(planesConcealmentFromPlanes, (current, modifier) => current * modifier);
@@ -315,6 +321,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 CruisingSpeed = finalCruisingSpeed,
                 MaxSpeed = Math.Round(finalCruisingSpeed * (decimal)maxSpeedMultiplier, 0),
                 MinSpeed = Math.Round(finalCruisingSpeed * (decimal)minSpeedMultiplier, 0),
+                MaxEngineBoostDuration = (decimal)maxEngineBoostDuration,
                 InnerBombPercentage = bombInnerEllipse,
                 NumberDuringAttack = plane.AttackData.AttackerSize,
                 AmmoPerAttack = plane.AttackData.AttackCount,

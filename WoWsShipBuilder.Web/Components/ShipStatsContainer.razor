@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Net
 @using System.Diagnostics
+@using WoWsShipBuilder.Web.Utility
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
@@ -40,7 +41,7 @@
                             <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                    <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
+                                    <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
                                     <MudText Align="Align.Center">@GetShipTier(ViewModel.PreviousShip.Tier) @Localizer.GetGameLocalization(ViewModel.PreviousShip.Index + "_FULL").Localization</MudText>
                                 </MudStack>
                             </MudStack>
@@ -48,7 +49,7 @@
                         <MudStack Class="px-2" AlignItems="AlignItems.Center">
                             <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                             <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
+                                <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
                                 <MudText Align="Align.Center" >@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
@@ -59,7 +60,7 @@
                                 <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, ViewModel.CurrentShipIndex, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
-                                        <MudIcon ViewBox="-1 0 24 10" Icon="@GetIconFromClass(ship.ShipClass, ship.Category)"/>
+                                        <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
                                         <MudText Align="Align.Center">@GetShipTier(ship.Tier) @Localizer.GetGameLocalization(ship.Index + "_FULL").Localization</MudText>
                                     </MudStack>
                                 </MudStack>
@@ -162,7 +163,7 @@
 
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
-        MetricsService.ShipCount.WithLabels(shipIndex).Inc();
+        MetricsService.ShipCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         Build? build = null;
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
@@ -193,14 +194,6 @@
             imgName = shipNation.ToString();
         }
         return $"background-image: url(\"/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
-    }
-
-    private static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
-    {
-        string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
-        string stroke = ClassToPathHelper.GetColorFromCategory(category, true)[3..];
-        string fill = ClassToPathHelper.GetColorFromCategory(category, false)[3..];
-        return $"<path fill=\"#{fill}\" stroke=\"#{stroke}\" stroke-width=\"1\"  d=\"{path}\" />";
     }
 
     private int GetImageWidth(bool isCurrentShip)

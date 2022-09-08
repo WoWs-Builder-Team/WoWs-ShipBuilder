@@ -62,7 +62,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var torpedoDamageModifiers = modifiers.FindModifiers("torpedoDamageCoeff");
                 var torpedoDamage = (decimal)torpedoDamageModifiers.Aggregate(torp.Damage, (current, modifier) => current * modifier);
 
-                var torpedoSpeedModifiers = modifiers.FindModifiers("torpedoSpeedMultiplier").ToList();
+                var torpedoSpeedModifiers = modifiers.FindModifiers("torpedoSpeedMultiplier", true).ToList();
                 torpedoSpeedModifiers.AddRange(modifiers.FindModifiers("planeTorpedoSpeedMultiplier"));
                 var torpedoSpeed = (decimal)torpedoSpeedModifiers.Aggregate(torp.Speed, (current, modifier) => current * modifier);
 

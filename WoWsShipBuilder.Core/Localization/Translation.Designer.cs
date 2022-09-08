@@ -2691,6 +2691,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max engine boost duration.
+        /// </summary>
+        public static string ShipStats_MaxEngineBoostDuration {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxEngineBoostDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max number of fires.
         /// </summary>
         public static string ShipStats_MaxFireAmount {

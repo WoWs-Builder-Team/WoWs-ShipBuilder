@@ -39,7 +39,7 @@
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
                 <MudItem @key="skill.Skill.SkillNumber" Class="d-flex justify-center" xs="2" Style="@(GetOrder(skill.Skill.Tiers.Single(x => x.ShipClass == ShipClass)) + GetSubFix())">
-                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent"  Delay="750">
+                    <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="400">
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
@@ -77,6 +77,7 @@
                                     @if (skill.ConditionalModifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
+                                        <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>@Localizer.GetGameLocalization("SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization</MudText>
                                         @foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
