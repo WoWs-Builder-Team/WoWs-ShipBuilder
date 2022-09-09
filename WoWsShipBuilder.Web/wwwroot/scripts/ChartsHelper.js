@@ -97,6 +97,19 @@ export function BatchRemoveData(chartsId, labels)
 }
 
 /**
+ * @description Remove all datasets from multiple charts
+ * @param {Array<string>} chartsId - The charts ID
+ */
+export function RemoveAllData(chartsId)
+{
+    chartsId.forEach(chartId => {
+        const chart = Chart.getChart(chartId);
+        chart.data.datasets.splice(0, chart.data.datasets.length);
+        chart.update();
+    });
+}
+
+/**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
  * @param {Array<string>} labels - The labels of the dataset to update
