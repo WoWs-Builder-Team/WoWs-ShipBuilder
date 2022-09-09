@@ -125,6 +125,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     SkillOrderList.Add(skill);
                 }
 
+                UpdateCanAddSkill(); // Needs to be called to update the internal state of the skill viewmodels
                 SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
             }
         }

@@ -7,7 +7,7 @@
 
 
 ## Bugfixes
-
+- Captain skills cannot be changed in some situations after switching between captains
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
