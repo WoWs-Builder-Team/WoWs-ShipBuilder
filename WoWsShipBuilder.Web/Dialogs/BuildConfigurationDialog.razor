@@ -297,7 +297,7 @@
 
     private async Task OnActivePanelChanged(int newIndex)
     {
-        buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName.Trim()) ? ShipComparisonViewModel.DefaultBuildName : ViewModel.BuildName.Trim();
+        buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName) ? ShipComparisonViewModel.DefaultBuildName : ViewModel.BuildName;
         ViewModel = null;
         StateHasChanged();
         currentBuildString = string.Empty;
