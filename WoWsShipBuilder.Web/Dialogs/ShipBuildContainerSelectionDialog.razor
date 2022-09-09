@@ -1,0 +1,104 @@
+﻿@using System.Collections.Specialized
+@using System.Collections.ObjectModel
+@using DynamicData
+@using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.DataProvider
+@using WoWsShipBuilder.Core.Services
+
+@implements IDisposable
+@inject ILocalizer Localizer
+@inject IAppDataService WebAppDataService
+
+<MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;">
+    <DialogContent>
+        <MudGrid >
+            <MudItem xs="4">
+                <MudPaper Outlined>
+                    <MudList>
+                        @foreach (var ship in ShipList)
+                        {
+                            <MudListItem>
+                                <MudStack Row Style="align-items: center">
+                                    <MudText >
+                                        @Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization
+                                    </MudText>
+                                    @if (!string.IsNullOrWhiteSpace(ship.Build?.BuildName))
+                                    {
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden">
+                                            Build: @ship.Build.BuildName
+                                        </MudText>
+                                    }
+                                    <MudIcon  Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
+                                </MudStack>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="8">
+                <ShipSelector AllowCopies LargerList SelectedShips="@selectedShips"/>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@SubmitShips">
+            Confirm
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public List<ShipBuildContainer>? ShipList { get; set; }
+
+    private readonly ObservableCollection<string> selectedShips = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (ShipList is null)
+        {
+            ShipList = new();
+        }
+        selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void SubmitShips()
+    {
+        MudDialog.Close(ShipList);
+    }
+
+    private async void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems![0] is string shipIndex)
+        {
+            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
+            var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+
+            var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null);
+            ShipList!.Add(shipContainer);
+        }
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
+    }
+
+    private void RemoveShip(ShipBuildContainer shipBuildContainer)
+    {
+        ShipList!.Remove(shipBuildContainer);
+    }
+
+}
