@@ -6,6 +6,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
 @using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Utility
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
 
@@ -15,6 +16,7 @@
 @inject ILocalizer Localizer
 @inject IAppDataService AppDataService
 @inject ISnackbar Snackbar
+@inject AppSettings AppSettings
 
 <PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
 
@@ -33,7 +35,7 @@
                         None
                     </MudButton>
                 </MudStack>
-                <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                     @for(var i = 1; i <= 11; i++)
                     {
                         int tier = i;
@@ -54,7 +56,7 @@
                         None
                     </MudButton>
                 </MudStack>
-                <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                     @foreach (var shipClass in ViewModel!.AvailableClasses)
                     {
                         bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
@@ -74,7 +76,7 @@
                         None
                     </MudButton>
                 </MudStack>
-                <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                     @foreach (var nation in ViewModel!.AvailableNations)
                     {
                         bool isSelected = ViewModel.SelectedNations.Contains(nation);
@@ -94,7 +96,7 @@
                         None
                     </MudButton>
                 </MudStack>
-                <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                     @foreach (var category in ViewModel!.AvailableShipCategories)
                     {
                         bool isSelected = ViewModel.SelectedCategories.Contains(category);
@@ -110,10 +112,10 @@
                 {
                     <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
                         <MudList Clickable="true" SelectedValueChanged="AddSearchedShip">
-                            <MudVirtualize IsEnabled="true" Items="@ViewModel.SearchedShips.OrderBy(x => Localizer.GetGameLocalization(x.Index).Localization).ToList()" Context="ship">
+                            <MudVirtualize IsEnabled="true" Items="@ViewModel.SearchedShips.OrderBy(x => LocalizeShipName(x.Index)).ToList()" Context="ship">
                                 <MudListItem Style="text-align: center" Value="@ship">
                                     <MudText Color="Color.Secondary">
-                                        @(Localizer.GetGameLocalization(ship.Index).Localization)
+                                        @(LocalizeShipName(ship.Index))
                                     </MudText>
                                 </MudListItem>
                             </MudVirtualize>
@@ -158,7 +160,7 @@
                     <MudText GutterBottom="true" Style="font-size: large">
                         Section
                     </MudText>
-                    <MudButtonGroup OverrideStyles="false" Class="gap-1" Style="flex-wrap: wrap" Size="Size.Small">
+                    <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
                         @foreach (var dataSection in Enum.GetValues(typeof(ShipComparisonViewModel.DataSections)).Cast<ShipComparisonViewModel.DataSections>())
                         {
                             bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
@@ -179,42 +181,42 @@
                 <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="new[] {25, 50, 75, 100}" Class="mt-n3"/>
             </ToolBarContent>
             <Columns>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))">
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))">
+                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())">
+                <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())">
+                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier">
+                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @context.Item.ShipTier.ToTierString()
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => Localizer.GetGameLocalization(x.ShipIndex).Localization)">
+                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudImage Src="@(BaseAddress + context.Item.ShipIndex + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" SortBy="@(x => Localizer.GetGameLocalization(x.ShipIndex).Localization)" InitialDirection="SortDirection.Ascending">
+                <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
-                        @Localizer.GetGameLocalization(context.Item.ShipIndex).Localization
+                        @LocalizeShipName(context.Item.ShipIndex)
                     </CellTemplate>
                 </Column>
-                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build">
+                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @(string.IsNullOrEmpty(context.Item.BuildName) ? ShipComparisonViewModel.DefaultBuildName : context.Item.BuildName)
                     </CellTemplate>
@@ -228,7 +230,7 @@
                 <MudText>No matching ships found</MudText>
             </NoRecordsContent>
         </MudDataGrid>
-        <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => Localizer.GetGameLocalization(x.Ship.Index).Localization).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+        <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
         <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
             <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
         </MudScrollToTop>
@@ -245,7 +247,7 @@
      protected override async Task OnInitializedAsync()
      {
          await base.OnInitializedAsync();
-         ViewModel = new(AppDataService, Localizer);
+         ViewModel = new(AppDataService, Localizer, AppSettings);
      }
 
      private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
@@ -295,8 +297,8 @@
         List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
         if (warnings.Count > 0)
         {
-            string shipNames = string.Join(", ", warnings.Select(x => Localizer.GetGameLocalization(x.ShipIndex).Localization));
-            Snackbar.Add($"The build on < {shipNames} > has been removed", Severity.Success);
+            string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.ShipIndex)));
+            Snackbar.Add($"The build on < {shipNames} > has been reset without removing the last instance.", Severity.Success);
         }
     }
 
@@ -324,9 +326,9 @@
         StateHasChanged();
     }
 
-    private void AddSearchedShip(object? obj)
+    private async Task AddSearchedShip(object? obj)
     {
-        ViewModel!.AddShip(obj);
+        await ViewModel!.AddShip(obj);
         StateHasChanged();
     }
 
@@ -345,9 +347,8 @@
     {
         if (string.IsNullOrWhiteSpace(ViewModel!.SearchString))
             return true;
-
-        //TODO change this search method for the server
-        return CultureInfo.CurrentCulture.CompareInfo.IndexOf(Localizer.GetGameLocalization(x.ShipIndex).Localization, ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
+        
+        return AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
     };
 
     private void DuplicateSelectedShips()
@@ -357,7 +358,7 @@
             return;   
         }
         ViewModel!.DuplicateSelectedShips();
-        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of {Localizer.GetGameLocalization(ship.Key).Localization}"))} > duplicated.", Severity.Success);
+        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of {LocalizeShipName(ship.Key)}"))} > duplicated.", Severity.Success);
     }
 
     private bool IsAnyShipSelected()
@@ -376,4 +377,8 @@
         Snackbar.Add("All builds have been reset.", Severity.Success);
     }
 
+    private string LocalizeShipName(string shipIndex)
+    {
+        return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
+    }
 }

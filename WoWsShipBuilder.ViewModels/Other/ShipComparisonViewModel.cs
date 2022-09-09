@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 
@@ -16,11 +17,13 @@ public class ShipComparisonViewModel : ViewModelBase
 {
     public const string DataNotAvailable = "N/A";
 
-    public static readonly string DefaultBuildName = "Default";
+    public static readonly string DefaultBuildName = "---";
 
     private readonly IAppDataService appDataService;
 
     private readonly ILocalizer localizer;
+
+    private readonly AppSettings appSettings;
 
     private readonly IEnumerable<Ship> fullShipList = AppData.ShipDictionary!.Values;
 
@@ -113,10 +116,11 @@ public class ShipComparisonViewModel : ViewModelBase
         private set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
     }
 
-    public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer)
+    public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings)
     {
         this.appDataService = appDataService;
         this.localizer = localizer;
+        this.appSettings = appSettings;
     }
 
     private async Task<List<ShipComparisonDataWrapper>> ApplyFilters()
@@ -383,7 +387,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    private async  Task RemovePinnedShip(ShipComparisonDataWrapper wrapper)
+    private async Task RemovePinnedShip(ShipComparisonDataWrapper wrapper)
     {
         PinnedShipList.Remove(wrapper);
         FilteredShipList = await ApplyFilters();
@@ -507,7 +511,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
         if (!string.IsNullOrEmpty(searchString))
         {
-            list = list.Where(x => CultureInfo.CurrentCulture.CompareInfo.IndexOf(localizer.GetGameLocalization(x.Ship.Index).Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+            list = list.Where(x => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(x.ShipIndex + "_FULL").Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
         }
 
         if (SelectAllShips)
@@ -528,7 +532,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
         if (!string.IsNullOrEmpty(searchString))
         {
-            list = list.Where(x => CultureInfo.CurrentCulture.CompareInfo.IndexOf(localizer.GetGameLocalization(x.Ship.Index).Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+            list = list.Where(x => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(x.ShipIndex + "_FULL").Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
         }
 
         if (PinAllShips)
@@ -548,7 +552,7 @@ public class ShipComparisonViewModel : ViewModelBase
             return;
         }
         SearchedShips.Clear();
-        SearchedShips.AddRange(fullShipList.Where(ship => CultureInfo.CurrentCulture.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index).Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
+        SearchedShips.AddRange(fullShipList.Where(ship => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index + "_FULL").Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
     }
 
     public void DuplicateSelectedShips()
@@ -565,24 +569,23 @@ public class ShipComparisonViewModel : ViewModelBase
         SetSelectAndPinAllButtonsStatus();
     }
 
-    public void AddShip(object? obj)
+    public async Task AddShip(object? obj)
     {
         if (obj is not Ship ship) return;
 
-        PinnedShipList.Where(x => x.Ship.Index.Equals(ship.Index)).ToList().ForEach(x => PinnedShipList.Remove(x));
-        PinnedShipList.AddRange(FilteredShipList.Where(x => x.Ship.Index.Equals(ship.Index)));
+        ShipComparisonDataWrapper newWrapper = new(ship, await GetShipConfiguration(ship));
+        FilteredShipList.Add(newWrapper);
+        PinnedShipList.Add(newWrapper);
 
+        SetSelectAndPinAllButtonsStatus();
         SearchString = string.Empty;
-        //ShowPinnedShipsOnly = true;
-        PinAllShips = true;
-        SelectAllShips = FilteredShipList.Intersect(PinnedShipList).All(x => ContainsWrapper(x, SelectedShipList));
         SearchShip = string.Empty;
         SearchedShips.Clear();
     }
 
     private void SetSelectAndPinAllButtonsStatus(IReadOnlyCollection<ShipComparisonDataWrapper>? list = null)
     {
-        list ??= FilteredShipList;
+        list ??= GetShipsToBeDisplayedList();
         SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
         PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
     }
