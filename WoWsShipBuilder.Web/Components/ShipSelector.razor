@@ -100,6 +100,9 @@
     [Parameter]
     public bool LargerList { get; set; }
 
+    [Parameter]
+    public bool AllowCopies { get; set; } = false;
+
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
     private MudList mudList = default!;
@@ -233,7 +236,7 @@
 
     private void AddShip(object? obj)
     {
-        if (obj is not string shipIndex || SelectedShips.Contains(shipIndex)) return;
+        if (obj is not string shipIndex || (!AllowCopies && SelectedShips.Contains(shipIndex))) return;
         if (MultiSelect)
         {
             SelectedShips.Add(shipIndex);
@@ -241,6 +244,10 @@
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
             SelectedShips.Add(shipIndex);
+        }
+        if (AllowCopies)
+        {
+            mudList.SelectedValue = null;
         }
     }
 

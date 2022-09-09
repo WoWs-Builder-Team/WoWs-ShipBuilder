@@ -24,12 +24,17 @@
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
 
-<MudStack Row Class="mt-2">
-    <MudButton OnClick="AddShips" Variant="Variant.Filled" Color="Color.Primary" Class="mx-auto" >
-        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+
+<MudText Class="mt-2 mx-4" Style="white-space: break-spaces">@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
+<MudStack Row Class="mt-2 mx-4">
+    <MudButton OnClick="AddShips" Variant="Variant.Filled" Color="Color.Primary">
+        @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)).Localization
+    </MudButton>
+    <MudButton Disabled="@(shipBuildList.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
+        @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_ChangeBuilds)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
-    <MudSelect Variant="Variant.Outlined" T="int" Label="Initial Gear" @bind-Value="@firstGear">
+    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
         <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
@@ -37,7 +42,7 @@
         <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Variant="Variant.Outlined" T="int" Label="Second Gear" @bind-Value="@secondGear">
+    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@secondGear" Label="Middle Gear" ValueChanged="@(value => UpdateThrottle(1, value))">
        <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
@@ -45,7 +50,7 @@
        <MudSelectItem Value="AccelerationHelper.ThreeQuarter"><MudText Color="Color.Secondary">3/4</MudText></MudSelectItem>
        <MudSelectItem Value="AccelerationHelper.FullAhead"><MudText Color="Color.Secondary">4/4</MudText></MudSelectItem>
     </MudSelect>
-    <MudSelect Variant="Variant.Outlined" T="int" Label="Third Gear" @bind-Value="@thirdGear">
+    <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@thirdGear" Label="Final Gear" ValueChanged="@(value => UpdateThrottle(2, value))">
         <MudSelectItem Value="AccelerationHelper.FullReverse"> <MudText Color="Color.Secondary">-1</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationHelper.Zero"><MudText Color="Color.Secondary">0</MudText></MudSelectItem>
         <MudSelectItem Value="AccelerationHelper.OneQuarter"><MudText Color="Color.Secondary">1/4</MudText></MudSelectItem>
@@ -59,15 +64,21 @@
     <canvas id="@AccelerationId"></canvas>
 </div>
 
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildList" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+
 @code
 {
     private const string AccelerationId = "acceleration";
+    
+    private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
     
     private string[] shipIndexesFromUrl = { };
 
     private Breakpoint Breakpoint {get; set; }
 
-    private readonly List<ShipBuildContainer> shipBuildList = new();
+    private List<ShipBuildContainer> shipBuildList = new();
+
+    private readonly List<int> throttleList = new() {AccelerationHelper.Zero, AccelerationHelper.FullAhead, AccelerationHelper.FullReverse};
 
     private int firstGear = AccelerationHelper.Zero;
 
@@ -104,7 +115,7 @@
                     var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
                     var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
                     
-                    var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null, false);
+                    var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null);
                     
                     shipBuildList.Add(shipContainer);
                 }
@@ -120,12 +131,6 @@
         {
             AccelerationId,
         };
-        List<int> throttleList = new()
-        {
-            firstGear,
-            secondGear,
-            thirdGear,
-        };
         //IEnumerable<Point> is a single dataset. The middle List contains all datasets of a certain chart. The outermost List contains the list of datasets of each chart.
         List<List<IEnumerable<ChartsHelper.Point>>> data = new();
         List<int> indexes = new();
@@ -137,7 +142,7 @@
             counter++;
 
             var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
-            if (shipWrapper.Build is not null)
+            if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
             {
                 label += " - " + shipWrapper.Build.BuildName;
             }
@@ -199,23 +204,52 @@
             CloseOnEscapeKey = true,
             DisableBackdropClick = false,
         };
-        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
-        
-        if (!result.Cancelled && result.Data is List<string> newIndexes)
+        // make a copy to pass
+        var parameters = new DialogParameters
         {
-            List<ShipBuildContainer> newShipList = new();
-            foreach (string shipIndex in newIndexes)
-            {
-                var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-                var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
-                    
-                var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null, false);
-                    
-                newShipList.Add(shipContainer);
-                shipBuildList.Add(shipContainer);
-            }
-
-            await AddShipsBatchAsync(newShipList);
+            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipBuildList.ToList()},
+        };
+        
+        var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
+        
+        if (!result.Cancelled && result.Data is List<ShipBuildContainer> newShipList)
+        {
+            counter = 0;
+            shipBuildList = newShipList;
+        
+            await ChartJsInterop.RemoveAllData(new(){AccelerationId});
+            await AddShipsBatchAsync(shipBuildList);
         }
+    }
+
+    private async Task ConfigureBuilds()
+    {
+        var result = await buildConfigurationHelper.ShowDialogAsync();
+        if (result is not null)
+        {
+            counter = 0;
+            shipBuildList = result.ToList();
+            await ChartJsInterop.RemoveAllData(new(){AccelerationId});
+            await AddShipsBatchAsync(shipBuildList);
+        }
+    }
+
+    private async Task UpdateThrottle(int index, int value)
+    {
+        throttleList[index] = value;
+        switch (index)
+        {
+            case 0:
+                firstGear = value;
+                break;
+            case 1:
+                secondGear = value;
+                break;
+            case 2:
+                thirdGear = value;
+                break;
+        }
+        await ChartJsInterop.RemoveAllData(new(){AccelerationId});
+        await AddShipsBatchAsync(shipBuildList);
     }
 }

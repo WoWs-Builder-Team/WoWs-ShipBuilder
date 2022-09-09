@@ -69,20 +69,41 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add/remove ships.
+        /// </summary>
+        public static string AccelerationChart_AddRemoveShip {
+            get {
+                return ResourceManager.GetString("AccelerationChart_AddRemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change builds.
+        /// </summary>
+        public static string AccelerationChart_ChangeBuilds {
+            get {
+                return ResourceManager.GetString("AccelerationChart_ChangeBuilds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After selecting a ship, you have the option to select the 3 gears that will be used in the chart.
+        ///The chart will go in the order Initial gear --&gt; Middle gear --&gt; Final Gear, switching to the next one only after reaching the maximum speed of the current gear.
+        ///Setting two gear to the same value will merge them into one.
+        ///You can use the Change builds button to manage the builds of single ships. You can also add a ship multiple times, in case you want to compare different builds..
+        /// </summary>
+        public static string AccelerationChart_Explanation {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string AccelerationChart_Time {
             get {
                 return ResourceManager.GetString("AccelerationChart_Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AccelerationGraph_Acceleration {
-            get {
-                return ResourceManager.GetString("AccelerationGraph_Acceleration", resourceCulture);
             }
         }
         
