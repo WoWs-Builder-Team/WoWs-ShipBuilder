@@ -27,10 +27,10 @@
 
 <MudText Class="mt-2 mx-4" Style="white-space: break-spaces">@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
 <MudStack Row Class="mt-2 mx-4">
-    <MudButton OnClick="AddShips" Variant="Variant.Filled" Color="Color.Primary">
+    <MudButton OnClick="AddAndRemoveShips" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)).Localization
     </MudButton>
-    <MudButton Disabled="@(shipBuildList.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
+    <MudButton Disabled="@(shipBuildCache.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_ChangeBuilds)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
@@ -64,7 +64,7 @@
     <canvas id="@AccelerationId"></canvas>
 </div>
 
-<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildList" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@containerList" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
 @code
 {
@@ -76,7 +76,9 @@
 
     private Breakpoint Breakpoint {get; set; }
 
-    private List<ShipBuildContainer> shipBuildList = new();
+    private readonly Dictionary<int, ShipBuildContainer> shipBuildCache = new();
+
+    private List<ShipBuildContainer> containerList = new();
 
     private readonly List<int> throttleList = new() {AccelerationHelper.Zero, AccelerationHelper.FullAhead, AccelerationHelper.FullReverse};
 
@@ -117,15 +119,16 @@
                     
                     var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null);
                     
-                    shipBuildList.Add(shipContainer);
+                    shipBuildCache.Add(counter, shipContainer);
+                    counter++;
                 }
             }
             
-            await AddShipsBatchAsync(shipBuildList);
+            await AddShipsBatchAsync(shipBuildCache);
         }
     }
-    
-    private async Task AddShipsBatchAsync(List<ShipBuildContainer> shipList)
+
+    private async Task AddShipsBatchAsync(Dictionary<int, ShipBuildContainer> shipList)
     {
         List<string> chartIds = new()
         {
@@ -136,10 +139,9 @@
         List<int> indexes = new();
         List<string> labelNames = new();
 
-        foreach (var shipWrapper in shipList)
+        foreach (var (chartShipCounter, shipWrapper) in shipList)
         {
-            indexes.Add(counter);
-            counter++;
+            indexes.Add(chartShipCounter);
 
             var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
             if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
@@ -147,15 +149,40 @@
                 label += " - " + shipWrapper.Build.BuildName;
             }
             labelNames.Add(label);
-            
+
             List<IEnumerable<ChartsHelper.Point>> shipData = new()
             {
                 GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList),
             };
             data.Add(shipData);
         }
-        
         await ChartJsInterop.BatchAddDataAsync(chartIds, labelNames, data, indexes);
+    }
+
+    private async Task UpdateShipsBatchAsync(Dictionary<int, ShipBuildContainer> shipList, bool replaceLabel = false, List<string>? oldLabels = null)
+    {
+        List<IEnumerable<ChartsHelper.Point>> data = new();
+        List<string> labelNames = new();
+
+        foreach (var (chartShipCounter, shipWrapper) in shipList)
+        {
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
+            if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
+            {
+                label += " - " + shipWrapper.Build.BuildName;
+            }
+            labelNames.Add(label);
+            
+            data.Add(GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
+        }
+        if (replaceLabel && oldLabels is not null)
+        {
+            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, oldLabels, data , labelNames);
+        }
+        else
+        {
+            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, labelNames, data , labelNames);
+        }
     }
     
     private async Task SetupChartAsync()
@@ -196,7 +223,7 @@
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
 
-    private async Task AddShips()
+    private async Task AddAndRemoveShips()
     {
         var options = new DialogOptions
         {
@@ -205,32 +232,82 @@
             DisableBackdropClick = false,
         };
         // make a copy to pass
+        var shipList = shipBuildCache.Select(x => x.Value).ToList();
         var parameters = new DialogParameters
         {
-            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipBuildList.ToList()},
+            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList},
         };
         
         var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
         
         if (!result.Cancelled && result.Data is List<ShipBuildContainer> newShipList)
         {
-            counter = 0;
-            shipBuildList = newShipList;
-        
-            await ChartJsInterop.RemoveAllData(new(){AccelerationId});
-            await AddShipsBatchAsync(shipBuildList);
+            //first remove the removed ships
+            var shipsToRemove = shipBuildCache.Where(cacheContainer => !newShipList.Exists(newListContainer => cacheContainer.Value.Id.Equals(newListContainer.Id))).ToList();
+            var labelsToRemove = new List<string>();
+            foreach (var (shipCounter, shipContainer) in shipsToRemove)
+            {
+                var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
+                if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
+                {
+                    label += " - " + shipContainer.Build.BuildName;
+                }
+                labelsToRemove.Add(label);
+                shipBuildCache.Remove(shipCounter);
+                containerList.Remove(shipContainer);
+            }
+            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, labelsToRemove);
+
+            //then add the new ones 
+            Dictionary<int, ShipBuildContainer> shipsToAdd = new();
+            foreach (var shipBuildContainer in newShipList)
+            {
+                if (!shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id)))
+                {
+                    shipsToAdd.Add(counter, shipBuildContainer);
+                    shipBuildCache.Add(counter, shipBuildContainer);
+                    containerList.Add(shipBuildContainer);
+                    counter++;
+                }
+            }
+            await AddShipsBatchAsync(shipsToAdd);
         }
     }
 
     private async Task ConfigureBuilds()
     {
+        containerList = shipBuildCache.Select(x => x.Value).ToList();
         var result = await buildConfigurationHelper.ShowDialogAsync();
+        
         if (result is not null)
         {
+            // TODO uncomment when Build object rework is done
+            // var changedShips = GetAllChangedBuildShips(result);
+            // List<string> oldLabels = new();
+            // foreach (var (chartShipCounter, newContainer) in changedShips)
+            // {
+            //     var shipContainer = shipBuildCache[chartShipCounter];
+            //     var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
+            //     if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
+            //     {
+            //         label += " - " + shipContainer.Build.BuildName;
+            //     }
+            //     oldLabels.Add(label);
+            //     shipBuildCache[chartShipCounter] = newContainer;
+            // }
+            // await UpdateShipsBatchAsync(changedShips, true, oldLabels);
             counter = 0;
-            shipBuildList = result.ToList();
+            shipBuildCache.Clear();
+            containerList.Clear();
+            var shipBuildList = result.ToList();
+            foreach (var container in shipBuildList)
+            {
+                shipBuildCache.Add(counter, container);
+                containerList.Add(container);
+                counter++;
+            }
             await ChartJsInterop.RemoveAllData(new(){AccelerationId});
-            await AddShipsBatchAsync(shipBuildList);
+            await AddShipsBatchAsync(shipBuildCache);
         }
     }
 
@@ -249,7 +326,24 @@
                 thirdGear = value;
                 break;
         }
-        await ChartJsInterop.RemoveAllData(new(){AccelerationId});
-        await AddShipsBatchAsync(shipBuildList);
+        await UpdateShipsBatchAsync(shipBuildCache);
+    }
+
+    private Dictionary<int, ShipBuildContainer> GetAllChangedBuildShips(IEnumerable<ShipBuildContainer> newList)
+    {
+        Dictionary<int, ShipBuildContainer> filteredList = new();
+        foreach (var newContainer in newList)
+        {
+            var oldContainer = shipBuildCache.Single(container => container.Value.Id.Equals(newContainer.Id));
+            if (oldContainer.Value.Build is null && newContainer.Build is not null)
+            {
+                filteredList.Add(oldContainer.Key, newContainer);
+            }
+            else if (oldContainer.Value.Build is not null && newContainer.Build is not null && oldContainer.Value.Build.Equals(newContainer.Build))
+            {
+                filteredList.Add(oldContainer.Key, newContainer);
+            }
+        }
+        return filteredList;
     }
 }

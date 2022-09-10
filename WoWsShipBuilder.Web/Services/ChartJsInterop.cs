@@ -45,7 +45,7 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
     }
 
-    public async Task RemoveAllData(List<string> chartId)
+    public async Task RemoveAllDataAsync(List<string> chartId)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("RemoveAllData", chartId);
@@ -54,6 +54,16 @@ public class ChartJsInterop : IAsyncDisposable
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);
+    }
+    public async Task BatchUpdateDataNewLabels(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas, newLabels);
+    }
+    public async Task RemoveAllData(List<string> chartId)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("RemoveAllData", chartId);
     }
 
     [MemberNotNull(nameof(module))]
