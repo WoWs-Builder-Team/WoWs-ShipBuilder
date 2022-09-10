@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.DataStructures;
@@ -11,6 +12,8 @@ namespace WoWsShipBuilder.Core.Builds;
 public class Build
 {
     internal const int CurrentBuildVersion = 2;
+
+    private readonly Lazy<string> hashProvider;
 
     [JsonConstructor]
     private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
@@ -25,6 +28,15 @@ public class Build
         Signals = signals;
         Consumables = consumables;
         BuildVersion = buildVersion;
+
+        hashProvider = new(() =>
+        {
+            string buildString = JsonConvert.SerializeObject(this);
+            using var sha = SHA256.Create();
+            byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
+            byte[] hash = sha.ComputeHash(textData);
+            return BitConverter.ToString(hash).Replace("-", string.Empty);
+        });
     }
 
     public Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
@@ -39,19 +51,22 @@ public class Build
 
     public Nation Nation { get; }
 
-    public List<string> Modules { get; }
+    public IReadOnlyList<string> Modules { get; }
 
-    public List<string> Upgrades { get; }
+    public IReadOnlyList<string> Upgrades { get; }
 
     public string Captain { get; }
 
-    public List<int> Skills { get; }
+    public IReadOnlyList<int> Skills { get; }
 
-    public List<string> Consumables { get; }
+    public IReadOnlyList<string> Consumables { get; }
 
-    public List<string> Signals { get; }
+    public IReadOnlyList<string> Signals { get; }
 
     public int BuildVersion { get; private set; }
+
+    [JsonIgnore]
+    public string Hash => hashProvider.Value;
 
     /// <summary>
     /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.
@@ -80,23 +95,6 @@ public class Build
         }
     }
 
-    public string CreateStringFromBuild()
-    {
-        string buildString = JsonConvert.SerializeObject(this);
-        using var output = new MemoryStream();
-        using (var gzip = new DeflateStream(output, CompressionLevel.Optimal))
-        {
-            using (var writer = new StreamWriter(gzip, System.Text.Encoding.UTF8))
-            {
-                writer.Write(buildString);
-            }
-        }
-
-        byte[] bytes = output.ToArray();
-        string encodedOutput = Convert.ToBase64String(bytes);
-        return encodedOutput;
-    }
-
     /// <summary>
     /// Helper method to upgrade a build from an old build format to the current build format.
     /// </summary>
@@ -112,5 +110,39 @@ public class Build
         }
 
         return oldBuild;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = default(HashCode);
+        hashCode.Add(Hash);
+        return hashCode.ToHashCode();
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Build build)
+        {
+            return Hash == build.Hash;
+        }
+
+        return false;
+    }
+
+    public string CreateStringFromBuild()
+    {
+        string buildString = JsonConvert.SerializeObject(this);
+        using var output = new MemoryStream();
+        using (var gzip = new DeflateStream(output, CompressionLevel.Optimal))
+        {
+            using (var writer = new StreamWriter(gzip, System.Text.Encoding.UTF8))
+            {
+                writer.Write(buildString);
+            }
+        }
+
+        byte[] bytes = output.ToArray();
+        string encodedOutput = Convert.ToBase64String(bytes);
+        return encodedOutput;
     }
 }
