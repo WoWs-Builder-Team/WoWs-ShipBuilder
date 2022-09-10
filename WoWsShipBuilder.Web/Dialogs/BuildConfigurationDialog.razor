@@ -1,10 +1,10 @@
 ﻿@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Core.BuildCreator
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @using System.Collections.Concurrent
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
@@ -277,7 +277,7 @@
     {
         try
         {
-            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString, Localizer), null));
+            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString), null));
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
