@@ -1,4 +1,4 @@
-# Update 1.5.5
+# Update 1.5.6
 
 ## Additions
 
@@ -7,8 +7,8 @@
 
 
 ## Bugfixes
-- Fixed inability to choose amount of activations for the Improved Repair Party Readiness SkillNumber
-- Update outdated consumable icons
+- Captain skills cannot be changed in some situations after switching between captains
+- Number of flak explosions is not modified by Auxiliary Armaments Modification 2 (#152)
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
