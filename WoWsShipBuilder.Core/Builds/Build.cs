@@ -13,8 +13,6 @@ public class Build
 {
     internal const int CurrentBuildVersion = 2;
 
-    private readonly Lazy<string> hashProvider;
-
     [JsonConstructor]
     private Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals, int buildVersion = CurrentBuildVersion)
     {
@@ -29,14 +27,7 @@ public class Build
         Consumables = consumables;
         BuildVersion = buildVersion;
 
-        hashProvider = new(() =>
-        {
-            string buildString = JsonConvert.SerializeObject(this);
-            using var sha = SHA256.Create();
-            byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
-            byte[] hash = sha.ComputeHash(textData);
-            return BitConverter.ToString(hash).Replace("-", string.Empty);
-        });
+        Hash = CreateHash(this);
     }
 
     public Build(string buildName, string shipIndex, Nation nation, List<string> modules, List<string> upgrades, List<string> consumables, string captain, List<int> skills, List<string> signals)
@@ -66,7 +57,7 @@ public class Build
     public int BuildVersion { get; private set; }
 
     [JsonIgnore]
-    public string Hash => hashProvider.Value;
+    public string Hash { get; }
 
     /// <summary>
     /// Create a new <see cref="Build"/> from a compressed and base64 encoded string.
@@ -110,6 +101,15 @@ public class Build
         }
 
         return oldBuild;
+    }
+
+    private static string CreateHash(Build build)
+    {
+        string buildString = JsonConvert.SerializeObject(build);
+        using var sha = SHA256.Create();
+        byte[] textData = System.Text.Encoding.UTF8.GetBytes(buildString);
+        byte[] hash = sha.ComputeHash(textData);
+        return BitConverter.ToString(hash).Replace("-", string.Empty);
     }
 
     public override int GetHashCode()
