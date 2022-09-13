@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 

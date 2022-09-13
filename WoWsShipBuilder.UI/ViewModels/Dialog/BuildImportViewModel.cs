@@ -3,8 +3,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.BuildCreator;
-using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
 using WoWsShipBuilder.ViewModels.Helper;
@@ -16,12 +15,11 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
         private readonly IFileSystem fileSystem;
 
         public BuildImportViewModel()
-            : this(new FileSystem(), DataHelper.DemoLocalizer)
+            : this(new FileSystem())
         {
         }
 
-        public BuildImportViewModel(IFileSystem fileSystem, ILocalizer localizer)
-            : base(localizer)
+        public BuildImportViewModel(IFileSystem fileSystem)
         {
             this.fileSystem = fileSystem;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
@@ -18,6 +19,8 @@ namespace WoWsShipBuilder.UI
         public static readonly IReadOnlyList<Modernization> PlaceholderBaseList = new List<Modernization> { UpgradePanelViewModelBase.PlaceholderModernization };
 
         public static ILocalizer DemoLocalizer { get; } = new DemoLocalizerImpl();
+
+        public static Build CreateTestBuild(string name = "test-build") => new(name, null!, Nation.Common, null!, null!, null!, null!, null!, null!);
 
         public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation, ServerType serverType = ServerType.Dev1)
         {
