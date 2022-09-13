@@ -566,7 +566,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             return SelectedCaptain!.Index;
         }
 
-        public void LoadBuild(List<int> selectedSkills, string? captainIndex)
+        public void LoadBuild(IEnumerable<int> selectedSkills, string? captainIndex)
         {
             // this check is purely for backward compatibility
             if (captainIndex != null)

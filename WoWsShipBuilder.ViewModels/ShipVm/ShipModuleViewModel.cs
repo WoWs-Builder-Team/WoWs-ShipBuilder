@@ -3,14 +3,14 @@ using System.Linq;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class ShipModuleViewModel : ViewModelBase, IBuildStorable
+    public class ShipModuleViewModel : ViewModelBase, IBuildComponentProvider
     {
         #region Static Fields and Constants
 

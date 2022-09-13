@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace WoWsShipBuilder.Core.BuildCreator;
+namespace WoWsShipBuilder.Core.Builds;
 
-public interface IBuildStorable
+/// <summary>
+/// An interface used to mark classes that can provide components of a build.
+/// Build components are lists of selected modules, upgrades, skills, etc.
+/// </summary>
+public interface IBuildComponentProvider
 {
     /// <summary>
     /// Loads data from a stored build into the current instance.

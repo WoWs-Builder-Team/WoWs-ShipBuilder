@@ -1,8 +1,6 @@
 ﻿using System.IO.Abstractions;
 using System.Reactive.Linq;
-using Splat;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
@@ -36,6 +34,6 @@ namespace WoWsShipBuilder.UI.ViewModels
             await ShowSettingsInteraction.Handle(new SettingsWindowViewModel(fileSystem, ClipboardService, AppDataService));
         }
 
-        protected override BuildImportViewModelBase CreateImportViewModel() => new BuildImportViewModel(fileSystem, Locator.Current.GetServiceSafe<ILocalizer>());
+        protected override BuildImportViewModelBase CreateImportViewModel() => new BuildImportViewModel(fileSystem);
     }
 }

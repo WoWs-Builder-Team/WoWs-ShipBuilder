@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Services
