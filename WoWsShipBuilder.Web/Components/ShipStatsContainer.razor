@@ -12,6 +12,7 @@
 @using System.Net
 @using System.Diagnostics
 @using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
 
 @inject IHostEnvironment Environment
@@ -23,6 +24,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavManager
 @inject IClipboardService ClipboardService
+@inject ILinkShortener LinkShortener
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -260,9 +262,10 @@
         if (!result.Cancelled && result.Data is string buildName)
         {
             var build = ViewModel!.CreateBuild(buildName);
-            var buildString = build.CreateStringFromBuild();
-            var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-            await ClipboardService.SetTextAsync(buildUrl);
+            // var buildString = build.CreateStringFromBuild();
+            // var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+            var shorteningResult = await LinkShortener.CreateLinkForBuild(build);
+            await ClipboardService.SetTextAsync(shorteningResult.Link);
         }
     }
 }
