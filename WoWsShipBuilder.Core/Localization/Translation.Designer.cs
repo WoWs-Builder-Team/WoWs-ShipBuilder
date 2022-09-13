@@ -87,6 +87,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add custom data.
+        /// </summary>
+        public static string AccelerationChart_CustomDataTitle {
+            get {
+                return ResourceManager.GetString("AccelerationChart_CustomDataTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceleration chart explanation.
         /// </summary>
         public static string AccelerationChart_Explanation {
@@ -1953,6 +1962,33 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine backward forsage.
+        /// </summary>
+        public static string ShipStats_BackwardEngineForsag {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineForsag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backward forsage max speed.
+        /// </summary>
+        public static string ShipStats_BackwardEngineForsagMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineForsagMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine backward up time.
+        /// </summary>
+        public static string ShipStats_BackwardEngineUpTime {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineUpTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast.
         /// </summary>
         public static string ShipStats_Blast {
@@ -2316,6 +2352,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine power.
+        /// </summary>
+        public static string ShipStats_EnginePower {
+            get {
+                return ResourceManager.GetString("ShipStats_EnginePower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Radius.
         /// </summary>
         public static string ShipStats_ExplosionRadius {
@@ -2519,6 +2564,33 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_FlyAwayTime {
             get {
                 return ResourceManager.GetString("ShipStats_FlyAwayTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine forward forsage.
+        /// </summary>
+        public static string ShipStats_ForwardEngineForsag {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineForsag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forward forsage max speed.
+        /// </summary>
+        public static string ShipStats_ForwardEngineForsagMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineForsagMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine forward up time.
+        /// </summary>
+        public static string ShipStats_ForwardEngineUpTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineUpTime", resourceCulture);
             }
         }
         
@@ -3519,6 +3591,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Timings {
             get {
                 return ResourceManager.GetString("ShipStats_Timings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tonnage.
+        /// </summary>
+        public static string ShipStats_Tonnage {
+            get {
+                return ResourceManager.GetString("ShipStats_Tonnage", resourceCulture);
             }
         }
         

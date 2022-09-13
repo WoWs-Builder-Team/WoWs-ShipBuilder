@@ -24,7 +24,10 @@
                 <MudGrid>
                     <MudItem xs="12" Class="d-flex align-center" Style="justify-content: center;">
                         <MudStack AlignItems="AlignItems.End" Row="true" Justify="Justify.SpaceEvenly" Class="mt-1 mb-n1">
-                            <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                            @if (!SelectedContainer.Ship.Name.Equals("customShip"))
+                            {
+                                <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
+                            }
                             <MudText Style="font-size: x-large">
                                 @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
                             </MudText>
@@ -32,7 +35,10 @@
                                 @SelectedContainer.Ship.Tier
                             </MudText>
                             <MudIcon Icon="@Helpers.GetIconFromClass(SelectedContainer.Ship.ShipClass, SelectedContainer.Ship.ShipCategory)" Size="Size.Large" ViewBox="-1 0 24 10"/>
-                            <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                            @if (!SelectedContainer.Ship.Name.Equals("customShip"))
+                            {
+                                <MudImage Src="@GetNationFlag(SelectedContainer.Ship.ShipNation, SelectedContainer.Ship.Index)" Height="45"/>
+                            }
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">

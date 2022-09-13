@@ -1502,4 +1502,31 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Acceleration chart explanation</value>
   </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Add custom data</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Engine power</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Tonnage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Engine forward up time</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Engine backward up time</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Engine forward forsage</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Engine backward forsage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Forward forsage max speed</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Backward forsage max speed</value>
+  </data>
 </root>

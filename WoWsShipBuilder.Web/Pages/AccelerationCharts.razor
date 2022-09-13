@@ -8,7 +8,6 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
-@using DynamicData
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -22,11 +21,11 @@
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
 
 
-<MudExpansionPanel IsInitiallyExpanded Class="mt-2 mb-4 mx-4 header-border border border-solid rounded-0">
+<MudExpansionPanel IsInitiallyExpanded Class="my-4 mx-4 header-border border border-solid rounded-0">
     <TitleContent>
         <div class="d-flex">
             <MudIcon Icon="@Icons.Outlined.Info" class="mr-3"/>
-            <MudText>"@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
+            <MudText>@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
         </div>
     </TitleContent>
     <ChildContent>
@@ -39,6 +38,9 @@
     </MudButton>
     <MudButton Disabled="@(shipBuildCache.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_ChangeBuilds)).Localization
+    </MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCustomShip">
+        Add custom values
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
     <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
@@ -264,7 +266,11 @@
                 containerList.Remove(shipContainer);
             }
             await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, labelsToRemove);
-
+            if (shipBuildCache.Count == 0)
+            {
+                counter = 0;
+            }
+            
             //then add the new ones 
             Dictionary<int, ShipBuildContainer> shipsToAdd = new();
             foreach (var shipBuildContainer in newShipList)
@@ -277,6 +283,24 @@
                     counter++;
                 }
             }
+            await AddShipsBatchAsync(shipsToAdd);
+        }
+    }
+    
+    private async Task AddCustomShip()
+    {
+        var result = await DialogService.Show<CustomAccelerationDataDialog>("Custom data").Result;
+        
+        if (!result.Cancelled && result.Data is ShipBuildContainer shipBuildContainer)
+        {
+            // add the new one 
+            Dictionary<int, ShipBuildContainer> shipsToAdd = new();
+            
+            shipsToAdd.Add(counter, shipBuildContainer);
+            shipBuildCache.Add(counter, shipBuildContainer);
+            containerList.Add(shipBuildContainer);
+            counter++;
+            
             await AddShipsBatchAsync(shipsToAdd);
         }
     }
