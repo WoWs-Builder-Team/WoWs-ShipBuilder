@@ -22,7 +22,17 @@
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
 
 
-<MudText Class="mt-2 mx-4" Style="white-space: break-spaces">@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
+<MudExpansionPanel IsInitiallyExpanded Class="mt-2 mb-4 mx-4 header-border border border-solid rounded-0">
+    <TitleContent>
+        <div class="d-flex">
+            <MudIcon Icon="@Icons.Outlined.Info" class="mr-3"/>
+            <MudText>"@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
+        </div>
+    </TitleContent>
+    <ChildContent>
+        <MudText Style="white-space: break-spaces">@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_ExplanationText)).Localization</MudText>
+    </ChildContent>
+</MudExpansionPanel>
 <MudStack Row Class="mt-2 mx-4">
     <MudButton OnClick="AddAndRemoveShips" Variant="Variant.Filled" Color="Color.Primary">
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)).Localization
@@ -278,7 +288,6 @@
         
         if (result is not null)
         {
-            // TODO uncomment when Build object rework is done
             var changedShips = GetAllChangedBuildShips(result);
             List<string> oldLabels = new();
             foreach (var (chartShipCounter, newContainer) in changedShips)
@@ -294,18 +303,6 @@
                 containerList[chartShipCounter] = newContainer;
             }
             await UpdateShipsBatchAsync(changedShips, true, oldLabels);
-            // counter = 0;
-            // shipBuildCache.Clear();
-            // containerList.Clear();
-            // var shipBuildList = result.ToList();
-            // foreach (var container in shipBuildList)
-            // {
-            //     shipBuildCache.Add(counter, container);
-            //     containerList.Add(container);
-            //     counter++;
-            // }
-            // await ChartJsInterop.RemoveAllData(new(){AccelerationId});
-            // await AddShipsBatchAsync(shipBuildCache);
         }
     }
 

@@ -1493,10 +1493,13 @@ They do not have any effect on surface ships.</value>
   <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
       <value>Change builds</value>
   </data>
-  <data name="AccelerationChart_Explanation" xml:space="preserve">
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>After selecting a ship, you have the option to select the 3 gears that will be used in the chart.
 The chart will go in the order Initial gear --> Middle gear --> Final Gear, switching to the next one only after reaching the maximum speed of the current gear.
 Setting two gear to the same value will merge them into one.
 You can use the Change builds button to manage the builds of single ships. You can also add a ship multiple times, in case you want to compare different builds.</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Acceleration chart explanation</value>
   </data>
 </root>

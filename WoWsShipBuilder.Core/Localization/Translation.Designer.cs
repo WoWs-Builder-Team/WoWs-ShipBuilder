@@ -87,14 +87,23 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration chart explanation.
+        /// </summary>
+        public static string AccelerationChart_Explanation {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to After selecting a ship, you have the option to select the 3 gears that will be used in the chart.
         ///The chart will go in the order Initial gear --&gt; Middle gear --&gt; Final Gear, switching to the next one only after reaching the maximum speed of the current gear.
         ///Setting two gear to the same value will merge them into one.
         ///You can use the Change builds button to manage the builds of single ships. You can also add a ship multiple times, in case you want to compare different builds..
         /// </summary>
-        public static string AccelerationChart_Explanation {
+        public static string AccelerationChart_ExplanationText {
             get {
-                return ResourceManager.GetString("AccelerationChart_Explanation", resourceCulture);
+                return ResourceManager.GetString("AccelerationChart_ExplanationText", resourceCulture);
             }
         }
         
