@@ -1,9 +1,5 @@
 @page "/acceleration-chart"
-@using System.Collections.ObjectModel
-@using System.Collections.Specialized
-@using System.Net
 @using MudBlazor.Services
-@using WoWsShipBuilder.Core.BuildCreator
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
@@ -12,6 +8,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
+@using DynamicData
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -282,32 +279,33 @@
         if (result is not null)
         {
             // TODO uncomment when Build object rework is done
-            // var changedShips = GetAllChangedBuildShips(result);
-            // List<string> oldLabels = new();
-            // foreach (var (chartShipCounter, newContainer) in changedShips)
-            // {
-            //     var shipContainer = shipBuildCache[chartShipCounter];
-            //     var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
-            //     if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
-            //     {
-            //         label += " - " + shipContainer.Build.BuildName;
-            //     }
-            //     oldLabels.Add(label);
-            //     shipBuildCache[chartShipCounter] = newContainer;
-            // }
-            // await UpdateShipsBatchAsync(changedShips, true, oldLabels);
-            counter = 0;
-            shipBuildCache.Clear();
-            containerList.Clear();
-            var shipBuildList = result.ToList();
-            foreach (var container in shipBuildList)
+            var changedShips = GetAllChangedBuildShips(result);
+            List<string> oldLabels = new();
+            foreach (var (chartShipCounter, newContainer) in changedShips)
             {
-                shipBuildCache.Add(counter, container);
-                containerList.Add(container);
-                counter++;
+                var shipContainer = shipBuildCache[chartShipCounter];
+                var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
+                if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
+                {
+                    label += " - " + shipContainer.Build.BuildName;
+                }
+                oldLabels.Add(label);
+                shipBuildCache[chartShipCounter] = newContainer;
+                containerList[chartShipCounter] = newContainer;
             }
-            await ChartJsInterop.RemoveAllData(new(){AccelerationId});
-            await AddShipsBatchAsync(shipBuildCache);
+            await UpdateShipsBatchAsync(changedShips, true, oldLabels);
+            // counter = 0;
+            // shipBuildCache.Clear();
+            // containerList.Clear();
+            // var shipBuildList = result.ToList();
+            // foreach (var container in shipBuildList)
+            // {
+            //     shipBuildCache.Add(counter, container);
+            //     containerList.Add(container);
+            //     counter++;
+            // }
+            // await ChartJsInterop.RemoveAllData(new(){AccelerationId});
+            // await AddShipsBatchAsync(shipBuildCache);
         }
     }
 
@@ -339,7 +337,11 @@
             {
                 filteredList.Add(oldContainer.Key, newContainer);
             }
-            else if (oldContainer.Value.Build is not null && newContainer.Build is not null && oldContainer.Value.Build.Equals(newContainer.Build))
+            else if (oldContainer.Value.Build is not null && newContainer.Build is null)
+            {
+                filteredList.Add(oldContainer.Key, newContainer);
+            }
+            else if (oldContainer.Value.Build is not null && newContainer.Build is not null && !oldContainer.Value.Build.Equals(newContainer.Build))
             {
                 filteredList.Add(oldContainer.Key, newContainer);
             }
