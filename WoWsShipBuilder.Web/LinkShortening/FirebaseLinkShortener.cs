@@ -16,40 +16,55 @@ public class FirebaseLinkShortener : ILinkShortener
 
     private readonly SemaphoreSlim semaphore;
 
+    private readonly JsonSerializerOptions serializerOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true,
+    };
+
+    public bool IsAvailable { get; }
+
     public FirebaseLinkShortener(HttpClient httpClient, IOptions<LinkShorteningOptions> options, ILogger<FirebaseLinkShortener> logger)
     {
         this.httpClient = httpClient;
         this.options = options.Value;
         this.logger = logger;
         semaphore = new(this.options.RateLimit, this.options.RateLimit);
+        IsAvailable = !string.IsNullOrEmpty(this.options.ApiKey);
     }
 
     public async Task<ShorteningResult> CreateLinkForBuild(Build build)
     {
         logger.LogInformation("Creating short link for build {}", build.Hash);
-        string buildString = build.CreateStringFromBuild();
+        string buildString = build.CreateShortStringFromBuild();
         string encodedBuild = WebUtility.UrlEncode(buildString);
 
         var path = $"/ship?shipIndexes={build.ShipIndex}&build={encodedBuild}";
-        var serializerOptions = new JsonSerializerOptions
-        {
-            Converters = { new JsonStringEnumConverter() },
-            PropertyNameCaseInsensitive = true,
-        };
 
         var request = new DynamicLinkRequest(new(options.UriPrefix, options.LinkBaseUrl + path), new(LinkSuffixType.SHORT));
+        return await SendRequestAsync(request);
+    }
+
+    public async Task<ShorteningResult> CreateShortLink(string link)
+    {
+        logger.LogInformation("Creating short link for link {}", link);
+        var request = new DynamicLinkRequest(new(options.UriPrefix, link), new(LinkSuffixType.SHORT));
+        return await SendRequestAsync(request);
+    }
+
+    private async Task<ShorteningResult> SendRequestAsync(DynamicLinkRequest linkRequest)
+    {
         if (!await semaphore.WaitAsync(options.RequestTimeout))
         {
             logger.LogWarning("Timeout while waiting for dynamic link api access");
-            return new(false, request.DynamicLinkInfo.Link);
+            return new(false, linkRequest.DynamicLinkInfo.Link);
         }
 
-        var response = await httpClient.PostAsJsonAsync(options.ApiUrl + options.ApiKey, request, serializerOptions);
+        var response = await httpClient.PostAsJsonAsync(options.ApiUrl + options.ApiKey, linkRequest, serializerOptions);
 #pragma warning disable CS4014
         Task.Run(async () => await ResetLock());
 #pragma warning restore CS4014
         var result = await response.Content.ReadFromJsonAsync<DynamicLinkResponse>() ?? throw new InvalidOperationException();
-        logger.LogInformation("Successfully created short link {} for build {}", result.ShortLink, build.Hash);
         return new(true, result.ShortLink);
     }
 
