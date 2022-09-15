@@ -72,8 +72,7 @@ public static class AccelerationHelper
         double speedBoostEngineForwardForsageMaxSpeedOverride,
         double speedBoostEngineBackwardEngineForsagOverride,
         double forwardEngineForsagOverride,
-        double backwardEngineForsagOverride
-        )
+        double backwardEngineForsagOverride)
     {
         // check that only valid values are contained in throttleList
         if (throttleList.Any(throttle => throttle is > 4 or < -1))
@@ -91,7 +90,7 @@ public static class AccelerationHelper
         var fullPowerForwardTime = decimal.ToDouble(engine.ForwardEngineUpTime);
         var fullPowerBackwardTime = decimal.ToDouble(engine.BackwardEngineUpTime);
         var timeConstant = decimal.ToDouble(Constants.TimeScale);
-        var forwardEngineForsag = decimal.ToDouble(engine.ForwardEngineForsag) ;
+        var forwardEngineForsag = decimal.ToDouble(engine.ForwardEngineForsag);
         var backwardEngineForsag = decimal.ToDouble(engine.BackwardEngineForsag);
         var forwardEngineForsagMaxSpeed = decimal.ToDouble(engine.ForwardEngineForsagMaxSpeed);
         var backwardEngineForsagMaxSpeed = decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed);

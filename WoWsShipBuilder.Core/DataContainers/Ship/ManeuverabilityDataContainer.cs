@@ -62,12 +62,16 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         List<int> forward = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
         List<int> reverse = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
 
+        // disable warning cause readability. not much we can do since the parameter are a lot
+#pragma warning disable SA1117
         var timeForward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, (double)maxSpeedModifier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
-            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
+            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride,
+            speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
 
         var timeBackward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, (double)maxSpeedModifier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
-            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
-
+            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride,
+            speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
+#pragma warning restore SA1117
         var manoeuvrability = new ManeuverabilityDataContainer
         {
             ForwardMaxSpeedTime = Math.Round((decimal)timeForward, 1),
