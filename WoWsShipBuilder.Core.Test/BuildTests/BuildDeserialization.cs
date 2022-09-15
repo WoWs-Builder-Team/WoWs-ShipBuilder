@@ -91,7 +91,7 @@ public class BuildDeserialization
 
         Func<Build> action = () => Build.CreateBuildFromString(buildString);
 
-        action.Should().ThrowExactly<FormatException>().WithInnerException<FormatException>();
+        action.Should().ThrowExactly<FormatException>().WithInnerException<InvalidOperationException>();
     }
 
     [Test]
