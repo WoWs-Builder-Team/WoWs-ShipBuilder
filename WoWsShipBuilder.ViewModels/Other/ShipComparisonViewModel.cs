@@ -116,6 +116,14 @@ public class ShipComparisonViewModel : ViewModelBase
         private set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
     }
 
+    private bool hideShipsWithoutSelectedSection;
+
+    public bool HideShipsWithoutSelectedSection
+    {
+        get => hideShipsWithoutSelectedSection;
+        private set => this. RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
+    }
+
     public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings)
     {
         this.appDataService = appDataService;
@@ -156,6 +164,8 @@ public class ShipComparisonViewModel : ViewModelBase
         filteredShips.ForEach(x => FilteredShipList.Remove(x));
         FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList) && !ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
         wrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, wrappersCache)));
+
+        list = HideShipsIfNoSelectedSection(list);
 
         SetSelectAndPinAllButtonsStatus(list);
 
@@ -475,18 +485,52 @@ public class ShipComparisonViewModel : ViewModelBase
         await ChangeModulesBatch();
     }
 
+    public async Task ToggleHideShipsWithoutSelectedSection()
+    {
+        HideShipsWithoutSelectedSection = !HideShipsWithoutSelectedSection;
+        FilteredShipList = await ApplyFilters();
+    }
+
+    private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(List<ShipComparisonDataWrapper> list)
+    {
+        if (!HideShipsWithoutSelectedSection)
+        {
+            return list;
+        }
+
+        list = SelectedDataSection switch
+        {
+            DataSections.MainBattery => list.Where(x => x.ShipDataContainer.MainBatteryDataContainer is not null).ToList(),
+            DataSections.He => list.Where(x => x.HeDamage is not null).ToList(),
+            DataSections.Ap => list.Where(x => x.ApDamage is not null).ToList(),
+            DataSections.Sap => list.Where(x => x.SapDamage is not null).ToList(),
+            DataSections.Torpedo => list.Where(x => x.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToList(),
+            DataSections.RocketPlanes => list.Where(x => x.ShipDataContainer.CvAircraftDataContainer is not null).ToList(),
+            DataSections.TorpedoBombers => list.Where(x => x.ShipDataContainer.CvAircraftDataContainer is not null).ToList(),
+            DataSections.DiveBombers => list.Where(x => x.ShipDataContainer.CvAircraftDataContainer is not null).ToList(),
+            DataSections.PingerGun => list.Where(x => x.ShipDataContainer.PingerGunDataContainer is not null).ToList(),
+            DataSections.SecondaryBattery => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
+            DataSections.AntiAir => list.Where(x => x.ShipDataContainer.AntiAirDataContainer is not null).ToList(),
+            DataSections.AirStrike => list.Where(x => x.ShipDataContainer.AirstrikeDataContainer is not null).ToList(),
+            DataSections.AswStrike => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null).ToList(),
+            DataSections.DepthCharge => list.Where(x => x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
+            _ => list,
+        };
+        return list;
+    }
+
     public enum DataSections
     {
         General,
         MainBattery,
         He,
-        Sap,
         Ap,
+        Sap,
+        Torpedo,
         RocketPlanes,
         TorpedoBombers,
         DiveBombers,
         PingerGun,
-        Torpedo,
         SecondaryBattery,
         AntiAir,
         AirStrike,
