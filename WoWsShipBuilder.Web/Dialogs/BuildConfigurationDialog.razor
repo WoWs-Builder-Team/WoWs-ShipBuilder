@@ -48,12 +48,12 @@
                                 int index = i;
                                 var shipData = Ships[index];
                                 <MudListItem Value="index" OnClick="@(() => desktopTabs.ActivatePanel(index))">
-                                    <MudText>
+                                    <MudText Color="Color.Secondary">
                                         @Localizer.GetGameLocalization(Ships[index].Ship.Index).Localization
                                     </MudText>
                                     @if (!string.IsNullOrWhiteSpace(shipData.Build?.BuildName))
                                     {
-                                        <MudText Typo="Typo.body2">
+                                        <MudText Color="Color.Secondary" Typo="Typo.body2">
                                             Build: @shipData.Build.BuildName
                                         </MudText>
                                     }
@@ -162,9 +162,12 @@
                                     <div class="mt-0 mb-0">
                                         <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
                                     </div>
-                                    <div class="mt-0" style="margin-bottom: -2px">
-                                        <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
-                                    </div>
+                                    @if (shipData.Ship.ShipConsumable.Any())
+                                    {
+                                        <div class="mt-0" style="margin-bottom: -2px">
+                                            <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
+                                        </div>                                        
+                                    }
                                     @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList?.Any(module => module.Value.BurstModeAbility is not null) ?? false)))
                                     {
                                         <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
