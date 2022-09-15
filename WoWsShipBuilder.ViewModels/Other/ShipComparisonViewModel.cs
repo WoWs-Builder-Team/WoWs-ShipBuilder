@@ -15,7 +15,7 @@ namespace WoWsShipBuilder.ViewModels.Other;
 
 public class ShipComparisonViewModel : ViewModelBase
 {
-    public const string DataNotAvailable = "N/A";
+    public readonly string DataNotAvailable = "N/A";
 
     public static readonly string DefaultBuildName = "---";
 
