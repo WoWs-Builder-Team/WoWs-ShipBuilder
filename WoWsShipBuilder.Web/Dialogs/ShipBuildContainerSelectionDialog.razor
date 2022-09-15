@@ -20,7 +20,14 @@
                             <MudListItem>
                                 <MudStack Row Style="align-items: center">
                                     <MudText >
-                                        @Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization
+                                        @if(!ship.Ship.Name.Equals("customShip"))
+                                        {
+                                            @Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization
+                                        }
+                                        else
+                                        {
+                                            @ship.Ship.Index
+                                        }
                                     </MudText>
                                     @if (!string.IsNullOrWhiteSpace(ship.Build?.BuildName))
                                     {
@@ -28,7 +35,7 @@
                                             Build: @ship.Build.BuildName
                                         </MudText>
                                     }
-                                    <MudIcon  Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
+                                    <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
                                 </MudStack>
                             </MudListItem>
                         }
