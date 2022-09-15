@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
@@ -32,6 +33,16 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal TimeToSwitch { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "FirstOption")]
+        public string TorpFullSalvoDmg { get; set; } = default!;
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "SecondOption")]
+        public string AltTorpFullSalvoDmg { get; set; } = default!;
+
+        public int TorpCount { get; set; }
+
+        public string TorpLayout { get; set; } = default!;
+
         public List<TorpedoDataContainer> Torpedoes { get; set; } = new();
 
         public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
@@ -47,20 +58,24 @@ namespace WoWsShipBuilder.Core.DataContainers
             var torpedoModule = ship.TorpedoModules[torpConfiguration.Components[ComponentType.Torpedoes].First()];
             var launcher = torpedoModule.TorpedoLaunchers.First();
 
-            List<(int BarrelCount, int TorpCount, string LauncherName)> arrangementList = torpedoModule.TorpedoLaunchers
+            List<(int BarrelCount, int LauncherCount, string LauncherName)> arrangementList = torpedoModule.TorpedoLaunchers
                 .GroupBy(torpModule => torpModule.NumBarrels)
                 .Select(group => (BarrelCount: group.Key, TorpCount: group.Count(), LauncherName: group.First().Name))
                 .OrderBy(item => item.TorpCount)
                 .ToList();
 
+            var torpCount = 0;
             var arrangementString = "";
+            var torpLayout = new string[arrangementList.Count];
             var launcherNames = new List<string>();
 
             for (var i = 0; i < arrangementList.Count; i++)
             {
                 var current = arrangementList[i];
                 launcherNames.Add(current.LauncherName);
-                arrangementString += $"{current.TorpCount}x{current.BarrelCount} {{{i}}}\n";
+                arrangementString += $"{current.LauncherCount}x{current.BarrelCount} {{{i}}}\n";
+                torpLayout[i] = $"{current.LauncherCount}x{current.BarrelCount}";
+                torpCount += current.LauncherCount * current.BarrelCount;
             }
 
             var turnSpeedModifiers = modifiers.FindModifiers("GTRotationSpeed");
@@ -75,9 +90,12 @@ namespace WoWsShipBuilder.Core.DataContainers
             var talentModifiers = modifiers.FindModifiers("torpedoReloadCoeff");
             reloadSpeed = talentModifiers.Aggregate(reloadSpeed, (current, modifier) => current * (decimal)modifier);
 
-            string torpedoArea = $"{launcher.TorpedoAngles[0]} - {launcher.TorpedoAngles[1]}";
+            string torpedoArea = $"{launcher.TorpedoAngles[0]} - {Math.Round(launcher.TorpedoAngles[1], 1)}";
 
             var torpedoes = await TorpedoDataContainer.FromTorpedoName(launcher.AmmoList, modifiers, false, appDataService);
+
+            var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberGroupSeparator = "'";
 
             var torpedoArmamentDataContainer = new TorpedoArmamentDataContainer
             {
@@ -90,6 +108,10 @@ namespace WoWsShipBuilder.Core.DataContainers
                 Torpedoes = torpedoes,
                 TimeToSwitch = Math.Round(torpedoModule.TimeToChangeAmmo,  1),
                 TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
+                TorpLayout = string.Join(" + ", torpLayout),
+                TorpCount = torpCount,
+                TorpFullSalvoDmg = (torpCount * torpedoes.First().Damage).ToString("n0", nfi),
+                AltTorpFullSalvoDmg = torpedoes.Count > 1 ? (torpCount * torpedoes.Last().Damage).ToString("n0", nfi) : default!,
             };
 
             torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;

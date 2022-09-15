@@ -8,7 +8,12 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Utility
+
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.HeShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ApShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SapShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoesFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -106,6 +111,7 @@
                     }
                 </MudButtonGroup>
             </MudPaper>
+            
             <MudStack Style="width: 100%">
                 <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.SearchShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
                 @if (!string.IsNullOrEmpty(ViewModel.SearchShip))
@@ -122,14 +128,19 @@
                         </MudList>
                     </MudPaper>
                 }
+                
                 <MudStack Row>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.ShowPinnedShipsOnly, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.ShowPinnedShipsOnly, Color.Primary, Color.Secondary)" OnClick="ToggleShowPinnedShipOnly">
                         Display only pinned ships
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
-                        Use upgraded modules on ships without custom build
+                        Use upgraded modules if no build
+                    </MudButton>
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection, Color.Primary, Color.Secondary)" OnClick="@ViewModel.ToggleHideShipsWithoutSelectedSection">
+                        Hide ships without selected section
                     </MudButton>
                 </MudStack>
+                
                 <MudStack Row>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
                         @GetSelectAllButtonText()
@@ -150,12 +161,13 @@
                         Reset all builds
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
-                        Compare dispersion
+                        Compare ballistic
                     </MudButton>
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                         Compare acceleration
                     </MudButton>
                 </MudStack>
+                
                 <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
                     <MudText GutterBottom="true" Style="font-size: large">
                         Section
@@ -172,65 +184,84 @@
                 </MudPaper>
             </MudStack>
         </MudStack>
-        <MudDataGrid ID="table" T="ShipComparisonDataWrapper" Items="@ViewModel.GetShipsToBeDisplayedList()"  Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize QuickFilter="Search" ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+        
+        <MudDataGrid ID="table" T="ShipComparisonDataWrapper" Items="@ViewModel.GetShipsToBeDisplayedList()" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize QuickFilter="Search" ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+            
             <ToolBarContent>
                 <MudTextField @bind-Value="ViewModel.SearchString" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
                 <div style="width: 45%">
                     <MudSpacer/>
                 </div>
-                <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="new[] {25, 50, 75, 100}" Class="mt-n3"/>
+                <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="GridPagination" Class="mt-n3"/>
             </ToolBarContent>
+
             <Columns>
                 <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @context.Item.ShipTier.ToTierString()
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudImage Src="@(BaseAddress + context.Item.ShipIndex + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @LocalizeShipName(context.Item.ShipIndex)
                     </CellTemplate>
                 </Column>
+
                 <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @(string.IsNullOrEmpty(context.Item.BuildName) ? ShipComparisonViewModel.DefaultBuildName : context.Item.BuildName)
                     </CellTemplate>
                 </Column>
+
                 @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @HeShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @ApShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @TorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
+            
             <PagerContent>
-                <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="new[] {25, 50, 75, 100}"/>
+                <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="GridPagination"/>
             </PagerContent>
+            
             <NoRecordsContent>
                 <MudText>No matching ships found</MudText>
             </NoRecordsContent>
         </MudDataGrid>
+        
         <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+        
         <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
             <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
         </MudScrollToTop>
@@ -239,7 +270,9 @@
 @code {
     
      private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
-     
+
+     private static readonly int[] GridPagination = {25, 50, 75, 100};
+
      private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
      private bool isDialogOpen;
