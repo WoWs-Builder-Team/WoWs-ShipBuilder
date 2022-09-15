@@ -1,0 +1,77 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> ApShellDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Ap;
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryCaliber)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApMass is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApMass)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApDamage)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApSplashRadius is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApSplashRadius)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApSplashDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApSplashDamage)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApSpeed is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApSpeed)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApAirDrag is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApAirDrag)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApOvermatch" Title="Overmatch (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApOvermatch is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApOvermatch)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.ApRicochet?.Split(" - ").First() ?? "0"))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.ApRicochet) ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApRicochet)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApArmingThreshold" Title="Arming threshold (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApArmingThreshold is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApArmingThreshold)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApFuseTimer" Title="Fuse timer (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.ApFuseTimer is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.ApFuseTimer)
+            </CellTemplate>
+        </Column>
+    };
+}
