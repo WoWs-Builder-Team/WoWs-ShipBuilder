@@ -1,0 +1,71 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> SapShellDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Sap;
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryCaliber)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapMass is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapMass)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapDamage)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapSplashRadius is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapSplashRadius)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapSplashDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapSplashDamage)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapPenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapPenetration is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapPenetration)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapSpeed is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapSpeed)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapAirDrag is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapAirDrag)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapOvermatch" Title="Overmatch (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.SapOvermatch is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapOvermatch)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
+            <CellTemplate>
+                @(string.IsNullOrEmpty(context.Item.SapRicochet) ? ShipComparisonViewModel.DataNotAvailable : context.Item.SapRicochet)
+            </CellTemplate>
+        </Column>
+    };
+}
