@@ -15,7 +15,7 @@ namespace WoWsShipBuilder.ViewModels.Other;
 
 public class ShipComparisonViewModel : ViewModelBase
 {
-    public readonly string DataNotAvailable = "N/A";
+    public const string DataNotAvailable = "N/A";
 
     public static readonly string DefaultBuildName = "---";
 
@@ -29,10 +29,10 @@ public class ShipComparisonViewModel : ViewModelBase
 
     private List<ShipComparisonDataWrapper> filteredShipList = new();
 
-    public List<ShipComparisonDataWrapper> FilteredShipList
+    private List<ShipComparisonDataWrapper> FilteredShipList
     {
         get => filteredShipList;
-        private set => this.RaiseAndSetIfChanged(ref filteredShipList, value);
+        set => this.RaiseAndSetIfChanged(ref filteredShipList, value);
     }
 
     public List<ShipComparisonDataWrapper> SelectedShipList { get; } = new();
@@ -434,13 +434,13 @@ public class ShipComparisonViewModel : ViewModelBase
         return list.Select(x => x.Id).Contains(wrapper.Id);
     }
 
-    public bool ContainsShipIndex(string shipIndex, IEnumerable<ShipComparisonDataWrapper>? list = null)
+    private bool ContainsShipIndex(string shipIndex, IEnumerable<ShipComparisonDataWrapper>? list = null)
     {
         list ??= FilteredShipList;
         return list.Select(x => x.Ship.Index).Contains(shipIndex);
     }
 
-    public ShipComparisonDataWrapper SelectWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper>? list = null)
+    private ShipComparisonDataWrapper SelectWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper>? list = null)
     {
         list ??= FilteredShipList;
         return list.First(x => x.Id.Equals(wrapper.Id));
@@ -463,7 +463,7 @@ public class ShipComparisonViewModel : ViewModelBase
         EditBuilds(list.ToList());
     }
 
-    public async Task<ShipDataContainer> GetShipConfiguration(Ship ship)
+    private async Task<ShipDataContainer> GetShipConfiguration(Ship ship)
     {
         List<ShipUpgrade> shipConfiguration = UseUpgradedModules ?
             ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)

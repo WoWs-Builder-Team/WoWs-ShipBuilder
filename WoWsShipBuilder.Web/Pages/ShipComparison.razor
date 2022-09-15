@@ -185,7 +185,7 @@
             </MudStack>
         </MudStack>
         
-        <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" Items="@ViewModel.GetShipsToBeDisplayedList()" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize QuickFilter="Search" ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+        <MudDataGrid ID="dataGrid" T="ShipComparisonDataWrapper" Items="@ViewModel.GetShipsToBeDisplayedList()" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize QuickFilter="Search" ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
             
             <ToolBarContent>
                 <MudTextField @bind-Value="ViewModel.SearchString" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
@@ -268,9 +268,7 @@
     }
 
 @code {
-
-    private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
-    
+        
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private static readonly int[] GridPagination = {25, 50, 75, 100};
@@ -415,36 +413,5 @@
     private string LocalizeShipName(string shipIndex)
     {
         return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
-    }
-    
-    private async Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
-    {
-        IEnumerable<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
-        data = data.Where(x =>
-        {
-            if (string.IsNullOrWhiteSpace(ViewModel!.SearchString))
-                return true;
-            
-            return AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1;
-            
-        }).ToArray();
-        
-        int totalItems = data.Count();
-        
-        foreach (var column in state.SortDefinitions)
-        {
-            var sortDirection = column.Descending ? SortDirection.Descending : SortDirection.Ascending;
-
-            data = column.SortBy switch
-            {
-                "Name" => data.OrderByDirection(sortDirection, x => LocalizeShipName(x.Ship.Index)),
-                "Build" => data.OrderByDirection(sortDirection, x => x.Build?.BuildName ?? ViewModel!.DataNotAvailable),
-                _ => data,
-            };
-        }
-
-        ShipComparisonDataWrapper[] pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-        
-        return new() {TotalItems = totalItems, Items = pagedData};
     }
 }
