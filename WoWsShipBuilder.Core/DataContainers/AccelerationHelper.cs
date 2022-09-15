@@ -47,8 +47,12 @@ public static class AccelerationHelper
     /// <param name="engineBackwardUpTimeModifiers">Multipliers for the engine backwards up time to apply.</param>
     /// <param name="engineForwardForsageMaxSpeedModifier">Multipliers for the forward forsage max speed to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
     /// <param name="engineBackwardForsageMaxSpeedModifier">Multipliers the backward forsage max speed to  to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-    /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-    /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
+    /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
+    /// <param name="speedBoostEngineForwardForsageMaxSpeedOverride">Value from speed boost that override the actual engineForwardForsageMaxSpeed. Set to 0 if not present.</param>
+    /// <param name="speedBoostEngineBackwardEngineForsagOverride">Value from speed boost that override the actual engineBackwardForsageMaxSpeed. Set to 0 if not present.</param>
+    /// <param name="forwardEngineForsagOverride">Value from speed boost that override the actual forwardEngineForsag. Set to 0 if not present.</param>
+    /// <param name="backwardEngineForsagOverride">Value from speed boost that override the actual backwardEngineForsag. Set to 0 if not present.</param>
     /// <exception cref="InvalidOperationException">Thrown when the throttleList contains invalid numbers.</exception>
     /// <exception cref="OverflowException">Thrown when the calculation takes too many iterations.</exception>
     /// <returns>The data regarding acceleration.</returns>
@@ -58,13 +62,18 @@ public static class AccelerationHelper
         Engine engine,
         ShipClass shipClass,
         List<int> throttleList,
-        double speedMultiplier = 1,
-        double engineForwardUpTimeModifiers = 1,
-        double engineBackwardUpTimeModifiers = 1,
-        double engineForwardForsageMaxSpeedModifier = 1,
-        double engineBackwardForsageMaxSpeedModifier = 1,
-        double engineForwardForsagePowerModifier = 1,
-        double engineBackwardForsagePowerModifier = 1)
+        double speedMultiplier,
+        double engineForwardUpTimeModifiers,
+        double engineBackwardUpTimeModifiers,
+        double engineForwardForsageMaxSpeedModifier,
+        double engineBackwardForsageMaxSpeedModifier,
+        double engineForwardForsagePowerModifier,
+        double engineBackwardForsagePowerModifier,
+        double speedBoostEngineForwardForsageMaxSpeedOverride,
+        double speedBoostEngineBackwardEngineForsagOverride,
+        double forwardEngineForsagOverride,
+        double backwardEngineForsagOverride
+        )
     {
         // check that only valid values are contained in throttleList
         if (throttleList.Any(throttle => throttle is > 4 or < -1))
@@ -82,7 +91,7 @@ public static class AccelerationHelper
         var fullPowerForwardTime = decimal.ToDouble(engine.ForwardEngineUpTime);
         var fullPowerBackwardTime = decimal.ToDouble(engine.BackwardEngineUpTime);
         var timeConstant = decimal.ToDouble(Constants.TimeScale);
-        var forwardEngineForsag = decimal.ToDouble(engine.ForwardEngineForsag);
+        var forwardEngineForsag = decimal.ToDouble(engine.ForwardEngineForsag) ;
         var backwardEngineForsag = decimal.ToDouble(engine.BackwardEngineForsag);
         var forwardEngineForsagMaxSpeed = decimal.ToDouble(engine.ForwardEngineForsagMaxSpeed);
         var backwardEngineForsagMaxSpeed = decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed);
@@ -98,11 +107,11 @@ public static class AccelerationHelper
         var timeForward = (fullPowerForwardTime / timeConstant) * engineForwardUpTimeModifiers;
         var timeBackward = (fullPowerBackwardTime / timeConstant) * engineBackwardUpTimeModifiers;
 
-        var forsageForward = forwardEngineForsag * engineForwardForsagePowerModifier;
-        var forsageBackwards = backwardEngineForsag * engineBackwardForsagePowerModifier;
+        var forsageForward = forwardEngineForsagOverride == 0 ? forwardEngineForsag * engineForwardForsagePowerModifier : forwardEngineForsagOverride;
+        var forsageBackwards = backwardEngineForsagOverride == 0 ? backwardEngineForsag * engineBackwardForsagePowerModifier : backwardEngineForsagOverride;
 
-        var forsageForwardMaxSpeed = forwardEngineForsagMaxSpeed * engineForwardForsageMaxSpeedModifier;
-        var forsageBackwardsMaxSpeed = backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier;
+        var forsageForwardMaxSpeed = speedBoostEngineForwardForsageMaxSpeedOverride == 0 ? forwardEngineForsagMaxSpeed * engineForwardForsageMaxSpeedModifier : speedBoostEngineForwardForsageMaxSpeedOverride;
+        var forsageBackwardsMaxSpeed = speedBoostEngineBackwardEngineForsagOverride == 0 ? backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier : speedBoostEngineBackwardEngineForsagOverride;
 
         var powerIncreaseForward = Dt * maxPowerForward / timeForward;
         var powerIncreaseBackward = Dt * maxPowerBackwards / timeBackward;
