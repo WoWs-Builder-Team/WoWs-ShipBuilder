@@ -1,6 +1,4 @@
-﻿@using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.DataProvider
+﻿@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures
 @inject ILocalizer Localizer
 
@@ -77,27 +75,25 @@
     
     private readonly List<ShipClass> classList = Enum.GetValues<ShipClass>().Except(new List<ShipClass> { ShipClass.Auxiliary }).ToList();
 
-    private readonly List<string> speedBoostVariantsBlacklist = new() {"Blue_Aster", "FlyFire", "Paris", "Post_Apocalypse", "Post_Apocalypse2", "Test", "H2019"}; 
-
-    private string name = "My Mysore";
+    private string name = string.Empty;
     
-    private decimal maxSpeed = 31.5m;
+    private decimal maxSpeed;
 
-    private int enginePower = 72500;
+    private int enginePower;
 
-    private int tonnage = 11040;
+    private int tonnage;
 
-    private decimal forwardEngineUpTime = 40;
+    private decimal forwardEngineUpTime;
     
-    private decimal backwardEngineUpTime = 20;
+    private decimal backwardEngineUpTime;
         
-    private decimal forwardEngineForsag = 1.8m;
+    private decimal forwardEngineForsag;
         
-    private decimal backwardEngineForsag = 2.5m;
+    private decimal backwardEngineForsag;
         
-    private decimal forwardEngineForsagMaxSpeed = 30.225m;
+    private decimal forwardEngineForsagMaxSpeed;
         
-    private decimal backwardEngineForsagMaxSpeed = 5;
+    private decimal backwardEngineForsagMaxSpeed;
 
     private ShipClass selectedClass;
         
@@ -149,19 +145,8 @@
         upgradeInfo.ShipUpgrades.Add(engineUpgrade);
         upgradeInfo.ShipUpgrades.Add(hullUpgrade);
 
-        var speedBoosts = AppData.ConsumableList!.Where(x => x.Key.Contains("PCY007") && !speedBoostVariantsBlacklist.Contains((x.Value.ConsumableVariantName))).Select(x => x.Value).ToList();
-        List<ShipConsumable> shipConsumables = new();
-        foreach (var speedBoost in speedBoosts)
-        {
-            ShipConsumable consumable = new ShipConsumable();
-            consumable.ConsumableVariantName = speedBoost.ConsumableVariantName;
-            consumable.ConsumableName = speedBoost.Name;
-            consumable.Slot = 0;
-            shipConsumables.Add(consumable);
-        }
-
         ship.ShipUpgradeInfo = upgradeInfo;
-        ship.ShipConsumable = shipConsumables;
+        ship.ShipConsumable = new();
         
         var container = ShipBuildContainer.CreateNew(ship, null, null);
         MudDialog.Close(DialogResult.Ok(container));
