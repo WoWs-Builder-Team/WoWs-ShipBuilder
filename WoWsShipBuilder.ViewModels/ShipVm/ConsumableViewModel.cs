@@ -91,7 +91,15 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
         var modifiers = new List<(string, float)>();
         foreach (int slot in ActivatedSlots)
         {
-            modifiers.AddRange(ConsumableSlots[slot].SelectedConsumable.Modifiers.Select(entry => (entry.Key, entry.Value)));
+            var consumable = ConsumableSlots[slot].SelectedConsumable;
+            if (consumable.Name.Contains("PCY007"))
+            {
+                modifiers.AddRange(consumable.Modifiers.Select(entry => ("speedBoost_" + entry.Key, entry.Value)));
+            }
+            else
+            {
+                modifiers.AddRange(consumable.Modifiers.Select(entry => (entry.Key, entry.Value)));
+            }
         }
 
         return modifiers;
