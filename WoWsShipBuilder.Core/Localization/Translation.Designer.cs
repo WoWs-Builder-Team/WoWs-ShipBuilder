@@ -2358,6 +2358,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Option 1.
+        /// </summary>
+        public static string ShipStats_FirstOption {
+            get {
+                return ResourceManager.GetString("ShipStats_FirstOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First ping duration.
         /// </summary>
         public static string ShipStats_FirstPingDuration {
@@ -3110,6 +3119,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_SecondaryBattery {
             get {
                 return ResourceManager.GetString("ShipStats_SecondaryBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option 2.
+        /// </summary>
+        public static string ShipStats_SecondOption {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondOption", resourceCulture);
             }
         }
         

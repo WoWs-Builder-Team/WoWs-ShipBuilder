@@ -1493,4 +1493,10 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
       <value>Full salvo damage</value>
   </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>Option 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>Option 2</value>
+  </data>
 </root>
