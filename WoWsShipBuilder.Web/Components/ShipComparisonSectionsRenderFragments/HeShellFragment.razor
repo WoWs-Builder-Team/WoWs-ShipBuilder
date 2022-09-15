@@ -1,0 +1,83 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> HeShellDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.He;
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryCaliber)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeMass is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeMass)
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeDamage)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeSplashRadius is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeSplashRadius)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeSplashDamage is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeSplashDamage)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HePenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HePenetration is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HePenetration)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeSpeed is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeSpeed)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeAirDrag is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeAirDrag)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeShellFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeShellFireChance is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeShellFireChance)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSalvoFireChance" Title="Salvo fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeSalvoFireChance is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeSalvoFireChance)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeBlastRadius is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeBlastRadius)
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @(context.Item.HeBlastPenetration is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.HeBlastPenetration)
+            </CellTemplate>
+        </Column>
+    };
+}
