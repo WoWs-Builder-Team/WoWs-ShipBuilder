@@ -130,8 +130,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 .OrderBy(item => item.TurretCount)
                 .ToList();
 
-            int barrelCount = arrangementList.Select(item => item.TurretCount * item.BarrelCount).Sum();
-
+            var barrelCount = 0;
             var barrelLayout = new string[arrangementList.Count];
             var arrangementString = "";
             var turretNames = new List<string>();
@@ -142,6 +141,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 turretNames.Add(current.GunName);
                 arrangementString += $"{current.TurretCount}x{current.BarrelCount} {{{i}}}\n";
                 barrelLayout[i] = $"{current.TurretCount}x{current.BarrelCount}";
+                barrelCount += current.TurretCount * current.BarrelCount;
             }
 
             var gun = mainBattery.Guns.First();
