@@ -478,7 +478,9 @@
         return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
     }
     
+#pragma warning disable CS1998
     private async Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
+#pragma warning restore CS1998
     {
         List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
 
