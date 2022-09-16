@@ -493,8 +493,6 @@
             
             foreach (var sortDefinition in state.SortDefinitions)
             {
-                var tmp = sortDefinition.SortFunc.Invoke(data.First());
-                Console.WriteLine(tmp);
                 if (sortDefinition.SortFunc.Invoke(data.First()) is List<decimal>)
                 {
                     if (sortDefinition.Descending)
