@@ -86,17 +86,17 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal? TorpedoTimeToSwitch { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TimeToSwitch;
 
     //Torpedoes
-    public IEnumerable<string?> TorpedoFullSalvoDamage { get; } = new[] {ShipDataContainer.TorpedoArmamentDataContainer?.TorpFullSalvoDmg, ShipDataContainer.TorpedoArmamentDataContainer?.AltTorpFullSalvoDmg};
-    public List<string>? TorpedoType { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.TorpedoType).ToList();
-    public List<decimal>? TorpedoDamage { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Damage).ToList();
-    public List<decimal>? TorpedoRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Range).ToList();
-    public List<decimal>? TorpedoSpeed { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Speed).ToList();
-    public List<decimal>? TorpedoDetectRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Detectability).ToList();
-    public List<int>? TorpedoArmingDistance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ArmingDistance).ToList();
-    public List<decimal>? TorpedoReactionTime { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ReactionTime).ToList();
-    public List<decimal>? TorpedoFloodingChance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.FloodingChance).ToList();
-    public List<decimal>? TorpedoBlastRadius { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ExplosionRadius).ToList();
-    public List<decimal>? TorpedoBlastPenetration { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.SplashCoeff).ToList();
-    public List<List<ShipClass>?>? TorpedoCanHit { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.CanHitClasses).ToList();
+    public List<string?> TorpedoFullSalvoDamage { get; } = new() {ShipDataContainer.TorpedoArmamentDataContainer?.TorpFullSalvoDmg, ShipDataContainer.TorpedoArmamentDataContainer?.AltTorpFullSalvoDmg};
+    public List<string> TorpedoType { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.TorpedoType).ToList() ?? new();
+    public List<decimal> TorpedoDamage { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Damage).ToList() ?? new();
+    public List<decimal> TorpedoRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Range).ToList() ?? new();
+    public List<decimal> TorpedoSpeed { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Speed).ToList() ?? new();
+    public List<decimal> TorpedoDetectRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Detectability).ToList() ?? new();
+    public List<int> TorpedoArmingDistance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ArmingDistance).ToList() ?? new();
+    public List<decimal> TorpedoReactionTime { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ReactionTime).ToList() ?? new();
+    public List<decimal> TorpedoFloodingChance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.FloodingChance).ToList() ?? new();
+    public List<decimal> TorpedoBlastRadius { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ExplosionRadius).ToList() ?? new();
+    public List<decimal> TorpedoBlastPenetration { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.SplashCoeff).ToList() ?? new();
+    public List<List<ShipClass>?> TorpedoCanHit { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.CanHitClasses).ToList() ?? new();
 
 }

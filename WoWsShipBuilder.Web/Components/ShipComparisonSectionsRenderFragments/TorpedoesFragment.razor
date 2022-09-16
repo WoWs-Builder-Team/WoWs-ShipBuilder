@@ -63,11 +63,11 @@
         </Column>
         
         // find solution for sorting cells with multiple values. Atm it's using the first one.
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoType is null ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
             <CellTemplate>
-                @if (context.Item.TorpedoType is not null)
+                @if (context.Item.TorpedoType.Any())
                 {
-                    List<string>? torps = context.Item.TorpedoType;
+                    List<string> torps = context.Item.TorpedoType;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         string torp = torps[i];
@@ -89,11 +89,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoDamage?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoDamage is not null)
+                @if (context.Item.TorpedoDamage.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoDamage;
+                    List<decimal> torps = context.Item.TorpedoDamage;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -115,7 +115,7 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoFullSalvoDamage" Title="Full Salvo Damage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.TorpedoFullSalvoDamage.First() ?? "0", NumberStyles.AllowThousands, nfi))">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoFullSalvoDamage" Title="Full Salvo Damage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.TorpedoFullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
             <CellTemplate>
                 @{
                    List<string?> torps = context.Item.TorpedoFullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
@@ -143,11 +143,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoRange?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoRange is not null)
+                @if (context.Item.TorpedoRange.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoRange;
+                    List<decimal> torps = context.Item.TorpedoRange;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -169,11 +169,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoSpeed" Title="Speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoSpeed?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoSpeed" Title="Speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoSpeed is not null)
+                @if (context.Item.TorpedoSpeed.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoSpeed;
+                    List<decimal> torps = context.Item.TorpedoSpeed;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -195,11 +195,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoDetectRange" Title="Detection range (km)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoDetectRange?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoDetectRange" Title="Detection range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoDetectRange is not null)
+                @if (context.Item.TorpedoDetectRange.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoDetectRange;
+                    List<decimal> torps = context.Item.TorpedoDetectRange;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -221,11 +221,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoArmingDistance" Title="Arming distance (m)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoArmingDistance?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoArmingDistance" Title="Arming distance (m)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoArmingDistance is not null)
+                @if (context.Item.TorpedoArmingDistance.Any())
                 {
-                    List<int>? torps = context.Item.TorpedoArmingDistance;
+                    List<int> torps = context.Item.TorpedoArmingDistance;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -247,11 +247,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoReactionTime" Title="Reaction time (s)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoReactionTime?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoReactionTime" Title="Reaction time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoReactionTime is not null)
+                @if (context.Item.TorpedoReactionTime.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoReactionTime;
+                    List<decimal> torps = context.Item.TorpedoReactionTime;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -273,11 +273,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoFloodingChance" Title="Flooding chance (%)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoFloodingChance?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoFloodingChance" Title="Flooding chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoFloodingChance is not null)
+                @if (context.Item.TorpedoFloodingChance.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoFloodingChance;
+                    List<decimal> torps = context.Item.TorpedoFloodingChance;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -299,11 +299,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoBlastRadius?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoBlastRadius is not null)
+                @if (context.Item.TorpedoBlastRadius.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoBlastRadius;
+                    List<decimal> torps = context.Item.TorpedoBlastRadius;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -325,11 +325,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=>x.TorpedoBlastPenetration?.First() ?? 0)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.TorpedoBlastPenetration is not null)
+                @if (context.Item.TorpedoBlastPenetration.Any())
                 {
-                    List<decimal>? torps = context.Item.TorpedoBlastPenetration;
+                    List<decimal> torps = context.Item.TorpedoBlastPenetration;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         decimal torp = torps[i];
@@ -351,11 +351,11 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCanHit" Title="Can hit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoCanHit is null ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage is not null ? 5 : 0))">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCanHit" Title="Can hit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
             <CellTemplate>
-                @if (context.Item.TorpedoCanHit is not null)
+                @if (context.Item.TorpedoCanHit.Any())
                 {
-                    List<List<ShipClass>?>? torps = context.Item.TorpedoCanHit;
+                    List<List<ShipClass>?> torps = context.Item.TorpedoCanHit;
                     for (var i = 0; i < torps.Count; i++)
                     {
                         List<ShipClass>? classes = torps[i];

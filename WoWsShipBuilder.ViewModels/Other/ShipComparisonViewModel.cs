@@ -379,22 +379,15 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
     {
-        List<ShipComparisonDataWrapper> list = GetShipsToBeDisplayedList();
         if (!ContainsWrapper(wrapper, PinnedShipList))
         {
             PinnedShipList.Add(wrapper);
-            PinAllShips = list.Count == PinnedShipList.Count;
         }
         else
         {
             await RemovePinnedShip(wrapper);
-            PinAllShips = ShowPinnedShipsOnly || PinnedShipList.Count == 0 && false;
-            if (ShowPinnedShipsOnly)
-            {
-                list = FilteredShipList.Intersect(PinnedShipList).ToList();
-            }
-            SelectAllShips = list.All(x => ContainsWrapper(x, SelectedShipList));
         }
+        SetSelectAndPinAllButtonsStatus();
     }
 
     private async Task RemovePinnedShip(ShipComparisonDataWrapper wrapper)
@@ -405,22 +398,15 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public void AddSelectedShip(ShipComparisonDataWrapper wrapper)
     {
-        List<ShipComparisonDataWrapper> list = GetShipsToBeDisplayedList();
-
         if (!ContainsWrapper(wrapper, SelectedShipList))
         {
             SelectedShipList.Add(wrapper);
-            if (ShowPinnedShipsOnly)
-            {
-                list = FilteredShipList.Intersect(PinnedShipList).ToList();
-            }
-            SelectAllShips = list.All(x => ContainsWrapper(x, SelectedShipList));
         }
         else
         {
             RemoveSelectedShip(wrapper);
-            SelectAllShips = SelectedShipList.Count == 0 && false;
         }
+        SetSelectAndPinAllButtonsStatus();
     }
 
     private void RemoveSelectedShip(ShipComparisonDataWrapper wrapper)
