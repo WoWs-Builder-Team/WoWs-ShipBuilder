@@ -62,7 +62,6 @@
             </CellTemplate>
         </Column>
         
-        // find solution for sorting cells with multiple values. Atm it's using the first one.
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
             <CellTemplate>
                 @if (context.Item.TorpedoType.Any())
