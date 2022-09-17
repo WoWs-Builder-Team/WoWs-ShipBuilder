@@ -5,9 +5,11 @@
 @using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
+@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Utility
 
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
@@ -23,6 +25,7 @@
 @inject IAppDataService AppDataService
 @inject ISnackbar Snackbar
 @inject AppSettings AppSettings
+@inject IOptions<CdnOptions> CdnOptions
 
 <PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
 
@@ -120,10 +123,13 @@
                     <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
                         <MudList Clickable="true" SelectedValueChanged="AddSearchedShip">
                             <MudVirtualize IsEnabled="true" Items="@ViewModel.SearchedShips.OrderBy(x => LocalizeShipName(x.Index)).ToList()" Context="ship">
-                                <MudListItem Style="text-align: center" Value="@ship">
-                                    <MudText Color="Color.Secondary">
-                                        @(LocalizeShipName(ship.Index))
-                                    </MudText>
+                                <MudListItem Value="@ship">
+                                    <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+                                        <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="40" ObjectPosition="ObjectPosition.Center"/>
+                                        <MudText Color="Color.Secondary" Class="mt-3">
+                                            @(LocalizeShipName(ship.Index))
+                                        </MudText>
+                                    </MudStack>
                                 </MudListItem>
                             </MudVirtualize>
                         </MudList>
@@ -229,7 +235,7 @@
 
                 <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
-                        <MudImage Src="@(BaseAddress + context.Item.ShipIndex + ".png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
+                        <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                     </CellTemplate>
                 </Column>
 
@@ -271,8 +277,6 @@
 @code {
 
     private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
-    
-    private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private static readonly int[] GridPagination = {25, 50, 75, 100};
 
@@ -360,7 +364,7 @@
 
     private async Task PinAllDisplayedShips()
     {
-        ViewModel!.PinAllDisplayedShips();
+        await ViewModel!.PinAllDisplayedShips();
         await dataGrid.ReloadServerData();
     }
     private async Task ToggleShowPinnedShipOnly()
@@ -483,14 +487,14 @@
 #pragma warning restore CS1998
     {
         List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
+        
+        if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
+        {
+            data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+        }
 
         if (data.Any())
         {
-            if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
-            {
-                data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
-            }
-            
             foreach (var sortDefinition in state.SortDefinitions)
             {
                 if (sortDefinition.SortFunc.Invoke(data.First()) is List<decimal>)
