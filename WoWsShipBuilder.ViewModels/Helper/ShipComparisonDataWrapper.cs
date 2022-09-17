@@ -66,15 +66,15 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal? ApFuseTimer { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.FuseTimer;
 
     //SAP shells
-    public decimal? SapMass { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Mass;
-    public decimal? SapDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Damage;
-    public decimal? SapSplashRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.SplashRadius;
-    public decimal? SapSplashDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.SplashDmg;
-    public decimal? SapPenetration { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Penetration;
-    public decimal? SapSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.ShellVelocity;
-    public decimal? SapAirDrag { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.AirDrag;
-    public decimal? SapOvermatch { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Overmatch;
-    public string? SapRicochet { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.RicochetAngles;
+    public decimal? SapMass { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Mass;
+    public decimal? SapDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Damage;
+    public decimal? SapSplashRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.SplashRadius;
+    public decimal? SapSplashDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.SplashDmg;
+    public decimal? SapPenetration { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Penetration;
+    public decimal? SapSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.ShellVelocity;
+    public decimal? SapAirDrag { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.AirDrag;
+    public decimal? SapOvermatch { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Overmatch;
+    public string? SapRicochet { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.RicochetAngles;
 
     //TorpLaunchers
     public int? TorpedoCount { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TorpCount;
@@ -99,4 +99,28 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public List<decimal> TorpedoBlastPenetration { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.SplashCoeff).ToList() ?? new();
     public List<List<ShipClass>?> TorpedoCanHit { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.CanHitClasses).ToList() ?? new();
 
+    //Secondaries
+    public List<decimal> SecondaryBatteryCaliber { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.GunCaliber).ToList() ?? new();
+    public List<int> SecondaryBatteryBarrelCount { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.BarrelsCount).ToList() ?? new();
+    public List<string> SecondaryBatteryBarrelsLayout { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.BarrelsLayout).ToList() ?? new();
+    public decimal? SecondaryBatteryRange { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Range).First();
+    public List<decimal> SecondaryBatteryRoF { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.RoF).ToList() ?? new();
+    public List<string> SecondaryBatteryDpm { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.TheoreticalDpm).ToList() ?? new();
+    public List<decimal> SecondaryBatteryFpm { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.PotentialFpm).ToList() ?? new();
+    public decimal? SecondaryBatterySigma { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Sigma).First();
+
+    //Secondary shells
+    public List<string?> SecondaryType { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Type).ToList() ?? new();
+    public List<decimal?> SecondaryMass { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Mass).ToList() ?? new();
+    public List<decimal?> SecondaryDamage { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Damage).ToList() ?? new();
+    public List<decimal?> SecondarySplashRadius { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashRadius).ToList() ?? new();
+    public List<decimal?> SecondarySplashDamage { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashDmg).ToList() ?? new();
+    public List<int?> SecondaryPenetration { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Penetration).ToList() ?? new();
+    public List<decimal?> SecondarySpeed { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ShellVelocity).ToList() ?? new();
+    public List<decimal?> SecondaryAirDrag { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.AirDrag).ToList() ?? new();
+    public List<decimal?> SecondaryHeShellFireChance { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ShellFireChance).ToList() ?? new();
+    public List<decimal?> SecondaryHeBlastRadius { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ExplosionRadius).ToList() ?? new();
+    public List<decimal?> SecondaryHeBlastPenetration { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashCoeff).ToList() ?? new();
+    public List<decimal?> SecondarySapOvermatch { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Overmatch).ToList() ?? new();
+    public List<string?> SecondarySapRicochet { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.RicochetAngles).ToList() ?? new();
 }
