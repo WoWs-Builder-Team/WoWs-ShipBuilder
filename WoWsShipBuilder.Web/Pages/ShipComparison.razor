@@ -17,6 +17,7 @@
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ApShellFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SapShellFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -143,7 +144,7 @@
                     <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
                         Use upgraded modules if no build
                     </MudButton>
-                    <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection, Color.Primary, Color.Secondary)" OnClick="ToggleHideShipsWithoutSelectedSection">
+                    <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection, Color.Primary, Color.Secondary)" OnClick="ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly">
                         Hide ships without selected section
                     </MudButton>
                 </MudStack>
@@ -183,7 +184,7 @@
                         @foreach (var dataSection in Enum.GetValues(typeof(ShipComparisonViewModel.DataSections)).Cast<ShipComparisonViewModel.DataSections>())
                         {
                             bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
-                            <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ViewModel.ToggleDataSection(dataSection))">
+                            <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleDataSection(dataSection))">
                                 @dataSection.ToString()
                             </MudButton>
                         }
@@ -247,7 +248,18 @@
 
                 <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
-                        @(string.IsNullOrEmpty(context.Item.BuildName) ? ShipComparisonViewModel.DefaultBuildName : context.Item.BuildName)
+                        @if (!string.IsNullOrEmpty(context.Item.BuildName))
+                        {
+                            <MudText Typo="Typo.body2">
+                                @context.Item.BuildName
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
+                                @ShipComparisonViewModel.DefaultBuildName
+                            </MudText>
+                        }
                     </CellTemplate>
                 </Column>
 
@@ -256,6 +268,7 @@
                 @ApShellDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @TorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @SecondaryBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
             
             <PagerContent>
@@ -342,6 +355,12 @@
             string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.ShipIndex)));
             Snackbar.Add($"The build on < {shipNames} > has been reset without removing the last instance.", Severity.Success);
         }
+    }
+    
+    public async Task ToggleDataSection(ShipComparisonViewModel.DataSections dataSection)
+    {
+        await ViewModel!.ToggleDataSection(dataSection);
+        await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleHideShipsWithoutSelectedSection()
@@ -482,9 +501,7 @@
         return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
     }
     
-#pragma warning disable CS1998
-    private async Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
-#pragma warning restore CS1998
+    private Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
     {
         List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
         
@@ -533,6 +550,6 @@
             }
         }
 
-        return new() {TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList()};
+        return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() {TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList()});
     }
 }
