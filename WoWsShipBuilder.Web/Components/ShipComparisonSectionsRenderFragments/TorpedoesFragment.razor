@@ -20,49 +20,107 @@
         
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCount" Title="Torpedo amount" SortBy="@((x) => x.TorpedoCount ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                <MudText Typo="Typo.body2">
-                    @(context.Item.TorpedoCount is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoCount)
-                </MudText>
-                @if (context.Item.TorpedoLayout is not null)
+                @if (context.Item.TorpedoCount is not null && context.Item.TorpedoLayout is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @($"({context.Item.TorpedoLayout})")
+                        @($"{context.Item.TorpedoCount} ({context.Item.TorpedoLayout})")
                     </MudText>   
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
                 }
             </CellTemplate>
         </Column>
 
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoTurnTime" Title="Launcher 180° turn (s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @(context.Item.TorpedoTurnTime is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoTurnTime)
+                @if (context.Item.TorpedoTurnTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.TorpedoTurnTime
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
             </CellTemplate>
         </Column>
         
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoTraverseSpeed" Title="Launcher traverse speed (°/s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @(context.Item.TorpedoTraverseSpeed is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoTraverseSpeed)
+                @if (context.Item.TorpedoTraverseSpeed is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.TorpedoTraverseSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
             </CellTemplate>
         </Column>
         
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @(context.Item.TorpedoReload is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoReload)
+                @if (context.Item.TorpedoReload is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.TorpedoReload
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
             </CellTemplate>
         </Column>
         
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoSpread" Title="Spread (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[1] - x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[0] ?? -1)">
             <CellTemplate>
-                @(string.IsNullOrEmpty(context.Item.TorpedoSpread) ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoSpread)
+                @if (!string.IsNullOrEmpty(context.Item.TorpedoSpread))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.TorpedoSpread
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
             </CellTemplate>
         </Column>
         
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoTimeToSwitch" Title="Switch time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @(context.Item.TorpedoTimeToSwitch is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.TorpedoTimeToSwitch != 0 ? context.Item.TorpedoTimeToSwitch : ShipComparisonViewModel.DataNotAvailable)
+                @if (context.Item.TorpedoTimeToSwitch is not null && context.Item.TorpedoType.Count > 1)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.TorpedoTimeToSwitch
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
             <CellTemplate>
                 @if (context.Item.TorpedoType.Any())
                 {
@@ -75,13 +133,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -101,13 +159,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -120,7 +178,7 @@
                    List<string?> torps = context.Item.TorpedoFullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
                    if (torps.Count == 0)
                    {
-                       <MudText Typo="Typo.body2">
+                       <MudText Typo="Typo.body2" Color="Color.Primary">
                            @ShipComparisonViewModel.DataNotAvailable
                        </MudText>
                    }
@@ -134,7 +192,7 @@
                            </MudText>
                            if (i < torps.Count - 1)
                            {
-                               <MudDivider Light Class="my-1"/>
+                               <MudDivider Class="my-1"/>
                            }
                        }
                    }
@@ -155,13 +213,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -181,13 +239,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -207,13 +265,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -233,13 +291,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -259,13 +317,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -285,13 +343,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -311,13 +369,13 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
@@ -337,20 +395,20 @@
                         </MudText>
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCanHit" Title="Can hit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCanHit" Title="Can hit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
             <CellTemplate>
                 @if (context.Item.TorpedoCanHit.Any())
                 {
@@ -369,7 +427,7 @@
                         }
                         else if (classes is null && context.Item.TorpedoDamage is null)
                         {
-                            <MudText Typo="Typo.body2">
+                            <MudText Typo="Typo.body2" Color="Color.Primary">
                                 @ShipComparisonViewModel.DataNotAvailable
                             </MudText>
                         }
@@ -384,13 +442,13 @@
                         }
                         if (i < torps.Count - 1)
                         {
-                            <MudDivider Light Class="my-1"/>
+                            <MudDivider Class="my-1"/>
                         }
                     }
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2">
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
                         @ShipComparisonViewModel.DataNotAvailable
                     </MudText>
                 }
