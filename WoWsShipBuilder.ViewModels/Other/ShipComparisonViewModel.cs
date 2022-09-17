@@ -477,8 +477,9 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList = await ApplyFilters();
     }
 
-    private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(List<ShipComparisonDataWrapper> list)
+    private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(List<ShipComparisonDataWrapper>? list = null)
     {
+        list ??= FilteredShipList;
         if (!HideShipsWithoutSelectedSection)
         {
             return list;
@@ -528,9 +529,10 @@ public class ShipComparisonViewModel : ViewModelBase
         Consumables,
     }
 
-    public void ToggleDataSection(DataSections dataSection)
+    public async Task ToggleDataSection(DataSections dataSection)
     {
         SelectedDataSection = dataSection;
+        FilteredShipList = await ApplyFilters();
     }
 
     public void SelectAllDisplayedShips()
