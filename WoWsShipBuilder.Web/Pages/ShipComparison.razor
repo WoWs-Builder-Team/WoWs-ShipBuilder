@@ -357,7 +357,7 @@
         }
     }
     
-    public async Task ToggleDataSection(ShipComparisonViewModel.DataSections dataSection)
+    private async Task ToggleDataSection(ShipComparisonViewModel.DataSections dataSection)
     {
         await ViewModel!.ToggleDataSection(dataSection);
         await dataGrid.ReloadServerData();
