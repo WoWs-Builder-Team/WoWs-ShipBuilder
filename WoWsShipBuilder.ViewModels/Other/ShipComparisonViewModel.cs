@@ -55,9 +55,9 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new[] {ShipCategory.Disabled, ShipCategory.Clan});
 
-    private readonly List<ShipComparisonDataWrapper> wrappersCache = new();
-
     public List<Ship> SearchedShips { get; } = new();
+
+    private readonly List<ShipComparisonDataWrapper> wrappersCache = new();
 
     private string searchShip = string.Empty;
 
@@ -554,7 +554,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public void PinAllDisplayedShips()
+    public async Task PinAllDisplayedShips()
     {
         PinAllShips = !PinAllShips;
 
@@ -572,6 +572,7 @@ public class ShipComparisonViewModel : ViewModelBase
         else
         {
             list.Where(x => ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => PinnedShipList.Remove(x));
+            FilteredShipList = await ApplyFilters();
         }
     }
 
