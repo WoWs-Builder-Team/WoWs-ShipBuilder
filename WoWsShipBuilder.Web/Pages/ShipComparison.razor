@@ -18,6 +18,7 @@
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SapShellFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoesFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryShellsFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -269,6 +270,7 @@
                 @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @TorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @SecondaryBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @SecondaryBatteryShellsDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
             
             <PagerContent>

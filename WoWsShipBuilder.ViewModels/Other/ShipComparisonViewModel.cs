@@ -497,12 +497,16 @@ public class ShipComparisonViewModel : ViewModelBase
             DataSections.DiveBombers => list.Where(x => x.ShipDataContainer.CvAircraftDataContainer is not null).ToList(),
             DataSections.PingerGun => list.Where(x => x.ShipDataContainer.PingerGunDataContainer is not null).ToList(),
             DataSections.SecondaryBattery => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
+            DataSections.SecondaryBatteryShells => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
             DataSections.AntiAir => list.Where(x => x.ShipDataContainer.AntiAirDataContainer is not null).ToList(),
             DataSections.AirStrike => list.Where(x => x.ShipDataContainer.AirstrikeDataContainer is not null).ToList(),
             DataSections.AswStrike => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null).ToList(),
             DataSections.DepthCharge => list.Where(x => x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
             _ => list,
         };
+
+        list.AddRange(PinnedShipList.Where(x => !ContainsWrapper(x, list)));
+
         return list;
     }
 
@@ -514,11 +518,8 @@ public class ShipComparisonViewModel : ViewModelBase
         Ap,
         Sap,
         Torpedo,
-        RocketPlanes,
-        TorpedoBombers,
-        DiveBombers,
-        PingerGun,
         SecondaryBattery,
+        SecondaryBatteryShells,
         AntiAir,
         AirStrike,
         AswStrike,
@@ -526,6 +527,10 @@ public class ShipComparisonViewModel : ViewModelBase
         Maneuverability,
         Concealment,
         Survivability,
+        RocketPlanes,
+        TorpedoBombers,
+        DiveBombers,
+        PingerGun,
         Consumables,
     }
 

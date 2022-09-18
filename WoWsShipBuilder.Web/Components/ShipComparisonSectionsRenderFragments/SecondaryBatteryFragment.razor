@@ -86,6 +86,32 @@
             </CellTemplate>
         </Column>
         
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryReload.Any())
+                {
+                    List<decimal> items = context.Item.SecondaryBatteryReload;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryRoF" Title="ROF (shots/min)" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryRoF.Any())
