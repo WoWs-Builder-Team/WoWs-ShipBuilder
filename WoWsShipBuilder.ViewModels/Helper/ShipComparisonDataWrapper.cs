@@ -124,4 +124,17 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public List<decimal> SecondaryHeBlastPenetration { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
     public List<decimal> SecondarySapOvermatch { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Overmatch ?? 0).ToList() ?? new();
     public List<string> SecondarySapRicochet { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
+
+    //AA
+    public decimal? LongAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.Range;
+    public decimal? MediumAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.Range;
+    public decimal? ShortAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.Range;
+    public decimal? LongAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.ConstantDamage;
+    public decimal? MediumAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.ConstantDamage;
+    public decimal? ShortAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.ConstantDamage;
+    public decimal? LongAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.HitChance;
+    public decimal? MediumAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.HitChance;
+    public decimal? ShortAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.HitChance;
+    public string? Flak { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.Flak;
+    public decimal? FlakDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.FlakDamage;
 }
