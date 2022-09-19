@@ -18,7 +18,7 @@
             nfi.NumberGroupSeparator = "'";
         }
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCount" Title="Torpedo amount" SortBy="@((x) => x.TorpedoCount ?? 0)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoCount" Title="Torpedo amount" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoCount is not null && context.Item.TorpedoLayout is not null)
                 {

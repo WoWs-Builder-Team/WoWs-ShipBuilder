@@ -161,7 +161,7 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.SapRicochet))
                 {

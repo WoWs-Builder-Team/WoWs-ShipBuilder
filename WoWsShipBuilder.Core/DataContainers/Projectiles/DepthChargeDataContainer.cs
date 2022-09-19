@@ -17,7 +17,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValue)]
         public int Damage { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
         public string SinkSpeed { get; set; } = default!;
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
@@ -41,12 +41,12 @@ namespace WoWsShipBuilder.Core.DataContainers
         {
             var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
             float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current *= modifier);
-            float minSpeed = depthCharge.SinkingSpeed * (1 - depthCharge.SinkingSpeedRng);
-            float maxSpeed = depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng);
-            float minTimer = depthCharge.DetonationTimer - depthCharge.DetonationTimerRng;
-            float maxTimer = depthCharge.DetonationTimer + depthCharge.DetonationTimerRng;
-            decimal minDetDepth = (decimal)(minSpeed * minTimer) * Constants.KnotsToMps;
-            decimal maxDetDepth = (decimal)(maxSpeed * maxTimer) * Constants.KnotsToMps;
+            decimal minSpeed = (decimal)(depthCharge.SinkingSpeed * (1 - depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
+            decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
+            decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);
+            decimal maxTimer = (decimal)(depthCharge.DetonationTimer + depthCharge.DetonationTimerRng);
+            decimal minDetDepth = minSpeed * minTimer;
+            decimal maxDetDepth = maxSpeed * maxTimer;
 
             var depthChargeDataContainer = new DepthChargeDataContainer
             {
@@ -57,7 +57,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 DcSplashRadius = Math.Round((decimal)depthCharge.ExplosionRadius, 2),
                 SinkSpeed = $"{Math.Round(minSpeed, 1)} ~ {Math.Round(maxSpeed, 1)}",
                 DetonationTimer = $"{Math.Round(minTimer, 1)} ~ {Math.Round(maxTimer, 1)}",
-                DetonationDepth = $"{Math.Round(minDetDepth, 1)} ~ {Math.Round(maxDetDepth, 1)}",
+                DetonationDepth = $"{Math.Round(minDetDepth)} ~ {Math.Round(maxDetDepth)}",
                 PointsOfDmg = depthCharge.PointsOfDamage,
             };
 

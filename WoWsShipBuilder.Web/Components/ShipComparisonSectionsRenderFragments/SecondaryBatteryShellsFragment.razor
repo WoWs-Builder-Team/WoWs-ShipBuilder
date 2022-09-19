@@ -337,7 +337,7 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondarySapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.SecondarySapRicochet.Select(y => int.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondarySapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.SecondarySapRicochet.Select(y => double.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
             <CellTemplate>
                 @if (context.Item.SecondarySapRicochet.Any() && !context.Item.SecondarySapRicochet.Any(string.IsNullOrEmpty))
                 {

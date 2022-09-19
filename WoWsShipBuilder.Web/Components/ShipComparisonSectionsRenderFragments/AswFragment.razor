@@ -1,27 +1,19 @@
 ﻿@using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.ViewModels.Other
-@using System.Globalization
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> AswDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonViewModel.DataSections.MainBattery;
-        
-        NumberFormatInfo nfi = default!;
-        if (!hide)
-        {
-            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
-            nfi.NumberGroupSeparator = "'";
-        }
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Asw;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryCaliber is not null)
+                @if (context.Item.AswDcType is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryCaliber
+                        @element.localizer.GetAppLocalization(context.Item.AswDcType).Localization
                     </MudText>
                 }
                 else
@@ -33,29 +25,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryBarrelCount" Title="Barrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcUses" Title="Charges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryBarrelCount is not null && context.Item.MainBatteryBarrelsLayout is not null)
+                @if (context.Item.AswDcUses is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @($"{context.Item.MainBatteryBarrelCount} ({context.Item.MainBatteryBarrelsLayout})")
-                    </MudText>   
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.MainBatteryRange is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryRange
+                        @context.Item.AswDcUses
                     </MudText>
                 }
                 else
@@ -67,12 +42,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTurnTime" Title="180° turn (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswRange" Title="Drop Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryTurnTime is not null)
+                @if (context.Item.AswRange is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryTurnTime
+                        @context.Item.AswRange
                     </MudText>
                 }
                 else
@@ -84,12 +59,29 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryTraverseSpeed" Title="Traverse speed (°/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswMaxDropLength" Title="Max Drop Length (km)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryTraverseSpeed is not null)
+                @if (context.Item.AswMaxDropLength is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryTraverseSpeed
+                        @context.Item.AswMaxDropLength
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswPlanesInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswPlanesInSquadron is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswPlanesInSquadron
                     </MudText>
                 }
                 else
@@ -101,12 +93,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswBombsPerPlane" Title="Bombs per plane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryReload is not null)
+                @if (context.Item.AswBombsPerPlane is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryReload
+                        @context.Item.AswBombsPerPlane
                     </MudText>
                 }
                 else
@@ -118,12 +110,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryRoF" Title="ROF (shots/min)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcPerAttack" Title="Bombs in a charge" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.MainBatteryRoF is not null)
+                @if (context.Item.DcPerAttack is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryRoF
+                        @context.Item.DcPerAttack
                     </MudText>
                 }
                 else
@@ -135,12 +127,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeDpm" Title="HE DPM" SortBy="@(x => int.Parse(x.MainBatteryHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeDpm))
+                @if (context.Item.AswDcReload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryHeDpm
+                        @context.Item.AswDcReload
                     </MudText>
                 }
                 else
@@ -152,12 +144,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApDpm" Title="AP DPM" SortBy="@(x => int.Parse(x.MainBatteryApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApDpm))
+                @if (context.Item.DcDamage is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryApDpm
+                        @context.Item.DcDamage
                     </MudText>
                 }
                 else
@@ -169,12 +161,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapDpm" Title="SAP DPM" SortBy="@(x => int.Parse(x.MainBatterySapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapDpm))
+                @if (context.Item.DcFireChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySapDpm
+                        @context.Item.DcFireChance
                     </MudText>
                 }
                 else
@@ -186,12 +178,46 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryHeSalvo" Title="HE Salvo" SortBy="@(x => int.Parse(x.MainBatteryHeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFloodingChance" Title="Flood chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeSalvo))
+                @if (context.Item.DcFloodingChance is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryHeSalvo
+                        @context.Item.DcFloodingChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcSplashRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcSplashRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSinkSpeed" Title="Sink speed (m/s)" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.DcSinkSpeed))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcSinkSpeed
                     </MudText>
                 }
                 else
@@ -203,12 +229,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryApSalvo" Title="AP Salvo" SortBy="@(x => int.Parse(x.MainBatteryApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationTimer" Title="Detonation timer (s)" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryApSalvo
+                        @context.Item.DcDetonationTimer
                     </MudText>
                 }
                 else
@@ -220,49 +246,12 @@
             </CellTemplate>
         </Column>
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySapSalvo" Title="SAP Salvo" SortBy="@(x => int.Parse(x.MainBatterySapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationDepth" Title="Detonation depth (m)" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.DcDetonationDepth))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySapSalvo
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryFpm" Title="FPM (fires/min)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @(context.Item.MainBatteryFpm is null ? ShipComparisonViewModel.DataNotAvailable : context.Item.MainBatteryFpm != 0 ? context.Item.MainBatteryFpm : ShipComparisonViewModel.DataNotAvailable)
-            </CellTemplate>
-            <CellTemplate>
-                @if (context.Item.MainBatteryFpm is not null && context.Item.MainBatteryFpm != 0)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MainBatteryFpm
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatterySigma" Title="Sigma" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.MainBatterySigma is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.MainBatterySigma
+                        @context.Item.DcDetonationDepth
                     </MudText>
                 }
                 else

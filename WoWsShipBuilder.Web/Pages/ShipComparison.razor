@@ -20,6 +20,7 @@
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryShellsFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AaDefenseFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AswFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -273,6 +274,7 @@
                 @SecondaryBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @SecondaryBatteryShellsDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @AaDefenseDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @AswDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
             
             <PagerContent>

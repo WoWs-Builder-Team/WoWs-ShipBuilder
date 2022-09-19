@@ -14,7 +14,7 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
 
     public Guid Id { get; } = Guid.NewGuid();
 
-    //base columns
+    //base
     public string ShipIndex => Ship.Index;
     public Nation ShipNation => Ship.ShipNation;
     public ShipClass ShipClass => Ship.ShipClass;
@@ -137,4 +137,21 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal? ShortAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.HitChance;
     public string? Flak { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.Flak;
     public decimal? FlakDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.FlakDamage;
+
+    //ASW
+    public string? AswDcType { get; } = ShipDataContainer.AswAirstrikeDataContainer is not null ? "ShipStats_AswAirstrike" : ShipDataContainer.DepthChargeLauncherDataContainer is not null ? "DepthCharge" : null;
+    public decimal? AswRange { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumDistance;
+    public decimal? AswMaxDropLength { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumFlightDistance;
+    public decimal? AswDcReload { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.Reload ?? ShipDataContainer.AswAirstrikeDataContainer?.ReloadTime;
+    public int? AswDcUses { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.NumberOfUses ?? ShipDataContainer.AswAirstrikeDataContainer?.NumberOfUses;
+    public int? AswPlanesInSquadron { get; } = ShipDataContainer.AswAirstrikeDataContainer?.NumberDuringAttack;
+    public int? AswBombsPerPlane { get; } = ShipDataContainer.AswAirstrikeDataContainer?.BombsPerPlane;
+    public decimal? DcPerAttack { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.BombsPerCharge;
+    public decimal? DcDamage { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.Damage ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.Damage;
+    public decimal? DcFireChance { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.FireChance ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.FireChance;
+    public decimal? DcFloodingChance { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.FloodingChance ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.FloodingChance;
+    public decimal? DcSplashRadius { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DcSplashRadius ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DcSplashRadius;
+    public string? DcSinkSpeed { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.SinkSpeed ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.SinkSpeed;
+    public string? DcDetonationTimer { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DetonationTimer ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DetonationTimer;
+    public string? DcDetonationDepth { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DetonationDepth ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DetonationDepth;
 }

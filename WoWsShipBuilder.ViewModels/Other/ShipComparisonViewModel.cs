@@ -500,8 +500,7 @@ public class ShipComparisonViewModel : ViewModelBase
             DataSections.SecondaryBatteryShells => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
             DataSections.AntiAir => list.Where(x => x.ShipDataContainer.AntiAirDataContainer is not null).ToList(),
             DataSections.AirStrike => list.Where(x => x.ShipDataContainer.AirstrikeDataContainer is not null).ToList(),
-            DataSections.AswStrike => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null).ToList(),
-            DataSections.DepthCharge => list.Where(x => x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
+            DataSections.Asw => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null || x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
             _ => list,
         };
 
@@ -521,9 +520,8 @@ public class ShipComparisonViewModel : ViewModelBase
         SecondaryBattery,
         SecondaryBatteryShells,
         AntiAir,
+        Asw,
         AirStrike,
-        AswStrike,
-        DepthCharge,
         Maneuverability,
         Concealment,
         Survivability,
