@@ -162,7 +162,7 @@ export function BatchUpdateDataNewLabels(chartId, labels, newDatas, newLabels)
             return dataset.label === label;
         })
         chart.data.datasets[shipIndex].data = newDatas[index];
-        chart.data.data[shipIndex].label = newLabels[index];
+        chart.data.datasets[shipIndex].label = newLabels[index];
     });
     chart.update();
 }
