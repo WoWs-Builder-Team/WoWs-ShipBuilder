@@ -42,7 +42,6 @@ public record AntiAirDataContainer
             guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
         }
 
-        // var flakBonus = 0;
         decimal flakDamageBonus = modifiers.FindModifiers("AABubbleDamage").Aggregate(1M, (current, value) => current * (decimal)value);
         flakDamageBonus = modifiers.FindModifiers("bubbleDamageMultiplier").Aggregate(flakDamageBonus, (current, modifier) => current * (decimal)modifier);
 
@@ -83,8 +82,9 @@ public record AntiAirDataContainer
         var flakAmount = 0;
         if (longRange != null)
         {
-            IEnumerable<float> extraFlak = modifiers.FindModifiers("AAExtraBubbles");
-            flakAmount = extraFlak.Aggregate(longRange.FlakCloudsNumber, (current, modifier) => current + (int)modifier);
+            IEnumerable<float> extraFlak = modifiers.FindModifiers("AAExtraBubbles"); // extra flak explosions from captain skill
+            IEnumerable<float> extraFlakInner = modifiers.FindModifiers("AAInnerExtraBubbles"); // extra flak explosions from auxiliary armament mod 2
+            flakAmount = extraFlak.Concat(extraFlakInner).Aggregate(longRange.FlakCloudsNumber, (current, modifier) => current + (int)modifier);
         }
 
         aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);

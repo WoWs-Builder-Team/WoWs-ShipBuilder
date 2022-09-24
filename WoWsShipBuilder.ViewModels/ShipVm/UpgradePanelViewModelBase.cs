@@ -4,13 +4,13 @@ using System.Linq;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class UpgradePanelViewModelBase : ViewModelBase, IBuildStorable
+    public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
     {
         public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
 
@@ -21,7 +21,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
                 .Where(m => !(m.BlacklistedShips?.Contains(ship.Name) ?? false))
                 .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
-                .Where(m => m.AllowedNations?.Contains(ship.ShipNation) ?? false)
+                .Where(m => ship.ShipNation == Nation.Common || (m.AllowedNations?.Contains(ship.ShipNation) ?? false))
                 .Where(m => m.ShipClasses?.Contains(ship.ShipClass) ?? false)
                 .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips?.Contains(ship.Name) ?? false))
                 .ToList();

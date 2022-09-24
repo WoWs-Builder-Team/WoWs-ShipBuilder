@@ -753,9 +753,6 @@
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Pontosságváltozás manőverezés miatt</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Idő a teljes teljesítményig</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Adatok verziója:</value>
   </data>

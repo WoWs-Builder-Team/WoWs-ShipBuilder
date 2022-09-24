@@ -738,9 +738,6 @@
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Desviacion del area prevista de caida por maniobrar</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tiempo plena potencia</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Versión de datos:</value>
   </data>

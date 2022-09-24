@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 
@@ -44,7 +41,8 @@ namespace WoWsShipBuilder.ViewModels.Other
                 userDataService.LoadBuilds();
             }
 
-            var builds = new List<Build> { new(Translation.StartMenu_ImportBuild) };
+            var placeholderBuild = new Build(Translation.StartMenu_ImportBuild, string.Empty, Nation.Common, null!, null!, null!, null!, null!, null!);
+            var builds = new List<Build> { placeholderBuild };
             builds.AddRange(AppData.Builds);
             BuildList = new(builds);
             BuildList.CollectionChanged += BuildList_CollectionChanged;

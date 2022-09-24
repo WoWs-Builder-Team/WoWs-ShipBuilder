@@ -7,7 +7,8 @@
 
 
 ## Bugfixes
-
+- Captain skills cannot be changed in some situations after switching between captains
+- Number of flak explosions is not modified by Auxiliary Armaments Modification 2 (#152)
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

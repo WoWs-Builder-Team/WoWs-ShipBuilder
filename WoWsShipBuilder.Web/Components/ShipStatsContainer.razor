@@ -4,7 +4,6 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Core.BuildCreator
 @using Prometheus
 @using ReactiveUI
 @using WoWsShipBuilder.Core.Services
@@ -12,6 +11,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Net
 @using System.Diagnostics
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Web.Utility
 
 @inject IHostEnvironment Environment
@@ -169,7 +169,7 @@
         {
             if (!string.IsNullOrWhiteSpace(BuildString))
             {
-                build = Build.CreateBuildFromString(BuildString, Localizer);
+                build = Build.CreateBuildFromString(BuildString);
                 BuildString = null;
             }
 

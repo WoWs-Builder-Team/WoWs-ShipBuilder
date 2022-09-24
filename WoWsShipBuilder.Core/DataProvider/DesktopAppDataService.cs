@@ -4,7 +4,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Splat;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
@@ -248,7 +248,9 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
                 return;
             }
 
-            AppData.Builds = rawBuildList?.Select(str => Build.CreateBuildFromString(str, localizer)).ToList() ?? new List<Build>();
+            AppData.Builds = rawBuildList?
+                .Select(str => Build.CreateBuildFromString(str))
+                .ToList() ?? new List<Build>();
         }
     }
 

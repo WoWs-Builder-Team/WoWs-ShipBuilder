@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Long range aura</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Backward</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Forward</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Max speed</value>
   </data>
@@ -1480,6 +1474,63 @@ They do not have any effect on surface ships.</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Max engine boost duration</value>
+  </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Time for max speed</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Full Ahead</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Reverse</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Acceleration</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Time</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Add/remove ships</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Change builds</value>
+  </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>After selecting a ship, you have the option to select the 3 gears that will be used in the chart.
+The chart will go in the order Initial gear --> Middle gear --> Final Gear, switching to the next one only after reaching the maximum speed of the current gear.
+Setting two gear to the same value will merge them into one.
+You can use the Change builds button to manage the builds of single ships. You can also add a ship multiple times, in case you want to compare different builds.</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Acceleration chart explanation</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Add custom data</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Engine power</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Tonnage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Engine forward up time</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Engine backward up time</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Engine forward forsage</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Engine backward forsage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Forward forsage max speed</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Backward forsage max speed</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>

@@ -27,9 +27,6 @@
 </MudSelect>
 <MudButton OnClick="SaveCultureChangeAsync" Disabled="AppSettings.SelectedLanguage == selectedCulture">Save culture change</MudButton>
 <MudText>@Localizer.GetAppLocalization(nameof(Translation.Battleship))</MudText>
-<div>
-    <canvas id="test"></canvas>
-</div>
 @* <canvas style="height: 80vh; width: 25vw;position: relative; left: 50%; transform: translateX(-50%);"  id="visualizer"></canvas> *@
 @code {
 
@@ -47,59 +44,6 @@
         AppSettings.SelectedLanguage = selectedCulture;
         await AppSettingsHelper.SaveSettings(AppSettings);
         RefreshNotifierService.NotifyRefreshRequested();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            await ChartJsInterop.SetupGlobalChartConfigAsync(3);
-            await ChartJsInterop.CreateChartAsync("test", "Acceleration", "Time (s)", "Speed (knots)", "s", "kts");
-
-            var id = new List<string>();
-            id.Add("test");
-            
-            var names = new List<string>();
-
-            var (ship, _) = await LoadPreviewShip("PBSC110");
-            names.Add(Localizer.GetGameLocalization(ship.Index + "_FULL").Localization);
-            var accelerationData = GetAccelerationData(ship, 1, new());
-            var dataList = new List<IEnumerable<ChartsHelper.Point>> { accelerationData.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
-            
-            var (ship1, _) = await LoadPreviewShip("PASB110");
-            names.Add(Localizer.GetGameLocalization(ship1.Index + "_FULL").Localization);
-            var accelerationData1 = GetAccelerationData(ship1, 1, new());
-            var dataList1 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData1.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
-
-            var (ship2, _) = await LoadPreviewShip("PFSD110");
-            names.Add($"{Localizer.GetGameLocalization(ship2.Index + "_FULL").Localization}");
-
-            var modifiers = AppData.ModernizationCache!.Where(x => x.Key.Equals("PCM024") || x.Key.Equals("PCM052")).SelectMany(x => x.Value.Effect).ToList();
-
-            var accelerationData2 = GetAccelerationData(ship2, 1, new());
-            var dataList2 = new List<IEnumerable<ChartsHelper.Point>> { accelerationData2.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList() };
-
-            var containerList = new List<List<IEnumerable<ChartsHelper.Point>>> {dataList, dataList1, dataList2};
-            var indexList = new List<int> { 0, 1, 2};
-
-            await ChartJsInterop.BatchAddDataAsync(id, names, containerList, indexList);
-        }
-    }
-
-    private List<AccelerationHelper.AccelerationPoints> GetAccelerationData(Ship ship, double speedMultiplier, List<KeyValuePair<string,double>> modifiers)
-    {
-        List<int> throttleList = new() {AccelerationHelper.ThreeQuarter, AccelerationHelper.OneQuarter, AccelerationHelper.FullAhead, AccelerationHelper.Zero, AccelerationHelper.Half};
-        var engine = ship.Engines.First().Value;
-        var hull = ship.Hulls.First().Value;
-        var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineForwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var engineBackwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        return AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleList, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
-            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier).AccelerationPointsList;
     }
     
     private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(string shipIndex)
