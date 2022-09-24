@@ -1550,4 +1550,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_SecondOption" xml:space="preserve">
       <value>Option 2</value>
   </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Dispersion at max range</value>
+  </data>
 </root>

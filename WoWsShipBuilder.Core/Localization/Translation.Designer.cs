@@ -2325,6 +2325,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispersion at max range.
+        /// </summary>
+        public static string ShipStats_DispersionAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_DispersionAtMaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Formula at range X(km).
         /// </summary>
         public static string ShipStats_DispFormulaTooltip {
@@ -2627,6 +2636,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_FromSubs {
             get {
                 return ResourceManager.GetString("ShipStats_FromSubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full power time.
+        /// </summary>
+        public static string ShipStats_FullPowerTime {
+            get {
+                return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
             }
         }
         

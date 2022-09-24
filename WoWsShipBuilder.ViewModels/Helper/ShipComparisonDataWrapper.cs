@@ -1,5 +1,5 @@
 ﻿using System;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataContainers;
 
 namespace WoWsShipBuilder.ViewModels.Helper;

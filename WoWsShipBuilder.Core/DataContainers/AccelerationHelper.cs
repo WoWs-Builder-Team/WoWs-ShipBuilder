@@ -47,17 +47,12 @@ public static class AccelerationHelper
     /// <param name="engineBackwardUpTimeModifiers">Multipliers for the engine backwards up time to apply.</param>
     /// <param name="engineForwardForsageMaxSpeedModifier">Multipliers for the forward forsage max speed to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
     /// <param name="engineBackwardForsageMaxSpeedModifier">Multipliers the backward forsage max speed to  to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-<<<<<<< HEAD
-    /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-    /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-=======
     /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
     /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
     /// <param name="speedBoostEngineForwardForsageMaxSpeedOverride">Value from speed boost that override the actual engineForwardForsageMaxSpeed. Set to 0 if not present.</param>
     /// <param name="speedBoostEngineBackwardEngineForsagOverride">Value from speed boost that override the actual engineBackwardForsageMaxSpeed. Set to 0 if not present.</param>
     /// <param name="forwardEngineForsagOverride">Value from speed boost that override the actual forwardEngineForsag. Set to 0 if not present.</param>
     /// <param name="backwardEngineForsagOverride">Value from speed boost that override the actual backwardEngineForsag. Set to 0 if not present.</param>
->>>>>>> origin/feature/acceleration-calculations
     /// <exception cref="InvalidOperationException">Thrown when the throttleList contains invalid numbers.</exception>
     /// <exception cref="OverflowException">Thrown when the calculation takes too many iterations.</exception>
     /// <returns>The data regarding acceleration.</returns>
