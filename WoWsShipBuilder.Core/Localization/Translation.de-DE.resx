@@ -1456,6 +1456,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Build-URL kopieren</value>
   </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
+  </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>Schadensverteilungs-Diagramm ausblenden</value>
   </data>
