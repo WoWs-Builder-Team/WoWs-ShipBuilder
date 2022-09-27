@@ -870,9 +870,6 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>Auf Periskoptiefe</value>
   </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>Auf Einsatztiefe</value>
-  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Streuungs- und Ballistikdiagramme zeigen</value>
   </data>
