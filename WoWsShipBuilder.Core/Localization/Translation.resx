@@ -871,7 +871,7 @@
       <value>At periscope depth</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>At operating depth</value>
+      <value>At maximum depth</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Show dispersion and ballistics graphs</value>
