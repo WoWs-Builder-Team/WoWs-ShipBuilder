@@ -19,21 +19,27 @@
     <MudPaper Outlined="true" Class="pa-3">
         <MudGrid Class="align-center" Justify="Justify.Center">
             <MudItem xs="12">
-                <MudText Typo="Typo.body2" Align="Align.Center">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21 </MudText>
+                <MudText Typo="Typo.body2" Align="Align.Center">
+                    @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21
+                </MudText>
             </MudItem>
             <MudItem xs="7">
                 <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
                     @foreach (var captain in ViewModel.CaptainList!)
                     {
                         <MudSelectItem Value="captain">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">@Localizer.GetGameLocalization(captain.Name).Localization</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                @Localizer.GetGameLocalization(captain.Name).Localization
+                            </MudText>
                         </MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
             <MudItem xs="5" Style="text-align: center">
                 <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@OpenSkillDialog">
-                    <MudText Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization</MudText>
+                    <MudText Typo="Typo.body2">
+                        @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
+                    </MudText>
                 </MudButton>
             </MudItem>
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
@@ -52,7 +58,9 @@
                         <TooltipContent>
                             <MudPaper Outlined="true" Style="max-width: 300px">
                                 <MudStack Spacing="0" Class="pa-2">
-                                    <MudText Align="Align.Center" Typo="Typo.h6">@Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(skillName)).Localization</MudText>
+                                    <MudText Align="Align.Center" Typo="Typo.h6">
+                                        @Localizer.GetGameLocalization("SKILL_" + ToSnakeCase(skillName)).Localization
+                                    </MudText>
                                     @{
                                         // this is here so we can have the call to the localizer only once, to share the value between the if and the mudtext
                                         string localization = Localizer.GetGameLocalization("SKILL_DESC_" + ToSnakeCase(skillName)).Localization;
@@ -64,7 +72,7 @@
                                     @if (skill.Modifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        @foreach ((string modifierName, float modifierValue) in skill.Modifiers)
+                                        foreach ((string modifierName, float modifierValue) in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
@@ -77,12 +85,14 @@
                                     @if (skill.ConditionalModifiers is {Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
-                                        <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>@Localizer.GetGameLocalization("SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization</MudText>
-                                        @foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
+                                        <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>
+                                            @Localizer.GetGameLocalization("SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
+                                        </MudText>
+                                        foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                            @if (!string.IsNullOrWhiteSpace(modifierString))
+                                            if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }

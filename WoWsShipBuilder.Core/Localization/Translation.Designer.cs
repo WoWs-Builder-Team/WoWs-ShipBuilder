@@ -2820,6 +2820,33 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At maximum depth.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At periscope depth.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On surface.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedOnSurface {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Turning circle.
         /// </summary>
         public static string ShipStats_ManeuverabilityTurningCircle {

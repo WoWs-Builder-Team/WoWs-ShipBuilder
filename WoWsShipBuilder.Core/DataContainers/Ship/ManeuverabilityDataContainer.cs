@@ -13,6 +13,15 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "Knots")]
     public decimal ManeuverabilityMaxSpeed { get; set; }
 
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+    public decimal ManeuverabilitySubsMaxSpeedOnSurface { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+    public decimal ManeuverabilitySubsMaxSpeedAtPeriscope { get; set; }
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
+    public decimal ManeuverabilitySubsMaxSpeedAtMaxDepth { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal ManeuverabilityRudderShiftTime { get; set; }
 
@@ -72,11 +81,27 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
             engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride,
             speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
 #pragma warning restore SA1117
+
+        decimal maxSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier;
+        decimal maxSpeedOnSurface = 0;
+        decimal maxSpeedAtPeriscope = 0;
+        decimal maxSpeedAtMaxDepth = 0;
+        if (hull.MaxSpeedAtBuoyancyStateCoeff is not null)
+        {
+            maxSpeedOnSurface = maxSpeed;
+            maxSpeedAtPeriscope = maxSpeed * hull.MaxSpeedAtBuoyancyStateCoeff[SubsBuoyancyStates.Periscope];
+            maxSpeedAtMaxDepth = maxSpeed * hull.MaxSpeedAtBuoyancyStateCoeff[SubsBuoyancyStates.DeepWater] * modifiers.FindModifiers("speedCoefUW", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+            maxSpeed = 0;
+        }
+
         var manoeuvrability = new ManeuverabilityDataContainer
         {
             ForwardMaxSpeedTime = Math.Round((decimal)timeForward, 1),
             ReverseMaxSpeedTime = Math.Round((decimal)timeBackward, 1),
-            ManeuverabilityMaxSpeed = Math.Round(hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier, 2),
+            ManeuverabilityMaxSpeed = Math.Round(maxSpeed, 2),
+            ManeuverabilitySubsMaxSpeedOnSurface = Math.Round(maxSpeedOnSurface, 2),
+            ManeuverabilitySubsMaxSpeedAtPeriscope = Math.Round(maxSpeedAtPeriscope, 2),
+            ManeuverabilitySubsMaxSpeedAtMaxDepth = Math.Round(maxSpeedAtMaxDepth, 2),
             ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
             ManeuverabilityTurningCircle = hull.TurningRadius,
             RudderBlastProtection = hull.SteeringGearArmorCoeff,

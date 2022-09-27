@@ -1553,4 +1553,13 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
       <value>Dispersion at max range</value>
   </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>On surface</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>At maximum depth</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>At periscope depth</value>
+  </data>
 </root>
