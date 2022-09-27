@@ -29,6 +29,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         public decimal ConcealmentBySubPeriscope { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
+        [DataElementFiltering(false)]
         public decimal ConcealmentBySubOperating { get; set; }
 
         public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)

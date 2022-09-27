@@ -251,8 +251,13 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
-                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["updateFrequency"], (current, modifier) => current * modifier);
-                consumableModifiers["updateFrequency"] = hydrophoneUpdateFrequency;
+                if (!consumableModifiers.TryGetValue("hydrophoneUpdateFrequencyCoeff", out float baseUpdateFrequency))
+                {
+                    consumableModifiers.TryGetValue("updateFrequency", out baseUpdateFrequency);
+                }
+
+                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(baseUpdateFrequency, (current, modifier) => current * modifier);
+                consumableModifiers["hydrophoneUpdateFrequencyCoeff"] = hydrophoneUpdateFrequency;
             }
         }
         else if (usingFallback)

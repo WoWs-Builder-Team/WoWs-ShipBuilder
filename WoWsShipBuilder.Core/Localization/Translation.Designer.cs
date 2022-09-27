@@ -2163,7 +2163,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At operating depth.
+        ///   Looks up a localized string similar to At maximum depth.
         /// </summary>
         public static string ShipStats_ConcealmentBySubOperating {
             get {
