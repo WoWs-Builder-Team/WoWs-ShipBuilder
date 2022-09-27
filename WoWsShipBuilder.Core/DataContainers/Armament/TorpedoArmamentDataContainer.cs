@@ -33,6 +33,9 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal TimeToSwitch { get; set; }
 
+        [DataElementType(DataElementTypes.KeyValue)]
+        public string FullSalvoDamage { get; set; } = default!;
+
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "FullSalvoDamage", NameLocalizationKey = "FirstOption")]
         public string TorpFullSalvoDmg { get; set; } = default!;
 
@@ -97,6 +100,16 @@ namespace WoWsShipBuilder.Core.DataContainers
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = "'";
 
+            var fullSalvoDamage = (torpCount * torpedoes.First().Damage).ToString("n0", nfi);
+            string torpFullSalvoDmg = default!;
+            string altTorpFullSalvoDmg = default!;
+            if (torpedoes.Count > 1)
+            {
+                torpFullSalvoDmg = fullSalvoDamage;
+                altTorpFullSalvoDmg = (torpCount * torpedoes.Last().Damage).ToString("n0", nfi);
+                fullSalvoDamage = default!;
+            }
+
             var torpedoArmamentDataContainer = new TorpedoArmamentDataContainer
             {
                 Name = arrangementString,
@@ -110,8 +123,9 @@ namespace WoWsShipBuilder.Core.DataContainers
                 TorpedoLaunchers = torpedoModule.TorpedoLaunchers,
                 TorpLayout = string.Join(" + ", torpLayout),
                 TorpCount = torpCount,
-                TorpFullSalvoDmg = (torpCount * torpedoes.First().Damage).ToString("n0", nfi),
-                AltTorpFullSalvoDmg = torpedoes.Count > 1 ? (torpCount * torpedoes.Last().Damage).ToString("n0", nfi) : default!,
+                FullSalvoDamage = fullSalvoDamage,
+                TorpFullSalvoDmg = torpFullSalvoDmg,
+                AltTorpFullSalvoDmg = altTorpFullSalvoDmg,
             };
 
             torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;
