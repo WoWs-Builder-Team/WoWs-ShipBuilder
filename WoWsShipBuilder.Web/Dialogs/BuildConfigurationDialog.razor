@@ -44,7 +44,7 @@
                         </MudStack>
                     </MudItem>
                     <MudItem xs="2">
-                        <MudList @bind-SelectedValue="selectedListValue" Clickable Style="max-height: 75vh; overflow-y: scroll;">
+                        <MudList @bind-SelectedValue="selectedListValue" Dense Clickable Style="height: 84.6vh; overflow-y: scroll;" Class="mud-paper-outlined">
                             @for (var i = 0; i < Ships.Count; i++)
                             {
                                 int index = i;
