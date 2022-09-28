@@ -172,6 +172,17 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal? AirStrikeBlastRadius { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.ExplosionRadius;
     public decimal? AirStrikeBlastDamage { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.SplashCoeff;
 
+    //Maneuverability
+    public decimal ManeuverabilityMaxSpeed = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityMaxSpeed != 0 ? ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityMaxSpeed : ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedOnSurface;
+    public decimal ManeuverabilityMaxSpeedAtPeriscopeDepth = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedAtPeriscope;
+    public decimal ManeuverabilityMaxSpeedAtMaxDepth = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedAtMaxDepth;
+    public decimal ManeuverabilityRudderShiftTime = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityRudderShiftTime;
+    public decimal ManeuverabilityTurningCircle = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityTurningCircle;
+    public decimal ManeuverabilityTimeToFullAhead = ShipDataContainer.ManeuverabilityDataContainer.ForwardMaxSpeedTime;
+    public decimal ManeuverabilityTimeToFullReverse = ShipDataContainer.ManeuverabilityDataContainer.ReverseMaxSpeedTime;
+    public decimal ManeuverabilityRudderProtection = ShipDataContainer.ManeuverabilityDataContainer.RudderBlastProtection;
+    public decimal ManeuverabilityEngineProtection = ShipDataContainer.ManeuverabilityDataContainer.EngineBlastProtection;
+
     //Concealment
     public decimal ConcealmentFromShipsBase = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySea;
     public decimal ConcealmentFromShipsOnFire = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySeaFire;
@@ -179,5 +190,30 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal ConcealmentFromPlanesBase = ShipDataContainer.ConcealmentDataContainer.ConcealmentByAir;
     public decimal ConcealmentFromPlanesOnFire = ShipDataContainer.ConcealmentDataContainer.ConcealmentByAirFire;
     public decimal ConcealmentFromSubsPeriscopeDepth = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySubPeriscope;
-    public decimal ConcealmentFromSubsOperatingDepth = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySubOperating;
+    public decimal ConcealmentFromSubsMaxDepth = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySubOperating;
+
+    //Survivability
+    public decimal SurvivabilityShipHp = ShipDataContainer.SurvivabilityDataContainer.HitPoints;
+    public decimal SurvivabilityFireMaxAmount = ShipDataContainer.SurvivabilityDataContainer.FireAmount;
+    public decimal SurvivabilityFireDuration = ShipDataContainer.SurvivabilityDataContainer.FireDuration;
+    public decimal SurvivabilityFireDps = ShipDataContainer.SurvivabilityDataContainer.FireDPS;
+    public decimal SurvivabilityFireMaxDmg = ShipDataContainer.SurvivabilityDataContainer.FireTotalDamage;
+    public decimal SurvivabilityFireChanceReduction = ShipDataContainer.SurvivabilityDataContainer.FireReduction;
+    public decimal SurvivabilityFloodingMaxAmount = ShipDataContainer.SurvivabilityDataContainer.FloodAmount;
+    public decimal SurvivabilityFloodingDuration = ShipDataContainer.SurvivabilityDataContainer.FloodDuration;
+    public decimal SurvivabilityFloodingDps = ShipDataContainer.SurvivabilityDataContainer.FloodDPS;
+    public decimal SurvivabilityFloodingMaxDmg = ShipDataContainer.SurvivabilityDataContainer.FloodTotalDamage;
+    public decimal SurvivabilityFloodingTorpedoProtection = ShipDataContainer.SurvivabilityDataContainer.FloodTorpedoProtection;
+
+    //Sonar
+    public decimal? SonarReloadTime = ShipDataContainer.PingerGunDataContainer?.Reload;
+    public decimal? SonarTraverseSpeed = ShipDataContainer.PingerGunDataContainer?.TraverseSpeed;
+    public decimal? SonarTurnTime = ShipDataContainer.PingerGunDataContainer?.TurnTime;
+    public decimal? SonarRange = ShipDataContainer.PingerGunDataContainer?.Range;
+    public decimal? SonarWidth = ShipDataContainer.PingerGunDataContainer?.PingWidth;
+    public decimal? SonarSpeed = ShipDataContainer.PingerGunDataContainer?.PingSpeed;
+    public decimal? SonarFirstPingDuration = ShipDataContainer.PingerGunDataContainer?.FirstPingDuration;
+    public decimal? SonarSecondPingDuration = ShipDataContainer.PingerGunDataContainer?.SecondPingDuration;
+
+    //RocketPlanes
 }
