@@ -628,7 +628,7 @@
     <value>Min speed</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aircraft per attack</value>
+      <value>Per attack</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>In squadron</value>
@@ -1561,5 +1561,29 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>At periscope depth</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Rockets</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Tactical Rockets</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Dive Bombers</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Tactical Dive Bombers</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Torpedo Bombers</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Tactical Torpedo Bombers</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Skip Bombers</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Tactical Skip Bombers</value>
   </data>
 </root>
