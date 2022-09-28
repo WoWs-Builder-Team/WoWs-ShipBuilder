@@ -98,7 +98,7 @@
 
     private int thirdGear = AccelerationHelper.FullReverse;
     
-    private int counter = 0;
+    private int counter;
 
     protected override async Task OnInitializedAsync()
     {
@@ -174,7 +174,7 @@
         List<IEnumerable<ChartsHelper.Point>> data = new();
         List<string> labelNames = new();
 
-        foreach (var (chartShipCounter, shipWrapper) in shipList)
+        foreach (var (_, shipWrapper) in shipList)
         {
             var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
             if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
@@ -211,7 +211,7 @@
         await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
     }
     
-    private IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, List<(string modifierName, float ModifierValue)> modifiers, List<int> throttleList)
+    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, IReadOnlyCollection<(string modifierName, float ModifierValue)> modifiers, List<int> throttleValues)
     {
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
@@ -232,7 +232,7 @@
         var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
         
-        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleList, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
+        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleValues, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
             engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).AccelerationPointsList;
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
