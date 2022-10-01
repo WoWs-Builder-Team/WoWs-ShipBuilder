@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using NLog;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.Builds;
+using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Test.BuildTests;
 
@@ -112,5 +113,36 @@ public class BuildDeserialization
         Func<Build> action = () => Build.CreateBuildFromString(input);
 
         action.Should().ThrowExactly<FormatException>().WithInnerException<JsonSerializationException>();
+    }
+
+    [Test]
+    public void CreateBuildFromShortString_InvalidStringFormat_Exception()
+    {
+        const string input = "ABCD123;;;;";
+
+        Func<Build> action = () => Build.CreateFromShortString(input);
+
+        action.Should().Throw<InvalidOperationException>().WithMessage("Received an invalid short build string");
+    }
+
+    [Test]
+    public void CreateBuildFromShortString_EmptyBuild_Success()
+    {
+        const string buildName = "test-build";
+        const string shipIndex = "PASC020"; // Des Moines, USA, Cruiser, Tier 10
+        const string input = shipIndex + ";;;;;;;1;" + buildName;
+
+        var result = Build.CreateFromShortString(input);
+
+        result.ShipIndex.Should().Be(shipIndex);
+        result.BuildName.Should().Be(buildName);
+        result.Captain.Should().BeEmpty();
+        result.Nation.Should().Be(Nation.Usa);
+        result.Modules.Should().BeEmpty();
+        result.Upgrades.Should().BeEmpty();
+        result.Skills.Should().BeEmpty();
+        result.Consumables.Should().BeEmpty();
+        result.Signals.Should().BeEmpty();
+        result.BuildVersion.Should().Be(1);
     }
 }

@@ -100,7 +100,7 @@ public class Build
         }
     }
 
-    public static Build CreateFromShortString(string shortBuildString)
+    internal static Build CreateFromShortString(string shortBuildString)
     {
         string[] parts = shortBuildString.Split(";");
         if (parts.Length < 8)
