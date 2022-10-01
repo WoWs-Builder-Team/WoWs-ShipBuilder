@@ -870,6 +870,9 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>Na profundidade de periscópio</value>
   </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+      <value>Na profundidade de máxima</value>
+  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Mostrar gráficos de dispersão e balística</value>
   </data>
@@ -1456,6 +1459,9 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   </data>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copiar URL da build</value>
+  </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Expandir todos os blocos principais por padrão</value>
   </data>
   <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
       <value>Abrir todos os blocos de Secundárias, Armamentos de Aviões e AA por padrão</value>
