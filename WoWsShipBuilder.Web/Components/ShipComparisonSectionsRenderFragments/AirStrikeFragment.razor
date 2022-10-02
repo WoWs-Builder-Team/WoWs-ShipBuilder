@@ -1,0 +1,266 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> AirStrikeDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.AirStrike;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikePlanesHp" Title="Plane HP" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikePlanesHp is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikePlanesHp
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeRange is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeRange
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeMaxDropLength" Title="Max Drop Length (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeMaxDropLength is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeMaxDropLength
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikePlanesInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikePlanesInSquadron is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikePlanesInSquadron
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeBombsPerPlane" Title="Bombs per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeBombsPerPlane is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeBombsPerPlane
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeUses" Title="Charges" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeUses is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeUses
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeReload is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeReload
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeBombType" Title="Bomb Type" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.AirStrikeBombType))
+                {
+                    <MudText Typo="Typo.body2">
+                        @element.localizer.GetAppLocalization(context.Item.AirStrikeBombType).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeFireChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeFireChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeSplashRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeSplashRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeSplashDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeSplashDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikePenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikePenetration is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikePenetration
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeBlastRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeBlastRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AirStrikeBlastDamage" Title="Blast damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AirStrikeBlastDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AirStrikeBlastDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

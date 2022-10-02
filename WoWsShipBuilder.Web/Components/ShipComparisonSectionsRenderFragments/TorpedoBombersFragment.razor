@@ -1,0 +1,661 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> TorpedoBombersDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.TorpedoBombers;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersType" Title="Type" SortBy="@(x=> !x.TorpedoBombersType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.TorpedoBombersType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersType.Any())
+                {
+                    List<string> items = context.Item.TorpedoBombersType;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        string item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @element.localizer.GetAppLocalization($"ShipStats_{item}").Localization
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersInSquadron.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersInSquadron;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersPerAttack" Title="Planes per attack" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersPerAttack.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersPerAttack;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersOnDeck" Title="Planes on deck" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersOnDeck.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersOnDeck;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersRestorationTime" Title="Restoration time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersRestorationTime.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersRestorationTime;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersCruisingSpeed" Title="Cruising speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersCruisingSpeed.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersCruisingSpeed;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersMaxSpeed" Title="Max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersMaxSpeed.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersMaxSpeed;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersMinSpeed" Title="Min speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersMinSpeed.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersMinSpeed;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersEngineBoostDuration" Title="Engine boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersEngineBoostDuration.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersEngineBoostDuration;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersInitialBoostDuration" Title="Initial boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersInitialBoostDuration.Any(x => x != 0))
+                {
+                    List<decimal> items = context.Item.TorpedoBombersInitialBoostDuration;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersInitialBoostValue" Title="Initial boost amount (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersInitialBoostValue.Any(x => x != 0))
+                {
+                    List<decimal> items = context.Item.TorpedoBombersInitialBoostValue;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersPlaneHp" Title="Plane HP" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersPlaneHp.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersPlaneHp;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersSquadronHp" Title="Squadron HP" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersSquadronHp.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersSquadronHp;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersAttackGroupHp" Title="Attack group HP" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersAttackGroupHp.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersAttackGroupHp;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersDamageDuringAttack" Title="Damage taken while attacking (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersDamageDuringAttack.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersDamageDuringAttack;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersWeaponsPerPlane" Title="Torpedo per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersWeaponsPerPlane.Any())
+                {
+                    List<int> items = context.Item.TorpedoBombersWeaponsPerPlane;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersPreparationTime" Title="Preparation time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersPreparationTime.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersPreparationTime;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersAimingTime" Title="Aiming time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersAimingTime.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersAimingTime;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersTimeToFullyAimed" Title="To fully aimed time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersTimeToFullyAimed.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersTimeToFullyAimed;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersPostAttackInvulnerability" Title="Invulnerability time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersPostAttackInvulnerability.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersPostAttackInvulnerability;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersAttackCooldown" Title="Attack cooldown (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersAttackCooldown.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersAttackCooldown;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersConcealment" Title="Concealment (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersConcealment.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersConcealment;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersSpotting" Title="View range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersSpotting.Any())
+                {
+                    List<decimal> items = context.Item.TorpedoBombersSpotting;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersAreaChangeAiming" Title="Area change while aiming (%)" SortBy="@(x => !x.TorpedoBombersAreaChangeAiming.Any() ? double.MinValue : x.TorpedoBombersAreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersAreaChangeAiming.Any())
+                {
+                    List<string> items = context.Item.TorpedoBombersAreaChangeAiming;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        string item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="TorpedoBombersAreaChangePreparation" Title="Area change during preparation (%)" SortBy="@(x => !x.TorpedoBombersAreaChangePreparation.Any() ? double.MinValue : x.TorpedoBombersAreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.TorpedoBombersAreaChangePreparation.Any())
+                {
+                    List<string> items = context.Item.TorpedoBombersAreaChangePreparation;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        string item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

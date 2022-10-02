@@ -21,6 +21,17 @@
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryShellsFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AaDefenseFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AswFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AirStrikeFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ManeuverabilityFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ConcealmentFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SurvivabilityFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SonarFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.RocketPlanesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.RocketsFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoBombersFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AerialTorpedoesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombersFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombsFragment
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -207,49 +218,19 @@
             </ToolBarContent>
 
             <Columns>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" StickyLeft="false" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
 
-                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" StickyLeft="false" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
 
-                <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" Class="column-text-center" CellClass="column-text-center">
-                    <CellTemplate>
-                        <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
-                    </CellTemplate>
-                </Column>
-
-                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" Class="column-text-center" CellClass="column-text-center">
-                    <CellTemplate>
-                        <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
-                    </CellTemplate>
-                </Column>
-
-                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" Class="column-text-center" CellClass="column-text-center">
-                    <CellTemplate>
-                        @context.Item.ShipTier.ToTierString()
-                    </CellTemplate>
-                </Column>
-
-                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" Class="column-text-center" CellClass="column-text-center">
-                    <CellTemplate>
-                        <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
-                    </CellTemplate>
-                </Column>
-
-                <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
-                    <CellTemplate>
-                        @LocalizeShipName(context.Item.ShipIndex)
-                    </CellTemplate>
-                </Column>
-
-                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" Class="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" StickyLeft="false" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @if (!string.IsNullOrEmpty(context.Item.BuildName))
                         {
@@ -265,6 +246,36 @@
                         }
                     </CellTemplate>
                 </Column>
+                
+                <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft="false" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
+                    <CellTemplate>
+                        @LocalizeShipName(context.Item.ShipIndex)
+                    </CellTemplate>
+                </Column>
+
+                <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" Class="column-text-center" CellClass="column-text-center">
+                    <CellTemplate>
+                        <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
+                    </CellTemplate>
+                </Column>
+
+                <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" Class="column-text-center" CellClass="column-text-center">
+                    <CellTemplate>
+                        @context.Item.ShipTier.ToTierString()
+                    </CellTemplate>
+                </Column>
+                
+                <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" Class="column-text-center" CellClass="column-text-center">
+                    <CellTemplate>
+                        <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                    </CellTemplate>
+                </Column>
+
+                <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" Class="column-text-center" CellClass="column-text-center">
+                    <CellTemplate>
+                        <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
+                    </CellTemplate>
+                </Column>
 
                 @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @HeShellDataFragment((ViewModel.SelectedDataSection, Localizer))
@@ -275,6 +286,17 @@
                 @SecondaryBatteryShellsDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @AaDefenseDataFragment((ViewModel.SelectedDataSection, Localizer))
                 @AswDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @AirStrikeDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @ManeuverabilityDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @ConcealmentDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @SurvivabilityDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @SonarDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @RocketPlanesDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @RocketsDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @TorpedoBombersDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @AerialTorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @BombersDataFragment((ViewModel.SelectedDataSection, Localizer))
+                @BombsDataFragment((ViewModel.SelectedDataSection, Localizer))
             </Columns>
             
             <PagerContent>
@@ -367,6 +389,7 @@
     {
         await ViewModel!.ToggleDataSection(dataSection);
         await dataGrid.ReloadServerData();
+        StateHasChanged();
     }
 
     private async Task ToggleHideShipsWithoutSelectedSection()

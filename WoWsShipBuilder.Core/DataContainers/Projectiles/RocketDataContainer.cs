@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 ExplosionRadius = (decimal)rocket.ExplosionRadius,
                 SplashCoeff = (decimal)rocket.SplashCoeff,
                 ShowBlastPenetration = showBlastPenetration,
-                SplashRadius = (decimal)rocket.DepthSplashRadius,
+                SplashRadius = Math.Round((decimal)rocket.DepthSplashRadius, 1),
                 SplashDmg = Math.Round(rocketDamage * (decimal)rocket.SplashDamageCoefficient),
             };
 

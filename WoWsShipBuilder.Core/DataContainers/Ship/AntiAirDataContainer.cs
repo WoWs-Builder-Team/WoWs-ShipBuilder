@@ -49,7 +49,7 @@ public record AntiAirDataContainer
         constantDamageBonus = modifiers.FindModifiers("areaDamageMultiplier").Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
 
         IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
+        constantDamageBonus = constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100)));
 
         var aaUI = new AntiAirDataContainer
         {
@@ -67,7 +67,7 @@ public record AntiAirDataContainer
             longRange = hull.AntiAir.LongRangeAura;
         }
 
-        if (guns is not null && guns.AntiAir is not null)
+        if (guns?.AntiAir != null)
         {
             if (longRange is null)
             {

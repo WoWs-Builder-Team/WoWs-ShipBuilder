@@ -1,0 +1,77 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> SurvivabilityDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Survivability;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityShipHp" Title="HP" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityShipHp
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireMaxAmount" Title="Fire max amount" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFireMaxAmount
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireDuration" Title="Fire max duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFireDuration
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireDps" Title="Fire DPS" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFireDps
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireMaxDmg" Title="Fire max damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFireMaxDmg
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireChanceReduction" Title="Fire chance reduction (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFireChanceReduction
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingMaxAmount" Title="Flooding max amount" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFloodingMaxAmount
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingDuration" Title="Flooding max duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFloodingDuration
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingDps" Title="Flooding DPS" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFloodingDps
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingMaxDmg" Title="Flooding max damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFloodingMaxDmg
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingTorpedoProtection" Title="Torpedo protection (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.SurvivabilityFloodingTorpedoProtection
+            </CellTemplate>
+        </Column>
+    };
+}

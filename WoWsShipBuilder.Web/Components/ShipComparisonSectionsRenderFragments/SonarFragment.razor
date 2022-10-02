@@ -1,0 +1,147 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> SonarDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Sonar;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarReloadTime" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarReloadTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarReloadTime
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarTraverseSpeed" Title="Traverse speed (°/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarTraverseSpeed is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarTraverseSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarTurnTime" Title="180° turn (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarTurnTime is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarTurnTime
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarRange is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarRange
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarWidth" Title="Width (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarWidth is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarWidth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarSpeed" Title="Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarSpeed is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarFirstPingDuration" Title="1st ping duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarFirstPingDuration is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarFirstPingDuration
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SonarSecondPingDuration" Title="2nd ping duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SonarSecondPingDuration is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SonarSecondPingDuration
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

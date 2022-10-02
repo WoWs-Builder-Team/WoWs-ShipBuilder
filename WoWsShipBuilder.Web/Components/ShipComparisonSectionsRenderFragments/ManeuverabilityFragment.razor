@@ -1,0 +1,87 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> ManeuverabilityDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonViewModel.DataSections.Maneuverability;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeed" Title="Max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityMaxSpeed
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeedAtPeriscopeDepth" Title="Periscope max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityMaxSpeedAtPeriscopeDepth != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityMaxSpeedAtPeriscopeDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeedAtMaxDepth" Title="Max depth max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ManeuverabilityMaxSpeedAtMaxDepth != 0)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ManeuverabilityMaxSpeedAtMaxDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityRudderShiftTime" Title="Rudder shift time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityRudderShiftTime
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTurningCircle" Title="Turning circle (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityTurningCircle
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTimeToFullAhead" Title="Full ahead time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityTimeToFullAhead
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTimeToFullReverse" Title="Full reverse time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+               @context.Item.ManeuverabilityTimeToFullReverse
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityRudderProtection" Title="Rudder protection" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityRudderProtection
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityEngineProtection" Title="Engine protection" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @context.Item.ManeuverabilityEngineProtection
+            </CellTemplate>
+        </Column>
+    };
+}
