@@ -165,8 +165,6 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList.Where(x => ContainsWrapper(x, SelectedShipList) && !ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => SelectedShipList.Remove(x));
         wrappersCache.AddRange(FilteredShipList.Where(x => !ContainsWrapper(x, wrappersCache)));
 
-        list = HideShipsIfNoSelectedSection(list);
-
         SetSelectAndPinAllButtonsStatus(list);
 
         return list;
@@ -286,9 +284,16 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList = await ApplyFilters();
     }
 
-    public List<ShipComparisonDataWrapper> GetShipsToBeDisplayedList()
+    public List<ShipComparisonDataWrapper> GetShipsToBeDisplayedList(bool disableHideShipsIfNoSelectedSection = false)
     {
-        return ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
+        List<ShipComparisonDataWrapper> list = ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
+
+        if (!disableHideShipsIfNoSelectedSection)
+        {
+            list = HideShipsIfNoSelectedSection(list);
+        }
+
+        return list;
     }
 
     public void EditBuilds(List<ShipComparisonDataWrapper> newWrappers, bool clearCache = false)
@@ -510,6 +515,138 @@ public class ShipComparisonViewModel : ViewModelBase
         list.AddRange(PinnedShipList.Where(x => !ContainsWrapper(x, list)));
 
         return list;
+    }
+
+    public List<DataSections> GetDataSectionsToDisplay()
+    {
+        List<DataSections> dataSections = Enum.GetValues(typeof(DataSections)).Cast<DataSections>().ToList();
+        List<ShipComparisonDataWrapper> shipList = GetShipsToBeDisplayedList(true);
+
+        if (!shipList.Any())
+        {
+            return new() {DataSections.General};
+        }
+
+        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>())
+        {
+            switch (dataSection)
+            {
+                case DataSections.MainBattery:
+                    if (!shipList.Any(x => x.ShipDataContainer.MainBatteryDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.He:
+                    if (!shipList.Any(x => x.HeDamage is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Ap:
+                    if (!shipList.Any(x => x.ApDamage is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Sap:
+                    if (!shipList.Any(x => x.SapDamage is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Torpedo:
+                    if (!shipList.Any(x => x.ShipDataContainer.TorpedoArmamentDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.SecondaryBattery:
+                case DataSections.SecondaryBatteryShells:
+                    if (!shipList.Any(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.AntiAir:
+                    if (!shipList.Any(x => x.ShipDataContainer.AntiAirDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Asw:
+                    if (!shipList.Any(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null || x.ShipDataContainer.DepthChargeLauncherDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.AirStrike:
+                    if (!shipList.Any(x => x.ShipDataContainer.AirstrikeDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.RocketPlanes:
+                    if (!shipList.Any(x => x.RocketPlanesType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Rockets:
+                    if (!shipList.Any(x => x.RocketPlanesWeaponType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.TorpedoBombers:
+                    if (!shipList.Any(x => x.TorpedoBombersType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.AerialTorpedoes:
+                    if (!shipList.Any(x => x.TorpedoBombersWeaponType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Bombers:
+                    if (!shipList.Any(x => x.BombersType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Bombs:
+                    if (!shipList.Any(x => x.BombersWeaponType.Any()))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+
+                case DataSections.Sonar:
+                    if (!shipList.Any(x => x.ShipDataContainer.PingerGunDataContainer is not null))
+                    {
+                        dataSections.Remove(dataSection);
+                    }
+                    break;
+            }
+        }
+
+        return dataSections;
     }
 
     public enum DataSections

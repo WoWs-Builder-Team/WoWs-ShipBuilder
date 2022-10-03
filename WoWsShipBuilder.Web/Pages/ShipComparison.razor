@@ -195,7 +195,7 @@
                         Section
                     </MudText>
                     <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                        @foreach (var dataSection in Enum.GetValues(typeof(ShipComparisonViewModel.DataSections)).Cast<ShipComparisonViewModel.DataSections>())
+                        @foreach (var dataSection in ViewModel.GetDataSectionsToDisplay())
                         {
                             bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
                             <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleDataSection(dataSection))">

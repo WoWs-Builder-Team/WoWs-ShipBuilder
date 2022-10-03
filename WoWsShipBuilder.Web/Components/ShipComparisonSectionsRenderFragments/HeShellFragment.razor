@@ -8,9 +8,9 @@
     {
         bool hide = element.section != ShipComparisonViewModel.DataSections.He;
         
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.SecondaryBatteryRange is not null)
+                @if (context.Item.HeDamage is not null)
                 {
                     <MudText Typo="Typo.body2">
                         @context.Item.MainBatteryCaliber
