@@ -234,6 +234,7 @@
         
         var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleValues, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
             engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).AccelerationPointsList;
+        
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
 
@@ -249,7 +250,7 @@
         var shipList = shipBuildCache.Select(x => x.Value).ToList();
         var parameters = new DialogParameters
         {
-            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList},
+            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList },
         };
         
         var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
@@ -278,15 +279,12 @@
             
             //then add the new ones 
             Dictionary<int, ShipBuildContainer> shipsToAdd = new();
-            foreach (var shipBuildContainer in newShipList)
+            foreach (var shipBuildContainer in newShipList.Where(shipBuildContainer => !shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id))))
             {
-                if (!shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id)))
-                {
-                    shipsToAdd.Add(counter, shipBuildContainer);
-                    shipBuildCache.Add(counter, shipBuildContainer);
-                    containerList.Add(shipBuildContainer);
-                    counter++;
-                }
+                shipsToAdd.Add(counter, shipBuildContainer);
+                shipBuildCache.Add(counter, shipBuildContainer);
+                containerList.Add(shipBuildContainer);
+                counter++;
             }
             await AddShipsBatchAsync(shipsToAdd);
         }

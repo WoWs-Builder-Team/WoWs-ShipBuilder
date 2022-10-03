@@ -527,7 +527,7 @@ public class ShipComparisonViewModel : ViewModelBase
             return new() {DataSections.General};
         }
 
-        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>())
+        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>().Except(new [] {DataSections.Maneuverability, DataSections.Concealment, DataSections.Survivability, DataSections.General}))
         {
             switch (dataSection)
             {
