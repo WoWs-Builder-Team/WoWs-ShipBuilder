@@ -218,13 +218,13 @@
             </ToolBarContent>
 
             <Columns>
-                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" StickyLeft="false" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" Field="Ship" Title="Select" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
                 </Column>
 
-                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" StickyLeft="false" SortBy="@(x => ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="Pin" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderClass="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="0 0 24 24"/>
                     </CellTemplate>
@@ -247,7 +247,7 @@
                     </CellTemplate>
                 </Column>
                 
-                <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft="false" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
+                <Column T="ShipComparisonDataWrapper" HeaderStyle="background-clip: padding-box;" CellStyle="background-clip: padding-box;" Field="ShipIndex" Title="Name" StickyLeft SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" Class="column-text-center" CellClass="column-text-center">
                     <CellTemplate>
                         @LocalizeShipName(context.Item.ShipIndex)
                     </CellTemplate>
@@ -319,7 +319,7 @@
 
     private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
 
-    private static readonly int[] GridPagination = {25, 50, 75, 100};
+    private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
@@ -543,7 +543,8 @@
         {
             foreach (var sortDefinition in state.SortDefinitions)
             {
-                if (sortDefinition.SortFunc.Invoke(data.First()) is List<decimal>)
+                var sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                if (sortItem is List<decimal>)
                 {
                     if (sortDefinition.Descending)
                     {
@@ -554,7 +555,7 @@
                         data = data.OrderBy(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
                     }
                 }
-                else if (sortDefinition.SortFunc.Invoke(data.First()) is List<int>)
+                else if (sortItem is List<int>)
                 {
                     if (sortDefinition.Descending)
                     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataContainers;
+using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
@@ -139,7 +140,7 @@ public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer Ship
     public decimal? FlakDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.FlakDamage;
 
     //ASW
-    public string? AswDcType { get; } = ShipDataContainer.AswAirstrikeDataContainer is not null ? "ShipStats_AswAirstrike" : ShipDataContainer.DepthChargeLauncherDataContainer is not null ? "DepthCharge" : null;
+    public string? AswDcType { get; } = ShipDataContainer.AswAirstrikeDataContainer is not null ? nameof(Translation.ShipStats_AswAirstrike) : ShipDataContainer.DepthChargeLauncherDataContainer is not null ? "DepthCharge" : null;
     public decimal? AswRange { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumDistance;
     public decimal? AswMaxDropLength { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumFlightDistance;
     public decimal? AswDcReload { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.Reload ?? ShipDataContainer.AswAirstrikeDataContainer?.ReloadTime;
