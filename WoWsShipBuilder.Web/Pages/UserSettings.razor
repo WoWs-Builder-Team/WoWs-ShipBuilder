@@ -11,6 +11,7 @@
 @inject AppSettings AppSettings
 @inject AppSettingsHelper AppSettingsHelper
 @inject ISnackbar Snackbar
+@inject IBetaAccessManager BetaAccessManager
 
 <PageTitle>@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</PageTitle>
 
@@ -48,7 +49,28 @@
                     <MudSwitch @bind-Checked="@openSecondariesAndAaExpandersByDefault" Label="@Localizer.GetAppLocalization(nameof(Translation.WebApp_SecondariesAndAAExpanderSetting)).Localization" Color="Color.Info"/>
                 </MudStack>
             </MudStack>
-            
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">Beta Access</MudText>
+            <MudStack Row AlignItems="AlignItems.End">
+                <MudTextField @ref="betaCodeInput" T="string" Label="Beta-Code" OnKeyDown="@CodeOnKeyDown" Immediate @bind-Value="@CurrentCode"></MudTextField>
+                <MudButton Class="rounded-4" Disabled="@betaCodeSubmitDisabled" Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Material.Filled.Add" OnClick="@AddBetaCode">Add Code</MudButton>
+            </MudStack>
+            @if (SettingsInitialized && AppSettings.WebAppSettings!.BetaAccessCodes.Any())
+            {
+                <MudTable Items="@AppSettings.WebAppSettings.BetaAccessCodes">
+                    <HeaderContent>
+                        <MudTh>Code</MudTh>
+                        <MudTh>Feature</MudTh>
+                        <MudTh>Remove</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Code">@context</MudTd>
+                        <MudTd DataLabel="Feature">@(BetaAccessManager.FindBetaByCode(context)?.LocalizationKey ?? "N/A")</MudTd>
+                        <MudTd><MudIconButton OnClick="async () => await RemoveCode(context)" Icon="@Icons.Material.Filled.Delete"/></MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
         </MudItem>
         <MudItem xs="12"/>
         <MudItem xs="3">
@@ -73,11 +95,28 @@
 
     private bool openSecondariesAndAaExpandersByDefault = true;
 
+    private bool betaCodeSubmitDisabled = true;
+
+    private string currentCode = string.Empty;
+
+    private MudTextField<string> betaCodeInput = default!;
+
+    private string CurrentCode
+    {
+        get => currentCode;
+        set
+        {
+            currentCode = value;
+            betaCodeSubmitDisabled = string.IsNullOrEmpty(currentCode);
+        }
+    }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         RefreshNotifierService.RefreshRequested += UpdateSettingsValues;
         UpdateSettingsValues();
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
     }
 
     private void UpdateSettingsValues()
@@ -85,7 +124,7 @@
         selectedCulture = AppSettings.SelectedLanguage;
         openMainExpandersByDefault = AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true;
         openAmmoExpandersByDefault = AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true;
-        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAAExpandersByDefault ?? true;
+        openSecondariesAndAaExpandersByDefault = AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true;
 
         StateHasChanged();
     }
@@ -107,8 +146,8 @@
         settingsChanged = settingsChanged || openMainExpandersByDefault != AppSettings.WebAppSettings.OpenAllMainExpandersByDefault;
         AppSettings.WebAppSettings.OpenAllMainExpandersByDefault = openMainExpandersByDefault;
         
-        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault;
-        AppSettings.WebAppSettings.OpenSecondariesAndAAExpandersByDefault = openSecondariesAndAaExpandersByDefault;
+        settingsChanged = settingsChanged || openSecondariesAndAaExpandersByDefault != AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault;
+        AppSettings.WebAppSettings.OpenSecondariesAndAaExpandersByDefault = openSecondariesAndAaExpandersByDefault;
 
         await AppSettingsHelper.SaveSettings(AppSettings);
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
@@ -131,6 +170,51 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
         Snackbar.Add(Localizer.GetAppLocalization(nameof(Translation.WebApp_SettingsSaved)).Localization, Severity.Success, config => { config.CloseAfterNavigation = true; });
         RefreshNotifierService.NotifyRefreshRequested();
+    }
+
+    private async Task AddBetaCode()
+    {
+        var betaEntry = BetaAccessManager.FindBetaByCode(CurrentCode);
+        if (betaEntry is not null)
+        {
+            if (!AppSettings.WebAppSettings!.BetaAccessCodes.Contains(CurrentCode))
+            {
+                AppSettings.WebAppSettings!.BetaAccessCodes.Add(CurrentCode);
+                await AppSettingsHelper.SaveSettings(AppSettings);
+                RefreshNotifierService.NotifyRefreshRequested();
+                Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' has been enabled.", Severity.Success, config => { config.CloseAfterNavigation = true; });
+            }
+            else
+            {
+                Snackbar.Add($"'{Localizer.SimpleAppLocalization(betaEntry.LocalizationKey)}' was already enabled.", Severity.Warning, config => { config.CloseAfterNavigation = true; });
+            }
+            
+            await Task.Delay(100);
+            await betaCodeInput.Clear();
+        }
+        else
+        {
+            Snackbar.Add("Invalid code", Severity.Error, config => { config.CloseAfterNavigation = true; });
+            await Task.Delay(100);
+            await betaCodeInput.SelectAsync();
+        }
+    }
+
+    private async Task RemoveCode(string code)
+    {
+        if (AppSettings.WebAppSettings!.BetaAccessCodes.Remove(code))
+        {
+            await AppSettingsHelper.SaveSettings(AppSettings);
+            RefreshNotifierService.NotifyRefreshRequested();
+        }
+    }
+
+    private async Task CodeOnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Code is "Enter" or "NumpadEnter" && !betaCodeSubmitDisabled)
+        {
+            await AddBetaCode();
+        }
     }
 
 }

@@ -105,6 +105,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship Comparison Beta.
+        /// </summary>
+        public static string BETA_AccelerationCharts {
+            get {
+                return ResourceManager.GetString("BETA_AccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acceleration Charts Beta.
+        /// </summary>
+        public static string BETA_ShipComparison {
+            get {
+                return ResourceManager.GetString("BETA_ShipComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bomb.
         /// </summary>
         public static string Bomb {

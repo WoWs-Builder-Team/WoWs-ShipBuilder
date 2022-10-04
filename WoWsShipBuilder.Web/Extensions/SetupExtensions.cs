@@ -36,6 +36,7 @@ public static class SetupExtensions
         services.AddSingleton<IAwsClient, ServerAwsClient>();
         services.AddSingleton<IAppDataService, ServerAppDataService>();
         services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
+        services.AddSingleton<IBetaAccessManager, BetaAccessManager>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();

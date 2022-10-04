@@ -1487,4 +1487,10 @@ They do not have any effect on surface ships.</value>
   <data name="Build_EnterBuildName" xml:space="preserve">
       <value>Please enter a build name. The ship name will be automatically displayed at the end.</value>
   </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Acceleration Charts Beta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Ship Comparison Beta</value>
+  </data>
 </root>
