@@ -12,6 +12,8 @@
 @using System.Net
 @using System.Diagnostics
 @using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
 
 @inject IHostEnvironment Environment
@@ -23,6 +25,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavManager
 @inject IClipboardService ClipboardService
+@inject ILinkShortener LinkShortener
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -255,14 +258,18 @@
 
     private async Task OnShareBuildClicked()
     {
-        var dialog = DialogService.Show<BuildShareDialog>();
-        var result = await dialog.Result;
-        if (!result.Cancelled && result.Data is string buildName)
+        var parameters = new DialogParameters
         {
-            var build = ViewModel!.CreateBuild(buildName);
-            var buildString = build.CreateStringFromBuild();
+            ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
+        };
+        var dialog = DialogService.Show<BuildShareDialog>(string.Empty, parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data is BuildShareResult shareResult)
+        {
+            var build = ViewModel!.CreateBuild(shareResult.BuildName);
+            var buildString = build.CreateShortStringFromBuild();
             var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-            await ClipboardService.SetTextAsync(buildUrl);
+            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
     }
 }

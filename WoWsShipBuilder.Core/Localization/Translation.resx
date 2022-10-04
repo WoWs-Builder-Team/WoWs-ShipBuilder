@@ -1481,4 +1481,10 @@ They do not have any effect on surface ships.</value>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Max engine boost duration</value>
   </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Copy short link</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Please enter a build name. The ship name will be automatically displayed at the end.</value>
+  </data>
 </root>

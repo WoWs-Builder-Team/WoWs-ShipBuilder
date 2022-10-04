@@ -102,7 +102,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public void LoadBuild(IReadOnlyList<string> initialSignalsNames)
         {
             logger.Info("Initial signal configuration found {0}", string.Join(", ", initialSignalsNames));
-            var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Name));
+            var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
             SelectedSignals.AddRange(list);
             SignalsNumber = SelectedSignals.Count;
         }
