@@ -20,7 +20,7 @@
                             <ActivatorContent>
                                 <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
                                     <ChildContent>
-                                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(@GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
+                                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                                         </MudButton>
                                     </ChildContent>
@@ -160,9 +160,9 @@
     {
         if (viewModel.ConsumableActivated)
         {
-            return isButton ? "border-color: #FFD700;" : $"border: 1px solid; border-color: #FFD700;";
+            return isButton ? "border-color: #FFD700;" : "border: 1px solid; border-color: #FFD700;";
         }
-        return isButton ? $"border-color: {Color.Default};" : $"border: 1px solid; border-color: transparent;";
+        return isButton ? $"border-color: {Color.Default};" : "border: 1px solid; border-color: transparent;";
     }
 
     private static string ConvertValue(string value, bool isValueKey, bool isAppLocalizationKey, ILocalizer localizer)

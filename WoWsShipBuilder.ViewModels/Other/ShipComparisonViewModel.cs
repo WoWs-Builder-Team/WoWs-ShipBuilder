@@ -380,6 +380,7 @@ public class ShipComparisonViewModel : ViewModelBase
         SelectedShipList.Clear();
         ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is not null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
         EditBuilds(list.ToList(), true);
+        SetSelectAndPinAllButtonsStatus();
     }
 
     public async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
@@ -734,9 +735,10 @@ public class ShipComparisonViewModel : ViewModelBase
         SearchedShips.AddRange(fullShipList.Where(ship => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index + "_FULL").Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
     }
 
-    public void DuplicateSelectedShips()
+    public void DuplicateSelectedShips(ShipComparisonDataWrapper? ship = null)
     {
-        foreach (var selectedShip in SelectedShipList)
+        List<ShipComparisonDataWrapper> list = ship != null ? new() {ship} : SelectedShipList;
+        foreach (var selectedShip in list)
         {
             ShipComparisonDataWrapper newWrapper = new(selectedShip.Ship, selectedShip.ShipDataContainer, selectedShip.Build);
             FilteredShipList.Add(newWrapper);
