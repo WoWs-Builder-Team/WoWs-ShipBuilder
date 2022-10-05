@@ -310,7 +310,7 @@
         </NoRecordsContent>
     </MudDataGrid>
 
-    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@ViewModel.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)).ToList()" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildContainers" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
 
     <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
         <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
@@ -326,6 +326,8 @@
     private const string BackgroundColor = "background-color: #242424";
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
+
+    private readonly List<ShipBuildContainer> shipBuildContainers = new();
 
     private bool isDialogOpen;
 
@@ -357,9 +359,14 @@
 
     private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
     {
+        shipBuildContainers.Clear();
         if (wrapper is not null)
         {
-            buildConfigurationHelper.ShipBuildContainers = new List<ShipBuildContainer> { new(wrapper.Ship, wrapper.Build, wrapper.Id, null, false, wrapper.ShipDataContainer, null) };
+            shipBuildContainers.Add(new(wrapper.Ship, wrapper.Build, wrapper.Id, null, false, wrapper.ShipDataContainer, null));
+        }
+        else
+        {
+            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
         
         isDialogOpen = true;
