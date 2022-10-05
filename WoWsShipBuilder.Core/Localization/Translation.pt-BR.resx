@@ -1481,4 +1481,10 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Duração máxima do Impulso de Motor</value>
   </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Copiar link curto</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Por favor, dê um nome para a build. O nome do navio será exibido automaticamente ao final.</value>
+  </data>
 </root>
