@@ -1474,4 +1474,10 @@
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>発射管の角度を表示</value>
   </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>短いリンクをコピー</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>ビルド名を入力してください。艦艇名は最後に自動的に追加されます。</value>
+  </data>
 </root>
