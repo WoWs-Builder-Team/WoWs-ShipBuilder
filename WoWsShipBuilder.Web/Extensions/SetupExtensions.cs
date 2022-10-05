@@ -14,6 +14,7 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.LinkShortening;
 using WoWsShipBuilder.Web.Services;
 using LogLevel = NLog.LogLevel;
 
@@ -34,6 +35,7 @@ public static class SetupExtensions
         }));
         services.AddSingleton<IAwsClient, ServerAwsClient>();
         services.AddSingleton<IAppDataService, ServerAppDataService>();
+        services.AddSingleton<ILinkShortener, FirebaseLinkShortener>();
 
         services.AddScoped<ILocalizer, Localizer>();
         services.AddScoped<AppSettingsHelper>();
@@ -48,11 +50,12 @@ public static class SetupExtensions
         return services;
     }
 
-    public static void ConfigureNlog(bool lokiDisabled)
+    public static void ConfigureNlog(bool lokiDisabled, bool isDebug)
     {
         var configuration = new LoggingConfiguration();
         var logConsole = new ConsoleTarget("logconsole");
-        configuration.AddRule(LogLevel.Info, LogLevel.Fatal, logConsole);
+        var level = isDebug ? LogLevel.Debug : LogLevel.Info;
+        configuration.AddRule(level, LogLevel.Fatal, logConsole);
         if (!lokiDisabled)
         {
             var logLoki = new LokiTarget
@@ -71,7 +74,7 @@ public static class SetupExtensions
                 },
             };
 
-            configuration.AddRule(LogLevel.Info, LogLevel.Fatal, logLoki);
+            configuration.AddRule(level, LogLevel.Fatal, logLoki);
         }
 
         var version = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
@@ -97,6 +100,7 @@ public static class SetupExtensions
     {
         builder.Services.Configure<AdminOptions>(builder.Configuration.GetSection(AdminOptions.SectionName));
         builder.Services.Configure<CdnOptions>(builder.Configuration.GetSection(CdnOptions.SectionName));
+        builder.Services.Configure<LinkShorteningOptions>(builder.Configuration.GetSection(LinkShorteningOptions.SectionName));
         return builder;
     }
 }

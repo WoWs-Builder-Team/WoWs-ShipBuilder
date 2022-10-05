@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using DynamicData;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -17,7 +17,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 /// Data for each slot is stored in an individual <see cref="ConsumableSlotViewModel"/>
 /// while this viewmodel is responsible to store these individual instances and provide methods to easily interact with consumable-related data.
 /// </summary>
-public class ConsumableViewModel : ViewModelBase, IBuildStorable
+public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
 {
     private readonly IAppDataService appDataService;
     private readonly Ship ship;
@@ -48,7 +48,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildStorable
     {
         foreach (var slotViewModel in ConsumableSlots)
         {
-            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Contains(consumable.IconName));
+            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Any(s => consumable.IconName.StartsWith(s)));
             if (index > -1)
             {
                 slotViewModel.SelectedIndex = index;

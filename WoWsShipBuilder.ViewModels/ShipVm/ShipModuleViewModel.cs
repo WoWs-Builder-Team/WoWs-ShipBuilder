@@ -3,14 +3,14 @@ using System.Linq;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
 {
-    public class ShipModuleViewModel : ViewModelBase, IBuildStorable
+    public class ShipModuleViewModel : ViewModelBase, IBuildComponentProvider
     {
         #region Static Fields and Constants
 
@@ -80,7 +80,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var results = new List<ShipUpgrade>();
             foreach (List<ShipUpgrade> upgradeList in ShipUpgrades)
             {
-                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name)));
+                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.Split("_").First())));
             }
 
             var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();

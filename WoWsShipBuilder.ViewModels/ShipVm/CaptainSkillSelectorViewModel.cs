@@ -125,6 +125,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                     SkillOrderList.Add(skill);
                 }
 
+                UpdateCanAddSkill(); // Needs to be called to update the internal state of the skill viewmodels
                 SkillActivationButtonEnabled = CaptainTalentsList.Count > 0 || ConditionalModifiersList.Count > 0 || ShowArHpSelection;
             }
         }
@@ -565,7 +566,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             return SelectedCaptain!.Index;
         }
 
-        public void LoadBuild(List<int> selectedSkills, string? captainIndex)
+        public void LoadBuild(IEnumerable<int> selectedSkills, string? captainIndex)
         {
             // this check is purely for backward compatibility
             if (captainIndex != null)

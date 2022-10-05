@@ -132,11 +132,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy short link.
+        /// </summary>
+        public static string Build_CopyShortUrl {
+            get {
+                return ResourceManager.GetString("Build_CopyShortUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy build url.
         /// </summary>
         public static string Build_CopyUrl {
             get {
                 return ResourceManager.GetString("Build_CopyUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a build name. The ship name will be automatically displayed at the end..
+        /// </summary>
+        public static string Build_EnterBuildName {
+            get {
+                return ResourceManager.GetString("Build_EnterBuildName", resourceCulture);
             }
         }
         
@@ -2061,7 +2079,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At operating depth.
+        ///   Looks up a localized string similar to At maximum depth.
         /// </summary>
         public static string ShipStats_ConcealmentBySubOperating {
             get {

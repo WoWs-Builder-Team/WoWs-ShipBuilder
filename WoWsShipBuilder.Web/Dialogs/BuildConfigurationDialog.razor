@@ -1,10 +1,10 @@
 ﻿@using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Services
-@using WoWsShipBuilder.Core.BuildCreator
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
 @using System.Collections.Concurrent
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
@@ -236,7 +236,7 @@
 
     private async Task<ShipBuildViewModel> LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
-        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index).Inc();
+        MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
             var vm = await ShipBuildViewModel.CreateAsync(shipBuildContainer, AppDataService, AppSettings);
@@ -277,7 +277,7 @@
     {
         try
         {
-            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString, Localizer), null));
+            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString), null));
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);

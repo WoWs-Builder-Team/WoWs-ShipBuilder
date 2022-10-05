@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using WoWsShipBuilder.Core.BuildCreator;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
@@ -19,7 +19,7 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class ScreenshotContainerViewModel : ViewModelBase
     {
         public ScreenshotContainerViewModel()
-            : this(new("Test-build"), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
+            : this(DataHelper.CreateTestBuild(), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
         {
             var ship = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
             var appDataService = DesktopAppDataService.PreviewInstance;
@@ -27,7 +27,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation).Result, true);
             SignalSelectorViewModel = new(SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings).Result);
             UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
-            LoadBuilds(new("Test-build"));
+            LoadBuilds(DataHelper.CreateTestBuild());
         }
 
         private ScreenshotContainerViewModel(Build build, Ship ship, bool includeSignals = true)
