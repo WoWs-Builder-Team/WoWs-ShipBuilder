@@ -870,9 +870,6 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>Periskop Derinliğinde</value>
   </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>Operasyonel Derinliğinde</value>
-  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Dağılım ve Balistik Grafiklerini Görüntüle</value>
   </data>
