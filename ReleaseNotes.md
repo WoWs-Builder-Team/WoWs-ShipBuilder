@@ -7,7 +7,7 @@
 
 
 ## Bugfixes
-
+- Use the correct sonar module when a ship can chose between multiple sonar modules (#168)
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
