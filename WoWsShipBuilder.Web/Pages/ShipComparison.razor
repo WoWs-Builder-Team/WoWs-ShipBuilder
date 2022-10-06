@@ -5,6 +5,7 @@
 @using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
+@using DynamicData
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
@@ -41,6 +42,7 @@
 @inject ISnackbar Snackbar
 @inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
+@inject NavigationManager NavManager
 
 <PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
 
@@ -218,19 +220,19 @@
         </ToolBarContent>
 
         <Columns>
-            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {BackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {BackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"background-clip: padding-box; {BackgroundColor}")" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudText Typo="Typo.body2" Style="cursor: pointer">
                         @LocalizeShipName(context.Item.ShipIndex)
@@ -238,31 +240,31 @@
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" CellStyle="@BackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" CellStyle="@BackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     @context.Item.ShipTier.ToTierString()
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" CellStyle="@BackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" CellStyle="@BackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
                 </CellTemplate>
             </Column>
-            
-            <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" CellStyle="@BackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+
+            <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     @if (!string.IsNullOrEmpty(context.Item.BuildName))
                     {
@@ -321,9 +323,9 @@
 
     private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
 
-    private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
+    private static readonly int[] GridPagination = {15, 25, 50, 75, 100};
 
-    private const string BackgroundColor = "background-color: #242424";
+        private const string StickyColumnsBackgroundColor = "background-color: #242424";
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
@@ -334,7 +336,65 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
         ViewModel = new(AppDataService, Localizer, AppSettings);
+
+        NavManager.TryGetQueryString("tiers", out string selectedTiers);
+        NavManager.TryGetQueryString("classes", out string selectedClasses);
+        NavManager.TryGetQueryString("nations", out string selectedNations);
+        NavManager.TryGetQueryString("categories", out string selectedCategories);
+        NavManager.TryGetQueryString("upgraded-modules", out string upgradedModules);
+        NavManager.TryGetQueryString("hide-unfitting-ships", out string hideUnfittingShips);
+        NavManager.TryGetQueryString("section", out string section);
+
+        var applyFilters = false;
+
+        if (!string.IsNullOrEmpty(selectedTiers))
+        {
+            applyFilters = true;
+            ViewModel.SelectedTiers.AddRange(selectedTiers.Split(',').Select(int.Parse));
+        }
+
+        if (!string.IsNullOrEmpty(selectedClasses))
+        {
+            applyFilters = true;
+            ViewModel.SelectedClasses.AddRange(selectedClasses.Split(',').Select(Enum.Parse<ShipClass>));
+        }
+
+        if (!string.IsNullOrEmpty(selectedNations))
+        {
+            applyFilters = true;
+            ViewModel.SelectedNations.AddRange(selectedNations.Split(',').Select(Enum.Parse<Nation>));
+        }
+        
+        if (!string.IsNullOrEmpty(selectedCategories))
+        {
+            applyFilters = true;
+            ViewModel.SelectedCategories.AddRange(selectedCategories.Split(',').Select(Enum.Parse<ShipCategory>));
+        }
+
+        if (!string.IsNullOrEmpty(upgradedModules) && upgradedModules.Equals("true"))
+        {
+            applyFilters = true;
+            ViewModel.UseUpgradedModules = true;
+        }
+        
+        if (!string.IsNullOrEmpty(hideUnfittingShips) && hideUnfittingShips.Equals("true"))
+        {
+            applyFilters = true;
+            ViewModel.HideShipsWithoutSelectedSection = true;
+        }
+        
+        if (!string.IsNullOrEmpty(section))
+        {
+            applyFilters = true;
+            ViewModel.SelectedDataSection = Enum.Parse<ShipComparisonViewModel.DataSections>(section);
+        }
+
+        if (applyFilters)
+        {
+            await ViewModel.ApplyFilters();
+        }
     }
 
     private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
@@ -368,17 +428,17 @@
         {
             shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
-        
+
         isDialogOpen = true;
         IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync();
         isDialogOpen = false;
-        
+
         if (results is not null)
         {
             List<ShipComparisonDataWrapper> list = results.Select(x => new ShipComparisonDataWrapper(x.Ship, x.ShipDataContainer!, x.Build, x.Id)).ToList();
             ViewModel!.EditBuilds(list);
         }
-        
+
         await dataGrid.ReloadServerData();
     }
 
@@ -401,13 +461,14 @@
     private async Task ToggleDataSection(ShipComparisonViewModel.DataSections dataSection)
     {
         await ViewModel!.ToggleDataSection(dataSection);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
-        StateHasChanged();
     }
 
     private async Task ToggleHideShipsWithoutSelectedSection()
     {
         await ViewModel!.ToggleHideShipsWithoutSelectedSection();
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -426,18 +487,21 @@
     private async Task PinAllDisplayedShips()
     {
         await ViewModel!.PinAllDisplayedShips();
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleShowPinnedShipOnly()
     {
         ViewModel!.ToggleShowPinnedShipOnly();
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleUpgradedModules()
     {
         await ViewModel!.ToggleUpgradedModules();
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -450,48 +514,56 @@
     private async Task ToggleTierSelection(int tier)
     {
         await ViewModel!.ToggleTierSelection(tier);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleClassSelection(ShipClass shipClass)
     {
         await ViewModel!.ToggleClassSelection(shipClass);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleNationSelection(Nation nation)
     {
         await ViewModel!.ToggleNationSelection(nation);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleCategorySelection(ShipCategory category)
     {
         await ViewModel!.ToggleCategorySelection(category);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllCategories(bool toggle)
     {
         await ViewModel!.ToggleAllCategories(toggle);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllClasses(bool toggle)
     {
         await ViewModel!.ToggleAllClasses(toggle);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllNations(bool toggle)
     {
         await ViewModel!.ToggleAllNations(toggle);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllTiers(bool toggle)
     {
         await ViewModel!.ToggleAllTiers(toggle);
+        UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -551,9 +623,9 @@
 
         if (data.Any())
         {
-            foreach (var sortDefinition in state.SortDefinitions)
+            foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
             {
-                var sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
                 if (sortItem is List<decimal>)
                 {
                     if (sortDefinition.Descending)
@@ -592,4 +664,20 @@
 
         return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() {TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList()});
     }
+
+    private void UpdateUrl()
+    {
+        var tierFilter = $"tiers={string.Join(',', ViewModel!.SelectedTiers)}";
+        var classFilter = $"classes={string.Join(',', ViewModel!.SelectedClasses)}";
+        var nationFilter = $"nations={string.Join(',', ViewModel!.SelectedNations)}";
+        var categoryFilter = $"categories={string.Join(',', ViewModel!.SelectedCategories)}";
+        
+        string toggleUpgradedModules = ViewModel!.UseUpgradedModules ? "upgraded-modules=true" : string.Empty;
+        string toggleHideUnfittingShips = ViewModel!.HideShipsWithoutSelectedSection ? "hide-unfitting-ships=true" : string.Empty;
+
+        string dataSection = $"section={ViewModel!.SelectedDataSection}";
+
+        NavManager.NavigateTo($"/comparison?{tierFilter}&{classFilter}&{nationFilter}&{categoryFilter}&{toggleUpgradedModules}&{toggleHideUnfittingShips}&{dataSection}");
+    }
+
 }

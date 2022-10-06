@@ -39,7 +39,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public List<ShipComparisonDataWrapper> PinnedShipList { get; } = new();
 
-    public DataSections SelectedDataSection { get; private set; } = DataSections.General;
+    public DataSections SelectedDataSection { get; set; } = DataSections.General;
 
     public ObservableCollection<int> SelectedTiers { get; } = new();
 
@@ -113,7 +113,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool UseUpgradedModules
     {
         get => useUpgradedModules;
-        private set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
+        set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
     }
 
     private bool hideShipsWithoutSelectedSection;
@@ -121,7 +121,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool HideShipsWithoutSelectedSection
     {
         get => hideShipsWithoutSelectedSection;
-        private set => this. RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
+        set => this. RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
     }
 
     public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings)
@@ -131,7 +131,7 @@ public class ShipComparisonViewModel : ViewModelBase
         this.appSettings = appSettings;
     }
 
-    private async Task<List<ShipComparisonDataWrapper>> ApplyFilters()
+    public async Task ApplyFilters()
     {
         List<ShipComparisonDataWrapper> list = new();
 
@@ -167,7 +167,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
         SetSelectAndPinAllButtonsStatus(list);
 
-        return list;
+        FilteredShipList = list;
     }
 
     public void ToggleShowPinnedShipOnly()
@@ -195,7 +195,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedTiers.Add(value);
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleClassSelection(ShipClass value)
@@ -209,7 +209,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedClasses.Add(value);
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleNationSelection(Nation value)
@@ -223,7 +223,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedNations.Add(value);
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleCategorySelection(ShipCategory value)
@@ -237,7 +237,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedCategories.Add(value);
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleAllTiers(bool activationState)
@@ -248,7 +248,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedTiers.AddRange(Enumerable.Range(1, 11));
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleAllClasses(bool activationState)
@@ -259,7 +259,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedClasses.AddRange(Enum.GetValues<ShipClass>().Except(new[] { ShipClass.Auxiliary }));
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleAllNations(bool activationState)
@@ -270,7 +270,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedNations.AddRange(Enum.GetValues<Nation>().Except(new[] { Nation.Common }));
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public async Task ToggleAllCategories(bool activationState)
@@ -281,7 +281,7 @@ public class ShipComparisonViewModel : ViewModelBase
             SelectedCategories.AddRange(Enum.GetValues<ShipCategory>().Except(new[] { ShipCategory.Disabled, ShipCategory.Clan }));
         }
 
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public List<ShipComparisonDataWrapper> GetShipsToBeDisplayedList(bool disableHideShipsIfNoSelectedSection = false)
@@ -399,7 +399,7 @@ public class ShipComparisonViewModel : ViewModelBase
     private async Task RemovePinnedShip(ShipComparisonDataWrapper wrapper)
     {
         PinnedShipList.Remove(wrapper);
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public void AddSelectedShip(ShipComparisonDataWrapper wrapper)
@@ -480,7 +480,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public async Task ToggleHideShipsWithoutSelectedSection()
     {
         HideShipsWithoutSelectedSection = !HideShipsWithoutSelectedSection;
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(List<ShipComparisonDataWrapper>? list = null)
@@ -679,7 +679,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public async Task ToggleDataSection(DataSections dataSection)
     {
         SelectedDataSection = dataSection;
-        FilteredShipList = await ApplyFilters();
+        await ApplyFilters();
     }
 
     public void SelectAllDisplayedShips()
@@ -721,7 +721,7 @@ public class ShipComparisonViewModel : ViewModelBase
         else
         {
             list.Where(x => ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => PinnedShipList.Remove(x));
-            FilteredShipList = await ApplyFilters();
+            await ApplyFilters();
         }
     }
 
