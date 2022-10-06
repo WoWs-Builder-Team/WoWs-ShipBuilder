@@ -123,6 +123,78 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Code.
+        /// </summary>
+        public static string BetaAccess_AddCode {
+            get {
+                return ResourceManager.GetString("BetaAccess_AddCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string BetaAccess_Code {
+            get {
+                return ResourceManager.GetString("BetaAccess_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to has been enabled..
+        /// </summary>
+        public static string BetaAccess_CodeEnabled {
+            get {
+                return ResourceManager.GetString("BetaAccess_CodeEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to was already enabled..
+        /// </summary>
+        public static string BetaAccess_Duplicate {
+            get {
+                return ResourceManager.GetString("BetaAccess_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature.
+        /// </summary>
+        public static string BetaAccess_Feature {
+            get {
+                return ResourceManager.GetString("BetaAccess_Feature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beta Access.
+        /// </summary>
+        public static string BetaAccess_Heading {
+            get {
+                return ResourceManager.GetString("BetaAccess_Heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Code.
+        /// </summary>
+        public static string BetaAccess_Invalid {
+            get {
+                return ResourceManager.GetString("BetaAccess_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string BetaAccess_Remove {
+            get {
+                return ResourceManager.GetString("BetaAccess_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bomb.
         /// </summary>
         public static string Bomb {
