@@ -145,20 +145,18 @@ public class ShipComparisonViewModel : ViewModelBase
         list.AddRange(filteredShips.Where(x => !ContainsWrapper(x, list)));
 
         List<ShipComparisonDataWrapper> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Ship.Tier) &&
-                                                                       SelectedClasses.Contains(data.Ship.ShipClass) &&
-                                                                       SelectedNations.Contains(data.Ship.ShipNation) &&
-                                                                       SelectedCategories.Contains(data.Ship.ShipCategory)).ToList();
+                                                                                     SelectedClasses.Contains(data.Ship.ShipClass) &&
+                                                                                     SelectedNations.Contains(data.Ship.ShipNation) &&
+                                                                                     SelectedCategories.Contains(data.Ship.ShipCategory)).ToList();
 
         list.AddRange(cachedWrappers.Where(x => !ContainsWrapper(x, list)));
 
-        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList
-            .Where(data => !ContainsShipIndex(data.Index) &&
-                           !ContainsShipIndex(data.Index, cachedWrappers) &&
-                           SelectedTiers.Contains(data.Tier) &&
-                           SelectedClasses.Contains(data.ShipClass) &&
-                           SelectedNations.Contains(data.ShipNation) &&
-                           SelectedCategories.Contains(data.ShipCategory))
-            .ToList()));
+        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index) &&
+                                                                                                     !ContainsShipIndex(data.Index, cachedWrappers) &&
+                                                                                                     SelectedTiers.Contains(data.Tier) &&
+                                                                                                     SelectedClasses.Contains(data.ShipClass) &&
+                                                                                                     SelectedNations.Contains(data.ShipNation) &&
+                                                                                                     SelectedCategories.Contains(data.ShipCategory)).ToList()));
 
         cachedWrappers.ForEach(x => wrappersCache.Remove(x));
         filteredShips.ForEach(x => FilteredShipList.Remove(x));
@@ -328,6 +326,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 SelectedShipList.Replace(SelectedShipList.First(x => x.Id.Equals(wrapper.Id)), wrapper);
             }
         }
+
         if (clearCache)
         {
             wrappersCache.Clear();
@@ -343,10 +342,12 @@ public class ShipComparisonViewModel : ViewModelBase
             if (FilteredShipList.FindAll(x => x.Ship.Index.Equals(wrapper.Ship.Index)).Count > 1)
             {
                 FilteredShipList.Remove(wrapper);
+
                 if (ContainsWrapper(wrapper, PinnedShipList))
                 {
                     PinnedShipList.Remove(wrapper);
                 }
+
                 if (ContainsWrapper(wrapper, wrappersCache))
                 {
                     wrappersCache.Replace(SelectWrapper(wrapper, wrappersCache), wrapper);
@@ -393,6 +394,7 @@ public class ShipComparisonViewModel : ViewModelBase
         {
             await RemovePinnedShip(wrapper);
         }
+
         SetSelectAndPinAllButtonsStatus();
     }
 
@@ -412,6 +414,7 @@ public class ShipComparisonViewModel : ViewModelBase
         {
             RemoveSelectedShip(wrapper);
         }
+
         SetSelectAndPinAllButtonsStatus();
     }
 
@@ -731,6 +734,7 @@ public class ShipComparisonViewModel : ViewModelBase
         {
             return;
         }
+
         SearchedShips.Clear();
         SearchedShips.AddRange(fullShipList.Where(ship => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(ship.Index + "_FULL").Localization, searchShip, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1));
     }

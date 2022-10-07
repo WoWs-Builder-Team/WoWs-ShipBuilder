@@ -1,4 +1,5 @@
 ﻿@page "/comparison"
+
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.Core.Services
@@ -44,7 +45,7 @@
 @inject IOptions<CdnOptions> CdnOptions
 @inject NavigationManager NavManager
 
-<PageTitle>WoWs ShipBuilder: Ship Comparing</PageTitle>
+<PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
 @if (ViewModel is not null)
 {
@@ -326,9 +327,9 @@
 
     private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
 
-    private static readonly int[] GridPagination = {15, 25, 50, 75, 100};
+    private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
 
-        private const string StickyColumnsBackgroundColor = "background-color: #242424";
+    private const string StickyColumnsBackgroundColor = "background-color: #242424";
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
