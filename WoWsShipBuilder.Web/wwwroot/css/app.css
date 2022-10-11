@@ -209,3 +209,7 @@ a.kofi-button:active {
 .tab-header-limited-height .mud-tabs-toolbar {
     display: none;
 }
+
+.rounded-4 {
+    border-radius: 4px;
+}
