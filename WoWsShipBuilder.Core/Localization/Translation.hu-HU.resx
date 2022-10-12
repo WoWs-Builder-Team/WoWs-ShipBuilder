@@ -1487,4 +1487,34 @@ Felszini hajókra nincs hatásuk.</value>
   <data name="Build_EnterBuildName" xml:space="preserve">
       <value>Kérjük, adja meg a build nevét. A hajó neve automatikusan megjelenik a végén.</value>
   </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Gyorsulási ábrák - béta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Hajó összehasonlítás - béta</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Béta hozzáférés</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Kód</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Kód hozzáadása</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Funkció</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Törlés</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Érvénytelen kód</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>engedélyezve.</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>már engedélyezett.</value>
+  </data>
 </root>
