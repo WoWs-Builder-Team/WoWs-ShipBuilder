@@ -1,6 +1,7 @@
 ﻿using System.IO.Abstractions;
 using System.Net;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.JSInterop;
 using NLog;
@@ -48,6 +49,18 @@ public static class SetupExtensions
 
         services.AddTransient<DataInitializer>();
 
+        return services;
+    }
+
+    public static IServiceCollection AddCookieAuth(this IServiceCollection services)
+    {
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+        {
+            options.LoginPath = "/auth/login";
+            options.LogoutPath = "/auth/logout";
+            options.ExpireTimeSpan = TimeSpan.FromDays(1);
+            options.SlidingExpiration = true;
+        });
         return services;
     }
 

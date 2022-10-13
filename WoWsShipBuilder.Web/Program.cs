@@ -7,6 +7,7 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Web.Authentication;
 using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
 using WoWsShipBuilder.Web.Utility;
@@ -37,6 +38,7 @@ resolver.InitializeReactiveUI(RegistrationNamespace.Blazor);
 
 builder.Services.AddMudServices(config => { config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight; });
 builder.Services.AddShipBuilderServerServices();
+builder.Services.AddCookieAuth();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();
@@ -58,6 +60,9 @@ app.UseHttpMetrics(options =>
 });
 app.UseReferrerTracking();
 
+app.UseAuthentication();
+app.UseAuthorization();
+app.ConfigureCookiePolicy();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

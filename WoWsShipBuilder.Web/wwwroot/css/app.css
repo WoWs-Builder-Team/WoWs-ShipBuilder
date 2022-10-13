@@ -213,3 +213,7 @@ a.kofi-button:active {
 .rounded-4 {
     border-radius: 4px;
 }
+
+.menu-lc > .mud-button > span {
+    text-transform: none;
+}

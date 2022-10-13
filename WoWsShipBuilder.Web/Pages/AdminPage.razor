@@ -1,16 +1,10 @@
 ﻿@page "/admin"
-@using WoWsShipBuilder.Web.Utility
-@using System.Text.Json.Serialization
-@using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Web.Data
-@inject NavigationManager NavigationManager
-@inject HttpClient Client
-@inject IOptions<AdminOptions> AdminOptions
+@using WoWsShipBuilder.Web.Authentication
+@using System.Security.Claims
 
 <MudText Class="ma-2" Align="Align.Center" Typo="Typo.h4">Administration page</MudText>
 
 <div class="d-flex align-center flex-column">
-    <MudButton Variant="Variant.Outlined" OnClick="TryWgAuth">Auth with Wg</MudButton>
     @if (authorized)
     {
         <MudStack Class="mt-2">
@@ -19,6 +13,10 @@
             <MudText>@($"access_token: {accessToken}")</MudText>
         </MudStack>
     }
+    else
+    {
+        <MudButton Variant="Variant.Outlined">Auth with Wg</MudButton>
+    }
 </div>
 
 @code {
@@ -26,71 +24,29 @@
     private bool authorized = false;
 
     private string status = string.Empty;
-    
+
     private string accountId = string.Empty;
 
     private string accessToken = string.Empty;
-    
-    protected override async Task OnInitializedAsync()
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        if (NavigationManager.TryGetQueryString("status", out status) && status.Equals("ok"))
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
         {
-            NavigationManager.TryGetQueryString("account_id", out accountId);
-            if (AdminOptions.Value.AllowedUsers.Contains(accountId))
+            var authState = await AuthenticationStateTask;
+            if (authState.User.Identity?.IsAuthenticated ?? false)
             {
-                NavigationManager.TryGetQueryString("access_token", out accessToken);
-                authorized = await ValidateAuth();
+                accountId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                accessToken = authState.User.FindFirstValue(ClaimTypes.UserData);
+                status = string.Join(", ", authState.User.FindAll(ClaimTypes.Role).Select(c => c.Value));
+                authorized = authState.User.IsInRole(AuthController.AdminRoleName);
+                StateHasChanged();
             }
         }
-    }
-    
-    private void TryWgAuth()
-    {
-        var pageUrl = $"{NavigationManager.BaseUri}admin";
-        var url = @$"https://api.worldoftanks.eu/wot/auth/login/?application_id={AdminOptions.Value.WgApiKey}&redirect_uri={pageUrl}";
-        NavigationManager.NavigateTo(url);
-    }
-
-    private async Task<bool> ValidateAuth()
-    {
-        var checkUrl = @$"https://api.worldofwarships.eu/wows/account/info/?application_id={AdminOptions.Value.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private.gold";
-        
-        var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
-        var response = await Client.SendAsync(request);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var data = await response.Content.ReadFromJsonAsync<WgResponse>();
-            
-            if (data is not null && data.Status.Equals("ok"))
-            {
-                return data.Data.First().Value.Private?.Gold is not null;
-            }
-        }
-        
-        return false;
-    }
-
-    private class WgResponse
-    {
-        [JsonPropertyName("status")]
-        public string Status { get; set; } = string.Empty;
-
-        [JsonPropertyName("data")]
-        public Dictionary<string, Data> Data { get; set; } = new();
-    }
-
-    private class Data
-    {
-        [JsonPropertyName("private")]
-        public Private? Private { get; set; }
-    }
-
-    private class Private
-    {
-        [JsonPropertyName("gold")]
-        public int? Gold { get; set; }
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Authentication
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
 
@@ -24,6 +25,10 @@
         {
             <NavLink href="/compare" ActiveClass="nav-link-active">Ship Comparison</NavLink>
         }
+        @if (isAdmin)
+        {
+            <NavLink href="/admin" ActiveClass="nav-link-active">Admin Page</NavLink>
+        }
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
@@ -45,6 +50,18 @@
                 </span>
             </a>
         </div>
+        <AuthorizeView>
+            <Authorized>
+                <NavLink href="/auth/logout" class="main-nav-link" ActiveClass="nav-link-active">Logout</NavLink>
+            </Authorized>
+            <NotAuthorized>
+                <MudMenu Class="menu-lc" Label="Login" EndIcon="@Icons.Material.Filled.ArrowDropDown" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                    <MudMenuItem ForceLoad="true" Href="/auth/login/eu">EU</MudMenuItem>
+                    <MudMenuItem ForceLoad="true" Href="/auth/login/com">NA</MudMenuItem>
+                    <MudMenuItem ForceLoad="true" Href="/auth/login/asia">SEA</MudMenuItem>
+                </MudMenu>
+            </NotAuthorized>
+        </AuthorizeView>
         <NavLink href="/settings" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</NavLink>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
     </MudHidden>
@@ -93,10 +110,26 @@
 
     private bool accelerationChartsEnabled = false;
 
+    private bool isAdmin;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         RefreshNotifierService.RefreshRequested += UpdateComponent;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var authState = await AuthenticationStateTask;
+            isAdmin = authState.User.IsInRole(AuthController.AdminRoleName);
+            StateHasChanged();
+        }
     }
 
     private void UpdateComponent()
