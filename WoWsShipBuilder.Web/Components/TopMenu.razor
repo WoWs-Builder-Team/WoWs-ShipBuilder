@@ -50,18 +50,21 @@
                 </span>
             </a>
         </div>
-        <AuthorizeView>
-            <Authorized>
-                <NavLink href="/auth/logout" class="main-nav-link" ActiveClass="nav-link-active">Logout</NavLink>
-            </Authorized>
-            <NotAuthorized>
-                <MudMenu Class="menu-lc" Label="Login" EndIcon="@Icons.Material.Filled.ArrowDropDown" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
-                    <MudMenuItem ForceLoad="true" Href="/auth/login/eu">EU</MudMenuItem>
-                    <MudMenuItem ForceLoad="true" Href="/auth/login/com">NA</MudMenuItem>
-                    <MudMenuItem ForceLoad="true" Href="/auth/login/asia">SEA</MudMenuItem>
-                </MudMenu>
-            </NotAuthorized>
-        </AuthorizeView>
+        @if (loginEnabled)
+        {
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink href="/auth/logout" class="main-nav-link" ActiveClass="nav-link-active">Logout</NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <MudMenu Class="menu-lc" Label="Login" EndIcon="@Icons.Material.Filled.ArrowDropDown" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                        <MudMenuItem ForceLoad="true" Href="/auth/login/eu">EU</MudMenuItem>
+                        <MudMenuItem ForceLoad="true" Href="/auth/login/com">NA</MudMenuItem>
+                        <MudMenuItem ForceLoad="true" Href="/auth/login/asia">SEA</MudMenuItem>
+                    </MudMenu>
+                </NotAuthorized>
+            </AuthorizeView>
+        }
         <NavLink href="/settings" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</NavLink>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
     </MudHidden>
@@ -110,6 +113,8 @@
 
     private bool accelerationChartsEnabled = false;
 
+    private bool loginEnabled = false;
+
     private bool isAdmin;
 
     [CascadingParameter]
@@ -136,6 +141,7 @@
     {
         shipComparisonEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.ShipComparison.Code) ?? false;
         accelerationChartsEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.AccelerationCharts.Code) ?? false;
+        loginEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.UserLogin.Code) ?? false;
         StateHasChanged();
     }
 

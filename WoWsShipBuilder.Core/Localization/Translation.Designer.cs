@@ -123,6 +123,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User login.
+        /// </summary>
+        public static string BETA_UserLogin {
+            get {
+                return ResourceManager.GetString("BETA_UserLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Code.
         /// </summary>
         public static string BetaAccess_AddCode {

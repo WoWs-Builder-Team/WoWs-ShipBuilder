@@ -19,6 +19,8 @@ public class AuthController : ControllerBase
 
     public const string AdminRoleName = "admin";
 
+    public const string BuildCuratorRoleName = "build-curator";
+
     public AuthController(HttpClient client, IOptions<AdminOptions> options, ILogger<AuthController> logger)
     {
         this.client = client;
@@ -38,14 +40,20 @@ public class AuthController : ControllerBase
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, accountId),
-            new(ClaimTypes.Name, accountId),
-            new(ClaimTypes.UserData, accountId),
+            new(ClaimTypes.Name, nickname),
+            new(ClaimTypes.UserData, accessToken),
         };
 
-        if (options.AllowedUsers.Contains(accountId))
+        if (options.AdminUsers.Contains(accountId))
         {
             claims.Add(new(ClaimTypes.Role, AdminRoleName));
         }
+
+        if (options.BuildCurators.Contains(accountId))
+        {
+            claims.Add(new(ClaimTypes.Role, BuildCuratorRoleName));
+        }
+
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new() { IsPersistent = true });

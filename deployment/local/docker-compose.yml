@@ -13,6 +13,7 @@ services:
     environment:
       SENTRY_DSN:
       LinkShortening__ApiKey:
+      AdminSettings__WgApiKey:
     mem_limit: 4G
   prometheus:
     image: prom/prometheus

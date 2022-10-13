@@ -6,11 +6,13 @@ public class BetaAccessManager : IBetaAccessManager
 {
     public static readonly BetaAccessEntry ShipComparison = new("ship-comp", nameof(Translation.BETA_ShipComparison));
     public static readonly BetaAccessEntry AccelerationCharts = new("accel-charts", nameof(Translation.BETA_AccelerationCharts));
+    public static readonly BetaAccessEntry UserLogin = new("user-auth", nameof(Translation.BETA_UserLogin));
 
     public IEnumerable<BetaAccessEntry> ActiveBetas { get; } = new List<BetaAccessEntry>
     {
         ShipComparison,
         AccelerationCharts,
+        UserLogin,
     };
 
     public BetaAccessEntry? FindBetaByCode(string code) => ActiveBetas.FirstOrDefault(b => b.Code == code);
