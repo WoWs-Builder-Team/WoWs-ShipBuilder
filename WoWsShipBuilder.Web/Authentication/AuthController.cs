@@ -77,7 +77,7 @@ public class AuthController : ControllerBase
         return Redirect("/");
     }
 
-    private async Task<bool> VerifyToken(string accountId, string accessToken)
+    internal async Task<bool> VerifyToken(string accountId, string accessToken)
     {
         long numericId = long.Parse(accountId);
         string server = numericId switch
