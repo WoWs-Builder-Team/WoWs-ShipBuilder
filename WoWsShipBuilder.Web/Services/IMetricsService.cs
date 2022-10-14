@@ -13,4 +13,6 @@ public interface IMetricsService
     Summary ShipViewModelInitDuration { get; }
 
     Counter RefCount { get; }
+
+    Counter Logins { get; }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using WoWsShipBuilder.Web.Data;
+using WoWsShipBuilder.Web.Services;
 
 namespace WoWsShipBuilder.Web.Authentication;
 
@@ -15,12 +16,15 @@ public class AuthController : ControllerBase
 
     private readonly AdminOptions options;
 
+    private readonly IMetricsService metricsService;
+
     private readonly ILogger<AuthController> logger;
 
-    public AuthController(HttpClient client, IOptions<AdminOptions> options, ILogger<AuthController> logger)
+    public AuthController(HttpClient client, IOptions<AdminOptions> options, IMetricsService metricsService, ILogger<AuthController> logger)
     {
         this.client = client;
         this.options = options.Value;
+        this.metricsService = metricsService;
         this.logger = logger;
     }
 
@@ -61,7 +65,8 @@ public class AuthController : ControllerBase
     {
         string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
         var pageUrl = $"{baseUrl}/auth";
-        var url = @$"https://api.worldoftanks.{server}/wot/auth/login/?application_id={options.WgApiKey}&redirect_uri={pageUrl}";
+        string url = @$"https://api.worldoftanks.{server}/wot/auth/login/?application_id={options.WgApiKey}&redirect_uri={pageUrl}";
+        metricsService.Logins.Inc();
         return Task.FromResult<ActionResult>(Redirect(url));
     }
 
