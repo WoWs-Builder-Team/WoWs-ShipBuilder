@@ -1,0 +1,20 @@
+﻿@inject ILocalizer Localizer
+
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudText Typo="Typo.h3" Class="my-4">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_Unauthorized))</MudText>
+
+    <MudText Class="mb-4">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_UnauthorizedDescription))</MudText>
+    <AuthorizeView>
+        <Authorized>
+            <MudText>@Localizer.SimpleAppLocalization(nameof(Translation.Auth_NotEnoughPermissions))</MudText>
+        </Authorized>
+        <NotAuthorized>
+            <MudStack Row AlignItems="AlignItems.Center">
+                <MudText>@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RequestLogin))</MudText>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/auth/login/eu">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmEu))</MudButton>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/auth/login/com">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmNa))</MudButton>
+                <MudButton Color="Color.Info" Class="rounded-4" Variant="Variant.Filled" Href="/auth/login/asia">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmSea))</MudButton>
+            </MudStack>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudContainer>

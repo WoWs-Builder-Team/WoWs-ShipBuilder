@@ -17,10 +17,6 @@ public class AuthController : ControllerBase
 
     private readonly ILogger<AuthController> logger;
 
-    public const string AdminRoleName = "admin";
-
-    public const string BuildCuratorRoleName = "build-curator";
-
     public AuthController(HttpClient client, IOptions<AdminOptions> options, ILogger<AuthController> logger)
     {
         this.client = client;
@@ -46,12 +42,12 @@ public class AuthController : ControllerBase
 
         if (options.AdminUsers.Contains(accountId))
         {
-            claims.Add(new(ClaimTypes.Role, AdminRoleName));
+            claims.Add(new(ClaimTypes.Role, AuthConstants.AdminRoleName));
         }
 
         if (options.BuildCurators.Contains(accountId))
         {
-            claims.Add(new(ClaimTypes.Role, BuildCuratorRoleName));
+            claims.Add(new(ClaimTypes.Role, AuthConstants.BuildCuratorRoleName));
         }
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -84,11 +80,11 @@ public class AuthController : ControllerBase
             > 500_000_000 and < 1_000_000_000 => "eu",
             > 1_000_000_000 and < 2_000_000_000 => "com",
             > 2_000_000_000 => "asia",
-            _ => throw new InvalidOperationException("unsupported account id range")
+            _ => throw new InvalidOperationException("unsupported account id range"),
         };
 
         logger.LogInformation("Verifying access token for account {}", accountId);
-        var checkUrl = @$"https://api.worldofwarships.{server}/wows/account/info/?application_id={options.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private.gold";
+        var checkUrl = @$"https://api.worldofwarships.{server}/wows/account/info/?application_id={options.WgApiKey}&account_id={accountId}&access_token={accessToken}&fields=private";
         var request = new HttpRequestMessage(HttpMethod.Get,checkUrl);
         var response = await client.SendAsync(request);
 

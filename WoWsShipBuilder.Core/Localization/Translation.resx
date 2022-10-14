@@ -1520,4 +1520,31 @@ They do not have any effect on surface ships.</value>
   <data name="BETA_UserLogin" xml:space="preserve">
       <value>User login</value>
   </data>
+  <data name="Auth_Unauthorized" xml:space="preserve">
+      <value>Unauthorized</value>
+  </data>
+  <data name="Auth_UnauthorizedDescription" xml:space="preserve">
+      <value>Sorry, you are not authorized to view this resource.</value>
+  </data>
+  <data name="Auth_NotEnoughPermissions" xml:space="preserve">
+      <value>It seems like you don't have enough permissions to access this resource. Try to re-log or contact the site administrators if you think this is a bug.</value>
+  </data>
+  <data name="Auth_RequestLogin" xml:space="preserve">
+      <value>Please try to log in to access this resource:</value>
+  </data>
+  <data name="Auth_RealmEu" xml:space="preserve">
+      <value>EU</value>
+  </data>
+  <data name="Auth_RealmNa" xml:space="preserve">
+      <value>NA</value>
+  </data>
+  <data name="Auth_RealmSea" xml:space="preserve">
+      <value>SEA</value>
+  </data>
+  <data name="Auth_Login" xml:space="preserve">
+      <value>Login</value>
+  </data>
+  <data name="Auth_Logout" xml:space="preserve">
+      <value>Logout</value>
+  </data>
 </root>

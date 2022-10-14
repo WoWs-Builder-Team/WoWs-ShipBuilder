@@ -25,10 +25,9 @@
         {
             <NavLink href="/compare" ActiveClass="nav-link-active">Ship Comparison</NavLink>
         }
-        @if (isAdmin)
-        {
+        <AuthorizeView Roles="@AuthConstants.AdminRoleName">
             <NavLink href="/admin" ActiveClass="nav-link-active">Admin Page</NavLink>
-        }
+        </AuthorizeView>
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
@@ -54,13 +53,13 @@
         {
             <AuthorizeView>
                 <Authorized>
-                    <NavLink href="/auth/logout" class="main-nav-link" ActiveClass="nav-link-active">Logout</NavLink>
+                    <NavLink href="/auth/logout" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_Logout))</NavLink>
                 </Authorized>
                 <NotAuthorized>
-                    <MudMenu Class="menu-lc" Label="Login" EndIcon="@Icons.Material.Filled.ArrowDropDown" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
-                        <MudMenuItem ForceLoad="true" Href="/auth/login/eu">EU</MudMenuItem>
-                        <MudMenuItem ForceLoad="true" Href="/auth/login/com">NA</MudMenuItem>
-                        <MudMenuItem ForceLoad="true" Href="/auth/login/asia">SEA</MudMenuItem>
+                    <MudMenu Class="menu-lc" Label="@Localizer.SimpleAppLocalization(nameof(Translation.Auth_Login))" EndIcon="@Icons.Material.Filled.ArrowDropDown" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopLeft">
+                        <MudMenuItem ForceLoad Href="/auth/login/eu">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmEu))</MudMenuItem>
+                        <MudMenuItem ForceLoad Href="/auth/login/com">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmNa))</MudMenuItem>
+                        <MudMenuItem ForceLoad Href="/auth/login/asia">@Localizer.SimpleAppLocalization(nameof(Translation.Auth_RealmSea))</MudMenuItem>
                     </MudMenu>
                 </NotAuthorized>
             </AuthorizeView>
@@ -115,8 +114,6 @@
 
     private bool loginEnabled = false;
 
-    private bool isAdmin;
-
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
 
@@ -124,17 +121,6 @@
     {
         base.OnInitialized();
         RefreshNotifierService.RefreshRequested += UpdateComponent;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            var authState = await AuthenticationStateTask;
-            isAdmin = authState.User.IsInRole(AuthController.AdminRoleName);
-            StateHasChanged();
-        }
     }
 
     private void UpdateComponent()

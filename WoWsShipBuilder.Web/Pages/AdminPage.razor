@@ -1,27 +1,44 @@
 ﻿@page "/admin"
+@attribute [Authorize(Roles = AuthConstants.AdminRoleName)]
+
 @using WoWsShipBuilder.Web.Authentication
 @using System.Security.Claims
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.Web.Data
+
+@inject IBetaAccessManager BetaAccessManager
+@inject ILocalizer Localizer
+@inject IClipboardService ClipboardService
 
 <MudText Class="ma-2" Align="Align.Center" Typo="Typo.h4">Administration page</MudText>
 
-<div class="d-flex align-center flex-column">
-    @if (authorized)
-    {
-        <MudStack Class="mt-2">
-            <MudText>@($"status: {status}")</MudText>
-            <MudText>@($"account_id: {accountId}")</MudText>
-            <MudText>@($"access_token: {accessToken}")</MudText>
-        </MudStack>
-    }
-    else
-    {
-        <MudButton Variant="Variant.Outlined">Auth with Wg</MudButton>
-    }
-</div>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudStack Class="mt-2">
+        <MudText>@($"status: {status}")</MudText>
+        <MudText>@($"account_id: {accountId}")</MudText>
+        <MudText>@($"access_token: {accessToken}")</MudText>
+    </MudStack>
+
+    <MudDivider DividerType="DividerType.FullWidth" Class="my-4" Light/>
+    <MudText Typo="Typo.h5">Beta Access codes</MudText>
+    <MudTable Items="@BetaAccessManager.ActiveBetas" Outlined Striped Dense>
+        <HeaderContent>
+            <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))</MudTh>
+            <MudTh>@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Code))">
+                @context.Code
+                <MudIconButton OnClick="async () => await ClipboardService.SetTextAsync(context.Code)" Icon="@Icons.Material.Filled.ContentCopy"/>
+            </MudTd>
+            <MudTd DataLabel="@Localizer.SimpleAppLocalization(nameof(Translation.BetaAccess_Feature))">
+                @Localizer.SimpleAppLocalization(context.LocalizationKey)
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
 
 @code {
-
-    private bool authorized = false;
 
     private string status = string.Empty;
 
@@ -43,7 +60,6 @@
                 accountId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 accessToken = authState.User.FindFirstValue(ClaimTypes.UserData);
                 status = string.Join(", ", authState.User.FindAll(ClaimTypes.Role).Select(c => c.Value));
-                authorized = authState.User.IsInRole(AuthController.AdminRoleName);
                 StateHasChanged();
             }
         }

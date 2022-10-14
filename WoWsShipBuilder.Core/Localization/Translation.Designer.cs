@@ -96,6 +96,87 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Auth_Login {
+            get {
+                return ResourceManager.GetString("Auth_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string Auth_Logout {
+            get {
+                return ResourceManager.GetString("Auth_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It seems like you don&apos;t have enough permissions to access this resource. Try to re-log or contact the site administrators if you think this is a bug..
+        /// </summary>
+        public static string Auth_NotEnoughPermissions {
+            get {
+                return ResourceManager.GetString("Auth_NotEnoughPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EU.
+        /// </summary>
+        public static string Auth_RealmEu {
+            get {
+                return ResourceManager.GetString("Auth_RealmEu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NA.
+        /// </summary>
+        public static string Auth_RealmNa {
+            get {
+                return ResourceManager.GetString("Auth_RealmNa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEA.
+        /// </summary>
+        public static string Auth_RealmSea {
+            get {
+                return ResourceManager.GetString("Auth_RealmSea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please try to log in to access this resource:.
+        /// </summary>
+        public static string Auth_RequestLogin {
+            get {
+                return ResourceManager.GetString("Auth_RequestLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unauthorized.
+        /// </summary>
+        public static string Auth_Unauthorized {
+            get {
+                return ResourceManager.GetString("Auth_Unauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, you are not authorized to view this resource..
+        /// </summary>
+        public static string Auth_UnauthorizedDescription {
+            get {
+                return ResourceManager.GetString("Auth_UnauthorizedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Battleship.
         /// </summary>
         public static string Battleship {
