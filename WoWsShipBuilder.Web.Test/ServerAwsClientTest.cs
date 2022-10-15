@@ -10,7 +10,8 @@ using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Services;
 

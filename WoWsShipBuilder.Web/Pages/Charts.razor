@@ -4,7 +4,8 @@
 @using MudBlazor.Services
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Projectile
+@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 
@@ -282,7 +283,7 @@
                         var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
                         var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
                         Dictionary<string, ArtilleryData> artilleryData = new();
-                        if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+                        if (ship?.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
                         {
                             IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
                             foreach (string shellIndex in shellIndexes)

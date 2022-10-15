@@ -5,7 +5,7 @@
 @using DynamicData
 @using System.Linq
 @using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Projectile
 @inject ILocalizer Localizer
 @inject IAppDataService WebAppDataService
 
@@ -133,7 +133,7 @@
         var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
         if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         Dictionary<string, ArtilleryData> artilleryData = new();
-        if (ship!.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+        if (ship?.MainBatteryModuleList != null && ship.MainBatteryModuleList.Any())
         {
             IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
             foreach (string shellIndex in shellIndexes)

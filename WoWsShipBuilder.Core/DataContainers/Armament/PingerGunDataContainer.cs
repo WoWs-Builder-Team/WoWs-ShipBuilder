@@ -5,6 +5,7 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -36,7 +37,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public static PingerGunDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            if (ship.PingerGunList is null)
+            if (!ship.PingerGunList.Any())
             {
                 return null;
             }

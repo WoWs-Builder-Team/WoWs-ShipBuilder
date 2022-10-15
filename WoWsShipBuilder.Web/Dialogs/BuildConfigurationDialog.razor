@@ -6,6 +6,7 @@
 @using System.Collections.Concurrent
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
 
@@ -159,7 +160,7 @@
                                     <div class="mt-0" style="margin-bottom: -2px">
                                         <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                                     </div>
-                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList?.Any(module => module.Value.BurstModeAbility is not null) ?? false)))
+                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null))))
                                     {
                                         <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
