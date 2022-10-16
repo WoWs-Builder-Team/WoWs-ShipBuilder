@@ -519,8 +519,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
                 if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
                 {
-                    var multiplier = (float)Math.Round(1 - (improvedRepairPartyReadinessSkillModifier.ActivationNumbers * (1 - improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"])), 2);
-                    modifiers.Add(("regenCrewReloadCoeff", multiplier));
+                    float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
+                    double multiplier = Math.Pow(skillFactor, improvedRepairPartyReadinessSkillModifier.ActivationNumbers);
+                    modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
                 }
             }
 
