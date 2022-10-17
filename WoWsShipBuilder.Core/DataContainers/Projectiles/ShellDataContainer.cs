@@ -157,7 +157,6 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                     case ShellType.AP:
                     {
-                        // TODO: check and fix modifier names and application
                         int index;
                         if (shell.Caliber >= 0.190f)
                         {
