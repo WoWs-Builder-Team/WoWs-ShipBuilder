@@ -4,6 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.Test.ShipModuleTests
 {
@@ -30,7 +31,7 @@ namespace WoWsShipBuilder.Core.Test.ShipModuleTests
 
         private List<ShipUpgrade> CreateUpgradeList()
         {
-            return new List<ShipUpgrade>
+            return new()
             {
                 new() { UcType = ComponentType.Artillery, Name = "3", Prev = "2" },
                 new() { UcType = ComponentType.Artillery, Name = "1", Prev = "" },

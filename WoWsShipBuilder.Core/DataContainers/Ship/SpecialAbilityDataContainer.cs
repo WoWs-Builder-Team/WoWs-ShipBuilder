@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataContainers

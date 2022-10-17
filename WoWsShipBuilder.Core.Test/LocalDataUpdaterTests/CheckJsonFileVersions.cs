@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,6 +8,8 @@ using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
 {
@@ -41,10 +42,10 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             var previousVersion = new GameVersion(new(0, 10, 9), GameVersionType.Live, 1);
             var localVersionInfo = CreateTestVersionInfo(1, previousVersion);
             var testVersionInfo = new VersionInfo(
-                new Dictionary<string, List<FileVersion>>
+                new()
                 {
-                    { "Ability", new List<FileVersion> { new("Common.json", 2) } },
-                    { "Ship", new List<FileVersion> { new("Japan.json", 1), new("Germany.json", 1) } },
+                    { "Ability", new() { new("Common.json", 2) } },
+                    { "Ship", new() { new("Japan.json", 1), new("Germany.json", 1) } },
                 },
                 2,
                 currentVersion,

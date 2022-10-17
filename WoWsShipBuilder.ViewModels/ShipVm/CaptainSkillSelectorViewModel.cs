@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -11,7 +8,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm

@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -144,7 +145,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 FloodTotalDamage = Math.Round(floodTotalDamage),
             };
 
-            foreach (var location in shipHull.HitLocations ?? new List<HitLocation>())
+            foreach (var location in shipHull.HitLocations)
             {
                 switch (location.Name)
                 {
@@ -172,7 +173,6 @@ namespace WoWsShipBuilder.Core.DataContainers
                         survivability.CasemateHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
                         survivability.CasemateRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);
                         break;
-                    case ShipHitLocation.Hull:
                     default:
                         survivability.HullHp = (int)Math.Ceiling(location.Hp * (survivability.HitPoints / shipHull.Health) / 50) * 50;
                         survivability.HullRegenRatio = Math.Round((decimal)location.RepairableDamage * 100);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable InconsistentNaming
 namespace WoWsShipBuilder.Core.DataContainers;
@@ -36,7 +37,7 @@ public record AntiAirDataContainer
         }
 
         var hull = ship.Hulls[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Hull).Components[ComponentType.Hull].First()];
-        TurretModule? guns = null!;
+        TurretModule? guns = null;
         if (ship.MainBatteryModuleList is { Count: > 0 })
         {
             guns = ship.MainBatteryModuleList[shipConfiguration.First(upgrade => upgrade.UcType == ComponentType.Artillery).Components[ComponentType.Artillery].First()];
@@ -62,12 +63,12 @@ public record AntiAirDataContainer
 
         // Long Range Aura
         AntiAirAura? longRange = null;
-        if (hull.AntiAir.LongRangeAura != null)
+        if (hull.AntiAir?.LongRangeAura != null)
         {
             longRange = hull.AntiAir.LongRangeAura;
         }
 
-        if (guns is not null && guns.AntiAir is not null)
+        if (guns?.AntiAir != null)
         {
             if (longRange is null)
             {
@@ -75,7 +76,7 @@ public record AntiAirDataContainer
             }
             else
             {
-                longRange += guns.AntiAir;
+                longRange = longRange.AddAura(guns.AntiAir);
             }
         }
 
@@ -88,8 +89,8 @@ public record AntiAirDataContainer
         }
 
         aaUI.LongRangeAura = FromAura(longRange, flakDamageBonus, constantDamageBonus, flakAmount);
-        aaUI.MediumRangeAura = FromAura(hull.AntiAir.MediumRangeAura, flakDamageBonus, constantDamageBonus, 0);
-        aaUI.ShortRangeAura = FromAura(hull.AntiAir.ShortRangeAura, flakDamageBonus, constantDamageBonus, 0);
+        aaUI.MediumRangeAura = FromAura(hull.AntiAir?.MediumRangeAura, flakDamageBonus, constantDamageBonus, 0);
+        aaUI.ShortRangeAura = FromAura(hull.AntiAir?.ShortRangeAura, flakDamageBonus, constantDamageBonus, 0);
 
         if (aaUI.ShortRangeAura == null && aaUI.MediumRangeAura == null && aaUI.LongRangeAura == null)
         {

@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using ReactiveUI;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.DataStructures.Components;
+using WoWsShipBuilder.DataStructures.Ship.Components;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
