@@ -1,4 +1,4 @@
-# Update 1.6.0-pre
+# Update 1.6.0
 
 ## Additions
 
