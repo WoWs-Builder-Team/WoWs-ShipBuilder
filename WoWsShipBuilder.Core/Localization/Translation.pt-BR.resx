@@ -1487,4 +1487,34 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="Build_EnterBuildName" xml:space="preserve">
       <value>Por favor, dê um nome para a build. O nome do navio será exibido automaticamente ao final.</value>
   </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Gráficos de Aceleração Beta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Comparação de Navios Beta</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Acesso Beta</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Código</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Adicionar código</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Função</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Remover</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Código inválido</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>foi ativado.</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>já foi ativado.</value>
+  </data>
 </root>
