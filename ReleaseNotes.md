@@ -4,7 +4,7 @@
 
 
 ## Changes
-
+- Update asset files for CV skills
 
 ## Bugfixes
 - Use the correct sonar module when a ship can chose between multiple sonar modules (#168)
