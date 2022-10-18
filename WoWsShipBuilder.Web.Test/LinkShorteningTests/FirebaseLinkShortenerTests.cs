@@ -86,7 +86,7 @@ public class FirebaseLinkShortenerTests
         var result = await linkShortener.CreateShortLink(testLink);
         sw.Stop();
 
-        sw.ElapsedMilliseconds.Should().BeGreaterThan(1000);
+        sw.ElapsedMilliseconds.Should().BeGreaterThanOrEqualTo(1000);
         result.Link.Should().NotBeEmpty();
         result.Shortened.Should().BeTrue();
         mockHttp.GetMatchCount(request).Should().Be(6);

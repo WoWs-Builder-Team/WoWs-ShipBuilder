@@ -7,7 +7,8 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers;
 

@@ -1,4 +1,7 @@
-﻿namespace WoWsShipBuilder.Core.Settings;
+﻿using System;
+using System.Collections.Generic;
+
+namespace WoWsShipBuilder.Core.Settings;
 
 public record WebAppSettings
 {
@@ -6,5 +9,7 @@ public record WebAppSettings
 
     public bool OpenAllAmmoExpandersByDefault { get; set; } = true;
 
-    public bool OpenSecondariesAndAAExpandersByDefault { get; set; } = true;
+    public bool OpenSecondariesAndAaExpandersByDefault { get; set; } = true;
+
+    public List<string> BetaAccessCodes { get; set; } = new();
 }

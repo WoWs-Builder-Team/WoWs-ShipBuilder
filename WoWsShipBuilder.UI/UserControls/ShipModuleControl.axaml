@@ -3,9 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
-             xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels;assembly=WoWsShipBuilder.ViewModels"
              xmlns:shipVm="clr-namespace:WoWsShipBuilder.ViewModels.ShipVm;assembly=WoWsShipBuilder.ViewModels"
+             xmlns:ship="clr-namespace:WoWsShipBuilder.DataStructures.Ship;assembly=WoWsShipBuilder.DataStructures"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ShipModuleControl"
              Name="ShipModuleControl">
@@ -39,7 +38,7 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="data:ShipUpgrade">
+                                <DataTemplate DataType="ship:ShipUpgrade">
                                     <StackPanel Orientation="Vertical">
                                         <Path Fill="{DynamicResource ThemeForegroundBrush}"
                                               HorizontalAlignment="Center"

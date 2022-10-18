@@ -19,6 +19,8 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;

@@ -5,7 +5,8 @@ using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
 {

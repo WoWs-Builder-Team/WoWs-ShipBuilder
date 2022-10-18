@@ -1,10 +1,13 @@
 ﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
 
 @implements IDisposable
 
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
+@inject AppSettings AppSettings
 
 <MudAppBar Fixed>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -13,6 +16,14 @@
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and Ballistic Charts</NavLink>
+        @if (accelerationChartsEnabled)
+        {
+            <NavLink href="/acceleration" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
+        }
+        @if (shipComparisonEnabled)
+        {
+            <NavLink href="/compare" ActiveClass="nav-link-active">Ship Comparison</NavLink>
+        }
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
@@ -78,6 +89,10 @@
 
     bool open = false;
 
+    private bool shipComparisonEnabled = false;
+
+    private bool accelerationChartsEnabled = false;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -86,6 +101,8 @@
 
     private void UpdateComponent()
     {
+        shipComparisonEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.ShipComparison.Code) ?? false;
+        accelerationChartsEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.AccelerationCharts.Code) ?? false;
         StateHasChanged();
     }
 

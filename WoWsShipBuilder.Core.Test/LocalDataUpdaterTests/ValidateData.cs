@@ -6,7 +6,7 @@ using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.DataProvider.Updater;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
 {

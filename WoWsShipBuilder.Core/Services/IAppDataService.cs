@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Consumable;
+using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.DataStructures.Module;
+using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.Services
 {
