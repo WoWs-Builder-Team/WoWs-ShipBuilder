@@ -227,13 +227,14 @@
         var engineBackwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         
         //speed boost overrides
-        var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_engineForwardForsageMaxSpeed", true).FirstOrDefault(0);
+        var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
         
         var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleList, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
-            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).AccelerationPointsList;
+            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier,
+            speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).AccelerationPointsList;
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
 

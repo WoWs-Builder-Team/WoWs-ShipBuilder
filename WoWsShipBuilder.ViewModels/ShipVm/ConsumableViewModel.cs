@@ -92,7 +92,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
         foreach (int slot in ActivatedSlots)
         {
             var consumable = ConsumableSlots[slot].SelectedConsumable;
-            if (consumable.Name.Contains("PCY007"))
+            if (consumable.Name.Contains("PCY015"))
             {
                 modifiers.AddRange(consumable.Modifiers.Select(entry => ("speedBoost_" + entry.Key, entry.Value)));
             }
