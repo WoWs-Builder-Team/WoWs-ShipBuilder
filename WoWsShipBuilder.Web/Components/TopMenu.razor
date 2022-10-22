@@ -65,8 +65,15 @@
         </MudDrawerHeader>
         <MudNavMenu Bordered Color="Color.Info">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">Homepage</MudNavLink>
+            @if (accelerationChartsEnabled)
+            {
+                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-chart" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
+            }
+            @if (shipComparisonEnabled)
+            {
+                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/compare" ActiveClass="nav-link-active">Ship Comparison</MudNavLink>
+            }
             <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/charts">Dispersion and Ballistic Charts</MudNavLink>
-            <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-chart">Acceleration Charts</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
             <MudDivider Class="my-4"/>
