@@ -862,7 +862,7 @@
       <value>Na profundidade de periscópio</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>Na profundidade de operação</value>
+      <value>Na profundidade de máxima</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Mostrar gráficos de dispersão e balística</value>
@@ -1432,8 +1432,8 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Idioma selecionado</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Abrir blocos de Projéteis e Torpedos por padrão</value>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>Abrir blocos de Projéteis, Torpedos e Aviões por padrão</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Configurações Salvas</value>
@@ -1451,10 +1451,31 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Copiar URL da build</value>
   </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Expandir todos os blocos principais por padrão</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>Abrir todos os blocos de Secundárias, Armamentos de Aviões e AA por padrão</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>Configurações dos Blocos</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>HP das seções do Navio</value>
+  </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>Ocultar Gráfico de Distribuição de Dano</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>Mostrar Ângulos dos Lançadores</value>
+  </data>
+  <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
+      <value>Duração máxima do Impulso de Motor</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Copiar link curto</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Por favor, dê um nome para a build. O nome do navio será exibido automaticamente ao final.</value>
   </data>
 </root>

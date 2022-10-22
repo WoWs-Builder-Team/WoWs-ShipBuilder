@@ -26,11 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Dialogs\ShellSelectionDialog.razor" />
-      <AdditionalFiles Include="Dialogs\ShipAndShellSelectionDialog.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\chartJs\dist\Chart.min.js" />
     </ItemGroup>
 

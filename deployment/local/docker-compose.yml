@@ -12,7 +12,7 @@ services:
     container_name: "wowssb-app"
     environment:
       SENTRY_DSN:
-      FirebaseApiKey:
+      LinkShortening__ApiKey:
     mem_limit: 4G
   prometheus:
     image: prom/prometheus

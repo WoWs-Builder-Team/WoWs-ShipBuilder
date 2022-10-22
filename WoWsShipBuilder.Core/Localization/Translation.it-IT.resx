@@ -861,9 +861,6 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>Occultamento dai sottomarini ad altezza di periscopio</value>
   </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>Occultamento dai sottomarini ad altezza operativa</value>
-  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Mostra grafici di dispersione e balistici</value>
   </data>
@@ -1431,9 +1428,6 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   </data>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Lingua selezionata</value>
-  </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Apri tendina dei proiettili e siluri all'inizio</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Impostazioni salvate</value>

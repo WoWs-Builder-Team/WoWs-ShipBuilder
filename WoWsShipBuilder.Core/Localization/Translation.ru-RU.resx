@@ -861,9 +861,6 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>На перископной глубине</value>
   </data>
-  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>На рабочей глубине</value>
-  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Показать графики разброса и баллистики</value>
   </data>
@@ -1430,9 +1427,6 @@
   </data>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Выбранный язык</value>
-  </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Открывать подробное описание снарядов и торпед по умолчанию</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Настройки сохранены</value>

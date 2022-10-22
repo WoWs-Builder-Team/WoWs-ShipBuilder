@@ -66,7 +66,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
             }
             else
             {
-                await clipboardService.SetTextAsync(currentBuild.CreateStringFromBuild());
+                await clipboardService.SetTextAsync(currentBuild.CreateShortStringFromBuild());
                 infoBoxContent = Translation.BuildCreationWindow_SavedClipboard;
             }
 

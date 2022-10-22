@@ -48,7 +48,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     {
         foreach (var slotViewModel in ConsumableSlots)
         {
-            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Contains(consumable.IconName));
+            var index = slotViewModel.ConsumableData.FindIndex(consumable => storedData.Any(s => consumable.IconName.StartsWith(s)));
             if (index > -1)
             {
                 slotViewModel.SelectedIndex = index;
