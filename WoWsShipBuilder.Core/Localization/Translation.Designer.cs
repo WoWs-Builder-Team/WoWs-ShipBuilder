@@ -171,6 +171,96 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ship Comparison Beta.
+        /// </summary>
+        public static string BETA_AccelerationCharts {
+            get {
+                return ResourceManager.GetString("BETA_AccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acceleration Charts Beta.
+        /// </summary>
+        public static string BETA_ShipComparison {
+            get {
+                return ResourceManager.GetString("BETA_ShipComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Code.
+        /// </summary>
+        public static string BetaAccess_AddCode {
+            get {
+                return ResourceManager.GetString("BetaAccess_AddCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string BetaAccess_Code {
+            get {
+                return ResourceManager.GetString("BetaAccess_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to has been enabled..
+        /// </summary>
+        public static string BetaAccess_CodeEnabled {
+            get {
+                return ResourceManager.GetString("BetaAccess_CodeEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to was already enabled..
+        /// </summary>
+        public static string BetaAccess_Duplicate {
+            get {
+                return ResourceManager.GetString("BetaAccess_Duplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature.
+        /// </summary>
+        public static string BetaAccess_Feature {
+            get {
+                return ResourceManager.GetString("BetaAccess_Feature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beta Access.
+        /// </summary>
+        public static string BetaAccess_Heading {
+            get {
+                return ResourceManager.GetString("BetaAccess_Heading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Code.
+        /// </summary>
+        public static string BetaAccess_Invalid {
+            get {
+                return ResourceManager.GetString("BetaAccess_Invalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string BetaAccess_Remove {
+            get {
+                return ResourceManager.GetString("BetaAccess_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bomb.
         /// </summary>
         public static string Bomb {
@@ -198,11 +288,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy short link.
+        /// </summary>
+        public static string Build_CopyShortUrl {
+            get {
+                return ResourceManager.GetString("Build_CopyShortUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy build url.
         /// </summary>
         public static string Build_CopyUrl {
             get {
                 return ResourceManager.GetString("Build_CopyUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a build name. The ship name will be automatically displayed at the end..
+        /// </summary>
+        public static string Build_EnterBuildName {
+            get {
+                return ResourceManager.GetString("Build_EnterBuildName", resourceCulture);
             }
         }
         

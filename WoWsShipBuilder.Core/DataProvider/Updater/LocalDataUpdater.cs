@@ -10,7 +10,8 @@ using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.DataProvider.Updater
 {
@@ -182,7 +183,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 shouldLocalizationUpdate = true;
                 try
                 {
-                    canImagesDeltaUpdate = onlineVersionInfo.LastVersion != null && onlineVersionInfo.LastVersion.MainVersion == localVersionInfo.CurrentVersion?.MainVersion;
+                    canImagesDeltaUpdate = onlineVersionInfo.LastVersion != null && onlineVersionInfo.LastVersion.MainVersion == localVersionInfo.CurrentVersion.MainVersion;
                 }
                 catch (Exception)
                 {
@@ -207,7 +208,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 filesToDownload.Add((string.Empty, "VersionInfo.json"));
             }
 
-            var versionName = onlineVersionInfo.CurrentVersion?.MainVersion.ToString(3);
+            var versionName = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3);
 
             if (SupportedDataStructureVersion.Major < onlineVersionInfo.DataStructuresVersion.Major || SupportedDataStructureVersion.Minor < onlineVersionInfo.DataStructuresVersion.Minor)
             {
@@ -351,18 +352,6 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
                 progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
                 await awsClient.DownloadImages(ImageType.Ship, fileSystem, versionName);
             }
-
-            // var camoImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Camos"));
-            // if (!camoImageDirectory.Exists || !camoImageDirectory.GetFiles().Any() || !canDeltaUpdate)
-            // {
-            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
-            //     await awsClient.DownloadImages(ImageType.Camo);
-            // }
-            // else
-            // {
-            //     progressTracker.Report((3, "SplashScreen_CamoImages"));
-            //     await awsClient.DownloadImages(ImageType.Camo, versionName);
-            // }
         }
     }
 }

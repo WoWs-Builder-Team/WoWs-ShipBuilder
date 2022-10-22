@@ -5,6 +5,7 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -36,14 +37,24 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public static PingerGunDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
-            var pingerGunList = ship.PingerGunList;
-
-            if (pingerGunList is null)
+            if (!ship.PingerGunList.Any())
             {
                 return null;
             }
 
-            var pingerGun = pingerGunList.First().Value;
+            PingerGun pingerGun;
+            var pingerUpgrade = shipConfiguration.First(c => c.UcType == ComponentType.Sonar);
+
+            // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
+            if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
+            {
+                pingerGun = ship.PingerGunList[pingerGunInfo.First()];
+            }
+            else
+            {
+                Logging.Logger.Warn("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
+                pingerGun = ship.PingerGunList.First().Value;
+            }
 
             var pingSpeed = pingerGun.WaveParams.First().WaveSpeed.First();
             var pingSpeedModifiers = modifiers.FindModifiers("pingerWaveSpeedCoeff");

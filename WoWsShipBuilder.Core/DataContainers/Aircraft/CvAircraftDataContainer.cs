@@ -7,6 +7,8 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -111,48 +113,48 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public static async Task<List<CvAircraftDataContainer>?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
-            if (ship.CvPlanes is null)
+            if (!ship.CvPlanes.Any())
             {
                 return null;
             }
 
             var list = new List<CvAircraftDataContainer>();
-            var planes = new List<PlaneData>();
+            var planes = new List<string>();
 
             var rocketConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Fighter);
             if (rocketConfiguration != null)
             {
-                List<PlaneData>? skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
+                List<string> skipModule = ship.CvPlanes[rocketConfiguration.Components[ComponentType.Fighter].First()];
                 planes.AddRange(skipModule);
             }
 
             var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.TorpedoBomber);
             if (torpConfiguration != null)
             {
-                List<PlaneData>? skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
+                List<string> skipModule = ship.CvPlanes[torpConfiguration.Components[ComponentType.TorpedoBomber].First()];
                 planes.AddRange(skipModule);
             }
 
             var diveConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.DiveBomber);
             if (diveConfiguration != null)
             {
-                List<PlaneData>? diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
+                List<string> diveModule = ship.CvPlanes[diveConfiguration.Components[ComponentType.DiveBomber].First()];
                 planes.AddRange(diveModule);
             }
 
             var skipConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.SkipBomber);
             if (skipConfiguration != null)
             {
-                List<PlaneData>? skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
+                List<string> skipModule = ship.CvPlanes[skipConfiguration.Components[ComponentType.SkipBomber].First()];
                 planes.AddRange(skipModule);
             }
 
             foreach (var value in planes)
             {
-                int index = value.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
-                string name = value.PlaneName.Substring(0, index);
+                int index = value.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
+                string name = value.Substring(0, index);
                 var plane = await appDataService.GetAircraft(name);
-                var planeDataContainer = await ProcessCvPlane(plane, value.PlaneType, ship.Tier, modifiers, appDataService);
+                var planeDataContainer = await ProcessCvPlane(plane, ship.Tier, modifiers, appDataService);
                 list.Add(planeDataContainer);
             }
 
@@ -160,7 +162,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             return list;
         }
 
-        private static async Task<CvAircraftDataContainer> ProcessCvPlane(Aircraft plane, PlaneType type, int shipTier, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        private static async Task<CvAircraftDataContainer> ProcessCvPlane(Aircraft plane, int shipTier, List<(string name, float value)> modifiers, IAppDataService appDataService)
         {
             var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
             int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
@@ -179,8 +181,9 @@ namespace WoWsShipBuilder.Core.DataContainers
             var planesConcealmentFromPlanes = (float)plane.ConcealmentFromPlanes;
             decimal aimRateModifier = 1;
             decimal aimingTime = 0;
-            switch (type)
+            switch (plane.PlaneType)
             {
+                case PlaneType.TacticalFighter:
                 case PlaneType.Fighter:
                     var rocketPlaneHpModifiers = modifiers.FindModifiers("fighterHealth");
                     planeHp = rocketPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
@@ -192,6 +195,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                     aimRateModifier = aimModifiersRocket.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
 
                     break;
+                case PlaneType.TacticalDiveBomber:
                 case PlaneType.DiveBomber:
                     var divePlaneHpModifiers = modifiers.FindModifiers("diveBomberHealth");
                     planeHp = divePlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
@@ -209,6 +213,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                     aimRateModifier = aimModifiersBomber.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
 
                     break;
+                case PlaneType.TacticalTorpedoBomber:
                 case PlaneType.TorpedoBomber:
                     var torpPlaneHpModifiers = modifiers.FindModifiers("torpedoBomberHealth");
                     planeHp = torpPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
@@ -220,6 +225,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                     aimRateModifier = aimModifiersTorpedo.Aggregate(aimRateModifier, (current, modifier) => current * (decimal)modifier);
 
                     break;
+                case PlaneType.TacticalSkipBomber:
                 case PlaneType.SkipBomber:
                     var skipPlaneHpModifiers = modifiers.FindModifiers("skipBomberHealth");
                     planeHp = skipPlaneHpModifiers.Aggregate(plane.MaxHealth, (current, modifier) => current * modifier);
@@ -294,7 +300,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
 
             List<ConsumableDataContainer> consumables = new();
-            foreach (var consumable in plane.AircraftConsumable ?? new List<AircraftConsumable>())
+            foreach (var consumable in plane.AircraftConsumable)
             {
                 var consumableDataContainer = await ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0, appDataService);
                 consumables.Add(consumableDataContainer);

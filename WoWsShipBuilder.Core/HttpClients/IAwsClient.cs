@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpResponses;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.HttpClients
 {

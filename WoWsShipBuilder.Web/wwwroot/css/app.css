@@ -210,6 +210,11 @@ a.kofi-button:active {
     display: none;
 }
 
+
 .column-text-center {
-    text-align: center;
+  text-align: center;
+}
+
+.rounded-4 {
+    border-radius: 4px;
 }

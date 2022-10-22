@@ -6,6 +6,7 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Projectile;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {

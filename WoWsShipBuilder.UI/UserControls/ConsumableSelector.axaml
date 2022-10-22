@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
              xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
+             xmlns:consumable="clr-namespace:WoWsShipBuilder.DataStructures.Consumable;assembly=WoWsShipBuilder.DataStructures"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ConsumableSelector"
              x:Name="ConsumableSelector">
@@ -13,7 +13,7 @@
     </UserControl.Resources>
     
     <UserControl.DataTemplates>
-        <DataTemplate DataType="data:Consumable">
+        <DataTemplate DataType="consumable:Consumable">
             <Image Source="{Binding Converter={StaticResource ImageConverter}}"/>
         </DataTemplate>
     </UserControl.DataTemplates>

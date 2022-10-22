@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Captain;
 
 namespace WoWsShipBuilder.UI.Converters
 {

@@ -1,15 +1,20 @@
-﻿@inject ILocalizer Localizer
+﻿@using WoWsShipBuilder.Web.Data
+@inject ILocalizer Localizer
 
 <MudDialog>
     <DialogContent>
-        <MudText Typo="Typo.body1">Please enter a build name. The ship name will be automatically added at the end.</MudText>
+        <MudText Typo="Typo.body1">@Localizer.SimpleAppLocalization(nameof(Translation.Build_EnterBuildName))</MudText>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
             <MudTextField @bind-Value="buildName" Label="Build Name" Immediate/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.GetAppLocalization(nameof(Translation.Build_CopyUrl)).Localization</MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyUrl))</MudButton>
+        @if (!ShortLinkDisabled)
+        {
+            <MudButton OnClick="@OnConfirmShortLink" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyShortUrl))</MudButton>
+        }
     </DialogActions>
 </MudDialog>
 
@@ -17,6 +22,9 @@
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
+    
+    [Parameter]
+    public bool ShortLinkDisabled { get; set; }
     
     private string buildName = string.Empty;
 
@@ -27,6 +35,11 @@
 
     private void OnConfirm()
     {
-        MudDialog.Close(buildName);
+        MudDialog.Close(new BuildShareResult(buildName));
+    }
+
+    private void OnConfirmShortLink()
+    {
+        MudDialog.Close(new BuildShareResult(buildName, true));
     }
 }

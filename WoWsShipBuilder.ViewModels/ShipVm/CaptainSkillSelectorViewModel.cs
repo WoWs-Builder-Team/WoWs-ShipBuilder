@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
@@ -11,7 +8,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
@@ -519,8 +516,9 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
                 var improvedRepairPartyReadinessSkillModifier = ConditionalModifiersList.SingleOrDefault(skill => skill.SkillId is ImprovedRepairPartyReadinessSkillNumber);
                 if (improvedRepairPartyReadinessSkill is not null && improvedRepairPartyReadinessSkillModifier is not null && improvedRepairPartyReadinessSkillModifier.Status)
                 {
-                    var multiplier = (float)Math.Round(1 - (improvedRepairPartyReadinessSkillModifier.ActivationNumbers * (1 - improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"])), 2);
-                    modifiers.Add(("regenCrewReloadCoeff", multiplier));
+                    float skillFactor = improvedRepairPartyReadinessSkill.ConditionalModifiers["regenCrewReloadCoeff"];
+                    double multiplier = Math.Pow(skillFactor, improvedRepairPartyReadinessSkillModifier.ActivationNumbers);
+                    modifiers.Add(("regenCrewReloadCoeff", Convert.ToSingle(multiplier)));
                 }
             }
 

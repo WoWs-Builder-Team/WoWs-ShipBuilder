@@ -8,18 +8,18 @@
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="NLog" Version="5.0.2" />
+      <PackageReference Include="NLog" Version="5.0.4" />
       <PackageReference Include="ReactiveUI" Version="18.3.1" />
       <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="System.IO.Abstractions" Version="17.1.1" />
-      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="2.4.3" />
+      <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
+      <PackageReference Include="WoWsShipBuilder.DataStructures" Version="3.0.1" />
     </ItemGroup>
 
     <ItemGroup>

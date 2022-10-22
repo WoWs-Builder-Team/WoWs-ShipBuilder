@@ -8,6 +8,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace WoWsShipBuilder.Core.DataContainers
@@ -107,8 +108,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 return null;
             }
 
-            string[]? artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
-            string[]? supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
+            string[] artilleryOptions = artilleryConfiguration.Components[ComponentType.Artillery];
+            string[] supportedModules = artilleryConfiguration.Components[ComponentType.Artillery];
 
             TurretModule? mainBattery;
             if (artilleryOptions.Length == 1)
@@ -117,7 +118,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
             else
             {
-                string? hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
+                string hullArtilleryName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Artillery].First(artilleryName => supportedModules.Contains(artilleryName));
                 mainBattery = ship.MainBatteryModuleList[hullArtilleryName];
             }
 
@@ -171,9 +172,10 @@ namespace WoWsShipBuilder.Core.DataContainers
             range = talentRangeModifiers.Aggregate(range, (current, modifier) => current * (decimal)modifier) / 1000;
 
             // Consider dispersion modifiers
+            var idealRadius = modifiers.FindModifiers("GMIdealRadius").Aggregate(mainBattery.DispersionValues.IdealRadius, (current, modifier) => current * modifier);
             var modifiedDispersion = new Dispersion
             {
-                IdealRadius = mainBattery.DispersionValues.IdealRadius,
+                IdealRadius = idealRadius,
                 MinRadius = mainBattery.DispersionValues.MinRadius,
                 IdealDistance = mainBattery.DispersionValues.IdealDistance,
                 TaperDist = mainBattery.DispersionValues.TaperDist,
@@ -182,8 +184,6 @@ namespace WoWsShipBuilder.Core.DataContainers
                 RadiusOnMax = mainBattery.DispersionValues.RadiusOnMax,
                 Delim = mainBattery.DispersionValues.Delim,
             };
-
-            modifiedDispersion.IdealRadius = modifiers.FindModifiers("GMIdealRadius").Aggregate(modifiedDispersion.IdealRadius, (current, modifier) => current * modifier);
 
             decimal rateOfFire = 60 / reload;
 

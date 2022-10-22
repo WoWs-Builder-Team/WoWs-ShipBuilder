@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Utility;
 
