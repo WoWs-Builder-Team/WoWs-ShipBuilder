@@ -4,6 +4,7 @@ using System.Globalization;
 using Avalonia.Data.Converters;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.UI.Converters
 {

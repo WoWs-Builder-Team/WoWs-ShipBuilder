@@ -5,6 +5,12 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
 using WoWsShipBuilder.Web.Utility;
 
@@ -73,7 +79,7 @@ public class ServerAppDataService : IAppDataService
 
         string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
         var localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(versionInfoContent)!;
-        AppData.DataVersion = localVersionInfo.CurrentVersion!.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+        AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
         var dataRootInfo = new DirectoryInfo(dataRoot);
         DirectoryInfo[] categories = dataRootInfo.GetDirectories();

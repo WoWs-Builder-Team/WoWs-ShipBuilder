@@ -9,8 +9,8 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.5.7</VersionPrefix>
-        <VersionSuffix>pre</VersionSuffix>
+        <VersionPrefix>1.6.0</VersionPrefix>
+<!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
@@ -53,7 +53,7 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
-        <PackageReference Include="Clowd.Squirrel" Version="2.8.40" />
+        <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
         <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-Preview1" />
@@ -61,13 +61,13 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Sentry.NLog" Version="3.20.1" />
+        <PackageReference Include="Sentry.NLog" Version="3.22.0" />
         <PackageReference Include="Splat.Autofac" Version="14.4.1" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.406">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.IO.Abstractions" Version="17.1.1" />
+        <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />

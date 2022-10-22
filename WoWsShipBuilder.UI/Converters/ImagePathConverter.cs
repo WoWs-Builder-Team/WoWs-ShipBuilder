@@ -14,6 +14,10 @@ using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Consumable;
+using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Upgrade;
 
 namespace WoWsShipBuilder.UI.Converters
 {

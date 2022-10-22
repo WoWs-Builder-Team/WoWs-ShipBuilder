@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ReactiveUI;
-using WoWsShipBuilder.DataStructures;
+﻿using ReactiveUI;
+using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
@@ -18,6 +16,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         private readonly Dictionary<int, bool> canRemoveCache;
 
+        // TODO: update to new nullability state
         public SkillItemViewModel(Skill skill, CaptainSkillSelectorViewModel parent, ShipClass shipClass, Dictionary<int, bool> canAddCache, Dictionary<int, bool> canRemoveCache)
         {
             Skill = skill;

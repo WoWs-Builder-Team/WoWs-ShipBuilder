@@ -867,6 +867,9 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>Periszkóp mélységben</value>
   </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+      <value>Mélymerülésben</value>
+  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Szórási kép és ballisztikus ábrák mutatása</value>
   </data>
@@ -1332,11 +1335,24 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   <data name="ShipStats_TorpedoType" xml:space="preserve">
       <value>Torpedó típusa</value>
   </data>
+  <data name="DataUpdate_ErrorDescription" xml:space="preserve">
+      <value>Hiba lépett fel az adatok frissítése közben. Ez a megjelenítésben hibákhoz vezethet. Újrapróbálkozáshoz indítsa újra az alkalmazást.
+Bővebb információ a logfájlokban található.</value>
+  </data>
   <data name="DataUpdate_ErrorTitle" xml:space="preserve">
       <value>Adatfrissítési hiba</value>
   </data>
   <data name="NotificationService_UpdateActive" xml:space="preserve">
       <value>Az alkalmazásfrissítés háttérben fut...</value>
+  </data>
+  <data name="NotificationService_ErrorMessage" xml:space="preserve">
+      <value>Hiba lépett fel az app frissítésekor. További információk a logfájlban.</value>
+  </data>
+  <data name="NotificationService_UpdateCompleted" xml:space="preserve">
+      <value>Az alkalmazás a háttérben frissítve lett. A múdosítások érvénybe lépéséhez kérjük indítsa újra. Klikk az újraindításhoz.</value>
+  </data>
+  <data name="UpdateMessageBox_Description" xml:space="preserve">
+      <value>A frissítés befejeződött. Akarja újraindítani, hogy a módosítások élesedjenek?</value>
   </data>
   <data name="UpdateMessageBox_Title" xml:space="preserve">
       <value>Alkalmazás frissítve</value>
@@ -1352,6 +1368,10 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Sebzés</value>
+  </data>
+  <data name="ShipStats_SplashExplanation" xml:space="preserve">
+      <value>Ezek a paraméterek csak tengeralattjáróra hatnak.
+Felszini hajókra nincs hatásuk.</value>
   </data>
   <data name="ShipStats_DcSplashRadius" xml:space="preserve">
       <value>Robbanás hatósugara</value>
@@ -1457,5 +1477,41 @@ Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Maximális motorerősítési idő</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Gyorslink másolása</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Kérjük, adja meg a build nevét. A hajó neve automatikusan megjelenik a végén.</value>
+  </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Gyorsulási ábrák - béta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Hajó összehasonlítás - béta</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Béta hozzáférés</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Kód</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Kód hozzáadása</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Funkció</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Törlés</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Érvénytelen kód</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>engedélyezve.</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>már engedélyezett.</value>
   </data>
 </root>

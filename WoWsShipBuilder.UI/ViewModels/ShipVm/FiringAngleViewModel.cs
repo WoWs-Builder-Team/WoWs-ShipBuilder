@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Components;
+using WoWsShipBuilder.DataStructures.Ship.Components;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm

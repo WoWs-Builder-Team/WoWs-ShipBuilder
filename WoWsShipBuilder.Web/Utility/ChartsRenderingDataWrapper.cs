@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.DataStructures;
+﻿using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Web.Utility;
 

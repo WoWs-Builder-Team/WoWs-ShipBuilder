@@ -5,6 +5,8 @@ using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.ShipVm;
 

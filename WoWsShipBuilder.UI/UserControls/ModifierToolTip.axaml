@@ -5,16 +5,16 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WoWsShipBuilder.UI.UserControls.ModifierToolTip"
              xmlns:conv="clr-namespace:WoWsShipBuilder.UI.Converters"
-             xmlns:data="clr-namespace:WoWsShipBuilder.DataStructures;assembly=WoWsShipBuilder.DataStructures"
              xmlns:dataElements="clr-namespace:WoWsShipBuilder.DataElements.DataElements;assembly=WoWsShipBuilder.DataElements"
              xmlns:dataContainers="clr-namespace:WoWsShipBuilder.Core.DataContainers;assembly=WoWsShipBuilder.Core"
+             xmlns:upgrade="clr-namespace:WoWsShipBuilder.DataStructures.Upgrade;assembly=WoWsShipBuilder.DataStructures"
              MaxWidth="350">
     <UserControl.Resources>
         <conv:ModifierConverter x:Key="ModifierConverter" />
     </UserControl.Resources>
 
     <Design.DataContext>
-        <data:Modernization />
+        <upgrade:Modernization />
     </Design.DataContext>
 
     <UserControl.Styles>
@@ -27,7 +27,7 @@
     
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
-            <DataTemplate DataType="data:Modernization">
+            <DataTemplate DataType="upgrade:Modernization">
                 <StackPanel Orientation="Vertical" Spacing="5" Margin="3">
                     <TextBlock Classes="ModifierTitle" Name="TitleText"
                                Text="{Binding Name, Converter={StaticResource Localizer}, ConverterParameter=TITLE}" />

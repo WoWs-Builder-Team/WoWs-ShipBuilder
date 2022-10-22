@@ -1,13 +1,10 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using DynamicData;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;

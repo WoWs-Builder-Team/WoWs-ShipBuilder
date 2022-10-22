@@ -861,6 +861,9 @@
   <data name="ShipStats_ConcealmentBySubPeriscope" xml:space="preserve">
       <value>На перископной глубине</value>
   </data>
+  <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
+      <value>На предельной глубине</value>
+  </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>Показать графики разброса и баллистики</value>
   </data>
@@ -1428,6 +1431,9 @@
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Выбранный язык</value>
   </data>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>Отобразить снаряды, торпеды и самолёты по умолчанию</value>
+  </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Настройки сохранены</value>
   </data>
@@ -1444,10 +1450,61 @@
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Копировать ссылку на билд</value>
   </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Открывать подробное описание снарядов и торпед по умолчанию</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>Отображение подробного вида ПМК, Самолетного вооружения и ПВО по умолчанию</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>Настройки подробного вида</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>ХП секций корабля</value>
+  </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>Скрыть график распределения урона</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>Показать углы запуска</value>
+  </data>
+  <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
+      <value>Макс. длительность форсажа</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Копировать короткую ссылку</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Пожалуйста, введите название билда. Название корабля будет автоматически отображено в конце.</value>
+  </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Бета Графиков Ускорения</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Бета Сравнения Кораблей</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Бета доступ</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Код</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Добавить код</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Функция</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Удалить</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Неверный код</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>был включен(а).</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>уже включен(а).</value>
   </data>
 </root>

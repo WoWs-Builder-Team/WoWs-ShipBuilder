@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Projectile;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -156,7 +157,6 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                     case ShellType.AP:
                     {
-                        // TODO: check and fix modifier names and application
                         int index;
                         if (shell.Caliber >= 0.190f)
                         {

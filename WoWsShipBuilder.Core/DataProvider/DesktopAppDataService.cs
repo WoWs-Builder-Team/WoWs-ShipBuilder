@@ -10,6 +10,14 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Captain;
+using WoWsShipBuilder.DataStructures.Consumable;
+using WoWsShipBuilder.DataStructures.Exterior;
+using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.DataProvider;
 
