@@ -19,13 +19,13 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: [ "localhost:9090" ]
   - job_name: 'wowssb'
     metrics_path: /metrics
     scheme: http
-    static_configs: 
-      - targets: ["app:80"]
+    static_configs:
+      - targets: [ "app:80", "app-pts:80" ]
   - job_name: 'cadvisor'
     scrape_interval: 15s
-    static_configs: 
-      - targets: ["cadvisor:8080"]
+    static_configs:
+      - targets: [ "cadvisor:8080" ]
