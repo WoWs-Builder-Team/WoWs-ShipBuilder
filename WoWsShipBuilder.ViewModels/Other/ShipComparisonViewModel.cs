@@ -8,6 +8,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 

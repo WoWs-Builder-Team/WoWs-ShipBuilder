@@ -1585,6 +1585,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Tactical Skip Bombers</value>
+  </data>
   <data name="Build_CopyShortUrl" xml:space="preserve">
       <value>Copy short link</value>
   </data>

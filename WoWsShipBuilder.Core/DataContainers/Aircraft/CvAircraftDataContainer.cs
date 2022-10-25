@@ -315,25 +315,12 @@ namespace WoWsShipBuilder.Core.DataContainers
 
             var jatoSpeedMultiplier = jatoMultiplier > 1 ? (jatoMultiplier - 1) * 100 : 0;
 
-            var planeVariant = type;
-            if (shipTier == 11 && plane.IsTactical)
-            {
-                planeVariant = type switch
-                {
-                    PlaneType.Fighter => PlaneType.TacticalFighter,
-                    PlaneType.DiveBomber => PlaneType.TacticalDiveBomber,
-                    PlaneType.SkipBomber => PlaneType.TacticalSkipBomber,
-                    PlaneType.TorpedoBomber => PlaneType.TacticalTorpedoBomber,
-                    _ => type,
-                };
-            }
-
             const string stringFormat = "+#0.0;-#0.0;0";
 
             var cvAircraft = new CvAircraftDataContainer
             {
                 Name = plane.Name,
-                PlaneVariant = planeVariant.ToString(),
+                PlaneVariant = plane.PlaneType.ToString(),
                 PlaneHp = finalPlaneHp,
                 SquadronHp = finalPlaneHp * plane.NumPlanesInSquadron,
                 AttackGroupHp = finalPlaneHp * plane.AttackData.AttackerSize,

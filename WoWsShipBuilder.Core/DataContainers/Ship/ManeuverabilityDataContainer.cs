@@ -54,6 +54,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
         maxSpeedModifier = modifiers.FindModifiers("boostCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * ((decimal)modifier + 1));
 
+        decimal enlargedPropellerShaftSpeedModifier = modifiers.FindModifiers("speedCoefBattery", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+
         decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
         var engineForwardUpTimeModifiers = modifiers.Where(x => x.Key.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.Value);
@@ -69,8 +71,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
 
-        List<int> forward = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
-        List<int> reverse = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
+        var forward = new List<int> { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
+        var reverse = new List<int> { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
 
         // disable warning cause readability. not much we can do since the parameter are a lot
 #pragma warning disable SA1117
@@ -83,15 +85,20 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
             speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).TimeForGear.Single();
 #pragma warning restore SA1117
 
+        bool isSub = hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtMaxDepthCoeff);
+
         decimal maxSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier;
+
         decimal maxSpeedOnSurface = 0;
         decimal maxSpeedAtPeriscope = 0;
         decimal maxSpeedAtMaxDepth = 0;
-        if (hull.MaxSpeedAtBuoyancyStateCoeff is not null)
+
+        if (isSub)
         {
-            maxSpeedOnSurface = maxSpeed;
-            maxSpeedAtPeriscope = maxSpeed * hull.MaxSpeedAtBuoyancyStateCoeff[SubsBuoyancyStates.Periscope];
-            maxSpeedAtMaxDepth = maxSpeed * hull.MaxSpeedAtBuoyancyStateCoeff[SubsBuoyancyStates.DeepWater] * modifiers.FindModifiers("speedCoefUW", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+            maxSpeedOnSurface = maxSpeed * enlargedPropellerShaftSpeedModifier;
+            maxSpeedAtPeriscope = maxSpeed * speedAtPeriscopeCoeff * enlargedPropellerShaftSpeedModifier;
+            maxSpeedAtMaxDepth = maxSpeed * speedAtMaxDepthCoeff;
             maxSpeed = 0;
         }
 

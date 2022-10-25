@@ -1,5 +1,6 @@
 ﻿@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.DataStructures.Ship
 @inject ILocalizer Localizer
 
 <MudDialog>
@@ -104,43 +105,55 @@
     
     private void ReturnShipBuildContainer()
     {
-        Ship ship = new Ship();
-        ship.ShipClass = selectedClass;
-        ship.Name = "customShip";
-        ship.Index = name;
-        ship.ShipNation = Nation.Common;
-        ship.Tier = 10;
-        
-        Hull hull = new Hull();
-        hull.MaxSpeed = maxSpeed;
-        hull.EnginePower = enginePower;
-        hull.Tonnage = tonnage;
-        hull.AntiAir = new();
+        var ship = new Ship
+        {
+            ShipClass = selectedClass,
+            Name = "customShip",
+            Index = name,
+            ShipNation = Nation.Common,
+            Tier = 10,
+        };
+
+        var hull = new Hull
+        {
+            MaxSpeed = maxSpeed,
+            EnginePower = enginePower,
+            Tonnage = tonnage,
+            AntiAir = new(),
+        };
         ship.Hulls = new() {{"Custom hull", hull}};
 
-        Engine engine = new Engine();
-        engine.ForwardEngineUpTime = forwardEngineUpTime;
-        engine.BackwardEngineUpTime = backwardEngineUpTime;
-        engine.ForwardEngineForsag = forwardEngineForsag;
-        engine.BackwardEngineForsag = backwardEngineForsag;
-        engine.ForwardEngineForsagMaxSpeed = forwardEngineForsagMaxSpeed;
-        engine.BackwardEngineForsagMaxSpeed = backwardEngineForsagMaxSpeed;
+        var engine = new Engine
+        {
+            ForwardEngineUpTime = forwardEngineUpTime,
+            BackwardEngineUpTime = backwardEngineUpTime,
+            ForwardEngineForsag = forwardEngineForsag,
+            BackwardEngineForsag = backwardEngineForsag,
+            ForwardEngineForsagMaxSpeed = forwardEngineForsagMaxSpeed,
+            BackwardEngineForsagMaxSpeed = backwardEngineForsagMaxSpeed,
+            
+        };
+
         ship.Engines = new() {{"Custom engine", engine}};
 
-        UpgradeInfo upgradeInfo = new();
-        upgradeInfo.ShipUpgrades = new();
+        UpgradeInfo upgradeInfo = new()
+        {
+            ShipUpgrades = new(),
+        };
 
-        ShipUpgrade engineUpgrade = new ShipUpgrade();
-        engineUpgrade.Name = "Custom engine";
-        engineUpgrade.Components = new();
-        engineUpgrade.Components.Add(ComponentType.Engine, new[] {"Custom engine"});
-        engineUpgrade.UcType = ComponentType.Engine;
-        
-        ShipUpgrade hullUpgrade = new ShipUpgrade();
-        hullUpgrade.Name = "Custom hull";
-        hullUpgrade.Components = new();
-        hullUpgrade.Components.Add(ComponentType.Hull, new[] {"Custom hull"});
-        hullUpgrade.UcType = ComponentType.Hull;
+        var engineUpgrade = new ShipUpgrade
+        {
+            Name = "Custom engine",
+            Components = new() {{ComponentType.Engine, new[] {"Custom engine"}}},
+            UcType = ComponentType.Engine,
+        };
+
+        var hullUpgrade = new ShipUpgrade
+        {
+            Name = "Custom hull",
+            Components = new() {{ComponentType.Hull, new[] {"Custom hull"}}},
+            UcType = ComponentType.Hull,
+        };
 
         upgradeInfo.ShipUpgrades.Add(engineUpgrade);
         upgradeInfo.ShipUpgrades.Add(hullUpgrade);

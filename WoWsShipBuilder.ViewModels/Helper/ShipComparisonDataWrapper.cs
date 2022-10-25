@@ -2,6 +2,7 @@
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
