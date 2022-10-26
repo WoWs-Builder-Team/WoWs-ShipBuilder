@@ -359,7 +359,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 if (wrapper.Build is not null)
                 {
                     ShipComparisonDataWrapper err = new(wrapper.Ship, await GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
-                    EditBuilds(new(){err});
+                    EditBuilds(new(){ err });
                     warning.Add(err);
                 }
                 else
@@ -529,10 +529,10 @@ public class ShipComparisonViewModel : ViewModelBase
 
         if (!shipList.Any())
         {
-            return new() {DataSections.General};
+            return new() { DataSections.General };
         }
 
-        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>().Except(new [] {DataSections.Maneuverability, DataSections.Concealment, DataSections.Survivability, DataSections.General}))
+        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>().Except(new [] { DataSections.Maneuverability, DataSections.Concealment, DataSections.Survivability, DataSections.General }))
         {
             switch (dataSection)
             {
@@ -742,7 +742,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public void DuplicateSelectedShips(ShipComparisonDataWrapper? ship = null)
     {
-        List<ShipComparisonDataWrapper> list = ship != null ? new() {ship} : SelectedShipList;
+        List<ShipComparisonDataWrapper> list = ship != null ? new() { ship } : SelectedShipList;
         foreach (var selectedShip in list)
         {
             ShipComparisonDataWrapper newWrapper = new(selectedShip.Ship, selectedShip.ShipDataContainer, selectedShip.Build);
