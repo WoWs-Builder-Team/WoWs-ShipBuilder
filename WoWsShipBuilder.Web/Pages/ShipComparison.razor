@@ -673,7 +673,7 @@
             }
         }
 
-        return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() {TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList()});
+        return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
     }
 
     private void UpdateUrl()
