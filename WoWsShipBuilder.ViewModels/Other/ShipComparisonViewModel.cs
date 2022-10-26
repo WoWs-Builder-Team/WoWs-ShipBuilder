@@ -86,11 +86,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool ShowPinnedShipsOnly
     {
         get => showPinnedShipsOnly;
-        private set
-        {
-            GetShipsToBeDisplayedList();
-            this.RaiseAndSetIfChanged(ref showPinnedShipsOnly, value);
-        }
+        private set => this.RaiseAndSetIfChanged(ref showPinnedShipsOnly, value);
     }
 
     private bool pinAllShips;
