@@ -50,89 +50,96 @@
 @if (ViewModel is not null)
 {
     <MudStack Class="mb-3 mt-3">
-        <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
-            <MudStack Row="true">
-                <MudText GutterBottom="true" Style="font-size: large">
-                    Tier
+        <MudExpansionPanel IsInitiallyExpanded Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+            <TitleContent>
+                <MudText Style="font-size: large">
+                    Filters
                 </MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
-                    All
-                </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
-                    None
-                </MudButton>
-            </MudStack>
-            <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                @for (var i = 1; i <= 11; i++)
-                {
-                    int tier = i;
-                    bool isSelected = ViewModel.SelectedTiers.Contains(tier);
-                    <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleTierSelection(tier))">
-                        @tier.ToTierString()
+            </TitleContent>
+            <ChildContent>
+                <MudStack Row="true">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Tier
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
+                        All
                     </MudButton>
-                }
-            </MudButtonGroup>
-            <MudStack Row="true" Class="mt-3">
-                <MudText GutterBottom="true" Style="font-size: large">
-                    Class
-                </MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
-                    All
-                </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
-                    None
-                </MudButton>
-            </MudStack>
-            <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach (var shipClass in ViewModel!.AvailableClasses)
-                {
-                    bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
-                    <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleClassSelection(shipClass))">
-                        @Localizer.GetAppLocalization(shipClass.ToString()).Localization
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
+                        None
                     </MudButton>
-                }
-            </MudButtonGroup>
-            <MudStack Row="true" Class="mt-3">
-                <MudText GutterBottom="true" Style="font-size: large">
-                    Nation
-                </MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
-                    All
-                </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
-                    None
-                </MudButton>
-            </MudStack>
-            <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach (var nation in ViewModel!.AvailableNations)
-                {
-                    bool isSelected = ViewModel.SelectedNations.Contains(nation);
-                    <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleNationSelection(nation))">
-                        @Localizer.GetAppLocalization(nation.ToString()).Localization
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @for (var i = 1; i <= 11; i++)
+                    {
+                        int tier = i;
+                        bool isSelected = ViewModel.SelectedTiers.Contains(tier);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleTierSelection(tier))">
+                            @tier.ToTierString()
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Class
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
+                        All
                     </MudButton>
-                }
-            </MudButtonGroup>
-            <MudStack Row="true" Class="mt-3">
-                <MudText GutterBottom="true" Style="font-size: large">
-                    Category
-                </MudText>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
-                    All
-                </MudButton>
-                <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
-                    None
-                </MudButton>
-            </MudStack>
-            <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                @foreach (var category in ViewModel!.AvailableShipCategories)
-                {
-                    bool isSelected = ViewModel.SelectedCategories.Contains(category);
-                    <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleCategorySelection(category))">
-                        @Localizer.GetAppLocalization(category.ToString()).Localization
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
+                        None
                     </MudButton>
-                }
-            </MudButtonGroup>
-        </MudPaper>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var shipClass in ViewModel!.AvailableClasses)
+                    {
+                        bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleClassSelection(shipClass))">
+                            @Localizer.GetAppLocalization(shipClass.ToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Nation
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var nation in ViewModel!.AvailableNations)
+                    {
+                        bool isSelected = ViewModel.SelectedNations.Contains(nation);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleNationSelection(nation))">
+                            @Localizer.GetAppLocalization(nation.ToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Category
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var category in ViewModel!.AvailableShipCategories)
+                    {
+                        bool isSelected = ViewModel.SelectedCategories.Contains(category);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleCategorySelection(category))">
+                            @Localizer.GetAppLocalization(category.ToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+            </ChildContent>
+        </MudExpansionPanel>
 
         <MudStack Style="width: 100%">
             <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.SearchShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
