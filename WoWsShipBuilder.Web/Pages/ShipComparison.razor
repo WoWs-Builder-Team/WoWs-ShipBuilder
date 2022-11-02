@@ -231,13 +231,13 @@
         </ToolBarContent>
 
         <Columns>
-            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
@@ -399,7 +399,7 @@
         if (!string.IsNullOrEmpty(section))
         {
             applyFilters = true;
-            ViewModel.SelectedDataSection = Enum.Parse<ShipComparisonViewModel.DataSections>(section);
+            ViewModel.SelectedDataSection = Enum.Parse<ShipComparisonDataSections>(section);
         }
 
         if (applyFilters)
@@ -410,22 +410,22 @@
 
     private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
     {
-        return ViewModel!.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Color.Info : Color.Default;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Color.Info : Color.Default;
     }
 
     private string IsShipPinnedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ViewModel!.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
     }
 
     private Color IsShipSelectedColor(ShipComparisonDataWrapper wrapper)
     {
-        return ViewModel!.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Color.Info : Color.Default;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Color.Info : Color.Default;
     }
 
     private string IsShipSelectedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ViewModel!.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
     }
 
     private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
@@ -469,7 +469,7 @@
         }
     }
 
-    private async Task ToggleDataSection(ShipComparisonViewModel.DataSections dataSection)
+    private async Task ToggleDataSection(ShipComparisonDataSections dataSection)
     {
         await ViewModel!.ToggleDataSection(dataSection);
         UpdateUrl();

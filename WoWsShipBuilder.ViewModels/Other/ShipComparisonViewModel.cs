@@ -40,7 +40,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public List<ShipComparisonDataWrapper> PinnedShipList { get; } = new();
 
-    public DataSections SelectedDataSection { get; set; } = DataSections.General;
+    public ShipComparisonDataSections SelectedDataSection { get; set; } = ShipComparisonDataSections.General;
 
     public ObservableCollection<int> SelectedTiers { get; } = new();
 
@@ -50,11 +50,11 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public ObservableCollection<ShipCategory> SelectedCategories { get; } = new();
 
-    public IEnumerable<ShipClass> AvailableClasses { get; } = Enum.GetValues<ShipClass>().Except(new[] {ShipClass.Auxiliary});
+    public IEnumerable<ShipClass> AvailableClasses { get; } = Enum.GetValues<ShipClass>().Except(new[] { ShipClass.Auxiliary });
 
-    public IEnumerable<Nation> AvailableNations { get; } = Enum.GetValues<Nation>().Except(new[] {Nation.Common});
+    public IEnumerable<Nation> AvailableNations { get; } = Enum.GetValues<Nation>().Except(new[] { Nation.Common });
 
-    public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new[] {ShipCategory.Disabled, ShipCategory.Clan});
+    public IEnumerable<ShipCategory> AvailableShipCategories { get; } = Enum.GetValues<ShipCategory>().Except(new[] { ShipCategory.Disabled, ShipCategory.Clan });
 
     public List<Ship> SearchedShips { get; } = new();
 
@@ -94,7 +94,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool PinAllShips
     {
         get => pinAllShips;
-        private set => this. RaiseAndSetIfChanged(ref pinAllShips, value);
+        private set => this.RaiseAndSetIfChanged(ref pinAllShips, value);
     }
 
     private bool selectAllShips;
@@ -102,7 +102,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool SelectAllShips
     {
         get => selectAllShips;
-        private set => this. RaiseAndSetIfChanged(ref selectAllShips, value);
+        private set => this.RaiseAndSetIfChanged(ref selectAllShips, value);
     }
 
     private bool useUpgradedModules;
@@ -110,7 +110,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool UseUpgradedModules
     {
         get => useUpgradedModules;
-        set => this. RaiseAndSetIfChanged(ref useUpgradedModules, value);
+        set => this.RaiseAndSetIfChanged(ref useUpgradedModules, value);
     }
 
     private bool hideShipsWithoutSelectedSection;
@@ -118,7 +118,7 @@ public class ShipComparisonViewModel : ViewModelBase
     public bool HideShipsWithoutSelectedSection
     {
         get => hideShipsWithoutSelectedSection;
-        set => this. RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
+        set => this.RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
     }
 
     public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings)
@@ -148,7 +148,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
         list.AddRange(cachedWrappers.Where(x => !ContainsWrapper(x, list)));
 
-        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index) &&
+        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
                                                                                                      !ContainsShipIndex(data.Index, cachedWrappers) &&
                                                                                                      SelectedTiers.Contains(data.Tier) &&
                                                                                                      SelectedClasses.Contains(data.ShipClass) &&
@@ -295,9 +295,9 @@ public class ShipComparisonViewModel : ViewModelBase
     {
         foreach (var wrapper in newWrappers)
         {
-            if (ContainsWrapper(wrapper))
+            if (ContainsWrapper(wrapper, FilteredShipList))
             {
-                FilteredShipList.Replace(FilteredShipList.First(x => x.Id.Equals(wrapper.Id)), wrapper);
+                FilteredShipList.Replace(SelectWrapper(wrapper, FilteredShipList), wrapper);
             }
             else
             {
@@ -306,7 +306,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
             if (ContainsWrapper(wrapper, PinnedShipList))
             {
-                PinnedShipList.Replace(PinnedShipList.First(x => x.Id.Equals(wrapper.Id)), wrapper);
+                PinnedShipList.Replace(SelectWrapper(wrapper, PinnedShipList), wrapper);
             }
             else if (ContainsShipIndex(wrapper.Ship.Index, PinnedShipList))
             {
@@ -315,12 +315,12 @@ public class ShipComparisonViewModel : ViewModelBase
 
             if (!clearCache && ContainsWrapper(wrapper, wrappersCache))
             {
-                wrappersCache.Replace(wrappersCache.First(x => x.Id.Equals(wrapper.Id)), wrapper);
+                wrappersCache.Replace(SelectWrapper(wrapper, wrappersCache), wrapper);
             }
 
             if (ContainsWrapper(wrapper, SelectedShipList))
             {
-                SelectedShipList.Replace(SelectedShipList.First(x => x.Id.Equals(wrapper.Id)), wrapper);
+                SelectedShipList.Replace(SelectWrapper(wrapper, SelectedShipList), wrapper);
             }
         }
 
@@ -355,7 +355,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 if (wrapper.Build is not null)
                 {
                     ShipComparisonDataWrapper err = new(wrapper.Ship, await GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
-                    EditBuilds(new(){ err });
+                    EditBuilds(new() { err });
                     warning.Add(err);
                 }
                 else
@@ -364,6 +364,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 }
             }
         }
+
         SelectedShipList.Clear();
         SelectedShipList.AddRange(warning);
 
@@ -420,21 +421,18 @@ public class ShipComparisonViewModel : ViewModelBase
         SelectedShipList.Remove(wrapper);
     }
 
-    public bool ContainsWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper>? list = null)
+    public static bool ContainsWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper> list)
     {
-        list ??= FilteredShipList;
         return list.Select(x => x.Id).Contains(wrapper.Id);
     }
 
-    private bool ContainsShipIndex(string shipIndex, IEnumerable<ShipComparisonDataWrapper>? list = null)
+    private static bool ContainsShipIndex(string shipIndex, IEnumerable<ShipComparisonDataWrapper> list)
     {
-        list ??= FilteredShipList;
         return list.Select(x => x.Ship.Index).Contains(shipIndex);
     }
 
-    private ShipComparisonDataWrapper SelectWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper>? list = null)
+    private static ShipComparisonDataWrapper SelectWrapper(ShipComparisonDataWrapper wrapper, IEnumerable<ShipComparisonDataWrapper> list)
     {
-        list ??= FilteredShipList;
         return list.First(x => x.Id.Equals(wrapper.Id));
     }
 
@@ -457,13 +455,13 @@ public class ShipComparisonViewModel : ViewModelBase
 
     private async Task<ShipDataContainer> GetShipConfiguration(Ship ship)
     {
-        List<ShipUpgrade> shipConfiguration = UseUpgradedModules ?
-            ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
+        List<ShipUpgrade> shipConfiguration = UseUpgradedModules
+            ? ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
                 .Select(module => module.Last())
-                .ToList() :
-            ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
+                .ToList()
+            : ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
                 .OrderBy(entry => entry.Key)
                 .Select(entry => entry.Value)
                 .Select(module => module.First())
@@ -483,166 +481,181 @@ public class ShipComparisonViewModel : ViewModelBase
         await ApplyFilters();
     }
 
-    private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(List<ShipComparisonDataWrapper>? list = null)
+    private List<ShipComparisonDataWrapper> HideShipsIfNoSelectedSection(IEnumerable<ShipComparisonDataWrapper> list)
     {
-        list ??= FilteredShipList;
         if (!HideShipsWithoutSelectedSection)
         {
-            return list;
+            return list.ToList();
         }
 
-        list = SelectedDataSection switch
+        List<ShipComparisonDataWrapper> newList = SelectedDataSection switch
         {
-            DataSections.MainBattery => list.Where(x => x.ShipDataContainer.MainBatteryDataContainer is not null).ToList(),
-            DataSections.He => list.Where(x => x.HeDamage is not null).ToList(),
-            DataSections.Ap => list.Where(x => x.ApDamage is not null).ToList(),
-            DataSections.Sap => list.Where(x => x.SapDamage is not null).ToList(),
-            DataSections.Torpedo => list.Where(x => x.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToList(),
-            DataSections.RocketPlanes => list.Where(x => x.RocketPlanesType.Any()).ToList(),
-            DataSections.Rockets => list.Where(x => x.RocketPlanesWeaponType.Any()).ToList(),
-            DataSections.TorpedoBombers => list.Where(x => x.TorpedoBombersType.Any()).ToList(),
-            DataSections.AerialTorpedoes => list.Where(x => x.TorpedoBombersWeaponType.Any()).ToList(),
-            DataSections.Bombers => list.Where(x => x.BombersType.Any()).ToList(),
-            DataSections.Bombs => list.Where(x => x.BombersWeaponType.Any()).ToList(),
-            DataSections.Sonar => list.Where(x => x.ShipDataContainer.PingerGunDataContainer is not null).ToList(),
-            DataSections.SecondaryBattery => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
-            DataSections.SecondaryBatteryShells => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
-            DataSections.AntiAir => list.Where(x => x.ShipDataContainer.AntiAirDataContainer is not null).ToList(),
-            DataSections.AirStrike => list.Where(x => x.ShipDataContainer.AirstrikeDataContainer is not null).ToList(),
-            DataSections.Asw => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null || x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
-            _ => list,
+            ShipComparisonDataSections.MainBattery => list.Where(x => x.ShipDataContainer.MainBatteryDataContainer is not null).ToList(),
+            ShipComparisonDataSections.He => list.Where(x => x.HeDamage is not null).ToList(),
+            ShipComparisonDataSections.Ap => list.Where(x => x.ApDamage is not null).ToList(),
+            ShipComparisonDataSections.Sap => list.Where(x => x.SapDamage is not null).ToList(),
+            ShipComparisonDataSections.Torpedo => list.Where(x => x.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToList(),
+            ShipComparisonDataSections.RocketPlanes => list.Where(x => x.RocketPlanesType.Any()).ToList(),
+            ShipComparisonDataSections.Rockets => list.Where(x => x.RocketPlanesWeaponType.Any()).ToList(),
+            ShipComparisonDataSections.TorpedoBombers => list.Where(x => x.TorpedoBombersType.Any()).ToList(),
+            ShipComparisonDataSections.AerialTorpedoes => list.Where(x => x.TorpedoBombersWeaponType.Any()).ToList(),
+            ShipComparisonDataSections.Bombers => list.Where(x => x.BombersType.Any()).ToList(),
+            ShipComparisonDataSections.Bombs => list.Where(x => x.BombersWeaponType.Any()).ToList(),
+            ShipComparisonDataSections.Sonar => list.Where(x => x.ShipDataContainer.PingerGunDataContainer is not null).ToList(),
+            ShipComparisonDataSections.SecondaryBattery => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
+            ShipComparisonDataSections.SecondaryBatteryShells => list.Where(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToList(),
+            ShipComparisonDataSections.AntiAir => list.Where(x => x.ShipDataContainer.AntiAirDataContainer is not null).ToList(),
+            ShipComparisonDataSections.AirStrike => list.Where(x => x.ShipDataContainer.AirstrikeDataContainer is not null).ToList(),
+            ShipComparisonDataSections.Asw => list.Where(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null || x.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToList(),
+            _ => list.ToList(),
         };
 
-        list.AddRange(PinnedShipList.Where(x => !ContainsWrapper(x, list)));
+        newList.AddRange(PinnedShipList.Where(x => !ContainsWrapper(x, newList)));
 
-        return list;
+        return newList;
     }
 
-    public List<DataSections> GetDataSectionsToDisplay()
+    public List<ShipComparisonDataSections> GetDataSectionsToDisplay()
     {
-        List<DataSections> dataSections = Enum.GetValues(typeof(DataSections)).Cast<DataSections>().ToList();
+        List<ShipComparisonDataSections> dataSections = Enum.GetValues<ShipComparisonDataSections>().ToList();
         List<ShipComparisonDataWrapper> shipList = GetShipsToBeDisplayedList(true);
 
         if (!shipList.Any())
         {
-            return new() { DataSections.General };
+            return new() { ShipComparisonDataSections.General };
         }
 
-        foreach (var dataSection in Enum.GetValues(typeof(DataSections)).Cast<DataSections>().Except(new [] { DataSections.Maneuverability, DataSections.Concealment, DataSections.Survivability, DataSections.General }))
+        foreach (var dataSection in Enum.GetValues<ShipComparisonDataSections>().Except(new[] { ShipComparisonDataSections.Maneuverability, ShipComparisonDataSections.Concealment, ShipComparisonDataSections.Survivability, ShipComparisonDataSections.General }))
         {
             switch (dataSection)
             {
-                case DataSections.MainBattery:
+                case ShipComparisonDataSections.MainBattery:
                     if (!shipList.Any(x => x.ShipDataContainer.MainBatteryDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.He:
+                case ShipComparisonDataSections.He:
                     if (!shipList.Any(x => x.HeDamage is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Ap:
+                case ShipComparisonDataSections.Ap:
                     if (!shipList.Any(x => x.ApDamage is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Sap:
+                case ShipComparisonDataSections.Sap:
                     if (!shipList.Any(x => x.SapDamage is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Torpedo:
+                case ShipComparisonDataSections.Torpedo:
                     if (!shipList.Any(x => x.ShipDataContainer.TorpedoArmamentDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.SecondaryBattery:
-                case DataSections.SecondaryBatteryShells:
+                case ShipComparisonDataSections.SecondaryBattery:
+                case ShipComparisonDataSections.SecondaryBatteryShells:
                     if (!shipList.Any(x => x.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.AntiAir:
+                case ShipComparisonDataSections.AntiAir:
                     if (!shipList.Any(x => x.ShipDataContainer.AntiAirDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Asw:
+                case ShipComparisonDataSections.Asw:
                     if (!shipList.Any(x => x.ShipDataContainer.AswAirstrikeDataContainer is not null || x.ShipDataContainer.DepthChargeLauncherDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.AirStrike:
+                case ShipComparisonDataSections.AirStrike:
                     if (!shipList.Any(x => x.ShipDataContainer.AirstrikeDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.RocketPlanes:
+                case ShipComparisonDataSections.RocketPlanes:
                     if (!shipList.Any(x => x.RocketPlanesType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Rockets:
+                case ShipComparisonDataSections.Rockets:
                     if (!shipList.Any(x => x.RocketPlanesWeaponType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.TorpedoBombers:
+                case ShipComparisonDataSections.TorpedoBombers:
                     if (!shipList.Any(x => x.TorpedoBombersType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.AerialTorpedoes:
+                case ShipComparisonDataSections.AerialTorpedoes:
                     if (!shipList.Any(x => x.TorpedoBombersWeaponType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Bombers:
+                case ShipComparisonDataSections.Bombers:
                     if (!shipList.Any(x => x.BombersType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Bombs:
+                case ShipComparisonDataSections.Bombs:
                     if (!shipList.Any(x => x.BombersWeaponType.Any()))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
 
-                case DataSections.Sonar:
+                case ShipComparisonDataSections.Sonar:
                     if (!shipList.Any(x => x.ShipDataContainer.PingerGunDataContainer is not null))
                     {
                         dataSections.Remove(dataSection);
                     }
+
                     break;
             }
         }
@@ -650,33 +663,7 @@ public class ShipComparisonViewModel : ViewModelBase
         return dataSections;
     }
 
-    public enum DataSections
-    {
-        General,
-        MainBattery,
-        He,
-        Ap,
-        Sap,
-        Torpedo,
-        SecondaryBattery,
-        SecondaryBatteryShells,
-        AntiAir,
-        Asw,
-        AirStrike,
-        Maneuverability,
-        Concealment,
-        Survivability,
-        RocketPlanes,
-        Rockets,
-        TorpedoBombers,
-        AerialTorpedoes,
-        Bombers,
-        Bombs,
-        Sonar,
- //TODO Consumables,
-    }
-
-    public async Task ToggleDataSection(DataSections dataSection)
+    public async Task ToggleDataSection(ShipComparisonDataSections dataSection)
     {
         SelectedDataSection = dataSection;
         await ApplyFilters();
@@ -748,6 +735,7 @@ public class ShipComparisonViewModel : ViewModelBase
                 PinnedShipList.Add(newWrapper);
             }
         }
+
         SetSelectAndPinAllButtonsStatus();
     }
 
@@ -765,9 +753,9 @@ public class ShipComparisonViewModel : ViewModelBase
         SearchedShips.Clear();
     }
 
-    private void SetSelectAndPinAllButtonsStatus(IReadOnlyCollection<ShipComparisonDataWrapper>? list = null)
+    private void SetSelectAndPinAllButtonsStatus() => SetSelectAndPinAllButtonsStatus(GetShipsToBeDisplayedList());
+    private void SetSelectAndPinAllButtonsStatus(IReadOnlyCollection<ShipComparisonDataWrapper> list)
     {
-        list ??= GetShipsToBeDisplayedList();
         SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
         PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
     }

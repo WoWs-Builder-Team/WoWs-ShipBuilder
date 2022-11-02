@@ -7,9 +7,9 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> TorpedoDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> TorpedoDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonViewModel.DataSections.Torpedo;
+        bool hide = element.section != ShipComparisonDataSections.Torpedo;
         
         NumberFormatInfo nfi = default!;
         if (!hide)

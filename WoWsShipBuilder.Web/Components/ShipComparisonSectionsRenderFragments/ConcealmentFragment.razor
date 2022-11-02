@@ -4,9 +4,9 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonViewModel.DataSections section, ILocalizer localizer)> ConcealmentDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> ConcealmentDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonViewModel.DataSections.Concealment;
+        bool hide = element.section != ShipComparisonDataSections.Concealment;
 
         <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ConcealmentFromShipsBase" Title="From ships: Base (km)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
