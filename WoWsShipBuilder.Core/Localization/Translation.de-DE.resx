@@ -1432,8 +1432,8 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>Ausgewählte Sprache</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>Expander für Granaten, Torpedos und Flugzeuge standardmäßig öffnen</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>Einstellungen gespeichert</value>
@@ -1450,10 +1450,61 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>Build-URL kopieren</value>
   </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>Granaten- und Torpedo-Expander standardmäßig öffnen</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>Expander für Sekundärbewaffnung, Flugzeugwaffen und Flugabwehr standardmäßig öffnen</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>Expander-Einstellungen</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>HP der Schiffssektion</value>
+  </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>Schadensverteilungs-Diagramm ausblenden</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>Zeige Torpedowerfer-Winkel</value>
+  </data>
+  <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
+      <value>Maximale Motorboost-Dauer</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Kopiere kurzen Link</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Bitte gib einen Namen für den Build ein. Der Schiffsname wird am automatisch dahinter angezeigt.</value>
+  </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Beschleunigungsdiagramme Beta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Schiffsvergleich Beta</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Beta-Zugang</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Code</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Code hinzufügen</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Feature</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Entfernen</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Ungültiger Code</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>wurde aktiviert.</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>war bereits aktiviert.</value>
   </data>
 </root>

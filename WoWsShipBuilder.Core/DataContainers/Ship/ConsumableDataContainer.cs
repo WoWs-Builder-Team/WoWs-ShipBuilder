@@ -7,7 +7,8 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Aircraft;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers;
 
@@ -251,8 +252,13 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
-                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["updateFrequency"], (current, modifier) => current * modifier);
-                consumableModifiers["updateFrequency"] = hydrophoneUpdateFrequency;
+                if (!consumableModifiers.TryGetValue("hydrophoneUpdateFrequencyCoeff", out float baseUpdateFrequency))
+                {
+                    consumableModifiers.TryGetValue("updateFrequency", out baseUpdateFrequency);
+                }
+
+                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(baseUpdateFrequency, (current, modifier) => current * modifier);
+                consumableModifiers["hydrophoneUpdateFrequencyCoeff"] = hydrophoneUpdateFrequency;
             }
         }
         else if (usingFallback)

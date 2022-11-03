@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Projectile;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {

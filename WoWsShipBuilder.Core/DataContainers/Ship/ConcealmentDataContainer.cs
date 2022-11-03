@@ -5,6 +5,7 @@ using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -29,6 +30,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         public decimal ConcealmentBySubPeriscope { get; set; }
 
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "FromSubs", UnitKey = "KM")]
+        [DataElementFiltering(false)]
         public decimal ConcealmentBySubOperating { get; set; }
 
         public static ConcealmentDataContainer FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string Key, float Value)> modifiers)

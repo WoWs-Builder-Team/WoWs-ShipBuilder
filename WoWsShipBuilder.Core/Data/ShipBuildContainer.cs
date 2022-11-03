@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.Data;
 

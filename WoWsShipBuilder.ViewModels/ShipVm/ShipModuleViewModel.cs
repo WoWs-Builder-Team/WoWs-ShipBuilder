@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DynamicData;
+﻿using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
@@ -80,7 +78,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var results = new List<ShipUpgrade>();
             foreach (List<ShipUpgrade> upgradeList in ShipUpgrades)
             {
-                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name)));
+                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.Split("_").First())));
             }
 
             var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();

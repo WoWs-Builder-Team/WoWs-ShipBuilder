@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm
@@ -70,6 +67,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             }
         }
 
+        // TODO: update to new nullability state
         public static async Task<List<KeyValuePair<string, SignalItemViewModel>>> LoadSignalList(IAppDataService appDataService, AppSettings appSettings)
         {
             var dict = await appDataService.GetExteriorList(Nation.Common, appSettings.SelectedServerType);
@@ -102,7 +100,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public void LoadBuild(IReadOnlyList<string> initialSignalsNames)
         {
             logger.Info("Initial signal configuration found {0}", string.Join(", ", initialSignalsNames));
-            var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Name));
+            var list = SignalList.Select(x => x.Value.Signal).Where(signal => initialSignalsNames.Contains(signal.Index));
             SelectedSignals.AddRange(list);
             SignalsNumber = SelectedSignals.Count;
         }

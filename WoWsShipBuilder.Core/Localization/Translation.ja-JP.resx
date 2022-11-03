@@ -862,7 +862,7 @@
       <value>潜望鏡深度</value>
   </data>
   <data name="ShipStats_ConcealmentBySubOperating" xml:space="preserve">
-      <value>作戦深度</value>
+      <value>最大深度</value>
   </data>
   <data name="StartMenu_OpenDispersionWindow" xml:space="preserve">
     <value>散布界と弾道のグラフを表示する</value>
@@ -1432,8 +1432,8 @@
   <data name="WebApp_SelectedLanguage" xml:space="preserve">
       <value>選択された言語</value>
   </data>
-  <data name="WebApp_ExpanderSetting" xml:space="preserve">
-      <value>砲弾と魚雷の角度をデフォルトで表示</value>
+  <data name="WebApp_AmmoExpanderSetting" xml:space="preserve">
+      <value>砲弾、魚雷、艦載機の詳細をデフォルトで展開表示</value>
   </data>
   <data name="WebApp_SettingsSaved" xml:space="preserve">
       <value>設定を保存しました</value>
@@ -1450,10 +1450,61 @@
   <data name="Build_CopyUrl" xml:space="preserve">
       <value>ビルドのURLをコピー</value>
   </data>
+  <data name="WebApp_ExpanderSetting" xml:space="preserve">
+      <value>全ての詳細表示をデフォルトで展開</value>
+  </data>
+  <data name="WebApp_SecondariesAndAAExpanderSetting" xml:space="preserve">
+      <value>副砲、艦載機兵装、対空砲の詳細をデフォルトで展開表示</value>
+  </data>
+  <data name="WebApp_ExpanderSettingHeader" xml:space="preserve">
+      <value>詳細の展開表示設定</value>
+  </data>
+  <data name="ShipStats_ShipSectionsHp" xml:space="preserve">
+      <value>区画HP</value>
+  </data>
   <data name="ShipStats_HideDcDamageDistribution" xml:space="preserve">
       <value>ダメージ分布図を非表示</value>
   </data>
   <data name="ShipStats_ShowLaunchersAngles" xml:space="preserve">
       <value>発射管の角度を表示</value>
+  </data>
+  <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
+      <value>最大エンジンブースト時間</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>短いリンクをコピー</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>ビルド名を入力してください。艦艇名は最後に自動的に追加されます。</value>
+  </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>加減速チャート(ベータ版)</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>艦艇の比較(ベータ版)</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>ベータ版アクセス</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>コード</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>コードを追加</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>機能</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>削除</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>無効なコード</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>が有効になりました。</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>は既に有効になっています。</value>
   </data>
 </root>

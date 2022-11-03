@@ -1,10 +1,13 @@
 ﻿@using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
 
 @implements IDisposable
 
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
+@inject AppSettings AppSettings
 
 <MudAppBar Fixed>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -13,7 +16,14 @@
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and Ballistic Charts</NavLink>
-        <NavLink href="/acceleration-chart" class="main-nav-link" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
+        @if (accelerationChartsEnabled)
+        {
+            <NavLink href="/acceleration" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
+        }
+        @if (shipComparisonEnabled)
+        {
+            <NavLink href="/compare" ActiveClass="nav-link-active">Ship Comparison</NavLink>
+        }
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
             <TooltipContent>
@@ -55,8 +65,15 @@
         </MudDrawerHeader>
         <MudNavMenu Bordered Color="Color.Info">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">Homepage</MudNavLink>
+            @if (accelerationChartsEnabled)
+            {
+                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-chart" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
+            }
+            @if (shipComparisonEnabled)
+            {
+                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/compare" ActiveClass="nav-link-active">Ship Comparison</MudNavLink>
+            }
             <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/charts">Dispersion and Ballistic Charts</MudNavLink>
-            <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-chart">Acceleration Charts</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
             <MudDivider Class="my-4"/>
@@ -80,6 +97,10 @@
 
     bool open = false;
 
+    private bool shipComparisonEnabled = false;
+
+    private bool accelerationChartsEnabled = false;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -88,6 +109,8 @@
 
     private void UpdateComponent()
     {
+        shipComparisonEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.ShipComparison.Code) ?? false;
+        accelerationChartsEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.AccelerationCharts.Code) ?? false;
         StateHasChanged();
     }
 

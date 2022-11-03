@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.Services
 {

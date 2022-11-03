@@ -1,14 +1,14 @@
-# Update 1.5.6
+# Update 1.6.0
 
 ## Additions
 
 
 ## Changes
-
+- Update asset files for CV skills
 
 ## Bugfixes
-- Captain skills cannot be changed in some situations after switching between captains
-- Number of flak explosions is not modified by Auxiliary Armaments Modification 2 (#152)
+- Use the correct sonar module when a ship can chose between multiple sonar modules (#168)
+- Fix formula for bonus of repair party readiness skill (#177)
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

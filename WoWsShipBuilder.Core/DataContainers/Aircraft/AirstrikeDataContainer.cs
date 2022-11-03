@@ -7,6 +7,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
 {
@@ -62,8 +63,8 @@ namespace WoWsShipBuilder.Core.DataContainers
         public static async Task<AirstrikeDataContainer?> FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw, IAppDataService appDataService)
         {
             string header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
-            Dictionary<string, AirStrike>? airstrikes = ship.AirStrikes;
-            if (ship.AirStrikes == null || ship.AirStrikes.Count == 0)
+            Dictionary<string, AirStrike> airstrikes = ship.AirStrikes;
+            if (ship.AirStrikes.Count == 0)
             {
                 return null;
             }
