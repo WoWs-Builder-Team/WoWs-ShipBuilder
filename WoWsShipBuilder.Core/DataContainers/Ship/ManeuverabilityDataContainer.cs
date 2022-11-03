@@ -53,7 +53,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.Value);
         var engineForwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
         var engineBackwardForsagePowerModifier = modifiers.Where(x => x.Key.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.Value);
-        var accelerationModifiers = new AccelerationHelper.AccelerationModifiers((double) maxSpeedModifier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+        var accelerationModifiers = new AccelerationHelper.AccelerationModifiers((double)maxSpeedModifier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
+
         // speed boost overrides
         var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_engineForwardForsageMaxSpeed", true).FirstOrDefault(0);
         var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
@@ -64,8 +65,8 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         List<int> forward = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullAhead };
         List<int> reverse = new List<int>() { AccelerationHelper.Zero, AccelerationHelper.FullReverse };
 
-        var timeForward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers , speedBoostAccelerationModifiers).TimeForGear.Single();
-        var timeBackward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers , speedBoostAccelerationModifiers).TimeForGear.Single();
+        var timeForward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
+        var timeBackward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
 
         var manoeuvrability = new ManeuverabilityDataContainer
         {
