@@ -34,7 +34,7 @@
                                     @foreach (var consumable in consumableSlot.ConsumableData)
                                     {
                                         <MudMenuItem Style="padding: 0;" OnClick="@(_ => SwapConsumable(consumableSlot, consumable))">
-                                            <MudTooltip Placement="Placement.Right" Color="Color.Transparent">
+                                            <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Style="z-index: 1000000">
                                                 <ChildContent>
                                                     <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumable)"/>
                                                 </ChildContent>

@@ -816,9 +816,6 @@
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Felkészítés alatt</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Idő a teljes teljesítményig</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Adatok verziója:</value>
   </data>

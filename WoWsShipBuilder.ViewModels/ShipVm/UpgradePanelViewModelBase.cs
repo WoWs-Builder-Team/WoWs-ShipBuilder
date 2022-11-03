@@ -18,11 +18,11 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public UpgradePanelViewModelBase(Ship ship, Dictionary<string, Modernization> upgradeData)
         {
             List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
-                .Where(m => !(m.BlacklistedShips?.Contains(ship.Name) ?? false))
-                .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
-                .Where(m => m.AllowedNations?.Contains(ship.ShipNation) ?? false)
-                .Where(m => m.ShipClasses?.Contains(ship.ShipClass) ?? false)
-                .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips?.Contains(ship.Name) ?? false))
+                .Where(m => !(m.BlacklistedShips.Contains(ship.Name)))
+                .Where(m => m.ShipLevel.Contains(ship.Tier))
+                .Where(m => ship.ShipNation == Nation.Common || (m.AllowedNations.Contains(ship.ShipNation)))
+                .Where(m => m.ShipClasses.Contains(ship.ShipClass))
+                .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
                 .ToList();
 
             List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)
@@ -37,7 +37,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             }
 
             AvailableModernizationList = groupedList;
-            SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
+            SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => !string.IsNullOrEmpty(m.Index)));
 
             OnModernizationSelected = (modernization, modernizationList) =>
             {
@@ -71,7 +71,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public List<(string, float)> GetModifierList()
         {
             return SelectedModernizationList
-                .Where(m => m.Index != null)
+                .Where(m => !string.IsNullOrEmpty(m.Index))
                 .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
                 .ToList();
         }

@@ -60,6 +60,72 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration.
+        /// </summary>
+        public static string AccelerationChart_Acceleration {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Acceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add/remove ships.
+        /// </summary>
+        public static string AccelerationChart_AddRemoveShip {
+            get {
+                return ResourceManager.GetString("AccelerationChart_AddRemoveShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change builds.
+        /// </summary>
+        public static string AccelerationChart_ChangeBuilds {
+            get {
+                return ResourceManager.GetString("AccelerationChart_ChangeBuilds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add custom data.
+        /// </summary>
+        public static string AccelerationChart_CustomDataTitle {
+            get {
+                return ResourceManager.GetString("AccelerationChart_CustomDataTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acceleration chart explanation.
+        /// </summary>
+        public static string AccelerationChart_Explanation {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After selecting a ship, you have the option to select the 3 gears that will be used in the chart.
+        ///The chart will go in the order Initial gear --&gt; Middle gear --&gt; Final Gear, switching to the next one only after reaching the maximum speed of the current gear.
+        ///Setting two gear to the same value will merge them into one.
+        ///You can use the Change builds button to manage the builds of single ships. You can also add a ship multiple times, in case you want to compare different builds..
+        /// </summary>
+        public static string AccelerationChart_ExplanationText {
+            get {
+                return ResourceManager.GetString("AccelerationChart_ExplanationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string AccelerationChart_Time {
+            get {
+                return ResourceManager.GetString("AccelerationChart_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircraft Carrier.
         /// </summary>
         public static string AirCarrier {
@@ -2004,6 +2070,33 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine backward forsage.
+        /// </summary>
+        public static string ShipStats_BackwardEngineForsag {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineForsag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backward forsage max speed.
+        /// </summary>
+        public static string ShipStats_BackwardEngineForsagMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineForsagMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine backward up time.
+        /// </summary>
+        public static string ShipStats_BackwardEngineUpTime {
+            get {
+                return ResourceManager.GetString("ShipStats_BackwardEngineUpTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast.
         /// </summary>
         public static string ShipStats_Blast {
@@ -2367,6 +2460,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine power.
+        /// </summary>
+        public static string ShipStats_EnginePower {
+            get {
+                return ResourceManager.GetString("ShipStats_EnginePower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Radius.
         /// </summary>
         public static string ShipStats_ExplosionRadius {
@@ -2574,38 +2676,47 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine forward forsage.
+        /// </summary>
+        public static string ShipStats_ForwardEngineForsag {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineForsag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forward forsage max speed.
+        /// </summary>
+        public static string ShipStats_ForwardEngineForsagMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineForsagMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engine forward up time.
+        /// </summary>
+        public static string ShipStats_ForwardEngineUpTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardEngineUpTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Ahead.
+        /// </summary>
+        public static string ShipStats_ForwardMaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ForwardMaxSpeedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From Subs.
         /// </summary>
         public static string ShipStats_FromSubs {
             get {
                 return ResourceManager.GetString("ShipStats_FromSubs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Backward.
-        /// </summary>
-        public static string ShipStats_FullPowerBackward {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerBackward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Forward.
-        /// </summary>
-        public static string ShipStats_FullPowerForward {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerForward", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Full power time.
-        /// </summary>
-        public static string ShipStats_FullPowerTime {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
             }
         }
         
@@ -2858,6 +2969,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_MaxSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_MaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time for max speed.
+        /// </summary>
+        public static string ShipStats_MaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxSpeedTime", resourceCulture);
             }
         }
         
@@ -3128,6 +3248,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_RestorationTime {
             get {
                 return ResourceManager.GetString("ShipStats_RestorationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse.
+        /// </summary>
+        public static string ShipStats_ReverseMaxSpeedTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ReverseMaxSpeedTime", resourceCulture);
             }
         }
         
@@ -3570,6 +3699,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Timings {
             get {
                 return ResourceManager.GetString("ShipStats_Timings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tonnage.
+        /// </summary>
+        public static string ShipStats_Tonnage {
+            get {
+                return ResourceManager.GetString("ShipStats_Tonnage", resourceCulture);
             }
         }
         

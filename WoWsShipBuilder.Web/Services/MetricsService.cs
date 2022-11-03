@@ -13,6 +13,8 @@ public class MetricsService : IMetricsService
 
     public Counter BallisticPageCount { get; } = Metrics.CreateCounter("ballistics_page_requests_total", "Number of ballistics page requests");
 
+    public Counter AccelerationPageCount { get; } = Metrics.CreateCounter("acceleration_page_requests_total", "Number of acceleration page requests");
+
     public Summary ShipViewModelInitDuration { get; } = Metrics.CreateSummary("ship_vm_init_time_average10s", "Average init-time of the ship VM in seconds over the last 10 seconds.", new SummaryConfiguration
     {
         MaxAge = TimeSpan.FromSeconds(10),
