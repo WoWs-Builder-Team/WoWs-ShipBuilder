@@ -18,7 +18,7 @@
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and Ballistic Charts</NavLink>
         @if (accelerationChartsEnabled)
         {
-            <NavLink href="/acceleration" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
+            <NavLink href="/acceleration-charts" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
         }
         @if (shipComparisonEnabled)
         {
@@ -67,7 +67,7 @@
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">Homepage</MudNavLink>
             @if (accelerationChartsEnabled)
             {
-                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-chart" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
+                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
             }
             @if (shipComparisonEnabled)
             {
