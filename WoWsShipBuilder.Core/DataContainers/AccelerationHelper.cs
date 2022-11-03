@@ -42,17 +42,8 @@ public static class AccelerationHelper
     /// <param name="engine">Engine module of the ship.</param>
     /// <param name="shipClass">Class of the ship.</param>
     /// <param name="throttleList">List of throttle to use. First is the starting throttle.</param>
-    /// <param name="speedMultiplier">Multiplier for the base speed to apply.</param>
-    /// <param name="engineForwardUpTimeModifiers">Multipliers for the engine forward up time to apply.</param>
-    /// <param name="engineBackwardUpTimeModifiers">Multipliers for the engine backwards up time to apply.</param>
-    /// <param name="engineForwardForsageMaxSpeedModifier">Multipliers for the forward forsage max speed to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-    /// <param name="engineBackwardForsageMaxSpeedModifier">Multipliers the backward forsage max speed to  to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
-    /// <param name="engineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
-    /// <param name="engineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter. Speed boost is not a multiplier, but override the value directly.</param>
-    /// <param name="speedBoostEngineForwardForsageMaxSpeedOverride">Value from speed boost that override the actual engineForwardForsageMaxSpeed. Set to 0 if not present.</param>
-    /// <param name="speedBoostEngineBackwardEngineForsagOverride">Value from speed boost that override the actual engineBackwardForsageMaxSpeed. Set to 0 if not present.</param>
-    /// <param name="forwardEngineForsagOverride">Value from speed boost that override the actual forwardEngineForsag. Set to 0 if not present.</param>
-    /// <param name="backwardEngineForsagOverride">Value from speed boost that override the actual backwardEngineForsag. Set to 0 if not present.</param>
+    /// <param name="accelerationModifiers"> Modifiers affecting the acceleration.</param>
+    /// <param name="speedBoostModifiers"> Modifiers coming from speed boost.</param>
     /// <exception cref="InvalidOperationException">Thrown when the throttleList contains invalid numbers.</exception>
     /// <exception cref="OverflowException">Thrown when the calculation takes too many iterations.</exception>
     /// <returns>The data regarding acceleration.</returns>
@@ -62,17 +53,8 @@ public static class AccelerationHelper
         Engine engine,
         ShipClass shipClass,
         List<int> throttleList,
-        double speedMultiplier,
-        double engineForwardUpTimeModifiers,
-        double engineBackwardUpTimeModifiers,
-        double engineForwardForsageMaxSpeedModifier,
-        double engineBackwardForsageMaxSpeedModifier,
-        double engineForwardForsagePowerModifier,
-        double engineBackwardForsagePowerModifier,
-        double speedBoostEngineForwardForsageMaxSpeedOverride,
-        double speedBoostEngineBackwardEngineForsagOverride,
-        double forwardEngineForsagOverride,
-        double backwardEngineForsagOverride)
+        AccelerationModifiers accelerationModifiers,
+        SpeedBoostAccelerationModifiers speedBoostModifiers)
     {
         // check that only valid values are contained in throttleList
         if (throttleList.Any(throttle => throttle is > 4 or < -1))
@@ -96,21 +78,21 @@ public static class AccelerationHelper
         var backwardEngineForsagMaxSpeed = decimal.ToDouble(engine.BackwardEngineForsagMaxSpeed);
 
         // calculate other stats
-        var maxForwardSpeed = baseShipSpeed * speedMultiplier;
-        var maxReverseSpeed = ((baseShipSpeed / 4) + 4.9) * speedMultiplier;
+        var maxForwardSpeed = baseShipSpeed * accelerationModifiers.SpeedMultiplier;
+        var maxReverseSpeed = ((baseShipSpeed / 4) + 4.9) * accelerationModifiers.SpeedMultiplier;
 
         var powerRatio = horsepower / tonnage;
-        var maxPowerForward = Math.Pow(powerRatio, 0.42) * Math.Pow(speedMultiplier, 2);
-        var maxPowerBackwards = (maxPowerForward / GetPfToPbRatio(shipClass, shipIndex)) * Math.Pow(speedMultiplier, 2);
+        var maxPowerForward = Math.Pow(powerRatio, 0.42) * Math.Pow(accelerationModifiers.SpeedMultiplier, 2);
+        var maxPowerBackwards = (maxPowerForward / GetPfToPbRatio(shipClass, shipIndex)) * Math.Pow(accelerationModifiers.SpeedMultiplier, 2);
 
-        var timeForward = (fullPowerForwardTime / timeConstant) * engineForwardUpTimeModifiers;
-        var timeBackward = (fullPowerBackwardTime / timeConstant) * engineBackwardUpTimeModifiers;
+        var timeForward = (fullPowerForwardTime / timeConstant) * accelerationModifiers.EngineForwardUpTimeModifiers;
+        var timeBackward = (fullPowerBackwardTime / timeConstant) * accelerationModifiers.EngineBackwardUpTimeModifiers;
 
-        var forsageForward = forwardEngineForsagOverride == 0 ? forwardEngineForsag * engineForwardForsagePowerModifier : forwardEngineForsagOverride;
-        var forsageBackwards = backwardEngineForsagOverride == 0 ? backwardEngineForsag * engineBackwardForsagePowerModifier : backwardEngineForsagOverride;
+        var forsageForward = speedBoostModifiers.ForwardEngineForsagOverride == 0 ? forwardEngineForsag * accelerationModifiers.EngineForwardForsagePowerModifier : speedBoostModifiers.ForwardEngineForsagOverride;
+        var forsageBackwards = speedBoostModifiers.BackwardEngineForsagOverride == 0 ? backwardEngineForsag * accelerationModifiers.EngineBackwardForsagePowerModifier : speedBoostModifiers.BackwardEngineForsagOverride;
 
-        var forsageForwardMaxSpeed = speedBoostEngineForwardForsageMaxSpeedOverride == 0 ? forwardEngineForsagMaxSpeed * engineForwardForsageMaxSpeedModifier : speedBoostEngineForwardForsageMaxSpeedOverride;
-        var forsageBackwardsMaxSpeed = speedBoostEngineBackwardEngineForsagOverride == 0 ? backwardEngineForsagMaxSpeed * engineBackwardForsageMaxSpeedModifier : speedBoostEngineBackwardEngineForsagOverride;
+        var forsageForwardMaxSpeed = speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride == 0 ? forwardEngineForsagMaxSpeed * accelerationModifiers.EngineForwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineForwardForsageMaxSpeedOverride;
+        var forsageBackwardsMaxSpeed = speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride == 0 ? backwardEngineForsagMaxSpeed * accelerationModifiers.EngineBackwardForsageMaxSpeedModifier : speedBoostModifiers.SpeedBoostEngineBackwardEngineForsagOverride;
 
         var powerIncreaseForward = Dt * maxPowerForward / timeForward;
         var powerIncreaseBackward = Dt * maxPowerBackwards / timeBackward;
@@ -413,4 +395,25 @@ public static class AccelerationHelper
     /// <param name="TimeForGear">List of times needed to reach the gear given in input to <see cref="AccelerationHelper.CalculateAcceleration"/>.</param>
     /// <param name="AccelerationPointsList">List of the points calculated.</param>
     public sealed record AccelerationData(List<double> TimeForGear, List<AccelerationPoints> AccelerationPointsList);
+
+    /// <summary>
+    /// Records that holds all the non speed boost modifiers.
+    /// </summary>
+    /// <param name="SpeedMultiplier">Multiplier for the base speed to apply.</param>
+    /// <param name="EngineForwardUpTimeModifiers">Multipliers for the engine forward up time to apply.</param>
+    /// <param name="EngineBackwardUpTimeModifiers">Multipliers for the engine backwards up time to apply.</param>
+    /// <param name="EngineForwardForsageMaxSpeedModifier">Multipliers for the forward forsage max speed to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="EngineBackwardForsageMaxSpeedModifier">Multipliers the backward forsage max speed to  to apply. <b>IMPORTANT:</b> speed boost <b>OVERRIDE</b> this parameter, it does not stack.</param>
+    /// <param name="EngineForwardForsagePowerModifier">Multipliers for the forward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter of <see cref="SpeedBoostAccelerationModifiers"/>. Speed boost is not a multiplier, but override the value directly.</param>
+    /// <param name="EngineBackwardForsagePowerModifier">Multipliers for the backward forsage power to apply. <b>IMPORTANT:</b> for speed boost <b>USE</b> the speedBoostEngineForwardForsageMaxSpeedOverride parameter of <see cref="SpeedBoostAccelerationModifiers"/>. Speed boost is not a multiplier, but override the value directly.</param>
+    public sealed record AccelerationModifiers(double SpeedMultiplier, double EngineForwardUpTimeModifiers, double EngineBackwardUpTimeModifiers, double EngineForwardForsageMaxSpeedModifier, double EngineBackwardForsageMaxSpeedModifier, double EngineForwardForsagePowerModifier, double EngineBackwardForsagePowerModifier);
+
+    /// <summary>
+    /// Record that holds all the speed boost modifiers.
+    /// </summary>
+    /// <param name="SpeedBoostEngineForwardForsageMaxSpeedOverride">Value from speed boost that override the actual engineForwardForsageMaxSpeed. Set to 0 if not present.</param>
+    /// <param name="SpeedBoostEngineBackwardEngineForsagOverride">Value from speed boost that override the actual engineBackwardForsageMaxSpeed. Set to 0 if not present.</param>
+    /// <param name="ForwardEngineForsagOverride">Value from speed boost that override the actual forwardEngineForsag. Set to 0 if not present.</param>
+    /// <param name="BackwardEngineForsagOverride">Value from speed boost that override the actual backwardEngineForsag. Set to 0 if not present.</param>
+    public sealed record SpeedBoostAccelerationModifiers(double SpeedBoostEngineForwardForsageMaxSpeedOverride, double SpeedBoostEngineBackwardEngineForsagOverride, double ForwardEngineForsagOverride, double BackwardEngineForsagOverride);
 }
