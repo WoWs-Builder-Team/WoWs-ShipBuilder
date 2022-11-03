@@ -188,11 +188,11 @@
         }
         if (replaceLabel && oldLabels is not null)
         {
-            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, oldLabels, data , labelNames);
+            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, oldLabels, data , labelNames);
         }
         else
         {
-            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, labelNames, data , labelNames);
+            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, labelNames, data , labelNames);
         }
     }
     
