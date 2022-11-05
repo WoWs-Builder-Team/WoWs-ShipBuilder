@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Core.DataContainers;
