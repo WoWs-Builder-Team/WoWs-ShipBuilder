@@ -217,9 +217,9 @@
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
 
-        var speedMultiplier = modifiers.Where(x => x.modifierName.Equals("speedCoef")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("shipSpeedCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
-        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("boostCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
+        var speedMultiplier = modifiers.FindModifiers("speedCoef", true).Aggregate(1d, (current, modifier) => current * modifier);
+        speedMultiplier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(speedMultiplier, (current, modifier) => current * modifier);
+        speedMultiplier = modifiers.FindModifiers("boostCoeff").Aggregate(speedMultiplier, (current, modifier) => current * (modifier + 1));
         var engineForwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineBackwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
