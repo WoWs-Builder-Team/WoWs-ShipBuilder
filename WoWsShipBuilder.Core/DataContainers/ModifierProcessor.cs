@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using WoWsShipBuilder.Core.Localization;
 
 namespace WoWsShipBuilder.Core.DataContainers;
@@ -26,6 +25,11 @@ public static class ModifierProcessor
 
         switch (localizerKey)
         {
+            // defAA modifiers
+            case { } str when str.Contains("bubbleDamageMultiplier"):
+                value = $"+{(modifier - 1) * 100} {Translation.Unit_PerCent}";
+                break;
+
             // custom modifier to show hp per heal
             case { } str when str.Contains("hpPerHeal", StringComparison.InvariantCultureIgnoreCase):
                 value = $"+{(int)modifier}";
@@ -37,19 +41,19 @@ public static class ModifierProcessor
                 break;
 
             case { } str when str.Contains("prioritySectorStrengthBonus", StringComparison.InvariantCultureIgnoreCase):
-                value = $"+{(int)modifier}%";
+                value = $"+{(int)modifier} %";
                 break;
 
             // this is for Vigilance for BBs
             case { } str when str.Contains("uwCoeffBonus", StringComparison.InvariantCultureIgnoreCase) ||
                                      str.Contains("ignorePTZBonus", StringComparison.InvariantCultureIgnoreCase):
-                value = $"+{(int)modifier}%";
+                value = $"+{(int)modifier} %";
                 break;
 
             // This is for IFHE. At the start because of DE sharing similar modifier name
             case { } str when str.Contains("burnChanceFactorHighLevel", StringComparison.InvariantCultureIgnoreCase) ||
                                      str.Contains("burnChanceFactorLowLevel", StringComparison.InvariantCultureIgnoreCase):
-                value = $"-{(int)Math.Round(modifier * 100)}%";
+                value = $"-{(int)Math.Round(modifier * 100)} %";
                 break;
 
             // this is for HP module
@@ -58,7 +62,7 @@ public static class ModifierProcessor
                               str.Contains("SGCritRudderTime", StringComparison.InvariantCultureIgnoreCase):
             {
                 var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                value = numericValue > 0 ? $"+{numericValue} %" : $"{numericValue} %";
                 break;
             }
 
@@ -66,14 +70,14 @@ public static class ModifierProcessor
             case { } str when str.Contains("planeForsageDrainRate", StringComparison.InvariantCultureIgnoreCase):
             {
                 double numericValue = Math.Round(((1 / modifier) - 1) * 100, 2);
-                value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                value = numericValue > 0 ? $"+{numericValue} %" : $"{numericValue} %";
                 break;
             }
 
             // this is for midway leg mod. more accurate numbers
             case { } str when str.Contains("diveBomberMaxSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("diveBomberMinSpeedMultiplier", StringComparison.InvariantCultureIgnoreCase):
-                value = modifier > 1 ? $"+{Math.Round((modifier - 1) * 100, 2)}%" : $"-{Math.Round((1 - modifier) * 100, 2)}%";
+                value = modifier > 1 ? $"+{Math.Round((modifier - 1) * 100, 2)} %" : $"-{Math.Round((1 - modifier) * 100, 2)} %";
                 break;
 
             // this is for aiming time of CV planes
@@ -85,7 +89,7 @@ public static class ModifierProcessor
             case { } str when str.Contains("PMDetonationProb", StringComparison.InvariantCultureIgnoreCase):
             {
                 var numericValue = (int)(Math.Round(modifier * 100, 2) - 100);
-                value = numericValue > 0 ? $"+{numericValue}%" : $"{numericValue}%";
+                value = numericValue > 0 ? $"+{numericValue} %" : $"{numericValue} %";
                 break;
             }
 
@@ -108,7 +112,7 @@ public static class ModifierProcessor
 
             // This is Adrenaline Rush
             case { } str when str.Contains("lastChanceReloadCoefficient", StringComparison.InvariantCultureIgnoreCase):
-                value = $"-{modifier}%";
+                value = $"-{modifier} %";
                 break;
 
             // Something in Last stand. Not sure what make of it tho.
@@ -129,7 +133,7 @@ public static class ModifierProcessor
 
             // Speed boost modifier
             case { } str when str.Equals("boostCoeff", StringComparison.InvariantCultureIgnoreCase):
-                value = $"+{Math.Round(modifier * 100)}%";
+                value = $"+{Math.Round(modifier * 100)} %";
                 break;
 
             case { } str when str.Contains("fightersNum", StringComparison.InvariantCultureIgnoreCase):
@@ -138,7 +142,7 @@ public static class ModifierProcessor
 
             // this is the modifier
             case { } str when str.Contains("CALLFIGHTERStimeDelayAttack", StringComparison.InvariantCultureIgnoreCase):
-                value = $"-{Math.Round((1 - modifier) * 100)}%";
+                value = $"-{Math.Round((1 - modifier) * 100)} %";
                 break;
 
             // this is the actual value
@@ -156,12 +160,12 @@ public static class ModifierProcessor
                 if (modifier > 1)
                 {
                     var modifierValue = (decimal)Math.Round((modifier - 1) * 100, 2);
-                    value = $"+{modifierValue}%";
+                    value = $"+{modifierValue} %";
                 }
                 else
                 {
                     var modifierValue = (decimal)Math.Round((1 - modifier) * 100, 2);
-                    value = $"-{modifierValue}%";
+                    value = $"-{modifierValue} %";
                 }
 
                 break;

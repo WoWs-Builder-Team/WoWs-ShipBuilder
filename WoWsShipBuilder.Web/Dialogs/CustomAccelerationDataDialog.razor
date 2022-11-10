@@ -131,12 +131,11 @@
             BackwardEngineForsag = backwardEngineForsag,
             ForwardEngineForsagMaxSpeed = forwardEngineForsagMaxSpeed,
             BackwardEngineForsagMaxSpeed = backwardEngineForsagMaxSpeed,
-            
         };
 
         ship.Engines = new() {{"Custom engine", engine}};
 
-        UpgradeInfo upgradeInfo = new()
+        var upgradeInfo = new UpgradeInfo()
         {
             ShipUpgrades = new(),
         };
@@ -144,14 +143,14 @@
         var engineUpgrade = new ShipUpgrade
         {
             Name = "Custom engine",
-            Components = new() {{ComponentType.Engine, new[] {"Custom engine"}}},
+            Components = new() { { ComponentType.Engine, new[] {"Custom engine"} } },
             UcType = ComponentType.Engine,
         };
 
         var hullUpgrade = new ShipUpgrade
         {
             Name = "Custom hull",
-            Components = new() {{ComponentType.Hull, new[] {"Custom hull"}}},
+            Components = new() { { ComponentType.Hull, new[] {"Custom hull"} } },
             UcType = ComponentType.Hull,
         };
 

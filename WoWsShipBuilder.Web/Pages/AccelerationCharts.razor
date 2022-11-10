@@ -31,6 +31,7 @@
     </TitleContent>
     <ChildContent>
         <MudText Style="white-space: break-spaces">@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_ExplanationText)).Localization</MudText>
+        <MudText Style="white-space: break-spaces; color: yellow">WARNING: this feature is in BETA. There is currently a bug occurring when trying to remove one ship: all the ships with the same label will also be removed. this will be solved with the full release since a major rework of all the charts logic is required.</MudText>
     </ChildContent>
 </MudExpansionPanel>
 <MudStack Row Class="mt-2 mx-4">
@@ -187,11 +188,11 @@
         }
         if (replaceLabel && oldLabels is not null)
         {
-            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, oldLabels, data , labelNames);
+            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, oldLabels, data , labelNames);
         }
         else
         {
-            await ChartJsInterop.BatchUpdateDataNewLabels(AccelerationId, labelNames, data , labelNames);
+            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, labelNames, data , labelNames);
         }
     }
     
@@ -211,30 +212,30 @@
         await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
     }
     
-    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, IReadOnlyCollection<(string modifierName, float ModifierValue)> modifiers, List<int> throttleValues)
+    private IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, List<(string modifierName, float ModifierValue)> modifiers, List<int> throttles)
     {
         var engine = ship.Engines.First().Value;
         var hull = ship.Hulls.First().Value;
 
-        var speedMultiplier = modifiers.Where(x => x.modifierName.Equals("speedCoef")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
-        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("shipSpeedCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
-        speedMultiplier = modifiers.Where(x => x.modifierName.Equals("boostCoeff")).Aggregate(speedMultiplier, (current, modifier) => current * modifier.ModifierValue);
+        var speedMultiplier = modifiers.FindModifiers("speedCoef", true).Aggregate(1d, (current, modifier) => current * modifier);
+        speedMultiplier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(speedMultiplier, (current, modifier) => current * modifier);
+        speedMultiplier = modifiers.FindModifiers("boostCoeff").Aggregate(speedMultiplier, (current, modifier) => current * (modifier + 1));
         var engineForwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineForwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineBackwardUpTimeModifiers = modifiers.Where(x => x.modifierName.Equals("engineBackwardUpTime")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineForwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineBackwardForsageMaxSpeedModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsageMaxSpeed")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineForwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineForwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
         var engineBackwardForsagePowerModifier = modifiers.Where(x => x.modifierName.Equals("engineBackwardForsagePower")).Aggregate(1d, (current, modifier) => current * modifier.ModifierValue);
+        var accelerationModifiers = new AccelerationHelper.AccelerationModifiers(speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers, engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier);
         
         //speed boost overrides
         var speedBoostEngineForwardForsageMaxSpeedOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostEngineBackwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_backwardEngineForsagMaxSpeed", true).FirstOrDefault(0);
         var speedBoostForwardEngineForsagOverride = modifiers.FindModifiers("speedBoost_forwardEngineForsag", true).FirstOrDefault(0);
         var speedBoostBackwardEngineForsag = modifiers.FindModifiers("speedBoost_backwardEngineForsag", true).FirstOrDefault(0);
+        var speedBoostAccelerationModifiers = new AccelerationHelper.SpeedBoostAccelerationModifiers(speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag);
         
-        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttleValues, speedMultiplier, engineForwardUpTimeModifiers, engineBackwardUpTimeModifiers,
-            engineForwardForsageMaxSpeedModifier, engineBackwardForsageMaxSpeedModifier, engineForwardForsagePowerModifier, engineBackwardForsagePowerModifier, speedBoostEngineForwardForsageMaxSpeedOverride, speedBoostEngineBackwardEngineForsagOverride, speedBoostForwardEngineForsagOverride, speedBoostBackwardEngineForsag).AccelerationPointsList;
-        
+        var accelerationPointsList = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, throttles, accelerationModifiers , speedBoostAccelerationModifiers).AccelerationPointsList;
         return accelerationPointsList.Select(x => new ChartsHelper.Point(x.Time, x.Speed)).ToList();
     }
 

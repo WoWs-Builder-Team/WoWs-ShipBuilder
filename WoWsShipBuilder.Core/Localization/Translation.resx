@@ -810,9 +810,6 @@
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>During preparation</value>
   </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Full power time</value>
-  </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data version:</value>
   </data>
@@ -1474,6 +1471,42 @@ They do not have any effect on surface ships.</value>
   </data>
   <data name="ShipStats_MaxEngineBoostDuration" xml:space="preserve">
       <value>Max engine boost duration</value>
+  </data>
+  <data name="Build_CopyShortUrl" xml:space="preserve">
+      <value>Copy short link</value>
+  </data>
+  <data name="Build_EnterBuildName" xml:space="preserve">
+      <value>Please enter a build name. The ship name will be automatically displayed at the end.</value>
+  </data>
+  <data name="BETA_ShipComparison" xml:space="preserve">
+      <value>Acceleration Charts Beta</value>
+  </data>
+  <data name="BETA_AccelerationCharts" xml:space="preserve">
+      <value>Ship Comparison Beta</value>
+  </data>
+  <data name="BetaAccess_Heading" xml:space="preserve">
+      <value>Beta Access</value>
+  </data>
+  <data name="BetaAccess_Code" xml:space="preserve">
+      <value>Code</value>
+  </data>
+  <data name="BetaAccess_AddCode" xml:space="preserve">
+      <value>Add Code</value>
+  </data>
+  <data name="BetaAccess_Feature" xml:space="preserve">
+      <value>Feature</value>
+  </data>
+  <data name="BetaAccess_Remove" xml:space="preserve">
+      <value>Remove</value>
+  </data>
+  <data name="BetaAccess_Invalid" xml:space="preserve">
+      <value>Invalid Code</value>
+  </data>
+  <data name="BetaAccess_CodeEnabled" xml:space="preserve">
+      <value>has been enabled.</value>
+  </data>
+  <data name="BetaAccess_Duplicate" xml:space="preserve">
+      <value>was already enabled.</value>
   </data>
   <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
       <value>Time for max speed</value>
