@@ -37,7 +37,7 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
     public static async Task<DepthChargeDataContainer> FromChargesName(string name, IEnumerable<(string name, float value)> modifiers, IAppDataService appDataService)
     {
         var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
-        float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current *= modifier);
+        float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current * modifier);
         decimal minSpeed = (decimal)(depthCharge.SinkingSpeed * (1 - depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal minTimer = (decimal)(depthCharge.DetonationTimer - depthCharge.DetonationTimerRng);
@@ -47,7 +47,6 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
 
         var depthChargeDataContainer = new DepthChargeDataContainer
         {
-            // Name = depthCharge.Name,
             Damage = (int)Math.Round(damage, 0),
             FireChance = Math.Round((decimal)depthCharge.FireChance * 100, 2),
             FloodingChance = Math.Round((decimal)depthCharge.FloodChance * 100, 2),
