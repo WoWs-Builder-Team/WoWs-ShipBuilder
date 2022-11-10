@@ -1,6 +1,5 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
-@using DynamicData
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
@@ -85,14 +84,14 @@
         MudDialog.Close(ShipList);
     }
 
-    private async void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.NewItems![0] is string shipIndex)
         {
-            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-            var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+            var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+            var ship = WebAppDataService.GetShipFromSummary(shipSummary);
 
-            var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null);
+            var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);
             ShipList!.Add(shipContainer);
         }
         StateHasChanged();

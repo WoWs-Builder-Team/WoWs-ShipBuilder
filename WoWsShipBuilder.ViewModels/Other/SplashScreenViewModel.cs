@@ -1,10 +1,10 @@
 using System;
-using System.Threading.Tasks;
 using NLog;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.Localization;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -18,6 +18,8 @@ public class SplashScreenViewModel : ViewModelBase
 
     private readonly ILocalizationProvider localizationProvider;
 
+    private readonly IAppDataService appDataService;
+
     private readonly AppSettings appSettings;
 
     private readonly ILogger logger;
@@ -25,14 +27,15 @@ public class SplashScreenViewModel : ViewModelBase
     private double progress;
 
     public SplashScreenViewModel()
-        : this(null!, null!, new())
+        : this(null!, null!, null!, new())
     {
     }
 
-    public SplashScreenViewModel(ILocalDataUpdater localDataUpdater, ILocalizationProvider localizationProvider, AppSettings appSettings)
+    public SplashScreenViewModel(ILocalDataUpdater localDataUpdater, ILocalizationProvider localizationProvider, IAppDataService appDataService, AppSettings appSettings)
     {
         this.localDataUpdater = localDataUpdater;
         this.localizationProvider = localizationProvider;
+        this.appDataService = appDataService;
         this.appSettings = appSettings;
         logger = Logging.GetLogger("SplashScreen");
     }
@@ -65,6 +68,7 @@ public class SplashScreenViewModel : ViewModelBase
         {
             await localDataUpdater.RunDataUpdateCheck(appSettings.SelectedServerType, progressTracker, forceVersionCheck);
             await localizationProvider.RefreshDataAsync(appSettings.SelectedServerType, appSettings.SelectedLanguage);
+            await appDataService.LoadLocalFilesAsync(appSettings.SelectedServerType);
             logger.Debug("Version check and update tasks completed. Launching main window.");
         }
         catch (Exception e)

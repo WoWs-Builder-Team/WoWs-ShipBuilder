@@ -205,7 +205,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         await CloseChildrenInteraction.Handle(Unit.Default);
 
         disposables.Clear();
-        var ship = await appDataService.GetShipFromSummary(summary);
+        var ship = appDataService.GetShipFromSummary(summary);
 
         await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
     }
@@ -224,7 +224,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     {
         Logging.Logger.Info("Loading data for ship {0}", ship.Index);
         Logging.Logger.Info("Build is null: {0}", build is null);
-        await appDataService.LoadNationFiles(ship.ShipNation);
 
         ShipDataContainer.ExpanderStateMapper.Clear();
 
@@ -238,7 +237,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings));
         CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
+        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
         ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
 
         ShipStatsControlViewModel = new(EffectiveShipData, appDataService);

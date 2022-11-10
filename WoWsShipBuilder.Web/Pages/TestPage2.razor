@@ -1,6 +1,5 @@
 ﻿@page "/test2"
 @using WoWsShipBuilder.Web.Dialogs
-@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures
@@ -43,7 +42,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await UpdateShipList();
+        UpdateShipList();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -53,17 +52,17 @@
         {
             lastTier = selectedTier;
             lastClass = selectedClass;
-            await UpdateShipList();
+            UpdateShipList();
         }
     }
 
-    private async Task UpdateShipList()
+    private void UpdateShipList()
     {
-        var shipList = await Task.WhenAll(AppData.ShipSummaryList!
+        var shipList = AppData.ShipSummaryList
             .Where(s => s.Tier == selectedTier && s.ShipClass == selectedClass)
             .Take(25)
-            .Select(summary => AppDataService.GetShipFromSummary(summary, false)));
-        ships = shipList.Select(s => ShipBuildContainer.CreateNew(s!, null, null)).ToList();
+            .Select(summary => AppDataService.GetShipFromSummary(summary));
+        ships = shipList.Select(s => ShipBuildContainer.CreateNew(s, null, null)).ToList();
         StateHasChanged();
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,11 +13,9 @@ using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.DataStructures.Consumable;
 using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.DataProvider;
@@ -115,20 +114,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
     }
 
-    public async Task LoadNationFiles(Nation nation)
-    {
-        var server = appSettings.SelectedServerType;
-        if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
-        {
-            AppData.ShipDictionary = await ReadLocalJsonData<Ship>(nation, server);
-        }
-
-        AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
-        AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
-        AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
-        AppData.ModernizationCache ??= await ReadLocalJsonData<Modernization>(Nation.Common, server);
-    }
-
     /// <summary>
     /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
     /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
@@ -161,7 +146,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
     /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
     public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
     {
-        return (T)(await GetProjectile(projectileName));
+        return (T)await GetProjectile(projectileName);
     }
 
     /// <summary>
@@ -208,30 +193,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
     }
 
-    public async Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
-    {
-        Ship? ship = null;
-
-        if (summary.Nation.Equals(AppData.CurrentLoadedNation) && AppData.ShipDictionary is not null)
-        {
-            ship = AppData.ShipDictionary[summary.Index];
-        }
-        else
-        {
-            var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, appSettings.SelectedServerType);
-            if (shipDict != null)
-            {
-                ship = shipDict[summary.Index];
-                if (changeDictionary)
-                {
-                    AppData.ShipDictionary = shipDict;
-                    AppData.CurrentLoadedNation = summary.Nation;
-                }
-            }
-        }
-
-        return ship;
-    }
+    public Ship GetShipFromSummary(ShipSummary summary) => AppData.ShipDictionary[summary.Index];
 
     /// <summary>
     /// Save string compressed <see cref="Build"/> to the disk.
@@ -273,6 +235,36 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         string directory = BuildImageOutputDirectory;
         fileSystem.Directory.CreateDirectory(directory);
         return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
+    }
+
+    public async Task LoadLocalFilesAsync(ServerType serverType)
+    {
+        var sw = Stopwatch.StartNew();
+        Logging.Logger.Debug("Loading local files from disk.");
+        AppData.ResetCaches();
+        var localVersionInfo = await GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
+        AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+
+        var dataRootInfo = fileSystem.DirectoryInfo.FromDirectoryName(GetDataPath(serverType));
+        IDirectoryInfo[]? categories = dataRootInfo.GetDirectories();
+
+        // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.
+        await Parallel.ForEachAsync(categories, async (category, ct) =>
+        {
+            if (category.Name.Contains("Localization", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
+            foreach (var file in category.GetFiles())
+            {
+                string content = await fileSystem.File.ReadAllTextAsync(file.FullName, ct);
+                await DataCacheHelper.AddToCache(file.Name, category.Name, content);
+            }
+        });
+
+        sw.Stop();
+        Logging.Logger.Debug("Loaded local files in {}", sw.Elapsed);
     }
 
     internal async Task<T?> DeserializeFile<T>(string filePath)

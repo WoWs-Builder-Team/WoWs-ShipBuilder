@@ -28,13 +28,12 @@ public class DataInitializer
         {
             if (cdnOptions.UseLocalFiles)
             {
-                await serverAppDataService.LoadLocalFiles();
+                await serverAppDataService.LoadLocalFilesAsync(cdnOptions.Server);
             }
             else
             {
                 await serverAppDataService.FetchData();
             }
-            AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(cdnOptions.Server);
         }
     }
 }

@@ -176,9 +176,8 @@
                 BuildString = null;
             }
 
-            var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-            await AppDataService.LoadNationFiles(shipSummary.Nation);
-            var ship = await AppDataService.GetShipFromSummary(shipSummary);
+            var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+            var ship = AppDataService.GetShipFromSummary(shipSummary);
             var vmParams = new MainViewModelParams(ship!, shipSummary, build);
 
             ShipViewModel vm = new(null!, AppDataService, Localizer, AppSettings, vmParams);

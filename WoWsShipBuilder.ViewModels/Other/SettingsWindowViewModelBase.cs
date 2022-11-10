@@ -246,7 +246,6 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             if (serverChanged || pathChanged)
             {
-                AppData.ResetCaches();
                 await ShowDownloadWindowInteraction.Handle(Unit.Default);
             }
 

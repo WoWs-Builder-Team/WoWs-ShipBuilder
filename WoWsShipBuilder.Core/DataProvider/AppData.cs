@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -19,8 +17,6 @@ namespace WoWsShipBuilder.Core.DataProvider;
 /// </summary>
 public static class AppData
 {
-    private static Nation? currentLoadedNation;
-
     /// <summary>
     /// Gets or sets a value indicating whether application settings have been initialized.
     /// </summary>
@@ -32,34 +28,14 @@ public static class AppData
     public static string? DataVersion { get; set; }
 
     /// <summary>
-    /// Gets or sets the ship dictionary for the currently selected nation.
+    /// Gets the ship dictionary for the currently selected nation.
     /// </summary>
-    /// <seealso cref="CurrentLoadedNation"/>
-    public static Dictionary<string, Ship>? ShipDictionary { get; set; }
-
-    /// <summary>
-    /// Gets or sets the currently selected <see cref="Nation"/>.
-    /// When the nation is changed, the <see cref="ProjectileCache"/> and <see cref="AircraftCache"/> are automatically cleared.
-    /// </summary>
-    public static Nation? CurrentLoadedNation
-    {
-        get => currentLoadedNation;
-        set
-        {
-            if (value != currentLoadedNation)
-            {
-                ProjectileCache.Clear();
-                AircraftCache.Clear();
-            }
-
-            currentLoadedNation = value;
-        }
-    }
+    public static Dictionary<string, Ship> ShipDictionary { get; } = new();
 
     /// <summary>
     /// Gets or sets the list of available consumables.
     /// </summary>
-    public static Dictionary<string, Consumable>? ConsumableList { get; set; }
+    public static Dictionary<string, Consumable> ConsumableList { get; set; } = new();
 
     /// <summary>
     /// Gets the projectile cache, mapping a nation to the actual projectile dictionary for that nation.
@@ -80,12 +56,12 @@ public static class AppData
 
     public static ConcurrentDictionary<Nation, Dictionary<string, Captain>> CaptainCache { get; } = new();
 
-    public static Dictionary<string, Modernization>? ModernizationCache { get; set; }
+    public static Dictionary<string, Modernization> ModernizationCache { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the list of <see cref="ShipSummary">ship summaries</see> that are currently available.
     /// </summary>
-    public static List<ShipSummary>? ShipSummaryList { get; set; }
+    public static List<ShipSummary> ShipSummaryList { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the list of the last used builds.
@@ -98,23 +74,14 @@ public static class AppData
     public static bool IsDebug => false;
 #endif
 
-    public static string GenerateLogDump(AppSettings appSettings)
-    {
-        var result = new StringBuilder();
-        result.Append("DataVersion: ").AppendLine(DataVersion)
-            .Append("CurrentNation: ").AppendLine(CurrentLoadedNation?.ToString())
-            .Append("ServerType: ").AppendLine(appSettings.ToString());
-        return result.ToString();
-    }
-
     public static void ResetCaches()
     {
-        ShipSummaryList = null;
-        ConsumableList = null;
-        ModernizationCache = null;
+        ShipSummaryList.Clear();
+        ConsumableList.Clear();
+        ModernizationCache.Clear();
         ProjectileCache.Clear();
         AircraftCache.Clear();
-        ShipDictionary = null;
+        ShipDictionary.Clear();
         DataVersion = null;
         Logging.Logger.Info("Cleared all appdata caches.");
     }

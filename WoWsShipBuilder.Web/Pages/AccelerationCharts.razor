@@ -125,10 +125,10 @@
             {
                 foreach (string shipIndex in shipIndexesFromUrl)
                 {
-                    var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-                    var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+                    var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+                    var ship = WebAppDataService.GetShipFromSummary(shipSummary);
                     
-                    var shipContainer = ShipBuildContainer.CreateNew(ship!, null, null);
+                    var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);
                     
                     shipBuildCache.Add(counter, shipContainer);
                     counter++;

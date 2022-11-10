@@ -451,7 +451,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             foreach (var result in resultList)
             {
-                var ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
+                var ship = result != null ? DesktopAppDataService.Instance.GetShipFromSummary(result) : null;
                 if (ship == null)
                 {
                     continue;

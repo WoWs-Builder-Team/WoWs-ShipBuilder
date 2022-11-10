@@ -71,11 +71,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
         public static async Task<List<KeyValuePair<string, SignalItemViewModel>>> LoadSignalList(IAppDataService appDataService, AppSettings appSettings)
         {
             var dict = await appDataService.GetExteriorList(Nation.Common, appSettings.SelectedServerType);
-            if (dict == null)
-            {
-                Logging.Logger.Warn("Unable to load signals from local appdata. Data may be corrupted. Current application state: {0}", AppData.GenerateLogDump(appSettings));
-            }
-
             var list = dict!
                 .Select(entry => new KeyValuePair<string, SignalItemViewModel>(entry.Key, new(entry.Value)))
                 .Where(x => x.Value.Signal.Type.Equals(ExteriorType.Flags) && x.Value.Signal.Group == 0).OrderBy(x => x.Value.Signal.SortOrder).ToList();

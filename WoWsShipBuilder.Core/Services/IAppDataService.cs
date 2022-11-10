@@ -59,8 +59,6 @@ namespace WoWsShipBuilder.Core.Services
 
         Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
-        Task LoadNationFiles(Nation nation);
-
         /// <summary>
         /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
         /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
@@ -99,7 +97,7 @@ namespace WoWsShipBuilder.Core.Services
 
         Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
-        Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true);
+        Ship GetShipFromSummary(ShipSummary summary);
 
         string GetDataPath(ServerType serverType);
 
@@ -117,6 +115,8 @@ namespace WoWsShipBuilder.Core.Services
         /// <param name="includeFileType">Specifies whether the list of installed locales should contain the file extensions for each file.</param>
         /// <returns>A possibly empty list of installed locales.</returns>
         Task<List<string>> GetInstalledLocales(ServerType serverType, bool includeFileType = true);
+
+        Task LoadLocalFilesAsync(ServerType serverType);
 
         public static string GetNationString(Nation nation)
         {

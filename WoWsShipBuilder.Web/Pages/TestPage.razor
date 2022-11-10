@@ -8,14 +8,11 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Web.Dialogs
-@using MudBlazor.Services
-@using WoWsShipBuilder.Web.Utility
 @inject IAppDataService AppDataService
 @inject AppSettingsHelper AppSettingsHelper
 @inject AppSettings AppSettings
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
-@inject ChartJsInterop ChartJsInterop
 @inject IDialogService DialogService
 
 <MudText Typo="Typo.h2">Test Page</MudText>
@@ -47,9 +44,9 @@
         RefreshNotifierService.NotifyRefreshRequested();
     }
     
-    private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(string shipIndex)
+    private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(string shipIndex)
     {
-        var ship = await AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
+        var ship = AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
         
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())
@@ -60,9 +57,9 @@
         return (ship, configuration);
     }
 
-    private async Task<(Ship Ship, List<ShipUpgrade> Configuration)> LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
+    private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
-        var ship = await AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
+        var ship = AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
         
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())
@@ -75,7 +72,7 @@
 
     private async Task OpenFiringAngles()
     {
-        var (ship, config) = await LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
+        var (ship, config) = LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
         var data = await MainBatteryDataContainer.FromShip(ship, config, new(), AppDataService);
         var records = data!.OriginalMainBatteryData.Guns.Select(gun =>
         {
