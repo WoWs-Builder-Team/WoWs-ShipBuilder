@@ -1508,4 +1508,61 @@ Felszini hajókra nincs hatásuk.</value>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>már engedélyezett.</value>
   </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Maximális sebesség eléréséhez szükséges idő</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Teljes erővel előre</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Tolatás</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Gyorsulás</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Idő</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Hajót hozzáad / eltávolít</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Build megváltoztatása</value>
+  </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
+A táblázat a következő sorrendben fog haladni: Kezdő fokozat --&gt; kozépső fokozat --&gt; végső fokozat, csak az aktuális fokozat maximális sebességének elérése után vált a következőre.
+Ha két sebességfokozatot azonos értékre állít be, azok egybeolvadnak.
+A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többször is hozzáadhat egy hajót, ha össze szeretné hasonlítani a különböző buildeket.</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Gyorsulási ábra magyarázat</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Egyéni adatok hozzáadása</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Motorerő</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Vízkiszorítás</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Gyorsulás előre</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Gyorsulás hátra</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Gyorsulás előre forszázzsal</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Gyorsulás hátra forszázzsal</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Max sebesség előre forszázzsal</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Max sebesség hátra forszázzsal</value>
+  </data>
 </root>
