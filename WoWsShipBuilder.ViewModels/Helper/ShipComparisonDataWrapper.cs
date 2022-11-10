@@ -1,340 +1,971 @@
 ﻿using System;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataContainers;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
-public sealed record ShipComparisonDataWrapper(Ship Ship, ShipDataContainer ShipDataContainer, Build? Build = null)
+public sealed class ShipComparisonDataWrapper
 {
-    public ShipComparisonDataWrapper(Ship ship, ShipDataContainer shipDataContainer, Build? build, Guid id)
-        : this(ship, shipDataContainer, build)
+    public ShipComparisonDataWrapper(Ship ship, ShipDataContainer shipDataContainer, Build? build = null, Guid? id = null)
     {
-        Id = id;
+        Ship = ship;
+        ShipDataContainer = shipDataContainer;
+        Build = build;
+        Id = id ?? Guid.NewGuid();
+
+        //base
+        ShipIndex = ship.Index;
+        ShipNation = ship.ShipNation;
+        ShipClass = ship.ShipClass;
+        ShipCategory = ship.ShipCategory;
+        ShipTier = ship.Tier;
+        BuildName = build?.BuildName;
+
+        //Main battery
+        var mainBattery = shipDataContainer.MainBatteryDataContainer;
+
+        MainBatteryCaliber = mainBattery?.GunCaliber;
+        MainBatteryBarrelCount = mainBattery?.BarrelsCount;
+        MainBatteryBarrelsLayout = mainBattery?.BarrelsLayout;
+        MainBatteryRange = mainBattery?.Range;
+        MainBatteryTurnTime = mainBattery?.TurnTime;
+        MainBatteryTraverseSpeed = mainBattery?.TraverseSpeed;
+        MainBatteryReload = mainBattery?.Reload;
+        MainBatteryRoF = mainBattery?.RoF;
+        MainBatteryHeDpm = mainBattery?.TheoreticalHeDpm;
+        MainBatterySapDpm = mainBattery?.TheoreticalSapDpm;
+        MainBatteryApDpm = mainBattery?.TheoreticalApDpm;
+        MainBatteryHeSalvo = mainBattery?.HeSalvo;
+        MainBatterySapSalvo = mainBattery?.SapSalvo;
+        MainBatteryApSalvo = mainBattery?.ApSalvo;
+        MainBatteryFpm = mainBattery?.PotentialFpm;
+        MainBatterySigma = mainBattery?.Sigma;
+
+        //HE shells
+        var heShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
+
+        HeMass = heShellData?.Mass;
+        HeDamage = heShellData?.Damage;
+        HeSplashRadius = heShellData?.SplashRadius;
+        HeSplashDamage = heShellData?.SplashDmg;
+        HePenetration = heShellData?.Penetration;
+        HeSpeed = heShellData?.ShellVelocity;
+        HeAirDrag = heShellData?.AirDrag;
+        HeShellFireChance = heShellData?.ShellFireChance;
+        HeSalvoFireChance = heShellData?.FireChancePerSalvo;
+        HeBlastRadius = heShellData?.ExplosionRadius;
+        HeBlastPenetration = heShellData?.SplashCoeff;
+
+        //AP shells
+        var apShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
+
+        ApMass = apShellData?.Mass;
+        ApDamage = apShellData?.Damage;
+        ApSplashRadius = apShellData?.SplashRadius;
+        ApSplashDamage = apShellData?.SplashDmg;
+        ApSpeed = apShellData?.ShellVelocity;
+        ApAirDrag = apShellData?.AirDrag;
+        ApOvermatch = apShellData?.Overmatch;
+        ApRicochet = apShellData?.RicochetAngles;
+        ApArmingThreshold = apShellData?.ArmingThreshold;
+        ApFuseTimer = apShellData?.FuseTimer;
+
+        //SAP shells
+        var sapShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
+
+        SapMass = sapShellData?.Mass;
+        SapDamage = sapShellData?.Damage;
+        SapSplashRadius = sapShellData?.SplashRadius;
+        SapSplashDamage = sapShellData?.SplashDmg;
+        SapPenetration = sapShellData?.Penetration;
+        SapSpeed = sapShellData?.ShellVelocity;
+        SapAirDrag = sapShellData?.AirDrag;
+        SapOvermatch = sapShellData?.Overmatch;
+        SapRicochet = sapShellData?.RicochetAngles;
+
+        //TorpLaunchers
+        var torpedoArmament = shipDataContainer.TorpedoArmamentDataContainer;
+
+        TorpedoCount = torpedoArmament?.TorpCount;
+        TorpedoLayout = torpedoArmament?.TorpLayout;
+        TorpedoTurnTime = torpedoArmament?.TurnTime;
+        TorpedoTraverseSpeed = torpedoArmament?.TraverseSpeed;
+        TorpedoReload = torpedoArmament?.Reload;
+        TorpedoSpread = torpedoArmament?.TorpedoArea;
+        TorpedoTimeToSwitch = torpedoArmament?.TimeToSwitch;
+
+        //Torpedoes
+        List<TorpedoDataContainer>? torpedoes = torpedoArmament?.Torpedoes;
+
+        TorpedoFullSalvoDamage = new() { torpedoArmament?.FullSalvoDamage, torpedoArmament?.TorpFullSalvoDmg, torpedoArmament?.AltTorpFullSalvoDmg };
+        TorpedoType = torpedoes?.Select(x => x.TorpedoType).ToList() ?? new();
+        TorpedoDamage = torpedoes?.Select(x => x.Damage).ToList() ?? new();
+        TorpedoRange = torpedoes?.Select(x => x.Range).ToList() ?? new();
+        TorpedoSpeed = torpedoes?.Select(x => x.Speed).ToList() ?? new();
+        TorpedoDetectRange = torpedoes?.Select(x => x.Detectability).ToList() ?? new();
+        TorpedoArmingDistance = torpedoes?.Select(x => x.ArmingDistance).ToList() ?? new();
+        TorpedoReactionTime = torpedoes?.Select(x => x.ReactionTime).ToList() ?? new();
+        TorpedoFloodingChance = torpedoes?.Select(x => x.FloodingChance).ToList() ?? new();
+        TorpedoBlastRadius = torpedoes?.Select(x => x.ExplosionRadius).ToList() ?? new();
+        TorpedoBlastPenetration = torpedoes?.Select(x => x.SplashCoeff).ToList() ?? new();
+        TorpedoCanHit = torpedoes?.Select(x => x.CanHitClasses).ToList() ?? new();
+
+        //Secondaries
+        List<SecondaryBatteryDataContainer>? secondaryBattery = shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries;
+
+        SecondaryBatteryCaliber = secondaryBattery?.Select(x => x.GunCaliber).ToList() ?? new();
+        SecondaryBatteryBarrelCount = secondaryBattery?.Select(x => x.BarrelsCount).ToList() ?? new();
+        SecondaryBatteryBarrelsLayout = secondaryBattery?.Select(x => x.BarrelsLayout).ToList() ?? new();
+        SecondaryBatteryRange = secondaryBattery?.Select(x => x.Range).First();
+        SecondaryBatteryReload = secondaryBattery?.Select(x => x.Reload).ToList() ?? new();
+        SecondaryBatteryRoF = secondaryBattery?.Select(x => x.RoF).ToList() ?? new();
+        SecondaryBatteryDpm = secondaryBattery?.Select(x => x.TheoreticalDpm).ToList() ?? new();
+        SecondaryBatteryFpm = secondaryBattery?.Select(x => x.PotentialFpm).ToList() ?? new();
+        SecondaryBatterySigma = secondaryBattery?.Select(x => x.Sigma).First();
+
+        //Secondary shells
+        List<ShellDataContainer?>? secondaryShellData = secondaryBattery?.Select(x => x.Shell).ToList();
+
+        SecondaryType = secondaryShellData?.Select(x => x?.Type).First();
+        SecondaryMass = secondaryShellData?.Select(x => x?.Mass ?? 0).ToList() ?? new();
+        SecondaryDamage = secondaryShellData?.Select(x => x?.Damage ?? 0).ToList() ?? new();
+        SecondarySplashRadius = secondaryShellData?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
+        SecondarySplashDamage = secondaryShellData?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
+        SecondaryPenetration = secondaryShellData?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
+        SecondarySpeed = secondaryShellData?.Select(x => x?.ShellVelocity ?? 0).ToList() ?? new();
+        SecondaryAirDrag = secondaryShellData?.Select(x => x?.AirDrag ?? 0).ToList() ?? new();
+        SecondaryHeShellFireChance = secondaryShellData?.Select(x => x?.ShellFireChance ?? 0).ToList() ?? new();
+        SecondaryHeBlastRadius = secondaryShellData?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
+        SecondaryHeBlastPenetration = secondaryShellData?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
+        SecondarySapOvermatch = secondaryShellData?.Select(x => x?.Overmatch ?? 0).ToList() ?? new();
+        SecondarySapRicochet = secondaryShellData?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
+
+        //AA
+        var aaData = shipDataContainer.AntiAirDataContainer;
+
+        LongAaRange = aaData?.LongRangeAura?.Range;
+        MediumAaRange = aaData?.MediumRangeAura?.Range;
+        ShortAaRange = aaData?.ShortRangeAura?.Range;
+        LongAaConstantDamage = aaData?.LongRangeAura?.ConstantDamage;
+        MediumAaConstantDamage = aaData?.MediumRangeAura?.ConstantDamage;
+        ShortAaConstantDamage = aaData?.ShortRangeAura?.ConstantDamage;
+        LongAaHitChance = aaData?.LongRangeAura?.HitChance;
+        MediumAaHitChance = aaData?.MediumRangeAura?.HitChance;
+        ShortAaHitChance = aaData?.ShortRangeAura?.HitChance;
+        Flak = aaData?.LongRangeAura?.Flak;
+        FlakDamage = aaData?.LongRangeAura?.FlakDamage;
+
+        //ASW
+        var aswAirStrike = shipDataContainer.AswAirstrikeDataContainer;
+        var depthChargeLauncher = shipDataContainer.DepthChargeLauncherDataContainer;
+        var depthCharge = depthChargeLauncher?.DepthCharge ?? aswAirStrike?.Weapon as DepthChargeDataContainer;
+
+        AswDcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? "DepthCharge" : null;
+        AswRange = aswAirStrike?.MaximumDistance;
+        AswMaxDropLength = aswAirStrike?.MaximumFlightDistance;
+        AswDcReload = depthChargeLauncher?.Reload ?? aswAirStrike?.ReloadTime;
+        AswDcUses = depthChargeLauncher?.NumberOfUses ?? aswAirStrike?.NumberOfUses;
+        AswPlanesInSquadron = aswAirStrike?.NumberDuringAttack;
+        AswBombsPerPlane = aswAirStrike?.BombsPerPlane;
+        DcPerAttack = depthChargeLauncher?.BombsPerCharge;
+        DcDamage = depthCharge?.Damage;
+        DcFireChance = depthCharge?.FireChance;
+        DcFloodingChance = depthCharge?.FloodingChance;
+        DcSplashRadius = depthCharge?.DcSplashRadius;
+        DcSinkSpeed = depthCharge?.SinkSpeed;
+        DcDetonationTimer = depthCharge?.DetonationTimer;
+        DcDetonationDepth = depthCharge?.DetonationDepth;
+
+        //AirStrike
+        var airStrike = shipDataContainer.AirstrikeDataContainer;
+        var airStrikeWeapon = airStrike?.Weapon as BombDataContainer;
+
+        AirStrikePlanesHp = airStrike?.PlaneHp;
+        AirStrikeRange = airStrike?.MaximumDistance;
+        AirStrikeMaxDropLength = airStrike?.MaximumFlightDistance;
+        AirStrikeReload = airStrike?.ReloadTime;
+        AirStrikeUses = airStrike?.NumberOfUses;
+        AirStrikePlanesInSquadron = airStrike?.NumberDuringAttack;
+        AirStrikeBombsPerPlane = airStrike?.BombsPerPlane;
+        AirStrikeBombType = airStrikeWeapon?.BombType;
+        AirStrikeDamage = airStrikeWeapon?.Damage;
+        AirStrikeFireChance = airStrikeWeapon?.FireChance;
+        AirStrikeSplashRadius = airStrikeWeapon?.SplashRadius;
+        AirStrikeSplashDamage = airStrikeWeapon?.SplashDmg;
+        AirStrikePenetration = airStrikeWeapon?.Penetration;
+        AirStrikeBlastRadius = airStrikeWeapon?.ExplosionRadius;
+        AirStrikeBlastDamage = airStrikeWeapon?.SplashCoeff;
+
+        //Maneuverability
+        var maneuverability = shipDataContainer.ManeuverabilityDataContainer;
+
+        ManeuverabilityMaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
+        ManeuverabilityMaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
+        ManeuverabilityMaxSpeedAtMaxDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtMaxDepth;
+        ManeuverabilityRudderShiftTime = maneuverability.ManeuverabilityRudderShiftTime;
+        ManeuverabilityTurningCircle = maneuverability.ManeuverabilityTurningCircle;
+        ManeuverabilityTimeToFullAhead = maneuverability.ForwardMaxSpeedTime;
+        ManeuverabilityTimeToFullReverse = maneuverability.ReverseMaxSpeedTime;
+        ManeuverabilityRudderProtection = maneuverability.RudderBlastProtection;
+        ManeuverabilityEngineProtection = maneuverability.EngineBlastProtection;
+
+        //Concealment
+        var concealment = shipDataContainer.ConcealmentDataContainer;
+
+        ConcealmentFromShipsBase = concealment.ConcealmentBySea;
+        ConcealmentFromShipsOnFire = concealment.ConcealmentBySeaFire;
+        ConcealmentFromShipsSmokeFiring = concealment.ConcealmentBySeaFiringSmoke;
+        ConcealmentFromPlanesBase = concealment.ConcealmentByAir;
+        ConcealmentFromPlanesOnFire = concealment.ConcealmentByAirFire;
+        ConcealmentFromSubsPeriscopeDepth = concealment.ConcealmentBySubPeriscope;
+
+        //Survivability
+        var survivability = shipDataContainer.SurvivabilityDataContainer;
+
+        SurvivabilityShipHp = survivability.HitPoints;
+        SurvivabilityFireMaxAmount = survivability.FireAmount;
+        SurvivabilityFireDuration = survivability.FireDuration;
+        SurvivabilityFireDps = survivability.FireDPS;
+        SurvivabilityFireMaxDmg = survivability.FireTotalDamage;
+        SurvivabilityFireChanceReduction = survivability.FireReduction;
+        SurvivabilityFloodingMaxAmount = survivability.FloodAmount;
+        SurvivabilityFloodingDuration = survivability.FloodDuration;
+        SurvivabilityFloodingDps = survivability.FloodDPS;
+        SurvivabilityFloodingMaxDmg = survivability.FloodTotalDamage;
+        SurvivabilityFloodingTorpedoProtection = survivability.FloodTorpedoProtection;
+
+        //Sonar
+        var pingerGun = shipDataContainer.PingerGunDataContainer;
+
+        SonarReloadTime = pingerGun?.Reload;
+        SonarTraverseSpeed = pingerGun?.TraverseSpeed;
+        SonarTurnTime = pingerGun?.TurnTime;
+        SonarRange = pingerGun?.Range;
+        SonarWidth = pingerGun?.PingWidth;
+        SonarSpeed = pingerGun?.PingSpeed;
+        SonarFirstPingDuration = pingerGun?.FirstPingDuration;
+        SonarSecondPingDuration = pingerGun?.SecondPingDuration;
+
+        //RocketPlanes
+        List<CvAircraftDataContainer>? rocketPlanes = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList();
+
+        RocketPlanesType = rocketPlanes?.Select(x => x.PlaneVariant).ToList() ?? new();
+        RocketPlanesInSquadron = rocketPlanes?.Select(x => x.NumberInSquad).ToList() ?? new();
+        RocketPlanesPerAttack = rocketPlanes?.Select(x => x.NumberDuringAttack).ToList() ?? new();
+        RocketPlanesOnDeck = rocketPlanes?.Select(x => x.MaxNumberOnDeck).ToList() ?? new();
+        RocketPlanesRestorationTime = rocketPlanes?.Select(x => x.RestorationTime).ToList() ?? new();
+        RocketPlanesCruisingSpeed = rocketPlanes?.Select(x => x.CruisingSpeed).ToList() ?? new();
+        RocketPlanesMaxSpeed = rocketPlanes?.Select(x => x.MaxSpeed).ToList() ?? new();
+        RocketPlanesMinSpeed = rocketPlanes?.Select(x => x.MinSpeed).ToList() ?? new();
+        RocketPlanesEngineBoostDuration = rocketPlanes?.Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
+        RocketPlanesInitialBoostDuration = rocketPlanes?.Select(x => x.JatoDuration).ToList() ?? new();
+        RocketPlanesInitialBoostValue = rocketPlanes?.Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
+        RocketPlanesPlaneHp = rocketPlanes?.Select(x => x.PlaneHp).ToList() ?? new();
+        RocketPlanesSquadronHp = rocketPlanes?.Select(x => x.SquadronHp).ToList() ?? new();
+        RocketPlanesAttackGroupHp = rocketPlanes?.Select(x => x.AttackGroupHp).ToList() ?? new();
+        RocketPlanesDamageDuringAttack = rocketPlanes?.Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
+        RocketPlanesWeaponsPerPlane = rocketPlanes?.Select(x => x.AmmoPerAttack).ToList() ?? new();
+        RocketPlanesPreparationTime = rocketPlanes?.Select(x => x.PreparationTime).ToList() ?? new();
+        RocketPlanesAimingTime = rocketPlanes?.Select(x => x.AimingTime).ToList() ?? new();
+        RocketPlanesTimeToFullyAimed = rocketPlanes?.Select(x => x.TimeToFullyAimed).ToList() ?? new();
+        RocketPlanesPostAttackInvulnerability = rocketPlanes?.Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
+        RocketPlanesAttackCooldown = rocketPlanes?.Select(x => x.AttackCd).ToList() ?? new();
+        RocketPlanesConcealment = rocketPlanes?.Select(x => x.ConcealmentFromShips).ToList() ?? new();
+        RocketPlanesSpotting = rocketPlanes?.Select(x => x.MaxViewDistance).ToList() ?? new();
+        RocketPlanesAreaChangeAiming = rocketPlanes?.Select(x => x.AimingRateMoving).ToList() ?? new();
+        RocketPlanesAreaChangePreparation = rocketPlanes?.Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
+
+        //Rockets
+        List<RocketDataContainer?>? rockets = rocketPlanes?.Select(x => x.Weapon as RocketDataContainer).ToList();
+
+        RocketPlanesWeaponType = rockets?.Select(x => x?.RocketType ?? default!).ToList() ?? new();
+        RocketPlanesWeaponDamage = rockets?.Select(x => x?.Damage ?? 0).ToList() ?? new();
+        RocketPlanesWeaponSplashRadius = rockets?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
+        RocketPlanesWeaponSplashDamage = rockets?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
+        RocketPlanesWeaponPenetration = rockets?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
+        RocketPlanesWeaponFireChance = rockets?.Select(x => x?.FireChance ?? 0).ToList() ?? new();
+        RocketPlanesWeaponFuseTimer = rockets?.Select(x => x?.FuseTimer ?? 0).ToList() ?? new();
+        RocketPlanesWeaponArmingThreshold = rockets?.Select(x => x?.ArmingThreshold ?? 0).ToList() ?? new();
+        RocketPlanesWeaponRicochetAngles = rockets?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
+        RocketPlanesWeaponBlastRadius = rockets?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
+        RocketPlanesWeaponBlastPenetration = rockets?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
+
+        //TorpedoBombers
+        List<CvAircraftDataContainer>? torpedoBombers = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList();
+
+        TorpedoBombersType = torpedoBombers?.Select(x => x.PlaneVariant).ToList() ?? new();
+        TorpedoBombersInSquadron = torpedoBombers?.Select(x => x.NumberInSquad).ToList() ?? new();
+        TorpedoBombersPerAttack = torpedoBombers?.Select(x => x.NumberDuringAttack).ToList() ?? new();
+        TorpedoBombersOnDeck = torpedoBombers?.Select(x => x.MaxNumberOnDeck).ToList() ?? new();
+        TorpedoBombersRestorationTime = torpedoBombers?.Select(x => x.RestorationTime).ToList() ?? new();
+        TorpedoBombersCruisingSpeed = torpedoBombers?.Select(x => x.CruisingSpeed).ToList() ?? new();
+        TorpedoBombersMaxSpeed = torpedoBombers?.Select(x => x.MaxSpeed).ToList() ?? new();
+        TorpedoBombersMinSpeed = torpedoBombers?.Select(x => x.MinSpeed).ToList() ?? new();
+        TorpedoBombersEngineBoostDuration = torpedoBombers?.Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
+        TorpedoBombersInitialBoostDuration = torpedoBombers?.Select(x => x.JatoDuration).ToList() ?? new();
+        TorpedoBombersInitialBoostValue = torpedoBombers?.Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
+        TorpedoBombersPlaneHp = torpedoBombers?.Select(x => x.PlaneHp).ToList() ?? new();
+        TorpedoBombersSquadronHp = torpedoBombers?.Select(x => x.SquadronHp).ToList() ?? new();
+        TorpedoBombersAttackGroupHp = torpedoBombers?.Select(x => x.AttackGroupHp).ToList() ?? new();
+        TorpedoBombersDamageDuringAttack = torpedoBombers?.Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
+        TorpedoBombersWeaponsPerPlane = torpedoBombers?.Select(x => x.AmmoPerAttack).ToList() ?? new();
+        TorpedoBombersPreparationTime = torpedoBombers?.Select(x => x.PreparationTime).ToList() ?? new();
+        TorpedoBombersAimingTime = torpedoBombers?.Select(x => x.AimingTime).ToList() ?? new();
+        TorpedoBombersTimeToFullyAimed = torpedoBombers?.Select(x => x.TimeToFullyAimed).ToList() ?? new();
+        TorpedoBombersPostAttackInvulnerability = torpedoBombers?.Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
+        TorpedoBombersAttackCooldown = torpedoBombers?.Select(x => x.AttackCd).ToList() ?? new();
+        TorpedoBombersConcealment = torpedoBombers?.Select(x => x.ConcealmentFromShips).ToList() ?? new();
+        TorpedoBombersSpotting = torpedoBombers?.Select(x => x.MaxViewDistance).ToList() ?? new();
+        TorpedoBombersAreaChangeAiming = torpedoBombers?.Select(x => x.AimingRateMoving).ToList() ?? new();
+        TorpedoBombersAreaChangePreparation = torpedoBombers?.Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
+
+        //Aerial torps
+        List<TorpedoDataContainer?>? aerialTorpedoes = torpedoBombers?.Select(x => x.Weapon as TorpedoDataContainer).ToList();
+
+        TorpedoBombersWeaponType = aerialTorpedoes?.Select(x => x?.TorpedoType ?? default!).ToList() ?? new();
+        TorpedoBombersWeaponDamage = aerialTorpedoes?.Select(x => x?.Damage ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponRange = aerialTorpedoes?.Select(x => x?.Range ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponSpeed = aerialTorpedoes?.Select(x => x?.Speed ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponDetectabilityRange = aerialTorpedoes?.Select(x => x?.Detectability ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponArmingDistance = aerialTorpedoes?.Select(x => x?.ArmingDistance ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponReactionTime = aerialTorpedoes?.Select(x => x?.ReactionTime ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponFloodingChance = aerialTorpedoes?.Select(x => x?.FloodingChance ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponBlastRadius = aerialTorpedoes?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponBlastPenetration = aerialTorpedoes?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
+        TorpedoBombersWeaponCanHit = aerialTorpedoes?.Select(x => x?.CanHitClasses).ToList() ?? new();
+
+        //Bombers
+        List<CvAircraftDataContainer>? bombers = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList();
+
+        BombersType = bombers?.Select(x => x.PlaneVariant).ToList() ?? new();
+        BombersInSquadron = bombers?.Select(x => x.NumberInSquad).ToList() ?? new();
+        BombersPerAttack = bombers?.Select(x => x.NumberDuringAttack).ToList() ?? new();
+        BombersOnDeck = bombers?.Select(x => x.MaxNumberOnDeck).ToList() ?? new();
+        BombersRestorationTime = bombers?.Select(x => x.RestorationTime).ToList() ?? new();
+        BombersCruisingSpeed = bombers?.Select(x => x.CruisingSpeed).ToList() ?? new();
+        BombersMaxSpeed = bombers?.Select(x => x.MaxSpeed).ToList() ?? new();
+        BombersMinSpeed = bombers?.Select(x => x.MinSpeed).ToList() ?? new();
+        BombersEngineBoostDuration = bombers?.Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
+        BombersInitialBoostDuration = bombers?.Select(x => x.JatoDuration).ToList() ?? new();
+        BombersInitialBoostValue = bombers?.Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
+        BombersPlaneHp = bombers?.Select(x => x.PlaneHp).ToList() ?? new();
+        BombersSquadronHp = bombers?.Select(x => x.SquadronHp).ToList() ?? new();
+        BombersAttackGroupHp = bombers?.Select(x => x.AttackGroupHp).ToList() ?? new();
+        BombersDamageDuringAttack = bombers?.Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
+        BombersWeaponsPerPlane = bombers?.Select(x => x.AmmoPerAttack).ToList() ?? new();
+        BombersPreparationTime = bombers?.Select(x => x.PreparationTime).ToList() ?? new();
+        BombersAimingTime = bombers?.Select(x => x.AimingTime).ToList() ?? new();
+        BombersTimeToFullyAimed = bombers?.Select(x => x.TimeToFullyAimed).ToList() ?? new();
+        BombersPostAttackInvulnerability = bombers?.Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
+        BombersAttackCooldown = bombers?.Select(x => x.AttackCd).ToList() ?? new();
+        BombersConcealment = bombers?.Select(x => x.ConcealmentFromShips).ToList() ?? new();
+        BombersSpotting = bombers?.Select(x => x.MaxViewDistance).ToList() ?? new();
+        BombersAreaChangeAiming = bombers?.Select(x => x.AimingRateMoving).ToList() ?? new();
+        BombersAreaChangePreparation = bombers?.Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
+        BombersInnerEllipse = bombers?.Select(x => x.InnerBombPercentage).ToList() ?? new();
+
+        //Bombs
+        List<BombDataContainer?>? bombs = bombers?.Select(x => x.Weapon as BombDataContainer).ToList();
+
+        BombersWeaponType = bombers?.Select(x => x.WeaponType).ToList() ?? new();
+        BombersWeaponBombType = bombs?.Select(x => x?.BombType ?? default!).ToList() ?? new();
+        BombersWeaponDamage = bombs?.Select(x => x?.Damage ?? 0).ToList() ?? new();
+        BombersWeaponSplashRadius = bombs?.Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
+        BombersWeaponSplashDamage = bombs?.Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
+        BombersWeaponPenetration = bombs?.Select(x => x?.Penetration ?? 0).ToList() ?? new();
+        BombersWeaponFireChance = bombs?.Select(x => x?.FireChance ?? 0).ToList() ?? new();
+        BombersWeaponBlastRadius = bombs?.Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
+        BombersWeaponBlastPenetration = bombs?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
+        BombersWeaponFuseTimer = bombs?.Select(x => x?.FuseTimer ?? 0).ToList() ?? new();
+        BombersWeaponArmingThreshold = bombs?.Select(x => x?.ArmingThreshold ?? 0).ToList() ?? new();
+        BombersWeaponRicochetAngles = bombs?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
     }
 
-    public Guid Id { get; } = Guid.NewGuid();
+    public Ship Ship { get; }
+
+    public ShipDataContainer ShipDataContainer { get; }
+
+    public Build? Build { get; }
+
+    public Guid Id { get; }
 
     //base
-    public string ShipIndex => Ship.Index;
-    public Nation ShipNation => Ship.ShipNation;
-    public ShipClass ShipClass => Ship.ShipClass;
-    public ShipCategory ShipCategory => Ship.ShipCategory;
-    public int ShipTier => Ship.Tier;
-    public string? BuildName => Build?.BuildName;
+    public string ShipIndex { get; }
+
+    public Nation ShipNation { get; }
+
+    public ShipClass ShipClass { get; }
+
+    public ShipCategory ShipCategory { get; }
+
+    public int ShipTier { get; }
+
+    public string? BuildName { get; }
 
     //Main battery
-    public decimal? MainBatteryCaliber { get; } = ShipDataContainer.MainBatteryDataContainer?.GunCaliber;
-    public int? MainBatteryBarrelCount { get; } = ShipDataContainer.MainBatteryDataContainer?.BarrelsCount;
-    public string? MainBatteryBarrelsLayout { get; } = ShipDataContainer.MainBatteryDataContainer?.BarrelsLayout;
-    public decimal? MainBatteryRange { get; } = ShipDataContainer.MainBatteryDataContainer?.Range;
-    public decimal? MainBatteryTurnTime { get; } = ShipDataContainer.MainBatteryDataContainer?.TurnTime;
-    public decimal? MainBatteryTraverseSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.TraverseSpeed;
-    public decimal? MainBatteryReload { get; } = ShipDataContainer.MainBatteryDataContainer?.Reload;
-    public decimal? MainBatteryRoF { get; } = ShipDataContainer.MainBatteryDataContainer?.RoF;
-    public string? MainBatteryHeDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalHeDpm;
-    public string? MainBatterySapDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalSapDpm;
-    public string? MainBatteryApDpm { get; } = ShipDataContainer.MainBatteryDataContainer?.TheoreticalApDpm;
-    public string? MainBatteryHeSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.HeSalvo;
-    public string? MainBatterySapSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.SapSalvo;
-    public string? MainBatteryApSalvo { get; } = ShipDataContainer.MainBatteryDataContainer?.ApSalvo;
-    public decimal? MainBatteryFpm { get; } = ShipDataContainer.MainBatteryDataContainer?.PotentialFpm;
-    public decimal? MainBatterySigma { get; } = ShipDataContainer.MainBatteryDataContainer?.Sigma;
+    public decimal? MainBatteryCaliber { get; }
+
+    public int? MainBatteryBarrelCount { get; }
+
+    public string? MainBatteryBarrelsLayout { get; }
+
+    public decimal? MainBatteryRange { get; }
+
+    public decimal? MainBatteryTurnTime { get; }
+
+    public decimal? MainBatteryTraverseSpeed { get; }
+
+    public decimal? MainBatteryReload { get; }
+
+    public decimal? MainBatteryRoF { get; }
+
+    public string? MainBatteryHeDpm { get; }
+
+    public string? MainBatterySapDpm { get; }
+
+    public string? MainBatteryApDpm { get; }
+
+    public string? MainBatteryHeSalvo { get; }
+
+    public string? MainBatterySapSalvo { get; }
+
+    public string? MainBatteryApSalvo { get; }
+
+    public decimal? MainBatteryFpm { get; }
+
+    public decimal? MainBatterySigma { get; }
 
     //HE shells
-    public decimal? HeMass { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.Mass;
-    public decimal? HeDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.Damage;
-    public decimal? HeSplashRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.SplashRadius;
-    public decimal? HeSplashDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.SplashDmg;
-    public decimal? HePenetration { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.Penetration;
-    public decimal? HeSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.ShellVelocity;
-    public decimal? HeAirDrag { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.AirDrag;
-    public decimal? HeShellFireChance { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.ShellFireChance;
-    public decimal? HeSalvoFireChance { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.FireChancePerSalvo;
-    public decimal? HeBlastRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.ExplosionRadius;
-    public decimal? HeBlastPenetration { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE}"))?.SplashCoeff;
+    public decimal? HeMass { get; }
+
+    public decimal? HeDamage { get; }
+
+    public decimal? HeSplashRadius { get; }
+
+    public decimal? HeSplashDamage { get; }
+
+    public decimal? HePenetration { get; }
+
+    public decimal? HeSpeed { get; }
+
+    public decimal? HeAirDrag { get; }
+
+    public decimal? HeShellFireChance { get; }
+
+    public decimal? HeSalvoFireChance { get; }
+
+    public decimal? HeBlastRadius { get; }
+
+    public decimal? HeBlastPenetration { get; }
 
     //AP shells
-    public decimal? ApMass { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Mass;
-    public decimal? ApDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Damage;
-    public decimal? ApSplashRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.SplashRadius;
-    public decimal? ApSplashDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.SplashDmg;
-    public decimal? ApSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.ShellVelocity;
-    public decimal? ApAirDrag { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.AirDrag;
-    public decimal? ApOvermatch { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.Overmatch;
-    public string? ApRicochet { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.RicochetAngles;
-    public decimal? ApArmingThreshold { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.ArmingThreshold;
-    public decimal? ApFuseTimer { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP}"))?.FuseTimer;
+    public decimal? ApMass { get; }
+
+    public decimal? ApDamage { get; }
+
+    public decimal? ApSplashRadius { get; }
+
+    public decimal? ApSplashDamage { get; }
+
+    public decimal? ApSpeed { get; }
+
+    public decimal? ApAirDrag { get; }
+
+    public decimal? ApOvermatch { get; }
+
+    public string? ApRicochet { get; }
+
+    public decimal? ApArmingThreshold { get; }
+
+    public decimal? ApFuseTimer { get; }
 
     //SAP shells
-    public decimal? SapMass { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Mass;
-    public decimal? SapDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Damage;
-    public decimal? SapSplashRadius { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.SplashRadius;
-    public decimal? SapSplashDamage { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.SplashDmg;
-    public decimal? SapPenetration { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Penetration;
-    public decimal? SapSpeed { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.ShellVelocity;
-    public decimal? SapAirDrag { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.AirDrag;
-    public decimal? SapOvermatch { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.Overmatch;
-    public string? SapRicochet { get; } = ShipDataContainer.MainBatteryDataContainer?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP}"))?.RicochetAngles;
+    public decimal? SapMass { get; }
+
+    public decimal? SapDamage { get; }
+
+    public decimal? SapSplashRadius { get; }
+
+    public decimal? SapSplashDamage { get; }
+
+    public decimal? SapPenetration { get; }
+
+    public decimal? SapSpeed { get; }
+
+    public decimal? SapAirDrag { get; }
+
+    public decimal? SapOvermatch { get; }
+
+    public string? SapRicochet { get; }
 
     //TorpLaunchers
-    public int? TorpedoCount { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TorpCount;
-    public string? TorpedoLayout { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TorpLayout;
-    public decimal? TorpedoTurnTime { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TurnTime;
-    public decimal? TorpedoTraverseSpeed { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TraverseSpeed;
-    public decimal? TorpedoReload { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Reload;
-    public string? TorpedoSpread { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoArea;
-    public decimal? TorpedoTimeToSwitch { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.TimeToSwitch;
+    public int? TorpedoCount { get; }
+
+    public string? TorpedoLayout { get; }
+
+    public decimal? TorpedoTurnTime { get; }
+
+    public decimal? TorpedoTraverseSpeed { get; }
+
+    public decimal? TorpedoReload { get; }
+
+    public string? TorpedoSpread { get; }
+
+    public decimal? TorpedoTimeToSwitch { get; }
 
     //Torpedoes
-    public List<string?> TorpedoFullSalvoDamage { get; } = new() {ShipDataContainer.TorpedoArmamentDataContainer?.FullSalvoDamage, ShipDataContainer.TorpedoArmamentDataContainer?.TorpFullSalvoDmg, ShipDataContainer.TorpedoArmamentDataContainer?.AltTorpFullSalvoDmg};
-    public List<string> TorpedoType { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.TorpedoType).ToList() ?? new();
-    public List<decimal> TorpedoDamage { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Damage).ToList() ?? new();
-    public List<decimal> TorpedoRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Range).ToList() ?? new();
-    public List<decimal> TorpedoSpeed { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Speed).ToList() ?? new();
-    public List<decimal> TorpedoDetectRange { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.Detectability).ToList() ?? new();
-    public List<int> TorpedoArmingDistance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ArmingDistance).ToList() ?? new();
-    public List<decimal> TorpedoReactionTime { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ReactionTime).ToList() ?? new();
-    public List<decimal> TorpedoFloodingChance { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.FloodingChance).ToList() ?? new();
-    public List<decimal> TorpedoBlastRadius { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.ExplosionRadius).ToList() ?? new();
-    public List<decimal> TorpedoBlastPenetration { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.SplashCoeff).ToList() ?? new();
-    public List<List<ShipClass>?> TorpedoCanHit { get; } = ShipDataContainer.TorpedoArmamentDataContainer?.Torpedoes.Select(x => x.CanHitClasses).ToList() ?? new();
+    public List<string?> TorpedoFullSalvoDamage { get; }
+
+    public List<string> TorpedoType { get; }
+
+    public List<decimal> TorpedoDamage { get; }
+
+    public List<decimal> TorpedoRange { get; }
+
+    public List<decimal> TorpedoSpeed { get; }
+
+    public List<decimal> TorpedoDetectRange { get; }
+
+    public List<int> TorpedoArmingDistance { get; }
+
+    public List<decimal> TorpedoReactionTime { get; }
+
+    public List<decimal> TorpedoFloodingChance { get; }
+
+    public List<decimal> TorpedoBlastRadius { get; }
+
+    public List<decimal> TorpedoBlastPenetration { get; }
+
+    public List<List<ShipClass>?> TorpedoCanHit { get; }
 
     //Secondaries
-    public List<decimal> SecondaryBatteryCaliber { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.GunCaliber).ToList() ?? new();
-    public List<int> SecondaryBatteryBarrelCount { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.BarrelsCount).ToList() ?? new();
-    public List<string> SecondaryBatteryBarrelsLayout { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.BarrelsLayout).ToList() ?? new();
-    public decimal? SecondaryBatteryRange { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Range).First();
-    public List<decimal> SecondaryBatteryReload { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Reload).ToList() ?? new();
-    public List<decimal> SecondaryBatteryRoF { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.RoF).ToList() ?? new();
-    public List<string> SecondaryBatteryDpm { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.TheoreticalDpm).ToList() ?? new();
-    public List<decimal> SecondaryBatteryFpm { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.PotentialFpm).ToList() ?? new();
-    public decimal? SecondaryBatterySigma { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Sigma).First();
+    public List<decimal> SecondaryBatteryCaliber { get; }
+
+    public List<int> SecondaryBatteryBarrelCount { get; }
+
+    public List<string> SecondaryBatteryBarrelsLayout { get; }
+
+    public decimal? SecondaryBatteryRange { get; }
+
+    public List<decimal> SecondaryBatteryReload { get; }
+
+    public List<decimal> SecondaryBatteryRoF { get; }
+
+    public List<string> SecondaryBatteryDpm { get; }
+
+    public List<decimal> SecondaryBatteryFpm { get; }
+
+    public decimal? SecondaryBatterySigma { get; }
 
     //Secondary shells
-    public string? SecondaryType { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Type).First();
-    public List<decimal> SecondaryMass { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Mass ?? 0).ToList() ?? new();
-    public List<decimal> SecondaryDamage { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Damage ?? 0).ToList() ?? new();
-    public List<decimal> SecondarySplashRadius { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashRadius ?? 0).ToList() ?? new();
-    public List<decimal> SecondarySplashDamage { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashDmg ?? 0).ToList() ?? new();
-    public List<int> SecondaryPenetration { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Penetration ?? 0).ToList() ?? new();
-    public List<decimal> SecondarySpeed { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ShellVelocity ?? 0).ToList() ?? new();
-    public List<decimal> SecondaryAirDrag { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.AirDrag ?? 0).ToList() ?? new();
-    public List<decimal> SecondaryHeShellFireChance { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ShellFireChance ?? 0).ToList() ?? new();
-    public List<decimal> SecondaryHeBlastRadius { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.ExplosionRadius ?? 0).ToList() ?? new();
-    public List<decimal> SecondaryHeBlastPenetration { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
-    public List<decimal> SecondarySapOvermatch { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.Overmatch ?? 0).ToList() ?? new();
-    public List<string> SecondarySapRicochet { get; } = ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries?.Select(x=> x.Shell).Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
+    public string? SecondaryType { get; }
+
+    public List<decimal> SecondaryMass { get; }
+
+    public List<decimal> SecondaryDamage { get; }
+
+    public List<decimal> SecondarySplashRadius { get; }
+
+    public List<decimal> SecondarySplashDamage { get; }
+
+    public List<int> SecondaryPenetration { get; }
+
+    public List<decimal> SecondarySpeed { get; }
+
+    public List<decimal> SecondaryAirDrag { get; }
+
+    public List<decimal> SecondaryHeShellFireChance { get; }
+
+    public List<decimal> SecondaryHeBlastRadius { get; }
+
+    public List<decimal> SecondaryHeBlastPenetration { get; }
+
+    public List<decimal> SecondarySapOvermatch { get; }
+
+    public List<string> SecondarySapRicochet { get; }
 
     //AA
-    public decimal? LongAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.Range;
-    public decimal? MediumAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.Range;
-    public decimal? ShortAaRange { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.Range;
-    public decimal? LongAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.ConstantDamage;
-    public decimal? MediumAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.ConstantDamage;
-    public decimal? ShortAaConstantDamage { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.ConstantDamage;
-    public decimal? LongAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.HitChance;
-    public decimal? MediumAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.MediumRangeAura?.HitChance;
-    public decimal? ShortAaHitChance { get; } = ShipDataContainer.AntiAirDataContainer?.ShortRangeAura?.HitChance;
-    public string? Flak { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.Flak;
-    public decimal? FlakDamage { get; } = ShipDataContainer.AntiAirDataContainer?.LongRangeAura?.FlakDamage;
+    public decimal? LongAaRange { get; }
+
+    public decimal? MediumAaRange { get; }
+
+    public decimal? ShortAaRange { get; }
+
+    public decimal? LongAaConstantDamage { get; }
+
+    public decimal? MediumAaConstantDamage { get; }
+
+    public decimal? ShortAaConstantDamage { get; }
+
+    public decimal? LongAaHitChance { get; }
+
+    public decimal? MediumAaHitChance { get; }
+
+    public decimal? ShortAaHitChance { get; }
+
+    public string? Flak { get; }
+
+    public decimal? FlakDamage { get; }
 
     //ASW
-    public string? AswDcType { get; } = ShipDataContainer.AswAirstrikeDataContainer is not null ? nameof(Translation.ShipStats_AswAirstrike) : ShipDataContainer.DepthChargeLauncherDataContainer is not null ? "DepthCharge" : null;
-    public decimal? AswRange { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumDistance;
-    public decimal? AswMaxDropLength { get; } = ShipDataContainer.AswAirstrikeDataContainer?.MaximumFlightDistance;
-    public decimal? AswDcReload { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.Reload ?? ShipDataContainer.AswAirstrikeDataContainer?.ReloadTime;
-    public int? AswDcUses { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.NumberOfUses ?? ShipDataContainer.AswAirstrikeDataContainer?.NumberOfUses;
-    public int? AswPlanesInSquadron { get; } = ShipDataContainer.AswAirstrikeDataContainer?.NumberDuringAttack;
-    public int? AswBombsPerPlane { get; } = ShipDataContainer.AswAirstrikeDataContainer?.BombsPerPlane;
-    public decimal? DcPerAttack { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.BombsPerCharge;
-    public decimal? DcDamage { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.Damage ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.Damage;
-    public decimal? DcFireChance { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.FireChance ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.FireChance;
-    public decimal? DcFloodingChance { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.FloodingChance ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.FloodingChance;
-    public decimal? DcSplashRadius { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DcSplashRadius ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DcSplashRadius;
-    public string? DcSinkSpeed { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.SinkSpeed ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.SinkSpeed;
-    public string? DcDetonationTimer { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DetonationTimer ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DetonationTimer;
-    public string? DcDetonationDepth { get; } = ShipDataContainer.DepthChargeLauncherDataContainer?.DepthCharge?.DetonationDepth ?? (ShipDataContainer.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer)?.DetonationDepth;
+    public string? AswDcType { get; }
+
+    public decimal? AswRange { get; }
+
+    public decimal? AswMaxDropLength { get; }
+
+    public decimal? AswDcReload { get; }
+
+    public int? AswDcUses { get; }
+
+    public int? AswPlanesInSquadron { get; }
+
+    public int? AswBombsPerPlane { get; }
+
+    public decimal? DcPerAttack { get; }
+
+    public decimal? DcDamage { get; }
+
+    public decimal? DcFireChance { get; }
+
+    public decimal? DcFloodingChance { get; }
+
+    public decimal? DcSplashRadius { get; }
+
+    public string? DcSinkSpeed { get; }
+
+    public string? DcDetonationTimer { get; }
+
+    public string? DcDetonationDepth { get; }
 
     //AirStrike
-    public decimal? AirStrikePlanesHp { get; } = ShipDataContainer.AirstrikeDataContainer?.PlaneHp;
-    public decimal? AirStrikeRange { get; } = ShipDataContainer.AirstrikeDataContainer?.MaximumDistance;
-    public decimal? AirStrikeMaxDropLength { get; } = ShipDataContainer.AirstrikeDataContainer?.MaximumFlightDistance;
-    public decimal? AirStrikeReload { get; } = ShipDataContainer.AirstrikeDataContainer?.ReloadTime;
-    public int? AirStrikeUses { get; } = ShipDataContainer.AirstrikeDataContainer?.NumberOfUses;
-    public int? AirStrikePlanesInSquadron { get; } = ShipDataContainer.AirstrikeDataContainer?.NumberDuringAttack;
-    public int? AirStrikeBombsPerPlane { get; } = ShipDataContainer.AirstrikeDataContainer?.BombsPerPlane;
-    public string? AirStrikeBombType { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.BombType;
-    public decimal? AirStrikeDamage { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.Damage;
-    public decimal? AirStrikeFireChance { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.FireChance;
-    public decimal? AirStrikeSplashRadius { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.SplashRadius;
-    public decimal? AirStrikeSplashDamage { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.SplashDmg;
-    public int? AirStrikePenetration { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.Penetration;
-    public decimal? AirStrikeBlastRadius { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.ExplosionRadius;
-    public decimal? AirStrikeBlastDamage { get; } = (ShipDataContainer.AirstrikeDataContainer?.Weapon as BombDataContainer)?.SplashCoeff;
+    public decimal? AirStrikePlanesHp { get; }
+
+    public decimal? AirStrikeRange { get; }
+
+    public decimal? AirStrikeMaxDropLength { get; }
+
+    public decimal? AirStrikeReload { get; }
+
+    public int? AirStrikeUses { get; }
+
+    public int? AirStrikePlanesInSquadron { get; }
+
+    public int? AirStrikeBombsPerPlane { get; }
+
+    public string? AirStrikeBombType { get; }
+
+    public decimal? AirStrikeDamage { get; }
+
+    public decimal? AirStrikeFireChance { get; }
+
+    public decimal? AirStrikeSplashRadius { get; }
+
+    public decimal? AirStrikeSplashDamage { get; }
+
+    public int? AirStrikePenetration { get; }
+
+    public decimal? AirStrikeBlastRadius { get; }
+
+    public decimal? AirStrikeBlastDamage { get; }
 
     //Maneuverability
-    public decimal ManeuverabilityMaxSpeed { get; } = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityMaxSpeed != 0 ? ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityMaxSpeed : ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedOnSurface;
-    public decimal ManeuverabilityMaxSpeedAtPeriscopeDepth { get; } = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedAtPeriscope;
-    public decimal ManeuverabilityMaxSpeedAtMaxDepth { get; } = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilitySubsMaxSpeedAtMaxDepth;
-    public decimal ManeuverabilityRudderShiftTime { get; } = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityRudderShiftTime;
-    public decimal ManeuverabilityTurningCircle { get; } = ShipDataContainer.ManeuverabilityDataContainer.ManeuverabilityTurningCircle;
-    public decimal ManeuverabilityTimeToFullAhead { get; } = ShipDataContainer.ManeuverabilityDataContainer.ForwardMaxSpeedTime;
-    public decimal ManeuverabilityTimeToFullReverse { get; } = ShipDataContainer.ManeuverabilityDataContainer.ReverseMaxSpeedTime;
-    public decimal ManeuverabilityRudderProtection { get; } = ShipDataContainer.ManeuverabilityDataContainer.RudderBlastProtection;
-    public decimal ManeuverabilityEngineProtection { get; } = ShipDataContainer.ManeuverabilityDataContainer.EngineBlastProtection;
+    public decimal ManeuverabilityMaxSpeed { get; }
+
+    public decimal ManeuverabilityMaxSpeedAtPeriscopeDepth { get; }
+
+    public decimal ManeuverabilityMaxSpeedAtMaxDepth { get; }
+
+    public decimal ManeuverabilityRudderShiftTime { get; }
+
+    public decimal ManeuverabilityTurningCircle { get; }
+
+    public decimal ManeuverabilityTimeToFullAhead { get; }
+
+    public decimal ManeuverabilityTimeToFullReverse { get; }
+
+    public decimal ManeuverabilityRudderProtection { get; }
+
+    public decimal ManeuverabilityEngineProtection { get; }
 
     //Concealment
-    public decimal ConcealmentFromShipsBase { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySea;
-    public decimal ConcealmentFromShipsOnFire { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySeaFire;
-    public decimal ConcealmentFromShipsSmokeFiring { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySeaFiringSmoke;
-    public decimal ConcealmentFromPlanesBase { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentByAir;
-    public decimal ConcealmentFromPlanesOnFire { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentByAirFire;
-    public decimal ConcealmentFromSubsPeriscopeDepth { get; } = ShipDataContainer.ConcealmentDataContainer.ConcealmentBySubPeriscope;
+    public decimal ConcealmentFromShipsBase { get; }
+
+    public decimal ConcealmentFromShipsOnFire { get; }
+
+    public decimal ConcealmentFromShipsSmokeFiring { get; }
+
+    public decimal ConcealmentFromPlanesBase { get; }
+
+    public decimal ConcealmentFromPlanesOnFire { get; }
+
+    public decimal ConcealmentFromSubsPeriscopeDepth { get; }
 
     //Survivability
-    public decimal SurvivabilityShipHp { get; } = ShipDataContainer.SurvivabilityDataContainer.HitPoints;
-    public decimal SurvivabilityFireMaxAmount { get; } = ShipDataContainer.SurvivabilityDataContainer.FireAmount;
-    public decimal SurvivabilityFireDuration { get; } = ShipDataContainer.SurvivabilityDataContainer.FireDuration;
-    public decimal SurvivabilityFireDps { get; } = ShipDataContainer.SurvivabilityDataContainer.FireDPS;
-    public decimal SurvivabilityFireMaxDmg { get; } = ShipDataContainer.SurvivabilityDataContainer.FireTotalDamage;
-    public decimal SurvivabilityFireChanceReduction { get; } = ShipDataContainer.SurvivabilityDataContainer.FireReduction;
-    public decimal SurvivabilityFloodingMaxAmount { get; } = ShipDataContainer.SurvivabilityDataContainer.FloodAmount;
-    public decimal SurvivabilityFloodingDuration { get; } = ShipDataContainer.SurvivabilityDataContainer.FloodDuration;
-    public decimal SurvivabilityFloodingDps { get; } = ShipDataContainer.SurvivabilityDataContainer.FloodDPS;
-    public decimal SurvivabilityFloodingMaxDmg { get; } = ShipDataContainer.SurvivabilityDataContainer.FloodTotalDamage;
-    public decimal SurvivabilityFloodingTorpedoProtection { get; } = ShipDataContainer.SurvivabilityDataContainer.FloodTorpedoProtection;
+    public decimal SurvivabilityShipHp { get; }
+
+    public decimal SurvivabilityFireMaxAmount { get; }
+
+    public decimal SurvivabilityFireDuration { get; }
+
+    public decimal SurvivabilityFireDps { get; }
+
+    public decimal SurvivabilityFireMaxDmg { get; }
+
+    public decimal SurvivabilityFireChanceReduction { get; }
+
+    public decimal SurvivabilityFloodingMaxAmount { get; }
+
+    public decimal SurvivabilityFloodingDuration { get; }
+
+    public decimal SurvivabilityFloodingDps { get; }
+
+    public decimal SurvivabilityFloodingMaxDmg { get; }
+
+    public decimal SurvivabilityFloodingTorpedoProtection { get; }
 
     //Sonar
-    public decimal? SonarReloadTime { get; } = ShipDataContainer.PingerGunDataContainer?.Reload;
-    public decimal? SonarTraverseSpeed { get; } = ShipDataContainer.PingerGunDataContainer?.TraverseSpeed;
-    public decimal? SonarTurnTime { get; } = ShipDataContainer.PingerGunDataContainer?.TurnTime;
-    public decimal? SonarRange { get; } = ShipDataContainer.PingerGunDataContainer?.Range;
-    public decimal? SonarWidth { get; } = ShipDataContainer.PingerGunDataContainer?.PingWidth;
-    public decimal? SonarSpeed { get; } = ShipDataContainer.PingerGunDataContainer?.PingSpeed;
-    public decimal? SonarFirstPingDuration { get; } = ShipDataContainer.PingerGunDataContainer?.FirstPingDuration;
-    public decimal? SonarSecondPingDuration { get; } = ShipDataContainer.PingerGunDataContainer?.SecondPingDuration;
+    public decimal? SonarReloadTime { get; }
+
+    public decimal? SonarTraverseSpeed { get; }
+
+    public decimal? SonarTurnTime { get; }
+
+    public decimal? SonarRange { get; }
+
+    public decimal? SonarWidth { get; }
+
+    public decimal? SonarSpeed { get; }
+
+    public decimal? SonarFirstPingDuration { get; }
+
+    public decimal? SonarSecondPingDuration { get; }
 
     //RocketPlanes
-    public List<string> RocketPlanesType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.PlaneVariant).ToList() ?? new();
-    public List<int> RocketPlanesInSquadron { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.NumberInSquad).ToList() ?? new();
-    public List<int> RocketPlanesPerAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.NumberDuringAttack).ToList() ?? new();
-    public List<int> RocketPlanesOnDeck { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.MaxNumberOnDeck).ToList() ?? new();
-    public List<decimal> RocketPlanesRestorationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.RestorationTime).ToList() ?? new();
-    public List<decimal> RocketPlanesCruisingSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.CruisingSpeed).ToList() ?? new();
-    public List<decimal> RocketPlanesMaxSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.MaxSpeed).ToList() ?? new();
-    public List<decimal> RocketPlanesMinSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.MinSpeed).ToList() ?? new();
-    public List<decimal> RocketPlanesEngineBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
-    public List<decimal> RocketPlanesInitialBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.JatoDuration).ToList() ?? new();
-    public List<decimal> RocketPlanesInitialBoostValue { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
-    public List<int> RocketPlanesPlaneHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.PlaneHp).ToList() ?? new();
-    public List<int> RocketPlanesSquadronHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.SquadronHp).ToList() ?? new();
-    public List<int> RocketPlanesAttackGroupHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AttackGroupHp).ToList() ?? new();
-    public List<int> RocketPlanesDamageDuringAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
-    public List<int> RocketPlanesWeaponsPerPlane { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AmmoPerAttack).ToList() ?? new();
-    public List<decimal> RocketPlanesPreparationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.PreparationTime).ToList() ?? new();
-    public List<decimal> RocketPlanesAimingTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AimingTime).ToList() ?? new();
-    public List<decimal> RocketPlanesTimeToFullyAimed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.TimeToFullyAimed).ToList() ?? new();
-    public List<decimal> RocketPlanesPostAttackInvulnerability { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
-    public List<decimal> RocketPlanesAttackCooldown { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AttackCd).ToList() ?? new();
-    public List<decimal> RocketPlanesConcealment { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.ConcealmentFromShips).ToList() ?? new();
-    public List<decimal> RocketPlanesSpotting { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.MaxViewDistance).ToList() ?? new();
-    public List<string> RocketPlanesAreaChangeAiming { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AimingRateMoving).ToList() ?? new();
-    public List<string> RocketPlanesAreaChangePreparation { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
+    public List<string> RocketPlanesType { get; }
 
-    public List<string> RocketPlanesWeaponType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.RocketType ?? default!).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponDamage { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.Damage ?? 0).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponSplashRadius { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.SplashRadius ?? 0).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponSplashDamage { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.SplashDmg ?? 0).ToList() ?? new();
-    public List<int> RocketPlanesWeaponPenetration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.Penetration ?? 0).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponFireChance { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.FireChance ?? 0).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponFuseTimer { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.FuseTimer ?? 0).ToList() ?? new();
-    public List<int> RocketPlanesWeaponArmingThreshold { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.ArmingThreshold ?? 0).ToList() ?? new();
-    public List<string> RocketPlanesWeaponRicochetAngles { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.RicochetAngles ?? default!).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponBlastRadius { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.ExplosionRadius ?? 0).ToList() ?? new();
-    public List<decimal> RocketPlanesWeaponBlastPenetration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ToString())).Select(x => x.Weapon).Select(x => (x as RocketDataContainer)?.SplashCoeff ?? 0).ToList() ?? new();
+    public List<int> RocketPlanesInSquadron { get; }
+
+    public List<int> RocketPlanesPerAttack { get; }
+
+    public List<int> RocketPlanesOnDeck { get; }
+
+    public List<decimal> RocketPlanesRestorationTime { get; }
+
+    public List<decimal> RocketPlanesCruisingSpeed { get; }
+
+    public List<decimal> RocketPlanesMaxSpeed { get; }
+
+    public List<decimal> RocketPlanesMinSpeed { get; }
+
+    public List<decimal> RocketPlanesEngineBoostDuration { get; }
+
+    public List<decimal> RocketPlanesInitialBoostDuration { get; }
+
+    public List<decimal> RocketPlanesInitialBoostValue { get; }
+
+    public List<int> RocketPlanesPlaneHp { get; }
+
+    public List<int> RocketPlanesSquadronHp { get; }
+
+    public List<int> RocketPlanesAttackGroupHp { get; }
+
+    public List<int> RocketPlanesDamageDuringAttack { get; }
+
+    public List<int> RocketPlanesWeaponsPerPlane { get; }
+
+    public List<decimal> RocketPlanesPreparationTime { get; }
+
+    public List<decimal> RocketPlanesAimingTime { get; }
+
+    public List<decimal> RocketPlanesTimeToFullyAimed { get; }
+
+    public List<decimal> RocketPlanesPostAttackInvulnerability { get; }
+
+    public List<decimal> RocketPlanesAttackCooldown { get; }
+
+    public List<decimal> RocketPlanesConcealment { get; }
+
+    public List<decimal> RocketPlanesSpotting { get; }
+
+    public List<string> RocketPlanesAreaChangeAiming { get; }
+
+    public List<string> RocketPlanesAreaChangePreparation { get; }
+
+    public List<string> RocketPlanesWeaponType { get; }
+
+    public List<decimal> RocketPlanesWeaponDamage { get; }
+
+    public List<decimal> RocketPlanesWeaponSplashRadius { get; }
+
+    public List<decimal> RocketPlanesWeaponSplashDamage { get; }
+
+    public List<int> RocketPlanesWeaponPenetration { get; }
+
+    public List<decimal> RocketPlanesWeaponFireChance { get; }
+
+    public List<decimal> RocketPlanesWeaponFuseTimer { get; }
+
+    public List<int> RocketPlanesWeaponArmingThreshold { get; }
+
+    public List<string> RocketPlanesWeaponRicochetAngles { get; }
+
+    public List<decimal> RocketPlanesWeaponBlastRadius { get; }
+
+    public List<decimal> RocketPlanesWeaponBlastPenetration { get; }
 
     //TorpedoBombers
-    public List<string> TorpedoBombersType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.PlaneVariant).ToList() ?? new();
-    public List<int> TorpedoBombersInSquadron { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.NumberInSquad).ToList() ?? new();
-    public List<int> TorpedoBombersPerAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.NumberDuringAttack).ToList() ?? new();
-    public List<int> TorpedoBombersOnDeck { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.MaxNumberOnDeck).ToList() ?? new();
-    public List<decimal> TorpedoBombersRestorationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.RestorationTime).ToList() ?? new();
-    public List<decimal> TorpedoBombersCruisingSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.CruisingSpeed).ToList() ?? new();
-    public List<decimal> TorpedoBombersMaxSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.MaxSpeed).ToList() ?? new();
-    public List<decimal> TorpedoBombersMinSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.MinSpeed).ToList() ?? new();
-    public List<decimal> TorpedoBombersEngineBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
-    public List<decimal> TorpedoBombersInitialBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.JatoDuration).ToList() ?? new();
-    public List<decimal> TorpedoBombersInitialBoostValue { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
-    public List<int> TorpedoBombersPlaneHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.PlaneHp).ToList() ?? new();
-    public List<int> TorpedoBombersSquadronHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.SquadronHp).ToList() ?? new();
-    public List<int> TorpedoBombersAttackGroupHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AttackGroupHp).ToList() ?? new();
-    public List<int> TorpedoBombersDamageDuringAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
-    public List<int> TorpedoBombersWeaponsPerPlane { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AmmoPerAttack).ToList() ?? new();
-    public List<decimal> TorpedoBombersPreparationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.PreparationTime).ToList() ?? new();
-    public List<decimal> TorpedoBombersAimingTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AimingTime).ToList() ?? new();
-    public List<decimal> TorpedoBombersTimeToFullyAimed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.TimeToFullyAimed).ToList() ?? new();
-    public List<decimal> TorpedoBombersPostAttackInvulnerability { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
-    public List<decimal> TorpedoBombersAttackCooldown { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AttackCd).ToList() ?? new();
-    public List<decimal> TorpedoBombersConcealment { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.ConcealmentFromShips).ToList() ?? new();
-    public List<decimal> TorpedoBombersSpotting { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.MaxViewDistance).ToList() ?? new();
-    public List<string> TorpedoBombersAreaChangeAiming { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AimingRateMoving).ToList() ?? new();
-    public List<string> TorpedoBombersAreaChangePreparation { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
+    public List<string> TorpedoBombersType { get; }
+
+    public List<int> TorpedoBombersInSquadron { get; }
+
+    public List<int> TorpedoBombersPerAttack { get; }
+
+    public List<int> TorpedoBombersOnDeck { get; }
+
+    public List<decimal> TorpedoBombersRestorationTime { get; }
+
+    public List<decimal> TorpedoBombersCruisingSpeed { get; }
+
+    public List<decimal> TorpedoBombersMaxSpeed { get; }
+
+    public List<decimal> TorpedoBombersMinSpeed { get; }
+
+    public List<decimal> TorpedoBombersEngineBoostDuration { get; }
+
+    public List<decimal> TorpedoBombersInitialBoostDuration { get; }
+
+    public List<decimal> TorpedoBombersInitialBoostValue { get; }
+
+    public List<int> TorpedoBombersPlaneHp { get; }
+
+    public List<int> TorpedoBombersSquadronHp { get; }
+
+    public List<int> TorpedoBombersAttackGroupHp { get; }
+
+    public List<int> TorpedoBombersDamageDuringAttack { get; }
+
+    public List<int> TorpedoBombersWeaponsPerPlane { get; }
+
+    public List<decimal> TorpedoBombersPreparationTime { get; }
+
+    public List<decimal> TorpedoBombersAimingTime { get; }
+
+    public List<decimal> TorpedoBombersTimeToFullyAimed { get; }
+
+    public List<decimal> TorpedoBombersPostAttackInvulnerability { get; }
+
+    public List<decimal> TorpedoBombersAttackCooldown { get; }
+
+    public List<decimal> TorpedoBombersConcealment { get; }
+
+    public List<decimal> TorpedoBombersSpotting { get; }
+
+    public List<string> TorpedoBombersAreaChangeAiming { get; }
+
+    public List<string> TorpedoBombersAreaChangePreparation { get; }
 
     //Aerial torps
-    public List<string> TorpedoBombersWeaponType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.TorpedoType ?? default!).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponDamage { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.Damage ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponRange { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.Range ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.Speed ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponDetectabilityRange { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.Detectability ?? 0).ToList() ?? new();
-    public List<int> TorpedoBombersWeaponArmingDistance { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.ArmingDistance ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponReactionTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.ReactionTime ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponFloodingChance { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.FloodingChance ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponBlastRadius { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.ExplosionRadius ?? 0).ToList() ?? new();
-    public List<decimal> TorpedoBombersWeaponBlastPenetration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.SplashCoeff ?? 0).ToList() ?? new();
-    public List<List<ShipClass>?> TorpedoBombersWeaponCanHit { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ToString())).Select(x => x.Weapon).Select(x => (x as TorpedoDataContainer)?.CanHitClasses).ToList() ?? new();
+    public List<string> TorpedoBombersWeaponType { get; }
+
+    public List<decimal> TorpedoBombersWeaponDamage { get; }
+
+    public List<decimal> TorpedoBombersWeaponRange { get; }
+
+    public List<decimal> TorpedoBombersWeaponSpeed { get; }
+
+    public List<decimal> TorpedoBombersWeaponDetectabilityRange { get; }
+
+    public List<int> TorpedoBombersWeaponArmingDistance { get; }
+
+    public List<decimal> TorpedoBombersWeaponReactionTime { get; }
+
+    public List<decimal> TorpedoBombersWeaponFloodingChance { get; }
+
+    public List<decimal> TorpedoBombersWeaponBlastRadius { get; }
+
+    public List<decimal> TorpedoBombersWeaponBlastPenetration { get; }
+
+    public List<List<ShipClass>?> TorpedoBombersWeaponCanHit { get; }
 
     //Bombers
-    public List<string> BombersType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.PlaneVariant).ToList() ?? new();
-    public List<int> BombersInSquadron { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.NumberInSquad).ToList() ?? new();
-    public List<int> BombersPerAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.NumberDuringAttack).ToList() ?? new();
-    public List<int> BombersOnDeck { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.MaxNumberOnDeck).ToList() ?? new();
-    public List<decimal> BombersRestorationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.RestorationTime).ToList() ?? new();
-    public List<decimal> BombersCruisingSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.CruisingSpeed).ToList() ?? new();
-    public List<decimal> BombersMaxSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.MaxSpeed).ToList() ?? new();
-    public List<decimal> BombersMinSpeed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.MinSpeed).ToList() ?? new();
-    public List<decimal> BombersEngineBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.MaxEngineBoostDuration).ToList() ?? new();
-    public List<decimal> BombersInitialBoostDuration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.JatoDuration).ToList() ?? new();
-    public List<decimal> BombersInitialBoostValue { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.JatoSpeedMultiplier).ToList() ?? new();
-    public List<int> BombersPlaneHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.PlaneHp).ToList() ?? new();
-    public List<int> BombersSquadronHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.SquadronHp).ToList() ?? new();
-    public List<int> BombersAttackGroupHp { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AttackGroupHp).ToList() ?? new();
-    public List<int> BombersDamageDuringAttack { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.DamageTakenDuringAttack).ToList() ?? new();
-    public List<int> BombersWeaponsPerPlane { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AmmoPerAttack).ToList() ?? new();
-    public List<decimal> BombersPreparationTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.PreparationTime).ToList() ?? new();
-    public List<decimal> BombersAimingTime { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AimingTime).ToList() ?? new();
-    public List<decimal> BombersTimeToFullyAimed { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.TimeToFullyAimed).ToList() ?? new();
-    public List<decimal> BombersPostAttackInvulnerability { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.PostAttackInvulnerabilityDuration).ToList() ?? new();
-    public List<decimal> BombersAttackCooldown { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AttackCd).ToList() ?? new();
-    public List<decimal> BombersConcealment { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.ConcealmentFromShips).ToList() ?? new();
-    public List<decimal> BombersSpotting { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.MaxViewDistance).ToList() ?? new();
-    public List<string> BombersAreaChangeAiming { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AimingRateMoving).ToList() ?? new();
-    public List<string> BombersAreaChangePreparation { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.AimingPreparationRateMoving).ToList() ?? new();
-    public List<int> BombersInnerEllipse { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.InnerBombPercentage).ToList() ?? new();
+    public List<string> BombersType { get; }
+
+    public List<int> BombersInSquadron { get; }
+
+    public List<int> BombersPerAttack { get; }
+
+    public List<int> BombersOnDeck { get; }
+
+    public List<decimal> BombersRestorationTime { get; }
+
+    public List<decimal> BombersCruisingSpeed { get; }
+
+    public List<decimal> BombersMaxSpeed { get; }
+
+    public List<decimal> BombersMinSpeed { get; }
+
+    public List<decimal> BombersEngineBoostDuration { get; }
+
+    public List<decimal> BombersInitialBoostDuration { get; }
+
+    public List<decimal> BombersInitialBoostValue { get; }
+
+    public List<int> BombersPlaneHp { get; }
+
+    public List<int> BombersSquadronHp { get; }
+
+    public List<int> BombersAttackGroupHp { get; }
+
+    public List<int> BombersDamageDuringAttack { get; }
+
+    public List<int> BombersWeaponsPerPlane { get; }
+
+    public List<decimal> BombersPreparationTime { get; }
+
+    public List<decimal> BombersAimingTime { get; }
+
+    public List<decimal> BombersTimeToFullyAimed { get; }
+
+    public List<decimal> BombersPostAttackInvulnerability { get; }
+
+    public List<decimal> BombersAttackCooldown { get; }
+
+    public List<decimal> BombersConcealment { get; }
+
+    public List<decimal> BombersSpotting { get; }
+
+    public List<string> BombersAreaChangeAiming { get; }
+
+    public List<string> BombersAreaChangePreparation { get; }
+
+    public List<int> BombersInnerEllipse { get; }
 
     //Bombs
-    public List<string> BombersWeaponType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.WeaponType).ToList() ?? new();
-    public List<string> BombersWeaponBombType { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.BombType ?? default!).ToList() ?? new();
-    public List<decimal> BombersWeaponDamage { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.Damage ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponSplashRadius { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.SplashRadius ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponSplashDamage { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.SplashDmg ?? 0).ToList() ?? new();
-    public List<int> BombersWeaponPenetration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.Penetration ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponFireChance { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.FireChance ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponBlastRadius { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.ExplosionRadius ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponBlastPenetration { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.SplashCoeff ?? 0).ToList() ?? new();
-    public List<decimal> BombersWeaponFuseTimer { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.FuseTimer ?? 0).ToList() ?? new();
-    public List<int> BombersWeaponArmingThreshold { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.ArmingThreshold ?? 0).ToList() ?? new();
-    public List<string> BombersWeaponRicochetAngles { get; } = ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ToString())).Select(x => x.Weapon).Select(x => (x as BombDataContainer)?.RicochetAngles ?? default!).ToList() ?? new();
+    public List<string> BombersWeaponType { get; }
 
+    public List<string> BombersWeaponBombType { get; }
+
+    public List<decimal> BombersWeaponDamage { get; }
+
+    public List<decimal> BombersWeaponSplashRadius { get; }
+
+    public List<decimal> BombersWeaponSplashDamage { get; }
+
+    public List<int> BombersWeaponPenetration { get; }
+
+    public List<decimal> BombersWeaponFireChance { get; }
+
+    public List<decimal> BombersWeaponBlastRadius { get; }
+
+    public List<decimal> BombersWeaponBlastPenetration { get; }
+
+    public List<decimal> BombersWeaponFuseTimer { get; }
+
+    public List<int> BombersWeaponArmingThreshold { get; }
+
+    public List<string> BombersWeaponRicochetAngles { get; }
 }
