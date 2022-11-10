@@ -320,7 +320,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var cvAircraft = new CvAircraftDataContainer
             {
                 Name = plane.Name,
-                PlaneVariant = plane.PlaneType.ToString(),
+                PlaneVariant = plane.PlaneType.PlaneTypeToString(),
                 PlaneHp = finalPlaneHp,
                 SquadronHp = finalPlaneHp * plane.NumPlanesInSquadron,
                 AttackGroupHp = finalPlaneHp * plane.AttackData.AttackerSize,
@@ -337,7 +337,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 AttackCd = Math.Round((decimal)plane.AttackData.AttackCooldown, 1),
                 JatoDuration = jatoDuration,
                 JatoSpeedMultiplier = Math.Round(jatoSpeedMultiplier, 0),
-                WeaponType = weaponType.ToString(),
+                WeaponType = weaponType.ProjectileTypeToString(),
                 Weapon = weapon,
                 PlaneConsumables = consumables,
                 AimingTime = Math.Round(aimingTime, 1),
