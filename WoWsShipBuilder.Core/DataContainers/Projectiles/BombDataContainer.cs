@@ -83,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var bombDataContainer = new BombDataContainer
             {
                 Name = bomb.Name,
-                BombType = $"ArmamentType_{bomb.BombType}",
+                BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
                 Damage = Math.Round(bombDamage, 2),
                 Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = fuseTimer,
