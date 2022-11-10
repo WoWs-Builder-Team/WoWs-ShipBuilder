@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
@@ -69,7 +70,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 .ToList();
 
             var torpCount = 0;
-            var arrangementString = "";
+            StringBuilder arrangementString = new();
             var torpLayout = new string[arrangementList.Count];
             var launcherNames = new List<string>();
 
@@ -77,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             {
                 var current = arrangementList[i];
                 launcherNames.Add(current.LauncherName);
-                arrangementString += $"{current.LauncherCount}x{current.BarrelCount} {{{i}}}\n";
+                arrangementString.AppendLine($"{current.LauncherCount}x{current.BarrelCount} {{{i}}}");
                 torpLayout[i] = $"{current.LauncherCount}x{current.BarrelCount}";
                 torpCount += current.LauncherCount * current.BarrelCount;
             }
@@ -113,7 +114,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
             var torpedoArmamentDataContainer = new TorpedoArmamentDataContainer
             {
-                Name = arrangementString,
+                Name = arrangementString.ToString(),
                 LauncherNames = launcherNames,
                 TurnTime = Math.Round(180 / traverseSpeed, 1),
                 TraverseSpeed = Math.Round(traverseSpeed, 2),
