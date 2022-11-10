@@ -78,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var rocketDataContainer = new RocketDataContainer
             {
                 Name = rocket.Name,
-                RocketType = $"ArmamentType_{rocket.RocketType}",
+                RocketType = $"ArmamentType_{rocket.RocketType.RocketTypeToString()}",
                 Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
