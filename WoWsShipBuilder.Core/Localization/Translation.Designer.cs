@@ -2766,15 +2766,6 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full power time.
-        /// </summary>
-        public static string ShipStats_FullPowerTime {
-            get {
-                return ResourceManager.GetString("ShipStats_FullPowerTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Full salvo damage.
         /// </summary>
         public static string ShipStats_FullSalvoDamage {

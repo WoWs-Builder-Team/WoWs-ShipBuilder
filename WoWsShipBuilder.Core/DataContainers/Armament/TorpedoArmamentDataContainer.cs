@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var talentModifiers = modifiers.FindModifiers("torpedoReloadCoeff");
             reloadSpeed = talentModifiers.Aggregate(reloadSpeed, (current, modifier) => current * (decimal)modifier);
 
-            string torpedoArea = $"{launcher.TorpedoAngles[0]} - {Math.Round(launcher.TorpedoAngles[1], 1)}";
+            string torpedoArea = $"{launcher.TorpedoAngles[0]} - {Math.Round(launcher.TorpedoAngles[1], 1)}"; // only the second one needs rounding
 
             var torpedoes = await TorpedoDataContainer.FromTorpedoName(launcher.AmmoList, modifiers, false, appDataService);
 

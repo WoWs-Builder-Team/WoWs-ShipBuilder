@@ -337,20 +337,20 @@
 
     private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
 
-    private static readonly int[] TiersRange = {1, 11};
+    private static readonly int[] TiersRange = { 1, 11 };
 
     private const string StickyColumnsBackgroundColor = "background-color: #242424";
-    
+
     private const string TiersUrlParameter = "tiers";
-    
+
     private const string ClassesUrlParameter = "classes";
-    
+
     private const string NationsUrlParameter = "nations";
-    
+
     private const string CategoriesUrlParameter = "categories";
-    
+
     private const string UpgradedModulesUrlParameter = "upgraded-modules";
-    
+
     private const string HideUnfittingShipsUrlParameter = "hide-unfitting-ships";
 
     private const string SectionUrlParameter = "section";
@@ -394,7 +394,7 @@
             applyFilters = true;
             ViewModel.SelectedNations.AddRange(selectedNations.Split(',').Select(Enum.Parse<Nation>));
         }
-        
+
         if (!string.IsNullOrEmpty(selectedCategories))
         {
             applyFilters = true;
@@ -406,13 +406,13 @@
             applyFilters = true;
             ViewModel.UseUpgradedModules = true;
         }
-        
+
         if (!string.IsNullOrEmpty(hideUnfittingShips) && hideUnfittingShips.Equals("true"))
         {
             applyFilters = true;
             ViewModel.HideShipsWithoutSelectedSection = true;
         }
-        
+
         if (!string.IsNullOrEmpty(section))
         {
             applyFilters = true;
@@ -690,7 +690,7 @@
             { HideUnfittingShipsUrlParameter, ViewModel!.HideShipsWithoutSelectedSection ? "true" : "false" },
             { SectionUrlParameter, string.Join(',', ViewModel!.SelectedDataSection) },
         };
-        
+
         NavManager.NavigateTo($"/comparison{url}");
     }
 
