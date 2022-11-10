@@ -51,7 +51,7 @@ public class ShipBuildViewModel : ViewModelBase
 
     public string BuildName
     {
-        get => buildName.Trim();
+        get => buildName;
         set => this.RaiseAndSetIfChanged(ref buildName, value);
     }
 
@@ -76,20 +76,20 @@ public class ShipBuildViewModel : ViewModelBase
             vm.ShipModuleViewModel.LoadBuild(build.Modules);
             vm.UpgradePanelViewModel.LoadBuild(build.Upgrades);
             vm.ConsumableViewModel.LoadBuild(build.Consumables);
-            vm.BuildName = build.BuildName;
+            vm.BuildName = build.BuildName.Trim();
         }
 
         return vm;
     }
 
-    public Build? DumpToBuild()
+    private Build? DumpToBuild()
     {
         bool isCustomBuild = !string.IsNullOrWhiteSpace(BuildName) || ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
                              UpgradePanelViewModel.SelectedModernizationList.Any() || ConsumableViewModel.ActivatedSlots.Any() ||
                              CaptainSkillSelectorViewModel.SkillOrderList.Any() || SignalSelectorViewModel.SelectedSignals.Any();
         if (isCustomBuild)
         {
-            return new(BuildName, CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList());
+            return new(BuildName.Trim(), CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList());
         }
 
         return null;
