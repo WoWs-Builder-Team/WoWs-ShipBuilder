@@ -83,5 +83,78 @@ namespace WoWsShipBuilder.Core.Extensions
                 _ => level.ToString(),
             };
         }
+
+        public static string PlaneTypeToString(this PlaneType planeType)
+        {
+            return planeType switch
+            {
+                PlaneType.None => "None",
+                PlaneType.Fighter => "Fighter",
+                PlaneType.DiveBomber => "DiveBomber",
+                PlaneType.TorpedoBomber => "TorpedoBomber",
+                PlaneType.SkipBomber => "SkipBomber",
+                PlaneType.TacticalFighter => "TacticalFighter",
+                PlaneType.TacticalDiveBomber => "TacticalDiveBomber",
+                PlaneType.TacticalTorpedoBomber => "TacticalTorpedoBomber",
+                PlaneType.TacticalSkipBomber => "TacticalSkipBomber",
+                _ => planeType.ToString(),
+            };
+        }
+
+        public static string ProjectileTypeToString(this ProjectileType projectileType)
+        {
+            return projectileType switch
+            {
+                ProjectileType.Artillery => "Artillery",
+                ProjectileType.Bomb => "Bomb",
+                ProjectileType.SkipBomb => "SkipBomb",
+                ProjectileType.Torpedo => "Torpedo",
+                ProjectileType.DepthCharge => "DepthCharge",
+                ProjectileType.Rocket => "Rocket",
+                _ => projectileType.ToString(),
+            };
+        }
+
+        public static string ShellTypeToString(this ShellType shellType)
+        {
+            return shellType switch
+            {
+                ShellType.SAP => "SAP",
+                ShellType.HE => "HE",
+                ShellType.AP => "AP",
+                _ => shellType.ToString(),
+            };
+        }
+
+        public static string TorpedoTypeToString(this TorpedoType torpedoType)
+        {
+            return torpedoType switch
+            {
+                TorpedoType.Standard => "Standard",
+                TorpedoType.DeepWater => "DeepWater",
+                TorpedoType.Magnetic => "Magnetic",
+                _ => torpedoType.ToString(),
+            };
+        }
+
+        public static string BombTypeToString(this BombType bombType)
+        {
+            return bombType switch
+            {
+                BombType.HE => "HE",
+                BombType.AP => "AP",
+                _ => bombType.ToString(),
+            };
+        }
+
+        public static string RocketTypeToString(this RocketType rocketType)
+        {
+            return rocketType switch
+            {
+                RocketType.HE => "HE",
+                RocketType.AP => "AP",
+                _ => rocketType.ToString(),
+            };
+        }
     }
 }
