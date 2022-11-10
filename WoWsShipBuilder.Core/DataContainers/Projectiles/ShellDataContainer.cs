@@ -185,7 +185,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var shellDataContainer = new ShellDataContainer
                 {
                     Name = shell.Name,
-                    Type = $"ArmamentType_{shell.ShellType}",
+                    Type = $"ArmamentType_{shell.ShellType.ShellTypeToString()}",
                     Mass = (decimal)shellMass,
                     Damage = Math.Round((decimal)shellDamage),
                     ExplosionRadius = (decimal)shell.ExplosionRadius,
