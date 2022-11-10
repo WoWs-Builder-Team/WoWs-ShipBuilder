@@ -7,6 +7,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
 @using DynamicData
+@using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
@@ -69,7 +70,7 @@
                     </MudButton>
                 </MudStack>
                 <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                    @for (var i = 1; i <= 11; i++)
+                    @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
                     {
                         int tier = i;
                         bool isSelected = ViewModel.SelectedTiers.Contains(tier);
@@ -142,8 +143,8 @@
         </MudExpansionPanel>
 
         <MudStack Style="width: 100%">
-            <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.SearchShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
-            @if (!string.IsNullOrEmpty(ViewModel.SearchShip))
+            <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.ResearchedShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+            @if (!string.IsNullOrEmpty(ViewModel.ResearchedShip))
             {
                 <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
                     <MudList Clickable="true" SelectedValueChanged="AddSearchedShip">
@@ -183,7 +184,7 @@
                 <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetAllBuilds">
                     Reset all
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => DuplicateSelectedShips())" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                     Duplicate
                 </MudButton>
                 <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => EditBuilds())" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
@@ -208,10 +209,10 @@
                     Section
                 </MudText>
                 <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
-                    @foreach (var dataSection in ViewModel.GetDataSectionsToDisplay())
+                    @foreach (var dataSection in ViewModel.DataSections)
                     {
                         bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
-                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleDataSection(dataSection))">
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => SelectDataSection(dataSection))">
                             @dataSection.ToString()
                         </MudButton>
                     }
@@ -336,7 +337,23 @@
 
     private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
 
+    private static readonly int[] TiersRange = {1, 11};
+
     private const string StickyColumnsBackgroundColor = "background-color: #242424";
+    
+    private const string TiersUrlParameter = "tiers";
+    
+    private const string ClassesUrlParameter = "classes";
+    
+    private const string NationsUrlParameter = "nations";
+    
+    private const string CategoriesUrlParameter = "categories";
+    
+    private const string UpgradedModulesUrlParameter = "upgraded-modules";
+    
+    private const string HideUnfittingShipsUrlParameter = "hide-unfitting-ships";
+
+    private const string SectionUrlParameter = "section";
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
@@ -350,13 +367,13 @@
 
         ViewModel = new(AppDataService, Localizer, AppSettings);
 
-        NavManager.TryGetQueryString("tiers", out string selectedTiers);
-        NavManager.TryGetQueryString("classes", out string selectedClasses);
-        NavManager.TryGetQueryString("nations", out string selectedNations);
-        NavManager.TryGetQueryString("categories", out string selectedCategories);
-        NavManager.TryGetQueryString("upgraded-modules", out string upgradedModules);
-        NavManager.TryGetQueryString("hide-unfitting-ships", out string hideUnfittingShips);
-        NavManager.TryGetQueryString("section", out string section);
+        NavManager.TryGetQueryString(TiersUrlParameter, out string selectedTiers);
+        NavManager.TryGetQueryString(ClassesUrlParameter, out string selectedClasses);
+        NavManager.TryGetQueryString(NationsUrlParameter, out string selectedNations);
+        NavManager.TryGetQueryString(CategoriesUrlParameter, out string selectedCategories);
+        NavManager.TryGetQueryString(UpgradedModulesUrlParameter, out string upgradedModules);
+        NavManager.TryGetQueryString(HideUnfittingShipsUrlParameter, out string hideUnfittingShips);
+        NavManager.TryGetQueryString(SectionUrlParameter, out string section);
 
         var applyFilters = false;
 
@@ -410,22 +427,22 @@
 
     private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Color.Info : Color.Default;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Color.Info : Color.Default;
     }
 
     private string IsShipPinnedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
     }
 
     private Color IsShipSelectedColor(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Color.Info : Color.Default;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Color.Info : Color.Default;
     }
 
     private string IsShipSelectedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
     }
 
     private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
@@ -469,16 +486,16 @@
         }
     }
 
-    private async Task ToggleDataSection(ShipComparisonDataSections dataSection)
+    private async Task SelectDataSection(ShipComparisonDataSections dataSection)
     {
-        await ViewModel!.ToggleDataSection(dataSection);
+        await ViewModel!.SelectDataSection(dataSection);
         UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleHideShipsWithoutSelectedSection()
     {
-        await ViewModel!.ToggleHideShipsWithoutSelectedSection();
+        ViewModel!.ToggleHideShipsWithoutSelectedSection();
         UpdateUrl();
         await dataGrid.ReloadServerData();
     }
@@ -594,11 +611,11 @@
         await dataGrid.ReloadServerData();
     }
 
-    private async Task DuplicateSelectedShips(ShipComparisonDataWrapper? selection = null)
+    private async Task DuplicateSelectedShips()
     {
-        ViewModel!.DuplicateSelectedShips(selection);
+        ViewModel!.DuplicateSelectedShips();
         await dataGrid.ReloadServerData();
-        Snackbar.Add(selection != null ? $"< 1 instance of ''{LocalizeShipName(selection.Ship.Index)}'' > duplicated." : $"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of ''{LocalizeShipName(ship.Key)}''"))} > duplicated.", Severity.Success);
+        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of ''{LocalizeShipName(ship.Key)}''"))} > duplicated.", Severity.Success);
     }
 
     private bool IsAnyShipSelected()
@@ -637,38 +654,23 @@
             foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
             {
                 object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
-                if (sortItem is List<decimal>)
+                switch (sortItem)
                 {
-                    if (sortDefinition.Descending)
-                    {
+                    case List<decimal> when sortDefinition.Descending:
                         data = data.OrderByDescending(x => ((List<decimal>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
-                    }
-                    else
-                    {
+                        break;
+                    case List<decimal>:
                         data = data.OrderBy(x => ((List<decimal>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
-                    }
-                }
-                else if (sortItem is List<int>)
-                {
-                    if (sortDefinition.Descending)
-                    {
+                        break;
+                    case List<int> when sortDefinition.Descending:
                         data = data.OrderByDescending(x => ((List<int>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
-                    }
-                    else
-                    {
+                        break;
+                    case List<int>:
                         data = data.OrderBy(x => ((List<int>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
-                    }
-                }
-                else
-                {
-                    if (sortDefinition.Descending)
-                    {
-                        data = data.OrderByDescending(sortDefinition.SortFunc).ToList();
-                    }
-                    else
-                    {
-                        data = data.OrderBy(sortDefinition.SortFunc).ToList();
-                    }
+                        break;
+                    default:
+                        data = sortDefinition.Descending ? data.OrderByDescending(sortDefinition.SortFunc).ToList() : data.OrderBy(sortDefinition.SortFunc).ToList();
+                        break;
                 }
             }
         }
@@ -678,17 +680,18 @@
 
     private void UpdateUrl()
     {
-        var tierFilter = $"tiers={string.Join(',', ViewModel!.SelectedTiers)}";
-        var classFilter = $"classes={string.Join(',', ViewModel!.SelectedClasses)}";
-        var nationFilter = $"nations={string.Join(',', ViewModel!.SelectedNations)}";
-        var categoryFilter = $"categories={string.Join(',', ViewModel!.SelectedCategories)}";
+        QueryBuilder url = new()
+        {
+            { TiersUrlParameter, string.Join(',', ViewModel!.SelectedTiers) },
+            { ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses) },
+            { NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations) },
+            { CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories) },
+            { UpgradedModulesUrlParameter, ViewModel!.UseUpgradedModules ? "true" : "false" },
+            { HideUnfittingShipsUrlParameter, ViewModel!.HideShipsWithoutSelectedSection ? "true" : "false" },
+            { SectionUrlParameter, string.Join(',', ViewModel!.SelectedDataSection) },
+        };
         
-        string toggleUpgradedModules = ViewModel!.UseUpgradedModules ? "upgraded-modules=true" : string.Empty;
-        string toggleHideUnfittingShips = ViewModel!.HideShipsWithoutSelectedSection ? "hide-unfitting-ships=true" : string.Empty;
-
-        string dataSection = $"section={ViewModel!.SelectedDataSection}";
-
-        NavManager.NavigateTo($"/comparison?{tierFilter}&{classFilter}&{nationFilter}&{categoryFilter}&{toggleUpgradedModules}&{toggleHideUnfittingShips}&{dataSection}");
+        NavManager.NavigateTo($"/comparison{url}");
     }
 
 }
