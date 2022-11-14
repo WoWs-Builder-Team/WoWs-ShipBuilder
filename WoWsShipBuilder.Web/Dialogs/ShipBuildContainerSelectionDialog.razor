@@ -1,9 +1,9 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
-@using DynamicData
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.ViewModels.Other
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -11,33 +11,36 @@
 
 <MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;">
     <DialogContent>
-        <MudGrid >
-            <MudItem xs="4">
-                <MudPaper Outlined>
-                    <MudList Style="max-height: 75vh; overflow-y: scroll;">
-                        @foreach (var ship in ShipList!)
+        <MudGrid>
+            <MudItem xs="3">
+                <MudPaper Outlined Style="margin-top: 6px">
+                    <MudList Style="height: 47.3vh; overflow-y: scroll;" Dense>
+                        @if (!ShipList!.Any())
                         {
                             <MudListItem>
-                                <MudStack Row Style="align-items: center">
-                                    <MudText >
-                                        @if(!ship.Ship.Name.Equals("customShip"))
-                                        {
-                                            @Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization
-                                        }
-                                        else
-                                        {
-                                            @ship.Ship.Index
-                                        }
-                                    </MudText>
-                                    @if (!string.IsNullOrWhiteSpace(ship.Build?.BuildName))
-                                    {
-                                        <MudText Style="text-overflow: ellipsis; overflow: hidden">
-                                            Build: @ship.Build.BuildName
-                                        </MudText>
-                                    }
-                                    <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
-                                </MudStack>
+                                <MudText Color="Color.Primary" Align="Align.Center">
+                                    No ships selected
+                                </MudText>
                             </MudListItem>
+                        }
+                        else
+                        {
+                            foreach (var ship in ShipList!)
+                            {
+                                <MudListItem>
+                                    <MudStack Row Style="align-items: center" Justify="Justify.SpaceBetween">
+                                        <MudStack>
+                                            <MudText>
+                                                @(!ship.Ship.Name.Equals("customShip") ? Localizer.GetGameLocalization(ship.Ship.Index + "_FULL").Localization : ship.Ship.Index)
+                                            </MudText>
+                                            <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2">
+                                                Build: @(!string.IsNullOrWhiteSpace(ship.Build?.BuildName) ? ship.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)
+                                            </MudText>
+                                        </MudStack>
+                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
+                                    </MudStack>
+                                </MudListItem>
+                            }   
                         }
                     </MudList>
                 </MudPaper>
@@ -48,7 +51,9 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">
+            Cancel
+        </MudButton>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@SubmitShips">
             Confirm
         </MudButton>

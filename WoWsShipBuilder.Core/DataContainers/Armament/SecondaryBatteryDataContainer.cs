@@ -20,6 +20,12 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public FormattedTextDataElement TurretSetup { get; set; } = default!;
 
+        public decimal GunCaliber { get; set; }
+
+        public int BarrelsCount { get; set; }
+
+        public string BarrelsLayout { get; set; } = default!;
+
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal Range { get; set; }
 
@@ -90,6 +96,9 @@ namespace WoWsShipBuilder.Core.DataContainers
                     Name = arrangementString,
                     TurretName = turretName,
                     TurretSetup = new(arrangementString, turretName, AreValuesKeys: true),
+                    BarrelsLayout = $"{secondaryGroup.Count} x {secondaryGun.NumBarrels}",
+                    BarrelsCount = secondaryGroup.Count * secondaryGun.NumBarrels,
+                    GunCaliber = Math.Round(secondaryGun.BarrelDiameter * 1000),
                     Range = Math.Round(range / 1000, 2),
                     Reload = Math.Round((decimal)reload, 2),
                     RoF = Math.Round(rof * barrelCount, 1),

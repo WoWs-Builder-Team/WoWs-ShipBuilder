@@ -160,6 +160,7 @@
             {
                 elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index));
             }
+            StateHasChanged();
             await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
         }
     }
