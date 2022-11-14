@@ -45,6 +45,7 @@
 @inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
 @inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
 
 <PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
@@ -221,7 +222,7 @@
         </MudStack>
     </MudStack>
 
-    <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" ServerData="@(new Func<GridState<ShipComparisonDataWrapper>, Task<GridData<ShipComparisonDataWrapper>>>(ReloadData))" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+    <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
 
         <ToolBarContent>
             <MudTextField T="string" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
@@ -489,14 +490,14 @@
     private async Task SelectDataSection(ShipComparisonDataSections dataSection)
     {
         await ViewModel!.SelectDataSection(dataSection);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleHideShipsWithoutSelectedSection()
     {
         ViewModel!.ToggleHideShipsWithoutSelectedSection();
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -515,21 +516,21 @@
     private async Task PinAllDisplayedShips()
     {
         await ViewModel!.PinAllDisplayedShips();
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleShowPinnedShipOnly()
     {
         ViewModel!.ToggleShowPinnedShipOnly();
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleUpgradedModules()
     {
         await ViewModel!.ToggleUpgradedModules();
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -542,56 +543,56 @@
     private async Task ToggleTierSelection(int tier)
     {
         await ViewModel!.ToggleTierSelection(tier);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleClassSelection(ShipClass shipClass)
     {
         await ViewModel!.ToggleClassSelection(shipClass);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleNationSelection(Nation nation)
     {
         await ViewModel!.ToggleNationSelection(nation);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleCategorySelection(ShipCategory category)
     {
         await ViewModel!.ToggleCategorySelection(category);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllCategories(bool toggle)
     {
         await ViewModel!.ToggleAllCategories(toggle);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllClasses(bool toggle)
     {
         await ViewModel!.ToggleAllClasses(toggle);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllNations(bool toggle)
     {
         await ViewModel!.ToggleAllNations(toggle);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task ToggleAllTiers(bool toggle)
     {
         await ViewModel!.ToggleAllTiers(toggle);
-        UpdateUrl();
+        await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
@@ -678,7 +679,7 @@
         return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
     }
 
-    private void UpdateUrl()
+    private async Task UpdateUrl()
     {
         QueryBuilder url = new()
         {
@@ -691,7 +692,8 @@
             { SectionUrlParameter, string.Join(',', ViewModel!.SelectedDataSection) },
         };
 
-        NavManager.NavigateTo($"/comparison{url}");
+        // Required instead of NavManager.NavigateTo in order to keep scroll state of the current page
+        await JsRuntime.InvokeVoidAsync("window.history.replaceState", new { }, string.Empty, $"/comparison{url}");
     }
 
 }
