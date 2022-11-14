@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Мин. Скорость</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Самолетов в сбросе</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>В эскадрилье</value>
   </data>
@@ -1506,5 +1503,20 @@
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>уже включен(а).</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>ОФ</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>ББ</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>ПББ</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>На предельной глубине</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>На перископной глубине</value>
   </data>
 </root>
