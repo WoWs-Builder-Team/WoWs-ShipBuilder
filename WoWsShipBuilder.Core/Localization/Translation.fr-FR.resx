@@ -480,9 +480,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Vitesse min</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Avions par attaque</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Temps de restauration</value>
   </data>
@@ -980,5 +977,14 @@ Si "module de protection de projection de module" + "pénétration de projection
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Dégâts</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
   </data>
 </root>
