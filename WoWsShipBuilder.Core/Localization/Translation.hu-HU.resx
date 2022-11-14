@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Minimális sebesség</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Gépek egy támadásban</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>A században</value>
   </data>
@@ -1564,5 +1561,20 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
       <value>Max sebesség hátra forszázzsal</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>Repeszromboló</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>Páncéltörő</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>Félig páncéltörő</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>Mélymerülésben</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Periszkóp mélységben</value>
   </data>
 </root>
