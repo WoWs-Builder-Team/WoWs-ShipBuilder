@@ -591,9 +591,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocidad Min</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aviones por ataque</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tiempo de recuperación</value>
   </data>
@@ -1094,5 +1091,14 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Daño</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>AE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
   </data>
 </root>
