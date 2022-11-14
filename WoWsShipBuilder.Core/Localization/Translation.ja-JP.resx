@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>最低速度</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>攻撃中隊のサイズ</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
   </data>
@@ -1506,5 +1503,20 @@
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>は既に有効になっています。</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>最大深度</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>潜望鏡深度</value>
   </data>
 </root>
