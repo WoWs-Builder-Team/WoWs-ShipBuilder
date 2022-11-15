@@ -1571,10 +1571,49 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>Félig páncéltörő</value>
   </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Teljes szalvó sebzés</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>1. lehetőség</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>2. lehetőség</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Szórás maximális lőtávnál</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>A felszínen</value>
+  </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
       <value>Mélymerülésben</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>Periszkóp mélységben</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Rakéták</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Taktikai rakéták</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Zuhanó bombázók</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Taktikai zuhanó bombázók</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Torpedó bombázók</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Taktikai torpedó bombázók</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Pattogóbomba-vetők</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Taktikai pattogóbomba-vetők</value>
   </data>
 </root>
