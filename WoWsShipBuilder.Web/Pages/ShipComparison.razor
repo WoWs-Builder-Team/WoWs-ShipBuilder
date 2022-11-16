@@ -9,10 +9,12 @@
 @using DynamicData
 @using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.Options
+@using Prometheus
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
 
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
@@ -46,6 +48,7 @@
 @inject IOptions<CdnOptions> CdnOptions
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
+@inject IMetricsService MetricsService
 
 <PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
@@ -368,6 +371,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        MetricsService.ComparisonPageCount.Inc();
 
         ViewModel = new(AppDataService, Localizer, AppSettings);
 
@@ -646,40 +650,43 @@
 
     private Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
     {
-        List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
-
-        if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
+        using (MetricsService.ComparisonLoadDuration.NewTimer())
         {
-            data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
-        }
+            List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
 
-        if (data.Any())
-        {
-            foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
+            if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
             {
-                object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
-                switch (sortItem)
+                data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+            }
+
+            if (data.Any())
+            {
+                foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
                 {
-                    case List<decimal> when sortDefinition.Descending:
-                        data = data.OrderByDescending(x => ((List<decimal>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
-                        break;
-                    case List<decimal>:
-                        data = data.OrderBy(x => ((List<decimal>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
-                        break;
-                    case List<int> when sortDefinition.Descending:
-                        data = data.OrderByDescending(x => ((List<int>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
-                        break;
-                    case List<int>:
-                        data = data.OrderBy(x => ((List<int>) sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
-                        break;
-                    default:
-                        data = sortDefinition.Descending ? data.OrderByDescending(sortDefinition.SortFunc).ToList() : data.OrderBy(sortDefinition.SortFunc).ToList();
-                        break;
+                    object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                    switch (sortItem)
+                    {
+                        case List<decimal> when sortDefinition.Descending:
+                            data = data.OrderByDescending(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            break;
+                        case List<decimal>:
+                            data = data.OrderBy(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            break;
+                        case List<int> when sortDefinition.Descending:
+                            data = data.OrderByDescending(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            break;
+                        case List<int>:
+                            data = data.OrderBy(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            break;
+                        default:
+                            data = sortDefinition.Descending ? data.OrderByDescending(sortDefinition.SortFunc).ToList() : data.OrderBy(sortDefinition.SortFunc).ToList();
+                            break;
+                    }
                 }
             }
+            
+            return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
-
-        return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
     }
 
     private async Task UpdateUrl()

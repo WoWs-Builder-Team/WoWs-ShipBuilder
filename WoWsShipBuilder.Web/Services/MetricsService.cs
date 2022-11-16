@@ -15,6 +15,13 @@ public class MetricsService : IMetricsService
 
     public Counter AccelerationPageCount { get; } = Metrics.CreateCounter("acceleration_page_requests_total", "Number of acceleration page requests");
 
+    public Counter ComparisonPageCount { get; } = Metrics.CreateCounter("comparison_page_requests_total", "Number of comparison page requests");
+
+    public Summary ComparisonLoadDuration { get; } = Metrics.CreateSummary("comparison_load_duration_average10s", "Average load duration for the ship comparison data grid", new SummaryConfiguration
+    {
+        MaxAge = TimeSpan.FromSeconds(10),
+    });
+
     public Summary ShipViewModelInitDuration { get; } = Metrics.CreateSummary("ship_vm_init_time_average10s", "Average init-time of the ship VM in seconds over the last 10 seconds.", new SummaryConfiguration
     {
         MaxAge = TimeSpan.FromSeconds(10),
