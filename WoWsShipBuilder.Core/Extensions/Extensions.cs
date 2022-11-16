@@ -156,5 +156,56 @@ namespace WoWsShipBuilder.Core.Extensions
                 _ => rocketType.ToString(),
             };
         }
+
+        public static string ShipNationToString(this Nation shipNation)
+        {
+            return shipNation switch
+            {
+                Nation.France => "France",
+                Nation.Usa => "Usa",
+                Nation.Russia => "Russia",
+                Nation.Japan => "Japan",
+                Nation.UnitedKingdom => "UnitedKingdom",
+                Nation.Germany => "Germany",
+                Nation.Italy => "Italy",
+                Nation.Europe => "Europe",
+                Nation.Netherlands => "Netherlands",
+                Nation.Spain => "Spain",
+                Nation.PanAsia => "PanAsia",
+                Nation.PanAmerica => "PanAmericaPanAmerica",
+                Nation.Commonwealth => "Commonwealth",
+                Nation.Common => "Common",
+                _ => shipNation.ToString(),
+            };
+        }
+
+        public static string ShipCategoryToString(this ShipCategory shipCategory)
+        {
+            return shipCategory switch
+            {
+                ShipCategory.TechTree => "TechTree",
+                ShipCategory.Premium => "Premium",
+                ShipCategory.Special => "Special",
+                ShipCategory.TestShip => "TestShip",
+                ShipCategory.Disabled => "Disabled",
+                ShipCategory.Clan => "Clan",
+                ShipCategory.SuperShip => "SuperShip",
+                _ => shipCategory.ToString(),
+            };
+        }
+
+        public static string ShipClassToString(this ShipClass shipClass)
+        {
+            return shipClass switch
+            {
+                ShipClass.Submarine => "Submarine",
+                ShipClass.Destroyer => "Destroyer",
+                ShipClass.Cruiser => "Cruiser",
+                ShipClass.Battleship => "Battleship",
+                ShipClass.AirCarrier => "AirCarrier",
+                ShipClass.Auxiliary => "Auxiliary",
+                _ => shipClass.ToString(),
+            };
+        }
     }
 }

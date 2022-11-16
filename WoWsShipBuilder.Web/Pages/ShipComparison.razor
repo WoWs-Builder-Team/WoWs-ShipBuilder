@@ -102,7 +102,7 @@
                     {
                         bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
                         <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleClassSelection(shipClass))">
-                            @Localizer.GetAppLocalization(shipClass.ToString()).Localization
+                            @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
                         </MudButton>
                     }
                 </MudButtonGroup>
@@ -122,7 +122,7 @@
                     {
                         bool isSelected = ViewModel.SelectedNations.Contains(nation);
                         <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleNationSelection(nation))">
-                            @Localizer.GetAppLocalization(nation.ToString()).Localization
+                            @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
                         </MudButton>
                     }
                 </MudButtonGroup>
@@ -142,7 +142,7 @@
                     {
                         bool isSelected = ViewModel.SelectedCategories.Contains(category);
                         <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleCategorySelection(category))">
-                            @Localizer.GetAppLocalization(category.ToString()).Localization
+                            @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
                         </MudButton>
                     }
                 </MudButtonGroup>
@@ -220,7 +220,7 @@
                     {
                         bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
                         <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => SelectDataSection(dataSection))">
-                            @dataSection.ToString()
+                            @ViewModel.ShipComparisonDataSectionToString(dataSection)
                         </MudButton>
                     }
                 </MudButtonGroup>

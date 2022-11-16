@@ -762,6 +762,7 @@ public class ShipComparisonViewModel : ViewModelBase
         PinnedShipList.Add(newWrapper);
 
         SetSelectAndPinAllButtonsStatus();
+        GetDataSectionsToDisplay();
         SearchString = string.Empty;
         ResearchedShip = string.Empty;
         SearchedShips.Clear();
@@ -772,5 +773,34 @@ public class ShipComparisonViewModel : ViewModelBase
     {
         SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
         PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
+    }
+
+    public string ShipComparisonDataSectionToString(ShipComparisonDataSections dataSection)
+    {
+        return dataSection switch
+        {
+            ShipComparisonDataSections.General => "General",
+            ShipComparisonDataSections.MainBattery => "MainBattery",
+            ShipComparisonDataSections.He => "He",
+            ShipComparisonDataSections.Ap => "Ap",
+            ShipComparisonDataSections.Sap => "Sap",
+            ShipComparisonDataSections.Torpedo => "Torpedo",
+            ShipComparisonDataSections.SecondaryBattery => "SecondaryBattery",
+            ShipComparisonDataSections.SecondaryBatteryShells => "SecondaryBatteryShells",
+            ShipComparisonDataSections.AntiAir => "AntiAir",
+            ShipComparisonDataSections.Asw => "Asw",
+            ShipComparisonDataSections.AirStrike => "AirStrike",
+            ShipComparisonDataSections.Maneuverability => "Maneuverability",
+            ShipComparisonDataSections.Concealment => "Concealment",
+            ShipComparisonDataSections.Survivability => "Survivability",
+            ShipComparisonDataSections.RocketPlanes => "RocketPlanes",
+            ShipComparisonDataSections.Rockets => "Rockets",
+            ShipComparisonDataSections.TorpedoBombers => "TorpedoBombers",
+            ShipComparisonDataSections.AerialTorpedoes => "AerialTorpedoes",
+            ShipComparisonDataSections.Bombers => "Bombers",
+            ShipComparisonDataSections.Bombs => "Bombs",
+            ShipComparisonDataSections.Sonar => "Sonar",
+            _ => dataSection.ToString(),
+        };
     }
 }
