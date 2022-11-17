@@ -627,6 +627,9 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Minimális sebesség</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>Támdásonként</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>A században</value>
   </data>
