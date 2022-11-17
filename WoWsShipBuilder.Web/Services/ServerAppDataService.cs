@@ -107,11 +107,6 @@ public class ServerAppDataService : IAppDataService
         return Task.FromResult(AppData.ShipSummaryList ?? throw new InvalidOperationException());
     }
 
-    public Task LoadNationFiles(Nation nation)
-    {
-        return Task.CompletedTask;
-    }
-
     public Task<Projectile> GetProjectile(string projectileName)
     {
         var nation = IAppDataService.GetNationFromIndex(projectileName);
@@ -127,11 +122,6 @@ public class ServerAppDataService : IAppDataService
     {
         var nation = IAppDataService.GetNationFromIndex(aircraftName);
         return Task.FromResult(AppData.AircraftCache[nation][aircraftName]);
-    }
-
-    public Task<Dictionary<string, Exterior>> GetExteriorList(Nation nation, ServerType serverType)
-    {
-        return Task.FromResult(AppData.ExteriorCache[nation]);
     }
 
     public Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)

@@ -13,7 +13,6 @@ using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -165,16 +164,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         }
 
         return AppData.AircraftCache[nation][aircraftName];
-    }
-
-    public async Task<Dictionary<string, Exterior>> GetExteriorList(Nation nation, ServerType serverType)
-    {
-        if (!AppData.ExteriorCache.ContainsKey(nation))
-        {
-            AppData.ExteriorCache.SetIfNotNull(nation, await ReadLocalJsonData<Exterior>(nation, serverType));
-        }
-
-        return AppData.ExteriorCache[nation];
     }
 
     public async Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)

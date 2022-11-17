@@ -60,7 +60,7 @@ public class ShipBuildViewModel : ViewModelBase
         var ship = shipBuildContainer.Ship;
         var vm = new ShipBuildViewModel(ship, appDataService)
         {
-            SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings)),
+            SignalSelectorViewModel = new(),
             CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation)),
             ShipModuleViewModel = new(ship.ShipUpgradeInfo),
             UpgradePanelViewModel = new(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
