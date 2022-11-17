@@ -83,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var bombDataContainer = new BombDataContainer
             {
                 Name = bomb.Name,
-                BombType = $"ArmamentType_{bomb.BombType}",
+                BombType = $"ArmamentType_{bomb.BombType.BombTypeToString()}",
                 Damage = Math.Round(bombDamage, 2),
                 Penetration = (int)Math.Truncate(bomb.Penetration),
                 FuseTimer = fuseTimer,
@@ -93,7 +93,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 ExplosionRadius = (decimal)bomb.ExplosionRadius,
                 SplashCoeff = (decimal)bomb.SplashCoeff,
                 ShowBlastPenetration = showBlastPenetration,
-                SplashRadius = (decimal)bomb.DepthSplashRadius,
+                SplashRadius = Math.Round((decimal)bomb.DepthSplashRadius, 1),
                 SplashDmg = Math.Round(bombDamage * (decimal)bomb.SplashDamageCoefficient),
             };
 

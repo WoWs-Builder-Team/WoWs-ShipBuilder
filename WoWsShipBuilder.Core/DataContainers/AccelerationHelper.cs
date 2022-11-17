@@ -121,7 +121,7 @@ public static class AccelerationHelper
             int iterations = 0;
             while (ShouldCycle(throttle, oldThrottle, speed, speedLimit))
             {
-                GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, throttle > oldThrottle);
 
                 // isDown needs to be 1 only for one cycle, so we set it to 0.
                 isDown = 0;
@@ -254,11 +254,9 @@ public static class AccelerationHelper
         {
             return speed < speedLimit - Margin;
         }
-        else
-        {
-            // we are decelerating/going towards reverse speed. Graph is going downwards.
-            return speed > speedLimit + Margin;
-        }
+
+        // we are decelerating/going towards reverse speed. Graph is going downwards.
+        return speed > speedLimit + Margin;
     }
 
     /// <summary>
@@ -300,7 +298,7 @@ public static class AccelerationHelper
         double maxReverseSpeed,
         double forsageBackwardsMaxSpeed,
         double forsageBackwards,
-        bool stoppingFromBackward = false)
+        bool stoppingFromBackward)
     {
         int acc;
         if (speedLimit > speed)

@@ -35,13 +35,19 @@
                             @DataElementFragment((data, Localizer))
                         }
                         <!--Dispersion-->
-                        <MudText>@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Dispersion)).Localization</MudText>
+                        <MudText>
+                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_DispersionAtMaxRange)).Localization
+                        </MudText>
                         <MudTooltip Inline="false" Placement="Placement.Bottom" Color="Color.Transparent" RootStyle="width: 100%">
                             <ChildContent>
                                 <div class="ml-3 d-flex justify-space-between">
-                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDisp)).Localization</MudText>
+                                    <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
+                                        @Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDisp)).Localization
+                                    </MudText>
                                     <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
-                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
+                                    <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
+                                        @(ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)
+                                    </MudText>
                                 </div>
                             </ChildContent>
                             <TooltipContent>
@@ -163,8 +169,16 @@
                     <MudStack Spacing="3" Class="expander-content-padding mb-n3 mt-1">
                         @foreach (var plane in ViewModel.CurrentShipStats.CvAircraftDataContainer)
                         {
-                            <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(plane.Name).Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true)" Style="border-bottom: initial" Class="child-expander rounded-0">
+                            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization($"ShipStats_{plane.PlaneVariant}").Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true)" Style="border-bottom: initial" Class="child-expander rounded-0">
                                 <MudStack Spacing="1" Class="expander-content-padding mb-n3">
+                                    <div class="d-flex justify-space-between">
+                                        <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
+                                            @Localizer.GetAppLocalization(nameof(Translation.ShipStats_Name)).Localization
+                                        </MudText>
+                                        <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
+                                            @Localizer.GetGameLocalization(plane.Name).Localization
+                                        </MudText>
+                                    </div>
                                     @foreach (var data in plane.DataElements)
                                     {
                                         @DataElementFragment((data,Localizer))
@@ -173,9 +187,9 @@
                                     <MudExpansionPanel DisableGutters Dense Text="@Localizer.GetAppLocalization(plane.WeaponType).Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenSecondariesAndAaExpandersByDefault ?? true)" Style="border-bottom: initial" Class="child-expander rounded-0 my-1">
                                         <MudStack Spacing="1" Class="expander-content-padding">
                                             @foreach (var weaponData in plane.Weapon?.DataElements ?? new())
-                                        {
-                                            @DataElementFragment((weaponData,Localizer))
-                                        }
+                                            {
+                                                @DataElementFragment((weaponData,Localizer))
+                                            }
                                         </MudStack>
                                     </MudExpansionPanel>
                                     @if (plane.PlaneConsumables.Count > 0)

@@ -65,14 +65,14 @@ namespace WoWsShipBuilder.Core.DataContainers
             };
 
             shipDataContainer.SecondColumnContent = new List<object?>
-                {
-                    shipDataContainer.AntiAirDataContainer,
-                    shipDataContainer.AirstrikeDataContainer,
-                    shipDataContainer.AswAirstrikeDataContainer,
-                    shipDataContainer.DepthChargeLauncherDataContainer,
-                }.Where(item => item != null)
-                .Cast<object>()
-                .ToList();
+            {
+                shipDataContainer.AntiAirDataContainer,
+                shipDataContainer.AirstrikeDataContainer,
+                shipDataContainer.AswAirstrikeDataContainer,
+                shipDataContainer.DepthChargeLauncherDataContainer,
+            }.Where(item => item != null)
+             .Cast<object>()
+             .ToList();
 
             if (shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries != null)
             {

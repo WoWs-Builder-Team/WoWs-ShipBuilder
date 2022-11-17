@@ -1,0 +1,709 @@
+﻿@page "/comparison"
+
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Core.Extensions
+@using WoWsShipBuilder.Core.Services
+@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.Web.Dialogs
+@using System.Globalization
+@using DynamicData
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.Options
+@using Prometheus
+@using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.Settings
+@using WoWsShipBuilder.DataStructures
+@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Web.Services
+@using WoWsShipBuilder.Web.Utility
+
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.HeShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ApShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SapShellFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SecondaryBatteryShellsFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AaDefenseFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AswFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AirStrikeFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ManeuverabilityFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ConcealmentFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SurvivabilityFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SonarFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.RocketPlanesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.RocketsFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoBombersFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AerialTorpedoesFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombersFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombsFragment
+
+@inherits ReactiveComponentBase<ShipComparisonViewModel>
+
+@inject IHostEnvironment Environment
+@inject ILocalizer Localizer
+@inject IAppDataService AppDataService
+@inject ISnackbar Snackbar
+@inject AppSettings AppSettings
+@inject IOptions<CdnOptions> CdnOptions
+@inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
+@inject IMetricsService MetricsService
+
+<PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
+
+@if (ViewModel is not null)
+{
+    <MudStack Class="mb-3 mt-3">
+        <MudText Style="white-space: break-spaces; color: yellow" Class="my-n6">
+            WARNING: This feature is in BETA. Some functions (like "View Stats", "View Ballistic" and "View Acceleration") are still under active development. If you happen to find a bug please report it. Impressions and suggestions are also very welcomed!
+        </MudText>
+        <MudExpansionPanel IsInitiallyExpanded Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
+            <TitleContent>
+                <MudText Style="font-size: large">
+                    Filters
+                </MudText>
+            </TitleContent>
+            <ChildContent>
+                <MudStack Row="true">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Tier
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllTiers(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @for (int i = TiersRange.First(); i <= TiersRange.Last(); i++)
+                    {
+                        int tier = i;
+                        bool isSelected = ViewModel.SelectedTiers.Contains(tier);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleTierSelection(tier))">
+                            @tier.ToTierString()
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Class
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllClasses(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var shipClass in ViewModel!.AvailableClasses)
+                    {
+                        bool isSelected = ViewModel.SelectedClasses.Contains(shipClass);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleClassSelection(shipClass))">
+                            @Localizer.GetAppLocalization(shipClass.ShipClassToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Nation
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllNations(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var nation in ViewModel!.AvailableNations)
+                    {
+                        bool isSelected = ViewModel.SelectedNations.Contains(nation);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleNationSelection(nation))">
+                            @Localizer.GetAppLocalization(nation.ShipNationToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+                <MudStack Row="true" Class="mt-3">
+                    <MudText GutterBottom="true" Style="font-size: large">
+                        Category
+                    </MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="ml-auto" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(true))">
+                        All
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Info" Class="mr-0" DisableElevation="true" Size="Size.Small" OnClick="@(() => ToggleAllCategories(false))">
+                        None
+                    </MudButton>
+                </MudStack>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var category in ViewModel!.AvailableShipCategories)
+                    {
+                        bool isSelected = ViewModel.SelectedCategories.Contains(category);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => ToggleCategorySelection(category))">
+                            @Localizer.GetAppLocalization(category.ShipCategoryToString()).Localization
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+            </ChildContent>
+        </MudExpansionPanel>
+
+        <MudStack Style="width: 100%">
+            <MudTextField AutoFocus T="string" Adornment="Adornment.Start" Placeholder="Type name..." AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Variant="Variant.Outlined" Label="Search & Pin Ship" @bind-Text="@ViewModel.ResearchedShip" Immediate="true" DebounceInterval="150" Margin="Margin.Normal"/>
+            @if (!string.IsNullOrEmpty(ViewModel.ResearchedShip))
+            {
+                <MudPaper Style="max-height: 300px; overflow:auto" Outlined="true">
+                    <MudList Clickable="true" SelectedValueChanged="AddSearchedShip">
+                        <MudVirtualize IsEnabled="true" Items="@ViewModel.SearchedShips.OrderBy(x => LocalizeShipName(x.Index)).ToList()" Context="ship">
+                            <MudListItem Value="@ship">
+                                <MudStack Row Justify="Justify.Center" AlignItems="AlignItems.Center">
+                                    <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ship.Index}.png")" Height="40" ObjectPosition="ObjectPosition.Center"/>
+                                    <MudText Color="Color.Secondary" Class="mt-3">
+                                        @(LocalizeShipName(ship.Index))
+                                    </MudText>
+                                </MudStack>
+                            </MudListItem>
+                        </MudVirtualize>
+                    </MudList>
+                </MudPaper>
+            }
+
+            <MudStack Row>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.ShowPinnedShipsOnly, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.ShowPinnedShipsOnly, Color.Primary, Color.Secondary)" OnClick="ToggleShowPinnedShipOnly">
+                    Display only pinned ships
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.UseUpgradedModules, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.UseUpgradedModules, Color.Primary, Color.Secondary)" OnClick="ToggleUpgradedModules">
+                    Use upgraded modules if no build
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Helpers.GetVariantFromBool(ViewModel.HideShipsWithoutSelectedSection, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(ViewModel.HideShipsWithoutSelectedSection, Color.Primary, Color.Secondary)" OnClick="ToggleHideShipsWithoutSelectedSection" Disabled="ViewModel.ShowPinnedShipsOnly">
+                    Hide ships without selected section
+                </MudButton>
+            </MudStack>
+
+            <MudStack Row>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
+                    @GetSelectAllButtonText()
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
+                    @GetPinAllButtonText()
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetAllBuilds">
+                    Reset all
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="DuplicateSelectedShips" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                    Duplicate
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => EditBuilds())" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                    Edit builds
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
+                    Remove builds
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                    View stats
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                    View ballistic
+                </MudButton>
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                    View acceleration
+                </MudButton>
+            </MudStack>
+
+            <MudPaper Outlined="true" Square="true" Class="pa-3" Style="width: 100%">
+                <MudText GutterBottom="true" Style="font-size: large">
+                    Section
+                </MudText>
+                <MudButtonGroup OverrideStyles="false" Class="gap-3" Style="flex-wrap: wrap" Size="Size.Small">
+                    @foreach (var dataSection in ViewModel.DataSections)
+                    {
+                        bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
+                        <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => SelectDataSection(dataSection))">
+                            @ViewModel.ShipComparisonDataSectionToString(dataSection)
+                        </MudButton>
+                    }
+                </MudButtonGroup>
+            </MudPaper>
+        </MudStack>
+    </MudStack>
+
+    <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+
+        <ToolBarContent>
+            <MudTextField T="string" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
+            <div style="width: 45%">
+                <MudSpacer/>
+            </div>
+            <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="GridPagination" Class="mt-n3"/>
+        </ToolBarContent>
+
+        <Columns>
+            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="-1 -1 24 24"/>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="-1 -1 24 24"/>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2" Style="cursor: pointer">
+                        @LocalizeShipName(context.Item.ShipIndex)
+                    </MudText>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    @context.Item.ShipTier.ToTierString()
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
+                </CellTemplate>
+            </Column>
+
+            <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+                <CellTemplate>
+                    @if (!string.IsNullOrEmpty(context.Item.BuildName))
+                    {
+                        <MudText Typo="Typo.body2" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
+                            @context.Item.BuildName
+                        </MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Primary" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
+                            @ShipComparisonViewModel.DefaultBuildName
+                        </MudText>
+                    }
+                </CellTemplate>
+            </Column>
+
+            @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @HeShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @ApShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @TorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @SecondaryBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @SecondaryBatteryShellsDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @AaDefenseDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @AswDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @AirStrikeDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @ManeuverabilityDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @ConcealmentDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @SurvivabilityDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @SonarDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @RocketPlanesDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @RocketsDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @TorpedoBombersDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @AerialTorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @BombersDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @BombsDataFragment((ViewModel.SelectedDataSection, Localizer))
+        </Columns>
+
+        <PagerContent>
+            <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="GridPagination"/>
+        </PagerContent>
+
+        <NoRecordsContent>
+            <MudText>No matching ships found</MudText>
+        </NoRecordsContent>
+    </MudDataGrid>
+
+    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildContainers" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+
+    <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
+        <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+    </MudScrollToTop>
+}
+
+@code {
+
+    private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
+
+    private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
+
+    private static readonly int[] TiersRange = { 1, 11 };
+
+    private const string StickyColumnsBackgroundColor = "background-color: #242424";
+
+    private const string TiersUrlParameter = "tiers";
+
+    private const string ClassesUrlParameter = "classes";
+
+    private const string NationsUrlParameter = "nations";
+
+    private const string CategoriesUrlParameter = "categories";
+
+    private const string UpgradedModulesUrlParameter = "upgraded-modules";
+
+    private const string HideUnfittingShipsUrlParameter = "hide-unfitting-ships";
+
+    private const string SectionUrlParameter = "section";
+
+    private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
+
+    private readonly List<ShipBuildContainer> shipBuildContainers = new();
+
+    private bool isDialogOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        MetricsService.ComparisonPageCount.Inc();
+
+        ViewModel = new(AppDataService, Localizer, AppSettings);
+
+        NavManager.TryGetQueryString(TiersUrlParameter, out string selectedTiers);
+        NavManager.TryGetQueryString(ClassesUrlParameter, out string selectedClasses);
+        NavManager.TryGetQueryString(NationsUrlParameter, out string selectedNations);
+        NavManager.TryGetQueryString(CategoriesUrlParameter, out string selectedCategories);
+        NavManager.TryGetQueryString(UpgradedModulesUrlParameter, out string upgradedModules);
+        NavManager.TryGetQueryString(HideUnfittingShipsUrlParameter, out string hideUnfittingShips);
+        NavManager.TryGetQueryString(SectionUrlParameter, out string section);
+
+        var applyFilters = false;
+
+        if (!string.IsNullOrEmpty(selectedTiers))
+        {
+            applyFilters = true;
+            ViewModel.SelectedTiers.AddRange(selectedTiers.Split(',').Select(int.Parse));
+        }
+
+        if (!string.IsNullOrEmpty(selectedClasses))
+        {
+            applyFilters = true;
+            ViewModel.SelectedClasses.AddRange(selectedClasses.Split(',').Select(Enum.Parse<ShipClass>));
+        }
+
+        if (!string.IsNullOrEmpty(selectedNations))
+        {
+            applyFilters = true;
+            ViewModel.SelectedNations.AddRange(selectedNations.Split(',').Select(Enum.Parse<Nation>));
+        }
+
+        if (!string.IsNullOrEmpty(selectedCategories))
+        {
+            applyFilters = true;
+            ViewModel.SelectedCategories.AddRange(selectedCategories.Split(',').Select(Enum.Parse<ShipCategory>));
+        }
+
+        if (!string.IsNullOrEmpty(upgradedModules) && upgradedModules.Equals("true"))
+        {
+            applyFilters = true;
+            ViewModel.UseUpgradedModules = true;
+        }
+
+        if (!string.IsNullOrEmpty(hideUnfittingShips) && hideUnfittingShips.Equals("true"))
+        {
+            applyFilters = true;
+            ViewModel.HideShipsWithoutSelectedSection = true;
+        }
+
+        if (!string.IsNullOrEmpty(section))
+        {
+            applyFilters = true;
+            ViewModel.SelectedDataSection = Enum.Parse<ShipComparisonDataSections>(section);
+        }
+
+        if (applyFilters)
+        {
+            await ViewModel.ApplyFilters();
+        }
+    }
+
+    private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
+    {
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Color.Info : Color.Default;
+    }
+
+    private string IsShipPinnedIcon(ShipComparisonDataWrapper wrapper)
+    {
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
+    }
+
+    private Color IsShipSelectedColor(ShipComparisonDataWrapper wrapper)
+    {
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Color.Info : Color.Default;
+    }
+
+    private string IsShipSelectedIcon(ShipComparisonDataWrapper wrapper)
+    {
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
+    }
+
+    private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
+    {
+        shipBuildContainers.Clear();
+        if (wrapper is not null)
+        {
+            shipBuildContainers.Add(new(wrapper.Ship, wrapper.Build, wrapper.Id, null, false, wrapper.ShipDataContainer, null));
+        }
+        else
+        {
+            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)));
+        }
+
+        isDialogOpen = true;
+        IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync();
+        isDialogOpen = false;
+
+        if (results is not null)
+        {
+            List<ShipComparisonDataWrapper> list = results.Select(x => new ShipComparisonDataWrapper(x.Ship, x.ShipDataContainer!, x.Build, x.Id)).ToList();
+            ViewModel!.EditBuilds(list);
+        }
+
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task RemoveBuilds()
+    {
+        if (!IsAnyShipSelected())
+        {
+            return;
+        }
+
+        List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
+        await dataGrid.ReloadServerData();
+        if (warnings.Count > 0)
+        {
+            string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.ShipIndex)));
+            Snackbar.Add($"The build on < {shipNames} > has been reset without removing the last instance.", Severity.Success);
+        }
+    }
+
+    private async Task SelectDataSection(ShipComparisonDataSections dataSection)
+    {
+        await ViewModel!.SelectDataSection(dataSection);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleHideShipsWithoutSelectedSection()
+    {
+        ViewModel!.ToggleHideShipsWithoutSelectedSection();
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
+    {
+        await ViewModel!.AddPinnedShip(wrapper);
+        await dataGrid.ReloadServerData();
+    }
+
+    private void AddSelectedShip(ShipComparisonDataWrapper wrapper)
+    {
+        ViewModel!.AddSelectedShip(wrapper);
+        StateHasChanged();
+    }
+
+    private async Task PinAllDisplayedShips()
+    {
+        await ViewModel!.PinAllDisplayedShips();
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleShowPinnedShipOnly()
+    {
+        ViewModel!.ToggleShowPinnedShipOnly();
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleUpgradedModules()
+    {
+        await ViewModel!.ToggleUpgradedModules();
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task AddSearchedShip(object? obj)
+    {
+        await ViewModel!.AddShip(obj);
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleTierSelection(int tier)
+    {
+        await ViewModel!.ToggleTierSelection(tier);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleClassSelection(ShipClass shipClass)
+    {
+        await ViewModel!.ToggleClassSelection(shipClass);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleNationSelection(Nation nation)
+    {
+        await ViewModel!.ToggleNationSelection(nation);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleCategorySelection(ShipCategory category)
+    {
+        await ViewModel!.ToggleCategorySelection(category);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleAllCategories(bool toggle)
+    {
+        await ViewModel!.ToggleAllCategories(toggle);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleAllClasses(bool toggle)
+    {
+        await ViewModel!.ToggleAllClasses(toggle);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleAllNations(bool toggle)
+    {
+        await ViewModel!.ToggleAllNations(toggle);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task ToggleAllTiers(bool toggle)
+    {
+        await ViewModel!.ToggleAllTiers(toggle);
+        await UpdateUrl();
+        await dataGrid.ReloadServerData();
+    }
+
+    private string GetSelectAllButtonText()
+    {
+        return ViewModel!.SelectAllShips ? "Unselect All" : "Select All";
+    }
+
+    private string GetPinAllButtonText()
+    {
+        return ViewModel!.PinAllShips ? "Unpin All" : "Pin All";
+    }
+
+    private async Task Search(string obj)
+    {
+        ViewModel!.SearchString = obj;
+        await dataGrid.ReloadServerData();
+    }
+
+    private async Task DuplicateSelectedShips()
+    {
+        ViewModel!.DuplicateSelectedShips();
+        await dataGrid.ReloadServerData();
+        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of ''{LocalizeShipName(ship.Key)}''"))} > duplicated.", Severity.Success);
+    }
+
+    private bool IsAnyShipSelected()
+    {
+        if (ViewModel!.SelectedShipList.Count != 0)
+        {
+            return true;
+        }
+        Snackbar.Add("No ship selected.", Severity.Warning);
+        return false;
+    }
+
+    private async Task ResetAllBuilds()
+    {
+        await ViewModel!.ResetAllBuilds();
+        await dataGrid.ReloadServerData();
+        Snackbar.Add("All builds have been reset.", Severity.Success);
+    }
+
+    private string LocalizeShipName(string shipIndex)
+    {
+        return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
+    }
+
+    private Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
+    {
+        using (MetricsService.ComparisonLoadDuration.NewTimer())
+        {
+            List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
+
+            if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
+            {
+                data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+            }
+
+            if (data.Any())
+            {
+                foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
+                {
+                    object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                    switch (sortItem)
+                    {
+                        case List<decimal> when sortDefinition.Descending:
+                            data = data.OrderByDescending(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            break;
+                        case List<decimal>:
+                            data = data.OrderBy(x => ((List<decimal>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            break;
+                        case List<int> when sortDefinition.Descending:
+                            data = data.OrderByDescending(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Max()).ToList();
+                            break;
+                        case List<int>:
+                            data = data.OrderBy(x => ((List<int>)sortDefinition.SortFunc.Invoke(x)).DefaultIfEmpty().Min()).ToList();
+                            break;
+                        default:
+                            data = sortDefinition.Descending ? data.OrderByDescending(sortDefinition.SortFunc).ToList() : data.OrderBy(sortDefinition.SortFunc).ToList();
+                            break;
+                    }
+                }
+            }
+            
+            return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
+        }
+    }
+
+    private async Task UpdateUrl()
+    {
+        QueryBuilder url = new()
+        {
+            { TiersUrlParameter, string.Join(',', ViewModel!.SelectedTiers) },
+            { ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses) },
+            { NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations) },
+            { CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories) },
+            { UpgradedModulesUrlParameter, ViewModel!.UseUpgradedModules ? "true" : "false" },
+            { HideUnfittingShipsUrlParameter, ViewModel!.HideShipsWithoutSelectedSection ? "true" : "false" },
+            { SectionUrlParameter, string.Join(',', ViewModel!.SelectedDataSection) },
+        };
+
+        // Required instead of NavManager.NavigateTo in order to keep scroll state of the current page
+        await JsRuntime.InvokeVoidAsync("window.history.replaceState", new { }, string.Empty, $"/comparison{url}");
+    }
+
+}

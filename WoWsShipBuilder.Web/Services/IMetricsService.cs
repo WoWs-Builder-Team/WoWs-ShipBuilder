@@ -12,6 +12,10 @@ public interface IMetricsService
 
     Counter AccelerationPageCount { get; }
 
+    Counter ComparisonPageCount { get; }
+
+    Summary ComparisonLoadDuration { get; }
+
     Summary ShipViewModelInitDuration { get; }
 
     Counter RefCount { get; }

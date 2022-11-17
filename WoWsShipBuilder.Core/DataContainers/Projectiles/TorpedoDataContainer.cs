@@ -81,7 +81,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var torpedoDataContainer = new TorpedoDataContainer
                 {
                     Name = name,
-                    TorpedoType = $"ShipStats_Torpedo{torp.TorpedoType}",
+                    TorpedoType = $"ShipStats_Torpedo{torp.TorpedoType.TorpedoTypeToString()}",
                     Damage = Math.Round(torpedoDamage),
                     Range = Math.Round((decimal)torp.MaxRange / 1000, 1),
                     Speed = Math.Round(torpedoSpeed, 2),

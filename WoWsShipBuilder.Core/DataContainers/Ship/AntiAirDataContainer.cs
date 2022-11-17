@@ -50,7 +50,7 @@ public record AntiAirDataContainer
         constantDamageBonus = modifiers.FindModifiers("areaDamageMultiplier").Aggregate(constantDamageBonus, (current, value) => current * (decimal)value);
 
         IEnumerable<float> constantDamageBonusModifiers = modifiers.FindModifiers("lastChanceReloadCoefficient");
-        constantDamageBonus = Math.Round(constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100))), 2);
+        constantDamageBonus = constantDamageBonusModifiers.Aggregate(constantDamageBonus, (current, arModifier) => current * (1 + ((decimal)arModifier / 100)));
 
         var aaUI = new AntiAirDataContainer
         {

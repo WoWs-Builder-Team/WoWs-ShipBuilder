@@ -2007,6 +2007,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AP.
+        /// </summary>
+        public static string ShipStats_ApSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_ApSalvo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arming distance.
         /// </summary>
         public static string ShipStats_ArmingDistance {
@@ -2424,11 +2433,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dispersion at max range.
+        /// </summary>
+        public static string ShipStats_DispersionAtMaxRange {
+            get {
+                return ResourceManager.GetString("ShipStats_DispersionAtMaxRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Formula at range X(km).
         /// </summary>
         public static string ShipStats_DispFormulaTooltip {
             get {
                 return ResourceManager.GetString("ShipStats_DispFormulaTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dive Bombers.
+        /// </summary>
+        public static string ShipStats_DiveBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_DiveBomber", resourceCulture);
             }
         }
         
@@ -2474,6 +2501,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ExplosionRadius {
             get {
                 return ResourceManager.GetString("ShipStats_ExplosionRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rockets.
+        /// </summary>
+        public static string ShipStats_Fighter {
+            get {
+                return ResourceManager.GetString("ShipStats_Fighter", resourceCulture);
             }
         }
         
@@ -2555,6 +2591,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_FireTotalDamage {
             get {
                 return ResourceManager.GetString("ShipStats_FireTotalDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option 1.
+        /// </summary>
+        public static string ShipStats_FirstOption {
+            get {
+                return ResourceManager.GetString("ShipStats_FirstOption", resourceCulture);
             }
         }
         
@@ -2721,11 +2766,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full salvo damage.
+        /// </summary>
+        public static string ShipStats_FullSalvoDamage {
+            get {
+                return ResourceManager.GetString("ShipStats_FullSalvoDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fuse timer.
         /// </summary>
         public static string ShipStats_FuseTimer {
             get {
                 return ResourceManager.GetString("ShipStats_FuseTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HE.
+        /// </summary>
+        public static string ShipStats_HeSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_HeSalvo", resourceCulture);
             }
         }
         
@@ -2870,6 +2933,33 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ManeuverabilityRudderShiftTime {
             get {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityRudderShiftTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At maximum depth.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At periscope depth.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On surface.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxSpeedOnSurface {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxSpeedOnSurface", resourceCulture);
             }
         }
         
@@ -3036,7 +3126,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aircraft per attack.
+        ///   Looks up a localized string similar to Per attack.
         /// </summary>
         public static string ShipStats_NumberDuringAttack {
             get {
@@ -3297,6 +3387,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SAP.
+        /// </summary>
+        public static string ShipStats_SapSalvo {
+            get {
+                return ResourceManager.GetString("ShipStats_SapSalvo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sea.
         /// </summary>
         public static string ShipStats_Sea {
@@ -3311,6 +3410,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_SecondaryBattery {
             get {
                 return ResourceManager.GetString("ShipStats_SecondaryBattery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Option 2.
+        /// </summary>
+        public static string ShipStats_SecondOption {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondOption", resourceCulture);
             }
         }
         
@@ -3455,6 +3563,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_SinkSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_SinkSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip Bombers.
+        /// </summary>
+        public static string ShipStats_SkipBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_SkipBomber", resourceCulture);
             }
         }
         
@@ -3604,6 +3721,42 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tactical Dive Bombers.
+        /// </summary>
+        public static string ShipStats_TacticalDiveBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_TacticalDiveBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tactical Rockets.
+        /// </summary>
+        public static string ShipStats_TacticalFighter {
+            get {
+                return ResourceManager.GetString("ShipStats_TacticalFighter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tactical Skip Bombers.
+        /// </summary>
+        public static string ShipStats_TacticalSkipBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_TacticalSkipBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tactical Torpedo Bombers.
+        /// </summary>
+        public static string ShipStats_TacticalTorpedoBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_TacticalTorpedoBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AP.
         /// </summary>
         public static string ShipStats_TheoreticalApDpm {
@@ -3726,6 +3879,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_TorpedoArea {
             get {
                 return ResourceManager.GetString("ShipStats_TorpedoArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedo Bombers.
+        /// </summary>
+        public static string ShipStats_TorpedoBomber {
+            get {
+                return ResourceManager.GetString("ShipStats_TorpedoBomber", resourceCulture);
             }
         }
         

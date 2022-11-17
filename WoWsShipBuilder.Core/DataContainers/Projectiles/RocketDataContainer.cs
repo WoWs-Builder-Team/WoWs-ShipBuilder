@@ -78,7 +78,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var rocketDataContainer = new RocketDataContainer
             {
                 Name = rocket.Name,
-                RocketType = $"ArmamentType_{rocket.RocketType}",
+                RocketType = $"ArmamentType_{rocket.RocketType.RocketTypeToString()}",
                 Damage = Math.Round(rocketDamage, 2),
                 Penetration = (int)Math.Truncate(rocket.Penetration),
                 FuseTimer = fuseTimer,
@@ -88,7 +88,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 ExplosionRadius = (decimal)rocket.ExplosionRadius,
                 SplashCoeff = (decimal)rocket.SplashCoeff,
                 ShowBlastPenetration = showBlastPenetration,
-                SplashRadius = (decimal)rocket.DepthSplashRadius,
+                SplashRadius = Math.Round((decimal)rocket.DepthSplashRadius, 1),
                 SplashDmg = Math.Round(rocketDamage * (decimal)rocket.SplashDamageCoefficient),
             };
 
