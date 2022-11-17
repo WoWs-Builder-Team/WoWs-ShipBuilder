@@ -12,7 +12,6 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
-using WoWsShipBuilder.DataStructures.Captain;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -164,16 +163,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         }
 
         return AppData.AircraftCache[nation][aircraftName];
-    }
-
-    public async Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)
-    {
-        if (!AppData.CaptainCache.ContainsKey(nation))
-        {
-            AppData.CaptainCache.SetIfNotNull(nation, await ReadLocalJsonData<Captain>(nation, serverType));
-        }
-
-        return AppData.CaptainCache.TryGetValue(nation, out Dictionary<string, Captain>? result) ? result : new();
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)

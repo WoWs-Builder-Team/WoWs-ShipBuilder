@@ -91,8 +91,6 @@ public interface IAppDataService
     /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
     Task<Aircraft> GetAircraft(string aircraftName);
 
-    Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType);
-
     Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
     Ship GetShipFromSummary(ShipSummary summary);

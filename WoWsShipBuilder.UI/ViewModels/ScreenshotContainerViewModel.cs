@@ -10,7 +10,6 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
-using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.ViewModels.Base;
@@ -24,9 +23,8 @@ namespace WoWsShipBuilder.UI.ViewModels
             : this(DataHelper.CreateTestBuild(), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
         {
             var ship = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
-            var appDataService = DesktopAppDataService.PreviewInstance;
 
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation).Result, true);
+            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true);
             SignalSelectorViewModel = new();
             UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
             LoadBuilds(DataHelper.CreateTestBuild());
@@ -77,7 +75,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         {
             var vm = new ScreenshotContainerViewModel(build, ship, includeSignals)
             {
-                CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
+                CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true),
                 SignalSelectorViewModel = new(),
                 UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
                 ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),

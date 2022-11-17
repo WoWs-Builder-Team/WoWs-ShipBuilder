@@ -6,8 +6,6 @@ using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
-using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -122,11 +120,6 @@ public class ServerAppDataService : IAppDataService
     {
         var nation = IAppDataService.GetNationFromIndex(aircraftName);
         return Task.FromResult(AppData.AircraftCache[nation][aircraftName]);
-    }
-
-    public Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)
-    {
-        return Task.FromResult(AppData.CaptainCache[nation]);
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)

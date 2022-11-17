@@ -235,7 +235,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         // Viewmodel inits
         SignalSelectorViewModel = new();
-        CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
+        CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
         UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
         ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
