@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.UI.UserControls;
@@ -69,7 +68,7 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public static ScreenshotContainerViewModel Create(IAppDataService appDataService, Build build, Ship ship, bool includeSignals = true)
+        public static ScreenshotContainerViewModel Create(Build build, Ship ship, bool includeSignals = true)
         {
             var vm = new ScreenshotContainerViewModel(build, ship, includeSignals)
             {

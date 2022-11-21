@@ -9,7 +9,6 @@ using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
@@ -25,7 +24,7 @@ namespace WoWsShipBuilder.UI.Services
             string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Locator.Current.GetServiceSafe<ILocalizer>().GetGameLocalization(build.ShipIndex).Localization);
             var screenshotWindow = new ScreenshotWindow
             {
-                DataContext = ScreenshotContainerViewModel.Create(Locator.Current.GetServiceSafe<IAppDataService>(), build, rawShipData, includeSignals),
+                DataContext = ScreenshotContainerViewModel.Create(build, rawShipData, includeSignals),
             };
             screenshotWindow.Show();
 

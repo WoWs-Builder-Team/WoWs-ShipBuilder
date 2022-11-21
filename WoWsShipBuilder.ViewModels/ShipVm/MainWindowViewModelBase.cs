@@ -29,8 +29,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private readonly INavigationService navigationService;
 
-    private readonly IAppDataService appDataService;
-
     private readonly ILocalizer localizer;
 
     private readonly AppSettings appSettings;
@@ -65,10 +63,9 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     protected string? CurrentBuildName;
 
-    protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
+    protected MainWindowViewModelBase(INavigationService navigationService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
     {
         this.navigationService = navigationService;
-        this.appDataService = appDataService;
         this.localizer = localizer;
         this.appSettings = appSettings;
         tokenSource = new();
@@ -239,7 +236,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
         ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>());
 
-        ShipStatsControlViewModel = new(EffectiveShipData, appDataService);
+        ShipStatsControlViewModel = new(EffectiveShipData);
         await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)

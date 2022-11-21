@@ -9,8 +9,6 @@ using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.DataProvider;

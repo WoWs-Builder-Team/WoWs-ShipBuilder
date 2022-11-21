@@ -23,15 +23,15 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 
         private readonly AvaloniaScreenshotRenderService screenshotRenderService;
 
-        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, MainViewModelParams viewModelParams)
-            : base(navigationService, appDataService, AppSettingsHelper.LocalizerInstance, AppSettingsHelper.Settings, viewModelParams)
+        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, MainViewModelParams viewModelParams)
+            : base(navigationService, AppSettingsHelper.LocalizerInstance, AppSettingsHelper.Settings, viewModelParams)
         {
             this.clipboardService = clipboardService;
             screenshotRenderService = new();
         }
 
         public MainWindowViewModel()
-            : this(null!, null!, DesktopAppDataService.PreviewInstance, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
+            : this(null!, null!, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
         {
         }
 

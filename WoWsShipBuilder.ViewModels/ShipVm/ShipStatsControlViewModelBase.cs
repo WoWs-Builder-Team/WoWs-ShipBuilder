@@ -1,6 +1,5 @@
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -8,11 +7,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 
 public class ShipStatsControlViewModel : ViewModelBase
 {
-    private readonly IAppDataService appDataService;
-
-    public ShipStatsControlViewModel(Ship ship, IAppDataService appDataService)
+    public ShipStatsControlViewModel(Ship ship)
     {
-        this.appDataService = appDataService;
         BaseShipStats = ship;
     }
 

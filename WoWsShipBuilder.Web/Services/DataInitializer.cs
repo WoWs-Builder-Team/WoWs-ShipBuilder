@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Data;

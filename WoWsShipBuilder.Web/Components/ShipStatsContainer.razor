@@ -18,7 +18,6 @@
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
 @inject IMetricsService MetricsService
-@inject IAppDataService AppDataService
 @inject AppSettings AppSettings
 @inject MouseEventInterop MouseEventInterop
 @inject IDialogService DialogService
@@ -180,7 +179,7 @@
             var ship = AppData.FindShipFromSummary(shipSummary);
             var vmParams = new MainViewModelParams(ship!, shipSummary, build);
 
-            ShipViewModel vm = new(null!, AppDataService, Localizer, AppSettings, vmParams);
+            ShipViewModel vm = new(null!, Localizer, AppSettings, vmParams);
             await vm.InitializeData(vmParams);
             shipChanged = true;
             return vm;
