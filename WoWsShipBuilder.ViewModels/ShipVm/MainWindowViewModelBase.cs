@@ -15,7 +15,6 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
@@ -185,7 +184,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     {
         Logging.Logger.Info("Selecting new ship");
 
-        var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings, localizer))))?.FirstOrDefault();
+        var result = (await SelectNewShipInteraction.Handle(new(false, ShipSelectionWindowViewModel.LoadParams(localizer))))?.FirstOrDefault();
         if (result != null)
         {
             Logging.Logger.Info("New ship selected: {0}", result.Index);

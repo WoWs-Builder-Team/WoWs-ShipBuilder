@@ -57,8 +57,6 @@ public interface IAppDataService
     /// <returns>The local VersionInfo or null if none was found.</returns>
     Task<VersionInfo?> GetCurrentVersionInfo(ServerType serverType);
 
-    Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
-
     Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
     Ship GetShipFromSummary(ShipSummary summary);

@@ -103,12 +103,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return await DeserializeFile<VersionInfo>(filePath);
     }
 
-    public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
-    {
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common.json");
-        return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
-    }
-
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
         string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
@@ -189,7 +183,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         Logging.Logger.Debug("Loaded local files in {}", sw.Elapsed);
     }
 
-    internal async Task<T?> DeserializeFile<T>(string filePath)
+    public async Task<T?> DeserializeFile<T>(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
         {

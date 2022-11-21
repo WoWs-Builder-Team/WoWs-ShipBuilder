@@ -48,9 +48,8 @@ public static class AppData
 
     /// <summary>
     /// Gets the aircraft cache, mapping a nation to the actual aircraft dictionary for that nation.
-    /// This property should not be accessed directly, use <see cref="DesktopAppDataService.GetAircraft"/> instead.
     /// </summary>
-    /// <seealso cref="DesktopAppDataService.GetAircraft"/>
+    /// <seealso cref="FindAircraft"/>
     public static ConcurrentDictionary<Nation, Dictionary<string, Aircraft>> AircraftCache { get; } = new();
 
     public static ConcurrentDictionary<Nation, Dictionary<string, Exterior>> ExteriorCache { get; } = new();

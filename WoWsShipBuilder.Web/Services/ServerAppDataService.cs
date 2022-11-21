@@ -98,11 +98,6 @@ public class ServerAppDataService : IAppDataService
         return versionInfo;
     }
 
-    public Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
-    {
-        return Task.FromResult(AppData.ShipSummaryList ?? throw new InvalidOperationException());
-    }
-
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
         if (options.UseLocalFiles)

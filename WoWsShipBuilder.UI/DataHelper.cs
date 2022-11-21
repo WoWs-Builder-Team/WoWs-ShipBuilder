@@ -20,6 +20,7 @@ using ShipUpgrade = WoWsShipBuilder.DataStructures.Ship.ShipUpgrade;
 
 namespace WoWsShipBuilder.UI;
 
+// TODO: fix this entire mess
 public static class DataHelper
 {
     public static readonly IReadOnlyList<Modernization> PlaceholderBaseList = new List<Modernization> { UpgradePanelViewModelBase.PlaceholderModernization };
@@ -53,7 +54,10 @@ public static class DataHelper
     public static ShipSummary GetPreviewShipSummary(ShipClass shipClass, int tier, Nation nation)
     {
         var ship = LoadPreviewShip(shipClass, tier, nation);
-        return DesktopAppDataService.PreviewInstance.GetShipSummaryList(ServerType.Live).Result.First(summary => summary.Index == ship.Ship.Index);
+        var dataService = new DesktopDataService(new FileSystem());
+        string fileName = dataService.CombinePaths(DesktopAppDataService.PreviewInstance.GetDataPath(ServerType.Live), "Summary", "Common.json");
+        var summaryTask = DesktopAppDataService.PreviewInstance.DeserializeFile<List<ShipSummary>>(fileName);
+        return summaryTask.Result!.First(summary => summary.Index == ship.Ship.Index);
     }
 
     public static MainViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)

@@ -442,7 +442,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings, Locator.Current.GetServiceSafe<ILocalizer>()))))!;
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, ShipSelectionWindowViewModel.LoadParams(Locator.Current.GetServiceSafe<ILocalizer>()))))!;
 
             if (resultList is not { Count: > 0 })
             {
