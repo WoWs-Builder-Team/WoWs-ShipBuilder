@@ -109,4 +109,16 @@ public static class AppData
     {
         return (T)FindProjectile(projectileIndex);
     }
+
+    /// <summary>
+    /// Reads aircraft data from the <see cref="AppData.AircraftCache"/> and returns the result.
+    /// </summary>
+    /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
+    /// <returns>The requested aircraft.</returns>
+    /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
+    public static Aircraft FindAircraft(string aircraftName)
+    {
+        var nation = IAppDataService.GetNationFromIndex(aircraftName);
+        return AircraftCache[nation][aircraftName];
+    }
 }

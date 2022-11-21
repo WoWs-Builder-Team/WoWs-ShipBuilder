@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
@@ -40,21 +38,21 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-        public static async Task<ShipDataContainer> FromShipAsync(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
             var shipDataContainer = new ShipDataContainer(ship.Index)
             {
                 // Main weapons
                 MainBatteryDataContainer = MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 TorpedoArmamentDataContainer = TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                CvAircraftDataContainer = await DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                CvAircraftDataContainer = DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 PingerGunDataContainer = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
                 SecondaryBatteryUiDataContainer = SecondaryBatteryUiDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirDataContainer = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                AirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, false, appDataService),
-                AswAirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, true, appDataService),
+                AirstrikeDataContainer = AirstrikeDataContainer.FromShip(ship, modifiers, false),
+                AswAirstrikeDataContainer = AirstrikeDataContainer.FromShip(ship, modifiers, true),
                 DepthChargeLauncherDataContainer = DepthChargesLauncherDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Misc

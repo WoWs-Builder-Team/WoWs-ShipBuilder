@@ -29,7 +29,7 @@ public class ShipStatsControlViewModel : ViewModelBase
 
     public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
     {
-        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.FromShipAsync(BaseShipStats, selectedConfiguration, modifiers, appDataService));
+        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(BaseShipStats, selectedConfiguration, modifiers));
         CurrentShipStats = shipStats;
     }
 }

@@ -1,8 +1,6 @@
-﻿@using WoWsShipBuilder.Core.Settings
-@using WoWsShipBuilder.Web.Services
+﻿@using WoWsShipBuilder.Web.Services
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.DataStructures
 @using System.Collections.Concurrent
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
@@ -14,8 +12,6 @@
 @inherits ReactiveComponentBase<ShipBuildViewModel>
 
 @inject ILocalizer Localizer
-@inject IAppDataService AppDataService
-@inject AppSettings AppSettings
 @inject IMetricsService MetricsService
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
@@ -170,7 +166,7 @@
                                             <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
                                         </div>                                        
                                     }
-                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || (shipData.Ship.MainBatteryModuleList?.Any(module => module.Value.BurstModeAbility is not null) ?? false)))
+                                    @if (!SpecialAbilityDisabled && (shipData.Ship.SpecialAbility is not null || shipData.Ship.MainBatteryModuleList.Any(module => module.Value.BurstModeAbility is not null)))
                                     {
                                         <MudSwitch T="bool" @bind-Checked="ViewModel.SpecialAbilityActive" Color="Color.Info" Label="Activate special ability"/>
                                     }
@@ -213,12 +209,14 @@
     {
         await base.OnInitializedAsync();
 
-        await UpdateViewModel();
-        await Task.Run(async () =>
+        UpdateViewModel();
+        
+        // TODO Check why this Task.Run is even used and if it can be removed
+        await Task.Run(() =>
         {
             foreach (var container in Ships.Skip(1))
             {
-                var vm = await LoadShipViewModel(container);
+                var vm = LoadShipViewModel(container);
                 vmCache.TryAdd(container.Id, vm);
                 buildNameDictionary[container.Id] = !string.IsNullOrEmpty(container.Build?.BuildName) ? container.Build.BuildName : ShipComparisonViewModel.DefaultBuildName;
             }
@@ -233,7 +231,7 @@
     /// <br/>
     /// This method will also update the build name field and the status of the special ability switch (only affects super ships).
     /// </summary>
-    private async Task UpdateViewModel()
+    private void UpdateViewModel()
     {
         if (vmCache.TryGetValue(SelectedContainer.Id, out var vm))
         {
@@ -241,17 +239,17 @@
         }
         else
         {
-            ViewModel = await LoadShipViewModel(SelectedContainer);
+            ViewModel = LoadShipViewModel(SelectedContainer);
             vmCache.TryAdd(SelectedContainer.Id, ViewModel);
         }
     }
 
-    private async Task<ShipBuildViewModel> LoadShipViewModel(ShipBuildContainer shipBuildContainer)
+    private ShipBuildViewModel LoadShipViewModel(ShipBuildContainer shipBuildContainer)
     {
         MetricsService.ShipCount.WithLabels(shipBuildContainer.Ship.Index, Localizer.GetGameLocalization(shipBuildContainer.Ship.Index + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            var vm = await ShipBuildViewModel.CreateAsync(shipBuildContainer, AppDataService, AppSettings);
+            var vm = ShipBuildViewModel.Create(shipBuildContainer);
             foreach (int slot in shipBuildContainer.ActivatedConsumableSlots ?? Array.Empty<int>())
             {
                 vm.ConsumableViewModel.ConsumableSlots[slot].ConsumableActivated = true;
@@ -260,36 +258,29 @@
         }
     }
 
-    private async Task SaveBuilds()
+    private void SaveBuilds()
     {
         var result = new List<ShipBuildContainer>();
         foreach (var container in Ships)
         {
-            if (vmCache.TryGetValue(container.Id, out var vm))
-            {
-                result.Add(await vm.CreateShipBuildContainerAsync(container));
-            }
-            else
-            {
-                result.Add(container);
-            }
+            result.Add(vmCache.TryGetValue(container.Id, out var vm) ? vm.CreateShipBuildContainerAsync(container) : container);
         }
 
         MudDialog.Close(DialogResult.Ok(result));
     }
 
-    private async Task ResetBuild()
+    private void ResetBuild()
     {
-        var vm = await LoadShipViewModel(SelectedContainer with {Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
+        var vm = LoadShipViewModel(SelectedContainer with {Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
     }
 
-    private async Task ImportBuild(Ship ship)
+    private void ImportBuild(Ship ship)
     {
         try
         {
-            ViewModel = await LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString), null));
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString), null));
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
@@ -305,13 +296,13 @@
         MudDialog.Cancel();
     }
 
-    private async Task OnActivePanelChanged(int newIndex)
+    private void OnActivePanelChanged(int newIndex)
     {
         buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName) ? ShipComparisonViewModel.DefaultBuildName : ViewModel.BuildName;
         ViewModel = null;
         StateHasChanged();
         currentBuildString = string.Empty;
         selectedTab = newIndex;
-        await UpdateViewModel();
+        UpdateViewModel();
     }
 }

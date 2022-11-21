@@ -59,15 +59,6 @@ public interface IAppDataService
 
     Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
-    /// <summary>
-    /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
-    /// Initializes the data for the nation of the provided aircraft name if it is not loaded already.
-    /// </summary>
-    /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
-    /// <returns>The requested aircraft.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
-    Task<Aircraft> GetAircraft(string aircraftName);
-
     Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language);
 
     Ship GetShipFromSummary(ShipSummary summary);

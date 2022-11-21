@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 using DynamicData;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -16,17 +14,15 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 /// </summary>
 public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
 {
-    private readonly IAppDataService appDataService;
     private readonly Ship ship;
 
     public ConsumableViewModel()
-        : this(DesktopAppDataService.PreviewInstance, new())
+        : this(new())
     {
     }
 
-    private ConsumableViewModel(IAppDataService appDataService, Ship ship)
+    private ConsumableViewModel(Ship ship)
     {
-        this.appDataService = appDataService;
         this.ship = ship;
         ConsumableSlots = new();
     }
@@ -61,14 +57,13 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     /// <summary>
     /// Creates a new instance of the <see cref="ConsumableViewModel"/> and initializes its data through asynchronous methods.
     /// </summary>
-    /// <param name="appDataService">The <see cref="IAppDataService"/> used by the new viewmodel.</param>
     /// <param name="ship">The ship associated with the new viewmodel instance.</param>
     /// <param name="disabledConsumables">A list of consumables that are currently disabled.</param>
     /// <returns>A new instance of the <see cref="ConsumableViewModel"/> with initialized data.</returns>
-    public static async Task<ConsumableViewModel> CreateAsync(IAppDataService appDataService, Ship ship, IEnumerable<string> disabledConsumables)
+    public static ConsumableViewModel Create(Ship ship, IEnumerable<string> disabledConsumables)
     {
-        var vm = new ConsumableViewModel(appDataService, ship);
-        await vm.UpdateSlotViewModels(disabledConsumables);
+        var vm = new ConsumableViewModel(ship);
+        vm.UpdateSlotViewModels(disabledConsumables);
         return vm;
     }
 
@@ -78,9 +73,9 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     /// </summary>
     /// <param name="modifiers">The list of modifiers applied to the current ship.</param>
     /// <param name="shipHp">The HP of the ship after modifiers have been applied.</param>
-    public async Task UpdateConsumableData(List<(string, float)> modifiers, int shipHp)
+    public void UpdateConsumableData(List<(string, float)> modifiers, int shipHp)
     {
-        await Parallel.ForEachAsync(ConsumableSlots, async (consumableSlot, _) => { await consumableSlot.UpdateDataContainers(modifiers, shipHp); });
+        Parallel.ForEach(ConsumableSlots, consumableSlot => consumableSlot.UpdateDataContainers(modifiers, shipHp));
     }
 
     public IEnumerable<(string, float)> GetModifiersList()
@@ -102,7 +97,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
         return modifiers;
     }
 
-    private async Task UpdateSlotViewModels(IEnumerable<string> disabledConsumables)
+    private void UpdateSlotViewModels(IEnumerable<string> disabledConsumables)
     {
         var rawSlots = ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
             .AsParallel()
@@ -110,7 +105,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
             .Where(consumables => consumables.Any());
         var slots = new ConcurrentBag<ConsumableSlotViewModel>();
 
-        await Parallel.ForEachAsync(rawSlots, async (consumables, _) => { slots.Add(await ConsumableSlotViewModel.CreateAsync(appDataService, consumables, ConsumableActivationChanged)); });
+        Parallel.ForEach(rawSlots, consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, ConsumableActivationChanged)));
 
         ConsumableSlots.Clear();
         ConsumableSlots.AddRange(slots.OrderBy(vm => vm.Slot));

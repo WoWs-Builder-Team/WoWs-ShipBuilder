@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
@@ -112,7 +110,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public decimal BoostReloadTime { get; set; }
 
-        public static async Task<List<CvAircraftDataContainer>?> FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static List<CvAircraftDataContainer>? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
         {
             if (!ship.CvPlanes.Any())
             {
@@ -154,8 +152,8 @@ namespace WoWsShipBuilder.Core.DataContainers
             {
                 int index = value.IndexOf("_", StringComparison.InvariantCultureIgnoreCase);
                 string name = value.Substring(0, index);
-                var plane = await appDataService.GetAircraft(name);
-                var planeDataContainer = await ProcessCvPlane(plane, ship.Tier, modifiers, appDataService);
+                var plane = AppData.FindAircraft(name);
+                var planeDataContainer = ProcessCvPlane(plane, ship.Tier, modifiers);
                 list.Add(planeDataContainer);
             }
 
@@ -163,7 +161,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             return list;
         }
 
-        private static async Task<CvAircraftDataContainer> ProcessCvPlane(Aircraft plane, int shipTier, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        private static CvAircraftDataContainer ProcessCvPlane(Aircraft plane, int shipTier, List<(string name, float value)> modifiers)
         {
             var maxOnDeckModifiers = modifiers.FindModifiers("planeExtraHangarSize");
             int maxOnDeck = maxOnDeckModifiers.Aggregate(plane.MaxPlaneInHangar, (current, modifier) => (int)(current + modifier));
@@ -303,7 +301,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             List<ConsumableDataContainer> consumables = new();
             foreach (var consumable in plane.AircraftConsumable)
             {
-                var consumableDataContainer = await ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0, appDataService);
+                var consumableDataContainer = ConsumableDataContainer.FromTypeAndVariant(consumable, modifiers, true, finalPlaneHp, 0);
                 consumables.Add(consumableDataContainer);
             }
 

@@ -64,7 +64,7 @@ public static class DataHelper
     public static TurretModule GetPreviewTurretModule(ShipClass shipClass, int tier, Nation nation)
     {
         var testData = LoadPreviewShip(shipClass, tier, nation);
-        var currentShipStats = ShipDataContainer.FromShipAsync(testData.Ship, testData.Configuration, new(), DesktopAppDataService.Instance).Result;
+        var currentShipStats = ShipDataContainer.CreateFromShip(testData.Ship, testData.Configuration, new());
         return currentShipStats.MainBatteryDataContainer!.OriginalMainBatteryData;
     }
 

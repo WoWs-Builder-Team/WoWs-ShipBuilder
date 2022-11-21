@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -9,7 +8,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.ViewModels.Base;
@@ -26,7 +24,7 @@ namespace WoWsShipBuilder.UI.ViewModels
 
             CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true);
             SignalSelectorViewModel = new();
-            UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
+            UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache);
             LoadBuilds(DataHelper.CreateTestBuild());
         }
 
@@ -71,14 +69,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public static async Task<ScreenshotContainerViewModel> CreateAsync(IAppDataService appDataService, Build build, Ship ship, bool includeSignals = true)
+        public static ScreenshotContainerViewModel Create(IAppDataService appDataService, Build build, Ship ship, bool includeSignals = true)
         {
             var vm = new ScreenshotContainerViewModel(build, ship, includeSignals)
             {
                 CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true),
                 SignalSelectorViewModel = new(),
-                UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
-                ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),
+                UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache),
+                ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>()),
             };
             vm.LoadBuilds(build);
             return vm;

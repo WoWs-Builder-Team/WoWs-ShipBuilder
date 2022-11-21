@@ -5,8 +5,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Aircraft;
-using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
@@ -103,12 +101,6 @@ public class ServerAppDataService : IAppDataService
     public Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
     {
         return Task.FromResult(AppData.ShipSummaryList ?? throw new InvalidOperationException());
-    }
-
-    public Task<Aircraft> GetAircraft(string aircraftName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(aircraftName);
-        return Task.FromResult(AppData.AircraftCache[nation][aircraftName]);
     }
 
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)

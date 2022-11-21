@@ -238,7 +238,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
         UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
-        ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
+        ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>());
 
         ShipStatsControlViewModel = new(EffectiveShipData, appDataService);
         await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
@@ -256,9 +256,9 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         CurrentShipIndex = ship.Index;
         CurrentShipTier = ship.Tier;
-        CurrentShip = AppData.ShipSummaryList!.First(sum => sum.Index == ship.Index);
-        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex);
-        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList!.First(sum => sum.Index == index)).ToList();
+        CurrentShip = AppData.ShipSummaryList.First(sum => sum.Index == ship.Index);
+        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList.First(sum => sum.Index == previousIndex);
+        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList.First(sum => sum.Index == index)).ToList();
 
         AddChangeListeners();
         UpdateStatsViewModel();
@@ -311,7 +311,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
                             await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                         }
                         var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
-                        await ConsumableViewModel.UpdateConsumableData(modifiers, hp);
+                        ConsumableViewModel.UpdateConsumableData(modifiers, hp);
                         semaphore.Release();
                     }
                 }

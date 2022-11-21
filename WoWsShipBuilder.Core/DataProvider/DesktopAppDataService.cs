@@ -6,12 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Splat;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 
@@ -111,24 +109,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
     }
 
-    /// <summary>
-    /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
-    /// Initializes the data for the nation of the provided aircraft name if it is not loaded already.
-    /// </summary>
-    /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
-    /// <returns>The requested aircraft.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
-    public async Task<Aircraft> GetAircraft(string aircraftName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(aircraftName);
-        if (!AppData.AircraftCache.ContainsKey(nation))
-        {
-            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, appSettings.SelectedServerType));
-        }
-
-        return AppData.AircraftCache[nation][aircraftName];
-    }
-
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
         string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
@@ -223,20 +203,5 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         }
 
         return await dataService.LoadAsync<T>(filePath);
-    }
-
-    /// <summary>
-    /// Read a dictionary from the local app data directory.
-    /// </summary>
-    /// <param name="nation">The selected nation.</param>
-    /// <param name="serverType">The selected server type.</param>
-    /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
-    /// <returns>A dictionary containing the deserialized file content.</returns>
-    private async Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType)
-    {
-        string categoryString = IAppDataService.GetCategoryString<T>();
-        string nationString = IAppDataService.GetNationString(nation);
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}.json");
-        return await DeserializeFile<Dictionary<string, T>>(fileName);
     }
 }

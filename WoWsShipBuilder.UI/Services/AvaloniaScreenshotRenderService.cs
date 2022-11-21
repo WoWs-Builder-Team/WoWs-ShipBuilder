@@ -10,7 +10,6 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.Utilities;
@@ -26,7 +25,7 @@ namespace WoWsShipBuilder.UI.Services
             string outputPath = DesktopAppDataService.Instance.GetImageOutputPath(build.BuildName, Locator.Current.GetServiceSafe<ILocalizer>().GetGameLocalization(build.ShipIndex).Localization);
             var screenshotWindow = new ScreenshotWindow
             {
-                DataContext = await ScreenshotContainerViewModel.CreateAsync(Locator.Current.GetServiceSafe<IAppDataService>(), build, rawShipData, includeSignals),
+                DataContext = ScreenshotContainerViewModel.Create(Locator.Current.GetServiceSafe<IAppDataService>(), build, rawShipData, includeSignals),
             };
             screenshotWindow.Show();
 
@@ -35,13 +34,10 @@ namespace WoWsShipBuilder.UI.Services
             bitmap.Save(bitmapData);
             bitmapData.Seek(0, SeekOrigin.Begin);
             BuildImageProcessor.AddTextToBitmap(bitmapData, JsonConvert.SerializeObject(build), outputPath);
-            if (copyToClipboard)
+            if (copyToClipboard && OperatingSystem.IsWindows())
             {
-                if (OperatingSystem.IsWindows())
-                {
-                    using var savedBitmap = new Bitmap(outputPath);
-                    await ClipboardHelper.SetBitmapAsync(savedBitmap);
-                }
+                using var savedBitmap = new Bitmap(outputPath);
+                await ClipboardHelper.SetBitmapAsync(savedBitmap);
             }
 
             screenshotWindow.Close();
