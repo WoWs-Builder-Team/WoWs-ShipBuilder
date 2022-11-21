@@ -12,7 +12,6 @@
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
@@ -126,7 +125,7 @@
                 foreach (string shipIndex in shipIndexesFromUrl)
                 {
                     var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-                    var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+                    var ship = AppData.FindShipFromSummary(shipSummary);
                     
                     var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);
                     

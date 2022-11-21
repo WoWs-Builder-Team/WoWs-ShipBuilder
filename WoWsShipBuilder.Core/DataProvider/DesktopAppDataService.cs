@@ -109,8 +109,6 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
     }
 
-    public Ship GetShipFromSummary(ShipSummary summary) => AppData.ShipDictionary[summary.Index];
-
     /// <summary>
     /// Save string compressed <see cref="Build"/> to the disk.
     /// </summary>

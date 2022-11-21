@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using NLog;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Core.Builds;
@@ -110,7 +111,7 @@ public class Build
 
         string buildName = parts.Length == 9 ? parts[8] : string.Empty;
         string shipIndex = parts[0];
-        var nation = IAppDataService.GetNationFromIndex(shipIndex);
+        var nation = GameDataHelper.GetNationFromIndex(shipIndex);
         List<string> modules = parts[1].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         List<string> upgrades = parts[2].Split(ListSeparator).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         string captain = parts[3];

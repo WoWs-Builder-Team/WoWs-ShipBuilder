@@ -1,9 +1,7 @@
 ﻿@using WoWsShipBuilder.Web.Utility
 @using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures.Projectile
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 
 <MudDialog>
     <TitleContent>
@@ -96,7 +94,7 @@
         foreach ((string shipIndex, Dictionary<string, ArtilleryData> artilleryDataDictionary, _, _) in selections)
         {
             var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-            var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+            var ship = AppData.FindShipFromSummary(shipSummary);
             double maxRange = -1;
             double sigma = -1;
             IEnumerable<string> shellIndexes = artilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);

@@ -4,10 +4,8 @@
 @using System.Collections.Specialized
 @using DynamicData
 @using System.Linq
-@using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures.Projectile
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
     <TitleContent>
@@ -130,7 +128,7 @@
     private void AddWrapper(string shipIndex)
     {
         var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-        var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+        var ship = AppData.FindShipFromSummary(shipSummary);
         if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         Dictionary<string, ArtilleryData> artilleryData = new();
         if (ship.MainBatteryModuleList.Any())
@@ -162,7 +160,7 @@
         foreach ((string shipIndex, Dictionary<string, ArtilleryData> artilleryDataDictionary, _, _) in selections)
         {
             var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-            var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+            var ship = AppData.FindShipFromSummary(shipSummary);
             double maxRange = -1;
             double sigma = -1;
             IEnumerable<string> shellIndexes = artilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);

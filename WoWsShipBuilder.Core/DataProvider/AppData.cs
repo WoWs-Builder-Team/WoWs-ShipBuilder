@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -93,7 +93,7 @@ public static class AppData
     /// <returns>The projectile object with the specified index.</returns>
     public static Projectile FindProjectile(string projectileIndex)
     {
-        var nation = IAppDataService.GetNationFromIndex(projectileIndex);
+        var nation = GameDataHelper.GetNationFromIndex(projectileIndex);
         return ProjectileCache[nation][projectileIndex];
     }
 
@@ -117,7 +117,9 @@ public static class AppData
     /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
     public static Aircraft FindAircraft(string aircraftName)
     {
-        var nation = IAppDataService.GetNationFromIndex(aircraftName);
+        var nation = GameDataHelper.GetNationFromIndex(aircraftName);
         return AircraftCache[nation][aircraftName];
     }
+
+    public static Ship FindShipFromSummary(ShipSummary summary) => ShipDictionary[summary.Index];
 }

@@ -46,7 +46,7 @@
     
     private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(string shipIndex)
     {
-        var ship = AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
+        var ship = AppData.FindShipFromSummary(AppData.ShipSummaryList!.First(s => s.Index.Equals(shipIndex)));
         
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())
@@ -59,7 +59,7 @@
 
     private (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation)
     {
-        var ship = AppDataService.GetShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
+        var ship = AppData.FindShipFromSummary(AppData.ShipSummaryList!.First(s => s.ShipClass == shipClass && s.Nation == nation && s.Tier == tier));
         
         var configuration = ShipModuleHelper.GroupAndSortUpgrades(ship!.ShipUpgradeInfo.ShipUpgrades)
             .Select(entry => entry.Value.FirstOrDefault())

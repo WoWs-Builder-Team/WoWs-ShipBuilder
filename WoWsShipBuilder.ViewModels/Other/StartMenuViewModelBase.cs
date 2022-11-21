@@ -84,7 +84,7 @@ namespace WoWsShipBuilder.ViewModels.Other
                 Logging.Logger.Info("Selected ship with index {}", result.Index);
                 try
                 {
-                    var ship = AppDataService.GetShipFromSummary(result);
+                    var ship = AppData.FindShipFromSummary(result);
                     await NavigationService.OpenMainWindow(ship, result, closeMainWindow: true);
                 }
                 catch (Exception e)
@@ -127,7 +127,7 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             try
             {
-                var ship = AppDataService.GetShipFromSummary(summary);
+                var ship = AppData.FindShipFromSummary(summary);
                 await NavigationService.OpenMainWindow(ship, summary, build, true);
             }
             catch (Exception e)

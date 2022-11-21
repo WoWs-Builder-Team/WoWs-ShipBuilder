@@ -9,6 +9,7 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Consumable;
@@ -88,8 +89,8 @@ public static class DataHelper
 
     private static Dictionary<string, T>? ReadLocalJsonData<T>(Nation nation, ServerType serverType)
     {
-        string categoryString = IAppDataService.GetCategoryString<T>();
-        string nationString = IAppDataService.GetNationString(nation);
+        string categoryString = GameDataHelper.GetCategoryString<T>();
+        string nationString = GameDataHelper.GetNationString(nation);
         var dataService = new DesktopDataService(new FileSystem());
         string fileName = dataService.CombinePaths(DesktopAppDataService.PreviewInstance.GetDataPath(serverType), categoryString, $"{nationString}.json");
         return dataService.Load<Dictionary<string, T>>(fileName);

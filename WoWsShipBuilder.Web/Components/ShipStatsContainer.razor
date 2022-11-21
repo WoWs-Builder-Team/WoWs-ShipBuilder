@@ -1,5 +1,4 @@
 ﻿@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Core.ConverterHelpers
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Settings
@@ -178,7 +177,7 @@
             }
 
             var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
-            var ship = AppDataService.GetShipFromSummary(shipSummary);
+            var ship = AppData.FindShipFromSummary(shipSummary);
             var vmParams = new MainViewModelParams(ship!, shipSummary, build);
 
             ShipViewModel vm = new(null!, AppDataService, Localizer, AppSettings, vmParams);

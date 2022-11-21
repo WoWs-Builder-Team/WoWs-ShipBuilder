@@ -11,7 +11,6 @@
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
@@ -253,7 +252,7 @@
                 {
                     string shipIndex = shipIndexesFromUrl.First();
                     var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-                    var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+                    var ship = AppData.FindShipFromSummary(shipSummary);
 
                     var gun = ship.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
                     Dictionary<string, ArtilleryData> artilleryData = new();
@@ -281,7 +280,7 @@
                     foreach (string shipIndex in shipIndexesFromUrl)
                     {
                         var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
-                        var ship = WebAppDataService.GetShipFromSummary(shipSummary);
+                        var ship = AppData.FindShipFromSummary(shipSummary);
                         Dictionary<string, ArtilleryData> artilleryData = new();
                         if (ship.MainBatteryModuleList.Count > 0)
                         {

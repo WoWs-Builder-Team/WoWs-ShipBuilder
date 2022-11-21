@@ -204,7 +204,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         await CloseChildrenInteraction.Handle(Unit.Default);
 
         disposables.Clear();
-        var ship = appDataService.GetShipFromSummary(summary);
+        var ship = AppData.FindShipFromSummary(summary);
 
         await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
     }
