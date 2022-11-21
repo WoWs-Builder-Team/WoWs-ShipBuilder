@@ -104,8 +104,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
             .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
             .Where(consumables => consumables.Any());
         var slots = new ConcurrentBag<ConsumableSlotViewModel>();
-
-        Parallel.ForEach(rawSlots, consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, ConsumableActivationChanged)));
+        rawSlots.AsParallel().ForAll(consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, ConsumableActivationChanged)));
 
         ConsumableSlots.Clear();
         ConsumableSlots.AddRange(slots.OrderBy(vm => vm.Slot));
