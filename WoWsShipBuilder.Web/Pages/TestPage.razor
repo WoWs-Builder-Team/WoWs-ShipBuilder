@@ -70,10 +70,10 @@
         return (ship, configuration);
     }
 
-    private async Task OpenFiringAngles()
+    private void OpenFiringAngles()
     {
         var (ship, config) = LoadPreviewShip(ShipClass.Destroyer, 5, Nation.UnitedKingdom);
-        var data = await MainBatteryDataContainer.FromShip(ship, config, new(), AppDataService);
+        var data = MainBatteryDataContainer.FromShip(ship, config, new());
         var records = data!.OriginalMainBatteryData.Guns.Select(gun =>
         {
             var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();

@@ -60,29 +60,6 @@ public interface IAppDataService
     Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType);
 
     /// <summary>
-    /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
-    /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
-    /// </summary>
-    /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
-    /// <returns>The projectile for the specified name.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-    Task<Projectile> GetProjectile(string projectileName);
-
-    /// <summary>
-    /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result, cast to the requested type.
-    /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
-    /// </summary>
-    /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
-    /// <typeparam name="T">
-    /// The requested return type. Must be a sub type of <see cref="Projectile"/>.
-    /// The caller is responsible for ensuring that the requested projectile is of the specified type.<br/>
-    /// <b>This method does not handle exceptions caused by an invalid cast!</b>
-    /// </typeparam>
-    /// <returns>The requested projectile, cast to the specified type.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-    Task<T> GetProjectile<T>(string projectileName) where T : Projectile;
-
-    /// <summary>
     /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
     /// Initializes the data for the nation of the provided aircraft name if it is not loaded already.
     /// </summary>

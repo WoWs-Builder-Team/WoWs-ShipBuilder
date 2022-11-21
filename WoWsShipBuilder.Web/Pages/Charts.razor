@@ -262,7 +262,7 @@
                     {
                         if (shellIndex.Equals(shellIndexFromUrl))
                         {
-                            var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
+                            var shell = AppData.FindProjectile<ArtilleryShell>(shellIndexFromUrl);
                             ArtilleryData data = new(shell, gun.DispersionValues, true);
                             artilleryData.Add(shellIndexFromUrl, data);
                         }

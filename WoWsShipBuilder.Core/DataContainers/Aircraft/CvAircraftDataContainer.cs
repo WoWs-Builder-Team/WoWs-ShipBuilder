@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -275,27 +276,27 @@ namespace WoWsShipBuilder.Core.DataContainers
                 jatoMultiplier = 0;
             }
 
-            var weaponType = (await appDataService.GetProjectile(plane.BombName)).ProjectileType;
+            var weaponType = AppData.FindProjectile(plane.BombName).ProjectileType;
             var bombInnerEllipse = 0;
             ProjectileDataContainer weapon = null!;
             switch (weaponType)
             {
                 case ProjectileType.Bomb:
-                    weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
+                    weapon = BombDataContainer.FromBombName(plane.BombName, modifiers);
                     bombInnerEllipse = (int)plane.InnerBombsPercentage;
                     break;
                 case ProjectileType.SkipBomb:
-                    weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
+                    weapon = BombDataContainer.FromBombName(plane.BombName, modifiers);
                     break;
                 case ProjectileType.Torpedo:
                     var torpList = new List<string>
                     {
                         plane.BombName,
                     };
-                    weapon = (await TorpedoDataContainer.FromTorpedoName(torpList, modifiers, true, appDataService)).First();
+                    weapon = TorpedoDataContainer.FromTorpedoName(torpList, modifiers, true).First();
                     break;
                 case ProjectileType.Rocket:
-                    weapon = await RocketDataContainer.FromRocketName(plane.BombName, modifiers, appDataService);
+                    weapon = RocketDataContainer.FromRocketName(plane.BombName, modifiers);
                     break;
             }
 

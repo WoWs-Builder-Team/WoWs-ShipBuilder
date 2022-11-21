@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
 
@@ -34,9 +33,9 @@ public partial record DepthChargeDataContainer : ProjectileDataContainer
 
     public Dictionary<float, List<float>> PointsOfDmg { get; set; } = default!;
 
-    public static async Task<DepthChargeDataContainer> FromChargesName(string name, IEnumerable<(string name, float value)> modifiers, IAppDataService appDataService)
+    public static DepthChargeDataContainer FromChargesName(string name, IEnumerable<(string name, float value)> modifiers)
     {
-        var depthCharge = await appDataService.GetProjectile<DepthCharge>(name);
+        var depthCharge = AppData.FindProjectile<DepthCharge>(name);
         float damage = modifiers.FindModifiers("dcAlphaDamageMultiplier").Aggregate(depthCharge.Damage, (current, modifier) => current * modifier);
         decimal minSpeed = (decimal)(depthCharge.SinkingSpeed * (1 - depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;
         decimal maxSpeed = (decimal)(depthCharge.SinkingSpeed * (1 + depthCharge.SinkingSpeedRng)) * Constants.KnotsToMps;

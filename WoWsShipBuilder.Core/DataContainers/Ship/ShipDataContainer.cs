@@ -45,17 +45,17 @@ namespace WoWsShipBuilder.Core.DataContainers
             var shipDataContainer = new ShipDataContainer(ship.Index)
             {
                 // Main weapons
-                MainBatteryDataContainer = await MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                TorpedoArmamentDataContainer = await TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                MainBatteryDataContainer = MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                TorpedoArmamentDataContainer = TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 CvAircraftDataContainer = await DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
                 PingerGunDataContainer = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUiDataContainer = await SecondaryBatteryUiDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                SecondaryBatteryUiDataContainer = SecondaryBatteryUiDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirDataContainer = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 AirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, false, appDataService),
                 AswAirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, true, appDataService),
-                DepthChargeLauncherDataContainer = await DepthChargesLauncherDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                DepthChargeLauncherDataContainer = DepthChargesLauncherDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Misc
                 ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),

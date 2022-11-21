@@ -145,7 +145,7 @@
         ShipList.Add(wrapper);
     }
 
-    private async Task ReturnSelectedShells()
+    private void ReturnSelectedShells()
     {
         processing = true;
         List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => !x.IsFullyConfigured && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
@@ -169,7 +169,7 @@
             foreach (string shellIndex in shellIndexes)
             {
                 var gun = ship.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
-                var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
+                var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
                 var newArtilleryData = artilleryDataDictionary[shellIndex];
                 newArtilleryData.Shell = shell;

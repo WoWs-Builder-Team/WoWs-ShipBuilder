@@ -91,12 +91,12 @@ namespace WoWsShipBuilder.Core.DataContainers
             string weaponType;
             if (isAsw)
             {
-                weapon = await DepthChargeDataContainer.FromChargesName(plane.BombName, modifiers, appDataService);
+                weapon = DepthChargeDataContainer.FromChargesName(plane.BombName, modifiers);
                 weaponType = ProjectileType.DepthCharge.ToString();
             }
             else
             {
-                weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
+                weapon = BombDataContainer.FromBombName(plane.BombName, modifiers);
                 weaponType = ProjectileType.Bomb.ToString();
             }
 

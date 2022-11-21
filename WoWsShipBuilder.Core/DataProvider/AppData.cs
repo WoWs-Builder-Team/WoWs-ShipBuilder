@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using WoWsShipBuilder.Core.Builds;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -39,10 +40,10 @@ public static class AppData
 
     /// <summary>
     /// Gets the projectile cache, mapping a nation to the actual projectile dictionary for that nation.
-    /// This property should not be accessed directly, use <see cref="DesktopAppDataService.GetProjectile"/> instead.
+    /// For easier access to data, have a look at the two linked utility methods.
     /// </summary>
-    /// <seealso cref="DesktopAppDataService.GetProjectile"/>
-    /// <seealso cref="DesktopAppDataService.GetProjectile{T}"/>
+    /// <seealso cref="FindProjectile"/>
+    /// <seealso cref="FindProjectile{T}"/>
     public static Dictionary<Nation, Dictionary<string, Projectile>> ProjectileCache { get; } = new();
 
     /// <summary>
@@ -84,5 +85,28 @@ public static class AppData
         ShipDictionary.Clear();
         DataVersion = null;
         Logging.Logger.Info("Cleared all appdata caches.");
+    }
+
+    /// <summary>
+    /// Helper method to retrieve a <see cref="Projectile"/> object from the <see cref="ProjectileCache"/> dictionary with only its index.
+    /// </summary>
+    /// <param name="projectileIndex">The WG index of the projectile object.</param>
+    /// <returns>The projectile object with the specified index.</returns>
+    public static Projectile FindProjectile(string projectileIndex)
+    {
+        var nation = IAppDataService.GetNationFromIndex(projectileIndex);
+        return ProjectileCache[nation][projectileIndex];
+    }
+
+    /// <summary>
+    /// Helper method to retrieve a <see cref="Projectile"/> object with its concrete type instead of the projectile base type.
+    /// </summary>
+    /// <param name="projectileIndex">The WG index of the projectile object.</param>
+    /// <typeparam name="T">The specific subtype or Projectile to cast the object to.</typeparam>
+    /// <returns>The projectile object with the specified index.</returns>
+    /// <exception cref="System.InvalidCastException">Occurs if the specified generic type does not match the type of the retrieved object.</exception>
+    public static T FindProjectile<T>(string projectileIndex) where T : Projectile
+    {
+        return (T)FindProjectile(projectileIndex);
     }
 }

@@ -105,17 +105,6 @@ public class ServerAppDataService : IAppDataService
         return Task.FromResult(AppData.ShipSummaryList ?? throw new InvalidOperationException());
     }
 
-    public Task<Projectile> GetProjectile(string projectileName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(projectileName);
-        return Task.FromResult(AppData.ProjectileCache[nation][projectileName]);
-    }
-
-    public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
-    {
-        return (T)await GetProjectile(projectileName);
-    }
-
     public Task<Aircraft> GetAircraft(string aircraftName)
     {
         var nation = IAppDataService.GetNationFromIndex(aircraftName);

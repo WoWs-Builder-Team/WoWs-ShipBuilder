@@ -503,7 +503,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         logger.Info("Ship is not a duplicate, start creating series.");
 
                         // create and add the ballistic series
-                        var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+                        var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
                         ShellTrajectoryCache.Add(ballisticSeries.Ballistic);
