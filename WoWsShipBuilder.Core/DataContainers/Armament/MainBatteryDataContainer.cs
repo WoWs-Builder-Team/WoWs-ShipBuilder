@@ -244,7 +244,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             if (mainBatteryDataContainer.DisplaySapDpm)
             {
                 decimal shellDamage = shellData.First(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}")).Damage;
-                mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
+                mainBatteryDataContainer.TheoreticalSapDpm = Math.Round(shellDamage * barrelCount * rateOfFire).ToString("n0", nfi);
                 mainBatteryDataContainer.SapSalvo = Math.Round(shellDamage * barrelCount).ToString("n0", nfi);
             }
 
