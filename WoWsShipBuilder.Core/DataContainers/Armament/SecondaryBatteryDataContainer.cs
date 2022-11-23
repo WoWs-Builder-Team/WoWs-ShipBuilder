@@ -124,7 +124,7 @@ namespace WoWsShipBuilder.Core.DataContainers
                 }
 
                 secondaryBatteryDataContainer.Shell = shellData;
-                secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE}");
+                secondaryBatteryDataContainer.DisplayFpm = shellData.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}");
                 secondaryBatteryDataContainer.TheoreticalDpm = Math.Round(shellData.Damage * barrelCount * rof).ToString("n0", nfi);
 
                 if (secondaryBatteryDataContainer.DisplayFpm)
