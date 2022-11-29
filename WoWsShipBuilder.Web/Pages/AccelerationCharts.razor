@@ -147,6 +147,7 @@
         List<List<IEnumerable<ChartsHelper.Point>>> data = new();
         List<int> indexes = new();
         List<string> labelNames = new();
+        List<Guid> guids = new();
 
         foreach (var (chartShipCounter, shipWrapper) in shipList)
         {
@@ -158,20 +159,22 @@
                 label += " - " + shipWrapper.Build.BuildName;
             }
             labelNames.Add(label);
-
+            guids.Add(shipWrapper.Id);
+            
             List<IEnumerable<ChartsHelper.Point>> shipData = new()
             {
                 GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList),
             };
             data.Add(shipData);
         }
-        await ChartJsInterop.BatchAddDataAsync(chartIds, labelNames, data, indexes);
+        await ChartJsInterop.BatchAddDataAsync(chartIds, guids, labelNames, data, indexes);
     }
 
-    private async Task UpdateShipsBatchAsync(Dictionary<int, ShipBuildContainer> shipList, bool replaceLabel = false, List<string>? oldLabels = null)
+    private async Task UpdateShipsBatchAsync(Dictionary<int, ShipBuildContainer> shipList)
     {
         List<IEnumerable<ChartsHelper.Point>> data = new();
         List<string> labelNames = new();
+        List<Guid> guids = new();
 
         foreach (var (_, shipWrapper) in shipList)
         {
@@ -181,17 +184,12 @@
                 label += " - " + shipWrapper.Build.BuildName;
             }
             labelNames.Add(label);
+            guids.Add(shipWrapper.Id);
             
             data.Add(GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
         }
-        if (replaceLabel && oldLabels is not null)
-        {
-            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, oldLabels, data , labelNames);
-        }
-        else
-        {
-            await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, labelNames, data , labelNames);
-        }
+
+        await ChartJsInterop.BatchUpdateDataNewLabelsAsync(AccelerationId, guids, data , labelNames);
     }
     
     private async Task SetupChartAsync()
@@ -258,19 +256,14 @@
         {
             //first remove the removed ships
             var shipsToRemove = shipBuildCache.Where(cacheContainer => !newShipList.Exists(newListContainer => cacheContainer.Value.Id.Equals(newListContainer.Id))).ToList();
-            var labelsToRemove = new List<string>();
+            var guidsToRemove = new List<Guid>();
             foreach (var (shipCounter, shipContainer) in shipsToRemove)
             {
-                var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
-                if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
-                {
-                    label += " - " + shipContainer.Build.BuildName;
-                }
-                labelsToRemove.Add(label);
+                guidsToRemove.Add(shipContainer.Id);
                 shipBuildCache.Remove(shipCounter);
                 containerList.Remove(shipContainer);
             }
-            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, labelsToRemove);
+            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, guidsToRemove);
             if (shipBuildCache.Count == 0)
             {
                 counter = 0;
@@ -315,20 +308,12 @@
         if (result is not null)
         {
             var changedShips = GetAllChangedBuildShips(result);
-            List<string> oldLabels = new();
             foreach (var (chartShipCounter, newContainer) in changedShips)
             {
-                var shipContainer = shipBuildCache[chartShipCounter];
-                var label = Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization;
-                if (shipContainer.Build is not null && !string.IsNullOrEmpty(shipContainer.Build.BuildName))
-                {
-                    label += " - " + shipContainer.Build.BuildName;
-                }
-                oldLabels.Add(label);
                 shipBuildCache[chartShipCounter] = newContainer;
                 containerList[chartShipCounter] = newContainer;
             }
-            await UpdateShipsBatchAsync(changedShips, true, oldLabels);
+            await UpdateShipsBatchAsync(changedShips);
         }
     }
 

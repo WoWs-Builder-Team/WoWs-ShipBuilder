@@ -54,6 +54,34 @@ function GetColor(index)
 /**
  * @description Add multiple datasets to multiple charts at once.
  * @param {Array<string>} chartsId - The charts ID
+ * @param {Array<string>} guids - The guids of the dataset to add
+ * @param {Array<string>} labels - The labels of the dataset to add
+ * @param {Array<Array<Array<number>>>} datas - The data of each dataset for each chart.
+ * @param {Array<number>} indexes - The indexes to associate to a dataset
+ */
+export function BatchAddData2(chartsId, guids, datas, labels, indexes)
+{
+    console.log(guids)
+    chartsId.forEach((chartId, chartIndex) =>{
+        const chart = Chart.getChart(chartId);
+        datas.forEach((shipData, index) => {
+            const dataset =
+                {
+                    data : shipData[chartIndex],
+                    label: labels[index],
+                    index: indexes[index],
+                    guid: guids[index],
+                };
+            chart.data.datasets.push(dataset)
+        });
+        chart.update();
+    });
+
+}
+
+/**
+ * @description Add multiple datasets to multiple charts at once.
+ * @param {Array<string>} chartsId - The charts ID
  * @param {Array<string>} labels - The labels of the dataset to update
  * @param {Array<Array<Array<number>>>} datas - The data of each dataset for each chart.
  * @param {Array<number>} indexes - The indexes to associate to a dataset
@@ -74,6 +102,26 @@ export function BatchAddData(chartsId, datas, labels, indexes)
         chart.update();
     });
 
+}
+
+/**
+ * @description Remove multiple datasets from multiple charts at once.
+ * @param {Array<string>} chartsId - The charts ID
+ * @param {Array<string>} guids - The labels of the dataset to remove
+ */
+export function BatchRemoveData2(chartsId, guids)
+{
+    chartsId.forEach((chartId) =>{
+        const chart = Chart.getChart(chartId);
+
+        guids.forEach((guid) => {
+            const shipIndex = chart.data.datasets.findIndex(dataset => {
+                return dataset.guid === guid;
+            })
+            chart.data.datasets.splice(shipIndex, 1);
+        });
+        chart.update();
+    });
 }
 
 /**
@@ -132,6 +180,24 @@ export function RemoveAllData(chartsId)
 /**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
+ * @param {Array<string>} guids - The labels of the dataset to update
+ * @param {Array<Array<number>>} newDatas - The new data
+ */
+export function BatchUpdateData2(chartId, guids, newDatas)
+{
+    const chart = Chart.getChart(chartId);
+    guids.forEach((guid, index) => {
+        const shipIndex = chart.data.datasets.findIndex(dataset => {
+            return dataset.guid === guid;
+        })
+        chart.data.datasets[shipIndex].data = newDatas[index];
+    });
+    chart.update();
+}
+
+/**
+ * @description Update multiple dataset at once for a specific chart.
+ * @param {string} chartId - The chart Id
  * @param {Array<string>} labels - The labels of the dataset to update
  * @param {Array<Array<number>>} newDatas - The new data
  */
@@ -143,6 +209,26 @@ export function BatchUpdateData(chartId, labels, newDatas)
             return dataset.label === label;
         })
         chart.data.datasets[shipIndex].data = newDatas[index];
+    });
+    chart.update();
+}
+
+/**
+ * @description Update multiple dataset at once for a specific chart.
+ * @param {string} chartId - The chart Id
+ * @param {Array<string>} guids - The labels of the dataset to update
+ * @param {Array<Array<number>>} newDatas - The new data
+ * @param {Array<string>} newLabels - The labels of the dataset to update
+ */
+export function BatchUpdateDataNewLabels2(chartId, guids, newDatas, newLabels)
+{
+    const chart = Chart.getChart(chartId);
+    guids.forEach((guid, index) => {
+        const shipIndex = chart.data.datasets.findIndex(dataset => {
+            return dataset.guid === guid;
+        })
+        chart.data.datasets[shipIndex].data = newDatas[index];
+        chart.data.datasets[shipIndex].label = newLabels[index];
     });
     chart.update();
 }

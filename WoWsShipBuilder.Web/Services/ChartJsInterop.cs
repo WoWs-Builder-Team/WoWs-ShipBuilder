@@ -33,12 +33,26 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
+    public async Task BatchAddDataAsync(List<string> chartIds, List<Guid> guids, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchAddData2", chartIds, guids, data, labels, indexes);
+    }
+
+    [Obsolete("Use the overload with the GUID parameter")]
     public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
     }
 
+    public async Task BatchRemoveDataAsync(List<string> chartId, List<Guid> guids)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchRemoveData2", chartId, guids);
+    }
+
+    [Obsolete("Use the overload with the GUID parameter")]
     public async Task BatchRemoveDataAsync(List<string> chartId, List<string> labels)
     {
         await InitializeModule();
@@ -51,12 +65,26 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("RemoveAllData", chartId);
     }
 
+    public async Task BatchUpdateDataAsync(string chartId, List<Guid> guids, List<IEnumerable<ChartsHelper.Point>> datas)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchUpdateData2", chartId, guids, datas);
+    }
+
+    [Obsolete("Use the overload with the GUID parameter")]
     public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);
     }
 
+    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<Guid> guids, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchUpdateDataNewLabels2", chartId, guids, datas, newLabels);
+    }
+
+    [Obsolete("Use the overload with the GUID parameter")]
     public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
     {
         await InitializeModule();
