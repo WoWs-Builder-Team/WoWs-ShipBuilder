@@ -22,12 +22,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Verify tag does not exist
-        run: docker manifest inspect floribe2000/wowssb:$APPVERSION > /dev/null ; "TAGCHECK=$?" >> $GITHUB_ENV
+      - name: Check version tag existence
+        continue-on-error: true
+        run: echo "TAGCHECK=1" >> $GITHUB_ENV; docker manifest inspect floribe2000/wowssb:$APPVERSION > /dev/null ; "TAGCHECK=$?" >> $GITHUB_ENV
       - name: Mark build as failed if tag exists
         if: env.TAGCHECK == 0
         run: false
-      - name: Build and pushdocker image
+      - name: Build and push docker image
         if: env.TAGCHECK != 0
         uses: docker/build-push-action@v3
         with:
