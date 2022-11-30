@@ -11,7 +11,6 @@
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
@@ -252,17 +251,17 @@
                 if (shellIndexFromUrl.Any())
                 {
                     string shipIndex = shipIndexesFromUrl.First();
-                    var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-                    var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+                    var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+                    var ship = AppData.FindShipFromSummary(shipSummary);
 
-                    var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
+                    var gun = ship.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndexFromUrl));
                     Dictionary<string, ArtilleryData> artilleryData = new();
                     IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(g => g.AmmoList)).Distinct();
                     foreach (string shellIndex in shellIndexes)
                     {
                         if (shellIndex.Equals(shellIndexFromUrl))
                         {
-                            var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndexFromUrl);
+                            var shell = AppData.FindProjectile<ArtilleryShell>(shellIndexFromUrl);
                             ArtilleryData data = new(shell, gun.DispersionValues, true);
                             artilleryData.Add(shellIndexFromUrl, data);
                         }
@@ -280,10 +279,10 @@
                     List<ChartsRenderingDataWrapper> shipList = new();
                     foreach (string shipIndex in shipIndexesFromUrl)
                     {
-                        var shipSummary = AppData.ShipSummaryList!.Single(x => x.Index.Equals(shipIndex));
-                        var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+                        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+                        var ship = AppData.FindShipFromSummary(shipSummary);
                         Dictionary<string, ArtilleryData> artilleryData = new();
-                        if (ship?.MainBatteryModuleList != null && ship.MainBatteryModuleList.Count > 0)
+                        if (ship.MainBatteryModuleList.Count > 0)
                         {
                             IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
                             foreach (string shellIndex in shellIndexes)

@@ -9,10 +9,8 @@ using WoWsShipBuilder.ViewModels.ShipVm;
 
 public class ShipViewModel : MainWindowViewModelBase
 {
-    public ShipViewModel(INavigationService navigationService, IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
-        : base(navigationService, appDataService, localizer, appSettings, viewModelParams)
+    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
+        : base(navigationService, localizer, appSettings, viewModelParams)
     {
     }
-
-
 }

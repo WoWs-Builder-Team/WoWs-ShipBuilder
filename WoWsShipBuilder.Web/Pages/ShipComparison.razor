@@ -42,7 +42,6 @@
 
 @inject IHostEnvironment Environment
 @inject ILocalizer Localizer
-@inject IAppDataService AppDataService
 @inject ISnackbar Snackbar
 @inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
@@ -373,7 +372,7 @@
         await base.OnInitializedAsync();
         MetricsService.ComparisonPageCount.Inc();
 
-        ViewModel = new(AppDataService, Localizer, AppSettings);
+        ViewModel = new(Localizer, AppSettings);
 
         NavManager.TryGetQueryString(TiersUrlParameter, out string selectedTiers);
         NavManager.TryGetQueryString(ClassesUrlParameter, out string selectedClasses);
@@ -485,7 +484,7 @@
             return;
         }
 
-        List<ShipComparisonDataWrapper> warnings = await ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
+        List<ShipComparisonDataWrapper> warnings = ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
         await dataGrid.ReloadServerData();
         if (warnings.Count > 0)
         {
@@ -536,14 +535,14 @@
 
     private async Task ToggleUpgradedModules()
     {
-        await ViewModel!.ToggleUpgradedModules();
+        ViewModel!.ToggleUpgradedModules();
         await UpdateUrl();
         await dataGrid.ReloadServerData();
     }
 
     private async Task AddSearchedShip(object? obj)
     {
-        await ViewModel!.AddShip(obj);
+        ViewModel!.AddShip(obj);
         await dataGrid.ReloadServerData();
     }
 
@@ -638,7 +637,7 @@
 
     private async Task ResetAllBuilds()
     {
-        await ViewModel!.ResetAllBuilds();
+        ViewModel!.ResetAllBuilds();
         await dataGrid.ReloadServerData();
         Snackbar.Add("All builds have been reset.", Severity.Success);
     }

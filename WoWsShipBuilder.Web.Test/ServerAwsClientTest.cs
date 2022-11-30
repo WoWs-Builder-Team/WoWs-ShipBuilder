@@ -26,7 +26,7 @@ public class ServerAwsClientTest
     public void Setup()
     {
         messageHandlerMock = new();
-        AppData.ShipDictionary = new();
+        AppData.ShipDictionary.Clear();
     }
 
     [Test]

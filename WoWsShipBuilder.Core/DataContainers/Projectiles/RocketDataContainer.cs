@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataStructures.Projectile;
 
@@ -50,9 +50,9 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public bool ShowBlastPenetration { get; private set; }
 
-        public static async Task<RocketDataContainer> FromRocketName(string name, List<(string name, float value)> modifiers, IAppDataService appDataService)
+        public static RocketDataContainer FromRocketName(string name, List<(string name, float value)> modifiers)
         {
-            var rocket = await appDataService.GetProjectile<Rocket>(name);
+            var rocket = AppData.FindProjectile<Rocket>(name);
 
             var rocketDamage = (decimal)rocket.Damage;
             var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");

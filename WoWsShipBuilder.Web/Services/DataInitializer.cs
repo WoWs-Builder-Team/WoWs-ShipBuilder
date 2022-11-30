@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Data;
@@ -28,13 +27,12 @@ public class DataInitializer
         {
             if (cdnOptions.UseLocalFiles)
             {
-                await serverAppDataService.LoadLocalFiles();
+                await serverAppDataService.LoadLocalFilesAsync(cdnOptions.Server);
             }
             else
             {
                 await serverAppDataService.FetchData();
             }
-            AppData.ShipSummaryList = await serverAppDataService.GetShipSummaryList(cdnOptions.Server);
         }
     }
 }

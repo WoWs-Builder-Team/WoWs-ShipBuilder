@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataElements.DataElements;
 
-namespace WoWsShipBuilder.Core.ConverterHelpers;
+namespace WoWsShipBuilder.Core.Utility;
 
 public static class FormattedTextHelper
 {

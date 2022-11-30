@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures;
@@ -60,7 +59,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public ProjectileDataContainer? Weapon { get; set; }
 
-        public static async Task<AirstrikeDataContainer?> FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw, IAppDataService appDataService)
+        public static AirstrikeDataContainer? FromShip(Ship ship, List<(string, float)> modifiers, bool isAsw)
         {
             string header = isAsw ? "ShipStats_AswAirstrike" : "ShipStats_Airstrike";
             Dictionary<string, AirStrike> airstrikes = ship.AirStrikes;
@@ -70,7 +69,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
 
             var airstrike = airstrikes.FirstOrDefault().Value;
-            var plane = await appDataService.GetAircraft(airstrike.PlaneName[..airstrike.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase)]);
+            var plane = AppData.FindAircraft(airstrike.PlaneName[..airstrike.PlaneName.IndexOf("_", StringComparison.InvariantCultureIgnoreCase)]);
 
             if (isAsw != plane.PlaneCategory.Equals(PlaneCategory.Asw))
             {
@@ -91,12 +90,12 @@ namespace WoWsShipBuilder.Core.DataContainers
             string weaponType;
             if (isAsw)
             {
-                weapon = await DepthChargeDataContainer.FromChargesName(plane.BombName, modifiers, appDataService);
+                weapon = DepthChargeDataContainer.FromChargesName(plane.BombName, modifiers);
                 weaponType = ProjectileType.DepthCharge.ToString();
             }
             else
             {
-                weapon = await BombDataContainer.FromBombName(plane.BombName, modifiers, appDataService);
+                weapon = BombDataContainer.FromBombName(plane.BombName, modifiers);
                 weaponType = ProjectileType.Bomb.ToString();
             }
 

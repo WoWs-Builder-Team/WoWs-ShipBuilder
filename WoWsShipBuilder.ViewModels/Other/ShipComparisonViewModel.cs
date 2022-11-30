@@ -6,7 +6,6 @@ using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
@@ -20,13 +19,11 @@ public class ShipComparisonViewModel : ViewModelBase
 
     public static readonly string DefaultBuildName = "---";
 
-    private readonly IAppDataService appDataService;
-
     private readonly ILocalizer localizer;
 
     private readonly AppSettings appSettings;
 
-    private readonly IEnumerable<Ship> fullShipList = AppData.ShipDictionary!.Values;
+    private readonly IEnumerable<Ship> fullShipList = AppData.ShipDictionary.Values;
 
     private List<ShipComparisonDataWrapper> filteredShipList = new();
 
@@ -123,14 +120,13 @@ public class ShipComparisonViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
     }
 
-    public ShipComparisonViewModel(IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings)
+    public ShipComparisonViewModel(ILocalizer localizer, AppSettings appSettings)
     {
-        this.appDataService = appDataService;
         this.localizer = localizer;
         this.appSettings = appSettings;
     }
 
-    public async Task ApplyFilters()
+    public Task ApplyFilters()
     {
         List<ShipComparisonDataWrapper> list = new();
 
@@ -150,7 +146,7 @@ public class ShipComparisonViewModel : ViewModelBase
 
         list.AddRange(cachedWrappers.Where(x => !ContainsWrapper(x, list)));
 
-        list.AddRange(await InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
+        list.AddRange(InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
                                                                                                      !ContainsShipIndex(data.Index, cachedWrappers) &&
                                                                                                      SelectedTiers.Contains(data.Tier) &&
                                                                                                      SelectedClasses.Contains(data.ShipClass) &&
@@ -167,6 +163,9 @@ public class ShipComparisonViewModel : ViewModelBase
         FilteredShipList = list;
 
         GetDataSectionsToDisplay();
+
+        // Keep the return type as task in order to allow making the method async in the future if there is heavy filtering logic that needs to run asynchronously.
+        return Task.CompletedTask;
     }
 
     public void ToggleShowPinnedShipOnly()
@@ -344,7 +343,7 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public async Task<List<ShipComparisonDataWrapper>> RemoveBuilds(IEnumerable<ShipComparisonDataWrapper> builds)
+    public List<ShipComparisonDataWrapper> RemoveBuilds(IEnumerable<ShipComparisonDataWrapper> builds)
     {
         List<ShipComparisonDataWrapper> warnings = new();
         List<ShipComparisonDataWrapper> buildList = new(builds);
@@ -368,7 +367,7 @@ public class ShipComparisonViewModel : ViewModelBase
             {
                 if (wrapper.Build is not null)
                 {
-                    ShipComparisonDataWrapper err = new(wrapper.Ship, await GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
+                    ShipComparisonDataWrapper err = new(wrapper.Ship, GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
                     EditBuilds(new() { err });
                     warnings.Add(err);
                 }
@@ -387,11 +386,11 @@ public class ShipComparisonViewModel : ViewModelBase
         return warnings;
     }
 
-    public async Task ResetAllBuilds()
+    public void ResetAllBuilds()
     {
-        await RemoveBuilds(FilteredShipList);
+        RemoveBuilds(FilteredShipList);
         SelectedShipList.Clear();
-        ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is not null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
+        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is not null).Select(x => new ShipComparisonDataWrapper(x.Ship, GetShipConfiguration(x.Ship), null, x.Id));
         EditBuilds(list.ToList(), true);
         SetSelectAndPinAllButtonsStatus();
     }
@@ -450,24 +449,24 @@ public class ShipComparisonViewModel : ViewModelBase
         return list.First(x => x.Id.Equals(wrapper.Id));
     }
 
-    private async Task<List<ShipComparisonDataWrapper>> InitialiseShipComparisonDataWrapper(List<Ship> ships)
+    private List<ShipComparisonDataWrapper> InitialiseShipComparisonDataWrapper(List<Ship> ships)
     {
         List<ShipComparisonDataWrapper> list = new();
         foreach (var ship in ships)
         {
-            list.Add(new(ship, await GetShipConfiguration(ship)));
+            list.Add(new(ship, GetShipConfiguration(ship)));
         }
 
         return list;
     }
 
-    private async Task ChangeModulesBatch()
+    private void ChangeModulesBatch()
     {
-        ShipComparisonDataWrapper[] list = await Task.WhenAll(FilteredShipList.Where(x => x.Build is null).Select(async x => new ShipComparisonDataWrapper(x.Ship, await GetShipConfiguration(x.Ship), null, x.Id)));
+        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is null).Select(x => new ShipComparisonDataWrapper(x.Ship, GetShipConfiguration(x.Ship), null, x.Id));
         EditBuilds(list.ToList());
     }
 
-    private async Task<ShipDataContainer> GetShipConfiguration(Ship ship)
+    private ShipDataContainer GetShipConfiguration(Ship ship)
     {
         List<ShipUpgrade> shipConfiguration = UseUpgradedModules
             ? ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
@@ -480,13 +479,13 @@ public class ShipComparisonViewModel : ViewModelBase
                 .Select(entry => entry.Value)
                 .Select(module => module.First())
                 .ToList();
-        return await ShipDataContainer.FromShipAsync(ship, shipConfiguration, new(), appDataService);
+        return ShipDataContainer.CreateFromShip(ship, shipConfiguration, new());
     }
 
-    public async Task ToggleUpgradedModules()
+    public void ToggleUpgradedModules()
     {
         UseUpgradedModules = !UseUpgradedModules;
-        await ChangeModulesBatch();
+        ChangeModulesBatch();
     }
 
     public void ToggleHideShipsWithoutSelectedSection()
@@ -753,11 +752,11 @@ public class ShipComparisonViewModel : ViewModelBase
         SetSelectAndPinAllButtonsStatus();
     }
 
-    public async Task AddShip(object? obj)
+    public void AddShip(object? obj)
     {
         if (obj is not Ship ship) return;
 
-        ShipComparisonDataWrapper newWrapper = new(ship, await GetShipConfiguration(ship));
+        ShipComparisonDataWrapper newWrapper = new(ship, GetShipConfiguration(ship));
         FilteredShipList.Add(newWrapper);
         PinnedShipList.Add(newWrapper);
 

@@ -1,5 +1,5 @@
 ﻿using MudBlazor;
-using WoWsShipBuilder.Core.ConverterHelpers;
+using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 
 namespace WoWsShipBuilder.Web.Utility;

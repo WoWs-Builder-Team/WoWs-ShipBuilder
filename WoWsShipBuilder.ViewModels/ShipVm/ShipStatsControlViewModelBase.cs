@@ -1,6 +1,5 @@
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -8,11 +7,8 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 
 public class ShipStatsControlViewModel : ViewModelBase
 {
-    private readonly IAppDataService appDataService;
-
-    public ShipStatsControlViewModel(Ship ship, IAppDataService appDataService)
+    public ShipStatsControlViewModel(Ship ship)
     {
-        this.appDataService = appDataService;
         BaseShipStats = ship;
     }
 
@@ -29,7 +25,7 @@ public class ShipStatsControlViewModel : ViewModelBase
 
     public async Task UpdateShipStats(List<ShipUpgrade> selectedConfiguration, List<(string, float)> modifiers)
     {
-        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.FromShipAsync(BaseShipStats, selectedConfiguration, modifiers, appDataService));
+        ShipDataContainer shipStats = await Task.Run(() => ShipDataContainer.CreateFromShip(BaseShipStats, selectedConfiguration, modifiers));
         CurrentShipStats = shipStats;
     }
 }

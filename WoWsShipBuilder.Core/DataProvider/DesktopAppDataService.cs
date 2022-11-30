@@ -1,22 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Splat;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
-using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Aircraft;
-using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.DataStructures.Consumable;
-using WoWsShipBuilder.DataStructures.Exterior;
-using WoWsShipBuilder.DataStructures.Projectile;
-using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.DataStructures.Versioning;
 
 namespace WoWsShipBuilder.Core.DataProvider;
@@ -109,128 +101,10 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return await DeserializeFile<VersionInfo>(filePath);
     }
 
-    public async Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
-    {
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), "Summary", "Common.json");
-        return await DeserializeFile<List<ShipSummary>>(fileName) ?? new List<ShipSummary>();
-    }
-
-    public async Task LoadNationFiles(Nation nation)
-    {
-        var server = appSettings.SelectedServerType;
-        if (AppData.ShipDictionary?.FirstOrDefault() == null || AppData.ShipDictionary.First().Value.ShipNation != nation)
-        {
-            AppData.ShipDictionary = await ReadLocalJsonData<Ship>(nation, server);
-        }
-
-        AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, server));
-        AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, server));
-        AppData.ConsumableList ??= await ReadLocalJsonData<Consumable>(Nation.Common, server);
-        AppData.ModernizationCache ??= await ReadLocalJsonData<Modernization>(Nation.Common, server);
-    }
-
-    /// <summary>
-    /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result.
-    /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
-    /// </summary>
-    /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
-    /// <returns>The projectile for the specified name.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-    public async Task<Projectile> GetProjectile(string projectileName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(projectileName);
-        if (!AppData.ProjectileCache.ContainsKey(nation))
-        {
-            AppData.ProjectileCache.SetIfNotNull(nation, await ReadLocalJsonData<Projectile>(nation, appSettings.SelectedServerType));
-        }
-
-        return AppData.ProjectileCache[nation][projectileName];
-    }
-
-    /// <summary>
-    /// Reads projectile data from the current <see cref="AppData.ProjectileCache"/> and returns the result, cast to the requested type.
-    /// Initializes the data for the nation of the provided projectile name if it is not loaded already.
-    /// </summary>
-    /// <param name="projectileName">The name of the projectile, <b>MUST</b> start with the projectile's index.</param>
-    /// <typeparam name="T">
-    /// The requested return type. Must be a sub type of <see cref="Projectile"/>.
-    /// The caller is responsible for ensuring that the requested projectile is of the specified type.<br/>
-    /// <b>This method does not handle exceptions caused by an invalid cast!</b>
-    /// </typeparam>
-    /// <returns>The requested projectile, cast to the specified type.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the projectile name does not exist in the projectile data.</exception>
-    public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
-    {
-        return (T)(await GetProjectile(projectileName));
-    }
-
-    /// <summary>
-    /// Reads aircraft data from the current <see cref="AppData.AircraftCache"/> and returns the result.
-    /// Initializes the data for the nation of the provided aircraft name if it is not loaded already.
-    /// </summary>
-    /// <param name="aircraftName">The name of the aircraft, <b>MUST</b> start with the aircraft's index.</param>
-    /// <returns>The requested aircraft.</returns>
-    /// <exception cref="KeyNotFoundException">Occurs if the aircraft name does not exist in the aircraft data.</exception>
-    public async Task<Aircraft> GetAircraft(string aircraftName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(aircraftName);
-        if (!AppData.AircraftCache.ContainsKey(nation))
-        {
-            AppData.AircraftCache.SetIfNotNull(nation, await ReadLocalJsonData<Aircraft>(nation, appSettings.SelectedServerType));
-        }
-
-        return AppData.AircraftCache[nation][aircraftName];
-    }
-
-    public async Task<Dictionary<string, Exterior>> GetExteriorList(Nation nation, ServerType serverType)
-    {
-        if (!AppData.ExteriorCache.ContainsKey(nation))
-        {
-            AppData.ExteriorCache.SetIfNotNull(nation, await ReadLocalJsonData<Exterior>(nation, serverType));
-        }
-
-        return AppData.ExteriorCache[nation];
-    }
-
-    public async Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)
-    {
-        if (!AppData.CaptainCache.ContainsKey(nation))
-        {
-            AppData.CaptainCache.SetIfNotNull(nation, await ReadLocalJsonData<Captain>(nation, serverType));
-        }
-
-        return AppData.CaptainCache.TryGetValue(nation, out Dictionary<string, Captain>? result) ? result : new();
-    }
-
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
         string fileName = dataService.CombinePaths(GetDataPath(serverType), "Localization", $"{language}.json");
         return fileSystem.File.Exists(fileName) ? await DeserializeFile<Dictionary<string, string>>(fileName) : null;
-    }
-
-    public async Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
-    {
-        Ship? ship = null;
-
-        if (summary.Nation.Equals(AppData.CurrentLoadedNation) && AppData.ShipDictionary is not null)
-        {
-            ship = AppData.ShipDictionary[summary.Index];
-        }
-        else
-        {
-            var shipDict = await ReadLocalJsonData<Ship>(summary.Nation, appSettings.SelectedServerType);
-            if (shipDict != null)
-            {
-                ship = shipDict[summary.Index];
-                if (changeDictionary)
-                {
-                    AppData.ShipDictionary = shipDict;
-                    AppData.CurrentLoadedNation = summary.Nation;
-                }
-            }
-        }
-
-        return ship;
     }
 
     /// <summary>
@@ -275,7 +149,37 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
     }
 
-    internal async Task<T?> DeserializeFile<T>(string filePath)
+    public async Task LoadLocalFilesAsync(ServerType serverType)
+    {
+        var sw = Stopwatch.StartNew();
+        Logging.Logger.Debug("Loading local files from disk.");
+        AppData.ResetCaches();
+        var localVersionInfo = await GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
+        AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
+
+        var dataRootInfo = fileSystem.DirectoryInfo.FromDirectoryName(GetDataPath(serverType));
+        IDirectoryInfo[]? categories = dataRootInfo.GetDirectories();
+
+        // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.
+        await Parallel.ForEachAsync(categories, async (category, ct) =>
+        {
+            if (category.Name.Contains("Localization", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return;
+            }
+
+            foreach (var file in category.GetFiles())
+            {
+                string content = await fileSystem.File.ReadAllTextAsync(file.FullName, ct);
+                await DataCacheHelper.AddToCache(file.Name, category.Name, content);
+            }
+        });
+
+        sw.Stop();
+        Logging.Logger.Debug("Loaded local files in {}", sw.Elapsed);
+    }
+
+    public async Task<T?> DeserializeFile<T>(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath))
         {
@@ -289,20 +193,5 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         }
 
         return await dataService.LoadAsync<T>(filePath);
-    }
-
-    /// <summary>
-    /// Read a dictionary from the local app data directory.
-    /// </summary>
-    /// <param name="nation">The selected nation.</param>
-    /// <param name="serverType">The selected server type.</param>
-    /// <typeparam name="T">The data type of the values of the dictionary.</typeparam>
-    /// <returns>A dictionary containing the deserialized file content.</returns>
-    private async Task<Dictionary<string, T>?> ReadLocalJsonData<T>(Nation nation, ServerType serverType)
-    {
-        string categoryString = IAppDataService.GetCategoryString<T>();
-        string nationString = IAppDataService.GetNationString(nation);
-        string fileName = dataService.CombinePaths(GetDataPath(serverType), categoryString, $"{nationString}.json");
-        return await DeserializeFile<Dictionary<string, T>>(fileName);
     }
 }

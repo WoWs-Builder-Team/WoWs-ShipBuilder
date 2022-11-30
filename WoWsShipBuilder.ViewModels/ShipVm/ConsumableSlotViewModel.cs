@@ -1,8 +1,6 @@
 ﻿using System;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -11,7 +9,6 @@ namespace WoWsShipBuilder.ViewModels.ShipVm;
 public class ConsumableSlotViewModel : ViewModelBase
 {
     private readonly Action<int, bool>? activationChangeHandler;
-    private readonly IAppDataService appDataService;
     private readonly List<ShipConsumable> shipConsumables;
 
     private bool consumableActivated;
@@ -21,13 +18,12 @@ public class ConsumableSlotViewModel : ViewModelBase
     private int selectedIndex;
 
     public ConsumableSlotViewModel()
-        : this(DesktopAppDataService.PreviewInstance, new List<ShipConsumable>(), null)
+        : this(new List<ShipConsumable>(), null)
     {
     }
 
-    private ConsumableSlotViewModel(IAppDataService appDataService, IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler)
+    private ConsumableSlotViewModel(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler)
     {
-        this.appDataService = appDataService;
         this.activationChangeHandler = activationChangeHandler;
         this.shipConsumables = new(shipConsumables);
         Slot = this.shipConsumables.First().Slot;
@@ -68,17 +64,16 @@ public class ConsumableSlotViewModel : ViewModelBase
 
     public ConsumableDataContainer SelectedConsumable => ConsumableData[SelectedIndex];
 
-    public static async Task<ConsumableSlotViewModel> CreateAsync(IAppDataService appDataService, IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler = null)
+    public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler = null)
     {
-        var vm = new ConsumableSlotViewModel(appDataService, shipConsumables, activationChangeHandler);
-        await vm.UpdateDataContainers(new(), 0);
+        var vm = new ConsumableSlotViewModel(shipConsumables, activationChangeHandler);
+        vm.UpdateDataContainers(new(), 0);
         return vm;
     }
 
-    public async Task UpdateDataContainers(List<(string, float)> modifiers, int shipHp)
+    public void UpdateDataContainers(List<(string, float)> modifiers, int shipHp)
     {
-        var dataContainers = await Task.WhenAll(shipConsumables
-            .Select(async c => await ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, 0, shipHp, appDataService)));
+        var dataContainers = shipConsumables.Select(c => ConsumableDataContainer.FromTypeAndVariant(c, modifiers, false, 0, shipHp));
         ConsumableData = dataContainers.ToList();
     }
 }
