@@ -9,7 +9,7 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
-public class BuildImportViewModelBase : ViewModelBase
+public partial class BuildImportViewModelBase : ViewModelBase
 {
     protected BuildImportViewModelBase()
     {
@@ -19,21 +19,11 @@ public class BuildImportViewModelBase : ViewModelBase
 
     public ReactiveCommand<Unit, Unit> ImportCommand { get; }
 
+    [Observable]
     private bool importOnly = true;
 
-    public bool ImportOnly
-    {
-        get => importOnly;
-        set => this.RaiseAndSetIfChanged(ref importOnly, value);
-    }
-
+    [Observable]
     private string? buildString;
-
-    public string? BuildString
-    {
-        get => buildString;
-        set => this.RaiseAndSetIfChanged(ref buildString, value);
-    }
 
     public Interaction<Build?, Unit> CloseInteraction { get; } = new();
 

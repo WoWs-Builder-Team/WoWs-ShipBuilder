@@ -13,7 +13,7 @@ using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
-public class ShipComparisonViewModel : ViewModelBase
+public partial class ShipComparisonViewModel : ViewModelBase
 {
     public const string DataNotAvailable = "N/A";
 
@@ -72,53 +72,23 @@ public class ShipComparisonViewModel : ViewModelBase
         }
     }
 
+    [Observable]
     private string searchString = default!;
 
-    public string SearchString
-    {
-        get => searchString;
-        set => this.RaiseAndSetIfChanged(ref searchString, value);
-    }
-
+    [Observable]
     private bool showPinnedShipsOnly;
 
-    public bool ShowPinnedShipsOnly
-    {
-        get => showPinnedShipsOnly;
-        private set => this.RaiseAndSetIfChanged(ref showPinnedShipsOnly, value);
-    }
-
+    [Observable]
     private bool pinAllShips;
 
-    public bool PinAllShips
-    {
-        get => pinAllShips;
-        private set => this.RaiseAndSetIfChanged(ref pinAllShips, value);
-    }
-
+    [Observable]
     private bool selectAllShips;
 
-    public bool SelectAllShips
-    {
-        get => selectAllShips;
-        private set => this.RaiseAndSetIfChanged(ref selectAllShips, value);
-    }
-
+    [Observable]
     private bool useUpgradedModules;
 
-    public bool UseUpgradedModules
-    {
-        get => useUpgradedModules;
-        set => this.RaiseAndSetIfChanged(ref useUpgradedModules, value);
-    }
-
+    [Observable]
     private bool hideShipsWithoutSelectedSection;
-
-    public bool HideShipsWithoutSelectedSection
-    {
-        get => hideShipsWithoutSelectedSection;
-        set => this.RaiseAndSetIfChanged(ref hideShipsWithoutSelectedSection, value);
-    }
 
     public ShipComparisonViewModel(ILocalizer localizer, AppSettings appSettings)
     {

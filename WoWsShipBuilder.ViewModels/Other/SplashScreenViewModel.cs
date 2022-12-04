@@ -1,6 +1,5 @@
 using System;
 using NLog;
-using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider.Updater;
 using WoWsShipBuilder.Core.Localization;
@@ -10,7 +9,7 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
-public class SplashScreenViewModel : ViewModelBase
+public partial class SplashScreenViewModel : ViewModelBase
 {
     private const int TaskNumber = 4;
 
@@ -24,7 +23,11 @@ public class SplashScreenViewModel : ViewModelBase
 
     private readonly ILogger logger;
 
+    [Observable]
     private double progress;
+
+    [Observable]
+    private string downloadInfo = nameof(Translation.SplashScreen_Init);
 
     public SplashScreenViewModel()
         : this(null!, null!, null!, new())
@@ -38,20 +41,6 @@ public class SplashScreenViewModel : ViewModelBase
         this.appDataService = appDataService;
         this.appSettings = appSettings;
         logger = Logging.GetLogger("SplashScreen");
-    }
-
-    public double Progress
-    {
-        get => progress;
-        set => this.RaiseAndSetIfChanged(ref progress, value);
-    }
-
-    private string downloadInfo = nameof(Translation.SplashScreen_Init);
-
-    public string DownloadInfo
-    {
-        get => downloadInfo;
-        set => this.RaiseAndSetIfChanged(ref downloadInfo, value);
     }
 
     public async Task VersionCheck(bool forceVersionCheck = false, bool throwOnException = false)
