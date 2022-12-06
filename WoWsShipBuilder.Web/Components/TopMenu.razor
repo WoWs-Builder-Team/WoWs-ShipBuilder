@@ -37,7 +37,6 @@
             </ChildContent>
         </MudTooltip>
         <MudSpacer/>
-        <MudText Color="Color.Warning" Style="padding-right: 1em;">Beta version!</MudText>
         <div class=btn-container>
             <a title="Donate" class="kofi-button" style="background-color:#505050;" href="https://ko-fi.com/L4L3DT7EM" target="_blank">
                 <span class="kofitext">
@@ -45,7 +44,10 @@
                 </span>
             </a>
         </div>
-        <NavLink href="/settings" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</NavLink>
+        <NavLink href="/settings" class="main-nav-link d-flex" ActiveClass="nav-link-active">
+            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Size="Size.Medium"/>
+            <MudText Typo="Typo.inherit" Color="Color.Inherit" Style="font-weight: inherit;" Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))</MudText>
+        </NavLink>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank"/>
     </MudHidden>
     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
@@ -55,7 +57,6 @@
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
         <MudSpacer/>
-        <MudText Color="Color.Warning">Beta Version!</MudText>
     </MudHidden>
 </MudAppBar>
 <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
