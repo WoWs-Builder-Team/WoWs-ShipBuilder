@@ -33,7 +33,6 @@ public class PropertyChangedSourceGenerator : IIncrementalGenerator
             return false;
         }
 
-        // var validBaseType = classDeclaration.BaseList?.Types.Any(baseType => baseType.ToString().Contains("ViewModelBase") || baseType.ToString().Contains(nameof(INotifyPropertyChanged))) ?? false;
         return classDeclaration.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword));
     }
 

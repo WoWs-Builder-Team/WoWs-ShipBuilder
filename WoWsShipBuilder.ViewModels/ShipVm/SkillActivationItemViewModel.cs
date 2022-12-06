@@ -1,52 +1,34 @@
-using System.Collections.Generic;
-using ReactiveUI;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm
+namespace WoWsShipBuilder.ViewModels.ShipVm;
+
+public partial class SkillActivationItemViewModel : ViewModelBase
 {
-    public class SkillActivationItemViewModel : ViewModelBase
+    public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
     {
-        public SkillActivationItemViewModel(string name, int skillId, Dictionary<string, float> modifiers, bool activationStatus, int maximumActivations = 0, int activationNumbers = 1, string description = "")
-        {
-            SkillName = name;
-            Status = activationStatus;
-            SkillId = skillId;
-            MaximumActivations = maximumActivations;
-            ActivationNumbers = activationNumbers;
-            Modifiers = modifiers;
-            Description = description;
-        }
-
-        private string skillName = default!;
-
-        public string SkillName
-        {
-            get => skillName;
-            set => this.RaiseAndSetIfChanged(ref skillName, value);
-        }
-
-        private bool status;
-
-        public bool Status
-        {
-            get => status;
-            set => this.RaiseAndSetIfChanged(ref status, value);
-        }
-
-        private int activationNumbers;
-
-        public int ActivationNumbers
-        {
-            get => activationNumbers;
-            set => this.RaiseAndSetIfChanged(ref activationNumbers, value);
-        }
-
-        public Dictionary<string, float> Modifiers { get; } = new();
-
-        public int SkillId { get; }
-
-        public int MaximumActivations { get; }
-
-        public string Description { get; }
+        SkillName = name;
+        Status = activationStatus;
+        SkillId = skillId;
+        MaximumActivations = maximumActivations;
+        ActivationNumbers = activationNumbers;
+        Modifiers = modifiers;
+        Description = description;
     }
+
+    [Observable]
+    private string skillName = default!;
+
+    [Observable]
+    private bool status;
+
+    [Observable]
+    private int activationNumbers;
+
+    public Dictionary<string, float> Modifiers { get; }
+
+    public int SkillId { get; }
+
+    public int MaximumActivations { get; }
+
+    public string Description { get; }
 }

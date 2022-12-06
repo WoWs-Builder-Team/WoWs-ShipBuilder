@@ -11,7 +11,7 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 
-public class CaptainSkillSelectorViewModel : ViewModelBase
+public partial class CaptainSkillSelectorViewModel : ViewModelBase
 {
     private const int ArSkillNumber = 23;
 
@@ -125,38 +125,14 @@ public class CaptainSkillSelectorViewModel : ViewModelBase
         }
     }
 
+    [Observable]
     private List<Captain>? captainList;
 
-    /// <summary>
-    /// Gets or sets the list of available captains.
-    /// </summary>
-    public List<Captain>? CaptainList
-    {
-        get => captainList;
-        set => this.RaiseAndSetIfChanged(ref captainList, value);
-    }
-
+    [Observable]
     private int assignedPoints;
 
-    /// <summary>
-    /// Gets or sets the number of assigned skill points.
-    /// </summary>
-    public int AssignedPoints
-    {
-        get => assignedPoints;
-        set => this.RaiseAndSetIfChanged(ref assignedPoints, value);
-    }
-
+    [Observable]
     private Dictionary<string, SkillItemViewModel>? skillList;
-
-    /// <summary>
-    /// Gets or sets the dictionary of skillList.
-    /// </summary>
-    public Dictionary<string, SkillItemViewModel>? SkillList
-    {
-        get => skillList;
-        set => this.RaiseAndSetIfChanged(ref skillList, value);
-    }
 
     /// <summary>
     /// Gets the List containing the selected skill in the order they were selected.
@@ -178,16 +154,8 @@ public class CaptainSkillSelectorViewModel : ViewModelBase
         }
     }
 
+    [Observable]
     private int arHpPercentage = 100;
-
-    /// <summary>
-    /// Gets or sets the current Adrenaline rush hp percentage.
-    /// </summary>
-    public int ArHpPercentage
-    {
-        get => arHpPercentage;
-        set => this.RaiseAndSetIfChanged(ref arHpPercentage, value);
-    }
 
     /// <summary>
     /// Gets the dictionary containing the conditional modifiers and their activation status.
@@ -214,38 +182,14 @@ public class CaptainSkillSelectorViewModel : ViewModelBase
         }
     }
 
+    [Observable]
     private bool skillActivationButtonEnabled;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the skill activation button is enabled.
-    /// </summary>
-    public bool SkillActivationButtonEnabled
-    {
-        get => skillActivationButtonEnabled;
-        set => this.RaiseAndSetIfChanged(ref skillActivationButtonEnabled, value);
-    }
-
+    [Observable]
     private bool talentOrConditionalSkillEnabled;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether a talent or a conditional skill are enabled.
-    /// </summary>
-    public bool TalentOrConditionalSkillEnabled
-    {
-        get => talentOrConditionalSkillEnabled;
-        set => this.RaiseAndSetIfChanged(ref talentOrConditionalSkillEnabled, value);
-    }
-
+    [Observable]
     private bool captainWithTalents;
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the current captain has talents.
-    /// </summary>
-    public bool CaptainWithTalents
-    {
-        get => captainWithTalents;
-        set => this.RaiseAndSetIfChanged(ref captainWithTalents, value);
-    }
 
     public bool ScreenshotMode { get; }
 
