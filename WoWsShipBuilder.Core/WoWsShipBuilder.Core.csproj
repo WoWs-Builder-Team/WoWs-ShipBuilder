@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
       <PackageReference Include="NLog" Version="5.0.4" />
       <PackageReference Include="ReactiveUI" Version="18.3.1" />
       <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
