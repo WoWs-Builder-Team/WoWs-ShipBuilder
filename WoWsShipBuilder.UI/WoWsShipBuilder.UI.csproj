@@ -9,8 +9,6 @@
         <AssemblyName>WoWsShipBuilder</AssemblyName>
         <Authors>WoWsShipBuilder-Team</Authors>
         <RepositoryType>github</RepositoryType>
-        <VersionPrefix>1.6.0</VersionPrefix>
-<!--        <VersionSuffix>pre</VersionSuffix>-->
         <NeutralLanguage>en-GB</NeutralLanguage>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);NU5128;NU5048</NoWarn>
@@ -68,6 +66,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
+        <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" Version="3.5.119" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\WoWsShipBuilder.Core\WoWsShipBuilder.Core.csproj" />
@@ -96,6 +95,11 @@
         <Content Include="..\docs\Third-Party-Licenses.txt">
             <Link>Third-Party-Licenses.txt</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="version.json">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
     <ItemGroup>
