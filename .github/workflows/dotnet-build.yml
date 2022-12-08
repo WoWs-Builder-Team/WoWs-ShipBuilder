@@ -11,6 +11,7 @@ on:
       - '.github/*.png'
       - 'docs/**/*.*'
       - 'workflows/*.yml'
+      - 'deployment/**/*.*'
 
 jobs: 
   build-and-test:

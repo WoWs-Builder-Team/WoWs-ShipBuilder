@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'development'
+    paths-ignore:
+      - 'deployment/**/*.*'
   workflow_dispatch: 
 
 jobs: 

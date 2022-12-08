@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - development
+    paths-ignore:
+      - 'deployment/**/*.*'
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch: 
