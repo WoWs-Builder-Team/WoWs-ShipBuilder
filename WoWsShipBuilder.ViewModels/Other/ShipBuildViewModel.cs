@@ -1,5 +1,4 @@
-﻿using ReactiveUI;
-using WoWsShipBuilder.Core.Builds;
+﻿using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
@@ -14,10 +13,12 @@ namespace WoWsShipBuilder.ViewModels.Other;
 /// Based on the structure of the main ship viewmodel, this viewmodel is a simplified version that does not contain a viewmodel to automatically calculate ship stats.
 /// Instead, it allows to manually calculate ship stats based on current modifications.
 /// </summary>
-public class ShipBuildViewModel : ViewModelBase
+public partial class ShipBuildViewModel : ViewModelBase
 {
+    [Observable]
     private string buildName = string.Empty;
 
+    [Observable]
     private bool specialAbilityActive;
 
     private ShipBuildViewModel(Ship ship)
@@ -36,18 +37,6 @@ public class ShipBuildViewModel : ViewModelBase
     public SignalSelectorViewModel SignalSelectorViewModel { get; private init; } = default!;
 
     public Ship CurrentShip { get; }
-
-    public bool SpecialAbilityActive
-    {
-        get => specialAbilityActive;
-        set => this.RaiseAndSetIfChanged(ref specialAbilityActive, value);
-    }
-
-    public string BuildName
-    {
-        get => buildName;
-        set => this.RaiseAndSetIfChanged(ref buildName, value);
-    }
 
     public static ShipBuildViewModel Create(ShipBuildContainer shipBuildContainer)
     {
