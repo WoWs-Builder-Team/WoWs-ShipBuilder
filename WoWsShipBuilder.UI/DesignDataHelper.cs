@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using Avalonia.Controls;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
@@ -17,13 +19,14 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.ViewModels;
+using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.ViewModels.ShipVm;
 using ShipUpgrade = WoWsShipBuilder.DataStructures.Ship.ShipUpgrade;
 
 namespace WoWsShipBuilder.UI;
 
 // TODO: fix this entire mess
-public static class DataHelper
+public static class DesignDataHelper
 {
     public static readonly IReadOnlyList<Modernization> PlaceholderBaseList = new List<Modernization> { UpgradePanelViewModelBase.PlaceholderModernization };
 
@@ -35,10 +38,14 @@ public static class DataHelper
 
     public static SettingsWindowViewModel SettingsWindowViewModel { get; } = new(new FileSystem(), new AvaloniaClipboardService(), PreviewAppDataService);
 
+    public static ShipWindowViewModel ShipWindowViewModel { get; } = new(new NavigationService(), new AvaloniaClipboardService(), DemoLocalizer, GetPreviewViewModelParams(ShipClass.Cruiser, 10, Nation.Usa));
+
     public static Build CreateTestBuild(string name = "test-build") => new(name, null!, Nation.Common, null!, null!, null!, null!, null!, null!);
 
     public static (Ship Ship, List<ShipUpgrade> Configuration) LoadPreviewShip(ShipClass shipClass, int tier, Nation nation, ServerType serverType = ServerType.Dev1)
     {
+        ThrowIfNotDesignMode();
+
         LoadNationFiles(nation, serverType);
 
         var ship = ReadLocalJsonData<Ship>(nation, ServerType.Live)!
@@ -56,6 +63,7 @@ public static class DataHelper
 
     public static ShipSummary GetPreviewShipSummary(ShipClass shipClass, int tier, Nation nation)
     {
+        ThrowIfNotDesignMode();
         var ship = LoadPreviewShip(shipClass, tier, nation);
         var dataService = new DesktopDataService(new FileSystem());
         string fileName = dataService.CombinePaths(PreviewAppDataService.GetDataPath(ServerType.Live), "Summary", "Common.json");
@@ -63,13 +71,16 @@ public static class DataHelper
         return summaryTask.Result!.First(summary => summary.Index == ship.Ship.Index);
     }
 
-    public static MainViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)
+    public static ShipViewModelParams GetPreviewViewModelParams(ShipClass shipClass, int tier, Nation nation)
     {
+        ThrowIfNotDesignMode();
         return new(LoadPreviewShip(shipClass, tier, nation).Ship, GetPreviewShipSummary(shipClass, tier, nation));
     }
 
     public static TurretModule GetPreviewTurretModule(ShipClass shipClass, int tier, Nation nation)
     {
+        ThrowIfNotDesignMode();
+
         var testData = LoadPreviewShip(shipClass, tier, nation);
         var currentShipStats = ShipDataContainer.CreateFromShip(testData.Ship, testData.Configuration, new());
         return currentShipStats.MainBatteryDataContainer!.OriginalMainBatteryData;
@@ -96,6 +107,14 @@ public static class DataHelper
         var dataService = new DesktopDataService(new FileSystem());
         string fileName = dataService.CombinePaths(PreviewAppDataService.GetDataPath(serverType), categoryString, $"{nationString}.json");
         return dataService.Load<Dictionary<string, T>>(fileName);
+    }
+
+    private static void ThrowIfNotDesignMode()
+    {
+        if (!Design.IsDesignMode)
+        {
+            throw new InvalidOperationException("This method must not be used outside of design mode");
+        }
     }
 
     public class DemoLocalizerImpl : ILocalizer

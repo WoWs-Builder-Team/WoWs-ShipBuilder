@@ -94,7 +94,7 @@ namespace WoWsShipBuilder.UI
             builder.RegisterType<AppNotificationService>().SingleInstance();
 
             builder.RegisterType<StartMenuViewModel>();
-            builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterType<ShipWindowViewModel>();
             builder.RegisterType<DispersionGraphViewModel>();
             builder.RegisterType<SplashScreenViewModel>();
 

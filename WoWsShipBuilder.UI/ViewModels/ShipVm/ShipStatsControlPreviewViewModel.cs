@@ -8,7 +8,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm;
 public class ShipStatsControlPreviewViewModel : ShipStatsControlViewModel
 {
     public ShipStatsControlPreviewViewModel()
-        : base(DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship)
+        : base(DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship)
     {
         if (!Design.IsDesignMode)
         {

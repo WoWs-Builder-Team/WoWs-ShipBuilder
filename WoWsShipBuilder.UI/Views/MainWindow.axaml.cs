@@ -19,7 +19,7 @@ using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class MainWindow : ScalableReactiveWindow<MainWindowViewModel>
+    public partial class MainWindow : ScalableReactiveWindow<ShipWindowViewModel>
     {
         public MainWindow()
         {

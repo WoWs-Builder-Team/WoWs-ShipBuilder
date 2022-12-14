@@ -15,7 +15,7 @@
         Name="StartWindow"
         Height="800" Width="400" CanResize="False"
         utilities:Scaling.ContentScaling="1"
-        Design.DataContext="{x:Static ui:DataHelper.StartMenuViewModel}"
+        Design.DataContext="{x:Static ui:DesignDataHelper.StartMenuViewModel}"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>

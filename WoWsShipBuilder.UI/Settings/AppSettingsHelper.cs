@@ -21,7 +21,7 @@ public static class AppSettingsHelper
 
     public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
 
-    public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DataHelper.DemoLocalizer;
+    public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DesignDataHelper.DemoLocalizer;
 
     public static string BuildImageOutputDirectory => Settings.CustomImagePath ?? Locator.Current.GetRequiredService<IDataService>().CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName);
 

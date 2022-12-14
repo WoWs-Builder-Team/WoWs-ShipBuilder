@@ -49,7 +49,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
+                DataContext = new FiringAngleViewModel(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
@@ -95,7 +95,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var win = new FiringAngleWindow
                 {
-                    DataContext = new FiringAngleViewModelBase(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
+                    DataContext = new FiringAngleViewModel(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
                 };
                 win.Show((Window)this.GetVisualRoot());
                 e.Handled = true;

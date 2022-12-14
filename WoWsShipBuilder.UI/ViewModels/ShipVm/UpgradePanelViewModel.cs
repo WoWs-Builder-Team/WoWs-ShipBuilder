@@ -10,7 +10,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
     public class UpgradePanelViewModel : UpgradePanelViewModelBase
     {
         public UpgradePanelViewModel()
-            : this(DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>())
+            : this(DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Germany).Ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>())
         {
         }
 

@@ -177,9 +177,9 @@
 
             var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
             var ship = AppData.FindShipFromSummary(shipSummary);
-            var vmParams = new MainViewModelParams(ship!, shipSummary, build);
+            var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
-            ShipViewModel vm = new(null!, Localizer, AppSettings, vmParams);
+            ShipViewModel vm = new(null!, Localizer, vmParams);
             await vm.InitializeData(vmParams);
             shipChanged = true;
             return vm;

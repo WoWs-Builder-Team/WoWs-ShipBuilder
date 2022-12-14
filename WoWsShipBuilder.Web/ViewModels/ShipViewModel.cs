@@ -1,5 +1,4 @@
 ﻿using WoWsShipBuilder.Core.Localization;
-using WoWsShipBuilder.Core.Settings;
 
 namespace WoWsShipBuilder.Web.ViewModels;
 
@@ -7,10 +6,10 @@ using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
-public class ShipViewModel : MainWindowViewModelBase
+public class ShipViewModel : ShipViewModelBase
 {
-    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
-        : base(navigationService, localizer, appSettings, viewModelParams)
+    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ShipViewModelParams viewModelParams)
+        : base(navigationService, localizer, viewModelParams)
     {
     }
 }

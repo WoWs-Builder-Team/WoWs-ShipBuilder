@@ -13,7 +13,6 @@ using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
@@ -21,7 +20,7 @@ using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 
-public abstract class MainWindowViewModelBase : ViewModelBase
+public abstract class ShipViewModelBase : ViewModelBase
 {
     private readonly SemaphoreSlim semaphore = new(1, 1);
 
@@ -30,8 +29,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     private readonly INavigationService navigationService;
 
     private readonly ILocalizer localizer;
-
-    private readonly AppSettings appSettings;
 
     private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
 
@@ -63,11 +60,10 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     protected string? CurrentBuildName;
 
-    protected MainWindowViewModelBase(INavigationService navigationService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
+    protected ShipViewModelBase(INavigationService navigationService, ILocalizer localizer, ShipViewModelParams viewModelParams)
     {
         this.navigationService = navigationService;
         this.localizer = localizer;
-        this.appSettings = appSettings;
         tokenSource = new();
         PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
         CurrentShip = viewModelParams.ShipSummary;
@@ -203,10 +199,10 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
 
-        await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
+        await InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
-    public async Task InitializeData(MainViewModelParams viewModelParams)
+    public async Task InitializeData(ShipViewModelParams viewModelParams)
     {
         await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }

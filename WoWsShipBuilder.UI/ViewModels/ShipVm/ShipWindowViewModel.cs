@@ -17,7 +17,7 @@ using WoWsShipBuilder.ViewModels.ShipVm;
 
 namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 {
-    public class MainWindowViewModel : MainWindowViewModelBase
+    public class ShipWindowViewModel : ShipViewModelBase
     {
         private readonly IClipboardService clipboardService;
 
@@ -25,8 +25,8 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 
         private readonly ILocalizer localizer;
 
-        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, ILocalizer localizer, MainViewModelParams viewModelParams)
-            : base(navigationService, localizer, AppSettingsHelper.Settings, viewModelParams)
+        public ShipWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, ILocalizer localizer, ShipViewModelParams viewModelParams)
+            : base(navigationService, localizer, viewModelParams)
         {
             this.clipboardService = clipboardService;
             this.localizer = localizer;
