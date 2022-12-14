@@ -23,22 +23,20 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 
         private readonly AvaloniaScreenshotRenderService screenshotRenderService;
 
-        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, MainViewModelParams viewModelParams)
-            : base(navigationService, AppSettingsHelper.LocalizerInstance, AppSettingsHelper.Settings, viewModelParams)
+        private readonly ILocalizer localizer;
+
+        public MainWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, ILocalizer localizer, MainViewModelParams viewModelParams)
+            : base(navigationService, localizer, AppSettingsHelper.Settings, viewModelParams)
         {
             this.clipboardService = clipboardService;
+            this.localizer = localizer;
             screenshotRenderService = new();
-        }
-
-        public MainWindowViewModel()
-            : this(null!, null!, DataHelper.GetPreviewViewModelParams(ShipClass.Destroyer, 9, Nation.Germany))
-        {
         }
 
         public async void OpenSaveBuild()
         {
             Logging.Logger.Info("Saving build");
-            string shipName = Locator.Current.GetServiceSafe<ILocalizer>().GetGameLocalization(CurrentShipIndex).Localization;
+            string shipName = localizer.GetGameLocalization(CurrentShipIndex).Localization;
             var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, shipName, CurrentBuildName)) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)
             {

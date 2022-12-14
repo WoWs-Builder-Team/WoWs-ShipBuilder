@@ -7,9 +7,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ReactiveUI;
 using Squirrel;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
@@ -19,11 +17,6 @@ namespace WoWsShipBuilder.UI.ViewModels
     public class SettingsWindowViewModel : SettingsWindowViewModelBase
     {
         private readonly IFileSystem fileSystem;
-
-        public SettingsWindowViewModel()
-            : this(new FileSystem(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance)
-        {
-        }
 
         public SettingsWindowViewModel(IFileSystem fileSystem, IClipboardService clipboardService, IAppDataService appDataService)
             : base(clipboardService, appDataService, AppSettingsHelper.Settings)

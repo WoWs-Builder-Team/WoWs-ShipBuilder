@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
-using Splat;
 using WoWsShipBuilder.Core.Builds;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -15,16 +13,6 @@ namespace WoWsShipBuilder.Core.DataProvider;
 
 public class DesktopAppDataService : IAppDataService, IUserDataService
 {
-#if DEBUG
-    private const string ShipBuilderName = "WoWsShipBuilderDev";
-#else
-    private const string ShipBuilderName = "WoWsShipBuilder";
-#endif
-
-#pragma warning disable CS8603
-    private static readonly Lazy<DesktopAppDataService> InstanceValue = new(() => Locator.Current.GetService<DesktopAppDataService>() ?? PreviewInstance);
-#pragma warning restore CS8603
-
     private readonly AppSettings appSettings;
 
     private readonly IDataService dataService;
@@ -36,14 +24,8 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         this.fileSystem = fileSystem;
         this.dataService = dataService;
         this.appSettings = appSettings;
-        DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ShipBuilderName);
+        DefaultAppDataDirectory = dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.ShipBuilderName);
     }
-
-    public static DesktopAppDataService Instance => InstanceValue.Value;
-
-    public static DesktopAppDataService PreviewInstance { get; } = new(new FileSystem(), new DesktopDataService(new FileSystem()), new());
-
-    public string BuildImageOutputDirectory => appSettings.CustomImagePath ?? dataService.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), ShipBuilderName);
 
     public string DefaultAppDataDirectory { get; }
 
@@ -123,30 +105,10 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         if (fileSystem.File.Exists(path))
         {
             var rawBuildList = dataService.Load<List<string>>(path);
-            var localizer = Locator.Current.GetService<ILocalizer>();
-            if (localizer is null)
-            {
-                Logging.Logger.Warn("Localizer was null, aborting build loading.");
-                return;
-            }
-
             AppData.Builds = rawBuildList?
                 .Select(str => Build.CreateBuildFromString(str))
                 .ToList() ?? new List<Build>();
         }
-    }
-
-    /// <summary>
-    /// Helper method to create the path for a build image file.
-    /// </summary>
-    /// <param name="buildName">The name of the saved build.</param>
-    /// <param name="shipName">The name of the ship of the build.</param>
-    /// <returns>The path where the generated image should be stored.</returns>
-    public string GetImageOutputPath(string buildName, string shipName)
-    {
-        string directory = BuildImageOutputDirectory;
-        fileSystem.Directory.CreateDirectory(directory);
-        return dataService.CombinePaths(directory, shipName + " - " + buildName + ".png");
     }
 
     public async Task LoadLocalFilesAsync(ServerType serverType)

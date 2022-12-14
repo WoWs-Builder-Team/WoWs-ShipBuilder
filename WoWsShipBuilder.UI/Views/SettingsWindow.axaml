@@ -9,12 +9,11 @@
         xmlns:customControls="clr-namespace:WoWsShipBuilder.UI.CustomControls"
         xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:dataProvider="clr-namespace:WoWsShipBuilder.Core.DataProvider;assembly=WoWsShipBuilder.Core"
+        xmlns:ui="clr-namespace:WoWsShipBuilder.UI"
         Height="635" Width="750" CanResize="False"
+        x:DataType="viewModels:SettingsWindowViewModel"
+        Design.DataContext="{x:Static ui:DataHelper.SettingsWindowViewModel}"
         WindowStartupLocation="CenterScreen">
-
-    <Design.DataContext>
-        <viewModels:SettingsWindowViewModel />
-    </Design.DataContext>
 
     <Grid RowDefinitions="30, *">
         <userControls:AppHeader Grid.Row="0" />

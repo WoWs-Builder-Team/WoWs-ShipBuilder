@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using DynamicData;
 
 namespace WoWsShipBuilder.Core
 {
@@ -31,7 +30,10 @@ namespace WoWsShipBuilder.Core
 
             if (itemList.Count > 1)
             {
-                Items.AddRange(itemList.SkipLast(1));
+                foreach (var item in itemList.SkipLast(1))
+                {
+                    Items.Add(item);
+                }
             }
 
             Add(itemList.Last());
@@ -47,7 +49,10 @@ namespace WoWsShipBuilder.Core
 
             if (itemList.Count > 1)
             {
-                Items.RemoveMany(itemList.SkipLast(1));
+                foreach (var item in itemList.SkipLast(1))
+                {
+                    Items.Remove(item);
+                }
             }
 
             Remove(itemList.Last());

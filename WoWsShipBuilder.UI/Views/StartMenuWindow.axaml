@@ -6,20 +6,17 @@
         x:Class="WoWsShipBuilder.UI.Views.StartMenuWindow"
         xmlns:translations="clr-namespace:WoWsShipBuilder.Core.Localization;assembly=WoWsShipBuilder.Core"
         xmlns:userControls="clr-namespace:WoWsShipBuilder.UI.UserControls"
-        xmlns:viewModels="clr-namespace:WoWsShipBuilder.UI.ViewModels"
         xmlns:utilities="clr-namespace:WoWsShipBuilder.UI.Utilities"
         xmlns:converters="clr-namespace:WoWsShipBuilder.UI.Converters"
         xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
         xmlns:services="clr-namespace:WoWsShipBuilder.UI.Services"
+        xmlns:ui="clr-namespace:WoWsShipBuilder.UI"
         Title="WoWs Ship Builder"
         Name="StartWindow"
         Height="800" Width="400" CanResize="False"
         utilities:Scaling.ContentScaling="1"
+        Design.DataContext="{x:Static ui:DataHelper.StartMenuViewModel}"
         WindowStartupLocation="CenterScreen">
-
-    <Design.DataContext>
-        <viewModels:StartMenuViewModel />
-    </Design.DataContext>
 
     <Window.Resources>
         <converters:BuildNameConverter x:Key="BuildNameConverter" />

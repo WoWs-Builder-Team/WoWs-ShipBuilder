@@ -8,9 +8,9 @@ using Avalonia.Threading;
 using ReactiveUI;
 using Splat;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.ViewModels.Other;
 
@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.UI.Views
 #endif
             this.WhenActivated(_ =>
             {
-                var vm = ViewModel ?? Locator.Current.GetServiceSafe<SplashScreenViewModel>();
+                var vm = ViewModel ?? Locator.Current.GetRequiredService<SplashScreenViewModel>();
 
                 Task.Run(async () =>
                 {
@@ -50,7 +50,7 @@ namespace WoWsShipBuilder.UI.Views
                     }
 
                     await minimumRuntime;
-                    var navigationService = Locator.Current.GetServiceSafe<INavigationService>();
+                    var navigationService = Locator.Current.GetRequiredService<INavigationService>();
 
                     await Dispatcher.UIThread.InvokeAsync(() => { navigationService.OpenStartMenu(true); });
                 });
@@ -60,7 +60,7 @@ namespace WoWsShipBuilder.UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            ViewModel = Locator.Current.GetServiceSafe<SplashScreenViewModel>();
+            ViewModel = Locator.Current.GetRequiredService<SplashScreenViewModel>();
         }
     }
 }
