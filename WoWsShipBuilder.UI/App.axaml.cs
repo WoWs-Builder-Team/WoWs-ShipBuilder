@@ -40,6 +40,11 @@ namespace WoWsShipBuilder.UI
     {
         private IContainer container = null!;
 
+        public App()
+        {
+            ModeDetector.OverrideModeDetector(new CustomModeDetector());
+        }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -178,6 +183,11 @@ namespace WoWsShipBuilder.UI
 #endif
                 await notificationService.NotifyAppUpdateError(nameof(Translation.NotificationService_ErrorMessage));
             }
+        }
+
+        private sealed class CustomModeDetector : IModeDetector
+        {
+            public bool? InUnitTestRunner() => false;
         }
     }
 }

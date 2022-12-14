@@ -20,7 +20,7 @@ using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 
-public abstract class ShipViewModelBase : ViewModelBase
+public partial class ShipViewModelBase : ViewModelBase
 {
     private readonly SemaphoreSlim semaphore = new(1, 1);
 
@@ -30,32 +30,45 @@ public abstract class ShipViewModelBase : ViewModelBase
 
     private readonly ILocalizer localizer;
 
-    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
-
-    private ConsumableViewModel consumableViewModel = null!;
-
-    private string currentShipIndex = "_default";
-
-    private int? currentShipTier;
-
-    private Ship effectiveShipData = null!;
-
-    private List<ShipSummary>? nextShips = new();
-
-    private ShipSummary currentShip = default!;
-
-    private ShipSummary? previousShip;
-
-    private Ship rawShipData = null!;
-
-    private ShipModuleViewModel shipModuleViewModel = null!;
-
-    private ShipStatsControlViewModel? shipStatsControlViewModel;
-
-    private SignalSelectorViewModel? signalSelectorViewModel;
-
     private CancellationTokenSource tokenSource;
 
+    [Observable]
+    private string currentShipIndex = "_default";
+
+    [Observable]
+    private int? currentShipTier;
+
+    [Observable]
+    private Ship rawShipData = null!;
+
+    [Observable]
+    private Ship effectiveShipData = null!;
+
+    [Observable]
+    private ShipSummary currentShip = default!;
+
+    [Observable]
+    private ShipSummary? previousShip;
+
+    [Observable]
+    private List<ShipSummary>? nextShips = new();
+
+    [Observable]
+    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
+    [Observable]
+    private ConsumableViewModel consumableViewModel = null!;
+
+    [Observable]
+    private ShipModuleViewModel shipModuleViewModel = null!;
+
+    [Observable]
+    private ShipStatsControlViewModel? shipStatsControlViewModel;
+
+    [Observable]
+    private SignalSelectorViewModel? signalSelectorViewModel;
+
+    [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
     protected string? CurrentBuildName;
@@ -69,84 +82,6 @@ public abstract class ShipViewModelBase : ViewModelBase
         CurrentShip = viewModelParams.ShipSummary;
 
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
-    }
-
-    public string CurrentShipIndex
-    {
-        get => currentShipIndex;
-        set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
-    }
-
-    public int? CurrentShipTier
-    {
-        get => currentShipTier;
-        set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
-    }
-
-    public ShipSummary CurrentShip
-    {
-        get => currentShip;
-        set => this.RaiseAndSetIfChanged(ref currentShip, value);
-    }
-
-    public ShipSummary? PreviousShip
-    {
-        get => previousShip;
-        set => this.RaiseAndSetIfChanged(ref previousShip, value);
-    }
-
-    public List<ShipSummary>? NextShips
-    {
-        get => nextShips;
-        set => this.RaiseAndSetIfChanged(ref nextShips, value);
-    }
-
-    public ShipModuleViewModel ShipModuleViewModel
-    {
-        get => shipModuleViewModel;
-        set => this.RaiseAndSetIfChanged(ref shipModuleViewModel, value);
-    }
-
-    public SignalSelectorViewModel? SignalSelectorViewModel
-    {
-        get => signalSelectorViewModel;
-        set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
-    }
-
-    public ShipStatsControlViewModel? ShipStatsControlViewModel
-    {
-        get => shipStatsControlViewModel;
-        set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
-    }
-
-    public CaptainSkillSelectorViewModel? CaptainSkillSelectorViewModel
-    {
-        get => captainSkillSelectorViewModel;
-        set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
-    }
-
-    public ConsumableViewModel ConsumableViewModel
-    {
-        get => consumableViewModel;
-        set => this.RaiseAndSetIfChanged(ref consumableViewModel, value);
-    }
-
-    public UpgradePanelViewModelBase UpgradePanelViewModel
-    {
-        get => upgradePanelViewModel;
-        set => this.RaiseAndSetIfChanged(ref upgradePanelViewModel, value);
-    }
-
-    public Ship EffectiveShipData
-    {
-        get => effectiveShipData;
-        set => this.RaiseAndSetIfChanged(ref effectiveShipData, value);
-    }
-
-    protected Ship RawShipData
-    {
-        get => rawShipData;
-        set => this.RaiseAndSetIfChanged(ref rawShipData, value);
     }
 
     public async void ResetBuild()

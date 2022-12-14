@@ -1,15 +1,12 @@
 ﻿using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Services;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.ViewModels.Helper;
