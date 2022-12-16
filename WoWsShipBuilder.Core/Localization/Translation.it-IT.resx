@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocità minima</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aerei per attacco</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Per squadrone</value>
   </data>
@@ -1507,5 +1504,20 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>era già abilitato.</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>Ad altezza operativa</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Occultamento dai sottomarini ad altezza di periscopio</value>
   </data>
 </root>

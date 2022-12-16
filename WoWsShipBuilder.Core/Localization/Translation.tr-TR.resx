@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Asgari Hız</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Saldıran Uçuş Boyutu</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Filodaki Miktar</value>
   </data>
@@ -1368,5 +1365,17 @@ Yüzey gemilerine herhangi bir etkileri yoktur.</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Patlama Derinliği</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Periskop Derinliğinde</value>
   </data>
 </root>

@@ -627,9 +627,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>最低速度</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>攻撃中隊のサイズ</value>
-  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
   </data>
@@ -1506,5 +1503,59 @@
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>は既に有効になっています。</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>斉射ダメージ</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>オプション 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>オプション 2</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>最大射程での散布界</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>浮上時</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>最大深度</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>潜望鏡深度</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>ロケット</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>戦術ロケット</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>急降下爆撃機</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>戦術爆撃機</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>雷撃機</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>戦術雷撃機</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>反跳爆撃機</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>戦術反跳爆撃機</value>
   </data>
 </root>

@@ -135,27 +135,6 @@
   <data name="SettingsWindow_CleanAppData" xml:space="preserve">
     <value>Effacer les données de l'application</value>
   </data>
-  <data name="SettingsWindow_DevelopedBy" xml:space="preserve">
-    <value>Développé par:</value>
-  </data>
-  <data name="SettingsWindow_Info" xml:space="preserve">
-    <value>Info</value>
-  </data>
-  <data name="SettingsWindow_Language" xml:space="preserve">
-    <value>Langue</value>
-  </data>
-  <data name="SettingsWindow_Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
-  </data>
-  <data name="SettingsWindow_ResetSettings" xml:space="preserve">
-    <value>Réinitialiser les paramètres par défaut</value>
-  </data>
-  <data name="SettingsWindow_Settings" xml:space="preserve">
-    <value>Paramètres</value>
-  </data>
-  <data name="SettingsWindow_Version" xml:space="preserve">
-    <value>Version:</value>
-  </data>
   <data name="StartMenu_LoadBuild" xml:space="preserve">
     <value>Charger une composition</value>
   </data>
@@ -165,44 +144,17 @@
   <data name="StartMenu_ImportBuild" xml:space="preserve">
     <value>Importer une composition...</value>
   </data>
-  <data name="StartMenu_Settings" xml:space="preserve">
-    <value>Paramètres et infos</value>
-  </data>
-  <data name="DownloadWindow_Status" xml:space="preserve">
-    <value>État:</value>
-  </data>
   <data name="SignalSelector_Flags" xml:space="preserve">
     <value>Pavillons </value>
   </data>
   <data name="BuildCreationWindow_InsertBuildName" xml:space="preserve">
     <value>Insérer le nom de la composition. Le nom du navire sera automatiquement ajouté.</value>
   </data>
-  <data name="MainWindow_NewShipSelection" xml:space="preserve">
-    <value>Sélectionner un nouveau navire</value>
-  </data>
-  <data name="SettingsWindow_ArtBy" xml:space="preserve">
-    <value>Art par:</value>
-  </data>
-  <data name="SettingsWindow_Devs" xml:space="preserve">
-    <value>Devs: </value>
-  </data>
   <data name="SettingsWindow_LeadDevs" xml:space="preserve">
     <value>Devs lead:</value>
   </data>
-  <data name="SettingsWindow_Data" xml:space="preserve">
-    <value>Conversion de données:</value>
-  </data>
-  <data name="CaptainSkillSelector_Points" xml:space="preserve">
-    <value>Points de commandant:</value>
-  </data>
   <data name="CaptainSkillSelector_Talents" xml:space="preserve">
     <value>Compétences de commandant</value>
-  </data>
-  <data name="SettingsWindow_Save" xml:space="preserve">
-    <value>Enregistrer</value>
-  </data>
-  <data name="SettingsWindow_Server" xml:space="preserve">
-    <value>Serveur</value>
   </data>
   <data name="MainWindow_BaseXp" xml:space="preserve">
     <value>XP de Base</value>
@@ -231,74 +183,14 @@
   <data name="SplashScreen_CamoImages" xml:space="preserve">
     <value>Téléchargement des images de camos</value>
   </data>
-  <data name="SplashScreen_Done" xml:space="preserve">
-    <value>Terminé</value>
-  </data>
-  <data name="SplashScreen_Json" xml:space="preserve">
-    <value>Téléchargement des données</value>
-  </data>
-  <data name="SplashScreen_ShipImages" xml:space="preserve">
-    <value>Téléchargement des images de navire</value>
-  </data>
-  <data name="AirCarrier" xml:space="preserve">
-    <value>Porte-avions</value>
-  </data>
-  <data name="Battleship" xml:space="preserve">
-    <value>Cuirassé</value>
-  </data>
   <data name="Commonwealth" xml:space="preserve">
     <value>Commonwealth</value>
-  </data>
-  <data name="Cruiser" xml:space="preserve">
-    <value>Croiseur</value>
   </data>
   <data name="Destroyer" xml:space="preserve">
     <value>Destroyer</value>
   </data>
-  <data name="Europe" xml:space="preserve">
-    <value>Europe</value>
-  </data>
-  <data name="France" xml:space="preserve">
-    <value>France</value>
-  </data>
-  <data name="Germany" xml:space="preserve">
-    <value>Allemagne</value>
-  </data>
-  <data name="Italy" xml:space="preserve">
-    <value>Italie</value>
-  </data>
-  <data name="Japan" xml:space="preserve">
-    <value>Japon</value>
-  </data>
-  <data name="Netherlands" xml:space="preserve">
-    <value>Pays-Bas</value>
-  </data>
-  <data name="PanAmerica" xml:space="preserve">
-    <value>Pan-Amérique</value>
-  </data>
-  <data name="PanAsia" xml:space="preserve">
-    <value>Pan-Asie</value>
-  </data>
-  <data name="Premium" xml:space="preserve">
-    <value>Prémium</value>
-  </data>
-  <data name="Russia" xml:space="preserve">
-    <value>Union Soviétique</value>
-  </data>
-  <data name="Spain" xml:space="preserve">
-    <value>Espagne</value>
-  </data>
-  <data name="Special" xml:space="preserve">
-    <value>Spécial</value>
-  </data>
-  <data name="Submarine" xml:space="preserve">
-    <value>Sous-marin</value>
-  </data>
   <data name="TechTree" xml:space="preserve">
-    <value>Arbre techno</value>
-  </data>
-  <data name="TestShip" xml:space="preserve">
-    <value>Navire de test</value>
+    <value>Arbre technologique</value>
   </data>
   <data name="UnitedKingdom" xml:space="preserve">
     <value>Royaume-Uni</value>
@@ -588,9 +480,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Vitesse min</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Avions par attaque</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Temps de restauration</value>
   </data>
@@ -602,6 +491,9 @@
   </data>
   <data name="ShipStats_MaximumFlightDistance" xml:space="preserve">
     <value>Longueur de largage max</value>
+  </data>
+  <data name="ShipStats_MinimumDistance" xml:space="preserve">
+      <value>Portée minimale</value>
   </data>
   <data name="ShipStats_NumberOfUses" xml:space="preserve">
     <value>Nombre de charges</value>
@@ -942,9 +834,6 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="BuildCreationWindow_ExportImage" xml:space="preserve">
     <value>Enregistrer et copier l'image</value>
   </data>
-  <data name="Dialog_Save" xml:space="preserve">
-    <value>Enregistrer</value>
-  </data>
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
@@ -1062,6 +951,9 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ArmamentType_SAP" xml:space="preserve">
     <value>SAP</value>
   </data>
+  <data name="ShipStats_Min" xml:space="preserve">
+      <value>Portée minimale</value>
+  </data>
   <data name="ShipStats_TheoreticalHeDpm" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1085,5 +977,14 @@ Si "module de protection de projection de module" + "pénétration de projection
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Dégâts</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
   </data>
 </root>
