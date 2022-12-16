@@ -627,6 +627,9 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Minimalgeschwindigkeit</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>Pro Angriff</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
   </data>
@@ -1503,6 +1506,39 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>war bereits aktiviert.</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Volle Fahrt voraus</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Rückwärts</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Beschleunigung</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Zeit</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Schiffe hinzufügen/entfernen</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Builds ändern</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Erklärung des Beschleunigungsdiagramms</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Benutzerdefinierte Daten hinzufügen</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Motorleistung</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Tonnage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Maximale Vorwärtsgeschwindigkeit</value>
   </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>
