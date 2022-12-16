@@ -1,11 +1,13 @@
 ﻿using System.IO;
 using System.IO.Abstractions;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace WoWsShipBuilder.Core.Services;
 
+[UnsupportedOSPlatform("browser")]
 public class DesktopDataService : IDataService
 {
     private readonly IFileSystem fileSystem;

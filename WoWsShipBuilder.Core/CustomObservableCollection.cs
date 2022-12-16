@@ -2,83 +2,82 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace WoWsShipBuilder.Core
+namespace WoWsShipBuilder.Core;
+
+public class CustomObservableCollection<T> : ObservableCollection<T>
 {
-    public class CustomObservableCollection<T> : ObservableCollection<T>
+    public CustomObservableCollection()
     {
-        public CustomObservableCollection()
+    }
+
+    public CustomObservableCollection(IEnumerable<T> collection)
+        : base(collection)
+    {
+    }
+
+    public CustomObservableCollection(List<T> list)
+        : base(list)
+    {
+    }
+
+    public void AddRange(IEnumerable<T> items)
+    {
+        List<T> itemList = items.ToList();
+        if (itemList.Count == 0)
         {
+            return;
         }
 
-        public CustomObservableCollection(IEnumerable<T> collection)
-            : base(collection)
+        if (itemList.Count > 1)
         {
-        }
-
-        public CustomObservableCollection(List<T> list)
-            : base(list)
-        {
-        }
-
-        public void AddRange(IEnumerable<T> items)
-        {
-            List<T> itemList = items.ToList();
-            if (itemList.Count == 0)
+            foreach (var item in itemList.SkipLast(1))
             {
-                return;
+                Items.Add(item);
             }
+        }
 
-            if (itemList.Count > 1)
+        Add(itemList.Last());
+    }
+
+    public void RemoveRange(IEnumerable<T> items)
+    {
+        List<T> itemList = items.ToList();
+        if (itemList.Count == 0)
+        {
+            return;
+        }
+
+        if (itemList.Count > 1)
+        {
+            foreach (var item in itemList.SkipLast(1))
             {
-                foreach (var item in itemList.SkipLast(1))
-                {
-                    Items.Add(item);
-                }
+                Items.Remove(item);
             }
-
-            Add(itemList.Last());
         }
 
-        public void RemoveRange(IEnumerable<T> items)
-        {
-            List<T> itemList = items.ToList();
-            if (itemList.Count == 0)
-            {
-                return;
-            }
+        Remove(itemList.Last());
+    }
 
-            if (itemList.Count > 1)
-            {
-                foreach (var item in itemList.SkipLast(1))
-                {
-                    Items.Remove(item);
-                }
-            }
+    protected override void InsertItem(int index, T item)
+    {
+        base.InsertItem(index, item);
+        NotifyCountChanged();
+    }
 
-            Remove(itemList.Last());
-        }
+    protected override void RemoveItem(int index)
+    {
+        base.RemoveItem(index);
+        NotifyCountChanged();
+    }
 
-        protected override void InsertItem(int index, T item)
-        {
-            base.InsertItem(index, item);
-            NotifyCountChanged();
-        }
+    protected override void ClearItems()
+    {
+        base.ClearItems();
+        NotifyCountChanged();
+    }
 
-        protected override void RemoveItem(int index)
-        {
-            base.RemoveItem(index);
-            NotifyCountChanged();
-        }
-
-        protected override void ClearItems()
-        {
-            base.ClearItems();
-            NotifyCountChanged();
-        }
-
-        private void NotifyCountChanged()
-        {
-            base.OnPropertyChanged(new(nameof(CustomObservableCollection<object>.Count)));
-        }
+    private void NotifyCountChanged()
+    {
+        base.OnPropertyChanged(new(nameof(CustomObservableCollection<object>.Count)));
     }
 }

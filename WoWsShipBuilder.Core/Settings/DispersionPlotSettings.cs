@@ -1,13 +1,12 @@
-﻿namespace WoWsShipBuilder.Core.Settings
+﻿namespace WoWsShipBuilder.Core.Settings;
+
+public class DispersionPlotSettings
 {
-    public class DispersionPlotSettings
-    {
-        public int ShotsNumber { get; set; } = 100;
+    public int ShotsNumber { get; set; } = 100;
 
-        public double AimingRange { get; set; } = 10.0;
+    public double AimingRange { get; set; } = 10.0;
 
-        public double ShootingRange { get; set; } = 10.0; // this is for shell trajectory chart
+    public double ShootingRange { get; set; } = 10.0; // this is for shell trajectory chart
 
-        public bool IsVertical { get; set; } = true;
-    }
+    public bool IsVertical { get; set; } = true;
 }
