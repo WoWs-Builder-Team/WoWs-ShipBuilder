@@ -1,0 +1,40 @@
+﻿version: "3.8"
+services:
+  app:
+    image: floribe2000/wowssb:latest
+    ports:
+      - target: 443
+        published: 8082
+      - target: 80
+        published: 8081
+    networks:
+      - monitoring
+    environment:
+      SENTRY_DSN:
+      LinkShortening__ApiKey:
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+  app-pts:
+    image: floribe2000/wowssb:latest
+    ports:
+      - target: 443
+        published: 8084
+      - target: 80
+        published: 8083
+    networks:
+      - monitoring
+    environment:
+      SENTRY_DSN:
+      LinkShortening__ApiKey:
+      CDNSettings__Server: Pts
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+networks:
+  monitoring:
+    name: monitoring
+    external: true
