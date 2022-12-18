@@ -5,8 +5,10 @@ services:
     ports:
       - target: 443
         published: 8082
+        mode: host
       - target: 80
         published: 8081
+        mode: host
     networks:
       - monitoring
     environment:
@@ -21,8 +23,10 @@ services:
     ports:
       - target: 443
         published: 8084
+        mode: host
       - target: 80
         published: 8083
+        mode: host
     networks:
       - monitoring
     environment:
