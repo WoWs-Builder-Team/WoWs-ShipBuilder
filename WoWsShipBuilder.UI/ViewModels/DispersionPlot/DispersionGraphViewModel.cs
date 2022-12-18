@@ -16,11 +16,11 @@ using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             logger = Logging.GetLogger("DispersionGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
-            localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+            localizer = Locator.Current.GetRequiredService<ILocalizer>();
 
             self = win;
             AddShipInteraction = new();
@@ -442,7 +442,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, ShipSelectionWindowViewModel.LoadParams(Locator.Current.GetServiceSafe<ILocalizer>()))))!;
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, ShipSelectionWindowViewModel.LoadParams(Locator.Current.GetRequiredService<ILocalizer>()))))!;
 
             if (resultList is not { Count: > 0 })
             {

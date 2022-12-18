@@ -4,7 +4,7 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 
-public partial class FiringAngleViewModelBase : ViewModelBase
+public partial class FiringAngleViewModel : ViewModelBase
 {
     [Observable]
     private IEnumerable<IGun> guns;
@@ -22,7 +22,7 @@ public partial class FiringAngleViewModelBase : ViewModelBase
     [Observable]
     private string showAllTextButton = Translation.FiringAngleWindow_ShowAll;
 
-    public FiringAngleViewModelBase(IEnumerable<IGun> guns)
+    public FiringAngleViewModel(IEnumerable<IGun> guns)
     {
         this.guns = guns;
     }

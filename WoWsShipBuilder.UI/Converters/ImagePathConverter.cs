@@ -10,14 +10,16 @@ using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using NLog;
+using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
-using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Consumable;
 using WoWsShipBuilder.DataStructures.Exterior;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
+using WoWsShipBuilder.UI.Extensions;
 
 namespace WoWsShipBuilder.UI.Converters
 {
@@ -64,7 +66,8 @@ namespace WoWsShipBuilder.UI.Converters
                     }
                     else if (type.Equals("ship", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        string? imagePath = fileSystem.Path.Combine(DesktopAppDataService.Instance.AppDataImageDirectory, "Ships", $"{imageName}.png");
+                        // TODO: remove locator invocation
+                        string? imagePath = fileSystem.Path.Combine(Locator.Current.GetRequiredService<IAppDataService>().AppDataImageDirectory, "Ships", $"{imageName}.png");
                         Stream stream;
                         if (fileSystem.File.Exists(imagePath))
                         {

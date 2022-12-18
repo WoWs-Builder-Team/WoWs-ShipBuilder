@@ -16,7 +16,7 @@ public class Tests
     [Test]
     public void EnsureReleaseVersion()
     {
-        var assembly = Assembly.GetAssembly(typeof(DataHelper));
+        var assembly = Assembly.GetAssembly(typeof(DesignDataHelper));
         string versionString = assembly!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
         versionString = VersionHelper.StripCommitFromVersion(versionString);
         Version.TryParse(versionString, out _).Should().BeTrue();
@@ -25,7 +25,7 @@ public class Tests
     [Test]
     public async Task EnsureNewVersionIsIncrement()
     {
-        var assembly = Assembly.GetAssembly(typeof(DataHelper));
+        var assembly = Assembly.GetAssembly(typeof(DesignDataHelper));
         string versionString = assembly!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
         versionString = VersionHelper.StripCommitFromVersion(versionString);
         var version = Version.Parse(versionString);

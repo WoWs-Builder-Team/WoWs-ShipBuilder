@@ -5,7 +5,6 @@ using Avalonia.Controls.Mixins;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.Dialog;
@@ -33,7 +32,7 @@ namespace WoWsShipBuilder.UI.Views
                     var fileDialog = new OpenFileDialog
                     {
                         AllowMultiple = false,
-                        Directory = AppSettingsHelper.Settings.LastImageImportPath ?? DesktopAppDataService.Instance.BuildImageOutputDirectory,
+                        Directory = AppSettingsHelper.Settings.LastImageImportPath ?? AppSettingsHelper.BuildImageOutputDirectory,
                         Filters = new()
                         {
                             new() { Name = "PNG Files", Extensions = new() { "png" } },

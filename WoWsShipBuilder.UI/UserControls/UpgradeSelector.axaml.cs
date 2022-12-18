@@ -125,7 +125,7 @@ namespace WoWsShipBuilder.UI.UserControls
             if (!beforeNotify)
             {
                 var dropDown = (UpgradeSelector)sender;
-                dropDown.EffectiveModernizationsList = DataHelper.PlaceholderBaseList
+                dropDown.EffectiveModernizationsList = DesignDataHelper.PlaceholderBaseList
                     .Concat(dropDown.AvailableModernizations)
                     .ToList();
             }

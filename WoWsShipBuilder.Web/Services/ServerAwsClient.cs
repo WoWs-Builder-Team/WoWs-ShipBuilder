@@ -5,11 +5,8 @@ using NLog;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
-using WoWsShipBuilder.Core.HttpResponses;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Utility;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -32,8 +29,6 @@ public class ServerAwsClient : IAwsClient
         var url = @$"{options.Host}/api/{serverType.StringName()}/VersionInfo.json";
         string stringContent = await httpClient.GetStringAsync(url);
         return JsonConvert.DeserializeObject<VersionInfo>(stringContent) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
-
-        // return await httpClient.GetFromJsonAsync<VersionInfo>(url) ?? throw new HttpRequestException("Unable to process VersionInfo response from AWS server.");
     }
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
@@ -83,7 +78,7 @@ public class ServerAwsClient : IAwsClient
         await DataCacheHelper.AddToCache(fileName, category, str);
     }
 
-    public Task DownloadImages(ImageType type, IFileSystem fileSystem, string? fileName = null)
+    public Task DownloadImages(IFileSystem fileSystem, string? fileName = null)
     {
         throw new NotImplementedException();
     }

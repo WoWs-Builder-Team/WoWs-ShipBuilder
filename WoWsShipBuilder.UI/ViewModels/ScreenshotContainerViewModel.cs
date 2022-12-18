@@ -17,14 +17,14 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class ScreenshotContainerViewModel : ViewModelBase
     {
         public ScreenshotContainerViewModel()
-            : this(DataHelper.CreateTestBuild(), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
+            : this(DesignDataHelper.CreateTestBuild(), DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
         {
-            var ship = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
+            var ship = DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
 
             CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true);
             SignalSelectorViewModel = new();
             UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache);
-            LoadBuilds(DataHelper.CreateTestBuild());
+            LoadBuilds(DesignDataHelper.CreateTestBuild());
         }
 
         private ScreenshotContainerViewModel(Build build, Ship ship, bool includeSignals = true)
