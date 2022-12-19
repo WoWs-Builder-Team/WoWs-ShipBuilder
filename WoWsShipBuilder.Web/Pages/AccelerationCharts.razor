@@ -356,15 +356,7 @@
         foreach (var newContainer in newList)
         {
             var oldContainer = shipBuildCache.Single(container => container.Value.Id.Equals(newContainer.Id));
-            if (oldContainer.Value.Build is null && newContainer.Build is not null)
-            {
-                filteredList.Add(oldContainer.Key, newContainer);
-            }
-            else if (oldContainer.Value.Build is not null && newContainer.Build is null)
-            {
-                filteredList.Add(oldContainer.Key, newContainer);
-            }
-            else if (oldContainer.Value.Build is not null && newContainer.Build is not null && !oldContainer.Value.Build.Equals(newContainer.Build))
+            if (!oldContainer.Value.IsEquivalentTo(newContainer))
             {
                 filteredList.Add(oldContainer.Key, newContainer);
             }
