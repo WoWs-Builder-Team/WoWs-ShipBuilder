@@ -398,7 +398,7 @@ public sealed class ShipComparisonDataWrapper
         BombersWeaponRicochetAngles = bombs?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
     }
 
-    private ShipBuildContainer shipBuildContainer;
+    private readonly ShipBuildContainer shipBuildContainer;
 
     public Ship Ship { get; }
 
