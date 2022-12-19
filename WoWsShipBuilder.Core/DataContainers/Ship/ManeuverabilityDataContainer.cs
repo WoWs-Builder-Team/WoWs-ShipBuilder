@@ -51,7 +51,7 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
 
         decimal maxSpeedModifier = modifiers.FindModifiers("speedCoef", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
         maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
-        maxSpeedModifier = modifiers.FindModifiers("boostCoeff").Aggregate(maxSpeedModifier, (current, modifier) => current * ((decimal)modifier + 1));
+        maxSpeedModifier = modifiers.FindModifiers("boostCoeff").Aggregate(maxSpeedModifier, (current, modifier) => current + (decimal)modifier); // Speed boost is additive
 
         decimal enlargedPropellerShaftSpeedModifier = modifiers.FindModifiers("speedCoefBattery", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
