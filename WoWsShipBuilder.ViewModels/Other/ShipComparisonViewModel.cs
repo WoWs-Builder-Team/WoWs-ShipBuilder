@@ -337,7 +337,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
             {
                 if (wrapper.Build is not null)
                 {
-                    ShipComparisonDataWrapper err = new(wrapper.Ship, GetShipConfiguration(wrapper.Ship), null, wrapper.Id);
+                    ShipComparisonDataWrapper err = ResetBuild(wrapper);
                     EditBuilds(new() { err });
                     warnings.Add(err);
                 }
@@ -360,7 +360,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         RemoveBuilds(FilteredShipList);
         SelectedShipList.Clear();
-        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is not null).Select(x => new ShipComparisonDataWrapper(x.Ship, GetShipConfiguration(x.Ship), null, x.Id));
+        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is not null).Select(ResetBuild);
         EditBuilds(list.ToList(), true);
         SetSelectAndPinAllButtonsStatus();
     }
@@ -424,7 +424,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         List<ShipComparisonDataWrapper> list = new();
         foreach (var ship in ships)
         {
-            list.Add(new(ship, GetShipConfiguration(ship)));
+            list.Add(ShipComparisonDataWrapper.CreateNew(ship, GetShipConfiguration(ship)));
         }
 
         return list;
@@ -432,7 +432,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     private void ChangeModulesBatch()
     {
-        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is null).Select(x => new ShipComparisonDataWrapper(x.Ship, GetShipConfiguration(x.Ship), null, x.Id));
+        IEnumerable<ShipComparisonDataWrapper> list = FilteredShipList.Where(x => x.Build is null).Select(ResetBuild);
         EditBuilds(list.ToList());
     }
 
@@ -711,7 +711,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         foreach (var selectedShip in SelectedShipList)
         {
-            ShipComparisonDataWrapper newWrapper = new(selectedShip.Ship, selectedShip.ShipDataContainer, selectedShip.Build);
+            ShipComparisonDataWrapper newWrapper = new(selectedShip.GetShipBuildContainer());
             FilteredShipList.Add(newWrapper);
             if (ContainsWrapper(selectedShip, PinnedShipList))
             {
@@ -726,7 +726,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         if (obj is not Ship ship) return;
 
-        ShipComparisonDataWrapper newWrapper = new(ship, GetShipConfiguration(ship));
+        var newWrapper = ShipComparisonDataWrapper.CreateNew(ship, GetShipConfiguration(ship));
         FilteredShipList.Add(newWrapper);
         PinnedShipList.Add(newWrapper);
 
@@ -742,6 +742,11 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         SelectAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, SelectedShipList)).ToList().Count == 0;
         PinAllShips = list.Where(wrapper => !ContainsWrapper(wrapper, PinnedShipList)).ToList().Count == 0;
+    }
+
+    private ShipComparisonDataWrapper ResetBuild(ShipComparisonDataWrapper wrapper)
+    {
+        return new(wrapper.GetShipBuildContainer() with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipConfiguration(wrapper.Ship), Modifiers = null });
     }
 
     public string ShipComparisonDataSectionToString(ShipComparisonDataSections dataSection)

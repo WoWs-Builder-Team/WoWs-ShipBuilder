@@ -2,7 +2,6 @@
 
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Core.Extensions
-@using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Globalization
@@ -454,23 +453,26 @@
 
     private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
     {
+        if (isDialogOpen)
+        {
+            return;
+        }
+        isDialogOpen = true;
         shipBuildContainers.Clear();
         if (wrapper is not null)
         {
-            shipBuildContainers.Add(new(wrapper.Ship, wrapper.Build, wrapper.Id, null, false, wrapper.ShipDataContainer, null));
+            shipBuildContainers.Add(wrapper.GetShipBuildContainer());
         }
         else
         {
-            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => new ShipBuildContainer(x.Ship, x.Build, x.Id, null, false, x.ShipDataContainer, null)).OrderBy(x => LocalizeShipName(x.Ship.Index)));
+            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => x.GetShipBuildContainer()).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
-
-        isDialogOpen = true;
         IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync();
         isDialogOpen = false;
 
         if (results is not null)
         {
-            List<ShipComparisonDataWrapper> list = results.Select(x => new ShipComparisonDataWrapper(x.Ship, x.ShipDataContainer!, x.Build, x.Id)).ToList();
+            List<ShipComparisonDataWrapper> list = results.Select(x => new ShipComparisonDataWrapper(x)).ToList();
             ViewModel!.EditBuilds(list);
         }
 

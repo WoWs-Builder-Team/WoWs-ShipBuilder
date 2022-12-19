@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using WoWsShipBuilder.Core.Builds;
+using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
@@ -9,23 +11,35 @@ namespace WoWsShipBuilder.ViewModels.Helper;
 
 public sealed class ShipComparisonDataWrapper
 {
-    public ShipComparisonDataWrapper(Ship ship, ShipDataContainer shipDataContainer, Build? build = null, Guid? id = null)
+    public static ShipComparisonDataWrapper CreateNew(Ship ship, ShipDataContainer shipDataContainer)
     {
-        Ship = ship;
-        ShipDataContainer = shipDataContainer;
-        Build = build;
-        Id = id ?? Guid.NewGuid();
+        return new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = shipDataContainer });
+    }
+
+    public ShipBuildContainer GetShipBuildContainer()
+    {
+        return shipBuildContainer;
+    }
+
+    public ShipComparisonDataWrapper(ShipBuildContainer shipBuildContainer)
+    {
+        this.shipBuildContainer = shipBuildContainer;
+
+        Ship = shipBuildContainer.Ship;
+        ShipDataContainer = shipBuildContainer.ShipDataContainer ?? throw new InvalidDataException("ShipDataContainer is null. ShipDataContainer must not be null.");
+        Build = shipBuildContainer.Build;
+        Id = shipBuildContainer.Id;
 
         //base
-        ShipIndex = ship.Index;
-        ShipNation = ship.ShipNation;
-        ShipClass = ship.ShipClass;
-        ShipCategory = ship.ShipCategory;
-        ShipTier = ship.Tier;
-        BuildName = build?.BuildName;
+        ShipIndex = shipBuildContainer.Ship.Index;
+        ShipNation = shipBuildContainer.Ship.ShipNation;
+        ShipClass = shipBuildContainer.Ship.ShipClass;
+        ShipCategory = shipBuildContainer.Ship.ShipCategory;
+        ShipTier = shipBuildContainer.Ship.Tier;
+        BuildName = shipBuildContainer.Build?.BuildName;
 
         //Main battery
-        var mainBattery = shipDataContainer.MainBatteryDataContainer;
+        var mainBattery = shipBuildContainer.ShipDataContainer.MainBatteryDataContainer;
 
         MainBatteryCaliber = mainBattery?.GunCaliber;
         MainBatteryBarrelCount = mainBattery?.BarrelsCount;
@@ -87,7 +101,7 @@ public sealed class ShipComparisonDataWrapper
         SapRicochet = sapShellData?.RicochetAngles;
 
         //TorpLaunchers
-        var torpedoArmament = shipDataContainer.TorpedoArmamentDataContainer;
+        var torpedoArmament = shipBuildContainer.ShipDataContainer.TorpedoArmamentDataContainer;
 
         TorpedoCount = torpedoArmament?.TorpCount;
         TorpedoLayout = torpedoArmament?.TorpLayout;
@@ -114,7 +128,7 @@ public sealed class ShipComparisonDataWrapper
         TorpedoCanHit = torpedoes?.Select(x => x.CanHitClasses).ToList() ?? new();
 
         //Secondaries
-        List<SecondaryBatteryDataContainer>? secondaryBattery = shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries;
+        List<SecondaryBatteryDataContainer>? secondaryBattery = shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries;
 
         SecondaryBatteryCaliber = secondaryBattery?.Select(x => x.GunCaliber).ToList() ?? new();
         SecondaryBatteryBarrelCount = secondaryBattery?.Select(x => x.BarrelsCount).ToList() ?? new();
@@ -144,7 +158,7 @@ public sealed class ShipComparisonDataWrapper
         SecondarySapRicochet = secondaryShellData?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
 
         //AA
-        var aaData = shipDataContainer.AntiAirDataContainer;
+        var aaData = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
 
         LongAaRange = aaData?.LongRangeAura?.Range;
         MediumAaRange = aaData?.MediumRangeAura?.Range;
@@ -159,8 +173,8 @@ public sealed class ShipComparisonDataWrapper
         FlakDamage = aaData?.LongRangeAura?.FlakDamage;
 
         //ASW
-        var aswAirStrike = shipDataContainer.AswAirstrikeDataContainer;
-        var depthChargeLauncher = shipDataContainer.DepthChargeLauncherDataContainer;
+        var aswAirStrike = shipBuildContainer.ShipDataContainer.AswAirstrikeDataContainer;
+        var depthChargeLauncher = shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer;
         var depthCharge = depthChargeLauncher?.DepthCharge ?? aswAirStrike?.Weapon as DepthChargeDataContainer;
 
         AswDcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? "DepthCharge" : null;
@@ -180,7 +194,7 @@ public sealed class ShipComparisonDataWrapper
         DcDetonationDepth = depthCharge?.DetonationDepth;
 
         //AirStrike
-        var airStrike = shipDataContainer.AirstrikeDataContainer;
+        var airStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
         var airStrikeWeapon = airStrike?.Weapon as BombDataContainer;
 
         AirStrikePlanesHp = airStrike?.PlaneHp;
@@ -200,7 +214,7 @@ public sealed class ShipComparisonDataWrapper
         AirStrikeBlastDamage = airStrikeWeapon?.SplashCoeff;
 
         //Maneuverability
-        var maneuverability = shipDataContainer.ManeuverabilityDataContainer;
+        var maneuverability = shipBuildContainer.ShipDataContainer.ManeuverabilityDataContainer;
 
         ManeuverabilityMaxSpeed = maneuverability.ManeuverabilityMaxSpeed != 0 ? maneuverability.ManeuverabilityMaxSpeed : maneuverability.ManeuverabilitySubsMaxSpeedOnSurface;
         ManeuverabilityMaxSpeedAtPeriscopeDepth = maneuverability.ManeuverabilitySubsMaxSpeedAtPeriscope;
@@ -213,7 +227,7 @@ public sealed class ShipComparisonDataWrapper
         ManeuverabilityEngineProtection = maneuverability.EngineBlastProtection;
 
         //Concealment
-        var concealment = shipDataContainer.ConcealmentDataContainer;
+        var concealment = shipBuildContainer.ShipDataContainer.ConcealmentDataContainer;
 
         ConcealmentFromShipsBase = concealment.ConcealmentBySea;
         ConcealmentFromShipsOnFire = concealment.ConcealmentBySeaFire;
@@ -223,7 +237,7 @@ public sealed class ShipComparisonDataWrapper
         ConcealmentFromSubsPeriscopeDepth = concealment.ConcealmentBySubPeriscope;
 
         //Survivability
-        var survivability = shipDataContainer.SurvivabilityDataContainer;
+        var survivability = shipBuildContainer.ShipDataContainer.SurvivabilityDataContainer;
 
         SurvivabilityShipHp = survivability.HitPoints;
         SurvivabilityFireMaxAmount = survivability.FireAmount;
@@ -238,7 +252,7 @@ public sealed class ShipComparisonDataWrapper
         SurvivabilityFloodingTorpedoProtection = survivability.FloodTorpedoProtection;
 
         //Sonar
-        var pingerGun = shipDataContainer.PingerGunDataContainer;
+        var pingerGun = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
 
         SonarReloadTime = pingerGun?.Reload;
         SonarTraverseSpeed = pingerGun?.TraverseSpeed;
@@ -250,7 +264,7 @@ public sealed class ShipComparisonDataWrapper
         SonarSecondPingDuration = pingerGun?.SecondPingDuration;
 
         //RocketPlanes
-        List<CvAircraftDataContainer>? rocketPlanes = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList();
+        List<CvAircraftDataContainer>? rocketPlanes = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString())).ToList();
 
         RocketPlanesType = rocketPlanes?.Select(x => x.PlaneVariant).ToList() ?? new();
         RocketPlanesInSquadron = rocketPlanes?.Select(x => x.NumberInSquad).ToList() ?? new();
@@ -294,7 +308,7 @@ public sealed class ShipComparisonDataWrapper
         RocketPlanesWeaponBlastPenetration = rockets?.Select(x => x?.SplashCoeff ?? 0).ToList() ?? new();
 
         //TorpedoBombers
-        List<CvAircraftDataContainer>? torpedoBombers = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList();
+        List<CvAircraftDataContainer>? torpedoBombers = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString())).ToList();
 
         TorpedoBombersType = torpedoBombers?.Select(x => x.PlaneVariant).ToList() ?? new();
         TorpedoBombersInSquadron = torpedoBombers?.Select(x => x.NumberInSquad).ToList() ?? new();
@@ -338,7 +352,7 @@ public sealed class ShipComparisonDataWrapper
         TorpedoBombersWeaponCanHit = aerialTorpedoes?.Select(x => x?.CanHitClasses).ToList() ?? new();
 
         //Bombers
-        List<CvAircraftDataContainer>? bombers = shipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList();
+        List<CvAircraftDataContainer>? bombers = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString())).ToList();
 
         BombersType = bombers?.Select(x => x.PlaneVariant).ToList() ?? new();
         BombersInSquadron = bombers?.Select(x => x.NumberInSquad).ToList() ?? new();
@@ -383,6 +397,8 @@ public sealed class ShipComparisonDataWrapper
         BombersWeaponArmingThreshold = bombs?.Select(x => x?.ArmingThreshold ?? 0).ToList() ?? new();
         BombersWeaponRicochetAngles = bombs?.Select(x => x?.RicochetAngles ?? default!).ToList() ?? new();
     }
+
+    private ShipBuildContainer shipBuildContainer;
 
     public Ship Ship { get; }
 
