@@ -86,7 +86,7 @@ public class SignalSelectorViewModel : ViewModelBase
 
     public List<string> GetFlagList()
     {
-        return SelectedSignals.Select(signal => signal.Name).ToList();
+        return SelectedSignals.Select(signal => signal.Index).ToList();
     }
 
     public void LoadBuild(IReadOnlyList<string> initialSignalsNames)

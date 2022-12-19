@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using NLog;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 
@@ -14,7 +13,7 @@ namespace WoWsShipBuilder.Core.Builds;
 
 public class Build
 {
-    internal const int CurrentBuildVersion = 2;
+    internal const int CurrentBuildVersion = 3;
 
     private const char ListSeparator = ',';
 
@@ -57,8 +56,16 @@ public class Build
 
     public IReadOnlyList<string> Consumables { get; }
 
-    public IReadOnlyList<string> Signals { get; }
+    public IReadOnlyList<string> Signals { get; private set; }
 
+    /// <summary>
+    /// Gets a value indicating the version number of a build.
+    /// <br/><br/>
+    /// <b>Version Changelog:</b>
+    /// <para>v1: old build format that stored localized build data.</para>
+    /// <para>v2: no longer store localized build data, store ship index directly.</para>
+    /// <para>v3: no structural changes, signals are now stored by index instead of full name.</para>
+    /// </summary>
     public int BuildVersion { get; private set; }
 
     [JsonIgnore]
@@ -130,6 +137,11 @@ public class Build
     /// <returns>The updated build.</returns>
     private static Build UpgradeBuild(Build oldBuild, ILogger logger)
     {
+        if (oldBuild.BuildVersion < 3)
+        {
+            oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToList();
+        }
+
         if (oldBuild.BuildVersion < CurrentBuildVersion)
         {
             logger.Info("Upgrading build {} from build version {} to current version.", oldBuild.BuildName, oldBuild.BuildVersion);
