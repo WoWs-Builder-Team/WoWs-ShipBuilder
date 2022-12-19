@@ -1,4 +1,6 @@
 ﻿using MudBlazor;
+using WoWsShipBuilder.Core.Extensions;
+using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 
@@ -16,7 +18,7 @@ public static class Helpers
 
     public static string GetNationFlag(IHostEnvironment environment, Nation shipNation, string shipIndex)
     {
-        string imgName = File.Exists(Path.Combine(environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ToString();
+        string imgName = File.Exists(Path.Combine(environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")) ? shipIndex : shipNation.ShipNationToString();
         return $"/assets/nation_flags/flag_{imgName}.png";
     }
 
