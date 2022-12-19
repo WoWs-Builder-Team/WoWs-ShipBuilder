@@ -269,13 +269,13 @@
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ShipClassToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                 </CellTemplate>
             </Column>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ShipNationToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
                 </CellTemplate>
@@ -329,7 +329,7 @@
         </NoRecordsContent>
     </MudDataGrid>
 
-    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildContainers" MaxWidth="MaxWidth.Large" FullWidth NoHeader/>
+    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildContainers" MaxWidth="MaxWidth.Large" DisableBackdropClick="true" FullWidth NoHeader/>
 
     <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
         <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
