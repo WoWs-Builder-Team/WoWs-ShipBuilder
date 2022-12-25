@@ -627,6 +627,9 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocidade mínima</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>Aeronaves por ataque</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Em um esquadrão</value>
   </data>
@@ -1550,6 +1553,18 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
       <value>Tempo de retrocesso do motor</value>
   </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Engine forward forsage</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Engine backward forsage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Forward forsage max speed</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Backward forsage max speed</value>
+  </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1559,10 +1574,49 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SAP</value>
   </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Dano de salva completa</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>Opção 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>Opção 2</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Dispersão no alcance máximo</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>Na superfície</value>
+  </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
       <value>Na profundidade de máxima</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>Na profundidade de periscópio</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Foguetes</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Foguetes Táticos</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Bombardeiros de Mergulho</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Bombardeiros Táticos de Mergulho</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Bombardeiros Torpedeiros</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Bombardeiros Torpedeiros Tático</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Bombardeiros "Skip"</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Bombardeiros Táticos "Skip"</value>
   </data>
 </root>
