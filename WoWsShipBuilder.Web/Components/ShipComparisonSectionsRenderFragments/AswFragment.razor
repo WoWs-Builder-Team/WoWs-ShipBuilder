@@ -1,0 +1,266 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> AswDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonDataSections.Asw;
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswDcType is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @element.localizer.GetAppLocalization(context.Item.AswDcType).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcUses" Title="Charges" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswDcUses is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswDcUses
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswRange" Title="Drop Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswRange is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswRange
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswMaxDropLength" Title="Max Drop Length (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswMaxDropLength is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswMaxDropLength
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswPlanesInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswPlanesInSquadron is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswPlanesInSquadron
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswBombsPerPlane" Title="Bombs per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswBombsPerPlane is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswBombsPerPlane
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcPerAttack" Title="Bombs in a charge" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcPerAttack is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcPerAttack
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.AswDcReload is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.AswDcReload
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcFireChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcFireChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFloodingChance" Title="Flood chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcFloodingChance is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcFloodingChance
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.DcSplashRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcSplashRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSinkSpeed" Title="Sink speed (m/s)" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.DcSinkSpeed))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcSinkSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationTimer" Title="Detonation timer (s)" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcDetonationTimer
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationDepth" Title="Detonation depth (m)" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.DcDetonationDepth))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.DcDetonationDepth
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

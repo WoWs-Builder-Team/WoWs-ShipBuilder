@@ -1,12 +1,8 @@
-﻿using ReactiveUI;
-using WoWsShipBuilder.Core.Builds;
+﻿using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.ShipVm;
 
@@ -17,17 +13,16 @@ namespace WoWsShipBuilder.ViewModels.Other;
 /// Based on the structure of the main ship viewmodel, this viewmodel is a simplified version that does not contain a viewmodel to automatically calculate ship stats.
 /// Instead, it allows to manually calculate ship stats based on current modifications.
 /// </summary>
-public class ShipBuildViewModel : ViewModelBase
+public partial class ShipBuildViewModel : ViewModelBase
 {
-    private readonly IAppDataService appDataService;
-
+    [Observable]
     private string buildName = string.Empty;
 
+    [Observable]
     private bool specialAbilityActive;
 
-    private ShipBuildViewModel(Ship ship, IAppDataService appDataService)
+    private ShipBuildViewModel(Ship ship)
     {
-        this.appDataService = appDataService;
         CurrentShip = ship;
     }
 
@@ -43,28 +38,16 @@ public class ShipBuildViewModel : ViewModelBase
 
     public Ship CurrentShip { get; }
 
-    public bool SpecialAbilityActive
-    {
-        get => specialAbilityActive;
-        set => this.RaiseAndSetIfChanged(ref specialAbilityActive, value);
-    }
-
-    public string BuildName
-    {
-        get => buildName;
-        set => this.RaiseAndSetIfChanged(ref buildName, value);
-    }
-
-    public static async Task<ShipBuildViewModel> CreateAsync(ShipBuildContainer shipBuildContainer, IAppDataService appDataService, AppSettings appSettings)
+    public static ShipBuildViewModel Create(ShipBuildContainer shipBuildContainer)
     {
         var ship = shipBuildContainer.Ship;
-        var vm = new ShipBuildViewModel(ship, appDataService)
+        var vm = new ShipBuildViewModel(ship)
         {
-            SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings)),
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation)),
+            SignalSelectorViewModel = new(),
+            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation)),
             ShipModuleViewModel = new(ship.ShipUpgradeInfo),
-            UpgradePanelViewModel = new(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
-            ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),
+            UpgradePanelViewModel = new(ship, AppData.ModernizationCache),
+            ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>()),
             SpecialAbilityActive = shipBuildContainer.SpecialAbilityActive,
         };
 
@@ -76,26 +59,26 @@ public class ShipBuildViewModel : ViewModelBase
             vm.ShipModuleViewModel.LoadBuild(build.Modules);
             vm.UpgradePanelViewModel.LoadBuild(build.Upgrades);
             vm.ConsumableViewModel.LoadBuild(build.Consumables);
-            vm.BuildName = build.BuildName;
+            vm.BuildName = build.BuildName.Trim();
         }
 
         return vm;
     }
 
-    public Build? DumpToBuild()
+    private Build? DumpToBuild()
     {
         bool isCustomBuild = !string.IsNullOrWhiteSpace(BuildName) || ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
                              UpgradePanelViewModel.SelectedModernizationList.Any() || ConsumableViewModel.ActivatedSlots.Any() ||
                              CaptainSkillSelectorViewModel.SkillOrderList.Any() || SignalSelectorViewModel.SelectedSignals.Any();
         if (isCustomBuild)
         {
-            return new(BuildName, CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList());
+            return new(BuildName.Trim(), CurrentShip.Index, CurrentShip.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel.GetCaptainIndex(), CaptainSkillSelectorViewModel.GetSkillNumberList(), SignalSelectorViewModel.GetFlagList());
         }
 
         return null;
     }
 
-    public async Task<ShipBuildContainer> CreateShipBuildContainerAsync(ShipBuildContainer baseContainer)
+    public ShipBuildContainer CreateShipBuildContainerAsync(ShipBuildContainer baseContainer)
     {
         var build = DumpToBuild();
         List<int>? activatedConsumables = ConsumableViewModel.ActivatedSlots.Any() ? ConsumableViewModel.ActivatedSlots.ToList() : null;
@@ -105,14 +88,14 @@ public class ShipBuildViewModel : ViewModelBase
             Build = build,
             ActivatedConsumableSlots = activatedConsumables,
             SpecialAbilityActive = SpecialAbilityActive,
-            ShipDataContainer = await CreateDataContainerAsync(modifiers),
+            ShipDataContainer = CreateDataContainerAsync(modifiers),
             Modifiers = modifiers,
         };
     }
 
-    private async Task<ShipDataContainer> CreateDataContainerAsync(List<(string, float)> modifiers)
+    private ShipDataContainer CreateDataContainerAsync(List<(string, float)> modifiers)
     {
-        return await ShipDataContainer.FromShipAsync(CurrentShip, ShipModuleViewModel.SelectedModules.ToList(), modifiers, appDataService);
+        return ShipDataContainer.CreateFromShip(CurrentShip, ShipModuleViewModel.SelectedModules.ToList(), modifiers);
     }
 
     private List<(string, float)> GenerateModifierList()

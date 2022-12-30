@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Langstreckenaura</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Rückwärts</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Vorwärts</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Maximalgeschwindigkeit</value>
   </data>
@@ -634,7 +628,7 @@
     <value>Minimalgeschwindigkeit</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Flugzeuge pro Angriff</value>
+      <value>Pro Angriff</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Flugzeuge pro Staffel</value>
@@ -815,9 +809,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Während der Vorbereitungszeit</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Zeit bis zur maximalen Leistung</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Datenversion:</value>
@@ -1515,5 +1506,98 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>war bereits aktiviert.</value>
+  </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Zeit bis zur maximalen Geschwindigkeit</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Volle Fahrt voraus</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Rückwärts</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Beschleunigung</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Zeit</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Schiffe hinzufügen/entfernen</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Builds ändern</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Erklärung des Beschleunigungsdiagramms</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Benutzerdefinierte Daten hinzufügen</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Motorleistung</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Tonnage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Maximale Vorwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Maximale Rückwärtsgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Gesamtschaden je Salve</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>Option 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>Option 2</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Streuung bei maximaler Reichweite</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>Aufgetaucht</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>Auf Einsatztiefe</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Auf Periskoptiefe</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Raketen</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Taktische Raketen</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Sturzkampfbomber</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Taktische Sturzkampfbomber</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Torpedobomber</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Taktische Torpedobomber</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Springbomber</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Taktische Springbomber</value>
   </data>
 </root>

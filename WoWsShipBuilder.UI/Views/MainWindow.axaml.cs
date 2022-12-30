@@ -9,7 +9,6 @@ using Avalonia.Controls.Mixins;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.UI.Settings;
@@ -20,7 +19,7 @@ using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.UI.Views
 {
-    public partial class MainWindow : ScalableReactiveWindow<MainWindowViewModel>
+    public partial class MainWindow : ScalableReactiveWindow<ShipWindowViewModel>
     {
         public MainWindow()
         {
@@ -54,7 +53,7 @@ namespace WoWsShipBuilder.UI.Views
                 {
                     var result = await new ShipSelectionWindow
                     {
-                        DataContext = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings, AppSettingsHelper.LocalizerInstance)),
+                        DataContext = new ShipSelectionWindowViewModel(false, ShipSelectionWindowViewModel.LoadParams(AppSettingsHelper.LocalizerInstance)),
                     }.ShowDialog<List<ShipSummary>?>(this);
                     interaction.SetOutput(result);
                 }).DisposeWith(disposables);

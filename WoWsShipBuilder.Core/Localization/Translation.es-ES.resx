@@ -591,9 +591,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocidad Min</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aviones por ataque</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Tiempo de recuperación</value>
   </data>
@@ -737,9 +734,6 @@
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Desviacion del area prevista de caida por maniobrar</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tiempo plena potencia</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Versión de datos:</value>
@@ -1097,5 +1091,14 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Daño</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>AE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
   </data>
 </root>

@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
-using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.ViewModels.Base;
@@ -21,15 +17,14 @@ namespace WoWsShipBuilder.UI.ViewModels
     internal class ScreenshotContainerViewModel : ViewModelBase
     {
         public ScreenshotContainerViewModel()
-            : this(DataHelper.CreateTestBuild(), DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
+            : this(DesignDataHelper.CreateTestBuild(), DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship, false)
         {
-            var ship = DataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
-            var appDataService = DesktopAppDataService.PreviewInstance;
+            var ship = DesignDataHelper.LoadPreviewShip(ShipClass.Cruiser, 10, Nation.Usa).Ship;
 
-            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation).Result, true);
-            SignalSelectorViewModel = new(SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings).Result);
-            UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
-            LoadBuilds(DataHelper.CreateTestBuild());
+            CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true);
+            SignalSelectorViewModel = new();
+            UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache);
+            LoadBuilds(DesignDataHelper.CreateTestBuild());
         }
 
         private ScreenshotContainerViewModel(Build build, Ship ship, bool includeSignals = true)
@@ -73,14 +68,14 @@ namespace WoWsShipBuilder.UI.ViewModels
             }
         }
 
-        public static async Task<ScreenshotContainerViewModel> CreateAsync(IAppDataService appDataService, Build build, Ship ship, bool includeSignals = true)
+        public static ScreenshotContainerViewModel Create(Build build, Ship ship, bool includeSignals = true)
         {
             var vm = new ScreenshotContainerViewModel(build, ship, includeSignals)
             {
-                CaptainSkillSelectorViewModel = new(ship.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, AppSettingsHelper.Settings, ship.ShipNation), true),
-                SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, AppSettingsHelper.Settings)),
-                UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache ?? new Dictionary<string, Modernization>()),
-                ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, ship, new List<string>()),
+                CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true),
+                SignalSelectorViewModel = new(),
+                UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache),
+                ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>()),
             };
             vm.LoadBuilds(build);
             return vm;

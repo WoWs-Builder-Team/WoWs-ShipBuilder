@@ -5,14 +5,9 @@ using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.HttpClients;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures;
-using WoWsShipBuilder.DataStructures.Aircraft;
-using WoWsShipBuilder.DataStructures.Captain;
-using WoWsShipBuilder.DataStructures.Exterior;
-using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Versioning;
 using WoWsShipBuilder.Web.Data;
-using WoWsShipBuilder.Web.Utility;
 
 namespace WoWsShipBuilder.Web.Services;
 
@@ -46,7 +41,7 @@ public class ServerAppDataService : IAppDataService
     {
         logger.LogInformation("Starting to fetch data with server type {server}...", options.Server);
         const string undefinedMarker = "undefined";
-        AppData.ShipDictionary = new();
+        AppData.ResetCaches();
 
         var onlineVersionInfo = await awsClient.DownloadVersionInfo(options.Server);
         if (onlineVersionInfo.CurrentVersion is not null)
@@ -71,11 +66,11 @@ public class ServerAppDataService : IAppDataService
         logger.LogInformation("Finished fetching data");
     }
 
-    public async Task LoadLocalFiles()
+    public async Task LoadLocalFilesAsync(ServerType serverType)
     {
-        AppData.ShipDictionary = new();
+        AppData.ResetCaches();
         const string shipBuilderDirectory = "WoWsShipBuilderDev";
-        string dataRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", options.Server.StringName());
+        string dataRoot = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), shipBuilderDirectory, "json", serverType.StringName());
 
         string versionInfoContent = await File.ReadAllTextAsync(Path.Join(dataRoot, "VersionInfo.json"));
         var localVersionInfo = JsonConvert.DeserializeObject<VersionInfo>(versionInfoContent)!;
@@ -103,43 +98,6 @@ public class ServerAppDataService : IAppDataService
         return versionInfo;
     }
 
-    public Task<List<ShipSummary>> GetShipSummaryList(ServerType serverType)
-    {
-        return Task.FromResult(AppData.ShipSummaryList ?? throw new InvalidOperationException());
-    }
-
-    public Task LoadNationFiles(Nation nation)
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task<Projectile> GetProjectile(string projectileName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(projectileName);
-        return Task.FromResult(AppData.ProjectileCache[nation][projectileName]);
-    }
-
-    public async Task<T> GetProjectile<T>(string projectileName) where T : Projectile
-    {
-        return (T)await GetProjectile(projectileName);
-    }
-
-    public Task<Aircraft> GetAircraft(string aircraftName)
-    {
-        var nation = IAppDataService.GetNationFromIndex(aircraftName);
-        return Task.FromResult(AppData.AircraftCache[nation][aircraftName]);
-    }
-
-    public Task<Dictionary<string, Exterior>> GetExteriorList(Nation nation, ServerType serverType)
-    {
-        return Task.FromResult(AppData.ExteriorCache[nation]);
-    }
-
-    public Task<Dictionary<string, Captain>> GetCaptains(Nation nation, ServerType serverType)
-    {
-        return Task.FromResult(AppData.CaptainCache[nation]);
-    }
-
     public async Task<Dictionary<string, string>?> ReadLocalizationData(ServerType serverType, string language)
     {
         if (options.UseLocalFiles)
@@ -164,10 +122,7 @@ public class ServerAppDataService : IAppDataService
         return null;
     }
 
-    public Task<Ship?> GetShipFromSummary(ShipSummary summary, bool changeDictionary = true)
-    {
-        return Task.FromResult<Ship?>(AppData.ShipDictionary![summary.Index]);
-    }
+    public Ship GetShipFromSummary(ShipSummary summary) => AppData.ShipDictionary[summary.Index];
 
     public string GetDataPath(ServerType serverType)
     {

@@ -7,92 +7,91 @@ using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.Base;
 
-namespace WoWsShipBuilder.ViewModels.ShipVm
+namespace WoWsShipBuilder.ViewModels.ShipVm;
+
+public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
 {
-    public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
+    public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
+
+    private List<List<Modernization>> availableModernizationList = null!;
+
+    public UpgradePanelViewModelBase(Ship ship, Dictionary<string, Modernization> upgradeData)
     {
-        public static readonly Modernization PlaceholderModernization = new() { Index = null!, Name = "PlaceholderMod" };
+        List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
+            .Where(m => !(m.BlacklistedShips.Contains(ship.Name)))
+            .Where(m => m.ShipLevel.Contains(ship.Tier))
+            .Where(m => ship.ShipNation == Nation.Common || (m.AllowedNations.Contains(ship.ShipNation)))
+            .Where(m => m.ShipClasses.Contains(ship.ShipClass))
+            .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips.Contains(ship.Name)))
+            .ToList();
 
-        private List<List<Modernization>> availableModernizationList = null!;
+        List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)
+            .Select(group => (group.Key, group.OrderBy(m => m.Type).ThenBy(m => m.Index).ToList()))
+            .OrderBy(item => item.Key)
+            .Select(item => item.Item2)
+            .ToList();
 
-        public UpgradePanelViewModelBase(Ship ship, Dictionary<string, Modernization> upgradeData)
+        foreach (List<Modernization> subList in groupedList)
         {
-            List<Modernization> filteredModernizations = upgradeData.Select(entry => entry.Value)
-                .Where(m => !(m.BlacklistedShips?.Contains(ship.Name) ?? false))
-                .Where(m => m.ShipLevel?.Contains(ship.Tier) ?? false)
-                .Where(m => m.AllowedNations?.Contains(ship.ShipNation) ?? false)
-                .Where(m => m.ShipClasses?.Contains(ship.ShipClass) ?? false)
-                .Union(upgradeData.Select(entry => entry.Value).Where(m => m.AdditionalShips?.Contains(ship.Name) ?? false))
-                .ToList();
+            subList.Insert(0, PlaceholderModernization);
+        }
 
-            List<List<Modernization>> groupedList = filteredModernizations.GroupBy(m => m.Slot)
-                .Select(group => (group.Key, group.OrderBy(m => m.Type).ThenBy(m => m.Index).ToList()))
-                .OrderBy(item => item.Key)
-                .Select(item => item.Item2)
-                .ToList();
+        AvailableModernizationList = groupedList;
+        SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => !string.IsNullOrEmpty(m.Index)));
 
-            foreach (List<Modernization> subList in groupedList)
+        OnModernizationSelected = (modernization, modernizationList) =>
+        {
+            int listIndex = AvailableModernizationList.IndexOf(modernizationList);
+            var oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
+
+            if (oldSelection != null)
             {
-                subList.Insert(0, PlaceholderModernization);
+                SelectedModernizationList.Remove(oldSelection);
             }
 
-            AvailableModernizationList = groupedList;
-            SelectedModernizationList = new(AvailableModernizationList.Select(list => list.First()).Where(m => m.Index != null));
-
-            OnModernizationSelected = (modernization, modernizationList) =>
+            if (modernization?.Index != null)
             {
-                int listIndex = AvailableModernizationList.IndexOf(modernizationList);
-                var oldSelection = SelectedModernizationList.ToList().Find(m => AvailableModernizationList[listIndex].Contains(m));
-
-                if (oldSelection != null)
-                {
-                    SelectedModernizationList.Remove(oldSelection);
-                }
-
-                if (modernization?.Index != null)
-                {
-                    SelectedModernizationList.Add(modernization);
-                }
-
-                this.RaisePropertyChanged(nameof(SelectedModernizationList));
-            };
-        }
-
-        public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }
-
-        public CustomObservableCollection<Modernization> SelectedModernizationList { get; }
-
-        public List<List<Modernization>> AvailableModernizationList
-        {
-            get => availableModernizationList;
-            set => this.RaiseAndSetIfChanged(ref availableModernizationList, value);
-        }
-
-        public List<(string, float)> GetModifierList()
-        {
-            return SelectedModernizationList
-                .Where(m => m.Index != null)
-                .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
-                .ToList();
-        }
-
-        public void LoadBuild(IEnumerable<string> storedData)
-        {
-            var selection = new List<Modernization>();
-            foreach (List<Modernization> modernizations in AvailableModernizationList)
-            {
-                selection.AddRange(modernizations.Where(modernization => storedData.Contains(modernization.Index)));
+                SelectedModernizationList.Add(modernization);
             }
 
-            var removeList = SelectedModernizationList.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
-            SelectedModernizationList.RemoveMany(removeList);
-            SelectedModernizationList.AddRange(selection);
             this.RaisePropertyChanged(nameof(SelectedModernizationList));
+        };
+    }
+
+    public Action<Modernization?, List<Modernization>> OnModernizationSelected { get; }
+
+    public CustomObservableCollection<Modernization> SelectedModernizationList { get; }
+
+    public List<List<Modernization>> AvailableModernizationList
+    {
+        get => availableModernizationList;
+        set => this.RaiseAndSetIfChanged(ref availableModernizationList, value);
+    }
+
+    public List<(string, float)> GetModifierList()
+    {
+        return SelectedModernizationList
+            .Where(m => !string.IsNullOrEmpty(m.Index))
+            .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
+            .ToList();
+    }
+
+    public void LoadBuild(IEnumerable<string> storedData)
+    {
+        var selection = new List<Modernization>();
+        foreach (List<Modernization> modernizations in AvailableModernizationList)
+        {
+            selection.AddRange(modernizations.Where(modernization => storedData.Contains(modernization.Index)));
         }
 
-        public List<string> SaveBuild()
-        {
-            return SelectedModernizationList.Select(modernization => modernization.Index).ToList();
-        }
+        var removeList = SelectedModernizationList.Where(selected => selection.Any(newSelected => newSelected.Slot == selected.Slot)).ToList();
+        SelectedModernizationList.RemoveMany(removeList);
+        SelectedModernizationList.AddRange(selection);
+        this.RaisePropertyChanged(nameof(SelectedModernizationList));
+    }
+
+    public List<string> SaveBuild()
+    {
+        return SelectedModernizationList.Select(modernization => modernization.Index).ToList();
     }
 }

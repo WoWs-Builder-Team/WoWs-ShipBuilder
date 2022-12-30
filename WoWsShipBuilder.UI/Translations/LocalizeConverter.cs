@@ -12,7 +12,7 @@ namespace WoWsShipBuilder.UI.Translations
 {
     /// <summary>
     /// An <see cref="IValueConverter"/> that allows to convert a string to its localized version.
-    /// Accesses the localizations provided by <see cref="Core.DataProvider.Localizer"/>.
+    /// Accesses the localizations provided by <see cref="ILocalizer"/>.
     /// </summary>
     public class LocalizeConverter : IValueConverter
     {

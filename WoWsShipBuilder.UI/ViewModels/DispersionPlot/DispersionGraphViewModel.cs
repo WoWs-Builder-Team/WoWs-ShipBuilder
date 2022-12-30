@@ -16,11 +16,11 @@ using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.UserControls;
 using WoWsShipBuilder.UI.Views;
@@ -69,7 +69,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         {
             logger = Logging.GetLogger("DispersionGraphVM");
             logger.Info("Opening with initial tab: {0}", initialTab.ToString());
-            localizer = Locator.Current.GetServiceSafe<ILocalizer>();
+            localizer = Locator.Current.GetRequiredService<ILocalizer>();
 
             self = win;
             AddShipInteraction = new();
@@ -442,7 +442,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         public async void AddShip()
         {
             // Open the ship selection window to let the user select a ship
-            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, await ShipSelectionWindowViewModel.LoadParamsAsync(DesktopAppDataService.Instance, AppSettingsHelper.Settings, Locator.Current.GetServiceSafe<ILocalizer>()))))!;
+            List<ShipSummary?>? resultList = (await AddShipInteraction.Handle(new(true, ShipSelectionWindowViewModel.LoadParams(Locator.Current.GetRequiredService<ILocalizer>()))))!;
 
             if (resultList is not { Count: > 0 })
             {
@@ -451,7 +451,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             foreach (var result in resultList)
             {
-                var ship = result != null ? await DesktopAppDataService.Instance.GetShipFromSummary(result, false) : null;
+                var ship = result != null ? AppData.FindShipFromSummary(result) : null;
                 if (ship == null)
                 {
                     continue;
@@ -503,7 +503,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         logger.Info("Ship is not a duplicate, start creating series.");
 
                         // create and add the ballistic series
-                        var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+                        var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
                         var ballisticSeries = CreateBallisticSeries(shell, (double)guns.MaxRange, name);
                         ShellTrajectoryCache.Add(ballisticSeries.Ballistic);

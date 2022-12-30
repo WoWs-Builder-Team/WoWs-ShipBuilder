@@ -1,0 +1,198 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> ApShellDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonDataSections.Ap;
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.MainBatteryCaliber
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApMass is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApMass
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApSplashRadius is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApSplashRadius
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApSplashDamage is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApSplashDamage
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApSpeed is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApSpeed
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApAirDrag is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApAirDrag
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApOvermatch" Title="Overmatch (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApOvermatch is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApOvermatch
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.ApRicochet?.Split(" - ").First() ?? "0"))">
+            <CellTemplate>
+                @if (!string.IsNullOrEmpty(context.Item.ApRicochet))
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApRicochet
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApArmingThreshold" Title="Arming threshold (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApArmingThreshold is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApArmingThreshold
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ApFuseTimer" Title="Fuse timer (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.ApFuseTimer is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.ApFuseTimer
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

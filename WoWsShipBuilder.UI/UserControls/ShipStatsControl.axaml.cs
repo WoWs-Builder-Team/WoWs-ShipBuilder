@@ -1,11 +1,9 @@
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
@@ -26,24 +24,24 @@ namespace WoWsShipBuilder.UI.UserControls
             AvaloniaXamlLoader.Load(this);
         }
 
-        public async void OpenDispersionGraphWindow(object sender, PointerReleasedEventArgs e)
+        public void OpenDispersionGraphWindow(object sender, PointerReleasedEventArgs e)
         {
-            await OpenGraphsWindow(sender, e, Tabs.Dispersion);
+            OpenGraphsWindow(sender, e, Tabs.Dispersion);
         }
 
-        public async void OpenDispersionPlotWindow(object sender, PointerReleasedEventArgs e)
+        public void OpenDispersionPlotWindow(object sender, PointerReleasedEventArgs e)
         {
-            await OpenGraphsWindow(sender, e, Tabs.Plot);
+            OpenGraphsWindow(sender, e, Tabs.Plot);
         }
 
-        public async void OpenBallisticGraphWindow(object sender, PointerReleasedEventArgs e)
+        public void OpenBallisticGraphWindow(object sender, PointerReleasedEventArgs e)
         {
-            await OpenGraphsWindow(sender, e, Tabs.Ballistic);
+            OpenGraphsWindow(sender, e, Tabs.Ballistic);
         }
 
-        public async void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
+        public void OpenShellTrajectoryWindow(object sender, PointerReleasedEventArgs e)
         {
-            await OpenGraphsWindow(sender, e, Tabs.Trajectory);
+            OpenGraphsWindow(sender, e, Tabs.Trajectory);
         }
 
         public void OpenTurretAnglesWindow(object sender, PointerReleasedEventArgs e)
@@ -51,20 +49,20 @@ namespace WoWsShipBuilder.UI.UserControls
             var dc = (ShipStatsControlViewModel)DataContext!;
             var win = new FiringAngleWindow
             {
-                DataContext = new FiringAngleViewModelBase(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
+                DataContext = new FiringAngleViewModel(dc.CurrentShipStats!.MainBatteryDataContainer!.OriginalMainBatteryData.Guns),
             };
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }
 
-        private async Task OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
+        private void OpenGraphsWindow(object sender, PointerReleasedEventArgs e, Tabs tab)
         {
             var dc = DataContext as ShipStatsControlViewModel;
             var mainBattery = dc!.CurrentShipStats!.MainBatteryDataContainer!;
             var win = new DispersionGraphsWindow();
             var textBlock = (TextBlock)sender;
             string shellIndex = ((ShellDataContainer)textBlock.DataContext!).Name;
-            var shell = await DesktopAppDataService.Instance.GetProjectile<ArtilleryShell>(shellIndex);
+            var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
             win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
@@ -78,7 +76,7 @@ namespace WoWsShipBuilder.UI.UserControls
                 return;
             }
 
-            var dataContext = vm.CurrentShipStats?.DepthChargeLauncherDataContainer?.DepthCharge as DepthChargeDataContainer ?? vm.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer;
+            var dataContext = vm.CurrentShipStats?.DepthChargeLauncherDataContainer?.DepthCharge ?? vm.CurrentShipStats?.AswAirstrikeDataContainer?.Weapon as DepthChargeDataContainer;
             if (dataContext != null)
             {
                 var win = new DepthChargeDamageDistributionChartWindow
@@ -97,7 +95,7 @@ namespace WoWsShipBuilder.UI.UserControls
             {
                 var win = new FiringAngleWindow
                 {
-                    DataContext = new FiringAngleViewModelBase(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
+                    DataContext = new FiringAngleViewModel(viewModel.CurrentShipStats!.TorpedoArmamentDataContainer!.TorpedoLaunchers),
                 };
                 win.Show((Window)this.GetVisualRoot());
                 e.Handled = true;

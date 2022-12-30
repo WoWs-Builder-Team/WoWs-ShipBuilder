@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using NLog;
 using WoWsShipBuilder.Core.HttpClients;
-using WoWsShipBuilder.Core.HttpResponses;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -345,12 +344,12 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
                 progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
-                await awsClient.DownloadImages(ImageType.Ship, fileSystem);
+                await awsClient.DownloadImages(fileSystem);
             }
             else
             {
                 progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));
-                await awsClient.DownloadImages(ImageType.Ship, fileSystem, versionName);
+                await awsClient.DownloadImages(fileSystem, versionName);
             }
         }
     }

@@ -77,19 +77,19 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         public async void NewBuild()
         {
-            var dc = new ShipSelectionWindowViewModel(false, await ShipSelectionWindowViewModel.LoadParamsAsync(AppDataService, AppSettings, localizer));
+            var dc = new ShipSelectionWindowViewModel(false, ShipSelectionWindowViewModel.LoadParams(localizer));
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
-                Logging.Logger.Info($"Selected ship with index {result.Index}");
+                Logging.Logger.Info("Selected ship with index {}", result.Index);
                 try
                 {
-                    var ship = await AppDataService.GetShipFromSummary(result);
-                    await NavigationService.OpenMainWindow(ship!, result, closeMainWindow: true);
+                    var ship = AppData.FindShipFromSummary(result);
+                    await NavigationService.OpenMainWindow(ship, result, closeMainWindow: true);
                 }
                 catch (Exception e)
                 {
-                    Logging.Logger.Error(e, $"Error during the loading of the local json files");
+                    Logging.Logger.Error(e, "Error during the loading of the local json files");
                     await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
                 }
             }
@@ -118,12 +118,6 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             Logging.Logger.Info("Loading build {0}", JsonConvert.SerializeObject(build));
 
-            if (AppData.ShipSummaryList == null)
-            {
-                Logging.Logger.Info("Ship summary is null, loading it.");
-                AppData.ShipSummaryList = await AppDataService.GetShipSummaryList(AppSettings.SelectedServerType);
-            }
-
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
             if (summary is null)
             {
@@ -133,12 +127,12 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             try
             {
-                var ship = await AppDataService.GetShipFromSummary(summary);
-                await NavigationService.OpenMainWindow(ship!, summary, build, true);
+                var ship = AppData.FindShipFromSummary(summary);
+                await NavigationService.OpenMainWindow(ship, summary, build, true);
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e, $"Error during the loading of the local json files");
+                Logging.Logger.Error(e, "Error during the loading of the local json files");
                 await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
             }
         }

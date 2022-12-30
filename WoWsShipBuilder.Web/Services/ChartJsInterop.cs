@@ -45,10 +45,22 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
     }
 
+    public async Task RemoveAllDataAsync(List<string> chartId)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("RemoveAllData", chartId);
+    }
+
     public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);
+    }
+
+    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
+    {
+        await InitializeModule();
+        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, labels, datas, newLabels);
     }
 
     [MemberNotNull(nameof(module))]
@@ -70,6 +82,7 @@ public class ChartJsInterop : IAsyncDisposable
             }
             catch (JSDisconnectedException)
             {
+                // ignore js disconnections
             }
         }
     }

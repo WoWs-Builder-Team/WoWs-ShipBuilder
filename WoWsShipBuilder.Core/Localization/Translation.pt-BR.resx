@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura de longo alcance</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Para trás</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Para a frente</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Velocidade máxima</value>
   </data>
@@ -632,9 +626,6 @@
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocidade mínima</value>
-  </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aeronaves por ataque</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Em um esquadrão</value>
@@ -815,9 +806,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Durante a preparação</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tempo para potência total</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Versão dos dados:</value>
@@ -1516,5 +1504,65 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>já foi ativado.</value>
+  </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Tempo para velocidade máxima</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Para a Frente</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Para Trás</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Aceleração</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Tempo</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Adicionar/remover navios</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Mudar builds</value>
+  </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>Depois de selecionar um navio, você tem a opção de selecionar as 3 'marchas' que serão usadas no gráfico.
+O gráfico aparecerá na ordem "Marcha" inicial --&gt; "Marcha" média --&gt; "Marcha" final, mudando para a próxima somente depois de atingir a velocidade máxima da marcha atual.
+Definir duas marchas com o mesmo valor irá mesclá-las em uma.
+Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Você também pode adicionar um navio várias vezes, caso você queira comparar builds diferentes.</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Explicação do gráfico de aceleração</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Adicionar dados personalizados</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Potência do motor</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Tonelagem</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Tempo de aceleração do motor</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Tempo de retrocesso do motor</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>Na profundidade de máxima</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Na profundidade de periscópio</value>
   </data>
 </root>

@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Core.DataContainers
@@ -40,22 +38,22 @@ namespace WoWsShipBuilder.Core.DataContainers
 
         public SpecialAbilityDataContainer? SpecialAbilityDataContainer { get; set; }
 
-        public static async Task<ShipDataContainer> FromShipAsync(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers, IAppDataService appDataService)
+        public static ShipDataContainer CreateFromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
         {
             var shipDataContainer = new ShipDataContainer(ship.Index)
             {
                 // Main weapons
-                MainBatteryDataContainer = await MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                TorpedoArmamentDataContainer = await TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
-                CvAircraftDataContainer = await DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                MainBatteryDataContainer = MainBatteryDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                TorpedoArmamentDataContainer = TorpedoArmamentDataContainer.FromShip(ship, shipConfiguration, modifiers),
+                CvAircraftDataContainer = DataContainers.CvAircraftDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 PingerGunDataContainer = PingerGunDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Secondary weapons
-                SecondaryBatteryUiDataContainer = await SecondaryBatteryUiDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                SecondaryBatteryUiDataContainer = SecondaryBatteryUiDataContainer.FromShip(ship, shipConfiguration, modifiers),
                 AntiAirDataContainer = AntiAirDataContainer.FromShip(ship, shipConfiguration, modifiers),
-                AirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, false, appDataService),
-                AswAirstrikeDataContainer = await AirstrikeDataContainer.FromShip(ship, modifiers, true, appDataService),
-                DepthChargeLauncherDataContainer = await DepthChargesLauncherDataContainer.FromShip(ship, shipConfiguration, modifiers, appDataService),
+                AirstrikeDataContainer = AirstrikeDataContainer.FromShip(ship, modifiers, false),
+                AswAirstrikeDataContainer = AirstrikeDataContainer.FromShip(ship, modifiers, true),
+                DepthChargeLauncherDataContainer = DepthChargesLauncherDataContainer.FromShip(ship, shipConfiguration, modifiers),
 
                 // Misc
                 ManeuverabilityDataContainer = ManeuverabilityDataContainer.FromShip(ship, shipConfiguration, modifiers),
@@ -65,14 +63,14 @@ namespace WoWsShipBuilder.Core.DataContainers
             };
 
             shipDataContainer.SecondColumnContent = new List<object?>
-                {
-                    shipDataContainer.AntiAirDataContainer,
-                    shipDataContainer.AirstrikeDataContainer,
-                    shipDataContainer.AswAirstrikeDataContainer,
-                    shipDataContainer.DepthChargeLauncherDataContainer,
-                }.Where(item => item != null)
-                .Cast<object>()
-                .ToList();
+            {
+                shipDataContainer.AntiAirDataContainer,
+                shipDataContainer.AirstrikeDataContainer,
+                shipDataContainer.AswAirstrikeDataContainer,
+                shipDataContainer.DepthChargeLauncherDataContainer,
+            }.Where(item => item != null)
+             .Cast<object>()
+             .ToList();
 
             if (shipDataContainer.SecondaryBatteryUiDataContainer.Secondaries != null)
             {

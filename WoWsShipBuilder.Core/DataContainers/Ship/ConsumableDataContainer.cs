@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
 using WoWsShipBuilder.DataStructures.Aircraft;
@@ -33,17 +31,17 @@ public partial record ConsumableDataContainer : DataContainerBase
 
     public Dictionary<string, float> Modifiers { get; set; } = null!;
 
-    public static Task<ConsumableDataContainer> FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
+    public static ConsumableDataContainer FromTypeAndVariant(ShipConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, appDataService);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp);
     }
 
-    public static Task<ConsumableDataContainer> FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
+    public static ConsumableDataContainer FromTypeAndVariant(AircraftConsumable consumable, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
     {
-        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp, appDataService);
+        return FromTypeAndVariant(consumable.ConsumableName, consumable.ConsumableVariantName, consumable.Slot, modifiers, isCvPlanes, planesHp, shipHp);
     }
 
-    private static async Task<ConsumableDataContainer> FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp, IAppDataService appDataService)
+    private static ConsumableDataContainer FromTypeAndVariant(string name, string variant, int slot, List<(string name, float value)> modifiers, bool isCvPlanes, int planesHp, int shipHp)
     {
         var consumableIdentifier = $"{name} {variant}";
         var usingFallback = false;
@@ -105,7 +103,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var timeFromHeaven = timeFromHeavenModifiers.Aggregate(consumableModifiers["timeFromHeaven"], (current, modifier) => current * modifier);
                 consumableModifiers["timeFromHeaven"] = timeFromHeaven;
 
-                var plane = await appDataService.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);
@@ -234,7 +232,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var cooldownModifiers = modifiers.FindModifiers("fighterReloadCoeff");
                 cooldown = cooldownModifiers.Aggregate(cooldown, (current, modifier) => current * modifier);
 
-                var plane = await appDataService.GetAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
+                var plane = AppData.FindAircraft(consumable.PlaneName.Substring(0, consumable.PlaneName.IndexOf("_", StringComparison.Ordinal)));
                 consumableModifiers.Add("cruisingSpeed", plane.Speed);
                 consumableModifiers.Add("maxViewDistance", (float)plane.SpottingOnShips);
                 consumableModifiers.Add("concealment", (float)plane.ConcealmentFromShips);

@@ -567,9 +567,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>최소 속도</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>공격시 항공기 수</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>회복 시간</value>
   </data>
@@ -695,9 +692,6 @@
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>기동 중 투하 면적 변동률</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>최대 마력 도달 시간</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>데이터 버전:</value>

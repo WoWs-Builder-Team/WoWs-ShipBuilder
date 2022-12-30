@@ -11,6 +11,7 @@ on:
       - '.github/*.png'
       - 'docs/**/*.*'
       - 'workflows/*.yml'
+      - 'deployment/**/*.*'
 
 jobs: 
   build-and-test:
@@ -19,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:

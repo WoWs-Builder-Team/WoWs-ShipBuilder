@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -5,54 +6,55 @@ using System.Threading;
 using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
-using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
+using WoWsShipBuilder.UI.Extensions;
 
-namespace WoWsShipBuilder.UI.Settings
+namespace WoWsShipBuilder.UI.Settings;
+
+[SuppressMessage("System.IO.Abstractions", "IO0002", Justification = "This class is never tested.")]
+[SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
+public static class AppSettingsHelper
 {
-    [SuppressMessage("System.IO.Abstractions", "IO0002", Justification = "This class is never tested.")]
-    [SuppressMessage("System.IO.Abstractions", "IO0006", Justification = "This class is never tested.")]
-    public static class AppSettingsHelper
+    private static readonly string SettingFile = Path.Combine(Locator.Current.GetRequiredService<IAppDataService>().DefaultAppDataDirectory, "settings.json");
+
+    public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
+
+    public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DesignDataHelper.DemoLocalizer;
+
+    public static string BuildImageOutputDirectory => Settings.CustomImagePath ?? Locator.Current.GetRequiredService<IDataService>().CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), AppConstants.ShipBuilderName);
+
+    public static void SaveSettings() => Locator.Current.GetRequiredService<IDataService>().StoreAsync(Settings, SettingFile);
+
+    public static void LoadSettings()
     {
-        private static readonly string SettingFile = Path.Combine(DesktopAppDataService.Instance.DefaultAppDataDirectory, "settings.json");
-
-        public static AppSettings Settings => Locator.Current.GetService<AppSettings>() ?? new();
-
-        public static ILocalizer LocalizerInstance => Locator.Current.GetService<ILocalizer>() ?? DataHelper.DemoLocalizer;
-
-        public static void SaveSettings() => Locator.Current.GetServiceSafe<IDataService>().StoreAsync(Settings, SettingFile);
-
-        public static void LoadSettings()
+        if (File.Exists(SettingFile))
         {
-            if (File.Exists(SettingFile))
+            Logging.Logger.Info("Trying to load settings from settings file...");
+            var settings = Locator.Current.GetRequiredService<IDataService>().Load<AppSettings>(SettingFile);
+            if (settings == null)
             {
-                Logging.Logger.Info("Trying to load settings from settings file...");
-                var settings = Locator.Current.GetServiceSafe<IDataService>().Load<AppSettings>(SettingFile);
-                if (settings == null)
-                {
-                    Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");
-                    settings = new();
-                }
-
-                Settings.UpdateFromSettings(settings);
-            }
-            else
-            {
-                Logging.Logger.Info("No settings file found, creating new settings...");
-                Settings.UpdateFromSettings(new());
+                Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");
+                settings = new();
             }
 
-            AppData.IsInitialized = true;
-            Logging.Logger.Info("Settings initialized.");
-            UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
+            Settings.UpdateFromSettings(settings);
+        }
+        else
+        {
+            Logging.Logger.Info("No settings file found, creating new settings...");
+            Settings.UpdateFromSettings(new());
         }
 
-        private static void UpdateThreadCulture(CultureInfo cultureInfo)
-        {
-            Thread.CurrentThread.CurrentCulture = cultureInfo;
-            Thread.CurrentThread.CurrentUICulture = cultureInfo;
-        }
+        AppData.IsInitialized = true;
+        Logging.Logger.Info("Settings initialized.");
+        UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
+    }
+
+    private static void UpdateThreadCulture(CultureInfo cultureInfo)
+    {
+        Thread.CurrentThread.CurrentCulture = cultureInfo;
+        Thread.CurrentThread.CurrentUICulture = cultureInfo;
     }
 }

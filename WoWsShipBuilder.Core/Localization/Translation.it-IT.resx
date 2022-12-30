@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Aura a lungo raggio</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Indietro</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Avanti</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Velocità massima</value>
   </data>
@@ -632,9 +626,6 @@
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocità minima</value>
-  </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Aerei per attacco</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Per squadrone</value>
@@ -815,9 +806,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Durante la preparazione</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tempo di piena potenza</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Versione dati:</value>
@@ -1516,5 +1504,20 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>era già abilitato.</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>Ad altezza operativa</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Occultamento dai sottomarini ad altezza di periscopio</value>
   </data>
 </root>

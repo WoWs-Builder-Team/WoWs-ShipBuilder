@@ -591,9 +591,6 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Minimum snelheid</value>
   </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Vliegtuigen per aanval</value>
-  </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Hersteltijd</value>
   </data>
@@ -737,9 +734,6 @@
   </data>
   <data name="ShipStats_AimPenaltyPlanes" xml:space="preserve">
     <value>Verandering van richtgebied tijdens het manoeuvreren</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tijd tot maximumsnelheid</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Data versie:</value>
@@ -1100,5 +1094,14 @@ Als "module explosie bescherming" + "bewapening explosie penetratie" &lt;= 0
   </data>
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Schade</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>BR</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>PD</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SPD</value>
   </data>
 </root>

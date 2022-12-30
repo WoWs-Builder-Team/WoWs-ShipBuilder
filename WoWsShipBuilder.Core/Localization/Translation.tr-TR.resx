@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Uzun Menzilli Silahlar</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Geriye</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>İleriye</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Azami Hız</value>
   </data>
@@ -632,9 +626,6 @@
   </data>
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Asgari Hız</value>
-  </data>
-  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Saldıran Uçuş Boyutu</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Filodaki Miktar</value>
@@ -815,9 +806,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>Hazırlık Sırasında</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Tam güce ulaşma süresi</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Eklenti Sürümü:</value>
@@ -1377,5 +1365,17 @@ Yüzey gemilerine herhangi bir etkileri yoktur.</value>
   </data>
   <data name="ShipStats_DetonationDepth" xml:space="preserve">
       <value>Patlama Derinliği</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>HE</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>AP</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>SAP</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>Periskop Derinliğinde</value>
   </data>
 </root>

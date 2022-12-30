@@ -4,10 +4,8 @@
 @using System.Collections.Specialized
 @using DynamicData
 @using System.Linq
-@using WoWsShipBuilder.Core.Services
 @using WoWsShipBuilder.DataStructures.Projectile
 @inject ILocalizer Localizer
-@inject IAppDataService WebAppDataService
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
     <TitleContent>
@@ -108,13 +106,13 @@
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }
 
-    private async void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (selectedShips.Count > ShipList.Count)
         {
             foreach (string selectedShip in selectedShips.ToList().Where(selectedShip => !ShipList.Select(x => x.ShipIndex).Contains(selectedShip)))
             {
-                await AddWrapper(selectedShip);
+                AddWrapper(selectedShip);
             }
         }
         else if (selectedShips.Count < ShipList.Count)
@@ -127,13 +125,13 @@
         StateHasChanged();
     }
 
-    private async Task AddWrapper(string shipIndex)
+    private void AddWrapper(string shipIndex)
     {
-        var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-        var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+        var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+        var ship = AppData.FindShipFromSummary(shipSummary);
         if (ShipList.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         Dictionary<string, ArtilleryData> artilleryData = new();
-        if (ship?.MainBatteryModuleList != null && ship.MainBatteryModuleList.Any())
+        if (ship.MainBatteryModuleList.Any())
         {
             IEnumerable<string> shellIndexes = ship.MainBatteryModuleList.SelectMany(turretModule => turretModule.Value.Guns.SelectMany(gun => gun.AmmoList)).Distinct();
             foreach (string shellIndex in shellIndexes)
@@ -145,7 +143,7 @@
         ShipList.Add(wrapper);
     }
 
-    private async Task ReturnSelectedShells()
+    private void ReturnSelectedShells()
     {
         processing = true;
         List<ChartsRenderingDataWrapper> selections = ShipList.Where(x => !x.IsFullyConfigured && x.ArtilleryDataDictionary.Select(y => y.Value.ShellSelected).Contains(true)).ToList();
@@ -161,15 +159,15 @@
         List<ChartsRenderingDataWrapper> newData = new();
         foreach ((string shipIndex, Dictionary<string, ArtilleryData> artilleryDataDictionary, _, _) in selections)
         {
-            var shipSummary = AppData.ShipSummaryList!.First(x => x.Index.Equals(shipIndex));
-            var ship = await WebAppDataService.GetShipFromSummary(shipSummary);
+            var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+            var ship = AppData.FindShipFromSummary(shipSummary);
             double maxRange = -1;
             double sigma = -1;
             IEnumerable<string> shellIndexes = artilleryDataDictionary.Where(x => x.Value.ShellSelected).Select(x => x.Key);
             foreach (string shellIndex in shellIndexes)
             {
-                var gun = ship!.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
-                var shell = await WebAppDataService.GetProjectile<ArtilleryShell>(shellIndex);
+                var gun = ship.MainBatteryModuleList.Values.First(x => x.Guns.First().AmmoList.Contains(shellIndex));
+                var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
                 var newArtilleryData = artilleryDataDictionary[shellIndex];
                 newArtilleryData.Shell = shell;

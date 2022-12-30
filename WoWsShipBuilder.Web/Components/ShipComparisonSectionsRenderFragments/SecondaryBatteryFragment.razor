@@ -1,0 +1,210 @@
+﻿@using WoWsShipBuilder.ViewModels.Helper
+@using WoWsShipBuilder.ViewModels.Other
+@using System.Globalization
+@code {
+
+    // Parameter needs to be named __builder, otherwise compilation will fail.
+    // ReSharper disable once InconsistentNaming UnusedParameter.Local
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> SecondaryBatteryDataFragment = element => __builder =>
+    {
+        bool hide = element.section != ShipComparisonDataSections.SecondaryBattery;
+        
+        NumberFormatInfo nfi = default!;
+        if (!hide)
+        {
+            nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            nfi.NumberGroupSeparator = "'";
+        }
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryCaliber.Any())
+                {
+                    List<decimal> items = context.Item.SecondaryBatteryCaliber;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryBarrelCount" SortBy="@(x => x.SecondaryBatteryBarrelCount.Sum())" Title="Barrels" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryBarrelCount.Any() && context.Item.SecondaryBatteryBarrelsLayout.Any())
+                {
+                    List<int> items = context.Item.SecondaryBatteryBarrelCount;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        int item = items[i];
+                        string itemLayout = context.Item.SecondaryBatteryBarrelsLayout[i];
+                        <MudText Typo="Typo.body2">
+                            @($"{item} ({itemLayout})")
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryRange" Title="Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryRange is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SecondaryBatteryRange
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryReload.Any())
+                {
+                    List<decimal> items = context.Item.SecondaryBatteryReload;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryRoF" Title="ROF (shots/min)" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryRoF.Any())
+                {
+                    List<decimal> items = context.Item.SecondaryBatteryRoF;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryDpm" Title="DPM" SortBy="@(x => x.SecondaryBatteryDpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryDpm.Any())
+                {
+                    List<string> items = context.Item.SecondaryBatteryDpm;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        string item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatteryFpm" Title="FPM (fires/min)" SortBy="@(x => x.SecondaryBatteryFpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatteryFpm.Any())
+                {
+                    List<decimal> items = context.Item.SecondaryBatteryFpm;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        decimal item = items[i];
+                        <MudText Typo="Typo.body2">
+                            @item
+                        </MudText>
+                        if (i < items.Count - 1)
+                        {
+                            <MudDivider Class="my-1"/>
+                        }
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+        
+        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SecondaryBatterySigma" Title="Sigma" HeaderClass="column-text-center" CellClass="column-text-center">
+            <CellTemplate>
+                @if (context.Item.SecondaryBatterySigma is not null)
+                {
+                    <MudText Typo="Typo.body2">
+                        @context.Item.SecondaryBatterySigma
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Primary">
+                        @ShipComparisonViewModel.DataNotAvailable
+                    </MudText>
+                }
+            </CellTemplate>
+        </Column>
+    };
+}

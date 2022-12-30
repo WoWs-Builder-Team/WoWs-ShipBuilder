@@ -14,6 +14,7 @@ using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other
 {
@@ -55,7 +56,8 @@ namespace WoWsShipBuilder.ViewModels.Other
             this.clipboardService = clipboardService;
             this.appSettings = appSettings;
             AppDataService = appDataService;
-            Version = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
+            string rawVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Undefined";
+            Version = VersionHelper.StripCommitFromVersion(rawVersion);
             languagesList = AppConstants.SupportedLanguages.ToList(); // Copy existing list. Do not change!
             SelectedLanguage = languagesList.FirstOrDefault(languageDetails => languageDetails.CultureInfo.Equals(appSettings.SelectedLanguage.CultureInfo))
                                ?? AppConstants.DefaultCultureDetails;
@@ -246,7 +248,6 @@ namespace WoWsShipBuilder.ViewModels.Other
 
             if (serverChanged || pathChanged)
             {
-                AppData.ResetCaches();
                 await ShowDownloadWindowInteraction.Handle(Unit.Default);
             }
 

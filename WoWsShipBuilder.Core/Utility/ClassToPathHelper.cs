@@ -1,6 +1,6 @@
 ﻿using WoWsShipBuilder.DataStructures;
 
-namespace WoWsShipBuilder.Core.ConverterHelpers;
+namespace WoWsShipBuilder.Core.Utility;
 
 public static class ClassToPathHelper
 {

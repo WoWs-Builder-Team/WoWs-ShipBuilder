@@ -147,7 +147,7 @@
                           IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=false}">
                     <StackPanel Orientation="Vertical">
                         <ItemsControl Items="{Binding DataElements}" />
-                        <TextBlock Text="{x:Static translations:Translation.ShipStats_Dispersion}" Classes="FormattedText" />
+                        <TextBlock Text="{x:Static translations:Translation.ShipStats_DispersionAtMaxRange}" Classes="FormattedText" />
                         <DockPanel HorizontalAlignment="Stretch" LastChildFill="True">
                             <TextBlock Text="{x:Static translations:Translation.Unit_M}" DockPanel.Dock="Right" Classes="Unit" />
                             <TextBlock Text="{Binding HorizontalDisp}" HorizontalAlignment="Right" DockPanel.Dock="Right" />

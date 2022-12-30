@@ -1,14 +1,15 @@
-# Update 1.6.0
+# Update 1.6.1
 
 ## Additions
 
 
 ## Changes
-- Update asset files for CV skills
+
 
 ## Bugfixes
-- Use the correct sonar module when a ship can chose between multiple sonar modules (#168)
-- Fix formula for bonus of repair party readiness skill (#177)
+- Fix torpedo speed calculation when upgrades or skill affect both ship and plane torpedoes
+- Fix speed boost modifier application (#189)
+- Signals are not loaded in builds
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.

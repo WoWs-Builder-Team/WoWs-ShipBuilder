@@ -9,7 +9,7 @@ using WoWsShipBuilder.ViewModels.Base;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
-public class BuildCreationWindowViewModel : ViewModelBase
+public partial class BuildCreationWindowViewModel : ViewModelBase
 {
     private const string BuildNameRegex = "^[a-zA-Z0-9][a-zA-Z0-9_ -]*$";
 
@@ -25,13 +25,8 @@ public class BuildCreationWindowViewModel : ViewModelBase
         SaveAndCopyImageCommand = ReactiveCommand.CreateFromTask(SaveAndCopyImage, canSaveExecute);
     }
 
+    [Observable]
     private string shipName = default!;
-
-    public string ShipName
-    {
-        get => shipName;
-        set => this.RaiseAndSetIfChanged(ref shipName, value);
-    }
 
     private string? buildName;
 
@@ -42,13 +37,8 @@ public class BuildCreationWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref buildName, value);
     }
 
+    [Observable]
     private bool includeSignals;
-
-    public bool IncludeSignals
-    {
-        get => includeSignals;
-        set => this.RaiseAndSetIfChanged(ref includeSignals, value);
-    }
 
     public bool IsNewBuild { get; }
 

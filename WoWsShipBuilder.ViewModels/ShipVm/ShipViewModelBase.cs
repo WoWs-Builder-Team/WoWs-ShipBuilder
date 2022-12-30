@@ -13,16 +13,14 @@ using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
-using WoWsShipBuilder.DataStructures.Upgrade;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
 
 namespace WoWsShipBuilder.ViewModels.ShipVm;
 
-public abstract class MainWindowViewModelBase : ViewModelBase
+public partial class ShipViewModelBase : ViewModelBase
 {
     private readonly SemaphoreSlim semaphore = new(1, 1);
 
@@ -30,131 +28,60 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
     private readonly INavigationService navigationService;
 
-    private readonly IAppDataService appDataService;
-
     private readonly ILocalizer localizer;
-
-    private readonly AppSettings appSettings;
-
-    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
-
-    private ConsumableViewModel consumableViewModel = null!;
-
-    private string currentShipIndex = "_default";
-
-    private int? currentShipTier;
-
-    private Ship effectiveShipData = null!;
-
-    private List<ShipSummary>? nextShips = new();
-
-    private ShipSummary currentShip = default!;
-
-    private ShipSummary? previousShip;
-
-    private Ship rawShipData = null!;
-
-    private ShipModuleViewModel shipModuleViewModel = null!;
-
-    private ShipStatsControlViewModel? shipStatsControlViewModel;
-
-    private SignalSelectorViewModel? signalSelectorViewModel;
 
     private CancellationTokenSource tokenSource;
 
+    [Observable]
+    private string currentShipIndex = "_default";
+
+    [Observable]
+    private int? currentShipTier;
+
+    [Observable]
+    private Ship rawShipData = null!;
+
+    [Observable]
+    private Ship effectiveShipData = null!;
+
+    [Observable]
+    private ShipSummary currentShip = default!;
+
+    [Observable]
+    private ShipSummary? previousShip;
+
+    [Observable]
+    private List<ShipSummary>? nextShips = new();
+
+    [Observable]
+    private CaptainSkillSelectorViewModel? captainSkillSelectorViewModel;
+
+    [Observable]
+    private ConsumableViewModel consumableViewModel = null!;
+
+    [Observable]
+    private ShipModuleViewModel shipModuleViewModel = null!;
+
+    [Observable]
+    private ShipStatsControlViewModel? shipStatsControlViewModel;
+
+    [Observable]
+    private SignalSelectorViewModel? signalSelectorViewModel;
+
+    [Observable]
     private UpgradePanelViewModelBase upgradePanelViewModel = null!;
 
     protected string? CurrentBuildName;
 
-    protected MainWindowViewModelBase(INavigationService navigationService, IAppDataService appDataService, ILocalizer localizer, AppSettings appSettings, MainViewModelParams viewModelParams)
+    protected ShipViewModelBase(INavigationService navigationService, ILocalizer localizer, ShipViewModelParams viewModelParams)
     {
         this.navigationService = navigationService;
-        this.appDataService = appDataService;
         this.localizer = localizer;
-        this.appSettings = appSettings;
         tokenSource = new();
         PreviousShip = viewModelParams.ShipSummary.PrevShipIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == viewModelParams.ShipSummary.PrevShipIndex);
         CurrentShip = viewModelParams.ShipSummary;
 
         LoadShipFromIndexCommand = ReactiveCommand.CreateFromTask<string>(LoadShipFromIndexExecute);
-    }
-
-    public string CurrentShipIndex
-    {
-        get => currentShipIndex;
-        set => this.RaiseAndSetIfChanged(ref currentShipIndex, value);
-    }
-
-    public int? CurrentShipTier
-    {
-        get => currentShipTier;
-        set => this.RaiseAndSetIfChanged(ref currentShipTier, value);
-    }
-
-    public ShipSummary CurrentShip
-    {
-        get => currentShip;
-        set => this.RaiseAndSetIfChanged(ref currentShip, value);
-    }
-
-    public ShipSummary? PreviousShip
-    {
-        get => previousShip;
-        set => this.RaiseAndSetIfChanged(ref previousShip, value);
-    }
-
-    public List<ShipSummary>? NextShips
-    {
-        get => nextShips;
-        set => this.RaiseAndSetIfChanged(ref nextShips, value);
-    }
-
-    public ShipModuleViewModel ShipModuleViewModel
-    {
-        get => shipModuleViewModel;
-        set => this.RaiseAndSetIfChanged(ref shipModuleViewModel, value);
-    }
-
-    public SignalSelectorViewModel? SignalSelectorViewModel
-    {
-        get => signalSelectorViewModel;
-        set => this.RaiseAndSetIfChanged(ref signalSelectorViewModel, value);
-    }
-
-    public ShipStatsControlViewModel? ShipStatsControlViewModel
-    {
-        get => shipStatsControlViewModel;
-        set => this.RaiseAndSetIfChanged(ref shipStatsControlViewModel, value);
-    }
-
-    public CaptainSkillSelectorViewModel? CaptainSkillSelectorViewModel
-    {
-        get => captainSkillSelectorViewModel;
-        set => this.RaiseAndSetIfChanged(ref captainSkillSelectorViewModel, value);
-    }
-
-    public ConsumableViewModel ConsumableViewModel
-    {
-        get => consumableViewModel;
-        set => this.RaiseAndSetIfChanged(ref consumableViewModel, value);
-    }
-
-    public UpgradePanelViewModelBase UpgradePanelViewModel
-    {
-        get => upgradePanelViewModel;
-        set => this.RaiseAndSetIfChanged(ref upgradePanelViewModel, value);
-    }
-
-    public Ship EffectiveShipData
-    {
-        get => effectiveShipData;
-        set => this.RaiseAndSetIfChanged(ref effectiveShipData, value);
-    }
-
-    protected Ship RawShipData
-    {
-        get => rawShipData;
-        set => this.RaiseAndSetIfChanged(ref rawShipData, value);
     }
 
     public async void ResetBuild()
@@ -185,7 +112,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     {
         Logging.Logger.Info("Selecting new ship");
 
-        var result = (await SelectNewShipInteraction.Handle(new(false, await ShipSelectionWindowViewModel.LoadParamsAsync(appDataService, appSettings, localizer))))?.FirstOrDefault();
+        var result = (await SelectNewShipInteraction.Handle(new(false, ShipSelectionWindowViewModel.LoadParams(localizer))))?.FirstOrDefault();
         if (result != null)
         {
             Logging.Logger.Info("New ship selected: {0}", result.Index);
@@ -205,12 +132,12 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         await CloseChildrenInteraction.Handle(Unit.Default);
 
         disposables.Clear();
-        var ship = await appDataService.GetShipFromSummary(summary);
+        var ship = AppData.FindShipFromSummary(summary);
 
-        await InitializeData(ship!, summary.PrevShipIndex, summary.NextShipsIndex);
+        await InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
-    public async Task InitializeData(MainViewModelParams viewModelParams)
+    public async Task InitializeData(ShipViewModelParams viewModelParams)
     {
         await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
@@ -224,7 +151,6 @@ public abstract class MainWindowViewModelBase : ViewModelBase
     {
         Logging.Logger.Info("Loading data for ship {0}", ship.Index);
         Logging.Logger.Info("Build is null: {0}", build is null);
-        await appDataService.LoadNationFiles(ship.ShipNation);
 
         ShipDataContainer.ExpanderStateMapper.Clear();
 
@@ -235,13 +161,13 @@ public abstract class MainWindowViewModelBase : ViewModelBase
         Logging.Logger.Info("Initializing view models");
 
         // Viewmodel inits
-        SignalSelectorViewModel = new(await SignalSelectorViewModel.LoadSignalList(appDataService, appSettings));
-        CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, await CaptainSkillSelectorViewModel.LoadParamsAsync(appDataService, appSettings, ship.ShipNation));
+        SignalSelectorViewModel = new();
+        CaptainSkillSelectorViewModel = new(RawShipData.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation));
         ShipModuleViewModel = new(RawShipData.ShipUpgradeInfo);
-        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache ?? new Dictionary<string, Modernization>());
-        ConsumableViewModel = await ConsumableViewModel.CreateAsync(appDataService, RawShipData, new List<string>());
+        UpgradePanelViewModel = new(RawShipData, AppData.ModernizationCache);
+        ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>());
 
-        ShipStatsControlViewModel = new(EffectiveShipData, appDataService);
+        ShipStatsControlViewModel = new(EffectiveShipData);
         await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)
@@ -257,9 +183,9 @@ public abstract class MainWindowViewModelBase : ViewModelBase
 
         CurrentShipIndex = ship.Index;
         CurrentShipTier = ship.Tier;
-        CurrentShip = AppData.ShipSummaryList!.First(sum => sum.Index == ship.Index);
-        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList!.First(sum => sum.Index == previousIndex);
-        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList!.First(sum => sum.Index == index)).ToList();
+        CurrentShip = AppData.ShipSummaryList.First(sum => sum.Index == ship.Index);
+        PreviousShip = previousIndex is null ? null : AppData.ShipSummaryList.First(sum => sum.Index == previousIndex);
+        NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList.First(sum => sum.Index == index)).ToList();
 
         AddChangeListeners();
         UpdateStatsViewModel();
@@ -312,7 +238,7 @@ public abstract class MainWindowViewModelBase : ViewModelBase
                             await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), modifiers);
                         }
                         var hp = ShipStatsControlViewModel!.CurrentShipStats!.SurvivabilityDataContainer.HitPoints;
-                        await ConsumableViewModel.UpdateConsumableData(modifiers, hp);
+                        ConsumableViewModel.UpdateConsumableData(modifiers, hp);
                         semaphore.Release();
                     }
                 }

@@ -567,12 +567,6 @@
   <data name="ShipStats_LongAura" xml:space="preserve">
     <value>Дальняя Аура</value>
   </data>
-  <data name="ShipStats_FullPowerBackward" xml:space="preserve">
-    <value>Назад</value>
-  </data>
-  <data name="ShipStats_FullPowerForward" xml:space="preserve">
-    <value>Вперед</value>
-  </data>
   <data name="ShipStats_ManeuverabilityMaxSpeed" xml:space="preserve">
     <value>Максимальная скорость</value>
   </data>
@@ -634,7 +628,7 @@
     <value>Мин. Скорость</value>
   </data>
   <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
-    <value>Самолетов в сбросе</value>
+      <value>Самолетов в сбросе</value>
   </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>В эскадрилье</value>
@@ -815,9 +809,6 @@
   </data>
   <data name="ShipStats_AimingPreparationRateMoving" xml:space="preserve">
     <value>В фазе подготовки</value>
-  </data>
-  <data name="ShipStats_FullPowerTime" xml:space="preserve">
-    <value>Время до полной мощности</value>
   </data>
   <data name="SettingsWindow_DataVersion" xml:space="preserve">
     <value>Версия данных:</value>
@@ -1515,5 +1506,116 @@
   </data>
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>уже включен(а).</value>
+  </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>Время до макс. скорости</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>Полный вперёд</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>Обратный ход</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>Ускорение</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>Время</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>Добавить/удалить корабли</value>
+  </data>
+  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+      <value>Изменить билд</value>
+  </data>
+  <data name="AccelerationChart_ExplanationText" xml:space="preserve">
+      <value>После выбора корабля у вас есть возможность выбрать 3 передачи, которые будут использоваться в графике.
+График будет идти в порядке Начальная передача --&gt; Средняя передача --&gt; Конечная передача, переключаясь на следующую только после достижения максимальной скорости текущей передачи.
+Установка двух передач на одно и то же значение объединит их в одну.
+Вы можете использовать кнопку Изменить билды для управления билдами отдельных кораблей. Вы также можете добавить корабль несколько раз, если хотите сравнить разные билды.</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>Описание графика ускорения</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>Добавить свои данные</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>Мощность двигателя</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>Тоннаж</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>Время разгона вперёд</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>Время разгона назад</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Форсаж двигателя вперед</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Форсаж двигателя назад</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Макс. скорость форсажа вперёд</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Макс. скорость форсажа назад</value>
+  </data>
+  <data name="ShipStats_HeSalvo" xml:space="preserve">
+      <value>ОФ</value>
+  </data>
+  <data name="ShipStats_ApSalvo" xml:space="preserve">
+      <value>ББ</value>
+  </data>
+  <data name="ShipStats_SapSalvo" xml:space="preserve">
+      <value>ПББ</value>
+  </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Урон полного залпа</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>Вариант 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>Вариант 2</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Разброс на макс. дальности</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>На поверхности</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
+      <value>На предельной глубине</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
+      <value>На перископной глубине</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Штурмовики</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Тактические Штурмовики</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Бомбардировщики</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Тактические Бомбардировщики</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Торпедоносцы</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Тактические Торпедоносцы</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Топмачтовики</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Тактические Топмачтовики</value>
   </data>
 </root>

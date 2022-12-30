@@ -1,6 +1,5 @@
 ﻿using System.IO.Abstractions;
 using System.Reactive.Linq;
-using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
@@ -14,11 +13,6 @@ namespace WoWsShipBuilder.UI.ViewModels
     public class StartMenuViewModel : StartMenuViewModelBase
     {
         private readonly IFileSystem fileSystem;
-
-        public StartMenuViewModel()
-            : this(new FileSystem(), new NavigationService(), new AvaloniaClipboardService(), DesktopAppDataService.PreviewInstance, DesktopAppDataService.PreviewInstance, DataHelper.DemoLocalizer, new())
-        {
-        }
 
         public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer, AppNotificationService notificationService)
             : base(navigationService, clipboardService, appDataService, userDataService, localizer, AppSettingsHelper.Settings)
