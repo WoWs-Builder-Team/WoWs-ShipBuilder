@@ -1,4 +1,4 @@
-# Update 1.6.1
+# Update 1.6.2
 
 ## Additions
 
@@ -7,9 +7,7 @@
 
 
 ## Bugfixes
-- Fix torpedo speed calculation when upgrades or skill affect both ship and plane torpedoes
-- Fix speed boost modifier application (#189)
-- Signals are not loaded in builds
+- Builds are ordered incorrectly when opening a build from Track
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
