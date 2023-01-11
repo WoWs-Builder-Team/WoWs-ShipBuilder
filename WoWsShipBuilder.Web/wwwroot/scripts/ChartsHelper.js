@@ -54,48 +54,20 @@ function GetColor(index)
 /**
  * @description Add multiple datasets to multiple charts at once.
  * @param {Array<string>} chartsId - The charts ID
- * @param {Array<string>} guids - The guids of the dataset to add
- * @param {Array<string>} labels - The labels of the dataset to add
- * @param {Array<Array<Array<number>>>} datas - The data of each dataset for each chart.
- * @param {Array<number>} indexes - The indexes to associate to a dataset
+ * @param {Array<{id: string, label: string , datasets: Array<Array<number>>, index: number }>} chartDataList - List of the new chart data.
  */
-export function BatchAddData2(chartsId, guids, datas, labels, indexes)
-{
-    console.log(guids)
-    chartsId.forEach((chartId, chartIndex) =>{
-        const chart = Chart.getChart(chartId);
-        datas.forEach((shipData, index) => {
-            const dataset =
-                {
-                    data : shipData[chartIndex],
-                    label: labels[index],
-                    index: indexes[index],
-                    guid: guids[index],
-                };
-            chart.data.datasets.push(dataset)
-        });
-        chart.update();
-    });
-
-}
-
-/**
- * @description Add multiple datasets to multiple charts at once.
- * @param {Array<string>} chartsId - The charts ID
- * @param {Array<string>} labels - The labels of the dataset to update
- * @param {Array<Array<Array<number>>>} datas - The data of each dataset for each chart.
- * @param {Array<number>} indexes - The indexes to associate to a dataset
- */
-export function BatchAddData(chartsId, datas, labels, indexes)
+export function BatchAddData(chartsId, chartDataList)//guids, datas, labels, indexes)
 {
     chartsId.forEach((chartId, chartIndex) =>{
         const chart = Chart.getChart(chartId);
-        datas.forEach((shipData, index) => {
+        chartDataList.forEach(shipData =>
+        {
             const dataset =
                 {
-                    data : shipData[chartIndex],
-                    label: labels[index],
-                    index: indexes[index],
+                    data: shipData.datasets[chartIndex],
+                    label: shipData.label,
+                    index: shipData.index,
+                    guid: shipData.id,
                 };
             chart.data.datasets.push(dataset)
         });
@@ -109,7 +81,7 @@ export function BatchAddData(chartsId, datas, labels, indexes)
  * @param {Array<string>} chartsId - The charts ID
  * @param {Array<string>} guids - The labels of the dataset to remove
  */
-export function BatchRemoveData2(chartsId, guids)
+export function BatchRemoveData(chartsId, guids)
 {
     chartsId.forEach((chartId) =>{
         const chart = Chart.getChart(chartId);
@@ -125,155 +97,40 @@ export function BatchRemoveData2(chartsId, guids)
 }
 
 /**
- * @description Remove multiple datasets from multiple charts at once.
- * @param {Array<string>} chartsId - The charts ID
- * @param {Array<string>} labels - The labels of the dataset to remove
- */
-export function BatchRemoveData(chartsId, labels)
-{
-    chartsId.forEach((chartId) =>{
-        const chart = Chart.getChart(chartId);
-
-        labels.forEach((label) => {
-            const shipIndex = chart.data.datasets.findIndex(dataset => {
-                return dataset.label === label;
-            })
-            chart.data.datasets.splice(shipIndex, 1);
-        });
-        chart.update();
-    });
-}
-
-/**
- * @description Remove multiple datasets from multiple charts at once.
- * @param {Array<string>} chartsId - The charts ID
- * @param {Array<string>} indexes - The indexes of the dataset to remove
- */
-export function BatchRemoveDataFromIndex(chartsId, indexes)
-{
-    chartsId.forEach((chartId) =>{
-        const chart = Chart.getChart(chartId);
-
-        indexes.forEach((index) => {
-            const shipIndex = chart.data.datasets.findIndex(dataset => {
-                return dataset.index === index;
-            })
-            chart.data.datasets.splice(shipIndex, 1);
-        });
-        chart.update();
-    });
-}
-
-/**
- * @description Remove all datasets from multiple charts
- * @param {Array<string>} chartsId - The charts ID
- */
-export function RemoveAllData(chartsId)
-{
-    chartsId.forEach(chartId => {
-        const chart = Chart.getChart(chartId);
-        chart.data.datasets.splice(0, chart.data.datasets.length);
-        chart.update();
-    });
-}
-
-/**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
- * @param {Array<string>} guids - The labels of the dataset to update
- * @param {Array<Array<number>>} newDatas - The new data
+ * @param {Array<{id: string, newDataset: Array<number>}>} updatedChartDataList - The labels of the dataset to update
  */
-export function BatchUpdateData2(chartId, guids, newDatas)
+export function BatchUpdateData(chartId, updatedChartDataList)
 {
     const chart = Chart.getChart(chartId);
-    guids.forEach((guid, index) => {
-        const shipIndex = chart.data.datasets.findIndex(dataset => {
-            return dataset.guid === guid;
-        })
-        chart.data.datasets[shipIndex].data = newDatas[index];
-    });
-    chart.update();
-}
-
-/**
- * @description Update multiple dataset at once for a specific chart.
- * @param {string} chartId - The chart Id
- * @param {Array<string>} labels - The labels of the dataset to update
- * @param {Array<Array<number>>} newDatas - The new data
- */
-export function BatchUpdateData(chartId, labels, newDatas)
-{
-    const chart = Chart.getChart(chartId);
-    labels.forEach((label, index) => {
-        const shipIndex = chart.data.datasets.findIndex(dataset => {
-            return dataset.label === label;
-        })
-        chart.data.datasets[shipIndex].data = newDatas[index];
-    });
-    chart.update();
-}
-
-/**
- * @description Update multiple dataset at once for a specific chart.
- * @param {string} chartId - The chart Id
- * @param {Array<string>} guids - The labels of the dataset to update
- * @param {Array<Array<number>>} newDatas - The new data
- * @param {Array<string>} newLabels - The labels of the dataset to update
- */
-export function BatchUpdateDataNewLabels2(chartId, guids, newDatas, newLabels)
-{
-    const chart = Chart.getChart(chartId);
-    guids.forEach((guid, index) => {
-        const shipIndex = chart.data.datasets.findIndex(dataset => {
-            return dataset.guid === guid;
-        })
-        chart.data.datasets[shipIndex].data = newDatas[index];
-        chart.data.datasets[shipIndex].label = newLabels[index];
-    });
-    chart.update();
-}
-
-/**
- * @description Update multiple dataset at once for a specific chart.
- * @param {string} chartId - The chart Id
- * @param {Array<string>} labels - The labels of the dataset to update
- * @param {Array<Array<number>>} newDatas - The new data
- * @param {Array<string>} newLabels - The labels of the dataset to update
- */
-export function BatchUpdateDataNewLabels(chartId, labels, newDatas, newLabels)
-{
-    const chart = Chart.getChart(chartId);
-    labels.forEach((label, index) => {
-        const shipIndex = chart.data.datasets.findIndex(dataset => {
-            return dataset.label === label;
-        })
-        chart.data.datasets[shipIndex].data = newDatas[index];
-        chart.data.datasets[shipIndex].label = newLabels[index];
-    });
-    chart.update();
-}
-
-/**
- * @description Update multiple dataset at once for a specific chart.
- * @param {Array<string>} chartsId - The charts Id to update the data of
- * @param {Array<number>} indexes - The indexes of the dataset to replace
- * @param {Array<string>} labels - The new labels
- * @param {Array<Array<Array<number>>>} newDatas - The new data
- */
-export function BatchUpdateDataFromIndexes(chartsId, indexes, labels, newDatas)
-{
-    chartsId.forEach((chartId, chartIndex) =>
+    updatedChartDataList.forEach(chartData =>
     {
-        const chart = Chart.getChart(chartId);
-        indexes.forEach((datasetIndex, index) => {
-            const shipIndex = chart.data.datasets.findIndex(dataset => {
-                return dataset.index === datasetIndex;
-            })
-            chart.data.datasets[shipIndex].data = newDatas[chartIndex][index];
-            chart.data.datasets[shipIndex].label = labels[chartIndex];
-        });
-        chart.update();  
+        const shipIndex = chart.data.datasets.findIndex(dataset => {
+            return dataset.guid === chartData.id;
+        })
+        chart.data.datasets[shipIndex].data = chartData.newDataset;
     });
+    chart.update();
+}
+
+/**
+ * @description Update multiple dataset at once for a specific chart.
+ * @param {string} chartId - The chart Id
+ * @param {Array<{id: string, newLabel: string, newDataset: Array<number>}>} updatedChartDataList - The labels of the dataset to update
+ */
+export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
+{
+    const chart = Chart.getChart(chartId);
+    updatedChartDataList.forEach(chartData =>
+    {
+        const shipIndex = chart.data.datasets.findIndex(dataset => {
+            return dataset.guid === chartData.id;
+        })
+        chart.data.datasets[shipIndex].data = chartData.newDataset;
+        chart.data.datasets[shipIndex].label = chartData.newLabel;
+    });
+    chart.update();
 }
 
 /**

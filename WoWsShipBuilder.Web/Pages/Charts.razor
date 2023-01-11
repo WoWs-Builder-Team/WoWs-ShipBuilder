@@ -9,6 +9,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.Data
+@using System.Diagnostics
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -123,7 +124,7 @@
                     }
                 </MudSelect>
             </MudStack>
-            <DispersionPlot Ships="cache.Values.Select(x => x.DispPlotShipsCache).ToList()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsHelper.ChartsTabs)chartsTabs.ActivePanel.ID)"/>
+            <DispersionPlot Ships="GetDataForDispersionPlot()" EllipsePlane="selectedDispPlotPlane" FusoPosition="selectedFusoPosition" IsVertical="verticalDispPlot" PlotScaling="dispPlotScaling" Tab="@((ChartsHelper.ChartsTabs)chartsTabs.ActivePanel.ID)"/>
         </MudStack>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsHelper.ChartsTabs.BallisticCharts">
@@ -218,7 +219,6 @@
     private MudTabs chartsTabs = default!;
     
     private readonly Dictionary<Guid, ChartsDataWrapper> displayedShips = new();
-    private readonly Dictionary<ChartsCacheKey, ChartsCacheValue> cache = new(); //TODO to move later inside the ChartsDataWrapper
 
     private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
     private readonly List<DispersionPlot.FusoPositions> fusoPositionsList = Enum.GetValues<DispersionPlot.FusoPositions>().ToList();
@@ -332,26 +332,27 @@
 
     private async Task UpdateChartsBatchAsync(ShipAndShellSelectionDialogOutput data)
     {
+        Debug.WriteLine($"count: {data.ShipsToAdd.Count} - {data.ShipsToModify.Count} - {data.ShipsToRemove.Count}");
         List<string> chartIds = GetChartsIdList();
+        List<(string shellIndex, Guid guid)> shellsToRemove = new();
         foreach (var (id, wrapper) in data.ShipsToModify)
         {
-            foreach (string shellIndex in displayedShips[id].SelectedShellsIndexes.Where(shellIndex => !wrapper.SelectedShellsIndexes.Contains(shellIndex)))
+            foreach (var (shellIndex,_) in displayedShips[id].SelectedShells.Where(shellIndex => !wrapper.SelectedShells.Contains(shellIndex)))
             {
-                await RemoveCharts(chartIds, data.ShipsToRemove); // TODO replace with proper method once implemented
+                shellsToRemove.Add((shellIndex, id));
             }
         }
         
         await GenerateCharts(chartIds, data.ShipsToModify.Values.ToList());
         await GenerateCharts(chartIds, data.ShipsToAdd);
-        await RemoveCharts(chartIds, data.ShipsToRemove);
+        await RemoveShipsData(chartIds, data.ShipsToRemove);
+        await RemoveShellsData(chartIds, shellsToRemove);
     }
 
     private async Task GenerateCharts(List<string> chartIds, List<ChartsDataWrapper> data)
     {
         //IEnumerable<Point> is a single dataset. The middle List contains all datasets of a certain chart. The outermost List contains the list of datasets of each chart.
-        List<List<IEnumerable<ChartsHelper.Point>>> plotData = new();
-        List<int> indexes = new();
-        List<string> newLabels = new();
+        List<NewChartDataInput> newDataInputs = new();
         
         foreach (var shipToAdd in data)
         {
@@ -360,89 +361,62 @@
             var maxRange = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Range;
             var shellCaliber = (float) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber;
             var sigma = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Sigma;
-            foreach (string shellIndex in shipToAdd.SelectedShellsIndexes)
+            foreach (var (shellIndex,_) in shipToAdd.SelectedShells)
             {
-                if (displayedShips[shipId].SelectedShellsIndexes.Contains(shellIndex))
+                if (displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
                 {
                     continue;
                 }
                 
                 var shell = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex));
 
-                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipId, shellIndex, (float)shell.ShellVelocity, shellCaliber, (float)shell.Mass, (float)shell.Krupp, (float)shell.AirDrag, maxRange, shell.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}") ? null : shell.Penetration);
+                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, (float)shell.ShellVelocity, shellCaliber, (float)shell.Mass, (float)shell.Krupp, (float)shell.AirDrag, maxRange, shell.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}") ? null : shell.Penetration);
 
                 List<IEnumerable<ChartsHelper.Point>> shipData = new()
                 {
                     ChartsHelper.CreateHorizontalDispersionChartDataset(dispersionData, maxRange),
-                    CreateVerticalDispersionChartDataset(shipId, shellIndex, dispersionData, maxRange, ballisticSeries),
+                    CreateVerticalDispersionChartDataset(shipToAdd, shellIndex, dispersionData, maxRange, ballisticSeries),
                     ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
                 };
-                plotData.Add(shipData);
-                indexes.Add(counter);
-                counter++;
-
-                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber, shell.Type, shipToAdd.ShipContainer.Build?.BuildName);
-                newLabels.Add(label);
                 
-                AddToCache(shipToAdd.ShipContainer.Id, shellIndex, DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, (float)shell.ShellVelocity, shellCaliber, (float)shell.Mass, (float)shell.Krupp, (float)shell.AirDrag, maxRange, aimingRange * 1000, sigma, shotsNumber));
+                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber, shell.Type, shipToAdd.ShipContainer.Build?.BuildName);
+
+                var newDataInput = new NewChartDataInput(shipId.ToString() + ";" + shellIndex, label, shipData, counter);
+                newDataInputs.Add(newDataInput);
+                counter++;
+                
+                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, (float) shell.ShellVelocity, shellCaliber, (float) shell.Mass, (float) shell.Krupp, (float) shell.AirDrag, maxRange, aimingRange * 1000, sigma, shotsNumber);
+                shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
             }
             displayedShips[shipId] = shipToAdd;
         }
-        await ChartJsInterop.BatchAddDataAsync(chartIds, data.Select(x => x.ShipContainer.Id).ToList(), newLabels, plotData, indexes);
+        await ChartJsInterop.BatchAddDataAsync(chartIds, newDataInputs);
     }
     
-    private async Task RemoveCharts(List<string> chartIds, List<Guid> data)
+    private async Task RemoveShipsData(List<string> chartIds, List<Guid> guids)
     {
-        foreach (var id in data)
+        List<string> dataToRemove = new();
+        foreach (var guid in guids)
         {
-            displayedShips.Remove(id);
-            RemoveFromCache(id);
+            dataToRemove.AddRange(displayedShips[guid].SelectedShells.Select(x => guid + ";" + x.Key));
+            displayedShips.Remove(guid);
         }
-        await ChartJsInterop.BatchRemoveDataAsync(chartIds, data);
+        await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
     }
-
-    private void AddToCache(ChartsCacheKey key, object obj)
+    
+    private async Task RemoveShellsData(List<string> chartIds, List<(string shellIndex, Guid guid)> shellsInfo)
     {
-        AddToCache(key.ChartsDataWrapperId, key.ShellIndex, obj);
-    }
-
-    private void AddToCache(Guid id, string label, object obj)
-    {
-        ChartsCacheKey cacheKey = new(id, label);
-        switch (obj)
+        List<string> dataToRemove = new();
+        foreach (var (shellIndex, guid) in shellsInfo)
         {
-            case DispersionEllipse disp when cache.ContainsKey(cacheKey):
-                cache[cacheKey] = cache[cacheKey] with { DispPlotShipsCache = disp };
-                break;
-            case DispersionEllipse disp:
-                cache.Add(cacheKey, new(disp, null, null));
-                break;
-            case VerticalDispersions vert when cache.ContainsKey(cacheKey):
-                cache[cacheKey] = cache[cacheKey] with { VerticalDispersionsCache = vert };
-                break;
-            case VerticalDispersions vert:
-                cache.Add(cacheKey, new(null, vert, null));
-                break;
-            case Dictionary<double, Ballistic> ballistic when cache.ContainsKey(cacheKey):
-                cache[cacheKey] = cache[cacheKey] with { BallisticCache = ballistic };
-                break;
-            case Dictionary<double, Ballistic> ballistic:
-                cache.Add(cacheKey, new(null, null, ballistic));
-                break;
+            dataToRemove.Add(guid + ";" + shellIndex);
+            displayedShips[guid].SelectedShells.Remove(shellIndex);
         }
-    }
-
-    private void RemoveFromCache(Guid id)
-    {
-        IEnumerable<ChartsCacheKey> list = cache.Keys.Where(x => x.ChartsDataWrapperId.Equals(id));
-        foreach (var ship in list)
-        {
-            cache.Remove(ship);
-        }
+        await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
     }
 
     private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, string shellType, string? buildName)
@@ -465,36 +439,53 @@
         return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber}{Localizer.GetAppLocalization(Translation.Unit_MM)} {type.ShellTypeToString()} - {buildName ?? DefaultBuildName}";
     }
     
-    private Dictionary<double, Ballistic> GetBallistic(Guid id, string shellIndex, float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, float? penetration)
+    private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, float? penetration)
     {
-        ChartsCacheKey cacheKey = new(id, shellIndex);
-        if (cache.ContainsKey(cacheKey) && cache[cacheKey].BallisticCache is not null)
+        if (wrapper.SelectedShells.ContainsKey(shellIndex))
         {
-            return cache[cacheKey].BallisticCache!;
+            var ballisticCache = wrapper.SelectedShells[shellIndex].BallisticCache;
+            if (ballisticCache is not null)
+            {
+                return ballisticCache;
+            }
         }
+        
         Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(muzzleVelocity, caliber, mass, krupp, airDrag, maxRange, penetration);
-        AddToCache(cacheKey, ballisticSeries);
+        wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { BallisticCache = ballisticSeries };
         return ballisticSeries;
     }
 
-    private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(Guid id, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
+    private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(ChartsDataWrapper wrapper, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
     {
-        ChartsCacheKey cacheKey = new(id, shellIndex);
-        if (cache.ContainsKey(cacheKey) && cache[cacheKey].VerticalDispersionsCache is not null)
+        if (wrapper.SelectedShells.ContainsKey(shellIndex))
         {
-            return ChartsHelper.SelectVerticalDispersionDataset(cache[cacheKey].VerticalDispersionsCache!, selectedVertDispersionPlane);
+            var verticalDispersionsCache = wrapper.SelectedShells[shellIndex].VerticalDispersionsCache;
+            if (verticalDispersionsCache is not null)
+            {
+                return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache, selectedVertDispersionPlane);
+            }
         }
+        
         var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
-        AddToCache(cacheKey, verticalDispersions);
+        wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { VerticalDispersionsCache = verticalDispersions };
         return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispersionPlane);
     }
 
     private async Task ChangeVerticalDispPlaneAsync()
     {
         SetProcessing(true);
-        List<IEnumerable<ChartsHelper.Point>> selectedVerticals = cache.Select(item => ChartsHelper.SelectVerticalDispersionDataset(cache[item.Key].VerticalDispersionsCache!, selectedVertDispersionPlane)).ToList();
-        List<Guid> shipIds = displayedShips.Values.Select(x => x.ShipContainer.Id).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, shipIds, selectedVerticals);
+        List<UpdateChartDataInput> updateChartDataInputs = new();
+        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
+        {
+            foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
+            {
+                IEnumerable<ChartsHelper.Point> selectedVerticals = ChartsHelper.SelectVerticalDispersionDataset(shellData.VerticalDispersionsCache!, selectedVertDispersionPlane);
+                UpdateChartDataInput updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, selectedVerticals);
+                updateChartDataInputs.Add(updateChartDataInput);
+            }
+        }
+        
+        await ChartJsInterop.BatchUpdateDataAsync(VerticalDispersionId, updateChartDataInputs);
         SetProcessing(false);
     }
 
@@ -502,9 +493,19 @@
     {
         SetProcessing(true);
         range = selectedRange;
-        List<IEnumerable<ChartsHelper.Point>> trajectoryData = cache.Select(item => ChartsHelper.CreateTrajectoryDataset(cache[item.Key].BallisticCache!, range)).ToList();
-        List<Guid> shipIds = displayedShips.Values.Select(x => x.ShipContainer.Id).ToList();
-        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, shipIds, trajectoryData);
+
+        List<UpdateChartDataInput> updateChartDataInputs = new();
+        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
+        {
+            foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
+            {
+                IEnumerable<ChartsHelper.Point> trajectoryData = ChartsHelper.CreateTrajectoryDataset(shellData.BallisticCache!, range);
+                UpdateChartDataInput updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, trajectoryData);
+                updateChartDataInputs.Add(updateChartDataInput);
+            }
+        }
+        
+        await ChartJsInterop.BatchUpdateDataAsync(TrajectoryId, updateChartDataInputs);
         await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, aimingRange / 4 * 1000);
         SetProcessing(false);
     }
@@ -569,11 +570,17 @@
 
     private void UpdateDispersionPlotParameters()
     {
-        foreach (((var chartsDataWrapperId, string shellIndex), var (dispPlotShipsCache, _, _)) in cache)
+        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
         {
-            AddToCache(chartsDataWrapperId, shellIndex, DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Name, dispPlotShipsCache.DispersionData, dispPlotShipsCache.MuzzleVelocity, dispPlotShipsCache.Caliber, dispPlotShipsCache.Mass, dispPlotShipsCache.Krupp, dispPlotShipsCache.AirDrag, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber));
+            foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
+            {
+                var dispPlotShipsCache = shellData.DispPlotShipsCache;
+                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Name, dispPlotShipsCache.DispersionData, dispPlotShipsCache.MuzzleVelocity, dispPlotShipsCache.Caliber, dispPlotShipsCache.Mass, dispPlotShipsCache.Krupp, dispPlotShipsCache.AirDrag, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
+                wrapper.SelectedShells[shellIndex] = shellData with {DispPlotShipsCache = dispersionPlotParameter};
+            }
         }
     }
+
 
     private void UpdateDispersionPlotRange(double selectedValue)
     {
@@ -600,5 +607,10 @@
     private bool SetFullWidth()
     {
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
+    }
+
+    private List<DispersionEllipse> GetDataForDispersionPlot()
+    {
+        return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToList();
     }
 }

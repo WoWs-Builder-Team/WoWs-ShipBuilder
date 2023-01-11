@@ -33,63 +33,34 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("ChangeSuggestedMax", chartId, newSuggestedMax);
     }
 
-    public async Task BatchAddDataAsync(List<string> chartIds, List<Guid> guids, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
+    public async Task BatchAddDataAsync(List<string> chartIds, List<NewChartDataInput> newChartData)
     {
+        if (newChartData.Any(x => x.Datasets.Count != chartIds.Count))
+        {
+            throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each NewChartDataInput");
+        }
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchAddData2", chartIds, guids, data, labels, indexes);
+        await module.InvokeVoidAsync("BatchAddData", chartIds, newChartData);
     }
 
-    [Obsolete("Use the overload with the GUID parameter")]
-    public async Task BatchAddDataAsync(List<string> chartIds, List<string> labels, List<List<IEnumerable<ChartsHelper.Point>>> data, List<int> indexes)
+    public async Task BatchRemoveDataAsync(List<string> chartId, List<string> id)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchAddData", chartIds, data, labels, indexes);
+        await module.InvokeVoidAsync("BatchRemoveData", chartId, id);
     }
 
-    public async Task BatchRemoveDataAsync(List<string> chartId, List<Guid> guids)
+    public async Task BatchUpdateDataAsync(string chartId, List<UpdateChartDataInput> updatedChartData)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchRemoveData2", chartId, guids);
+        await module.InvokeVoidAsync("BatchUpdateData", chartId, updatedChartData);
     }
 
-    [Obsolete("Use the overload with the GUID parameter")]
-    public async Task BatchRemoveDataAsync(List<string> chartId, List<string> labels)
+    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<UpdateChartDataLabelInput> updatedChartData)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchRemoveData", chartId, labels);
+        await module.InvokeVoidAsync("BatchUpdateDataNewLabels2", chartId, updatedChartData);
     }
 
-    public async Task RemoveAllDataAsync(List<string> chartId)
-    {
-        await InitializeModule();
-        await module.InvokeVoidAsync("RemoveAllData", chartId);
-    }
-
-    public async Task BatchUpdateDataAsync(string chartId, List<Guid> guids, List<IEnumerable<ChartsHelper.Point>> datas)
-    {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateData2", chartId, guids, datas);
-    }
-
-    [Obsolete("Use the overload with the GUID parameter")]
-    public async Task BatchUpdateDataAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas)
-    {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateData", chartId, labels, datas);
-    }
-
-    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<Guid> guids, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
-    {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateDataNewLabels2", chartId, guids, datas, newLabels);
-    }
-
-    [Obsolete("Use the overload with the GUID parameter")]
-    public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<string> labels, List<IEnumerable<ChartsHelper.Point>> datas, List<string> newLabels)
-    {
-        await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, labels, datas, newLabels);
-    }
 
     [MemberNotNull(nameof(module))]
     private async Task InitializeModule()
@@ -115,3 +86,9 @@ public class ChartJsInterop : IAsyncDisposable
         }
     }
 }
+
+public record NewChartDataInput(string Id, string Label, List<IEnumerable<ChartsHelper.Point>> Datasets, int Index);
+
+public record UpdateChartDataInput(string Id, IEnumerable<ChartsHelper.Point> Datasets);
+
+public record UpdateChartDataLabelInput(string Id, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);

@@ -2,4 +2,4 @@
 
 namespace WoWsShipBuilder.Web.Utility;
 
-public sealed record ChartsDataWrapper(ShipBuildContainer ShipContainer, List<string> SelectedShellsIndexes);
+public sealed record ChartsDataWrapper(ShipBuildContainer ShipContainer, Dictionary<string, ChartCacheData> SelectedShells);
