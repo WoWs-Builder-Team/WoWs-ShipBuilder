@@ -6,7 +6,6 @@
 @using System.Linq
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.DataStructures.Ship
 @inject ILocalizer Localizer
 
@@ -40,7 +39,7 @@
                                 <MudButtonGroup OverrideStyles="false" VerticalAlign="true" Class="gap-1">
                                     @foreach (var shellData in dataWrapper.ShipContainer.ShipDataContainer.MainBatteryDataContainer.ShellData)
                                     {
-                                        <MudButton Color="@(GetColorFromBool(dataWrapper.SelectedShells.Contains(shellData.Name)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.Contains(shellData.Name)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shellData.Name))">
+                                        <MudButton Color="@(GetColorFromBool(dataWrapper.SelectedShellsIndexes.Contains(shellData.Name)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShellsIndexes.Contains(shellData.Name)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shellData.Name))">
                                             @Localizer.GetGameLocalization(shellData.Name).Localization
                                         </MudButton>
                                     }
@@ -89,7 +88,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public ShipAndShellSelectionDialogInput InputData { get; set; }
+    public List<ChartsDataWrapper> InputData { get; set; }
 
 
     private readonly List<ChartsDataWrapper> dataWrappers = new();
@@ -99,8 +98,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        dataWrappers.AddRange(InputData.ContainerList);
-        selectedShips.AddRange(InputData.ContainerList.Select(x => x.ShipContainer.Ship.Index));
+        dataWrappers.AddRange(InputData);
+        selectedShips.AddRange(InputData.Select(x => x.ShipContainer.Ship.Index));
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }
 
@@ -109,7 +108,7 @@
         if (e.Action.Equals(NotifyCollectionChangedAction.Add))
         {
             //manage newly added items
-            var newShips = (e.NewItems as List<string>) ?? new List<string>();
+            var newShips = e.NewItems as List<string> ?? new List<string>();
             foreach (string ship in newShips)
             {
                 AddWrapper(ship);
@@ -131,22 +130,22 @@
             .Select(module => module.First())
             .ToList();
         var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration , new());
-        ShipBuildContainer container = new(ship, null, new Guid(), null, false, dataContainer, null);
-        ChartsDataWrapper wrapper = new ChartsDataWrapper(container, new());
+        var container = ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = dataContainer };
+        var wrapper = new ChartsDataWrapper(container, new());
         dataWrappers.Add(wrapper);
     }
 
     private void ReturnSelectedShells()
     {
         processing = true;
-        List<ChartsDataWrapper> initialShips = InputData.ContainerList;
+        List<ChartsDataWrapper> initialShips = InputData;
         
         List<ChartsDataWrapper> shipsToAdd = new();
         Dictionary<Guid, ChartsDataWrapper> shipsToModify = new();
         List<Guid> shipsToRemove = new();
         
         //newly added ships
-        shipsToAdd.AddRange(dataWrappers.Where(current => !initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id)));
+        shipsToAdd.AddRange(dataWrappers.Where(current => !initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id) && current.SelectedShellsIndexes.Count != 0));
         
         //removed ships
         shipsToRemove.AddRange(initialShips.Where(current => !dataWrappers.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id)).Select(x => x.ShipContainer.Id));
@@ -158,7 +157,11 @@
             
             var initialShip = initialShips.First(x => x.ShipContainer.Id.Equals(ship.ShipContainer.Id));
             //shells list are always sorted, see "ToggleSelection" method
-            if (!initialShip.SelectedShells.SequenceEqual(ship.SelectedShells))
+            if (ship.SelectedShellsIndexes.Count == 0)
+            {
+                shipsToRemove.Add(ship.ShipContainer.Id);
+            }
+            else if (!initialShip.SelectedShellsIndexes.SequenceEqual(ship.SelectedShellsIndexes))
             {
                 shipsToModify.Add(ship.ShipContainer.Id, ship);
             }
@@ -177,15 +180,15 @@
 
     private void ToggleSelection(ChartsDataWrapper ship, string shellIndex)
     {
-        if (ship.SelectedShells.Contains(shellIndex))
+        if (ship.SelectedShellsIndexes.Contains(shellIndex))
         {
-            ship.SelectedShells.Remove(shellIndex);
-            ship.SelectedShells.Sort();
+            ship.SelectedShellsIndexes.Remove(shellIndex);
+            ship.SelectedShellsIndexes.Sort();
         }
         else
         {
-            ship.SelectedShells.Add(shellIndex);
-            ship.SelectedShells.Sort();
+            ship.SelectedShellsIndexes.Add(shellIndex);
+            ship.SelectedShellsIndexes.Sort();
         }
         StateHasChanged();
     }

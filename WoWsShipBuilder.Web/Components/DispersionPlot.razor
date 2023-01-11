@@ -14,7 +14,7 @@
         {
             <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                 <MudText Style="font-size: x-large">
-                    @($"{Localizer.GetGameLocalization($"{dispersionEllipse.Name[..dispersionEllipse.Name.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(dispersionEllipse.Shell.Name).Localization}")
+                    @dispersionEllipse.Name
                 </MudText>
                 @if (dispersionEllipse.IsValid)
                 {
