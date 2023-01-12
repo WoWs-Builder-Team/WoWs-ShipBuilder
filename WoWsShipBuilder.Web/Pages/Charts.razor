@@ -365,10 +365,10 @@
                     continue;
                 }
                 
-                float? shellPenetration = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
+                var shellPenetration = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
                 var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
-                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, shell, maxRange, shell.ShellType == ShellType.AP ? null : shellPenetration);
+                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, shell, maxRange, shellPenetration);
 
                 List<IEnumerable<ChartsHelper.Point>> shipData = new()
                 {
@@ -422,7 +422,7 @@
         return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()} - Build: {buildName ?? DefaultBuildName}";
     }
     
-    private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, float? penetration)
+    private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, int penetration)
     {
         if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.ContainsKey(shellIndex))
         {
@@ -555,7 +555,7 @@
 
     private void UpdateDispersionPlotParameters()
     {
-        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
+        foreach (var wrapper in displayedShips.Values)
         {
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
             {

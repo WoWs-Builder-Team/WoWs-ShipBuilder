@@ -73,8 +73,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
         public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange)
         {
-            float? penetration = shell.ShellType == ShellType.AP ? null : shell.Penetration;
-            return CalculateBallistic(shell, maxRange, penetration);
+            return CalculateBallistic(shell, maxRange, shell.Penetration);
         }
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <param name="maxRange">Guns maximum range.</param>
         /// <param name="penetration">The shell penetration. If shell's type is AP set this parameter to null.</param>
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
-        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange, float? penetration)
+        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange, float penetration)
         {
             var dict = new Dictionary<double, Ballistic>();
 
@@ -101,7 +100,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             double k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
 
             // Insert pen at 0 distance
-            double initialPen = penetration ?? CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
+            double initialPen = shell.ShellType != ShellType.AP ? penetration : CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
             var initialBallistic = new Ballistic(initialPen, shell.MuzzleVelocity, 0, 0, new());
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
@@ -147,7 +146,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
                 var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
-                var pen = penetration ?? CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
+                var pen = shell.ShellType != ShellType.AP ? penetration : CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
 
                 if (x > maxRange || x < lastRange)
                 {

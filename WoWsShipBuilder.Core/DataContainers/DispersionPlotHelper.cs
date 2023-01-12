@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         private static (double waterLineProjection, double perpendicularToWaterProjection, double projectedOnWaterVerticalRadius, double perpendicularToWaterVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
         {
             double impactAngle;
-            List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, null).Where(x => x.Key >= aimingRange).ToList();
+            List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, shell.Penetration).Where(x => x.Key >= aimingRange).ToList();
             if (ballistic.Any())
             {
                 impactAngle = ballistic.First().Value.ImpactAngle;
