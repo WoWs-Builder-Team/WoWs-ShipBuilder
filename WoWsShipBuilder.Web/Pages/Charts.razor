@@ -288,6 +288,10 @@
                     {
                         ["InputData"] = shipList,
                     };
+                    foreach (var chartsDataWrapper in shipList)
+                    {
+                        displayedShips.Add(chartsDataWrapper.ShipContainer.Id, chartsDataWrapper);
+                    }
                     var dialog = DialogService.Show<ShipAndShellSelectionDialogNew>("ShipAndShellSelectionDialog", parameters, options);
                     var result = await dialog.Result;
                     if (result is null || result.Cancelled)
@@ -333,22 +337,23 @@
     private async Task UpdateChartsBatchAsync(ShipAndShellSelectionDialogOutput data)
     {
         List<string> chartIds = GetChartsIdList();
+        List<(string shellIndex, Guid guid)> shellsToRemove = new();
+        foreach (var (id, wrapper) in data.ShipsToModify)
+        {
+            foreach (var (shellIndex,_) in displayedShips[id].SelectedShells.Where(shellIndex => !wrapper.SelectedShells.Contains(shellIndex)))
+            {
+                shellsToRemove.Add((shellIndex, id));
+            }
+        }
         
         await GenerateCharts(chartIds, data.ShipsToModify.Values.ToList());
         await GenerateCharts(chartIds, data.ShipsToAdd);
         await RemoveShipsData(chartIds, data.ShipsToRemove);
-        
-        List<(string shellIndex, Guid guid)> shellsToRemove = new();
-        foreach (var (id, wrapper) in data.ShipsToModify)
-        {
-            shellsToRemove.AddRange(displayedShips[id].SelectedShells.Keys.Where(shellIndex => !wrapper.SelectedShells.ContainsKey(shellIndex)).Select(shellIndex => (shellIndex, id)));
-        }
         await RemoveShellsData(chartIds, shellsToRemove);
     }
 
     private async Task GenerateCharts(List<string> chartIds, List<ChartsDataWrapper> data)
     {
-        //IEnumerable<Point> is a single dataset. The middle List contains all datasets of a certain chart. The outermost List contains the list of datasets of each chart.
         List<NewChartDataInput> newDataInputs = new();
         
         foreach (var shipToAdd in data)
