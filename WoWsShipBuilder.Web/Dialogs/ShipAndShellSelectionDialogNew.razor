@@ -98,7 +98,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        dataWrappers.AddRange(InputData);
+        dataWrappers.AddRange(InputData.Select(x => x with { SelectedShells = x.SelectedShells.ToDictionary(y => y.Key, y => y.Value) }));
         selectedShips.AddRange(InputData.Select(x => x.ShipContainer.Ship.Index));
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }

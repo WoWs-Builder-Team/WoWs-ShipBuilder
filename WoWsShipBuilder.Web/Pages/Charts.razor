@@ -9,7 +9,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.Data
-@using System.Diagnostics
+@using WoWsShipBuilder.DataStructures.Projectile
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -332,20 +332,17 @@
 
     private async Task UpdateChartsBatchAsync(ShipAndShellSelectionDialogOutput data)
     {
-        Debug.WriteLine($"count: {data.ShipsToAdd.Count} - {data.ShipsToModify.Count} - {data.ShipsToRemove.Count}");
         List<string> chartIds = GetChartsIdList();
-        List<(string shellIndex, Guid guid)> shellsToRemove = new();
-        foreach (var (id, wrapper) in data.ShipsToModify)
-        {
-            foreach (var (shellIndex,_) in displayedShips[id].SelectedShells.Where(shellIndex => !wrapper.SelectedShells.Contains(shellIndex)))
-            {
-                shellsToRemove.Add((shellIndex, id));
-            }
-        }
         
         await GenerateCharts(chartIds, data.ShipsToModify.Values.ToList());
         await GenerateCharts(chartIds, data.ShipsToAdd);
         await RemoveShipsData(chartIds, data.ShipsToRemove);
+        
+        List<(string shellIndex, Guid guid)> shellsToRemove = new();
+        foreach (var (id, wrapper) in data.ShipsToModify)
+        {
+            shellsToRemove.AddRange(displayedShips[id].SelectedShells.Keys.Where(shellIndex => !wrapper.SelectedShells.ContainsKey(shellIndex)).Select(shellIndex => (shellIndex, id)));
+        }
         await RemoveShellsData(chartIds, shellsToRemove);
     }
 
@@ -358,19 +355,20 @@
         {
             var shipId = shipToAdd.ShipContainer.Id;
             var dispersionData = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.DispersionData;
-            var maxRange = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Range;
+            var maxRange = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Range * 1000;
             var shellCaliber = (float) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber;
             var sigma = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Sigma;
             foreach (var (shellIndex,_) in shipToAdd.SelectedShells)
             {
-                if (displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
+                if (displayedShips.ContainsKey(shipId) && displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
                 {
                     continue;
                 }
                 
-                var shell = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex));
+                float? shellPenetration = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
+                var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
 
-                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, (float)shell.ShellVelocity, shellCaliber, (float)shell.Mass, (float)shell.Krupp, (float)shell.AirDrag, maxRange, shell.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}") ? null : shell.Penetration);
+                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToAdd, shellIndex, shell, maxRange, shell.ShellType == ShellType.AP ? null : shellPenetration);
 
                 List<IEnumerable<ChartsHelper.Point>> shipData = new()
                 {
@@ -383,13 +381,13 @@
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
                 };
                 
-                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber, shell.Type, shipToAdd.ShipContainer.Build?.BuildName);
+                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipContainer.Build?.BuildName);
 
-                var newDataInput = new NewChartDataInput(shipId.ToString() + ";" + shellIndex, label, shipData, counter);
+                var newDataInput = new NewChartDataInput(shipId + ";" + shellIndex, label, shipData, counter);
                 newDataInputs.Add(newDataInput);
                 counter++;
                 
-                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, (float) shell.ShellVelocity, shellCaliber, (float) shell.Mass, (float) shell.Krupp, (float) shell.AirDrag, maxRange, aimingRange * 1000, sigma, shotsNumber);
+                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, shell, maxRange, aimingRange * 1000, sigma, shotsNumber);
                 shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
             }
             displayedShips[shipId] = shipToAdd;
@@ -419,47 +417,33 @@
         await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
     }
 
-    private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, string shellType, string? buildName)
+    private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, ShellType shellType, string? buildName)
     {
-        ShellType type;
-        
-        if (shellType.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"))
-        {
-            type = ShellType.SAP;
-        }
-        else if (shellType.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"))
-        {
-            type = ShellType.HE;
-        }
-        else
-        {
-            type = ShellType.AP;
-        }
-        
-        return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber}{Localizer.GetAppLocalization(Translation.Unit_MM)} {type.ShellTypeToString()} - {buildName ?? DefaultBuildName}";
+        return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()} - Build: {buildName ?? DefaultBuildName}";
     }
     
-    private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, float? penetration)
+    private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, float? penetration)
     {
-        if (wrapper.SelectedShells.ContainsKey(shellIndex))
+        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.ContainsKey(shellIndex))
         {
-            var ballisticCache = wrapper.SelectedShells[shellIndex].BallisticCache;
+            var ballisticCache = displayedShips[wrapper.ShipContainer.Id].SelectedShells[shellIndex].BallisticCache;
             if (ballisticCache is not null)
             {
                 return ballisticCache;
             }
         }
         
-        Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(muzzleVelocity, caliber, mass, krupp, airDrag, maxRange, penetration);
+        Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange, penetration);
         wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { BallisticCache = ballisticSeries };
+        displayedShips[wrapper.ShipContainer.Id] = wrapper;
         return ballisticSeries;
     }
 
     private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(ChartsDataWrapper wrapper, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
     {
-        if (wrapper.SelectedShells.ContainsKey(shellIndex))
+        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.ContainsKey(shellIndex))
         {
-            var verticalDispersionsCache = wrapper.SelectedShells[shellIndex].VerticalDispersionsCache;
+            var verticalDispersionsCache = displayedShips[wrapper.ShipContainer.Id].SelectedShells[shellIndex].VerticalDispersionsCache;
             if (verticalDispersionsCache is not null)
             {
                 return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache, selectedVertDispersionPlane);
@@ -468,6 +452,7 @@
         
         var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
         wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { VerticalDispersionsCache = verticalDispersions };
+        displayedShips[wrapper.ShipContainer.Id] = wrapper;
         return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispersionPlane);
     }
 
@@ -475,12 +460,12 @@
     {
         SetProcessing(true);
         List<UpdateChartDataInput> updateChartDataInputs = new();
-        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
+        foreach (var wrapper in displayedShips.Values)
         {
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
             {
                 IEnumerable<ChartsHelper.Point> selectedVerticals = ChartsHelper.SelectVerticalDispersionDataset(shellData.VerticalDispersionsCache!, selectedVertDispersionPlane);
-                UpdateChartDataInput updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, selectedVerticals);
+                var updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, selectedVerticals);
                 updateChartDataInputs.Add(updateChartDataInput);
             }
         }
@@ -495,12 +480,12 @@
         range = selectedRange;
 
         List<UpdateChartDataInput> updateChartDataInputs = new();
-        foreach (ChartsDataWrapper wrapper in displayedShips.Values)
+        foreach (var wrapper in displayedShips.Values)
         {
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
             {
                 IEnumerable<ChartsHelper.Point> trajectoryData = ChartsHelper.CreateTrajectoryDataset(shellData.BallisticCache!, range);
-                UpdateChartDataInput updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, trajectoryData);
+                var updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, trajectoryData);
                 updateChartDataInputs.Add(updateChartDataInput);
             }
         }
@@ -575,7 +560,7 @@
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
             {
                 var dispPlotShipsCache = shellData.DispPlotShipsCache;
-                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Name, dispPlotShipsCache.DispersionData, dispPlotShipsCache.MuzzleVelocity, dispPlotShipsCache.Caliber, dispPlotShipsCache.Mass, dispPlotShipsCache.Krupp, dispPlotShipsCache.AirDrag, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
+                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Name, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
                 wrapper.SelectedShells[shellIndex] = shellData with {DispPlotShipsCache = dispersionPlotParameter};
             }
         }

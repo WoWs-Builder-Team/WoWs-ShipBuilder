@@ -191,7 +191,7 @@ public partial record ShellDataContainer : DataContainerBase
                 Damage = Math.Round((decimal)shellDamage),
                 ExplosionRadius = (decimal)shell.ExplosionRadius,
                 SplashCoeff = (decimal)shell.SplashCoeff,
-                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
+                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 2),
                 Penetration = (int)Math.Truncate(shellPenetration),
                 AirDrag = Math.Round((decimal)shellAirDrag, 2),
                 ShellFireChance = Math.Round((decimal)shellFireChance, 1),

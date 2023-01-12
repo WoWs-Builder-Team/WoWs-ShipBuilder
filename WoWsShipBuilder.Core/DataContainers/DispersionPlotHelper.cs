@@ -26,19 +26,15 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <summary>
         /// Calculates the projection ratio and the vertical radius length of the dispersion ellipse projected on water.
         /// </summary>
-        /// <param name="muzzleVelocity">The shell initial speed.</param>
-        /// <param name="caliber">The shell caliber.</param>
-        /// <param name="mass">The shell mass.</param>
-        /// <param name="krupp">The shell krupp.</param>
-        /// <param name="airDrag">The shell air drag.</param>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="verticalRadius">The length of the dispersion ellipse vertical radius.</param>
         /// <returns>The projection ratio on water and on the perpendicular plane to the water, the length of the vertical radius projected on water and on the perpendicular plane to the water.</returns>
-        private static (double waterLineProjection, double perpendicularToWaterProjection, double projectedOnWaterVerticalRadius, double perpendicularToWaterVerticalRadius) GetProjectedEllipse(float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, double aimingRange, double verticalRadius)
+        private static (double waterLineProjection, double perpendicularToWaterProjection, double projectedOnWaterVerticalRadius, double perpendicularToWaterVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
         {
             double impactAngle;
-            List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(muzzleVelocity, caliber, mass, krupp, airDrag, maxRange, null).Where(x => x.Key >= aimingRange).ToList();
+            List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, null).Where(x => x.Key >= aimingRange).ToList();
             if (ballistic.Any())
             {
                 impactAngle = ballistic.First().Value.ImpactAngle;
@@ -107,40 +103,31 @@ namespace WoWsShipBuilder.Core.DataContainers
             return (realHitPoints, onWaterHitPoints, onVerticalHitPoints);
         }
 
-        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
-        {
-            return CalculateDispersionPlotParameters(name, dispersionData, shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp, shell.AirDrag, maxRange, aimingRange, sigma, shotsNumber);
-        }
-
         /// <summary>
         /// Calls all the necessary methods to get all the data for the dispersion plot.
         /// </summary>
         /// <param name="name">The name of the represented entity.</param>
         /// <param name="dispersionData">Contains the parameters to calculate horizontal and vertical dispersions.</param>
-        /// <param name="muzzleVelocity">The shell initial speed.</param>
-        /// <param name="caliber">The shell caliber.</param>
-        /// <param name="mass">The shell mass.</param>
-        /// <param name="krupp">The shell krupp.</param>
-        /// <param name="airDrag">The shell air drag.</param>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="sigma">The sigma of the ship.</param>
         /// <param name="shotsNumber">The number of shots to simulate.</param>
         /// <returns>A DispersionEllipse object containing all the information.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
-        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, double aimingRange, double sigma, int shotsNumber)
+        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
         {
             (double horizontalRadius, double verticalRadius) = GetDispersionEllipse(dispersionData, maxRange, aimingRange);
-            var projectedEllipse = GetProjectedEllipse(muzzleVelocity, caliber, mass, krupp, airDrag, maxRange, aimingRange, verticalRadius);
+            var projectedEllipse = GetProjectedEllipse(shell, maxRange, aimingRange, verticalRadius);
             if (projectedEllipse == (0, 0, 0, 0))
             {
-                return new(name, dispersionData, muzzleVelocity, caliber, mass, krupp, airDrag, sigma, maxRange);
+                return new(name, dispersionData, shell, sigma, maxRange);
             }
 
             double halfRatio = GetHalfHitsRatio(sigma);
             (List<(double x, double y)> realPlane, List<(double x, double y)> onWaterLine, List<(double x, double y)> perpendicularToWaterLine) = GetHitPoints(sigma, horizontalRadius, verticalRadius, shotsNumber, projectedEllipse.waterLineProjection, projectedEllipse.perpendicularToWaterProjection);
 
-            return new(name, dispersionData, muzzleVelocity, caliber, mass, krupp, airDrag, sigma, maxRange, horizontalRadius, verticalRadius,
+            return new(name, dispersionData, shell, sigma, maxRange, horizontalRadius, verticalRadius,
                        projectedEllipse.projectedOnWaterVerticalRadius, projectedEllipse.perpendicularToWaterVerticalRadius,
                        realPlane, onWaterLine, perpendicularToWaterLine,
                        horizontalRadius * halfRatio, verticalRadius * halfRatio, projectedEllipse.projectedOnWaterVerticalRadius * halfRatio,
@@ -148,15 +135,15 @@ namespace WoWsShipBuilder.Core.DataContainers
         }
     }
 
-    public sealed record DispersionEllipse(string Name, Dispersion DispersionData, float MuzzleVelocity, float Caliber, float Mass, float Krupp, float AirDrag, double Sigma, double MaxRange)
+    public sealed record DispersionEllipse(string Name, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange)
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
-        public DispersionEllipse(string name, Dispersion dispersionData, float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double sigma, double maxRange,
+        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange,
                                  double horizontalRadius, double verticalRadius, double projectedOnWaterVerticalRadius, double projectedOnPerpendicularToWaterVerticalRadius,
                                  List<(double x, double y)> realHitPoints, List<(double x, double y)> onWaterHitPoints, List<(double x, double y)> onPerpendicularToWaterHitPoints,
                                  double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedOnWaterVerticalRadiusHalfHitPoints,
                                  double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
-        : this(name, dispersionData, muzzleVelocity, caliber, mass, krupp, airDrag, sigma, maxRange)
+        : this(name, dispersionData, shell, sigma, maxRange)
         {
             HorizontalRadius = horizontalRadius;
             VerticalRadius = verticalRadius;

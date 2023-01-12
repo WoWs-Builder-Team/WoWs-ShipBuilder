@@ -74,21 +74,17 @@ namespace WoWsShipBuilder.Core.DataContainers
         public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange)
         {
             float? penetration = shell.ShellType == ShellType.AP ? null : shell.Penetration;
-            return CalculateBallistic(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp, shell.AirDrag, maxRange, penetration);
+            return CalculateBallistic(shell, maxRange, penetration);
         }
 
         /// <summary>
         /// Calculate all <see cref="Ballistic"/> values for a shell.
         /// </summary>
-        /// <param name="muzzleVelocity">The shell initial speed.</param>
-        /// <param name="caliber">The shell caliber.</param>
-        /// <param name="mass">The shell mass.</param>
-        /// <param name="krupp">The shell krupp.</param>
-        /// <param name="airDrag">The shell air drag.</param>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <param name="maxRange">Guns maximum range.</param>
         /// <param name="penetration">The shell penetration. If shell's type is AP set this parameter to null.</param>
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
-        public static Dictionary<double, Ballistic> CalculateBallistic(float muzzleVelocity, float caliber, float mass, float krupp, float airDrag, double maxRange, float? penetration)
+        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange, float? penetration)
         {
             var dict = new Dictionary<double, Ballistic>();
 
@@ -102,11 +98,11 @@ namespace WoWsShipBuilder.Core.DataContainers
                 calculationAngles = CreateCalculationAngles();
             }
 
-            double k = 0.5 * airDrag * Math.Pow(caliber / 2, 2) * Math.PI / mass;
+            double k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
 
             // Insert pen at 0 distance
-            double initialPen = penetration ?? CalculatePen(muzzleVelocity, caliber, mass, krupp);
-            var initialBallistic = new Ballistic(initialPen, muzzleVelocity, 0, 0, new());
+            double initialPen = penetration ?? CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
+            var initialBallistic = new Ballistic(initialPen, shell.MuzzleVelocity, 0, 0, new());
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
 
@@ -121,8 +117,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
-                var vX = muzzleVelocity * Math.Cos(angle);
-                var vY = muzzleVelocity * Math.Sin(angle);
+                var vX = shell.MuzzleVelocity * Math.Cos(angle);
+                var vY = shell.MuzzleVelocity * Math.Sin(angle);
 
                 while (y >= 0)
                 {
@@ -151,7 +147,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
                 var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
-                var pen = penetration ?? CalculatePen(vImpact, caliber, mass, krupp);
+                var pen = penetration ?? CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
 
                 if (x > maxRange || x < lastRange)
                 {
