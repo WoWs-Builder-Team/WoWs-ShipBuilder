@@ -1,6 +1,7 @@
 ﻿@page "/charts"
 @using WoWsShipBuilder.Web.Utility
 @using MudBlazor.Services
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Extensions
@@ -292,7 +293,7 @@
                     {
                         displayedShips.Add(chartsDataWrapper.ShipContainer.Id, chartsDataWrapper);
                     }
-                    var dialog = DialogService.Show<ShipAndShellSelectionDialogNew>("ShipAndShellSelectionDialog", parameters, options);
+                    var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
                     var result = await dialog.Result;
                     if (result is null || result.Cancelled)
                     {
@@ -386,7 +387,7 @@
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
                 };
                 
-                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipContainer.Build?.BuildName);
+                string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipContainer.Build);
 
                 var newDataInput = new NewChartDataInput(GenerateJsShipId(shipId, shellIndex), label, shipData, counter);
                 newDataInputs.Add(newDataInput);
@@ -422,9 +423,14 @@
         await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
     }
 
-    private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, ShellType shellType, string? buildName)
+    private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, ShellType shellType, Build? build)
     {
-        return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()} - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {buildName ?? DefaultBuildName}";
+        var label = $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()}";
+        if (build is not null)
+        {
+            label += $"- {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {build.BuildName ?? DefaultBuildName}";
+        }
+        return label;
     }
     
     private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, int penetration)
@@ -524,7 +530,7 @@
         {
             ["InputData"] = displayedShips.Values.ToList(),
         };
-        var dialog = DialogService.Show<ShipAndShellSelectionDialogNew>("ShipAndShellSelectionDialog", parameters, options);
+        var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
     }
 
