@@ -419,7 +419,7 @@
 
     private string GenerateLocalizedLabel(string shipIndex, decimal gunCaliber, ShellType shellType, string? buildName)
     {
-        return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()} - Build: {buildName ?? DefaultBuildName}";
+        return $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()} - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {buildName ?? DefaultBuildName}";
     }
     
     private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, int penetration)

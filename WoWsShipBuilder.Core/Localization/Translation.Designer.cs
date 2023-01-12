@@ -522,6 +522,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        public static string ChartsWeb_Build {
+            get {
+                return ResourceManager.GetString("ChartsWeb_Build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispersion Charts.
         /// </summary>
         public static string ChartsWeb_DispersionCharts {
