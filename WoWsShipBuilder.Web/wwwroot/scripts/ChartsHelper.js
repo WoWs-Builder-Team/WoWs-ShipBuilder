@@ -56,7 +56,7 @@ function GetColor(index)
  * @param {Array<string>} chartsId - The charts ID
  * @param {Array<{id: string, label: string , datasets: Array<Array<number>>, index: number }>} chartDataList - List of the new chart data.
  */
-export function BatchAddData(chartsId, chartDataList)//guids, datas, labels, indexes)
+export function BatchAddData(chartsId, chartDataList)
 {
     chartsId.forEach((chartId, chartIndex) =>{
         const chart = Chart.getChart(chartId);
@@ -99,7 +99,7 @@ export function BatchRemoveData(chartsId, guids)
 /**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
- * @param {Array<{id: string, newDataset: Array<number>}>} updatedChartDataList - The labels of the dataset to update
+ * @param {Array<{id: string, datasets: Array<number>}>} updatedChartDataList - The labels of the dataset to update
  */
 export function BatchUpdateData(chartId, updatedChartDataList)
 {
@@ -109,7 +109,7 @@ export function BatchUpdateData(chartId, updatedChartDataList)
         const shipIndex = chart.data.datasets.findIndex(dataset => {
             return dataset.guid === chartData.id;
         })
-        chart.data.datasets[shipIndex].data = chartData.newDataset;
+        chart.data.datasets[shipIndex].data = chartData.datasets;
     });
     chart.update();
 }
@@ -117,7 +117,7 @@ export function BatchUpdateData(chartId, updatedChartDataList)
 /**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
- * @param {Array<{id: string, newLabel: string, newDataset: Array<number>}>} updatedChartDataList - The labels of the dataset to update
+ * @param {Array<{id: string, newLabel: string, datasets: Array<number>}>} updatedChartDataList - The labels of the dataset to update
  */
 export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
 {
@@ -127,7 +127,7 @@ export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
         const shipIndex = chart.data.datasets.findIndex(dataset => {
             return dataset.guid === chartData.id;
         })
-        chart.data.datasets[shipIndex].data = chartData.newDataset;
+        chart.data.datasets[shipIndex].data = chartData.datasets;
         chart.data.datasets[shipIndex].label = chartData.newLabel;
     });
     chart.update();
