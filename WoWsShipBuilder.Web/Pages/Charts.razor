@@ -383,7 +383,7 @@
                 
                 string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipContainer.Build?.BuildName);
 
-                var newDataInput = new NewChartDataInput(shipId + ";" + shellIndex, label, shipData, counter);
+                var newDataInput = new NewChartDataInput(GenerateJsShipId(shipId, shellIndex), label, shipData, counter);
                 newDataInputs.Add(newDataInput);
                 counter++;
                 
@@ -400,7 +400,7 @@
         List<string> dataToRemove = new();
         foreach (var guid in guids)
         {
-            dataToRemove.AddRange(displayedShips[guid].SelectedShells.Select(x => guid + ";" + x.Key));
+            dataToRemove.AddRange(displayedShips[guid].SelectedShells.Select(x => GenerateJsShipId(guid, x.Key)));
             displayedShips.Remove(guid);
         }
         await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
@@ -411,7 +411,7 @@
         List<string> dataToRemove = new();
         foreach (var (shellIndex, guid) in shellsInfo)
         {
-            dataToRemove.Add(guid + ";" + shellIndex);
+            dataToRemove.Add(GenerateJsShipId(guid, shellIndex));
             displayedShips[guid].SelectedShells.Remove(shellIndex);
         }
         await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
@@ -465,7 +465,7 @@
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
             {
                 IEnumerable<ChartsHelper.Point> selectedVerticals = ChartsHelper.SelectVerticalDispersionDataset(shellData.VerticalDispersionsCache!, selectedVertDispersionPlane);
-                var updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, selectedVerticals);
+                var updateChartDataInput = new UpdateChartDataInput(GenerateJsShipId(wrapper.ShipContainer.Id, shellIndex), selectedVerticals);
                 updateChartDataInputs.Add(updateChartDataInput);
             }
         }
@@ -485,7 +485,7 @@
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells)
             {
                 IEnumerable<ChartsHelper.Point> trajectoryData = ChartsHelper.CreateTrajectoryDataset(shellData.BallisticCache!, range);
-                var updateChartDataInput = new UpdateChartDataInput(wrapper.ShipContainer.Id + ";" + shellIndex, trajectoryData);
+                var updateChartDataInput = new UpdateChartDataInput(GenerateJsShipId(wrapper.ShipContainer.Id, shellIndex), trajectoryData);
                 updateChartDataInputs.Add(updateChartDataInput);
             }
         }
@@ -597,5 +597,10 @@
     private List<DispersionEllipse> GetDataForDispersionPlot()
     {
         return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToList();
+    }
+
+    private static string GenerateJsShipId(Guid id, string shellIndex)
+    {
+        return $"{id};{shellIndex}";
     }
 }

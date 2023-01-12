@@ -58,7 +58,7 @@ public class ChartJsInterop : IAsyncDisposable
     public async Task BatchUpdateDataNewLabelsAsync(string chartId, List<UpdateChartDataLabelInput> updatedChartData)
     {
         await InitializeModule();
-        await module.InvokeVoidAsync("BatchUpdateDataNewLabels2", chartId, updatedChartData);
+        await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, updatedChartData);
     }
 
 
