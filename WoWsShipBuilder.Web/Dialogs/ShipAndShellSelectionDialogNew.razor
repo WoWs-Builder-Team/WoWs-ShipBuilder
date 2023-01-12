@@ -7,6 +7,7 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.DataStructures.Ship
+@using _Imports = MudBlazor._Imports
 @inject ILocalizer Localizer
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
@@ -88,7 +89,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public List<ChartsDataWrapper> InputData { get; set; }
+    public List<ChartsDataWrapper> InputData { get; set; } = new();
 
 
     private readonly List<ChartsDataWrapper> dataWrappers = new();
@@ -105,11 +106,10 @@
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action.Equals(NotifyCollectionChangedAction.Add))
+        if (e.Action.Equals(NotifyCollectionChangedAction.Add) && e.NewItems is not null)
         {
             //manage newly added items
-            var newShips = e.NewItems as List<string> ?? new List<string>();
-            foreach (string ship in newShips)
+            foreach (string ship in e.NewItems)
             {
                 AddWrapper(ship);
             }
