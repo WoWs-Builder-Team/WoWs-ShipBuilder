@@ -446,7 +446,6 @@
         
         Dictionary<double, Ballistic> ballisticSeries = BallisticHelper.CalculateBallistic(shell, maxRange, penetration);
         wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { BallisticCache = ballisticSeries };
-        displayedShips[wrapper.ShipContainer.Id] = wrapper;
         return ballisticSeries;
     }
 
@@ -463,7 +462,6 @@
         
         var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
         wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { VerticalDispersionsCache = verticalDispersions };
-        displayedShips[wrapper.ShipContainer.Id] = wrapper;
         return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispersionPlane);
     }
 
