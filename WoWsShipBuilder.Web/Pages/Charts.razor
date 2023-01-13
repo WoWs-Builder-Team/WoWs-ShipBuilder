@@ -22,41 +22,43 @@
 <PageTitle>WoWs ShipBuilder: Charts</PageTitle>
 <MudTabs Elevation="2" PanelClass="pa-6" Centered Color="Color.Primary" @ref="chartsTabs" Outlined Border KeepPanelsAlive>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_DispersionCharts)).Localization" ID="ChartsHelper.ChartsTabs.DispersionCharts">
-        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                </MudText>
-            }
-        </MudButton>
-        <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
-                </MudText>
-            }
-        </MudButton>
+        <MudStack Row Justify="Justify.Center" Spacing="4">
+            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                    </MudText>
+                }
+            </MudButton>
+            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || buildDialogContainer.Count == 0)">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
+                    </MudText>
+                }
+            </MudButton>
+        </MudStack>
         <div>
             <canvas id="@HorizontalDispersionId"></canvas>
         </div>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
-            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end; min-width: 220px;")">
+            <MudItem Class="z-20 mt-1 ml-auto mr-11" xs="12" md="1" Style="@(GetPositionStyleForSelector() + "align-self: flex-end; min-width: 220px;")">
                 <MudSelect Style="min-width: 220px" Label="@Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_PlotPlane)).Localization" @bind-Value="@selectedVertDispersionPlane" Variant="Variant.Outlined" SelectedValuesChanged="@(_ => ChangeVerticalDispPlaneAsync())" T="ChartsHelper.EllipsePlanes" Disabled="processing" Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter">
                     @foreach (var item in ellipsePlanesList)
                     {
@@ -144,21 +146,38 @@
         </MudStack>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_BallisticCharts)).Localization" ID="ChartsHelper.ChartsTabs.BallisticCharts">
-        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                </MudText>
-            }
-        </MudButton>
+        <MudStack Row Justify="Justify.Center" Spacing="4">
+            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                    </MudText>
+                }
+            </MudButton>
+            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || buildDialogContainer.Count == 0)">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
+                    </MudText>
+                }
+            </MudButton>
+        </MudStack>
         <div>
             <canvas id="@PenetrationId"></canvas>
         </div>
@@ -173,21 +192,38 @@
         </div>
     </MudTabPanel>
     <MudTabPanel Text="@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShellTrajectoryChart)).Localization" ID="ChartsHelper.ChartsTabs.TrajectoryChart">
-        <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto mb-2" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
-                </MudText>
-            }
-        </MudButton>
+        <MudStack Row Justify="Justify.Center" Spacing="4">
+            <MudButton OnClick="EditChartsAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="processing">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_AddRemoveShips)).Localization
+                    </MudText>
+                }
+            </MudButton>
+            <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex" Disabled="@(processing || buildDialogContainer.Count == 0)">
+                @if (processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2" Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.button">
+                        @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
+                    </MudText>
+                }
+            </MudButton>
+        </MudStack>
         <MudGrid Class="d-inline-flex" Style="flex-direction: column">
             <MudItem Class="z-20 mt-1 ml-auto mr-5 d-inline-flex" xs="12" md="1" Style="@(GetPositionStyleForSelector() +  "align-self: flex-end;")">
                 <MudNumericField Value="range" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Range)).Localization" Variant="Variant.Outlined" Immediate="true" ValueChanged="UpdateTrajectoryAsync" T="double" DebounceInterval="250" Disabled="processing" Margin="Margin.Dense" Min="0"/>
@@ -413,6 +449,10 @@
                 shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
             }
             displayedShips[shipId] = shipToAdd;
+            if (!buildDialogContainer.Contains(shipToAdd.ShipContainer))
+            {
+                buildDialogContainer.Add(shipToAdd.ShipContainer);
+            }
         }
         await ChartJsInterop.BatchAddDataAsync(chartIds, newDataInputs);
     }
@@ -452,10 +492,10 @@
             var sigma = (double) buildContainer.ShipDataContainer.MainBatteryDataContainer.Sigma;
             foreach (var (shellIndex,_) in displayedShips[guid].SelectedShells)
             {
-                if (displayedShips.ContainsKey(shipId) && displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
-                {
-                    continue;
-                }
+                // if (displayedShips.ContainsKey(shipId) && displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
+                // {
+                //     continue;
+                // }
                 
                 var shellPenetration = shipToUpdate.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
                 var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
@@ -483,6 +523,10 @@
                 shipToUpdate.SelectedShells[shellIndex] = shipToUpdate.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
             }
             displayedShips[shipId] = shipToUpdate;
+            //update the shipContainer in the build dialog list
+            var oldDataIndex = buildDialogContainer.FindIndex(x => x.Id.Equals(shipToUpdate.ShipContainer.Id));
+            buildDialogContainer[oldDataIndex] = shipToUpdate.ShipContainer;
+
         }
 
         await ChartJsInterop.MultipleBatchUpdateDataNewLabels(chartIds, updateDataInputs);
@@ -494,6 +538,7 @@
         foreach (var guid in guids)
         {
             dataToRemove.AddRange(displayedShips[guid].SelectedShells.Select(x => GenerateJsShipId(guid, x.Key)));
+            buildDialogContainer.Remove(displayedShips[guid].ShipContainer);
             displayedShips.Remove(guid);
         }
         await ChartJsInterop.BatchRemoveDataAsync(chartIds, dataToRemove);
