@@ -61,6 +61,16 @@ public class ChartJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("BatchUpdateDataNewLabels", chartId, updatedChartData);
     }
 
+    public async Task MultipleBatchUpdateDataNewLabels(List<string> chartIds, List<MultipleUpdateChartDataLabelInput> multipleUpdatedChartDataList)
+    {
+        if (multipleUpdatedChartDataList.Any(x => x.Datasets.Count != chartIds.Count))
+        {
+            throw new InvalidOperationException("The number of chartId is not equal to the number of dataset of each MultipleUpdatedChartDataList");
+        }
+        await InitializeModule();
+        await module.InvokeVoidAsync("MultipleBatchUpdateDataNewLabels", chartIds, multipleUpdatedChartDataList);
+    }
+
 
     [MemberNotNull(nameof(module))]
     private async Task InitializeModule()
@@ -92,3 +102,5 @@ public record NewChartDataInput(string Id, string Label, List<IEnumerable<Charts
 public record UpdateChartDataInput(string Id, IEnumerable<ChartsHelper.Point> Datasets);
 
 public record UpdateChartDataLabelInput(string Id, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);
+
+public record MultipleUpdateChartDataLabelInput(string Id, string NewLabel, List<IEnumerable<ChartsHelper.Point>> Datasets);

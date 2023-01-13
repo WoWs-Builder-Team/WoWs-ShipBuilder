@@ -37,6 +37,21 @@
                 </MudText>
             }
         </MudButton>
+        <MudButton OnClick="EditBuildAsync" Variant="Variant.Filled" Color="Color.Primary" Class="d-flex mx-auto" Disabled="processing">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
+                </MudText>
+            }
+        </MudButton>
         <div>
             <canvas id="@HorizontalDispersionId"></canvas>
         </div>
@@ -188,6 +203,7 @@
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@buildDialogContainer" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
 @code
 {
@@ -200,12 +216,11 @@
     private const string FlightTimeId = "flight-time";
     private const string ImpactVelocityId = "impact-velocity";
     private const string ImpactAngleId = "impact-angle";
-        
-    private const string DefaultBuildName = "---";
-
+    
     private string shellIndexFromUrl = string.Empty;
     private string[] shipIndexesFromUrl = { };
 
+    private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
     private bool processing;
     private double range = 10;
     private double aimingRange = 10;
@@ -220,7 +235,8 @@
     private MudTabs chartsTabs = default!;
     
     private readonly Dictionary<Guid, ChartsDataWrapper> displayedShips = new();
-
+    private List<ShipBuildContainer> buildDialogContainer = new();
+    
     private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
     private readonly List<DispersionPlot.FusoPositions> fusoPositionsList = Enum.GetValues<DispersionPlot.FusoPositions>().ToList();
 
@@ -401,6 +417,77 @@
         await ChartJsInterop.BatchAddDataAsync(chartIds, newDataInputs);
     }
     
+    private async Task UpdateChartWithShipBuilds(Dictionary<Guid, ShipBuildContainer> shipList)
+    {
+        List<MultipleUpdateChartDataLabelInput> updateDataInputs = new();
+        List<string> chartIds = GetChartsIdList();
+
+        foreach (var (guid, buildContainer) in shipList)
+        {
+            var shipToUpdate = displayedShips[guid];
+            //first, we change shells if needed. Some guns upgrades can change the shell, so we keep the same type
+            //if the shell didn't change, we still reset the cache to account for possible new modifiers influencing the charts,
+            var oldShellsIndexes = shipToUpdate.SelectedShells.Keys;
+            var availableShells = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData;
+            foreach (var oldShellIndex in oldShellsIndexes)
+            {
+                var oldShell = AppData.FindProjectile<ArtilleryShell>(oldShellIndex);
+                var newShell = availableShells.First(x => x.Type == ("ArmamentType_" + oldShell.ShellType.ShellTypeToString()));
+                if (!oldShellIndex.Equals(newShell.Name))
+                {
+                    shipToUpdate.SelectedShells.Remove(oldShellIndex);
+                    shipToUpdate.SelectedShells.Add(newShell.Name, new(null,null,null));
+                }
+                else
+                {
+                    shipToUpdate.SelectedShells[oldShellIndex] = new(null,null,null);
+                }
+            }
+            
+            //we start updating the data. Method is pretty much the same of the one in GenerateCharts, but with a different ChartDataInput
+            var shipId = buildContainer.Id;
+            var dispersionData = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.DispersionData;
+            var maxRange = (double) buildContainer.ShipDataContainer.MainBatteryDataContainer.Range * 1000;
+            var shellCaliber = (float) buildContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber;
+            var sigma = (double) buildContainer.ShipDataContainer.MainBatteryDataContainer.Sigma;
+            foreach (var (shellIndex,_) in displayedShips[guid].SelectedShells)
+            {
+                if (displayedShips.ContainsKey(shipId) && displayedShips[shipId].SelectedShells.ContainsKey(shellIndex))
+                {
+                    continue;
+                }
+                
+                var shellPenetration = shipToUpdate.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData.First(x => x.Name.Equals(shellIndex)).Penetration;
+                var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
+
+                Dictionary<double, Ballistic> ballisticSeries = GetBallistic(shipToUpdate, shellIndex, shell, maxRange, shellPenetration);
+
+                List<IEnumerable<ChartsHelper.Point>> shipData = new()
+                {
+                    ChartsHelper.CreateHorizontalDispersionChartDataset(dispersionData, maxRange),
+                    CreateVerticalDispersionChartDataset(shipToUpdate, shellIndex, dispersionData, maxRange, ballisticSeries),
+                    ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactVelocity),
+                    ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.ImpactAngle),
+                };
+                
+                string label = GenerateLocalizedLabel(shipToUpdate.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToUpdate.ShipContainer.Build);
+
+                var updateDataInput = new MultipleUpdateChartDataLabelInput(GenerateJsShipId(shipId, shellIndex), label , shipData);
+                updateDataInputs.Add(updateDataInput);
+                counter++;
+                
+                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, shell, maxRange, aimingRange * 1000, sigma, shotsNumber);
+                shipToUpdate.SelectedShells[shellIndex] = shipToUpdate.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
+            }
+            displayedShips[shipId] = shipToUpdate;
+        }
+
+        await ChartJsInterop.MultipleBatchUpdateDataNewLabels(chartIds, updateDataInputs);
+    }
+    
     private async Task RemoveShipsData(List<string> chartIds, List<Guid> guids)
     {
         List<string> dataToRemove = new();
@@ -428,7 +515,7 @@
         var label = $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()}";
         if (build is not null)
         {
-            label += $"- {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {build.BuildName ?? DefaultBuildName}";
+            label += $"- {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {build.BuildName}";
         }
         return label;
     }
@@ -516,6 +603,37 @@
 
         await UpdateChartsBatchAsync((ShipAndShellSelectionDialogOutput)selectedShipList.Data);
         SetProcessing(false);
+    }
+    
+    private async Task EditBuildAsync()
+    {
+        SetProcessing(true);
+        buildDialogContainer = displayedShips.Select(x => x.Value.ShipContainer).ToList();
+        var result = await buildConfigurationHelper.ShowDialogAsync();
+        if (result is not null)
+        {
+            var changedShips = GetAllChangedBuildShips(result);
+            foreach (var (guid, newContainer) in changedShips)
+            {
+                displayedShips[guid] = displayedShips[guid] with {ShipContainer = newContainer};
+            }
+            await UpdateChartWithShipBuilds(changedShips);
+        }
+        SetProcessing(false);
+    }
+    
+    private Dictionary<Guid, ShipBuildContainer> GetAllChangedBuildShips(IEnumerable<ShipBuildContainer> newList)
+    {
+        Dictionary<Guid, ShipBuildContainer> filteredList = new();
+        foreach (var newContainer in newList)
+        {
+            var oldContainer = displayedShips.Single(wrapper => wrapper.Value.ShipContainer.Id.Equals(newContainer.Id));
+            if (!oldContainer.Value.ShipContainer.IsEquivalentTo(newContainer))
+            {
+                filteredList.Add(oldContainer.Key, newContainer);
+            }
+        }
+        return filteredList;
     }
 
     private async Task<DialogResult?> GetSelectedShipsAsync()

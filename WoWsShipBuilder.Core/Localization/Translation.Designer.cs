@@ -78,15 +78,6 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change builds.
-        /// </summary>
-        public static string AccelerationChart_ChangeBuilds {
-            get {
-                return ResourceManager.GetString("AccelerationChart_ChangeBuilds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add custom data.
         /// </summary>
         public static string AccelerationChart_CustomDataTitle {
@@ -500,6 +491,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string CaptainSkillSelector_Talents {
             get {
                 return ResourceManager.GetString("CaptainSkillSelector_Talents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change builds.
+        /// </summary>
+        public static string Charts_ChangeBuilds {
+            get {
+                return ResourceManager.GetString("Charts_ChangeBuilds", resourceCulture);
             }
         }
         
