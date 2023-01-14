@@ -1845,6 +1845,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go To Build Window.
+        /// </summary>
+        public static string ShipSelectionWindow_GoToBuildWindow {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_GoToBuildWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nation.
         /// </summary>
         public static string ShipSelectionWindow_NationFilter {
