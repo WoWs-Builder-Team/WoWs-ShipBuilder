@@ -63,8 +63,23 @@
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
+        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="processing">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
+                </MudText>
+            }
+        </MudButton>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudButton Color="Color.Info" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
+            <MudButton Color="Color.Success" OnClick="@(() => ReturnSelectedShells(false))" Variant="Variant.Filled" Disabled="processing">
                 @if (processing)
                 {
                     <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -80,21 +95,6 @@
                 }
             </MudButton>
         </MudFocusTrap>
-        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="processing">
-            @if (processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2" Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
-                </MudText>
-            }
-            else
-            {
-                <MudText Typo="Typo.button">
-                    @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_GoToBuildWindow)).Localization
-                </MudText>
-            }
-        </MudButton>
     </DialogActions>
 </MudDialog>
 

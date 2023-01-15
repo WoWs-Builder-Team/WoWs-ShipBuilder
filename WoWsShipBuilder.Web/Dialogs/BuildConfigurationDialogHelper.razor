@@ -31,9 +31,9 @@
     
     [Parameter]
     public bool NoHeader { get; set; }
-    
+
     [Parameter]
-    public bool DisableBackdropClick { get; set; }
+    public bool DisableBackdropClick { get; set; } = true;
 
     public async Task<IEnumerable<ShipBuildContainer>?> ShowDialogAsync()
     {

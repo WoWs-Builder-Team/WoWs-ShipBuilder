@@ -1622,7 +1622,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ChartsWeb_Build" xml:space="preserve">
       <value>Build</value>
   </data>
-  <data name="ShipSelectionWindow_GoToBuildWindow" xml:space="preserve">
-      <value>Go To Build Window</value>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Edit builds</value>
   </data>
 </root>

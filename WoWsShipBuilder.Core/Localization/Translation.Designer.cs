@@ -1845,11 +1845,11 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go To Build Window.
+        ///   Looks up a localized string similar to Edit builds.
         /// </summary>
-        public static string ShipSelectionWindow_GoToBuildWindow {
+        public static string ShipSelectionWindow_EditBuilds {
             get {
-                return ResourceManager.GetString("ShipSelectionWindow_GoToBuildWindow", resourceCulture);
+                return ResourceManager.GetString("ShipSelectionWindow_EditBuilds", resourceCulture);
             }
         }
         
