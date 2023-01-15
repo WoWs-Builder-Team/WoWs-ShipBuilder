@@ -172,7 +172,7 @@
             {
                 label += " - " + shipWrapper.Build.BuildName;
             }
-            UpdateChartDataLabelInput updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
+            UpdateChartDataLabelInput updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
             updatedData.Add(updateChartData);
         }
 

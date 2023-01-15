@@ -445,7 +445,7 @@
 
                 if (updateChartWithShipBuilds)
                 {
-                    var updateDataInput = new MultipleUpdateChartDataLabelInput(GenerateJsShipId(shipId, shellIndex), label , shipData);
+                    var updateDataInput = new MultipleUpdateChartDataLabelInput(GenerateJsShipId(shipId, shellIndex), GenerateJsShipId(shipId, shellIndex), label , shipData);
                     updateDataInputs.Add(updateDataInput);
                 }
                 else

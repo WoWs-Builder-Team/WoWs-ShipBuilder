@@ -101,6 +101,6 @@ public record NewChartDataInput(string Id, string Label, List<IEnumerable<Charts
 
 public record UpdateChartDataInput(string Id, IEnumerable<ChartsHelper.Point> Datasets);
 
-public record UpdateChartDataLabelInput(string Id, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);
+public record UpdateChartDataLabelInput(string Id, string NewId, string NewLabel, IEnumerable<ChartsHelper.Point> Datasets);
 
-public record MultipleUpdateChartDataLabelInput(string Id, string NewLabel, List<IEnumerable<ChartsHelper.Point>> Datasets);
+public record MultipleUpdateChartDataLabelInput(string Id, string NewId, string NewLabel, List<IEnumerable<ChartsHelper.Point>> Datasets);

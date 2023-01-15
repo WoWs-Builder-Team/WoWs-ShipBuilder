@@ -117,7 +117,7 @@ export function BatchUpdateData(chartId, updatedChartDataList)
 /**
  * @description Update multiple dataset at once for a specific chart.
  * @param {string} chartId - The chart Id
- * @param {Array<{id: string, newLabel: string, datasets: Array<number>}>} updatedChartDataList - The labels of the dataset to update
+ * @param {Array<{id: string, newId: string, newLabel: string, datasets: Array<number>}>} updatedChartDataList - The labels of the dataset to update
  */
 export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
 {
@@ -129,6 +129,7 @@ export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
         })
         chart.data.datasets[shipIndex].data = chartData.datasets;
         chart.data.datasets[shipIndex].label = chartData.newLabel;
+        chart.data.datasets[shipIndex].guid = chartData.newId;
     });
     chart.update();
 }
@@ -136,7 +137,7 @@ export function BatchUpdateDataNewLabels(chartId, updatedChartDataList)
 /**
  * @description Update multiple dataset at once for a specific chart.
  * @param {Array<string>} chartIds - The chart Id
- * @param {Array<{id: string, newLabel: string, datasets: Array<Array<number>>}>} multipleUpdatedChartDataList - The labels of the dataset to update
+ * @param {Array<{id: string, newId: string, newLabel: string, datasets: Array<Array<number>>}>} multipleUpdatedChartDataList - The labels of the dataset to update
  */
 export function MultipleBatchUpdateDataNewLabels(chartIds, multipleUpdatedChartDataList)
 {
@@ -148,6 +149,7 @@ export function MultipleBatchUpdateDataNewLabels(chartIds, multipleUpdatedChartD
             })
             chart.data.datasets[shipIndex].data = chartData.datasets[chartIndex];
             chart.data.datasets[shipIndex].label = chartData.newLabel;
+            chart.data.datasets[shipIndex].guid = chartData.newId;
         });
         chart.update();
     });
