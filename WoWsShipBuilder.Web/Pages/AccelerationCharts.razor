@@ -73,7 +73,7 @@
     <canvas id="@AccelerationId"></canvas>
 </div>
 
-<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@containerList" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
 @code
 {
@@ -293,7 +293,7 @@
     private async Task ConfigureBuilds()
     {
         containerList = shipBuildCache.Select(x => x.Value).ToList();
-        var result = await buildConfigurationHelper.ShowDialogAsync();
+        var result = await buildConfigurationHelper.ShowDialogAsync(containerList); //TODO Yesod fix this
         
         if (result is not null)
         {

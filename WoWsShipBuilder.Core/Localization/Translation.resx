@@ -1625,4 +1625,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
       <value>Edit builds</value>
   </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>No Ship Selected</value>
+  </data>
 </root>

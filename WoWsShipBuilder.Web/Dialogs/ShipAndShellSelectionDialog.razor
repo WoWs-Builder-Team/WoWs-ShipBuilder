@@ -6,8 +6,9 @@
 @using System.Linq
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.Extensions
+@using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.DataStructures.Ship
-@using _Imports = MudBlazor._Imports
 @inject ILocalizer Localizer
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
@@ -25,7 +26,13 @@
                 <MudItem xs="12" md="8" Class="d-flex" Style="overflow-y: auto">
                     <ShipSelector SelectedShips="@selectedShips" LargerList AllowCopies/>
                 </MudItem>
-                <MudItem xs="12" md="4" Style="min-height: 600px; max-height: 600px; overflow-y: auto">
+                <MudItem xs="12" md="4" Style="min-height: 600px; max-height: 600px; overflow-y: auto;">
+                    @if (dataWrappers.Count == 0)
+                    {
+                        <MudText Typo="Typo.body2" Class="mt-4" Align="Align.Center" Color="Color.Primary" Style="font-size: x-large">
+                            @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
+                        </MudText>
+                    }
                     @foreach (var dataWrapper in dataWrappers)
                     {
                         <MudItem Class="d-flex" Style="flex-direction: column">
@@ -41,7 +48,7 @@
                                     @foreach (var shellData in dataWrapper.ShipContainer.ShipDataContainer.MainBatteryDataContainer.ShellData)
                                     {
                                         <MudButton Color="@(GetColorFromBool(dataWrapper.SelectedShells.ContainsKey(shellData.Name)))" Variant="@(GetVariantFromBool(dataWrapper.SelectedShells.ContainsKey(shellData.Name)))" DisableElevation="true" OnClick="@(() => ToggleSelection(dataWrapper, shellData.Name))">
-                                            @Localizer.GetGameLocalization(shellData.Name).Localization
+                                            @($"{dataWrapper.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {AppData.FindProjectile<ArtilleryShell>(shellData.Name).ShellType.ShellTypeToString()}")
                                         </MudButton>
                                     }
                                 </MudButtonGroup>
@@ -52,7 +59,10 @@
                                     @Localizer.GetAppLocalization(nameof(Translation.MessageBox_ShipNoGun)).Localization
                                 </MudText>
                             }
-                            <MudDivider Light="true" Class="mt-2"/>
+                            <MudText Typo="Typo.caption" Class="my-1">
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {dataWrapper.ShipContainer.Build?.BuildName ?? "---"}")
+                            </MudText>
+                            <MudDivider Light="true"/>
                         </MudItem>
                     }
                 </MudItem>
@@ -63,7 +73,7 @@
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="processing">
+        <MudButton Color="Color.Warning" OnClick="@(() => ReturnSelectedShells(true))" Variant="Variant.Filled" Disabled="@(processing || !dataWrappers.Any(wrapper => wrapper.SelectedShells.Any()))">
             @if (processing)
             {
                 <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>

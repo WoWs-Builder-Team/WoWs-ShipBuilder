@@ -254,7 +254,7 @@
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
-<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@buildDialogContainer" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
 @code
 {
@@ -272,7 +272,8 @@
     private string[] shipIndexesFromUrl = { };
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
-    
+
+    private bool fromHomePage; // this bool is needed since the ShipAndShellsSelectionDialog thinks the ships are being modified instead of added when adding from the app home page because we have to preload them in the displayedShips list in order to make it work
     private bool processing;
     private double range = 10;
     private double aimingRange = 10;
@@ -287,8 +288,7 @@
     private MudTabs chartsTabs = default!;
     
     private readonly Dictionary<Guid, ChartsDataWrapper> displayedShips = new();
-    private readonly List<ShipBuildContainer> buildDialogContainer = new();
-    
+
     private readonly List<ChartsHelper.EllipsePlanes> ellipsePlanesList = Enum.GetValues<ChartsHelper.EllipsePlanes>().ToList();
     private readonly List<DispersionPlot.FusoPositions> fusoPositionsList = Enum.GetValues<DispersionPlot.FusoPositions>().ToList();
 
@@ -314,13 +314,14 @@
         if (firstRender)
         {
             SetProcessing(true);
+            fromHomePage = true;
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
                 if (shellIndexFromUrl.Any())
                 {
-                    //TODO Enable when passing builds through server cache is implemented
+                    //TODO Enable when passing builds through server cache has been implemented
                     
                     // string shipIndex = shipIndexesFromUrl.First();
                     // var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
@@ -347,10 +348,12 @@
                         ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, new()) } , new());
                         displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
                     }
-
+                    
                     await EditChartsAsync();
                 }
             }
+            
+            fromHomePage = false;
             SetProcessing(false);
         }
     }
@@ -405,7 +408,6 @@
     {
         List<NewChartDataInput> newDataInputs = new();
         List<MultipleUpdateChartDataLabelInput> updateDataInputs = new();
-
         foreach (var shipToAdd in data)
         {
             var shipId = shipToAdd.ShipContainer.Id;
@@ -621,8 +623,16 @@
             {
                 displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
             }
+
+            if (fromHomePage)
+            {
+                foreach (var (id, wrapper) in data.ShipsToModify)
+                {
+                    displayedShips[id] = wrapper;
+                }
+            }
             
-            await EditBuildAsync(data);
+            await EditBuildAsyncFromDialog(data);
         }
         else
         {
@@ -631,12 +641,12 @@
         }
     }
 
-    private async Task EditBuildAsync() => await EditBuildAsync(null);
-    private async Task EditBuildAsync(ShipAndShellSelectionDialogOutput? shipAndShellSelectionDialogOutput)
+    private async Task EditBuildAsync() => await EditBuildAsyncFromDialog(null);
+    
+    private async Task EditBuildAsyncFromDialog(ShipAndShellSelectionDialogOutput? shipAndShellSelectionDialogOutput)
     {
         SetProcessing(true);
-        buildDialogContainer.AddRange(displayedShips.Values.Select(x => x.ShipContainer));
-        var result = await buildConfigurationHelper.ShowDialogAsync();
+        var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipContainer).ToList());
         if (result is not null)
         {
             var changedShips = GetAllChangedBuildShips(result);
@@ -655,7 +665,7 @@
                 Dictionary<Guid, ShipBuildContainer> shipsToUpdate = new();
                 foreach (var ship in changedShips)
                 {
-                    if (shipAndShellSelectionDialogOutput.ShipsToAdd.Select(x => x.ShipContainer.Id).Contains(ship.Key))
+                    if (fromHomePage || shipAndShellSelectionDialogOutput.ShipsToAdd.Select(x => x.ShipContainer.Id).Contains(ship.Key))
                     {
                         shipsToAdd.Add(displayedShips[ship.Key]);
                     }
@@ -668,7 +678,6 @@
                 await UpdateChartWithShipBuilds(shipsToUpdate); 
             }
         }
-        buildDialogContainer.Clear();
         SetProcessing(false);
     }
     
@@ -683,7 +692,7 @@
                 filteredList.Add(oldContainer.Key, newContainer);
             }
         }
-
+        
         return filteredList;
     }
 

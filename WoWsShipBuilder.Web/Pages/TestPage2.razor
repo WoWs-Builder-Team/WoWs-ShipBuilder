@@ -20,7 +20,7 @@
 </MudRadioGroup>
 
 <MudButton OnClick="@Callback">Show build configuration dialog</MudButton>
-<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="ships" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
+<BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
 @code {
 
@@ -65,7 +65,7 @@
 
     private async Task Callback()
     {
-        var result = await buildConfigurationHelper.ShowDialogAsync();
+        var result = await buildConfigurationHelper.ShowDialogAsync(ships);
         if (result is not null)
         {
             ships = result.ToList();

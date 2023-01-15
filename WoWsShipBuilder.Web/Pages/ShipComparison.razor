@@ -329,7 +329,7 @@
         </NoRecordsContent>
     </MudDataGrid>
 
-    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" ShipBuildContainers="@shipBuildContainers" MaxWidth="MaxWidth.Large" DisableBackdropClick="true" FullWidth NoHeader/>
+    <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" DisableBackdropClick="true" FullWidth NoHeader/>
 
     <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
         <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
@@ -361,8 +361,6 @@
     private const string SectionUrlParameter = "section";
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
-
-    private readonly List<ShipBuildContainer> shipBuildContainers = new();
 
     private bool isDialogOpen;
 
@@ -458,7 +456,7 @@
             return;
         }
         isDialogOpen = true;
-        shipBuildContainers.Clear();
+        var shipBuildContainers = new List<ShipBuildContainer>();
         if (wrapper is not null)
         {
             shipBuildContainers.Add(wrapper.GetShipBuildContainer());
@@ -467,7 +465,7 @@
         {
             shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => x.GetShipBuildContainer()).OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
-        IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync();
+        IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
 
         if (results is not null)

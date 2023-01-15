@@ -1827,6 +1827,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Ship Selected.
+        /// </summary>
+        public static string ShipAndShellsSelectionDialog_NoShipSelected {
+            get {
+                return ResourceManager.GetString("ShipAndShellsSelectionDialog_NoShipSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
