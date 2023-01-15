@@ -156,6 +156,41 @@ export function MultipleBatchUpdateDataNewLabels(chartIds, multipleUpdatedChartD
 }
 
 /**
+ * @description Update multiple dataset at once for a specific chart.
+ * @param {Array<string>} chartIds - The chart Id
+ * @param {Array<{id: string, index: number, newId: string, newLabel: string, datasets: Array<Array<number>>}>} multipleUpdatedChartDataList - The labels of the dataset to update
+ */
+export function MultipleBatchAddOrUpdateDataNewLabels(chartIds, multipleUpdatedChartDataList)
+{
+    chartIds.forEach((chartId, chartIndex) => {
+        const chart = Chart.getChart(chartId);
+        multipleUpdatedChartDataList.forEach(chartData => {
+            const shipIndex = chart.data.datasets.findIndex(dataset => {
+                return dataset.guid === chartData.id;
+            })
+            if (shipIndex === -1)
+            {
+                const dataset =
+                    {
+                        data: chartData.datasets[chartIndex],
+                        label: chartData.newLabel,
+                        index: chartData.index,
+                        guid: chartData.id,
+                    };
+                chart.data.datasets.push(dataset)
+            }
+            else
+            {
+                chart.data.datasets[shipIndex].data = chartData.datasets[chartIndex];
+                chart.data.datasets[shipIndex].label = chartData.newLabel;
+                chart.data.datasets[shipIndex].guid = chartData.newId;   
+            }
+        });
+        chart.update();
+    });
+}
+
+/**
  * @description Change the suggested max parameter of a chart.
  * @param {string} chartId - The chart Id
  * @param {number} newSuggestedMax - The new SuggestedMax parameter for the chart
