@@ -461,7 +461,7 @@
             var shipToUpdate = displayedShips[guid];
 
             //first, we change shells if needed. Some guns upgrades can change the shell, so we keep the same type
-            //if the shell didn't change, we still reset the cache to account for possible new modifiers influencing the charts,
+            //if the shell didn't change, we still reset the cache to account for possible new modifiers influencing the charts
             var oldShellsIndexes = shipToUpdate.SelectedShells.Keys.ToList();
             var availableShells = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData;
             foreach (var oldShellIndex in oldShellsIndexes)
@@ -633,7 +633,7 @@
     private async Task EditBuildAsync()
     {
         SetProcessing(true);
-        var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipContainer).OrderBy(x => Localizer.GetGameLocalization(x.Ship.Index + "_FULL").Localization).ToList());
+        var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipContainer).ToList());
         if (result is not null)
         {
             await UpdateChartWithShipBuilds(GetAllChangedBuildShips(result));
@@ -664,7 +664,7 @@
         };
         var parameters = new DialogParameters
         {
-            ["InputData"] = displayedShips.Values.OrderBy(x => Localizer.GetGameLocalization(x.ShipContainer.Ship.Index + "_FULL").Localization).ToList(),
+            ["InputData"] = displayedShips.Values.ToList(),
         };
         var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
@@ -712,8 +712,7 @@
             }
         }
     }
-
-
+    
     private void UpdateDispersionPlotRange(double selectedValue)
     {
         aimingRange = selectedValue;
