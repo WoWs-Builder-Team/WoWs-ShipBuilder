@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -56,6 +57,20 @@ public class CustomObservableCollection<T> : ObservableCollection<T>
         }
 
         Remove(itemList.Last());
+    }
+
+    public int FindIndex(Predicate<T> match)
+    {
+        int endIndex = Count;
+        for (var i = 0; i < endIndex; i++)
+        {
+            if (match(this[i]))
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     protected override void InsertItem(int index, T item)

@@ -13,7 +13,7 @@ namespace WoWsShipBuilder.Core.Builds;
 
 public class Build
 {
-    internal const int CurrentBuildVersion = 3;
+    internal const int CurrentBuildVersion = 4;
 
     private const char ListSeparator = ',';
 
@@ -46,7 +46,7 @@ public class Build
 
     public Nation Nation { get; }
 
-    public IReadOnlyList<string> Modules { get; }
+    public IReadOnlyList<string> Modules { get; private set; }
 
     public IReadOnlyList<string> Upgrades { get; }
 
@@ -65,6 +65,7 @@ public class Build
     /// <para>v1: old build format that stored localized build data.</para>
     /// <para>v2: no longer store localized build data, store ship index directly.</para>
     /// <para>v3: no structural changes, signals are now stored by index instead of full name.</para>
+    /// <para>v4: no structural changes, modules are now always stored by index instead of full name.</para>
     /// </summary>
     public int BuildVersion { get; private set; }
 
@@ -140,11 +141,18 @@ public class Build
         if (oldBuild.BuildVersion < 3)
         {
             oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToList();
+            logger.Debug("Reducing signal names to index for build {}", oldBuild.Hash);
+        }
+
+        if (oldBuild.BuildVersion < 4)
+        {
+            oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToList();
+            logger.Debug("Reducing module names to index for build {}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < CurrentBuildVersion)
         {
-            logger.Info("Upgrading build {} from build version {} to current version.", oldBuild.BuildName, oldBuild.BuildVersion);
+            logger.Info("Upgrading build {}({}) from build version {} to current version.", oldBuild.BuildName, oldBuild.Hash, oldBuild.BuildVersion);
             oldBuild.BuildVersion = CurrentBuildVersion;
         }
 

@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.Data.Genera
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.DataElements", "WoWsShipBuilder.DataElements\WoWsShipBuilder.DataElements.csproj", "{FB141047-D909-4C88-85DF-8F14E6E2A23B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWsShipBuilder.ViewModels.Test", "WoWsShipBuilder.ViewModels.Test\WoWsShipBuilder.ViewModels.Test.csproj", "{415A9E6E-4F74-42E7-BE39-0405CD6DC521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,5 +113,11 @@ Global
 		{FB141047-D909-4C88-85DF-8F14E6E2A23B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB141047-D909-4C88-85DF-8F14E6E2A23B}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB141047-D909-4C88-85DF-8F14E6E2A23B}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.ReleaseTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{415A9E6E-4F74-42E7-BE39-0405CD6DC521}.ReleaseTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
