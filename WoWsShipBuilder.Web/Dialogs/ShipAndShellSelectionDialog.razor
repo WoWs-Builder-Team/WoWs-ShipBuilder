@@ -9,6 +9,7 @@
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.ViewModels.Other
 @inject ILocalizer Localizer
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
@@ -60,7 +61,7 @@
                                 </MudText>
                             }
                             <MudText Typo="Typo.caption" Class="my-1">
-                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {dataWrapper.ShipContainer.Build?.BuildName ?? "---"}")
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {dataWrapper.ShipContainer.Build?.BuildName ?? ShipComparisonViewModel.DefaultBuildName}")
                             </MudText>
                             <MudDivider Light="true"/>
                         </MudItem>

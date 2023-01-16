@@ -273,7 +273,6 @@
 
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
 
-    private bool fromHomePage; // this bool is needed since the ShipAndShellsSelectionDialog thinks the ships are being modified instead of added when adding from the app home page because we have to preload them in the displayedShips list in order to make it work
     private bool processing;
     private double range = 10;
     private double aimingRange = 10;
@@ -314,7 +313,6 @@
         if (firstRender)
         {
             SetProcessing(true);
-            fromHomePage = true;
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
@@ -353,7 +351,6 @@
                 }
             }
             
-            fromHomePage = false;
             SetProcessing(false);
         }
     }
@@ -404,10 +401,9 @@
         await RemoveShellsData(chartIds, shellsToRemove);
     }
 
-    private async Task GenerateCharts(List<string> chartIds, List<ChartsDataWrapper> data, bool updateChartWithShipBuilds = false)
+    private async Task GenerateCharts(List<string> chartIds, List<ChartsDataWrapper> data, Dictionary<string, string>? shellIndexChangesByBuilds = null)
     {
-        List<NewChartDataInput> newDataInputs = new();
-        List<MultipleUpdateChartDataLabelInput> updateDataInputs = new();
+        List<MultipleUpdateChartDataLabelInput> jsDataInputs = new();
         foreach (var shipToAdd in data)
         {
             var shipId = shipToAdd.ShipContainer.Id;
@@ -443,41 +439,30 @@
                 var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, shell, maxRange, aimingRange * 1000, sigma, shotsNumber);
                 shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
 
-                if (updateChartWithShipBuilds)
-                {
-                    var updateDataInput = new MultipleUpdateChartDataLabelInput(GenerateJsShipId(shipId, shellIndex), GenerateJsShipId(shipId, shellIndex), label , shipData);
-                    updateDataInputs.Add(updateDataInput);
-                }
-                else
-                {
-                    var newDataInput = new NewChartDataInput(GenerateJsShipId(shipId, shellIndex), label, shipData, counter);
-                    newDataInputs.Add(newDataInput);
-                }
+                var newJsShipId = GenerateJsShipId(shipId, shellIndex);
+                var oldJsShipId = shellIndexChangesByBuilds is not null ? shellIndexChangesByBuilds.TryGetValue(newJsShipId, out string? previousJsShipId) ? previousJsShipId : newJsShipId : newJsShipId;
+
+                var jsDataInput = new MultipleUpdateChartDataLabelInput(oldJsShipId, counter, newJsShipId, label , shipData);
+                jsDataInputs.Add(jsDataInput);
                 counter++;
             }
             displayedShips[shipId] = shipToAdd;
         }
-        if (updateChartWithShipBuilds)
-        {
-            await ChartJsInterop.MultipleBatchUpdateDataNewLabels(chartIds, updateDataInputs);
-        }
-        else
-        {
-            await ChartJsInterop.BatchAddDataAsync(chartIds, newDataInputs);
-        }
+        
+        await ChartJsInterop.MultipleBatchAddOrUpdateDataNewLabels(chartIds, jsDataInputs);
     }
     
     private async Task UpdateChartWithShipBuilds(Dictionary<Guid, ShipBuildContainer> shipList)
     {
         List<ChartsDataWrapper> shipsToUpdate = new();
-
+        var shellChanges = new Dictionary<string, string>();
         foreach (var (guid, buildContainer) in shipList)
         {
             var shipToUpdate = displayedShips[guid];
 
             //first, we change shells if needed. Some guns upgrades can change the shell, so we keep the same type
             //if the shell didn't change, we still reset the cache to account for possible new modifiers influencing the charts,
-            var oldShellsIndexes = shipToUpdate.SelectedShells.Keys;
+            var oldShellsIndexes = shipToUpdate.SelectedShells.Keys.ToList();
             var availableShells = buildContainer.ShipDataContainer!.MainBatteryDataContainer!.ShellData;
             foreach (var oldShellIndex in oldShellsIndexes)
             {
@@ -487,16 +472,17 @@
                 {
                     shipToUpdate.SelectedShells.Remove(oldShellIndex);
                     shipToUpdate.SelectedShells.Add(newShell.Name, new(null, null, null));
+                    shellChanges.Add(GenerateJsShipId(guid, newShell.Name), GenerateJsShipId(guid, oldShellIndex));
                 }
                 else
                 {
                     shipToUpdate.SelectedShells[oldShellIndex] = new(null, null, null);
                 }
             }
-            shipsToUpdate.Add(shipToUpdate);
+            shipsToUpdate.Add(shipToUpdate with { ShipContainer = buildContainer });
         }
 
-        await GenerateCharts(GetChartsIdList(), shipsToUpdate, true);
+        await GenerateCharts(GetChartsIdList(), shipsToUpdate, shellChanges);
     }
     
     private async Task RemoveShipsData(List<string> chartIds, List<Guid> guids)
@@ -615,24 +601,27 @@
         var data = (ShipAndShellSelectionDialogOutput)selectedShipList.Data;
         if (data.OpenBuildDialog)
         {
-            foreach (var id in data.ShipsToRemove)
+            var chartIds = GetChartsIdList();
+            List<(string shellIndex, Guid guid)> shellsToRemove = new();
+            foreach (var (id, wrapper) in data.ShipsToModify)
             {
-                displayedShips.Remove(id);
+                foreach (var (shellIndex,_) in displayedShips[id].SelectedShells.Where(shellIndex => !wrapper.SelectedShells.Contains(shellIndex)))
+                {
+                    shellsToRemove.Add((shellIndex, id));
+                }
             }
+            await RemoveShipsData(chartIds, data.ShipsToRemove);
+            await RemoveShellsData(chartIds, shellsToRemove);
             foreach (var wrapper in data.ShipsToAdd)
             {
                 displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
             }
-
-            if (fromHomePage)
+            foreach (var (id, wrapper) in data.ShipsToModify)
             {
-                foreach (var (id, wrapper) in data.ShipsToModify)
-                {
-                    displayedShips[id] = wrapper;
-                }
+                displayedShips[id] = wrapper;
             }
             
-            await EditBuildAsyncFromDialog(data);
+            await EditBuildAsync();
         }
         else
         {
@@ -641,42 +630,13 @@
         }
     }
 
-    private async Task EditBuildAsync() => await EditBuildAsyncFromDialog(null);
-    
-    private async Task EditBuildAsyncFromDialog(ShipAndShellSelectionDialogOutput? shipAndShellSelectionDialogOutput)
+    private async Task EditBuildAsync()
     {
         SetProcessing(true);
-        var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipContainer).ToList());
+        var result = await buildConfigurationHelper.ShowDialogAsync(displayedShips.Values.Select(x => x.ShipContainer).OrderBy(x => Localizer.GetGameLocalization(x.Ship.Index + "_FULL").Localization).ToList());
         if (result is not null)
         {
-            var changedShips = GetAllChangedBuildShips(result);
-            foreach (var (guid, newContainer) in changedShips)
-            {
-                displayedShips[guid] = displayedShips[guid] with { ShipContainer = newContainer };
-            }
-            
-            if (shipAndShellSelectionDialogOutput is null)
-            {
-                await UpdateChartWithShipBuilds(changedShips); 
-            }
-            else
-            {
-                List<ChartsDataWrapper> shipsToAdd = new();
-                Dictionary<Guid, ShipBuildContainer> shipsToUpdate = new();
-                foreach (var ship in changedShips)
-                {
-                    if (fromHomePage || shipAndShellSelectionDialogOutput.ShipsToAdd.Select(x => x.ShipContainer.Id).Contains(ship.Key))
-                    {
-                        shipsToAdd.Add(displayedShips[ship.Key]);
-                    }
-                    else
-                    {
-                        shipsToUpdate.Add(ship.Key, ship.Value);
-                    }
-                }
-                await GenerateCharts(GetChartsIdList(), shipsToAdd);
-                await UpdateChartWithShipBuilds(shipsToUpdate); 
-            }
+            await UpdateChartWithShipBuilds(GetAllChangedBuildShips(result));
         }
         SetProcessing(false);
     }
@@ -704,7 +664,7 @@
         };
         var parameters = new DialogParameters
         {
-            ["InputData"] = displayedShips.Values.ToList(),
+            ["InputData"] = displayedShips.Values.OrderBy(x => Localizer.GetGameLocalization(x.ShipContainer.Ship.Index + "_FULL").Localization).ToList(),
         };
         var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
