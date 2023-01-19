@@ -3,6 +3,7 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Web.Utility
 
 @implements IDisposable
 @inject ILocalizer Localizer
@@ -52,8 +53,35 @@
         <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@Cancel">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" DisableElevation="true" OnClick="@SubmitShips">
-            @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
+        <MudButton Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" Disabled="@(ShipList != null && ShipList!.Count == 0)" OnClick="@(() => SubmitShips(true))">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
+                </MudText>
+            }
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" DisableElevation="true" OnClick="@(() => SubmitShips(false))">
+            @if (processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2" Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipAndShellSelectionDialogWeb_Loading)).Localization
+                </MudText>
+            }
+            else
+            {
+                <MudText Typo="Typo.button">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
+                </MudText>
+            }
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -67,6 +95,8 @@
     public List<ShipBuildContainer>? ShipList { get; set; }
 
     private readonly ObservableCollection<string> selectedShips = new();
+
+    bool processing = false;
 
     protected override void OnInitialized()
     {
@@ -83,9 +113,11 @@
         MudDialog.Cancel();
     }
 
-    private void SubmitShips()
+    private void SubmitShips(bool shouldOpenBuildDialog)
     {
-        MudDialog.Close(ShipList);
+        processing = true;
+        StateHasChanged();
+        MudDialog.Close(new ShipBuildContainerSelectionDialogOutput(ShipList!, shouldOpenBuildDialog));
     }
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

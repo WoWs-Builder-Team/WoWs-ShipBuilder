@@ -238,9 +238,11 @@
         };
         
         var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
-        
-        if (!result.Cancelled && result.Data is List<ShipBuildContainer> newShipList)
+
+        if (!result.Cancelled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
         {
+            var newShipList = dialogOutput.ShipList;
+            
             //first remove the removed ships
             var shipsToRemove = shipBuildCache.Where(cacheContainer => !newShipList.Exists(newListContainer => cacheContainer.Value.Id.Equals(newListContainer.Id))).ToList();
             var guidsToRemove = new List<string>();
@@ -249,21 +251,60 @@
                 guidsToRemove.Add(shipContainer.Id.ToString());
                 shipBuildCache.Remove(shipCounter);
             }
-            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, guidsToRemove);
             if (shipBuildCache.Count == 0)
             {
                 counter = 0;
             }
             
-            //then add the new ones 
-            Dictionary<int, ShipBuildContainer> shipsToAdd = new();
-            foreach (var shipBuildContainer in newShipList.Where(shipBuildContainer => !shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id))))
+            if (dialogOutput.ShouldOpenBuildDialog)
             {
-                shipsToAdd.Add(counter, shipBuildContainer);
-                shipBuildCache.Add(counter, shipBuildContainer);
-                counter++;
+                Dictionary<int, ShipBuildContainer> shipsToAdd = new();
+                foreach (var shipBuildContainer in newShipList.Where(shipBuildContainer => !shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id))))
+                {
+                    shipsToAdd.Add(counter, shipBuildContainer);
+                    shipBuildCache.Add(counter, shipBuildContainer);
+                    counter++;
+                }
+                
+                var containerList = shipBuildCache.Select(x => x.Value).ToList();
+                var buildConfigurationResult = await buildConfigurationHelper.ShowDialogAsync(containerList);
+                
+                Dictionary<int, ShipBuildContainer> shipsToUpdate = new();
+                if (buildConfigurationResult is not null)
+                {
+                    var changedShips = GetAllChangedBuildShips(buildConfigurationResult);
+                    foreach (var (chartShipCounter, newContainer) in changedShips)
+                    {
+                        shipBuildCache[chartShipCounter] = newContainer;
+                        if (shipsToAdd.ContainsKey(chartShipCounter))
+                        {
+                            shipsToAdd[chartShipCounter] = newContainer;
+                        }
+                        else
+                        {
+                            shipsToUpdate.Add(chartShipCounter, newContainer);
+                        }
+                    }
+                    
+                }
+
+                await AddShipsBatchAsync(shipsToAdd);
+                await UpdateShipsBatchAsync(shipsToUpdate);
             }
-            await AddShipsBatchAsync(shipsToAdd);
+            else
+            {
+                 //then add the new ones 
+                Dictionary<int, ShipBuildContainer> shipsToAdd = new();
+                foreach (var shipBuildContainer in newShipList.Where(shipBuildContainer => !shipBuildCache.Any(x => x.Value.Id.Equals(shipBuildContainer.Id))))
+                {
+                    shipsToAdd.Add(counter, shipBuildContainer);
+                    shipBuildCache.Add(counter, shipBuildContainer);
+                    counter++;
+                }
+                await AddShipsBatchAsync(shipsToAdd);
+            }
+            
+            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, guidsToRemove);
         }
     }
     
