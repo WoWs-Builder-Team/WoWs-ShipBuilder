@@ -8,6 +8,7 @@
 
 ## Bugfixes
 - Builds are ordered incorrectly when opening a build from Track
+- IFHE skill increases pen twice
 
 ## Known Issues
 - Hull A only consumables are still displayed as available when selecting hull B on some ships.
