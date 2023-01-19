@@ -42,7 +42,7 @@ public class BuildDeserialization
 
         var build = Build.CreateBuildFromString(buildString, logger.Object);
 
-        logger.Verify(l => l.Info("Upgrading build {} from build version {} to current version.", buildName, 1), Times.Once());
+        logger.Verify(l => l.Info("Upgrading build {}({}) from build version {} to current version.", buildName, build.Hash, 1), Times.Once());
         build.BuildName.Should().Be(buildName);
         build.BuildVersion.Should().Be(Build.CurrentBuildVersion);
         build.Modules.Should().NotBeEmpty();

@@ -106,7 +106,7 @@ public partial record SecondaryBatteryDataContainer : DataContainerBase
             ShellDataContainer? shellData;
             try
             {
-                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount).First();
+                shellData = ShellDataContainer.FromShellName(secondaryGun.AmmoList, modifiers, barrelCount, false).First();
             }
             catch (KeyNotFoundException e)
             {

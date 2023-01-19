@@ -192,7 +192,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount);
+        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount, true);
 
         // rounding reload in here to get a more accurate True reload
         var mainBatteryDataContainer = new MainBatteryDataContainer
