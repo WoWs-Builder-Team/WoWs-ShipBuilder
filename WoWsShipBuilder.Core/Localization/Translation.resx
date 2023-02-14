@@ -1619,4 +1619,19 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Tactical Skip Bombers</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Target area radius</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Progress per action</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>Time of inactivity before progress loss</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>Interval between progress losses</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>Progress loss per interval</value>
+  </data>
 </root>
