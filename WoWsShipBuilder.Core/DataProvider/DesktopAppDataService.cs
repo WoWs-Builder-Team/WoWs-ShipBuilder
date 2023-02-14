@@ -68,7 +68,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         // TODO: return Task.FromResult
         await Task.CompletedTask;
         fileSystem.Directory.CreateDirectory(GetLocalizationPath(serverType));
-        var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.FromFileName(file));
+        var files = fileSystem.Directory.GetFiles(GetLocalizationPath(serverType)).Select(file => fileSystem.FileInfo.New(file));
         return includeFileType ? files.Select(file => file.Name).ToList() : files.Select(file => fileSystem.Path.GetFileNameWithoutExtension(file.Name)).ToList();
     }
 
@@ -119,7 +119,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         var localVersionInfo = await GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
-        var dataRootInfo = fileSystem.DirectoryInfo.FromDirectoryName(GetDataPath(serverType));
+        var dataRootInfo = fileSystem.DirectoryInfo.New(GetDataPath(serverType));
         IDirectoryInfo[]? categories = dataRootInfo.GetDirectories();
 
         // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.

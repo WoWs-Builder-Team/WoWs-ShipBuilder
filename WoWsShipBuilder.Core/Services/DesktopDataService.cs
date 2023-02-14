@@ -75,7 +75,7 @@ public class DesktopDataService : IDataService
 
     private void CreateDirectory(string path)
     {
-        string directoryName = fileSystem.Path.GetDirectoryName(path);
+        string directoryName = fileSystem.Path.GetDirectoryName(path)!;
         fileSystem.Directory.CreateDirectory(directoryName);
     }
 }
