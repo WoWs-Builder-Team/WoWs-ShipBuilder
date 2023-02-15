@@ -2883,6 +2883,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time of inactivity before progress loss.
+        /// </summary>
+        public static string ShipStats_InactivityDelay {
+            get {
+                return ResourceManager.GetString("ShipStats_InactivityDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initial boost.
         /// </summary>
         public static string ShipStats_InitialBoost {
@@ -3284,6 +3293,33 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_PreparationTime {
             get {
                 return ResourceManager.GetString("ShipStats_PreparationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interval between progress losses.
+        /// </summary>
+        public static string ShipStats_ProgressLossInterval {
+            get {
+                return ResourceManager.GetString("ShipStats_ProgressLossInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Progress loss per interval.
+        /// </summary>
+        public static string ShipStats_ProgressLossPerInterval {
+            get {
+                return ResourceManager.GetString("ShipStats_ProgressLossPerInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Progress per action.
+        /// </summary>
+        public static string ShipStats_ProgressPerAction {
+            get {
+                return ResourceManager.GetString("ShipStats_ProgressPerAction", resourceCulture);
             }
         }
         
@@ -3780,6 +3816,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_TacticalTorpedoBomber {
             get {
                 return ResourceManager.GetString("ShipStats_TacticalTorpedoBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target area radius.
+        /// </summary>
+        public static string ShipStats_TargetAreaRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_TargetAreaRadius", resourceCulture);
             }
         }
         
