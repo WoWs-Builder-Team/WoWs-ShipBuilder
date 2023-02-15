@@ -1619,4 +1619,19 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Bombardeiros Táticos "Skip"</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Raio da área do alvo</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Progresso por ação</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>Tempo de inatividade antes da perda do progresso</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>Intervalo entre perdas de progresso</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>Perda de progresso por intervalo</value>
+  </data>
 </root>
