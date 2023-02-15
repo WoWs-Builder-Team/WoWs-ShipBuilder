@@ -11,6 +11,7 @@
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
+@using WoWsShipBuilder.ViewModels.Other
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -336,14 +337,7 @@
                     {
                         var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
                         var ship = AppData.FindShipFromSummary(shipSummary);
-                        
-                        List<ShipUpgrade> shipConfiguration = ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
-                                .OrderBy(entry => entry.Key)
-                                .Select(entry => entry.Value)
-                                .Select(module => module.First())
-                                .ToList();
-
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, new()) } , new());
+                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = ShipDataContainer.CreateFromShip(ship, Helpers.GetStockShipConfiguration(ship), new()) } , new());
                         displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
                     }
                     
@@ -512,7 +506,7 @@
         var label = $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()}";
         if (build is not null)
         {
-            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {build.BuildName}";
+            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(string.IsNullOrEmpty(build.BuildName) ? ShipComparisonViewModel.DefaultBuildName : build.BuildName)}";
         }
         return label;
     }
