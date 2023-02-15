@@ -1558,4 +1558,19 @@
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>戦術反跳爆撃機</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>ターゲット半径</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>アクションごとの進捗増加</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>進捗喪失までの非アクティブ時間</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>進捗損失の間隔</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>1回の進捗損失</value>
+  </data>
 </root>
