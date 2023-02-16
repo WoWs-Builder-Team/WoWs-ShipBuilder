@@ -23,3 +23,13 @@ An example for a build string using this format is the following string: `PASC02
 In this case, the modules are the default ship modules which can be omitted entirely: `PASC020;;;PCW001;;;;2;test-build`
 
 However, the captain must never be omitted even if it is the default captain.
+
+## Build string v3
+
+In v3, the build string keeps the format of v2, however, skill names are reduced to their index.
+Old builds are automatically converted upon loading a build.
+
+## Build string v4
+
+No structural changes compared to v2, however, module names are reduced to their index.
+Old build are automatically converted upon loading a build.

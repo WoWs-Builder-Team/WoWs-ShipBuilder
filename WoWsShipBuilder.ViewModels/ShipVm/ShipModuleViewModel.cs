@@ -3,6 +3,7 @@ using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
+using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
 
@@ -78,7 +79,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
             var results = new List<ShipUpgrade>();
             foreach (List<ShipUpgrade> upgradeList in ShipUpgrades)
             {
-                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.Split("_").First())));
+                results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.NameToIndex())));
             }
 
             var modulesToRemove = SelectedModules.Where(module => results.Any(newSelection => newSelection.UcType == module.UcType)).ToList();
@@ -88,7 +89,7 @@ namespace WoWsShipBuilder.ViewModels.ShipVm
 
         public List<string> SaveBuild()
         {
-            return SelectedModules.Select(upgrade => upgrade.Name).ToList();
+            return SelectedModules.Select(upgrade => upgrade.Name.NameToIndex()).ToList();
         }
     }
 }

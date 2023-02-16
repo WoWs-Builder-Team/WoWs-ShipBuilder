@@ -20,8 +20,20 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
         public decimal Duration { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValue)]
-        public int RequiredHits { get; set; }
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
+        public decimal TargetAreaRadius { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
+        public decimal ProgressPerAction { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        public decimal InactivityDelay { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        public decimal ProgressLossInterval { get; set; }
+
+        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "PerCent")]
+        public decimal ProgressLossPerInterval { get; set; }
 
         // These are for Burst mode
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
@@ -50,9 +62,13 @@ namespace WoWsShipBuilder.Core.DataContainers
                 specialDataContainer = new()
                 {
                     Name = $"DOCK_RAGE_MODE_TITLE_{specialAbility.Name}",
-                    Description = $"DOCK_RAGE_MODE_DESCRIPTION_{specialAbility.Name}",
+                    Description = $"RAGE_MODE_TRIGGER_DESCRIPTION_{specialAbility.ActivatorName}",
                     Duration = Math.Round((decimal)specialAbility.Duration, 1),
-                    RequiredHits = specialAbility.RequiredHits,
+                    TargetAreaRadius = Math.Round((decimal)(specialAbility.ActivatorRadius / 1000), 1),
+                    ProgressPerAction = (decimal)specialAbility.ProgressPerAction,
+                    InactivityDelay = (decimal)specialAbility.DecrementDelay,
+                    ProgressLossInterval = (decimal)specialAbility.DecrementPeriod,
+                    ProgressLossPerInterval = (decimal)specialAbility.DecrementCount,
                     Modifiers = specialAbility.Modifiers,
                 };
 

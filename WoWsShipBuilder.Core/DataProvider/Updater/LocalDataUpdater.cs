@@ -340,7 +340,7 @@ namespace WoWsShipBuilder.Core.DataProvider.Updater
         private async Task ImageUpdate(IProgress<(int, string)> progressTracker, bool canDeltaUpdate, string? versionName)
         {
             string imageBasePath = appDataService.AppDataImageDirectory;
-            var shipImageDirectory = fileSystem.DirectoryInfo.FromDirectoryName(fileSystem.Path.Combine(imageBasePath, "Ships"));
+            var shipImageDirectory = fileSystem.DirectoryInfo.New(fileSystem.Path.Combine(imageBasePath, "Ships"));
             if (!shipImageDirectory.Exists || !shipImageDirectory.GetFiles().Any() || !canDeltaUpdate)
             {
                 progressTracker.Report((2, nameof(Translation.SplashScreen_ShipImages)));

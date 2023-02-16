@@ -79,7 +79,7 @@ public partial record ShellDataContainer : DataContainerBase
 
     public bool ShowBlastPenetration { get; private set; }
 
-    public static List<ShellDataContainer> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount)
+    public static List<ShellDataContainer> FromShellName(List<string> shellNames, List<(string Name, float Value)> modifiers, int barrelCount, bool isMainGunShell)
     {
         var shells = new List<ShellDataContainer>();
         foreach (string shellName in shellNames)
@@ -141,7 +141,8 @@ public partial record ShellDataContainer : DataContainerBase
                     shellFireChance += modifiers.FindModifiers("burnProbabilityBonus").Select(m => m * 100).Sum();
 
                     // IFHE and possibly modifiers from supership abilities
-                    shellPenetration = modifiers.FindModifiers("penetrationCoeffHE").Aggregate(shellPenetration, (current, modifier) => current * modifier);
+                    var penModifierPrefix = isMainGunShell ? "GM" : "GS";
+                    shellPenetration = modifiers.FindModifiers($"{penModifierPrefix}penetrationCoeffHE").Aggregate(shellPenetration, (current, modifier) => current * modifier);
 
                     goto case ShellType.SAP;
                 }

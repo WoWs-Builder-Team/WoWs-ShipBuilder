@@ -334,8 +334,11 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         logger.Info("Reordering skills");
 
         // AvaloniaList is missing one of the extension methods, so we copy the list to a normal one,
-        var supportList = SkillOrderList.ToList();
-        var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier).Select(x => x.ToList()).ToList().OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier).ToList();
+        var groups = SkillOrderList.GroupBy(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier)
+            .Select(x => x.ToList())
+            .ToList()
+            .OrderBy(x => x.First().Tiers.First(skillPosition => skillPosition.ShipClass == currentClass).Tier)
+            .ToList();
 
         // Tier 0 skill reordering
         var tier0Skills = groups[0];
@@ -360,14 +363,14 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         if (groups.Count > 2)
         {
             var tier1Skills = groups[1];
-            var firstTier0SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
-            var firstTier2SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 2);
+            var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 1);
 
             var tier1SkillFirst = false;
 
             foreach (var tier1Skill in tier1Skills)
             {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstTier2SkillIndex)
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
                 {
                     tier1SkillFirst = true;
                 }
@@ -377,7 +380,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             {
                 var skill = tier1Skills.First();
                 SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstTier2SkillIndex, skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
             }
         }
 
@@ -385,14 +388,14 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         if (groups.Count > 3)
         {
             var tier1Skills = groups[2];
-            var firstTier1SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
-            var firstTier3SkillIndex = supportList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 3);
+            var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 2);
 
             var tier1SkillFirst = false;
 
             foreach (var tier1Skill in tier1Skills)
             {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstTier3SkillIndex)
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
                 {
                     tier1SkillFirst = true;
                 }
@@ -402,7 +405,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             {
                 var skill = tier1Skills.First();
                 SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstTier3SkillIndex, skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
             }
         }
 
@@ -518,6 +521,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         var skills = selectedSkills.Select(skillId => SelectedCaptain!.Skills.First(captainSkill => captainSkill.Value.SkillNumber == skillId)).Select(pair => pair.Value);
         SkillOrderList.AddRange(skills);
         AssignedPoints = SkillOrderList.Sum(skill => skill.Tiers.First(t => t.ShipClass == currentClass).Tier + 1);
+        ReorderSkillList();
         foreach (var skill in SkillOrderList)
         {
             if (skill.SkillNumber is ArSkillNumber or ArSkillNumberSubs)

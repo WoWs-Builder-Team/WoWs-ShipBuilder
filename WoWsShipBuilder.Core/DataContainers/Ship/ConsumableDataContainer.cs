@@ -172,7 +172,7 @@ public partial record ConsumableDataContainer : DataContainerBase
                 var workTimeModifiers = modifiers.FindModifiers("regenCrewWorkTimeCoeff");
                 workTime = workTimeModifiers.Aggregate(workTime, (current, modifier) => current * modifier);
 
-                var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed");
+                var regenerationSpeedModifiers = modifiers.FindModifiers("regenerationHPSpeed", true);
                 var regenerationSpeed = regenerationSpeedModifiers.Aggregate(consumableModifiers["regenerationHPSpeed"], (current, modifier) => current * modifier);
                 consumableModifiers["regenerationHPSpeed"] = regenerationSpeed;
 
