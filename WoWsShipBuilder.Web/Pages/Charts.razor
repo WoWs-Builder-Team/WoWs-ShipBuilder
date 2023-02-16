@@ -328,10 +328,8 @@
                     var ship = AppData.FindShipFromSummary(shipSummary);
                     var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
                     var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, buildContainers.First().Modifiers ?? new());
-                    
-                    ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, null) with { ShipDataContainer = dataContainer } , new() { {shellIndexFromUrl, new(null, null, null)} });
+                    ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, null) with { ShipDataContainer = dataContainer } , new() { { shellIndexFromUrl, new(null, null, null) } });
                     displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
-
                     ShipAndShellSelectionDialogOutput data = new(new() { wrapper }, new(), new(), false);
                     await UpdateChartsBatchAsync(data);
                 }
