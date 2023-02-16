@@ -44,6 +44,7 @@ public static class SetupExtensions
         services.AddScoped<RefreshNotifierService>();
         services.AddScoped<ChartJsInterop>();
         services.AddScoped<MouseEventInterop>();
+        services.AddScoped<BuildHelper>();
         services.AddScoped<IClipboardService, WebClipboardService>();
 
         services.AddTransient<DataInitializer>();
