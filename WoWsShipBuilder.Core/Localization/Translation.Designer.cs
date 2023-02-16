@@ -3567,6 +3567,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show acceleration charts.
+        /// </summary>
+        public static string ShipStats_ShowAccelerationCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowAccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Damage Distribution Chart.
         /// </summary>
         public static string ShipStats_ShowDcDamageDistribution {

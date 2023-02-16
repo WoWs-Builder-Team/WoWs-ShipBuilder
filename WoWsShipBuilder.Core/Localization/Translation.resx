@@ -1643,4 +1643,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
       <value>Progress loss per interval</value>
   </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Show acceleration charts</value>
+  </data>
 </root>

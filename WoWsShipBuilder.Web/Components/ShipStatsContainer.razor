@@ -285,10 +285,10 @@
         modifiers?.AddRange(ViewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
         modifiers?.AddRange(ViewModel?.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
         modifiers?.AddRange(ViewModel?.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-        
+
         var build = ViewModel!.CreateBuild(oldBuildString);
         var buildString = build.CreateShortStringFromBuild();
-        BuildHelper.BuildHelperContainer container = new(buildString, modifiers);
+        BuildHelper.BuildHelperContainer container = new(buildString, modifiers, ViewModel?.ConsumableViewModel.ActivatedSlots);
         await BuildHelper.SaveBuildContainers(new() { container });
     }
 }

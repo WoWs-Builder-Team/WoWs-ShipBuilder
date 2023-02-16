@@ -52,5 +52,5 @@ public class BuildHelper : IAsyncDisposable
         }
     }
 
-    public sealed record BuildHelperContainer(string BuildString, List<(string, float)>? Modifiers);
+    public sealed record BuildHelperContainer(string BuildString, List<(string, float)>? Modifiers, IEnumerable<int>? ActivatedConsumables);
 }

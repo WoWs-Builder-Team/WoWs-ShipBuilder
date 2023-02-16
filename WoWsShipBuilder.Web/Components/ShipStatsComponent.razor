@@ -391,12 +391,13 @@
         <MudStack>
             <!--Maneuverability-->
             <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true)" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
-                <MudStack Spacing="1" Class="expander-content-padding mb-n3">
+                <MudStack Spacing="1" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats?.ManeuverabilityDataContainer?.DataElements ?? new())
                     {
                         @DataElementFragment((data, Localizer))
                     }
                 </MudStack>
+                <MudLink Class="expander-content-padding mb-n3" Style="color: paleturquoise !important; text-decoration: underline" @onclick="SendBuildToCharts" Target="_blank" Href="@($"/acceleration-charts")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization</MudLink>
             </MudExpansionPanel>
 
             <!--Concealment-->

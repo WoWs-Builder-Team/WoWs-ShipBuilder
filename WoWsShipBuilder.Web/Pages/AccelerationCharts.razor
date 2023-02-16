@@ -1,20 +1,23 @@
 @page "/acceleration-charts"
 @using MudBlazor.Services
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures.Ship
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
 
-@inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject ChartJsInterop ChartJsInterop
 @inject IMetricsService MetricsService
 @inject IBreakpointService BreakpointService
+@inject BuildHelper BuildHelper
 
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
@@ -36,10 +39,10 @@
         @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_AddRemoveShip)).Localization
     </MudButton>
     <MudButton Disabled="@(shipBuildCache.Count == 0)" OnClick="ConfigureBuilds" Variant="Variant.Filled" Color="Color.Primary">
-        @Localizer.GetAppLocalization(nameof(Translation.Charts_ChangeBuilds)).Localization
+        @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_EditBuilds)).Localization
     </MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCustomShip">
-        Add custom values
+        @Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_CustomDataTitle)).Localization
     </MudButton>
     <MudDivider Vertical FlexItem Light/>
     <MudSelect Margin="Margin.Dense" AnchorOrigin="Origin.BottomCenter" Variant="Variant.Outlined" T="int" Value="@firstGear" Label="Initial Gear" ValueChanged="@(value => UpdateThrottle(0, value))">
@@ -79,8 +82,6 @@
     private const string AccelerationId = "acceleration";
     
     private BuildConfigurationDialogHelper buildConfigurationHelper = default!;
-    
-    private string[] shipIndexesFromUrl = { };
 
     private Breakpoint Breakpoint {get; set; }
 
@@ -100,11 +101,6 @@
     {
         await base.OnInitializedAsync();
         MetricsService.AccelerationPageCount.Inc();
-        
-        if (NavManager.TryGetQueryString("shipIndexes", out string shipIndex))
-        {
-            shipIndexesFromUrl = shipIndex.Split(',');
-        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -116,14 +112,18 @@
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartAsync();
 
-            if (shipIndexesFromUrl.Any())
+            var buildContainers = await BuildHelper.LoadBuildContainers();
+
+            if (buildContainers is not null)
             {
-                foreach (string shipIndex in shipIndexesFromUrl)
+                foreach (var container in buildContainers)
                 {
-                    var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+                    Build build = Build.CreateBuildFromString(container.BuildString);
+                    var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(build.ShipIndex));
                     var ship = AppData.FindShipFromSummary(shipSummary);
-                    
-                    var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);
+                    var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
+                    var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
+                    var shipContainer = ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer };
                     
                     shipBuildCache.Add(counter, shipContainer);
                     counter++;
@@ -131,6 +131,7 @@
             }
             
             await AddShipsBatchAsync(shipBuildCache);
+            StateHasChanged();
         }
     }
 
@@ -145,11 +146,7 @@
 
         foreach (var (chartShipCounter, shipWrapper) in shipList)
         {
-            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
-            if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
-            {
-                label += " - " + shipWrapper.Build.BuildName;
-            }
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
 
             List<IEnumerable<ChartsHelper.Point>> shipData = new()
             {
@@ -167,11 +164,8 @@
 
         foreach (var (_, shipWrapper) in shipList)
         {
-            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization;
-            if (shipWrapper.Build is not null && !string.IsNullOrEmpty(shipWrapper.Build.BuildName))
-            {
-                label += " - " + Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + shipWrapper.Build.BuildName;
-            }
+            var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
+
             UpdateChartDataLabelInput updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
             updatedData.Add(updateChartData);
         }
