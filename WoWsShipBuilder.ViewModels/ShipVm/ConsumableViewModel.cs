@@ -88,6 +88,10 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
             {
                 modifiers.AddRange(consumable.Modifiers.Select(entry => ("speedBoost_" + entry.Key, entry.Value)));
             }
+            else if (consumable.Name.Contains("PCY010"))
+            {
+                modifiers.AddRange(consumable.Modifiers.Select(entry => ("heal_" + entry.Key, entry.Value)));
+            }
             else
             {
                 modifiers.AddRange(consumable.Modifiers.Select(entry => (entry.Key, entry.Value)));

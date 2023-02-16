@@ -98,7 +98,6 @@ public static class ModifierProcessor
             // UPDATE: remember what i said about similar names? Wanna take a guess how they did captain talents?
             case { } str when str.Contains("Bonus", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("burnChanceFactor", StringComparison.InvariantCultureIgnoreCase) ||
-                              str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase) ||
                               (str.Contains("regenerationRate", StringComparison.InvariantCultureIgnoreCase) && !returnFilter.Equals(ReturnFilter.All)):
             {
                 value = $"+{Math.Round(modifier * 100, 1)}%";
@@ -107,6 +106,12 @@ public static class ModifierProcessor
                         value += $"/{localizer.GetAppLocalization(nameof(Translation.Unit_S)).Localization}";
                 }
 
+                break;
+            }
+
+            case { } str when str.Contains("regenerationHPSpeed", StringComparison.InvariantCultureIgnoreCase):
+            {
+                value = $"+{(modifier - 1) * 100:#} %";
                 break;
             }
 

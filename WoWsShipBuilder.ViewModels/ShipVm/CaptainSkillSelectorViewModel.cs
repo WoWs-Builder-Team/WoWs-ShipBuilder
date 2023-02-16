@@ -364,13 +364,13 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         {
             var tier1Skills = groups[1];
             var firstTier0SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 0);
-            var firstTier2SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 2);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 1);
 
             var tier1SkillFirst = false;
 
             foreach (var tier1Skill in tier1Skills)
             {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstTier2SkillIndex)
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier0SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
                 {
                     tier1SkillFirst = true;
                 }
@@ -380,7 +380,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             {
                 var skill = tier1Skills.First();
                 SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstTier2SkillIndex, skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
             }
         }
 
@@ -389,13 +389,13 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
         {
             var tier1Skills = groups[2];
             var firstTier1SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 1);
-            var firstTier3SkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier == 3);
+            var firstHigherTierSkillIndex = SkillOrderList.FindIndex(skill => skill.Tiers.First(x => x.ShipClass == currentClass).Tier > 2);
 
             var tier1SkillFirst = false;
 
             foreach (var tier1Skill in tier1Skills)
             {
-                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstTier3SkillIndex)
+                if (SkillOrderList.IndexOf(tier1Skill) > firstTier1SkillIndex && SkillOrderList.IndexOf(tier1Skill) < firstHigherTierSkillIndex)
                 {
                     tier1SkillFirst = true;
                 }
@@ -405,7 +405,7 @@ public partial class CaptainSkillSelectorViewModel : ViewModelBase
             {
                 var skill = tier1Skills.First();
                 SkillOrderList.Remove(skill);
-                SkillOrderList.Insert(firstTier3SkillIndex, skill);
+                SkillOrderList.Insert(firstHigherTierSkillIndex, skill);
             }
         }
 
