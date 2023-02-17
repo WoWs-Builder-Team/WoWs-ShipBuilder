@@ -55,15 +55,11 @@ namespace WoWsShipBuilder.Core.DataContainers
             var rocket = AppData.FindProjectile<Rocket>(name);
 
             var rocketDamage = (decimal)rocket.Damage;
-            var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
-            var fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
-            var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
-            fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
-
             var showBlastPenetration = true;
             var ricochetAngle = "";
             decimal fuseTimer = 0;
             var armingThreshold = 0;
+            decimal fireChance = 0;
             if (rocket.RocketType.Equals(DataStructures.RocketType.AP))
             {
                 List<float> rocketDamageModifiers = modifiers.FindModifiers("rocketApAlphaDamageMultiplier").ToList();
@@ -71,8 +67,14 @@ namespace WoWsShipBuilder.Core.DataContainers
                 ricochetAngle = $"{rocket.RicochetAngle}-{rocket.AlwaysRicochetAngle}";
                 fuseTimer = (decimal)rocket.FuseTimer;
                 armingThreshold = (int)rocket.ArmingThreshold;
-                fireChance = 0;
                 showBlastPenetration = false;
+            }
+            else
+            {
+                var fireChanceModifiers = modifiers.FindModifiers("rocketBurnChanceBonus");
+                fireChance = (decimal)fireChanceModifiers.Aggregate(rocket.FireChance, (current, modifier) => current + modifier);
+                var fireChanceModifiersRockets = modifiers.FindModifiers("burnChanceFactorSmall");
+                fireChance = fireChanceModifiersRockets.Aggregate(fireChance, (current, modifier) => current + (decimal)modifier);
             }
 
             var rocketDataContainer = new RocketDataContainer
