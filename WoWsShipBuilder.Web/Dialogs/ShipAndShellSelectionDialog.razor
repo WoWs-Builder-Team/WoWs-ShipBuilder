@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Other
+@implements IDisposable
 @inject ILocalizer Localizer
 
 <MudDialog Style="overflow: auto; max-height: calc(95vh - 100px)">
@@ -116,8 +117,7 @@
 
     [Parameter]
     public List<ChartsDataWrapper> InputData { get; set; } = new();
-
-
+    
     private readonly List<ChartsDataWrapper> dataWrappers = new();
     private readonly ObservableCollection<string> selectedShips = new();
     private readonly Dictionary<Guid, Dictionary<string, List<string>>> disabledShells = new();
@@ -167,7 +167,6 @@
     {
         processing = true;
         List<ChartsDataWrapper> initialShips = InputData;
-        
         List<ChartsDataWrapper> shipsToAdd = new();
         List<ChartsDataWrapper> shipsToModify = new();
         List<Guid> shipsToRemove = new();
@@ -336,5 +335,10 @@
     private void Cancel()
     {
         MudDialog.Cancel();
+    }
+    
+    public void Dispose()
+    {
+        selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;
     }
 }

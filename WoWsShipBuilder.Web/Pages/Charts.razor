@@ -375,6 +375,7 @@
         await ChartJsInterop.CreateChartAsync(FlightTimeId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_FlightTime)).Localization, km, s);
         await ChartJsInterop.CreateChartAsync(ImpactVelocityId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactVelocity)).Localization, km, mps);
         await ChartJsInterop.CreateChartAsync(ImpactAngleId, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, rangeString, Localizer.GetAppLocalization(nameof(Translation.DispersionGraphWindow_ImpactAngle)).Localization, km, degree);
+        
         await ChartJsInterop.ChangeSuggestedMaxAsync(TrajectoryId, range / 4 * 1000);
     }
 
