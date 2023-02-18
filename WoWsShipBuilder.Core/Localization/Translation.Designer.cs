@@ -78,15 +78,6 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change builds.
-        /// </summary>
-        public static string AccelerationChart_ChangeBuilds {
-            get {
-                return ResourceManager.GetString("AccelerationChart_ChangeBuilds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add custom data.
         /// </summary>
         public static string AccelerationChart_CustomDataTitle {
@@ -504,6 +495,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change builds.
+        /// </summary>
+        public static string Charts_ChangeBuilds {
+            get {
+                return ResourceManager.GetString("Charts_ChangeBuilds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add/Remove Ships/Shells.
         /// </summary>
         public static string ChartsWeb_AddRemoveShips {
@@ -518,6 +518,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ChartsWeb_BallisticCharts {
             get {
                 return ResourceManager.GetString("ChartsWeb_BallisticCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        public static string ChartsWeb_Build {
+            get {
+                return ResourceManager.GetString("ChartsWeb_Build", resourceCulture);
             }
         }
         
@@ -1818,6 +1827,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Ship Selected.
+        /// </summary>
+        public static string ShipAndShellsSelectionDialog_NoShipSelected {
+            get {
+                return ResourceManager.GetString("ShipAndShellsSelectionDialog_NoShipSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string ShipSelectionWindow_ClassFilter {
@@ -1832,6 +1850,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipSelectionWindow_ConfirmButton {
             get {
                 return ResourceManager.GetString("ShipSelectionWindow_ConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit builds.
+        /// </summary>
+        public static string ShipSelectionWindow_EditBuilds {
+            get {
+                return ResourceManager.GetString("ShipSelectionWindow_EditBuilds", resourceCulture);
             }
         }
         
@@ -3536,6 +3563,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ShotInBurst {
             get {
                 return ResourceManager.GetString("ShipStats_ShotInBurst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show acceleration charts.
+        /// </summary>
+        public static string ShipStats_ShowAccelerationCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowAccelerationCharts", resourceCulture);
             }
         }
         

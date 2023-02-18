@@ -26,7 +26,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <summary>
         /// Calculates the projection ratio and the vertical radius length of the dispersion ellipse projected on water.
         /// </summary>
-        /// <param name="shell">Contains all the shell parameters.</param>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="verticalRadius">The length of the dispersion ellipse vertical radius.</param>
@@ -34,7 +34,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         private static (double waterLineProjection, double perpendicularToWaterProjection, double projectedOnWaterVerticalRadius, double perpendicularToWaterVerticalRadius) GetProjectedEllipse(ArtilleryShell shell, double maxRange, double aimingRange, double verticalRadius)
         {
             double impactAngle;
-            var ballistic = BallisticHelper.CalculateBallistic(shell, maxRange).Where(x => x.Key >= aimingRange).ToList();
+            List<KeyValuePair<double, Ballistic>> ballistic = BallisticHelper.CalculateBallistic(shell, maxRange, shell.Penetration).Where(x => x.Key >= aimingRange).ToList();
             if (ballistic.Any())
             {
                 impactAngle = ballistic.First().Value.ImpactAngle;
@@ -108,7 +108,7 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// </summary>
         /// <param name="name">The name of the represented entity.</param>
         /// <param name="dispersionData">Contains the parameters to calculate horizontal and vertical dispersions.</param>
-        /// <param name="shell">Contains all the shell parameters.</param>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="sigma">The sigma of the ship.</param>

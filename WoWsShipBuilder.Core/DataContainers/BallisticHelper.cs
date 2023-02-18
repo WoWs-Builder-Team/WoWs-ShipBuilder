@@ -73,6 +73,18 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
         public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange)
         {
+            return CalculateBallistic(shell, maxRange, shell.Penetration);
+        }
+
+        /// <summary>
+        /// Calculate all <see cref="Ballistic"/> values for a shell.
+        /// </summary>
+        /// <param name="shell">The shell to calculate the <see cref="Ballistic"/> of.</param>
+        /// <param name="maxRange">Guns maximum range.</param>
+        /// <param name="penetration">The shell penetration. If shell's type is AP set this parameter to null.</param>
+        /// <returns>A dictionary with the <see cref="Ballistic"/> for each range.</returns>
+        public static Dictionary<double, Ballistic> CalculateBallistic(ArtilleryShell shell, double maxRange, float penetration)
+        {
             var dict = new Dictionary<double, Ballistic>();
 
             // Increase max range to account for modifiers
@@ -85,12 +97,11 @@ namespace WoWsShipBuilder.Core.DataContainers
                 calculationAngles = CreateCalculationAngles();
             }
 
-            var k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
+            double k = 0.5 * shell.AirDrag * Math.Pow(shell.Caliber / 2, 2) * Math.PI / shell.Mass;
 
             // Insert pen at 0 distance
-            var initialSpeed = shell.MuzzleVelocity;
-            var initialPen = shell.ShellType == ShellType.AP ? CalculatePen(initialSpeed, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
-            var initialBallistic = new Ballistic(initialPen, initialSpeed, 0, 0, new());
+            double initialPen = shell.ShellType != ShellType.AP ? penetration : CalculatePen(shell.MuzzleVelocity, shell.Caliber, shell.Mass, shell.Krupp);
+            var initialBallistic = new Ballistic(initialPen, shell.MuzzleVelocity, 0, 0, new());
             dict.Add(0, initialBallistic);
             var lastRange = 0d;
 
@@ -105,8 +116,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 var y = 0d;
                 var x = 0d;
                 var t = 0d;
-                var vX = initialSpeed * Math.Cos(angle);
-                var vY = initialSpeed * Math.Sin(angle);
+                var vX = shell.MuzzleVelocity * Math.Cos(angle);
+                var vY = shell.MuzzleVelocity * Math.Sin(angle);
 
                 while (y >= 0)
                 {
@@ -135,7 +146,7 @@ namespace WoWsShipBuilder.Core.DataContainers
 
                 var vImpact = Math.Sqrt((vX * vX) + (vY * vY));
                 var impactAngle = Math.Atan2(Math.Abs(vY), Math.Abs(vX)) * (180 / Math.PI);
-                var pen = shell.ShellType == ShellType.AP ? CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp) : shell.Penetration;
+                var pen = shell.ShellType != ShellType.AP ? penetration : CalculatePen(vImpact, shell.Caliber, shell.Mass, shell.Krupp);
 
                 if (x > maxRange || x < lastRange)
                 {
