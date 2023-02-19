@@ -85,21 +85,21 @@
                     }
                     else
                     {
-                        foreach (var ship in SelectedShips)
+                        foreach (var shipContainer in SelectedShips)
                         {
                             <MudListItem>
-                                <MudStack Style="align-items: stretch" Class="mt-n4">
+                                <MudStack Style="align-items: stretch" Class="mt-n2">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>
-                                            @Localizer.GetGameLocalization(ship.ShipIndex + "_FULL").Localization
+                                            @Localizer.GetGameLocalization(shipContainer.ShipIndex + "_FULL").Localization
                                         </MudText>
-                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
+                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
-                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuildString(ship))">
-                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(GetBuildName(ship.BuildString)) ? GetBuildName(ship.BuildString) : ShipComparisonViewModel.DefaultBuildName))
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuildString(shipContainer))">
+                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(GetBuildName(shipContainer.BuildString)) ? GetBuildName(shipContainer.BuildString) : ShipComparisonViewModel.DefaultBuildName))
                                         </MudText>
-                                        <MudIcon Size="Size.Small" Icon="@Icons.Filled.Edit" @onclick="@(_ => AddBuildString(ship))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        <MudIcon Size="Size.Small" Icon="@Icons.Filled.Edit" @onclick="@(_ => AddBuildString(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
                                     </MudStack>
                                 </MudStack>
                                 <MudDivider Class="mt-1"/>
@@ -311,7 +311,7 @@
     {
         var parameters = new DialogParameters
         {
-            ["ShipIndex"] = ship.ShipIndex,
+            ["SelectedShipIndex"] = ship.ShipIndex,
         };
         var dialog = DialogService.Show<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)), parameters);
         var result = await dialog.Result;

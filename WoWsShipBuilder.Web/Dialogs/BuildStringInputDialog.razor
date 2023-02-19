@@ -24,7 +24,7 @@
     MudDialogInstance MudDialog { get; set; } = new();
 
     [Parameter]
-    public string ShipIndex { get; set; } = default!;
+    public string SelectedShipIndex { get; set; } = default!;
     
     private string buildString = string.Empty;
 
@@ -61,7 +61,7 @@
         
         if (buildStr.Contains("share.wowssb.com"))
         {
-            return "Short link not supported.";
+            return "Short links are not supported";
         }
         
         if (buildStr.Contains(";"))
@@ -69,13 +69,13 @@
             try
             {
                 var build = Build.CreateBuildFromString(buildStr);
-                if (ShipIndex.Equals(build.ShipIndex))
+                if (SelectedShipIndex.Equals(build.ShipIndex))
                 {
                     validBuild = true;
                     return null;
                 }
                 
-                return "Ship <=> Build incompatibility";
+                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
             }
             catch (FormatException)
             {
@@ -93,12 +93,12 @@
         try
         {
             var build = Build.CreateBuildFromString(decodedBuildString);
-            if (ShipIndex.Equals(build.ShipIndex))
+            if (SelectedShipIndex.Equals(build.ShipIndex))
             {
                 validBuild = true;
                 return null;
             }
-            return "Ship <=> Build incompatibility";
+            return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
         }
         catch (FormatException)
         {
