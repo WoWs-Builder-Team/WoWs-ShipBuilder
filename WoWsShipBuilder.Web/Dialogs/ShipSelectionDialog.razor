@@ -6,7 +6,7 @@
 <MudDialog ContentStyle="max-height: calc(90vh - 100px); overflow-y: scroll; padding: 8px 16px;">
     <DialogContent>
         <MudContainer >
-            <ShipSelector SelectedShips="@selectedShips"/>
+            <ShipSelector SelectedShips="@selectedShips" AllowCopies/>
         </MudContainer>
     </DialogContent>
     <DialogActions>
@@ -22,7 +22,7 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = null!;
 
-    private readonly ObservableCollection<string> selectedShips = new();
+    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
 
     protected override void OnInitialized()
     {

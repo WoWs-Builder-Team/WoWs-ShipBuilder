@@ -423,6 +423,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter build string.
+        /// </summary>
+        public static string BuildStringInputDialog_EnterBuildString {
+            get {
+                return ResourceManager.GetString("BuildStringInputDialog_EnterBuildString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -4546,6 +4555,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string WebApp_ExpanderSettingHeader {
             get {
                 return ResourceManager.GetString("WebApp_ExpanderSettingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to ships page.
+        /// </summary>
+        public static string WebApp_GoToShipsPage {
+            get {
+                return ResourceManager.GetString("WebApp_GoToShipsPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Build.
+        /// </summary>
+        public static string WebApp_LoadBuild {
+            get {
+                return ResourceManager.GetString("WebApp_LoadBuild", resourceCulture);
             }
         }
         

@@ -1,0 +1,108 @@
+﻿@using WoWsShipBuilder.Core.Builds
+@using System.Net
+@inject ILocalizer Localizer
+
+<MudDialog Style="width: 600px">
+    <DialogContent>
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudTextField @bind-Value="buildString" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)).Localization" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))"/>
+        </MudFocusTrap>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@Cancel">
+            @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="!validBuild">
+            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public string ShipIndex { get; set; } = default!;
+    
+    private string buildString = string.Empty;
+
+    private bool validBuild;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void OnConfirm()
+    {
+        string buildStr;
+        if (buildString.Contains("build="))
+        {
+            int index = buildString.IndexOf("build=", StringComparison.Ordinal);
+            buildStr = WebUtility.UrlDecode(buildString[(index + 6)..]);
+        }
+        else
+        {
+            buildStr = buildString;
+        }
+        
+        MudDialog.Close(buildStr);
+    }
+
+    private string? ValidateBuildString(string buildStr)
+    {
+        validBuild = false;
+        if (string.IsNullOrWhiteSpace(buildStr))
+        {
+            return null;
+        }
+        
+        if (buildStr.Contains("share.wowssb.com"))
+        {
+            return "Short link not supported.";
+        }
+        
+        if (buildStr.Contains(";"))
+        {
+            try
+            {
+                var build = Build.CreateBuildFromString(buildStr);
+                if (ShipIndex.Equals(build.ShipIndex))
+                {
+                    validBuild = true;
+                    return null;
+                }
+                
+                return "Ship <=> Build incompatibility";
+            }
+            catch (FormatException)
+            {
+                return "Invalid build";
+            }
+        }
+        
+        if (!buildStr.Contains("&build="))
+        {
+            return "Invalid build";
+        }
+        
+        int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
+        string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
+        try
+        {
+            var build = Build.CreateBuildFromString(decodedBuildString);
+            if (ShipIndex.Equals(build.ShipIndex))
+            {
+                validBuild = true;
+                return null;
+            }
+            return "Ship <=> Build incompatibility";
+        }
+        catch (FormatException)
+        {
+            return "Invalid build";
+        }
+    }
+}

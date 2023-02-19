@@ -320,7 +320,7 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = await BuildHelper.LoadBuildContainers();
+                var buildContainers = await BuildHelper.RetrieveBuildContainers();
                 if (shellIndexFromUrl.Any() && buildContainers is not null)
                 {
                     Build build = Build.CreateBuildFromString(buildContainers.First().BuildString);
@@ -332,17 +332,6 @@
                     displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
                     ShipAndShellSelectionDialogOutput data = new(new() { wrapper }, new(), new(), false);
                     await UpdateChartsBatchAsync(data);
-                }
-                else
-                {
-                    foreach (string shipIndex in shipIndexesFromUrl)
-                    {
-                        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
-                        var ship = AppData.FindShipFromSummary(shipSummary);
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = ShipDataContainer.CreateFromShip(ship, Helpers.GetStockShipConfiguration(ship), new()) } , new());
-                        displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
-                    }
-                    await EditChartsAsync();
                 }
             }
             
@@ -508,7 +497,7 @@
         var label = $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()}";
         if (build is not null)
         {
-            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(string.IsNullOrEmpty(build.BuildName) ? ShipComparisonViewModel.DefaultBuildName : build.BuildName)}";
+            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(string.IsNullOrWhiteSpace(build.BuildName) ? ShipComparisonViewModel.DefaultBuildName : build.BuildName)}";
         }
         return label;
     }

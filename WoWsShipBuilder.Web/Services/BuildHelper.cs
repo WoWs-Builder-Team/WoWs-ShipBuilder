@@ -15,7 +15,7 @@ public class BuildHelper : IAsyncDisposable
         this.runtime = runtime;
     }
 
-    public async ValueTask<List<BuildHelperContainer>?> LoadBuildContainers()
+    public async ValueTask<List<BuildHelperContainer>?> RetrieveBuildContainers()
     {
         await InitializeModule();
         var containers = await module.InvokeAsync<string?>("loadContainers");
@@ -23,7 +23,7 @@ public class BuildHelper : IAsyncDisposable
         return containers is null ? null : JsonConvert.DeserializeObject<List<BuildHelperContainer>>(containers);
     }
 
-    public async Task SaveBuildContainers(List<BuildHelperContainer> containers)
+    public async Task StoreBuildContainers(List<BuildHelperContainer> containers)
     {
         await InitializeModule();
         await module.InvokeVoidAsync("saveContainers", JsonConvert.SerializeObject(containers));
