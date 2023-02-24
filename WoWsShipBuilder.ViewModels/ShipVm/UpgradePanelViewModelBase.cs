@@ -70,10 +70,13 @@ public class UpgradePanelViewModelBase : ViewModelBase, IBuildComponentProvider
 
     public List<(string, float)> GetModifierList()
     {
-        return SelectedModernizationList
+        var modifiers = SelectedModernizationList
             .Where(m => !string.IsNullOrEmpty(m.Index))
             .SelectMany(m => m.Effect.Select(effect => (effect.Key, (float)effect.Value)))
             .ToList();
+
+        // modifiers.FindIndex(pair => pair.Key.Contains())
+        return modifiers;
     }
 
     public void LoadBuild(IEnumerable<string> storedData)
