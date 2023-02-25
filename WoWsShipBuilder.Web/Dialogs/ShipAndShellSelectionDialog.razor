@@ -61,7 +61,7 @@
                                 </MudText>
                             }
                             <MudText Typo="Typo.caption" Class="my-1">
-                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {dataWrapper.ShipContainer.Build?.BuildName ?? ShipComparisonViewModel.DefaultBuildName}")
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipContainer.Build?.BuildName) ? dataWrapper.ShipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}")
                             </MudText>
                             <MudDivider Light="true"/>
                         </MudItem>

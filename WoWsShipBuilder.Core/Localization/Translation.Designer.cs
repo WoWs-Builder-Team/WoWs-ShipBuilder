@@ -3612,6 +3612,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show in Charts.
+        /// </summary>
+        public static string ShipStats_ShowInCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowInCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Launchers Angles.
         /// </summary>
         public static string ShipStats_ShowLaunchersAngles {

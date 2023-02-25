@@ -1,4 +1,4 @@
-﻿namespace WoWsShipBuilder.Web.Data;
+﻿namespace WoWsShipBuilder.Web.Services;
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
@@ -52,5 +52,5 @@ public class BuildHelper : IAsyncDisposable
         }
     }
 
-    public sealed record BuildHelperContainer(string BuildString, List<(string, float)>? Modifiers, IEnumerable<int>? ActivatedConsumables);
+    public sealed record BuildHelperContainer(string ShipIndex, string BuildString, List<(string, float)>? Modifiers, IEnumerable<int>? ActivatedConsumables);
 }

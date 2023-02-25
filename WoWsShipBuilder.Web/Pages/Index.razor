@@ -78,16 +78,16 @@
         foreach (var ship in selectedShips)
         {
             var buildStr = string.Empty;
-            if (!string.IsNullOrEmpty(ship.BuildString) && ship.BuildString.Contains("build="))
+            if (!string.IsNullOrWhiteSpace(ship.BuildString) && ship.BuildString.Contains("build="))
             {
                 var index = ship.BuildString.LastIndexOf("build=", StringComparison.Ordinal);
                 buildStr = index != -1 ? WebUtility.UrlDecode(ship.BuildString[(index + 6)..]) : string.Empty;
             }
-            else if (!string.IsNullOrEmpty(ship.BuildString))
+            else if (!string.IsNullOrWhiteSpace(ship.BuildString))
             {
                 buildStr = ship.BuildString;
             }
-            containers.Add(new(buildStr, null, null));
+            containers.Add(new(ship.ShipIndex, buildStr, null, null));
         }
         await BuildHelper.StoreBuildContainers(containers);
         NavManager.NavigateTo("/ship?shipIndexes=" + indexes);

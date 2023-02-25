@@ -1655,4 +1655,7 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Go to ships page</value>
   </data>
+  <data name="ShipStats_ShowInCharts" xml:space="preserve">
+      <value>Show in Charts</value>
+  </data>
 </root>

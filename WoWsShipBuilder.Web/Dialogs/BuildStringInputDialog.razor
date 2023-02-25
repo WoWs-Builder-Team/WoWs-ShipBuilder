@@ -48,7 +48,7 @@
             buildStr = buildString;
         }
         
-        MudDialog.Close(buildStr);
+        MudDialog.Close(buildStr.Trim());
     }
 
     private string? ValidateBuildString(string buildStr)
@@ -83,26 +83,26 @@
             }
         }
         
-        if (!buildStr.Contains("&build="))
+        if (buildStr.Contains("&build="))
         {
-            return "Invalid build";
+            int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
+            string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
+            try
+            {
+                var build = Build.CreateBuildFromString(decodedBuildString);
+                if (SelectedShipIndex.Equals(build.ShipIndex))
+                {
+                    validBuild = true;
+                    return null;
+                }
+                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+            }
+            catch (FormatException)
+            {
+                return "Invalid build";
+            }
         }
         
-        int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
-        string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
-        try
-        {
-            var build = Build.CreateBuildFromString(decodedBuildString);
-            if (SelectedShipIndex.Equals(build.ShipIndex))
-            {
-                validBuild = true;
-                return null;
-            }
-            return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-        }
-        catch (FormatException)
-        {
-            return "Invalid build";
-        }
+        return "Invalid build";
     }
 }

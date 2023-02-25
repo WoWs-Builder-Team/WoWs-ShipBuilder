@@ -12,7 +12,6 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Web.Data
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -321,17 +320,44 @@
             if (shipIndexesFromUrl.Any())
             {
                 var buildContainers = await BuildHelper.RetrieveBuildContainers();
-                if (shellIndexFromUrl.Any() && buildContainers is not null)
+                if (buildContainers is not null)
                 {
-                    Build build = Build.CreateBuildFromString(buildContainers.First().BuildString);
-                    var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(build.ShipIndex));
-                    var ship = AppData.FindShipFromSummary(shipSummary);
-                    var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
-                    var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, buildContainers.First().Modifiers ?? new());
-                    ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, buildContainers.First().ActivatedConsumables) with { ShipDataContainer = dataContainer } , new() { { shellIndexFromUrl, new(null, null, null) } });
-                    displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
-                    ShipAndShellSelectionDialogOutput data = new(new() { wrapper }, new(), new(), false);
-                    await UpdateChartsBatchAsync(data);
+                    List<ChartsDataWrapper> shipsToAdd = new();
+                    foreach (var container in buildContainers)
+                    {
+                        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(container.ShipIndex));
+                        var ship = AppData.FindShipFromSummary(shipSummary);
+                        Build? build;
+                        List<ShipUpgrade> shipConfiguration;
+                        if (string.IsNullOrWhiteSpace(container.BuildString))
+                        {
+                            build = null;
+                            shipConfiguration = Helpers.GetStockShipConfiguration(ship);
+                        }
+                        else
+                        {
+                            build = Build.CreateBuildFromString(container.BuildString);
+                            shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
+                        }
+                        
+                        var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
+                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer } , new());
+                        if (shellIndexFromUrl.Any())
+                        {
+                            shipsToAdd.Add(wrapper with { SelectedShells = new() { { shellIndexFromUrl, new(null, null, null) } } });
+                        }
+                        
+                        displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
+                    }
+                    
+                    if (shellIndexFromUrl.Any())
+                    {
+                        await UpdateChartsBatchAsync(new(shipsToAdd, new(), new(), false));
+                    }
+                    else
+                    {
+                        await EditChartsAsync();
+                    }
                 }
             }
             
