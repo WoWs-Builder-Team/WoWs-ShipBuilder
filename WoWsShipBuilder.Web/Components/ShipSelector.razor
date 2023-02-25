@@ -72,7 +72,7 @@
     @if (!LargerList)
     {
         <MudItem xs="12" md="4">
-            <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
+            <MudButton StartIcon="@Icons.Material.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
                 <MudList Style="max-height: 300px;" Dense>
                     @if (!SelectedShips.Any())
@@ -93,13 +93,13 @@
                                         <MudText>
                                             @Localizer.GetGameLocalization(shipContainer.ShipIndex + "_FULL").Localization
                                         </MudText>
-                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
+                                        <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
                                         <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuildString(shipContainer))">
                                             @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(GetBuildName(shipContainer.BuildString)) ? GetBuildName(shipContainer.BuildString) : ShipComparisonViewModel.DefaultBuildName))
                                         </MudText>
-                                        <MudIcon Size="Size.Small" Icon="@Icons.Filled.Edit" @onclick="@(_ => AddBuildString(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuildString(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
                                     </MudStack>
                                 </MudStack>
                                 <MudDivider Class="mt-1"/>
@@ -315,7 +315,7 @@
         };
         var dialog = DialogService.Show<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)), parameters);
         var result = await dialog.Result;
-        if (!result.Cancelled && result.Data is string buildStr)
+        if (!result.Canceled && result.Data is string buildStr)
         {
             SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { BuildString = buildStr });
         }

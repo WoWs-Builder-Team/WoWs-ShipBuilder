@@ -45,7 +45,7 @@
                                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
                                         @Localizer.GetAppLocalization(nameof(Translation.ShipStats_HorizontalDisp)).Localization
                                     </MudText>
-                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
+                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
                                         @(ViewModel.CurrentShipStats.MainBatteryDataContainer.HorizontalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)
                                     </MudText>
@@ -66,7 +66,7 @@
                             <ChildContent>
                                 <div class="ml-3 d-flex justify-space-between">
                                     <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_VerticalDisp)).Localization</MudText>
-                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Outlined.Info" Size="Size.Small"/>
+                                    <MudIcon ViewBox="-5 -1 36 36" Icon="@Icons.Material.Outlined.Info" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@(ViewModel.CurrentShipStats.MainBatteryDataContainer.VerticalDisp + " " + Localizer.GetAppLocalization(nameof(Translation.Unit_M)).Localization)</MudText>
                                 </div>
                             </ChildContent>

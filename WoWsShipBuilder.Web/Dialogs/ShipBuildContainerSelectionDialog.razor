@@ -39,7 +39,7 @@
                                                 @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(ship.Build?.BuildName) ? ship.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
                                             </MudText>
                                         </MudStack>
-                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
+                                        <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(ship))" Style="cursor: pointer"/>
                                     </MudStack>
                                 </MudListItem>
                             }

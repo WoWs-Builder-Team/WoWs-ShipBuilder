@@ -14,12 +14,12 @@
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
         <ChildContent>
             @foreach (var container in shipContainers)
             {
                 <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@indexIdMapper[container.Id]">
-                    <ShipStatsContainer @ref="shipStatsContainerCache[container.Id]" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                    <ShipStatsContainer @ref="shipStatsContainerCache[container.Id]" CachedViewModel="@shipStatsContainerCache[container.Id]?.ViewModel" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
                 </MudTabPanel>
             }
         </ChildContent>
@@ -37,7 +37,7 @@
     </MudDynamicTabs>
 </MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
-     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+     <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
 
 @code {
@@ -156,7 +156,7 @@
             DisableBackdropClick = false,
         };
         var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
-        if (!result.Cancelled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
+        if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
             selectedTabId = shipContainers.Last().Id;

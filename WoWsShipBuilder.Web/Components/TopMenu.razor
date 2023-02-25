@@ -63,16 +63,16 @@
         </MudDrawerHeader>
         <MudNavMenu Bordered Color="Color.Info">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">Homepage</MudNavLink>
-            <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
             @if (shipComparisonEnabled)
             {
-                <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">Ship Comparison</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">Ship Comparison</MudNavLink>
             }
-            <MudNavLink Icon="@Icons.Filled.SsidChart" Href="/charts">Dispersion and Ballistic Charts</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">Dispersion and Ballistic Charts</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
             <MudDivider Class="my-4"/>
-            <MudNavLink Icon="@Icons.Filled.Settings" Href="/settings">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.Settings" Href="/settings">@Localizer.GetAppLocalization(nameof(Translation.SettingsWindow_Settings)).Localization</MudNavLink>
             <MudDivider Class="my-4"/>
             <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
             <MudDivider Class="my-4"/>
