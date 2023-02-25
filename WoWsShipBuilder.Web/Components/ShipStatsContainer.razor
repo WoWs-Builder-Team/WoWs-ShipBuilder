@@ -42,7 +42,7 @@
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
                         {
-                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
+                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index + "_" + CurrentTabId)">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -61,7 +61,7 @@
                         {
                             foreach (var ship in ViewModel.NextShips)
                             {
-                                <MudStack key="@(ViewModel.CurrentShipIndex + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
+                                <MudStack key="@(ViewModel.CurrentShipIndex + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index + "_" + CurrentTabId)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                         <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -72,7 +72,7 @@
                         }
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Filled.Share" OnClick="@OnShareBuildClicked">
+                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                             @Localizer.GetAppLocalization(Translation.MainWindow_ShareBuild).Localization
                         </MudButton>
                     </MudItem>
@@ -129,6 +129,9 @@
 
     [Parameter]
     public string? BuildString { get; set; }
+    
+    [Parameter]
+    public ShipViewModel? CachedViewModel { get; set; }
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
@@ -149,7 +152,7 @@
         await base.OnInitializedAsync();
         MetricsService.ShipPageCount.Inc();
         initialized = false;
-        ViewModel = await LoadShipViewModel(ShipIndex);
+        ViewModel = CachedViewModel ?? await LoadShipViewModel(ShipIndex);
         await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         initialized = true;
     }
@@ -163,14 +166,19 @@
             var elementIds = new List<string>();
             if (ViewModel.PreviousShip is not null)
             {
-                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
+                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index + "_" + CurrentTabId);
             }
             if (ViewModel.NextShips is not null)
             {
-                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index));
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index + "_" + CurrentTabId));
             }
+            
             StateHasChanged();
-            await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
+            
+            if (elementIds.Any())
+            {
+                await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
+            }
         }
     }
 
@@ -279,7 +287,7 @@
         };
         var dialog = DialogService.Show<BuildShareDialog>(string.Empty, parameters, options);
         var result = await dialog.Result;
-        if (!result.Cancelled && result.Data is BuildShareResult shareResult)
+        if (!result.Canceled && result.Data is BuildShareResult shareResult)
         {
             buildName = shareResult.BuildName;
             var build = ViewModel!.CreateBuild(shareResult.BuildName);

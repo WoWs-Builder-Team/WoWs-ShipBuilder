@@ -332,7 +332,7 @@
     <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" DisableBackdropClick="true" FullWidth NoHeader/>
 
     <MudScrollToTop TopOffset="100" Style="z-index:2001" Visible="@(!isDialogOpen)">
-        <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+        <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
     </MudScrollToTop>
 }
 
@@ -436,7 +436,7 @@
 
     private string IsShipPinnedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Icons.Filled.PushPin : Icons.Outlined.PushPin;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Icons.Material.Filled.PushPin : Icons.Material.Outlined.PushPin;
     }
 
     private Color IsShipSelectedColor(ShipComparisonDataWrapper wrapper)
@@ -446,7 +446,7 @@
 
     private string IsShipSelectedIcon(ShipComparisonDataWrapper wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Icons.Filled.CheckBox : Icons.Filled.CheckBoxOutlineBlank;
+        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
     }
 
     private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)

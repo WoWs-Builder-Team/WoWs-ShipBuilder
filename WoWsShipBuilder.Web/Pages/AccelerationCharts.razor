@@ -27,7 +27,7 @@
 <MudExpansionPanel IsInitiallyExpanded Class="my-4 mx-4 header-border border border-solid rounded-0">
     <TitleContent>
         <div class="d-flex">
-            <MudIcon Icon="@Icons.Outlined.Info" class="mr-3"/>
+            <MudIcon Icon="@Icons.Material.Outlined.Info" class="mr-3"/>
             <MudText>@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
         </div>
     </TitleContent>
@@ -240,7 +240,7 @@
         
         var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
 
-        if (!result.Cancelled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
+        if (!result.Canceled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
         {
             var newShipList = dialogOutput.ShipList;
             
@@ -313,7 +313,7 @@
     {
         var result = await DialogService.Show<CustomAccelerationDataDialog>("Custom data").Result;
         
-        if (!result.Cancelled && result.Data is ShipBuildContainer shipBuildContainer)
+        if (!result.Canceled && result.Data is ShipBuildContainer shipBuildContainer)
         {
             // add the new one 
             Dictionary<int, ShipBuildContainer> shipsToAdd = new();
