@@ -30,7 +30,7 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync"/>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInCharts).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllToCharts"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllShipsToCharts"/>
                 </MudTooltip>
             </MudStack>
         </Header>
@@ -46,7 +46,7 @@
 
     private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
 
-    private readonly Dictionary<Guid, ShipStatsContainer> shipStatsContainerCache = new();
+    private readonly Dictionary<Guid, ShipStatsContainer?> shipStatsContainerCache = new();
 
     private string shipIndexesFromUrl = default!;
 
@@ -155,7 +155,7 @@
             CloseOnEscapeKey = true,
             DisableBackdropClick = false,
         };
-        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
+        var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
         if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
@@ -195,14 +195,37 @@
         shipContainers.AddRange(newShips);
     }
 
-    private async Task SendAllToCharts()
+    private async Task SendAllShipsToCharts()
     {
         List<BuildHelper.BuildHelperContainer> buildContainers = new();
         List<string> shipIndexes = new();
-        foreach (var shipStatsContainer in shipStatsContainerCache)
+        foreach (var container in shipContainers)
         {
-            buildContainers.Add(shipStatsContainer.Value.GetBuildContainer());
-            shipIndexes.Add(shipStatsContainer.Value.ShipIndex);
+            var shipStatsContainer = shipStatsContainerCache[container.Id];
+            if (shipStatsContainer is not null)
+            {
+                buildContainers.Add(shipStatsContainer.GetBuildHelperContainer());
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(container.BuildString))
+                {
+                    buildContainers.Add(new(container.ShipIndex, string.Empty, null, null));
+                }
+                else
+                {
+                    var viewModel = await shipStatsContainerCache.First().Value!.LoadShipVm(container.ShipIndex, container.BuildString);
+                    
+                    List<(string, float)>? modifiers = viewModel?.UpgradePanelViewModel.GetModifierList();
+                    modifiers?.AddRange(viewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
+                    modifiers?.AddRange(viewModel?.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+                    modifiers?.AddRange(viewModel?.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+                    
+                    buildContainers.Add(new(container.ShipIndex, container.BuildString, modifiers, viewModel?.ConsumableViewModel.ActivatedSlots));   
+                }
+            }
+            
+            shipIndexes.Add(container.ShipIndex);   
         }
         
         await BuildHelper.StoreBuildContainers(buildContainers);

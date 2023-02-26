@@ -271,7 +271,6 @@
                 StateHasChanged();
             }
         }
-
     }
 
     private async Task OnShareBuildClicked()
@@ -299,10 +298,10 @@
     
     private async Task SaveBuildStringToLocalStorage()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildContainer() });
+        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer() });
     }
 
-    public BuildHelper.BuildHelperContainer GetBuildContainer()
+    public BuildHelper.BuildHelperContainer GetBuildHelperContainer()
     {
         List<(string, float)>? modifiers = ViewModel?.UpgradePanelViewModel.GetModifierList();
         modifiers?.AddRange(ViewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
@@ -311,7 +310,13 @@
         
         var build = ViewModel!.CreateBuild(buildName);
         var buildString = build.CreateShortStringFromBuild();
-        BuildHelper.BuildHelperContainer container = new(ShipIndex, buildString, modifiers, ViewModel?.ConsumableViewModel.ActivatedSlots);
+        BuildHelper.BuildHelperContainer container = new(build.ShipIndex, buildString, modifiers, ViewModel?.ConsumableViewModel.ActivatedSlots);
         return container;
+    }
+
+    public async Task<ShipViewModel?> LoadShipVm(string shipIndex, string? buildString)
+    {
+        BuildString = buildString;
+        return await LoadShipViewModel(shipIndex);
     }
 }
