@@ -314,7 +314,7 @@
         return container;
     }
 
-    public async Task<ShipViewModel?> LoadShipVm(string shipIndex, string? buildString)
+    public async Task<ShipViewModel?> GetShipViewModel(string shipIndex, string? buildString)
     {
         BuildString = buildString;
         return await LoadShipViewModel(shipIndex);
