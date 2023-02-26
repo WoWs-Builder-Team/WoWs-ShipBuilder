@@ -101,10 +101,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (ShipList is null)
-        {
-            ShipList = new();
-        }
+        ShipList ??= new();
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
     }
 

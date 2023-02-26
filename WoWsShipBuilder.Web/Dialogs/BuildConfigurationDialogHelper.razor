@@ -39,7 +39,7 @@
             ["Ships"] = shipBuildContainers,
         };
         
-        var dialogResult = await DialogService.Show<BuildConfigurationDialog>("Configure builds", parameters, options).Result;
+        var dialogResult = await (await DialogService.ShowAsync<BuildConfigurationDialog>("Configure builds", parameters, options)).Result;
         if (dialogResult.Data is List<ShipBuildContainer> buildContainers)
         {
             return buildContainers;

@@ -7,7 +7,6 @@
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
@@ -231,7 +230,7 @@
             { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList },
         };
         
-        var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
+        var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options)).Result;
 
         if (!result.Canceled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
         {
@@ -304,14 +303,13 @@
     
     private async Task AddCustomShip()
     {
-        var result = await DialogService.Show<CustomAccelerationDataDialog>("Custom data").Result;
+        var result = await (await DialogService.ShowAsync<CustomAccelerationDataDialog>("Custom data")).Result;
         
         if (!result.Canceled && result.Data is ShipBuildContainer shipBuildContainer)
         {
             // add the new one 
-            Dictionary<int, ShipBuildContainer> shipsToAdd = new();
-            
-            shipsToAdd.Add(counter, shipBuildContainer);
+            Dictionary<int, ShipBuildContainer> shipsToAdd = new() { { counter, shipBuildContainer } };
+
             shipBuildCache.Add(counter, shipBuildContainer);
             counter++;
             

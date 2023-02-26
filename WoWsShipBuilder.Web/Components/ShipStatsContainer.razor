@@ -284,7 +284,7 @@
             ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
             ["BuildName"] = buildName,
         };
-        var dialog = DialogService.Show<BuildShareDialog>(string.Empty, parameters, options);
+        var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled && result.Data is BuildShareResult shareResult)
         {
