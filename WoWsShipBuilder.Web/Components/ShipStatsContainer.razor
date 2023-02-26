@@ -152,8 +152,17 @@
         await base.OnInitializedAsync();
         MetricsService.ShipPageCount.Inc();
         initialized = false;
-        ViewModel = CachedViewModel ?? await LoadShipViewModel(ShipIndex);
-        await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+        
+        if (CachedViewModel is not null)
+        {
+            ViewModel = CachedViewModel;
+        }
+        else
+        {
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());   
+        }
+        
         initialized = true;
     }
 
