@@ -681,7 +681,7 @@
         {
             ["InputData"] = displayedShips.Values.ToList(),
         };
-        var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
+        var dialog = await DialogService.ShowAsync<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
     }
 

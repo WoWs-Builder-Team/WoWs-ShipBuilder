@@ -302,7 +302,7 @@
         {
             ["SelectedShipIndex"] = ship.ShipIndex,
         };
-        var dialog = DialogService.Show<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
+        var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
         var result = await dialog.Result;
         if (!result.Canceled && result.Data is string buildStr)
         {
