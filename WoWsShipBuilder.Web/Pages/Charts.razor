@@ -12,7 +12,6 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.ViewModels.Other
-@using System.Collections.Immutable
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -755,9 +754,9 @@
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
     }
 
-    private ImmutableDictionary<Guid, DispersionEllipse> GetDataForDispersionPlot()
+    private Dictionary<Guid, DispersionEllipse> GetDataForDispersionPlot()
     {
-        return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToImmutableDictionary(_ => Guid.NewGuid());
+        return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToDictionary(_ => Guid.NewGuid());
     }
 
     private static string GenerateJsShipId(Guid id, string shellIndex)
