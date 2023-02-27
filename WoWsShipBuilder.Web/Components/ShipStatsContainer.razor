@@ -129,9 +129,9 @@
 
     [Parameter]
     public string? BuildString { get; set; }
-    
+
     [Parameter]
-    public ShipViewModel? CachedViewModel { get; set; }
+    public ShipStatsContainer? CachedInstance { get; set; }
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
@@ -153,9 +153,10 @@
         MetricsService.ShipPageCount.Inc();
         initialized = false;
         
-        if (CachedViewModel is not null)
+        if (CachedInstance is not null)
         {
-            ViewModel = CachedViewModel;
+            ViewModel = CachedInstance.ViewModel;
+            buildName = CachedInstance.buildName ;
         }
         else
         {
@@ -327,5 +328,10 @@
     {
         BuildString = buildString;
         return await LoadShipViewModel(shipIndex);
+    }
+
+    public string GetBuildName()
+    {
+        return buildName;
     }
 }
