@@ -10,7 +10,7 @@
 
 <div class="d-flex ma-auto">
     <MudStack Row="IsVertical" Justify="Justify.Center" AlignItems="AlignItems.Center">
-        @foreach (var dispersionEllipse in Ships)
+        @foreach (var (id, dispersionEllipse) in Ships)
         {
             <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                 <MudText Style="font-size: x-large">
@@ -19,7 +19,7 @@
                 @if (dispersionEllipse.IsValid)
                 {
                     <div>
-                        <canvas id="@($"DispersionPlot_{dispersionEllipse.Name}")"></canvas>
+                        <canvas id="@id"></canvas>
                     </div>
                 }
                 else
@@ -39,7 +39,7 @@
 @code {
 
     [Parameter]
-    public List<DispersionEllipse> Ships { get; set; } = default!;
+    public Dictionary<Guid, DispersionEllipse>  Ships { get; set; } = default!;
     [Parameter]
     public double PlotScaling { get; set; }
     [Parameter]
@@ -82,7 +82,7 @@
 
         var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
-        Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}", SetupData);
+        Dictionary<string, DrawingData> data = Ships.Where(x => x.Value.IsValid).ToDictionary(dispersionEllipse => dispersionEllipse.Key.ToString(), dispersionEllipse => SetupData(dispersionEllipse.Value));
         
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
