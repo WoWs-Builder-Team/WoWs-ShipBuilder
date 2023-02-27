@@ -19,7 +19,7 @@
             @foreach (var container in shipContainers)
             {
                 <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@indexIdMapper[container.Id]">
-                    <ShipStatsContainer @ref="@shipStatsContainerCache[container.Id]" CachedViewModel="@shipStatsContainerCache[container.Id]?.ViewModel" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                    <ShipStatsContainer @ref="@shipStatsContainerCache[container.Id]" CachedInstance="@shipStatsContainerCache[container.Id]" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
                 </MudTabPanel>
             }
         </ChildContent>
