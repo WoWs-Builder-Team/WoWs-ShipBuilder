@@ -342,17 +342,20 @@
                         
                         var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
                         ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers} , new());
+                        
                         if (shellIndexFromUrl.Any())
                         {
                             shipsToAdd.Add(wrapper with { SelectedShells = new() { { shellIndexFromUrl, new(null, null, null) } } });
                         }
-                        
-                        displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
+                        else
+                        {
+                            displayedShips.Add(wrapper.ShipContainer.Id, wrapper);   
+                        }
                     }
                     
                     if (shellIndexFromUrl.Any())
                     {
-                        await UpdateChartsBatchAsync(new(new(), shipsToAdd.ToDictionary(x => x.ShipContainer.Id, x => x), new(), false));
+                        await UpdateChartsBatchAsync(new(shipsToAdd, new(), new(), false));
                     }
                     else
                     {
