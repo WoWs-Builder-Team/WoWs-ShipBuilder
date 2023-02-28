@@ -325,7 +325,7 @@
                     List<ChartsDataWrapper> shipsToAdd = new();
                     foreach (var container in buildContainers)
                     {
-                        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(container.ShipIndex));
+                        var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(container.ShipIndex));
                         var ship = AppData.FindShipFromSummary(shipSummary);
                         Build? build;
                         List<ShipUpgrade> shipConfiguration;
@@ -341,13 +341,16 @@
                         }
                         
                         var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer } , new());
+                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers} , new());
+                        
                         if (shellIndexFromUrl.Any())
                         {
                             shipsToAdd.Add(wrapper with { SelectedShells = new() { { shellIndexFromUrl, new(null, null, null) } } });
                         }
-                        
-                        displayedShips.Add(wrapper.ShipContainer.Id, wrapper);
+                        else
+                        {
+                            displayedShips.Add(wrapper.ShipContainer.Id, wrapper);   
+                        }
                     }
                     
                     if (shellIndexFromUrl.Any())
