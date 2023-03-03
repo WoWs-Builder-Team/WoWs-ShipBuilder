@@ -722,7 +722,7 @@
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
             {
                 var dispPlotShipsCache = shellData.DispPlotShipsCache;
-                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Name, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
+                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Label, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
                 wrapper.SelectedShells[shellIndex] = shellData with {DispPlotShipsCache = dispersionPlotParameter};
             }
         }
