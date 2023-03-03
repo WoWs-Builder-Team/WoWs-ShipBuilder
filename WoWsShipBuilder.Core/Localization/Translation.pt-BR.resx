@@ -1526,9 +1526,6 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Adicionar/remover navios</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
-      <value>Mudar builds</value>
-  </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>Depois de selecionar um navio, você tem a opção de selecionar as 3 'marchas' que serão usadas no gráfico.
 O gráfico aparecerá na ordem "Marcha" inicial --&gt; "Marcha" média --&gt; "Marcha" final, mudando para a próxima somente depois de atingir a velocidade máxima da marcha atual.
