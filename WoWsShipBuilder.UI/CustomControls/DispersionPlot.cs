@@ -118,7 +118,7 @@ namespace WoWsShipBuilder.UI.CustomControls
         public override void Render(DrawingContext context)
         {
             var rect = new Rect(0, 0, Bounds.Width, Bounds.Height);
-            Point center = rect.Center;
+            var center = rect.Center;
 
             DrawFusoReference(context, center);
             DrawHalfHitPointsArea(context, center);
@@ -173,14 +173,14 @@ namespace WoWsShipBuilder.UI.CustomControls
             var pointStyle = new Pen(Brushes.Transparent);
             var filling = new SolidColorBrush(Colors.Goldenrod, 0.33);
 
-            List<(double x, double y)> hitPoints = EllipsePlane switch
+            List<DispersionPlotHelper.Point> hitPoints = EllipsePlane switch
             {
                 EllipsePlanes.HorizontalPlane => DispersionPlotParameters.OnWaterHitPoints,
                 EllipsePlanes.RealPlane => DispersionPlotParameters.RealHitPoints,
                 _ => DispersionPlotParameters.PerpendicularToWaterHitPoints,
             };
 
-            foreach ((var x, var y) in hitPoints)
+            foreach ((double x, double y) in hitPoints)
             {
                 Point pointCenter;
 

@@ -4,6 +4,7 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Pages
 @using WoWsShipBuilder.Web.Utility
+@using System.Collections.Immutable
 @implements IAsyncDisposable
 @inject IJSRuntime Runtime
 @inject ILocalizer Localizer
@@ -14,7 +15,7 @@
         {
             <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                 <MudText Style="font-size: x-large">
-                    @dispersionEllipse.Name
+                    @dispersionEllipse.Label
                 </MudText>
                 @if (dispersionEllipse.IsValid)
                 {
@@ -38,17 +39,17 @@
 
 @code {
 
-    [Parameter]
-    public Dictionary<Guid, DispersionEllipse> Ships { get; set; } = default!;
-    [Parameter]
+    [Parameter, EditorRequired]
+    public ImmutableDictionary<Guid, DispersionEllipse> Ships { get; set; } = default!;
+    [Parameter, EditorRequired]
     public double PlotScaling { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public ChartsHelper.EllipsePlanes EllipsePlane { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public FusoPositions FusoPosition { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public bool IsVertical { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public ChartsHelper.ChartsTabs Tab { get; set; }
     
     private IJSObjectReference? module;
@@ -123,14 +124,14 @@
     
     private List<ChartsHelper.Point> GetHitPoints(DispersionEllipse dispersionEllipse)
     {
-        List<(double x, double y)> hitPoints = EllipsePlane switch
+        List<DispersionPlotHelper.Point> hitPoints = EllipsePlane switch
         {
             ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.OnWaterHitPoints,
             ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.RealHitPoints,
             _ => dispersionEllipse.PerpendicularToWaterHitPoints,
         };
 
-        return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.x * PlotScaling, point.y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.y * PlotScaling, point.x * PlotScaling)).ToList();
+        return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.X * PlotScaling, point.Y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.Y * PlotScaling, point.X * PlotScaling)).ToList();
     }
     
     private (double xRadius, double yRadius) GetInnerEllipse(DispersionEllipse dispersionEllipse)
