@@ -28,7 +28,7 @@
                                 <MudImage Src="@($"{ImageBasePath}/{SelectedContainer.Ship.Index}.png")" Height="45"/>
                             }
                             <MudText Style="font-size: x-large">
-                                @Localizer.GetGameLocalization(SelectedContainer.Ship.Index).Localization
+                                @Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization
                             </MudText>
                             <MudText Style="font-size: x-large">
                                 @SelectedContainer.Ship.Tier.ToTierString()
@@ -48,10 +48,10 @@
                                 var shipData = Ships[index];
                                 <MudListItem Value="index" OnClick="@(() => desktopTabs.ActivatePanel(index))">
                                     <MudText >
-                                        @Localizer.GetGameLocalization(Ships[index].Ship.Index).Localization
+                                        @Localizer.GetGameLocalization(Ships[index].Ship.Index + "_FULL").Localization
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="ml-2">
-                                        Build: @(buildNameDictionary.ContainsKey(shipData.Id) ? buildNameDictionary[shipData.Id] : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)
+                                        @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (buildNameDictionary.ContainsKey(shipData.Id) ? buildNameDictionary[shipData.Id] : !string.IsNullOrEmpty(shipData.Build?.BuildName) ? shipData.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
                                     </MudText>
                                 </MudListItem>
                             }
@@ -77,12 +77,12 @@
         </MudButton>
         <MudButton Color="Color.Warning" OnClick="ResetBuild" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
-                Reset build
+                 @Localizer.GetAppLocalization(nameof(Translation.MainWindow_ResetBuild)).Localization
             </MudText>
         </MudButton>
         <MudButton Color="Color.Success" OnClick="@SaveBuilds" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
-                Confirm changes
+                 @Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton)).Localization
             </MudText>
         </MudButton>
     </DialogActions>

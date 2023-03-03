@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
+@using System.ComponentModel.DataAnnotations
 @inherits ReactiveComponentBase<ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
@@ -96,7 +97,7 @@
                                         {
                                             @DataElementFragment((data, Localizer))
                                         }
-                                        <MudLink Class="mb-n3" Style="color: paleturquoise !important; text-decoration: underline" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization</MudLink>
+                                        <MudLink Class="mb-n3" Style="color: paleturquoise !important; text-decoration: underline" @onclick="SendBuildToCharts" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization</MudLink>
                                     </MudStack>
                                 </MudExpansionPanel>
                             }
@@ -390,12 +391,13 @@
         <MudStack>
             <!--Maneuverability-->
             <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Maneuverability)).Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllMainExpandersByDefault ?? true)" Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
-                <MudStack Spacing="1" Class="expander-content-padding mb-n3">
+                <MudStack Spacing="1" Class="expander-content-padding">
                     @foreach (var data in ViewModel.CurrentShipStats?.ManeuverabilityDataContainer?.DataElements ?? new())
                     {
                         @DataElementFragment((data, Localizer))
                     }
                 </MudStack>
+                <MudLink Class="expander-content-padding mb-n3" Style="color: paleturquoise !important; text-decoration: underline" @onclick="SendBuildToCharts" Target="_blank" Href="@($"/acceleration-charts")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization</MudLink>
             </MudExpansionPanel>
 
             <!--Concealment-->
@@ -467,6 +469,8 @@
 }
 
 @code {
+    [Parameter, EditorRequired]
+    public EventCallback SaveBuildStringIntoLocal { get; set; }
 
     private bool showDepthChargeDamageDistributionChart;
 
@@ -488,7 +492,7 @@
             .Select(gun =>
             {
                 var sector = gun.HorizontalSector.Select(a => a + gun.BaseAngle).ToArray();
-                var deadZones = gun.HorizontalDeadZones?.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray() ?? Array.Empty<decimal[]>();
+                var deadZones = gun.HorizontalDeadZones.Select(z => z.Select(a => a + gun.BaseAngle).ToArray()).ToArray();
                 return new GunDataContainer(gun.HorizontalPosition, gun.VerticalPosition, gun.BaseAngle, sector, deadZones);
             });
         var parameters = new DialogParameters
@@ -514,4 +518,8 @@
         return showDepthChargeDamageDistributionChart ? "align-content: center; visibility: visible; height:100%; width:100%" : "height: 0px; visibility: hidden";
     }
 
+    private async Task SendBuildToCharts()
+    {
+        await SaveBuildStringIntoLocal.InvokeAsync();
+    }
 }

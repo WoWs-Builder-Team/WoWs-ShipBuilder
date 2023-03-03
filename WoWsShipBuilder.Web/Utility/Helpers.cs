@@ -1,8 +1,10 @@
-﻿using MudBlazor;
+﻿using DynamicData;
+using MudBlazor;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
-using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
+using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.Web.Utility;
 
@@ -30,5 +32,56 @@ public static class Helpers
     public static Color GetColorFromBool(bool active, Color colorIfTrue, Color colorIfFalse)
     {
         return active ? colorIfTrue : colorIfFalse;
+    }
+
+    public static List<string> GetStockConsumableNames(Ship ship)
+    {
+       return ship.ShipConsumable.GroupBy(consumable => consumable.Slot)
+            .Where(consumables => consumables.Any())
+            .Select(x => x.First().ConsumableName)
+            .ToList();
+    }
+
+    public static List<ShipUpgrade> GetStockShipConfiguration(Ship ship)
+    {
+        return ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
+            .OrderBy(entry => entry.Key)
+            .Select(entry => entry.Value)
+            .Select(module => module.First())
+            .ToList();
+    }
+
+    public static List<ShipUpgrade> GetFullUpgradedShipConfiguration(Ship ship)
+    {
+        return ShipModuleHelper.GroupAndSortUpgrades(ship.ShipUpgradeInfo.ShipUpgrades)
+            .OrderBy(entry => entry.Key)
+            .Select(entry => entry.Value)
+            .Select(module => module.Last())
+            .ToList();
+    }
+
+    public static void UpgradeModuleInShipConfiguration(List<ShipUpgrade> shipUpgrades, ShipUpgrade shipUpgrade)
+    {
+        ShipUpgrade? oldItem = shipUpgrades.FirstOrDefault(module => module.UcType == shipUpgrade.UcType);
+        if (oldItem != null)
+        {
+            // SelectedModules.Remove(oldItem);
+            shipUpgrades.Replace(oldItem, shipUpgrade);
+        }
+        else
+        {
+            shipUpgrades.Add(shipUpgrade);
+        }
+    }
+    public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, List<ShipUpgrade> upgrades)
+    {
+        var results = new List<ShipUpgrade>();
+        var shipUpgrades = ShipModuleHelper.GroupAndSortUpgrades(upgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList();
+        foreach (List<ShipUpgrade> upgradeList in shipUpgrades)
+        {
+            results.AddRange(upgradeList.Where(upgrade => storedData.Contains(upgrade.Name.NameToIndex())));
+        }
+
+        return results;
     }
 }

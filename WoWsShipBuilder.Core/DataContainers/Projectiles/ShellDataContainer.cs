@@ -71,6 +71,8 @@ public partial record ShellDataContainer : DataContainerBase
     [DataElementFiltering(true, "ShouldDisplayBlastPenetration")]
     public decimal SplashCoeff { get; set; }
 
+    public decimal Krupp { get; set; }
+
     public decimal MinRicochetAngle { get; set; }
 
     public decimal MaxRicochetAngle { get; set; }
@@ -190,7 +192,7 @@ public partial record ShellDataContainer : DataContainerBase
                 Damage = Math.Round((decimal)shellDamage),
                 ExplosionRadius = (decimal)shell.ExplosionRadius,
                 SplashCoeff = (decimal)shell.SplashCoeff,
-                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 1),
+                ShellVelocity = Math.Round((decimal)shell.MuzzleVelocity, 2),
                 Penetration = (int)Math.Truncate(shellPenetration),
                 AirDrag = Math.Round((decimal)shellAirDrag, 2),
                 ShellFireChance = Math.Round((decimal)shellFireChance, 1),
@@ -201,6 +203,7 @@ public partial record ShellDataContainer : DataContainerBase
                 ShowBlastPenetration = showBlastPenetration,
                 SplashRadius = (decimal)shell.DepthSplashRadius,
                 SplashDmg = Math.Round((decimal)(shellDamage * shell.SplashDamageCoefficient)),
+                Krupp = (decimal)shell.Krupp,
             };
 
             if (minRicochet > 0 || maxRicochet > 0)

@@ -643,7 +643,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             foreach (var itemViewModel in DispersionPlotList)
             {
                 var dispersionPlot = itemViewModel.DispersionEllipse;
-                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Name, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
+                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Label, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
                 itemViewModel.DispersionEllipse = newPlot;
                 itemViewModel.IsLast = false;
             }

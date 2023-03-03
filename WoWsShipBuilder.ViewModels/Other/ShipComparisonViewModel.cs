@@ -17,7 +17,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 {
     public const string DataNotAvailable = "N/A";
 
-    public static readonly string DefaultBuildName = "---";
+    public const string DefaultBuildName = "---";
 
     private readonly ILocalizer localizer;
 

@@ -11,6 +11,8 @@
 @using System.Net
 @using System.Diagnostics
 @using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
@@ -24,6 +26,7 @@
 @inject NavigationManager NavManager
 @inject IClipboardService ClipboardService
 @inject ILinkShortener LinkShortener
+@inject BuildHelper BuildHelper
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -69,7 +72,9 @@
                         }
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Share" OnClick="@OnShareBuildClicked">Share Build</MudButton>
+                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Share" OnClick="@OnShareBuildClicked">
+                            @Localizer.GetAppLocalization(Translation.MainWindow_ShareBuild).Localization
+                        </MudButton>
                     </MudItem>
                 </MudGrid>
             </MudPaper>
@@ -102,7 +107,7 @@
             <MudItem xs="12" md="6" lg="8" xl="9">
                 @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
                 {
-                    <ShipStatsComponent ViewModel="@ViewModel?.ShipStatsControlViewModel"/>
+                    <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringIntoLocal())"/>
                 }
             </MudItem>
         }
@@ -132,6 +137,8 @@
     private bool initialized;
 
     private bool shipChanged;
+
+    private string oldBuildString = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,6 +180,7 @@
             {
                 build = Build.CreateBuildFromString(BuildString);
                 BuildString = null;
+                oldBuildString = build.BuildName;
             }
 
             var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
@@ -269,5 +277,18 @@
             var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
+    }
+    
+    private async Task SaveBuildStringIntoLocal()
+    {
+        List<(string, float)>? modifiers = ViewModel?.UpgradePanelViewModel.GetModifierList();
+        modifiers?.AddRange(ViewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
+        modifiers?.AddRange(ViewModel?.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+        modifiers?.AddRange(ViewModel?.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+        var build = ViewModel!.CreateBuild(oldBuildString);
+        var buildString = build.CreateShortStringFromBuild();
+        BuildHelper.BuildHelperContainer container = new(buildString, modifiers, ViewModel?.ConsumableViewModel.ActivatedSlots);
+        await BuildHelper.SaveBuildContainers(new() { container });
     }
 }

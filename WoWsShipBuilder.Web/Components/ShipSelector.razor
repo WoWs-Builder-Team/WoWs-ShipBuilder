@@ -77,7 +77,6 @@
                             <MudChip Text="@Localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
                         }
                     }
-
                 }
                 else
                 {
@@ -101,7 +100,7 @@
     public bool LargerList { get; set; }
 
     [Parameter]
-    public bool AllowCopies { get; set; } = false;
+    public bool AllowCopies { get; set; }
 
     private SortedDictionary<string, ShipSummary> totalShipNameDictionary = new();
 
@@ -184,7 +183,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        totalShipNameDictionary = new(AppData.ShipSummaryList!.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
+        totalShipNameDictionary = new(AppData.ShipSummaryList.ToDictionary(ship => Localizer.GetGameLocalization($"{ship.Index}_FULL").Localization, ship => ship));
         filteredSummaryList = totalShipNameDictionary.ToList().OrderBy(x => x.Key).ToList();
     }
 
@@ -236,7 +235,7 @@
 
     private void AddShip(object? obj)
     {
-        if (obj is not string shipIndex || (!AllowCopies && SelectedShips.Contains(shipIndex))) return;
+        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Contains(shipIndex)) return;
         if (MultiSelect)
         {
             SelectedShips.Add(shipIndex);

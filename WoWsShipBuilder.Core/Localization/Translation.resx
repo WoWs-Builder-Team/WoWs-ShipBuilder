@@ -1526,7 +1526,7 @@ They do not have any effect on surface ships.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Add/remove ships</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Change builds</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
@@ -1619,6 +1619,15 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Tactical Skip Bombers</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Edit builds</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>No Ship Selected</value>
+  </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
       <value>Target area radius</value>
   </data>
@@ -1633,5 +1642,8 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
       <value>Progress loss per interval</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Show acceleration charts</value>
   </data>
 </root>

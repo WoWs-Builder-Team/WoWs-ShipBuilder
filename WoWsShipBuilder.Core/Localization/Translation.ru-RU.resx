@@ -1525,7 +1525,7 @@
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Добавить/удалить корабли</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Изменить билд</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">

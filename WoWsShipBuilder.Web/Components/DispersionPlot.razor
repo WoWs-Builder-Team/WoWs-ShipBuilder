@@ -4,22 +4,23 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.Web.Pages
 @using WoWsShipBuilder.Web.Utility
+@using System.Collections.Immutable
 @implements IAsyncDisposable
 @inject IJSRuntime Runtime
 @inject ILocalizer Localizer
 
 <div class="d-flex ma-auto">
     <MudStack Row="IsVertical" Justify="Justify.Center" AlignItems="AlignItems.Center">
-        @foreach (var dispersionEllipse in Ships)
+        @foreach (var (id, dispersionEllipse) in Ships)
         {
             <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                 <MudText Style="font-size: x-large">
-                    @($"{Localizer.GetGameLocalization($"{dispersionEllipse.Name[..dispersionEllipse.Name.IndexOf(" - ", StringComparison.Ordinal)]}_FULL").Localization} - {Localizer.GetGameLocalization(dispersionEllipse.Shell.Name).Localization}")
+                    @dispersionEllipse.Label
                 </MudText>
                 @if (dispersionEllipse.IsValid)
                 {
                     <div>
-                        <canvas id="@($"DispersionPlot_{dispersionEllipse.Name}")"></canvas>
+                        <canvas id="@id"></canvas>
                     </div>
                 }
                 else
@@ -38,17 +39,17 @@
 
 @code {
 
-    [Parameter]
-    public List<DispersionEllipse> Ships { get; set; } = default!;
-    [Parameter]
+    [Parameter, EditorRequired]
+    public ImmutableDictionary<Guid, DispersionEllipse> Ships { get; set; } = default!;
+    [Parameter, EditorRequired]
     public double PlotScaling { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public ChartsHelper.EllipsePlanes EllipsePlane { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public FusoPositions FusoPosition { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public bool IsVertical { get; set; }
-    [Parameter]
+    [Parameter, EditorRequired]
     public ChartsHelper.ChartsTabs Tab { get; set; }
     
     private IJSObjectReference? module;
@@ -82,7 +83,7 @@
 
         var text = new DispPlotAxisLabels(outerVertical, outerHorizontal, innerVertical, innerHorizontal, m);
 
-        Dictionary<string, DrawingData> data = Ships.Where(x => x.IsValid).ToDictionary(dispersionEllipse => $"DispersionPlot_{dispersionEllipse.Name}", SetupData);
+        Dictionary<string, DrawingData> data = Ships.Where(x => x.Value.IsValid).ToDictionary(dispersionEllipse => dispersionEllipse.Key.ToString(), dispersionEllipse => SetupData(dispersionEllipse.Value));
         
         module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Components/DispersionPlot.razor.js");
         await module.InvokeVoidAsync("drawDispersionPlotBatched", data, PlotScaling, GetFusoReference(), text);
@@ -123,14 +124,14 @@
     
     private List<ChartsHelper.Point> GetHitPoints(DispersionEllipse dispersionEllipse)
     {
-        List<(double x, double y)> hitPoints = EllipsePlane switch
+        List<DispersionPlotHelper.Point> hitPoints = EllipsePlane switch
         {
             ChartsHelper.EllipsePlanes.HorizontalPlane => dispersionEllipse.OnWaterHitPoints,
             ChartsHelper.EllipsePlanes.RealPlane => dispersionEllipse.RealHitPoints,
             _ => dispersionEllipse.PerpendicularToWaterHitPoints,
         };
 
-        return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.x * PlotScaling, point.y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.y * PlotScaling, point.x * PlotScaling)).ToList();
+        return IsVertical ? hitPoints.Select(point => new ChartsHelper.Point(point.X * PlotScaling, point.Y * PlotScaling)).ToList() : hitPoints.Select(point => new ChartsHelper.Point(point.Y * PlotScaling, point.X * PlotScaling)).ToList();
     }
     
     private (double xRadius, double yRadius) GetInnerEllipse(DispersionEllipse dispersionEllipse)

@@ -1523,7 +1523,7 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Adicionar/remover navios</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
       <value>Mudar builds</value>
   </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
