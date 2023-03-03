@@ -218,7 +218,7 @@
                                             <StackPanel Orientation="{Binding $parent[Window].DataContext.IsVertical, Converter={StaticResource OrientationConverter}}">
                                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                                     <Border BorderBrush="Gray" BorderThickness="1" Margin="5" HorizontalAlignment="Center" CornerRadius="5">
-                                                        <TextBlock Text="{Binding DispersionEllipse.Name}" FontSize="15"
+                                                        <TextBlock Text="{Binding DispersionEllipse.Label}" FontSize="15"
                                                                    TextAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
                                                     </Border>
                                                     <customControls:DispersionPlot DispersionPlotParameters="{Binding DispersionEllipse}"
