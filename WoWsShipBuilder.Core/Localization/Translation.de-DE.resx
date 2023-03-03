@@ -1525,9 +1525,6 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Schiffe hinzufügen/entfernen</value>
   </data>
-  <data name="AccelerationChart_ChangeBuilds" xml:space="preserve">
-      <value>Builds ändern</value>
-  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Erklärung des Beschleunigungsdiagramms</value>
   </data>
