@@ -1526,6 +1526,9 @@ Felszini hajókra nincs hatásuk.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Hajót hozzáad / eltávolít</value>
   </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>Build megváltoztatása</value>
+  </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>A hajó kiválasztása után lehetősége van kiválasztani azt a 3 sebességfokozatot, amelyet használni fog az ábra.
 A táblázat a következő sorrendben fog haladni: Kezdő fokozat --&gt; kozépső fokozat --&gt; végső fokozat, csak az aktuális fokozat maximális sebességének elérése után vált a következőre.
