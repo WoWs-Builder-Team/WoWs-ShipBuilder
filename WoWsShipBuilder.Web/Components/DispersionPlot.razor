@@ -40,7 +40,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public ImmutableDictionary<Guid, DispersionEllipse> Ships { get; set; } = default!;
+    public Dictionary<Guid, DispersionEllipse> Ships { get; set; } = new();
     [Parameter, EditorRequired]
     public double PlotScaling { get; set; }
     [Parameter, EditorRequired]
