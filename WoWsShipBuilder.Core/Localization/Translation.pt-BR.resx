@@ -1526,6 +1526,9 @@ Eles não têm qualquer efeito sobre navios de superfície.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Adicionar/remover navios</value>
   </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>Mudar builds</value>
+  </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>Depois de selecionar um navio, você tem a opção de selecionar as 3 'marchas' que serão usadas no gráfico.
 O gráfico aparecerá na ordem "Marcha" inicial --&gt; "Marcha" média --&gt; "Marcha" final, mudando para a próxima somente depois de atingir a velocidade máxima da marcha atual.
@@ -1616,6 +1619,15 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Bombardeiros Táticos "Skip"</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Editar builds</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>Nenhum navio selecionado</value>
+  </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
       <value>Raio da área do alvo</value>
   </data>
@@ -1630,5 +1642,8 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
       <value>Perda de progresso por intervalo</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Mostrar gráficos de aceleração</value>
   </data>
 </root>
