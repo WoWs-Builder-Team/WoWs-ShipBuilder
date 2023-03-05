@@ -1619,4 +1619,16 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Taktikai pattogóbomba-vetők</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Build szerkesztése</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>Nincs kiválasztott hajó</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Gyorsulási diagram megjelenítése</value>
+  </data>
 </root>
