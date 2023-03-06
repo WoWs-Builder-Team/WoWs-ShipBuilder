@@ -1706,4 +1706,52 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_Battery" xml:space="preserve">
       <value>Battery</value>
   </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 pings</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Max turning speed</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Turning acceleration</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Max vertical speed</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Vertical acceleration</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Search radius</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Search angle</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Aircraft Carrier</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarine</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cruiser</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Battleship</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destroyer</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>More Details</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Cut-off Distances</value>
+  </data>
 </root>
