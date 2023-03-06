@@ -13,6 +13,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using System.ComponentModel.DataAnnotations
+@using WoWsShipBuilder.Core.Extensions
 @inherits ReactiveComponentBase<ShipStatsControlViewModel>
 @inject ILocalizer Localizer
 @inject NavigationManager NavManager
@@ -139,14 +140,26 @@
                                 <!--Border bottom initial needed to fix the first expander having a wrong color when closed-->
                                 <MudExpansionPanel DisableGutters Text="@Localizer.GetGameLocalization(torpedo.Name).Localization" IsInitiallyExpanded="@(AppSettings.WebAppSettings?.OpenAllAmmoExpandersByDefault ?? true)" Style="border-bottom: initial" Class="child-expander rounded-0">
                                     <MudStack Spacing="1" Class="expander-content-padding mb-n3">
-                                        @foreach (var data in torpedo.DataElements)
+                                        @if (torpedo.TorpedoType.Equals($"ShipStats_Torpedo{TorpedoType.Magnetic.TorpedoTypeToString()}"))
                                         {
-                                            @DataElementFragment((data, Localizer))
+                                            for(int i = 0; i < torpedo.DataElements.Count - 11; i++)
+                                            {
+                                                @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                            }   
+                                        }
+                                        else
+                                        {
+                                            foreach (var data in torpedo.DataElements)
+                                            {
+                                                @DataElementFragment((data, Localizer))
+                                            }
                                         }
                                         @if (torpedo.CanHitClasses is not null)
                                         {
                                             <div class="d-flex justify-space-between">
-                                                <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_CanHitClasses)).Localization</MudText>
+                                                <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
+                                                    @Localizer.GetAppLocalization(nameof(Translation.ShipStats_CanHitClasses)).Localization
+                                                </MudText>
                                                 <MudStack Row="true">
                                                     @foreach (var shipClass in torpedo.CanHitClasses)
                                                     {
@@ -154,6 +167,25 @@
                                                     }
                                                 </MudStack>
                                             </div>
+                                        }
+                                        @if (torpedo.TorpedoType.Equals($"ShipStats_Torpedo{TorpedoType.Magnetic.TorpedoTypeToString()}"))
+                                        {
+                                            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_MoreDetails)).Localization" Style="border-bottom: initial" Class="child-expander rounded-0 mt-1">
+                                                <MudStack Spacing="1" Class="expander-content-padding mb-n3">
+                                                    @for (var i = torpedo.DataElements.Count - 11; i < torpedo.DataElements.Count - 5; i++)
+                                                    {
+                                                        @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                                    }
+                                                </MudStack>
+                                            </MudExpansionPanel>
+                                            <MudExpansionPanel DisableGutters Text="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_CutOffDistances)).Localization" Style="border-bottom: initial" Class="child-expander rounded-0 mt-1">
+                                                <MudStack Spacing="1" Class="expander-content-padding mb-n3">
+                                                    @for (var i = torpedo.DataElements.Count - 5; i < torpedo.DataElements.Count; i++)
+                                                    {
+                                                        @DataElementFragment((torpedo.DataElements[i]!, Localizer))
+                                                    }
+                                                </MudStack>
+                                            </MudExpansionPanel>   
                                         }
                                     </MudStack>
                                 </MudExpansionPanel>
@@ -432,7 +464,6 @@
                         </MudExpansionPanel>
                     </MudStack>
                 </ChildContent>
-
             </MudExpansionPanel>
 
             <!--T11 abilities-->
