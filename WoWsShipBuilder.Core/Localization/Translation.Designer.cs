@@ -2142,6 +2142,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        public static string ShipStats_Battery {
+            get {
+                return ResourceManager.GetString("ShipStats_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast.
         /// </summary>
         public static string ShipStats_Blast {
@@ -2213,6 +2222,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Bow {
             get {
                 return ResourceManager.GetString("ShipStats_Bow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bow.
+        /// </summary>
+        public static string ShipStats_BowLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_BowLoaders", resourceCulture);
             }
         }
         
@@ -2496,6 +2514,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capacity.
+        /// </summary>
+        public static string ShipStats_DiveCapacity {
+            get {
+                return ResourceManager.GetString("ShipStats_DiveCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recharge rate.
+        /// </summary>
+        public static string ShipStats_DiveCapacityRechargeRate {
+            get {
+                return ResourceManager.GetString("ShipStats_DiveCapacityRechargeRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drop.
         /// </summary>
         public static string ShipStats_DropTime {
@@ -2627,6 +2663,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_FireTotalDamage {
             get {
                 return ResourceManager.GetString("ShipStats_FireTotalDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        public static string ShipStats_First {
+            get {
+                return ResourceManager.GetString("ShipStats_First", resourceCulture);
             }
         }
         
@@ -2937,6 +2982,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loaders.
+        /// </summary>
+        public static string ShipStats_Loaders {
+            get {
+                return ResourceManager.GetString("ShipStats_Loaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Long range aura.
         /// </summary>
         public static string ShipStats_LongAura {
@@ -2978,6 +3032,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ManeuverabilityRudderShiftTime {
             get {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityRudderShiftTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diving plane shift time.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsDivingPlaneShiftTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsDivingPlaneShiftTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max dive speed.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxDiveSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxDiveSpeed", resourceCulture);
             }
         }
         
@@ -3477,6 +3549,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Second.
+        /// </summary>
+        public static string ShipStats_Second {
+            get {
+                return ResourceManager.GetString("ShipStats_Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Secondary Battery.
         /// </summary>
         public static string ShipStats_SecondaryBattery {
@@ -3789,6 +3870,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Stern {
             get {
                 return ResourceManager.GetString("ShipStats_Stern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stern.
+        /// </summary>
+        public static string ShipStats_SternLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_SternLoaders", resourceCulture);
             }
         }
         
@@ -4455,6 +4545,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string Unit_ShotsPerMinute {
             get {
                 return ResourceManager.GetString("Unit_ShotsPerMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unit.
+        /// </summary>
+        public static string Unit_U {
+            get {
+                return ResourceManager.GetString("Unit_U", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unit/s.
+        /// </summary>
+        public static string Unit_UPS {
+            get {
+                return ResourceManager.GetString("Unit_UPS", resourceCulture);
             }
         }
         

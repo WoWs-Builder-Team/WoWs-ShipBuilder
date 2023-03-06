@@ -40,7 +40,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public Dictionary<Guid, DispersionEllipse> Ships { get; set; } = new();
+    public Dictionary<Guid, DispersionEllipse> Ships { get; set; } = new(); //cant use ImmutableDictionary because it causes the loss of the items oder which is very important in this case
     [Parameter, EditorRequired]
     public double PlotScaling { get; set; }
     [Parameter, EditorRequired]

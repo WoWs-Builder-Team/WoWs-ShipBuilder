@@ -23,10 +23,10 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "KM")]
         public decimal Range { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "First")]
         public decimal FirstPingDuration { get; set; }
 
-        [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "PingDuration", UnitKey = "S", NameLocalizationKey = "Second")]
         public decimal SecondPingDuration { get; set; }
 
         [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "M")]

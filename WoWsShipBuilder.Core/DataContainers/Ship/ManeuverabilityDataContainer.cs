@@ -23,6 +23,12 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxSpeed", UnitKey = "Knots")]
     public decimal ManeuverabilitySubsMaxSpeedAtMaxDepth { get; set; }
 
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "MPS")]
+    public decimal ManeuverabilitySubsMaxDiveSpeed { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal ManeuverabilitySubsDivingPlaneShiftTime { get; set; }
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal ManeuverabilityRudderShiftTime { get; set; }
 
@@ -53,6 +59,10 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         maxSpeedModifier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(maxSpeedModifier, (current, modifier) => current * (decimal)modifier);
         maxSpeedModifier = modifiers.FindModifiers("boostCoeff").Aggregate(maxSpeedModifier, (current, modifier) => current + (decimal)modifier); // Speed boost is additive
 
+        decimal maxDiveSpeedModifier = modifiers.FindModifiers("maxBuoyancySpeedCoeff", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+
+        decimal divingPlaneShiftTimeModifier = modifiers.FindModifiers("buoyancyRudderTimeCoeff", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
+
         decimal enlargedPropellerShaftSpeedModifier = modifiers.FindModifiers("speedCoefBattery", true).Aggregate(1m, (current, modifier) => current * (decimal)modifier);
 
         decimal rudderShiftModifier = modifiers.FindModifiers("SGRudderTime").Aggregate(1m, (current, modifier) => current * (decimal)modifier);
@@ -82,10 +92,12 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
 
         decimal maxSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier;
-
         decimal maxSpeedOnSurface = 0;
         decimal maxSpeedAtPeriscope = 0;
         decimal maxSpeedAtMaxDepth = 0;
+        decimal maxDiveSpeed = 0;
+
+        decimal divingPlaneShiftTime = 0;
 
         if (isSub)
         {
@@ -93,6 +105,9 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
             maxSpeedAtPeriscope = maxSpeed * speedAtPeriscopeCoeff * enlargedPropellerShaftSpeedModifier;
             maxSpeedAtMaxDepth = maxSpeed * speedAtMaxDepthCoeff;
             maxSpeed = 0;
+            maxDiveSpeed = hull.DiveSpeed;
+
+            divingPlaneShiftTime = hull.DivingPlaneShiftTime;
         }
 
         var manoeuvrability = new ManeuverabilityDataContainer
@@ -100,10 +115,12 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
             ForwardMaxSpeedTime = Math.Round((decimal)timeForward, 2),
             ReverseMaxSpeedTime = Math.Round((decimal)timeBackward, 2),
             ManeuverabilityMaxSpeed = Math.Round(maxSpeed, 2),
+            ManeuverabilitySubsMaxDiveSpeed = Math.Round(maxDiveSpeed * maxDiveSpeedModifier, 2),
             ManeuverabilitySubsMaxSpeedOnSurface = Math.Round(maxSpeedOnSurface, 2),
             ManeuverabilitySubsMaxSpeedAtPeriscope = Math.Round(maxSpeedAtPeriscope, 2),
             ManeuverabilitySubsMaxSpeedAtMaxDepth = Math.Round(maxSpeedAtMaxDepth, 2),
             ManeuverabilityRudderShiftTime = Math.Round((hull.RudderTime * rudderShiftModifier) / 1.305M, 2),
+            ManeuverabilitySubsDivingPlaneShiftTime = Math.Round(divingPlaneShiftTime * divingPlaneShiftTimeModifier, 2),
             ManeuverabilityTurningCircle = hull.TurningRadius,
             RudderBlastProtection = hull.SteeringGearArmorCoeff,
             EngineBlastProtection = engine.ArmorCoeff,
