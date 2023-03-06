@@ -24,6 +24,9 @@ public partial record ConsumableDataContainer : DataContainerBase
     public string NumberOfUses { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal PreparationTime { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Cooldown { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
@@ -272,6 +275,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             Slot = slot,
             Desc = "",
             Cooldown = Math.Round((decimal)cooldown, 1),
+            PreparationTime = Math.Round((decimal)consumable.PreparationTime, 1),
             WorkTime = Math.Round((decimal)workTime, 1),
             Modifiers = consumableModifiers,
         };
