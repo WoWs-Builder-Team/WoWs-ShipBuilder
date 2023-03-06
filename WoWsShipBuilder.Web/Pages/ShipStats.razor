@@ -27,10 +27,10 @@
             <MudStack Row>
                 <MudDivider Vertical/>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Secondary"/>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInCharts).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllShipsToCharts"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllShipsToCharts" Color="Color.Secondary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
@@ -109,10 +109,8 @@
         }
         else
         {
-            var newId = Guid.NewGuid();
-            shipContainers.Add(new(newId, newShipIndex, null));
-            indexIdMapper[newId] = (idCount++).ToString();
-            selectedTabId = newId;
+            AddNewIndexes(new(){ newShipIndex }, null);
+            selectedTabId = indexIdMapper.Last().Key;
         }
         UpdateUrl();
         updateTab = true;
@@ -159,7 +157,7 @@
         if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
-            selectedTabId = shipContainers.Last().Id;
+            selectedTabId = indexIdMapper.Last().Key;
             AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildHelper.BuildHelperContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
             updateTab = true;
 
