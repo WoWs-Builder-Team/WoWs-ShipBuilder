@@ -416,7 +416,7 @@
                     <MudStack Spacing="1" Class="expander-content-padding mb-n3">
                          @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[0]!, Localizer))
                          @{
-                            var j = ViewModel.CurrentShipStats.PingerGunDataContainer is null ? 2 : 3; // subs have battery data that other ships do not have so we have to account for it
+                            var j = ViewModel.CurrentShipStats?.PingerGunDataContainer is null ? 2 : 3; // subs have battery data that other ships do not have so we have to account for it
                             for(int i = ViewModel.CurrentShipStats!.SurvivabilityDataContainer.DataElements.Count - j; i < ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements.Count; i++)
                             {
                                 @DataElementFragment((ViewModel.CurrentShipStats?.SurvivabilityDataContainer.DataElements[i]!, Localizer))
