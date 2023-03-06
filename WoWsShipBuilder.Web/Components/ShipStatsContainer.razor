@@ -30,6 +30,25 @@
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
+@if (!(initialized && SettingsInitialized))
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="166px"/>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudStack>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="8" xl="9">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+        </MudItem>
+    </MudGrid>
+}
 @if (ViewModel is not null)
 {
     <MudGrid>
