@@ -39,11 +39,11 @@
                                                 <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + currentMod.Name).Localization</MudText>
                                             }
                                             <MudDivider Light="true" Class="ma-1"/>
-                                            @foreach ((string modifierName, double modifierValue) in currentMod.Effect)
+                                            foreach ((string modifierName, double modifierValue) in currentMod.Effect)
                                             {
                                                 // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                                 string modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                                @if (!string.IsNullOrWhiteSpace(modifier))
+                                                if (!string.IsNullOrWhiteSpace(modifier))
                                                 {
                                                     <MudText Align="Align.Start" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
                                                 }
@@ -60,7 +60,7 @@
                             @foreach (var modernization in columnModernizations)
                             {
                                 <MudMenuItem Style="padding: 2px 4px;" OnClick="@(_ => ViewModel.OnModernizationSelected(modernization, columnModernizations))">
-                                     <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
+                                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
                                         <ChildContent>
                                             <MudImage Width="@GetImageSize(true)" Height="@GetImageSize(true)" Src="@GetUpgradeIcon(modernization)"/>
                                         </ChildContent>
@@ -80,20 +80,22 @@
                                                             <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@Localizer.GetGameLocalization("DESC_" + modernization.Name).Localization</MudText>
                                                         }
                                                         <MudDivider Light="true" Class="ma-1"/>
-                                                        @foreach ((string modifierName, double modifierValue) in modernization.Effect)
+                                                        foreach ((string modifierName, double modifierValue) in modernization.Effect)
                                                         {
                                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                                             string modifier = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                                            @if (!string.IsNullOrWhiteSpace(modifier))
+                                                            if (!string.IsNullOrWhiteSpace(modifier))
                                                             {
-                                                                <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">@modifier</MudText>
+                                                                <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces" Class="flex-grow-0 flex-shrink-1">
+                                                                    @modifier
+                                                                </MudText>
                                                             }
                                                         }
                                                     }
                                                 </MudStack>
                                             </MudPaper>
                                         </TooltipContent>
-                                    </MudTooltip>
+                                   </MudTooltip>
                                 </MudMenuItem>
                             }
                         </MudPaper>
@@ -115,7 +117,7 @@
         Modernization? selectedMod = modernizations.FirstOrDefault(modernization => selectedModernizations.Any(selected => selected.Index.Equals(modernization.Index)));
         selectedMod ??= UpgradePanelViewModelBase.PlaceholderModernization;
 
-        string path = selectedMod.Index != null ? $"/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+        string path = selectedMod.Index != null ? $"/assets/modernization_icons/icon_modernization_{selectedMod.Name}.png" : "/assets/modernization_icons/modernization_default3.png";
 
         return path;
     }
@@ -128,7 +130,7 @@
     
     private string GetUpgradeIcon(Modernization modernization)
     {
-        return modernization.Index != null ? $"/assets/modernization_icons/icon_modernization_{modernization.Name}.png" : $"/assets/modernization_icons/modernization_default3.png";
+        return modernization.Index != null ? $"/assets/modernization_icons/icon_modernization_{modernization.Name}.png" : "/assets/modernization_icons/modernization_default3.png";
     }
     
     private int GetImageSize(bool isInTooltip)
