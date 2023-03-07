@@ -185,7 +185,7 @@
                                 <MudStack Row="true" Class="mt-n1 mb-0">
                                     <MudTextField @bind-Value="currentBuildString" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@(string.IsNullOrWhiteSpace(currentBuildString) && !validBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
-                                        Import
+                                        @Localizer.GetAppLocalization(Translation.BuildImport_Import).Localization
                                     </MudButton>
                                 </MudStack>
                             </MudItem>
