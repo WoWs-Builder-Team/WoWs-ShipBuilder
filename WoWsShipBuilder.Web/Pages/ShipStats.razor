@@ -212,7 +212,8 @@
                 }
                 else
                 {
-                    var viewModel = await shipStatsContainerCache.First().Value!.GetShipViewModel(container.ShipIndex, container.BuildString);
+                    var tmpSc= shipStatsContainerCache.First().Value ?? new ShipStatsContainer();
+                    var viewModel = await tmpSc.GetShipViewModel(container.ShipIndex, container.BuildString);
                     
                     List<(string, float)>? modifiers = viewModel?.UpgradePanelViewModel.GetModifierList();
                     modifiers?.AddRange(viewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
