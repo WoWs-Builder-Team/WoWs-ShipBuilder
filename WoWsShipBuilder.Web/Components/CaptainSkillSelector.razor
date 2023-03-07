@@ -70,24 +70,24 @@
                                             <MudText Align="Align.Left" Typo="Typo.body2" Style="white-space: break-spaces">@localization</MudText>
                                         }
                                     }
-                                    @if (skill.Modifiers is {Count: > 0 })
+                                    @if (skill.Modifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         foreach ((string modifierName, float modifierValue) in skill.Modifiers)
                                         {
                                             // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                                             string modifierString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.All, Localizer);
-                                            @if (!string.IsNullOrWhiteSpace(modifierString))
+                                            if (!string.IsNullOrWhiteSpace(modifierString))
                                             {
                                                 <MudText Align="Align.Left" Typo="Typo.body2">@modifierString</MudText>
                                             }
                                         }
                                     }
-                                    @if (skill.ConditionalModifiers is {Count: > 0 })
+                                    @if (skill.ConditionalModifiers is { Count: > 0 })
                                     {
                                         <MudDivider Light="true" Class="ma-1"/>
                                         <MudText Align="Align.Left" Typo="Typo.body2" GutterBottom>
-                                            @Localizer.GetGameLocalization("SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
+                                            @Localizer.GetGameLocalization(!string.IsNullOrWhiteSpace(skill.Skill.ConditionalTriggerDescription) ? skill.Skill.ConditionalTriggerDescription : "SKILL_TRIGGER_" + skill.Skill.ConditionalTriggerType).Localization
                                         </MudText>
                                         foreach ((string modifierName, float modifierValue) in skill.ConditionalModifiers)
                                         {
