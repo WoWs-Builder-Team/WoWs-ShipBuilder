@@ -80,8 +80,12 @@
     {
         <MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
             <MudStack Spacing="0" Class="pa-2">
-                <MudText Align="Align.Center" Typo="Typo.h6">@pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization</MudText>
-                <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@pair.localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + pair.consumableData.Name).Localization</MudText>
+                <MudText Align="Align.Center" Typo="Typo.h6">
+                    @pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization
+                </MudText>
+                <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">
+                    @pair.localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + pair.consumableData.Name).Localization
+                </MudText>
                 <MudDivider Light="true" Class="ma-1"/>
                 @foreach (var data in pair.consumableData.DataElements)
                 {
@@ -96,8 +100,12 @@
                     if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifierDesc</MudText>
-                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@modifierValueString</MudText>
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
+                                @modifierDesc
+                            </MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
+                                @modifierValueString
+                            </MudText>
                         </div>
                     }
                 }

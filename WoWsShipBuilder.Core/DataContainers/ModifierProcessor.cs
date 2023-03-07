@@ -155,7 +155,7 @@ public static class ModifierProcessor
             case { } str when str.Equals("lifeTime", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("timeFromHeaven", StringComparison.InvariantCultureIgnoreCase) ||
                               str.Contains("torpedoReloadTime", StringComparison.InvariantCultureIgnoreCase) ||
-                              str.Contains("hydrophoneUpdateFrequency", StringComparison.InvariantCultureIgnoreCase):
+                              str.Equals("hydrophoneUpdateFrequency", StringComparison.InvariantCultureIgnoreCase):
                 value = $"{modifier} {localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
                 break;
 
@@ -194,8 +194,7 @@ public static class ModifierProcessor
     {
         string prefix = "PARAMS_MODIFIER_";
 
-        if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase) ||
-            localizerKey.Contains("hydrophoneUpdateFrequencyCoeff", StringComparison.InvariantCultureIgnoreCase))
+        if (localizerKey.Contains("regenerationHPSpeedUnits", StringComparison.InvariantCultureIgnoreCase))
         {
             return string.Empty;
         }
@@ -316,12 +315,10 @@ public static class ModifierProcessor
         {
             return "";
         }
-        else
-        {
-            // Remove [HIDDEN] text from some skills modifiers.
-            description = description.Replace("[HIDDEN]", "");
-            return value + " " + description.Trim();
-        }
+
+        // Remove [HIDDEN] text from some skills modifiers.
+        description = description.Replace("[HIDDEN]", "");
+        return value + " " + description.Trim();
     }
 
     public static string GetUiModifierString(string localizerKey, double modifier, ReturnFilter returnFilter, ILocalizer localizer)
