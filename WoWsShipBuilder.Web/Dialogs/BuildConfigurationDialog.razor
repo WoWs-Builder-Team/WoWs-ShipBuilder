@@ -2,6 +2,7 @@
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using System.Collections.Concurrent
+@using System.Net
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Extensions
@@ -125,6 +126,8 @@
     private MudTabs desktopTabs = default!;
 
     private object selectedListValue = 0;
+    
+    private bool validBuildString;
 
     public BuildConfigurationDialog()
     {
@@ -180,8 +183,8 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Class="mt-n1 mb-0">
-                                    <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@string.IsNullOrWhiteSpace(currentBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
+                                    <MudTextField @bind-Value="currentBuildString" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(currentBuildString) && !validBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
                                         Import
                                     </MudButton>
                                 </MudStack>
@@ -271,16 +274,27 @@
 
     private void ResetBuild()
     {
-        var vm = LoadShipViewModel(SelectedContainer with {Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
+        var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
     }
 
     private void ImportBuild(Ship ship)
     {
+        string buildStr;
+        if (currentBuildString.Contains("build="))
+        {
+            int index = currentBuildString.IndexOf("build=", StringComparison.Ordinal);
+            buildStr = WebUtility.UrlDecode(currentBuildString[(index + 6)..]);
+        }
+        else
+        {
+            buildStr = currentBuildString;
+        }
+        
         try
         {
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(currentBuildString), null));
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(buildStr), null));
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
@@ -304,5 +318,60 @@
         currentBuildString = string.Empty;
         selectedTab = newIndex;
         UpdateViewModel();
+    }
+    
+    private string? ValidateBuildString(string buildStr)
+    {
+        validBuildString = false;
+        if (string.IsNullOrWhiteSpace(buildStr))
+        {
+            return null;
+        }
+        
+        if (buildStr.Contains("share.wowssb.com"))
+        {
+            return "Short links are not supported";
+        }
+        
+        if (buildStr.Contains(";"))
+        {
+            try
+            {
+                var build = Build.CreateBuildFromString(buildStr);
+                if (SelectedContainer.Ship.Index.Equals(build.ShipIndex))
+                {
+                    validBuildString = true;
+                    return null;
+                }
+                
+                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+            }
+            catch (FormatException)
+            {
+                return "Invalid build";
+            }
+        }
+        
+        if (buildStr.Contains("&build="))
+        {
+            int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
+            string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
+            try
+            {
+                var build = Build.CreateBuildFromString(decodedBuildString);
+                if (SelectedContainer.Ship.Index.Equals(build.ShipIndex))
+                {
+                    validBuildString = true;
+                    return null;
+                }
+                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+            }
+            catch (FormatException)
+            {
+                return "Invalid build";
+            }
+        }
+        
+        return "Invalid build";
     }
 }
