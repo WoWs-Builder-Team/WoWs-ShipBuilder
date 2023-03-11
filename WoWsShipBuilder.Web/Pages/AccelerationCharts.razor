@@ -114,9 +114,7 @@
             
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = !string.IsNullOrEmpty(shipIndexesFromUrl) ? 
-                                                                shipIndexesFromUrl.Split(',').Select(x => new BuildHelper.BuildHelperContainer(x, string.Empty, null, null)) : 
-                                                                await BuildHelper.RetrieveBuildContainers();
+            var buildContainers = await BuildHelper.RetrieveBuildContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => new BuildHelper.BuildHelperContainer(x, string.Empty, null, null)) : null);
 
             if (buildContainers is not null)
             {
