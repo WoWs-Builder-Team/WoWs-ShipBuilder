@@ -17,6 +17,7 @@
 @inject IMetricsService MetricsService
 @inject IBreakpointService BreakpointService
 @inject BuildHelper BuildHelper
+@inject NavigationManager NavManager
 
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
@@ -110,8 +111,12 @@
         {
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartAsync();
+            
+            NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = await BuildHelper.RetrieveBuildContainers();
+            var buildContainers = !string.IsNullOrEmpty(shipIndexesFromUrl) ? 
+                                                                shipIndexesFromUrl.Split(',').Select(x => new BuildHelper.BuildHelperContainer(x, string.Empty, null, null)) : 
+                                                                await BuildHelper.RetrieveBuildContainers();
 
             if (buildContainers is not null)
             {
@@ -128,7 +133,7 @@
                     counter++;
                 }
             }
-            
+
             await AddShipsBatchAsync(shipBuildCache);
             StateHasChanged();
         }
@@ -297,7 +302,8 @@
                 await AddShipsBatchAsync(shipsToAdd);
             }
             
-            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, guidsToRemove);
+            await ChartJsInterop.BatchRemoveDataAsync(new() { AccelerationId }, guidsToRemove);
+            UpdateUrl();
         }
     }
     
@@ -363,5 +369,11 @@
             }
         }
         return filteredList;
+    }
+    
+    private void UpdateUrl()
+    {
+        var shipsString = string.Join(",", shipBuildCache.Values.Select(x => x.Ship.Index));
+        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={shipsString}");
     }
 }
