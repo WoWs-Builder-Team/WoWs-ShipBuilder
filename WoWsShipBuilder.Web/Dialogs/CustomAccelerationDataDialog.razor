@@ -17,7 +17,7 @@
             <MudText>You can set custom values to be plotted in the chart. A name is required. <strong>ADVANCED USERS ONLY.</strong></MudText>
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="@name" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Name)).Localization" Variant="Variant.Outlined"/>
+                    <MudTextField @bind-Value="@name" Label="@Localizer.GetAppLocalization(nameof(Translation.ShipStats_Name)).Localization" Variant="Variant.Outlined" Immediate/>
                 </MudItem>
                 <MudItem xs="6">
                    <MudSelect T="ShipClass" Variant="Variant.Outlined" @bind-Value="@selectedClass" Label="Ship Class" AnchorOrigin="Origin.BottomCenter">

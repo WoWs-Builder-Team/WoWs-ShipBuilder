@@ -243,7 +243,7 @@
     private async Task OpenAccelerationCharts()
     {
         var shipIndexes = await StoreBuildsForCharts();
-        NavManager.NavigateTo($"/acceleration-charts?shipIndex={string.Join(",", shipIndexes)}");
+        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
     private void UpdateUrl()
