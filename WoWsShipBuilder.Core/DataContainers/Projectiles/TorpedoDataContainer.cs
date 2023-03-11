@@ -46,16 +46,16 @@ public partial record TorpedoDataContainer : ProjectileDataContainer
     [DataElementFiltering(false)]
     public decimal SplashCoeff { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "MPS", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", NameLocalizationKey = "FirstPing")]
     public decimal MaxTurningSpeedFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "MPS", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxTurningSpeed", UnitKey = "DegreePerSecond", NameLocalizationKey = "SecondPing")]
     public decimal MaxTurningSpeedSecondPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "MPS2", NameLocalizationKey = "FirstPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", NameLocalizationKey = "FirstPing")]
     public decimal TurningAccelerationFirstPing { get; set; }
 
-    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "MPS2", NameLocalizationKey = "SecondPing")]
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "TurningAcceleration", UnitKey = "DegreePerSecond2", NameLocalizationKey = "SecondPing")]
     public decimal TurningAccelerationSecondPing { get; set; }
 
     [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "MaxVerticalSpeed", UnitKey = "MPS", NameLocalizationKey = "FirstPing")]

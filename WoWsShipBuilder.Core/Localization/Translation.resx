@@ -1655,8 +1655,11 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Go to ships page</value>
   </data>
-  <data name="ShipStats_ShowInCharts" xml:space="preserve">
-      <value>Show in Charts</value>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Show in Ballistic Charts</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Show in Acceleration Charts</value>
   </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
       <value>Loaders</value>
@@ -1741,5 +1744,8 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipStats_CutOffDistances" xml:space="preserve">
       <value>Cut-off Distances</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
   </data>
 </root>
