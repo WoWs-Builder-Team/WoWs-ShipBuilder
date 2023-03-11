@@ -3801,11 +3801,20 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show in Charts.
+        ///   Looks up a localized string similar to Show in Acceleration Charts.
         /// </summary>
-        public static string ShipStats_ShowInCharts {
+        public static string ShipStats_ShowInAccelerationCharts {
             get {
-                return ResourceManager.GetString("ShipStats_ShowInCharts", resourceCulture);
+                return ResourceManager.GetString("ShipStats_ShowInAccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show in Ballistic Charts.
+        /// </summary>
+        public static string ShipStats_ShowInBallisticCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowInBallisticCharts", resourceCulture);
             }
         }
         
@@ -4572,6 +4581,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string Unit_DegreePerSecond {
             get {
                 return ResourceManager.GetString("Unit_DegreePerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to °/s².
+        /// </summary>
+        public static string Unit_DegreePerSecond2 {
+            get {
+                return ResourceManager.GetString("Unit_DegreePerSecond2", resourceCulture);
             }
         }
         

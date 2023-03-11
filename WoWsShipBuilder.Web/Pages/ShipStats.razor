@@ -26,11 +26,14 @@
         <Header>
             <MudStack Row>
                 <MudDivider Vertical/>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Delay="350">
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Arrow Delay="350">
                     <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Secondary"/>
                 </MudTooltip>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInCharts).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllShipsToCharts" Color="Color.Secondary"/>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.SsidChart" OnClick="@OpenBallisticCharts" Color="Color.Secondary"/>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
@@ -193,7 +196,7 @@
         shipContainers.AddRange(newShips);
     }
 
-    private async Task SendAllShipsToCharts()
+    private async Task<List<string>> StoreBuildsForCharts()
     {
         List<BuildHelper.BuildHelperContainer> buildContainers = new();
         List<string> shipIndexes = new();
@@ -228,7 +231,19 @@
         }
         
         await BuildHelper.StoreBuildContainers(buildContainers);
+        return shipIndexes;
+    }
+
+    private async Task OpenBallisticCharts()
+    {
+        var shipIndexes = await StoreBuildsForCharts();
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
+    }
+    
+    private async Task OpenAccelerationCharts()
+    {
+        var shipIndexes = await StoreBuildsForCharts();
+        NavManager.NavigateTo($"/acceleration-charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
     private void UpdateUrl()
