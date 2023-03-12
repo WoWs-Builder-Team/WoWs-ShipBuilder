@@ -301,7 +301,7 @@
         {
             shellIndexFromUrl = shellIndex;
         }
-        if (NavManager.TryGetQueryString("shipIndexes", out string shipIndex))
+        if (NavManager.TryGetQueryString("shipIndex", out string shipIndex))
         {
             shipIndexesFromUrl = shipIndex.Split(',');
         }
@@ -340,7 +340,7 @@
                         }
                         
                         var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers} , new());
+                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers } , new());
                         
                         if (shellIndexFromUrl.Any())
                         {
