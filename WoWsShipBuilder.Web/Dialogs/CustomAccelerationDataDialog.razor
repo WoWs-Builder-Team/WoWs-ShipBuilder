@@ -63,7 +63,7 @@
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Disabled="@string.IsNullOrWhiteSpace(name)" OnClick="ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton Disabled="EnableOkButton()" OnClick="ReturnShipBuildContainer" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Ok)).Localization
         </MudButton>
     </DialogActions>
@@ -164,4 +164,17 @@
         MudDialog.Close(DialogResult.Ok(container));
     }
 
+    private bool EnableOkButton()
+    {
+        return !string.IsNullOrWhiteSpace(name) &&
+               maxSpeed != 0 &&
+               enginePower != 0 &&
+               tonnage != 0 &&
+               forwardEngineUpTime != 0 &&
+               backwardEngineUpTime != 0 &&
+               forwardEngineForsag != 0 &&
+               backwardEngineForsag != 0 &&
+               forwardEngineForsagMaxSpeed != 0 &&
+               backwardEngineForsagMaxSpeed != 0;
+    }
 }
