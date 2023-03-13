@@ -232,7 +232,7 @@
             ["ViewModel"] = ViewModel,
         };
 
-        var dialog = DialogService.Show<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
+        var dialog = await DialogService.ShowAsync<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
         // this is needed to wait for the dialog to close to change the SkillActivationPopupOpen, to get the values to update
         await dialog.Result;
         ViewModel!.SkillActivationPopupOpen = false;

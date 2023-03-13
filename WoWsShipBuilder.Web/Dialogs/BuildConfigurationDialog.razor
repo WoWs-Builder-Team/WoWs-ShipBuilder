@@ -184,7 +184,7 @@
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Class="mt-n1 mb-0">
                                     <MudTextField @bind-Value="currentBuildString" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(currentBuildString) && !validBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(currentBuildString) && !validBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
                                         @Localizer.GetAppLocalization(Translation.BuildImport_Import).Localization
                                     </MudButton>
                                 </MudStack>
@@ -272,14 +272,15 @@
         MudDialog.Close(DialogResult.Ok(result));
     }
 
-    private void ResetBuild()
+    private async Task ResetBuild()
     {
         var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
+        await Task.Delay(1);
     }
 
-    private void ImportBuild(Ship ship)
+    private async Task ImportBuild(Ship ship)
     {
         string buildStr;
         if (currentBuildString.Contains("build="))
@@ -298,6 +299,7 @@
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
+            await Task.Delay(1);
         }
         catch (FormatException)
         {
