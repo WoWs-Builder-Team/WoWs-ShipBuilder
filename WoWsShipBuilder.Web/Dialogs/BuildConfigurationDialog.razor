@@ -277,7 +277,7 @@
         var vm = LoadShipViewModel(SelectedContainer with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false });
         ViewModel = vm;
         vmCache[SelectedContainer.Id] = vm;
-        await Task.Delay(1);
+        await Task.Delay(1); // needed for the captain skill selector to rerender properly
     }
 
     private async Task ImportBuild(Ship ship)
@@ -299,7 +299,7 @@
             currentBuildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
-            await Task.Delay(1);
+            await Task.Delay(1); // needed for the captain skill selector to rerender properly
         }
         catch (FormatException)
         {

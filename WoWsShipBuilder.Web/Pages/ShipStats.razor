@@ -2,6 +2,7 @@
 
 @using WoWsShipBuilder.Web.Utility
 @using DynamicData
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 
@@ -40,7 +41,7 @@
     </MudDynamicTabs>
 </MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
-     <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
+    <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
 
 @code {
@@ -85,7 +86,7 @@
             {
                 buildList = null;
             }
-            
+
             AddNewIndexes(indexes, buildList);
         }
         UpdateUrl();
@@ -112,7 +113,7 @@
         }
         else
         {
-            AddNewIndexes(new(){ newShipIndex }, null);
+            AddNewIndexes(new() { newShipIndex }, null);
             selectedTabId = indexIdMapper.Last().Key;
         }
         UpdateUrl();
@@ -123,7 +124,7 @@
 
     private void RemoveTab(MudTabPanel panel)
     {
-        var id = (Guid)panel.Tag;
+        var id = (Guid) panel.Tag;
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
@@ -132,10 +133,10 @@
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
-            // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
-            // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
-            // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
-            // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
+    // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
+    // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
+    // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
+    // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
             if (shipContainers.Count > index && index != -1)
             {
                 mudTabs.ActivatePanel(shipContainers[index].Id);
@@ -192,7 +193,7 @@
                 shipStatsContainerCache.Add(newShip.Id, default!);
             }
         }
-        
+
         shipContainers.AddRange(newShips);
     }
 
@@ -215,21 +216,20 @@
                 }
                 else
                 {
-                    var tmpSc= shipStatsContainerCache.Values.FirstOrDefault(x => x is not null) ?? new ShipStatsContainer();
-                    var viewModel = await tmpSc.GetShipViewModel(container.ShipIndex, container.BuildString);
-                    
-                    List<(string, float)>? modifiers = viewModel?.UpgradePanelViewModel.GetModifierList();
-                    modifiers?.AddRange(viewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
-                    modifiers?.AddRange(viewModel?.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-                    modifiers?.AddRange(viewModel?.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-                    
-                    buildContainers.Add(new(container.ShipIndex, container.BuildString, modifiers, viewModel?.ConsumableViewModel.ActivatedSlots));   
+                    var viewModel = await ShipStatsContainer.CreateViewModel(container.ShipIndex, Build.CreateBuildFromString(container.BuildString), Localizer);
+
+                    List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+                    modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
+                    modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+                    modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+                    buildContainers.Add(new(container.ShipIndex, container.BuildString, modifiers, viewModel.ConsumableViewModel.ActivatedSlots));
                 }
             }
-            
-            shipIndexes.Add(container.ShipIndex);   
+
+            shipIndexes.Add(container.ShipIndex);
         }
-        
+
         await BuildHelper.StoreBuildContainers(buildContainers);
         return shipIndexes;
     }
@@ -239,7 +239,7 @@
         var shipIndexes = await StoreBuildsForCharts();
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
-    
+
     private async Task OpenAccelerationCharts()
     {
         var shipIndexes = await StoreBuildsForCharts();
@@ -260,4 +260,5 @@
         }
         return string.Empty;
     }
+
 }

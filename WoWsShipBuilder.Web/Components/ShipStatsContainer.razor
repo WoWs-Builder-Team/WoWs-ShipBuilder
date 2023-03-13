@@ -224,12 +224,7 @@
                 buildName = build.BuildName;
             }
 
-            var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
-            var ship = AppData.FindShipFromSummary(shipSummary);
-            var vmParams = new ShipViewModelParams(ship, shipSummary, build);
-
-            ShipViewModel vm = new(null!, Localizer, vmParams);
-            await vm.InitializeData(vmParams);
+            var vm = await CreateViewModel(shipIndex, build, Localizer);
             shipChanged = true;
             return vm;
         }
@@ -343,10 +338,16 @@
         return container;
     }
 
-    public async Task<ShipViewModel?> GetShipViewModel(string shipIndex, string? buildString)
+    public static async Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
     {
-        BuildString = buildString;
-        return await LoadShipViewModel(shipIndex);
+        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+        var ship = AppData.FindShipFromSummary(shipSummary);
+        var vmParams = new ShipViewModelParams(ship, shipSummary, build);
+
+        ShipViewModel vm = new(null!, localizer, vmParams);
+        await vm.InitializeData(vmParams);
+        
+        return vm;
     }
 
     public string GetBuildName()
