@@ -206,7 +206,7 @@
             var shipStatsContainer = shipStatsContainerCache[container.Id];
             if (shipStatsContainer is not null)
             {
-                buildContainers.Add(shipStatsContainer.GetBuildHelperContainer());
+                buildContainers.Add(shipStatsContainer.CreateBuildHelperContainer());
             }
             else
             {

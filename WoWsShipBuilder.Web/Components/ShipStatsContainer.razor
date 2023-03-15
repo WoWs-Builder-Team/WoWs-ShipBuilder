@@ -73,7 +73,7 @@
                             <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                             <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
-                                <MudText Align="Align.Center" >@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
+                                <MudText Align="Align.Center">@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
                         @if (ViewModel.NextShips is not null)
@@ -299,33 +299,50 @@
 
     private async Task OnShareBuildClicked()
     {
-        DialogOptions options = new()
+        bool image = true;
+        if (image)
         {
-            NoHeader = true,
-        };
-        var parameters = new DialogParameters
+            DialogOptions options = new()
+            {
+                NoHeader = true,
+                MaxWidth = MaxWidth.Large,
+            };
+            var parameters = new DialogParameters
+            {
+                ["ShipBuildContainer"] = ShipBuildContainer.CreateNew(AppData.FindShipFromSummary(ViewModel.CurrentShip), ViewModel!.CreateBuild(buildName), null),
+            };
+            var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>("test", parameters, options);
+        }
+        else
         {
-            ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
-            ["BuildName"] = buildName,
-        };
-        var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
-        var result = await dialog.Result;
-        if (!result.Canceled && result.Data is BuildShareResult shareResult)
-        {
-            buildName = shareResult.BuildName;
-            var build = ViewModel!.CreateBuild(shareResult.BuildName);
-            var buildString = build.CreateShortStringFromBuild();
-            var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
+            DialogOptions options = new()
+            {
+                NoHeader = true,
+            };
+            var parameters = new DialogParameters
+            {
+                ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
+                ["BuildName"] = buildName,
+            };
+            var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
+            var result = await dialog.Result;
+            if (!result.Canceled && result.Data is BuildShareResult shareResult)
+            {
+                buildName = shareResult.BuildName;
+                var build = ViewModel!.CreateBuild(shareResult.BuildName);
+                var buildString = build.CreateShortStringFromBuild();
+                var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+                await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
+            }
         }
     }
     
     private async Task SaveBuildStringIntoLocal()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer() });
+        await BuildHelper.StoreBuildContainers(new() { CreateBuildHelperContainer() });
     }
 
-    public BuildHelper.BuildHelperContainer GetBuildHelperContainer()
+    public BuildHelper.BuildHelperContainer CreateBuildHelperContainer()
     {
         List<(string, float)>? modifiers = ViewModel?.UpgradePanelViewModel.GetModifierList();
         modifiers?.AddRange(ViewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
