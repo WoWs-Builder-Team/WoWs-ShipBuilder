@@ -25,8 +25,8 @@
                         <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ShipBuildContainer.Ship.Index}.png")" Style="@GetBackgroundFlag(ShipBuildContainer.Ship.ShipNation, ShipBuildContainer.Ship.Index)"/>
                         <MudStack Class="align-center">
                             <MudStack Row Class="align-center">
-                                <MudIcon Icon="@Helpers.GetIconFromClass(ShipBuildContainer.Ship.ShipClass, ShipBuildContainer.Ship.ShipCategory)" Size="Size.Medium" ViewBox="-1 0 24 10" Style="alignment-baseline: center"/>
-                                <MudText Typo="Typo.body2" Style="font-size: large" Align="Align.Center">
+                                <MudIcon Icon="@Helpers.GetIconFromClass(ShipBuildContainer.Ship.ShipClass, ShipBuildContainer.Ship.ShipCategory)" Size="Size.Medium" ViewBox="-1 0 24 10" Style="alignment: bottom"/>
+                                <MudText Typo="Typo.body2" Style="font-size: large; alignment: bottom;" Align="Align.Center">
                                     @ShipBuildContainer.Ship.Tier.ToTierString()
                                 </MudText>
                                 <MudText Typo="Typo.body2" Style="font-size: x-large">
@@ -104,11 +104,11 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="OpenSettingsDialog" Variant="Variant.Filled" Color="Color.Warning">
-            Settings
-        </MudButton>
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="OpenSettingsDialog" Variant="Variant.Filled" Color="Color.Warning">
+            Settings
         </MudButton>
         <MudButton Color="Color.Success" OnClick="SaveImage" Variant="Variant.Filled">
             <MudText Typo="Typo.button">
@@ -125,6 +125,9 @@
 
     [Parameter, EditorRequired]
     public ShipBuildContainer ShipBuildContainer { get; set; } = default!;
+    
+    [Parameter]
+    public Breakpoint Breakpoint { get; set; }
 
     private bool showModules;
     private bool showCaptainSkills = true;
@@ -139,7 +142,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
+        GetScreenSize();
         ViewModel = ShipBuildViewModel.Create(ShipBuildContainer);
     }
 
@@ -184,17 +187,17 @@
             ["ShowConsumables"] = showConsumables,
             ["ShowSignals"] = showSignals,
             ["TwoColumns"] = twoColumns,
+            ["Breakpoint"] = Breakpoint,
         };
-        var dialog = await DialogService.ShowAsync<BuildImageSettingsDialog>(string.Empty, parameters, options);
-        var result = await dialog.Result;
-        if (!result.Canceled && result.Data is bool[] shareResult)
+        var dialogResult = await (await DialogService.ShowAsync<BuildImageSettingsDialog>(string.Empty, parameters, options)).Result;
+        if (!dialogResult.Canceled && dialogResult.Data is bool[] result)
         {
-            showModules = shareResult[0];
-            showCaptainSkills = shareResult[1];
-            showUpgrades = shareResult[2];
-            showConsumables = shareResult[3];
-            showSignals = shareResult[4];
-            twoColumns = shareResult[5];
+            showModules = result[0];
+            showCaptainSkills = result[1];
+            showUpgrades = result[2];
+            showConsumables = result[3];
+            showSignals = result[4];
+            twoColumns = result[5];
         }
         StateHasChanged();
     }
@@ -210,6 +213,14 @@
             catch (JSDisconnectedException)
             {
             }
+        }
+    }
+    
+    private void GetScreenSize()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            twoColumns = false; 
         }
     }
 }

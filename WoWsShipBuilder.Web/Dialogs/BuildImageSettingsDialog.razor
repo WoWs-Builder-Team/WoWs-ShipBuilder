@@ -2,9 +2,10 @@
 
 <MudDialog>
     <DialogContent>
-        <MudSwitch @bind-Checked="@TwoColumns" Label="Two Columns" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@TwoColumns" Label="Two Columns" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="GetScreenSize()" @onclick="@SetLayoutLimitations"/>
+        <MudDivider Light DividerType="DividerType.FullWidth" Class="my-2"/>
         <MudSwitch @bind-Checked="@ShowModules" Label="Modules" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
-        <MudSwitch @bind-Checked="@ShowCaptainSkills" Label="Captain skills" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
+        <MudSwitch @bind-Checked="@ShowCaptainSkills" Label="Captain Skills" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
         <MudSwitch @bind-Checked="@ShowUpgrades" Label="Upgrades" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
         <MudSwitch @bind-Checked="@ShowConsumables" Label="Consumables" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
         <MudSwitch @bind-Checked="@ShowSignals" Label="Signals" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
@@ -25,6 +26,9 @@
 {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public Breakpoint Breakpoint { get; set; }
     
     [Parameter, EditorRequired]
     public bool ShowModules { get; set; }
@@ -60,5 +64,27 @@
             ShowSignals,
             TwoColumns,
         }));
+    }
+    
+    private bool GetScreenSize()
+    {
+        switch (Breakpoint)
+        {
+            case Breakpoint.Xs:
+            case Breakpoint.Sm:
+                TwoColumns = false;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void SetLayoutLimitations()
+    {
+        if (!TwoColumns)
+        {
+            ShowCaptainSkills = true;
+            ShowSignals = true;
+        }
     }
 }

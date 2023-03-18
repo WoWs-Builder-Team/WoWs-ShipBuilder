@@ -309,6 +309,7 @@
             };
             var parameters = new DialogParameters
             {
+                ["Breakpoint"] = Breakpoint,
                 ["ShipBuildContainer"] = ShipBuildContainer.CreateNew(AppData.FindShipFromSummary(ViewModel.CurrentShip), ViewModel!.CreateBuild(buildName), null),
             };
             var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>("test", parameters, options);
