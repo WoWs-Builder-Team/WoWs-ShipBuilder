@@ -1,0 +1,64 @@
+﻿@inject ILocalizer Localizer
+
+<MudDialog>
+    <DialogContent>
+        <MudSwitch @bind-Checked="@TwoColumns" Label="Two Columns" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowModules" Label="Modules" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowCaptainSkills" Label="Captain skills" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
+        <MudSwitch @bind-Checked="@ShowUpgrades" Label="Upgrades" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowConsumables" Label="Consumables" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
+        <MudSwitch @bind-Checked="@ShowSignals" Label="Signals" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+            @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
+        </MudButton>
+        <MudButton Color="Color.Success" OnClick="Confirm" Variant="Variant.Filled">
+            <MudText Typo="Typo.button">
+                Save
+            </MudText>
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+    
+    [Parameter, EditorRequired]
+    public bool ShowModules { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowCaptainSkills { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowUpgrades { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowConsumables { get; set; }
+    [Parameter, EditorRequired]
+    public bool ShowSignals { get; set; }
+    [Parameter, EditorRequired]
+    public bool TwoColumns { get; set; }
+    
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+    
+    private void Confirm()
+    {
+        if (TwoColumns)
+        {
+            ShowCaptainSkills = true;
+            ShowSignals = true;
+        }
+        MudDialog.Close(DialogResult.Ok(new []
+        {
+            ShowModules,
+            ShowCaptainSkills,
+            ShowUpgrades,
+            ShowConsumables,
+            ShowSignals,
+            TwoColumns,
+        }));
+    }
+}
