@@ -163,15 +163,7 @@
     {
         base.OnInitialized();
         CheckScreenSize();
-        if (AppSettings.WebAppSettings is not null)
-        {
-            twoColumns = AppSettings.WebAppSettings.BuildImageLayoutSettings[0];
-            showModules = AppSettings.WebAppSettings.BuildImageLayoutSettings[1];
-            showCaptainSkills = AppSettings.WebAppSettings.BuildImageLayoutSettings[2];
-            showUpgrades = AppSettings.WebAppSettings.BuildImageLayoutSettings[3];
-            showConsumables = AppSettings.WebAppSettings.BuildImageLayoutSettings[4];
-            showSignals = AppSettings.WebAppSettings.BuildImageLayoutSettings[5];
-        }
+        LoadAppSettings();
     }
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
@@ -311,6 +303,19 @@
             AppSettings.WebAppSettings.BuildImageLayoutSettings[3] = showUpgrades;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[4] = showConsumables;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
+        }
+    }
+    
+    private void LoadAppSettings()
+    {
+        if (AppSettings.WebAppSettings is not null)
+        {
+            twoColumns = AppSettings.WebAppSettings.BuildImageLayoutSettings[0];
+            showModules = AppSettings.WebAppSettings.BuildImageLayoutSettings[1];
+            showCaptainSkills = AppSettings.WebAppSettings.BuildImageLayoutSettings[2];
+            showUpgrades = AppSettings.WebAppSettings.BuildImageLayoutSettings[3];
+            showConsumables = AppSettings.WebAppSettings.BuildImageLayoutSettings[4];
+            showSignals = AppSettings.WebAppSettings.BuildImageLayoutSettings[5];
         }
     }
 
