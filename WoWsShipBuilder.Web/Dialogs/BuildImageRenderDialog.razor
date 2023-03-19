@@ -16,7 +16,7 @@
 @inject IJSRuntime Runtime
 @inject IDialogService DialogService
 
-<MudDialog Style="@GetDialogWidth()">
+<MudDialog Style="@GetDialogSize()">
     <DialogContent>
         <MudBreakpointProvider>
             <div id="image" class="pa-2" style="@GetImageWidth()">
@@ -254,7 +254,7 @@
         return "width: " + (twoColumns ? "944px;" : "544px;");
     }
     
-    private string GetDialogWidth()
+    private string GetDialogSize()
     {
         return "max-height: 100vh; max-width: " + (twoColumns ? "1000px;" : "600px;");
     }
