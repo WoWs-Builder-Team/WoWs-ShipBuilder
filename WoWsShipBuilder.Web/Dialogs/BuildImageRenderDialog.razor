@@ -16,10 +16,10 @@
 @inject IJSRuntime Runtime
 @inject IDialogService DialogService
 
-<MudDialog Style="@GetMudDialogStyle()">
+<MudDialog Style="@GetDialogWidth()">
     <DialogContent>
         <MudBreakpointProvider>
-            <div id="image" class="pa-2">
+            <div id="image" class="pa-2" style="@GetImageWidth()">
                 <MudStack Spacing="2">
                     <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
                         <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ShipBuildContainer.Ship.Index}.png")" Style="@GetBackgroundFlag(ShipBuildContainer.Ship.ShipNation, ShipBuildContainer.Ship.Index)"/>
@@ -33,9 +33,12 @@
                                     @Localizer.GetGameLocalization(ShipBuildContainer.Ship.Index + "_FULL").Localization
                                 </MudText>
                             </MudStack>
-                            <MudText Typo="Typo.body2" Style="font-size: medium">
-                                @Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization: @(!string.IsNullOrEmpty(ShipBuildContainer.Build?.BuildName) ? ShipBuildContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)
-                            </MudText>
+                            <MudStack Row AlignItems="AlignItems.Baseline">
+                                <MudText Style="text-overflow: ellipsis; overflow: hidden; font-size: medium; cursor: pointer;" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => EditBuildName())">
+                                    @Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization: @(!string.IsNullOrEmpty(BuildName) ? BuildName : ShipComparisonViewModel.DefaultBuildName)
+                                </MudText>
+                                <MudIcon id="editBuildNameIcon" Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => EditBuildName())" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                            </MudStack>
                         </MudStack>
                         <MudStack Row Spacing="0">
                             <MudHidden Breakpoint="Breakpoint.Always" Invert>
@@ -104,16 +107,23 @@
         </MudBreakpointProvider>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="Cancel" Color="Color.Error">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="OpenSettingsDialog" Variant="Variant.Filled" Color="Color.Warning">
+        <MudButton OnClick="@OnConfirm" Color="Color.Info">
+            Get Url
+        </MudButton>
+        @if (!ShortLinkDisabled)
+        {
+            <MudButton OnClick="@OnConfirmShortLink" Disabled="@string.IsNullOrWhiteSpace(BuildName)" Color="Color.Info">
+                Get Short-Link
+            </MudButton>
+        }
+        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Warning">
             Settings
         </MudButton>
-        <MudButton Color="Color.Success" OnClick="SaveImage" Variant="Variant.Filled">
-            <MudText Typo="Typo.button">
-                Save
-            </MudText>
+        <MudButton Color="Color.Success" OnClick="@SaveImage">
+            Save Imange
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -126,15 +136,20 @@
     [Parameter, EditorRequired]
     public ShipBuildContainer ShipBuildContainer { get; set; } = default!;
     
+    [Parameter, EditorRequired]
+    public string BuildName { get; set; } = default!;
+    
     [Parameter]
     public Breakpoint Breakpoint { get; set; }
+    
+    [Parameter]
+    public bool ShortLinkDisabled { get; set; }
 
     private bool showModules;
     private bool showCaptainSkills = true;
     private bool showUpgrades = true;
     private bool showConsumables = true;
     private bool showSignals = true;
-
     private bool twoColumns = true;
 
     private IJSObjectReference? module;
@@ -162,15 +177,86 @@
         MudDialog.Cancel();
     }
 
+    private async Task EditBuildName()
+    {
+        DialogOptions options = new()
+        {
+            NoHeader = true,
+        };
+        DialogParameters parameters = new()
+        {
+            ["BuildName"] = BuildName,
+        };
+        var result = await (await DialogService.ShowAsync<BuildNameDialog>(string.Empty, parameters, options)).Result;
+        if (!result.Canceled && result.Data is string buildName)
+        {
+            BuildName = buildName;
+        }
+    }
+    
     private async Task SaveImage()
     {
-        module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
-        await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(ShipBuildContainer.Ship.Index + "_FULL").Localization}_{(!string.IsNullOrEmpty(ShipBuildContainer.Build?.BuildName) ? ShipBuildContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}");
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+        
+        StateHasChanged();
+        
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
+            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(ShipBuildContainer.Ship.Index + "_FULL").Localization}_{BuildName}");
+            MudDialog.Close(BuildName);
+        }
+    }
+    
+    private async Task OnConfirm()
+    {
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+        
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            MudDialog.Close(new BuildShareResult(BuildName));   
+        }
     }
 
-    private string GetMudDialogStyle()
+    private async Task OnConfirmShortLink()
     {
-        return "max-height: 100vh; width: " + (twoColumns ? "1000px;" : "600px;");
+        if (string.IsNullOrWhiteSpace(BuildName))
+        {
+            await EditBuildName();
+        }
+        
+        if (!string.IsNullOrWhiteSpace(BuildName))
+        {
+            MudDialog.Close(new BuildShareResult(BuildName, true));
+        }
+    }
+    
+    private void GetScreenSize()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            twoColumns = false; 
+        }
+    }
+
+    private string GetImageWidth()
+    {
+        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
+        {
+            return string.Empty;
+        }
+        return "width: " + (twoColumns ? "944px;" : "544px;");
+    }
+    
+    private string GetDialogWidth()
+    {
+        return "max-height: 100vh; max-width: " + (twoColumns ? "1000px;" : "600px;");
     }
 
     private async Task OpenSettingsDialog()
@@ -199,7 +285,6 @@
             showSignals = result[4];
             twoColumns = result[5];
         }
-        StateHasChanged();
     }
 
     public async ValueTask DisposeAsync()
@@ -213,14 +298,6 @@
             catch (JSDisconnectedException)
             {
             }
-        }
-    }
-    
-    private void GetScreenSize()
-    {
-        if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
-        {
-            twoColumns = false; 
         }
     }
 }

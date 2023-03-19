@@ -299,42 +299,35 @@
 
     private async Task OnShareBuildClicked()
     {
-        bool image = true;
-        if (image)
+        DialogOptions options = new()
         {
-            DialogOptions options = new()
-            {
-                NoHeader = true,
-                MaxWidth = MaxWidth.Large,
-            };
-            var parameters = new DialogParameters
-            {
-                ["Breakpoint"] = Breakpoint,
-                ["ShipBuildContainer"] = ShipBuildContainer.CreateNew(AppData.FindShipFromSummary(ViewModel.CurrentShip), ViewModel!.CreateBuild(buildName), null),
-            };
-            var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>("test", parameters, options);
+            NoHeader = true,
+            CloseOnEscapeKey = true,
+        };
+        
+        var parameters = new DialogParameters
+        {
+            ["Breakpoint"] = Breakpoint,
+            ["ShipBuildContainer"] = ShipBuildContainer.CreateNew(AppData.FindShipFromSummary(ViewModel!.CurrentShip), ViewModel!.CreateBuild(buildName), null),
+            ["BuildName"] = buildName,
+            ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
+        };
+        
+        var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>(string.Empty , parameters, options);
+        var result = await dialog.Result;
+        
+        if (result is { Canceled: false, Data: BuildShareResult shareResult })
+        {
+            buildName = shareResult.BuildName;
+            var build = ViewModel!.CreateBuild(shareResult.BuildName);
+            var buildString = build.CreateShortStringFromBuild();
+            var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
+            await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
-        else
+        
+        if (result is { Canceled: false, Data: string name })
         {
-            DialogOptions options = new()
-            {
-                NoHeader = true,
-            };
-            var parameters = new DialogParameters
-            {
-                ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
-                ["BuildName"] = buildName,
-            };
-            var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
-            var result = await dialog.Result;
-            if (!result.Canceled && result.Data is BuildShareResult shareResult)
-            {
-                buildName = shareResult.BuildName;
-                var build = ViewModel!.CreateBuild(shareResult.BuildName);
-                var buildString = build.CreateShortStringFromBuild();
-                var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
-                await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
-            }
+            buildName = name;
         }
     }
     

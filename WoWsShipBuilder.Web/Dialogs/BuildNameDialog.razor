@@ -1,0 +1,34 @@
+﻿@inject ILocalizer Localizer
+
+<MudDialog>
+    <DialogContent>
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudTextField @bind-Value="BuildName" Label="Build Name" Immediate Placeholder="Enter build name"/>
+        </MudFocusTrap>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(BuildName)" Color="Color.Success">
+            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public string BuildName { get; set; } = default!;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void OnConfirm()
+    {
+        MudDialog.Close(BuildName);
+    }
+}
