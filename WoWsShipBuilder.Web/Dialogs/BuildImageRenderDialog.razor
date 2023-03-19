@@ -1,12 +1,10 @@
 ﻿@using Microsoft.Extensions.Options
-@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Utility
-
-@inherits ReactiveComponentBase<ShipBuildViewModel>
 
 @implements IAsyncDisposable
 
@@ -22,15 +20,15 @@
             <div id="image" class="pa-2" style="@GetImageWidth()">
                 <MudStack Spacing="2">
                     <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
-                        <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{ShipBuildContainer.Ship.Index}.png")" Style="@GetBackgroundFlag(ShipBuildContainer.Ship.ShipNation, ShipBuildContainer.Ship.Index)"/>
+                        <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{Ship.Index}.png")" Style="@GetBackgroundFlag(Ship.Nation, Ship.Index)"/>
                         <MudStack Class="align-center">
                             <MudStack Row Class="align-center">
-                                <MudIcon Icon="@Helpers.GetIconFromClass(ShipBuildContainer.Ship.ShipClass, ShipBuildContainer.Ship.ShipCategory)" Size="Size.Medium" ViewBox="-1 0 24 10" Style="alignment: bottom"/>
+                                <MudIcon Icon="@Helpers.GetIconFromClass(Ship.ShipClass, Ship.Category)" Size="Size.Medium" ViewBox="-1 0 24 10" Style="alignment: bottom"/>
                                 <MudText Typo="Typo.body2" Style="font-size: large; alignment: bottom;" Align="Align.Center">
-                                    @ShipBuildContainer.Ship.Tier.ToTierString()
+                                    @Ship.Tier.ToTierString()
                                 </MudText>
                                 <MudText Typo="Typo.body2" Style="font-size: x-large">
-                                    @Localizer.GetGameLocalization(ShipBuildContainer.Ship.Index + "_FULL").Localization
+                                    @Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization
                                 </MudText>
                             </MudStack>
                             <MudStack Row AlignItems="AlignItems.Baseline">
@@ -47,59 +45,56 @@
                             <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/ship-builder.svg")"/>
                         </MudStack>
                     </MudStack>
-                    @if (ViewModel is not null)
+                    @if (showModules)
                     {
-                        if (showModules)
-                        {
-                            <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel" IsBuildImage/>
-                        }
-                        if (twoColumns)
-                        {
-                            <MudStack Row Spacing="2">
-                                <MudStack Spacing="2" Style="width: 50%">
-                                    @if (showCaptainSkills)
-                                    {
-                                        <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip.ShipClass" IsBuildImage/>
-                                    }
-                                    @if (showUpgrades)
-                                    {
-                                        <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel" IsBuildImage/>
-                                    }
-                                </MudStack>
-                                <MudStack Spacing="2" Style="width: 50%">
-                                    @if (showSignals)
-                                    {
-                                        <div style="@((showConsumables ? "height: 83.13%;" : "height: 100%;") + "display: flex")">
-                                            <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel" IsBuildImage/>
-                                        </div>
-                                    }
-                                    @if (showConsumables)
-                                    {
-                                        <div style="height: 16.87%; display: flex">
-                                            <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel" IsBuildImage/>
-                                        </div>
-                                    }
-                                </MudStack>
+                        <ShipModulesSelector ViewModel="@ShipModuleViewModel" IsBuildImage/>
+                    }
+                    @if (twoColumns)
+                    {
+                        <MudStack Row Spacing="2">
+                            <MudStack Spacing="2" Style="width: 50%">
+                                @if (showCaptainSkills)
+                                {
+                                    <CaptainSkillSelector ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass" IsBuildImage/>
+                                }
+                                @if (showUpgrades)
+                                {
+                                    <ShipUpgradeSelector ViewModel="@UpgradePanelViewModel" IsBuildImage/>
+                                }
                             </MudStack>
-                        }
-                        else
+                            <MudStack Spacing="2" Style="width: 50%">
+                                @if (showSignals)
+                                {
+                                    <div style="@((showConsumables ? "height: 83.13%;" : "height: 100%;") + "display: flex")">
+                                        <SignalSelector ViewModel="@SignalSelectorViewModel" IsBuildImage/>
+                                    </div>
+                                }
+                                @if (showConsumables)
+                                {
+                                    <div style="height: 16.87%; display: flex">
+                                        <ConsumableSelector ViewModel="@ConsumableViewModel" IsBuildImage/>
+                                    </div>
+                                }
+                            </MudStack>
+                        </MudStack>
+                    }
+                    else
+                    {
+                        if (showCaptainSkills)
                         {
-                            if (showCaptainSkills)
-                            {
-                                <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel!.CurrentShip.ShipClass" IsBuildImage/>
-                            }
-                            if (showUpgrades)
-                            {
-                                <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel" IsBuildImage/>
-                            }
-                            if (showConsumables)
-                            {
-                                <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel" IsBuildImage/>
-                            }
-                            if (showSignals)
-                            {
-                                <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel" IsBuildImage/>
-                            }
+                            <CaptainSkillSelector ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass" IsBuildImage/>
+                        }
+                        if (showUpgrades)
+                        {
+                            <ShipUpgradeSelector ViewModel="@UpgradePanelViewModel" IsBuildImage/>
+                        }
+                        if (showConsumables)
+                        {
+                            <ConsumableSelector ViewModel="@ConsumableViewModel" IsBuildImage/>
+                        }
+                        if (showSignals)
+                        {
+                            <SignalSelector ViewModel="@SignalSelectorViewModel" IsBuildImage/>
                         }
                     }
                 </MudStack>
@@ -132,19 +127,28 @@
 {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
-
-    [Parameter, EditorRequired]
-    public ShipBuildContainer ShipBuildContainer { get; set; } = default!;
     
+    [Parameter, EditorRequired]
+    public ShipSummary Ship { get; set; } = default!;
     [Parameter, EditorRequired]
     public string BuildName { get; set; } = default!;
-    
+    [Parameter, EditorRequired]
+    public ShipModuleViewModel ShipModuleViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public CaptainSkillSelectorViewModel CaptainSkillSelectorViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public UpgradePanelViewModelBase UpgradePanelViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public ConsumableViewModel ConsumableViewModel { get; set; } = default!;
+    [Parameter, EditorRequired]
+    public SignalSelectorViewModel SignalSelectorViewModel { get; set; } = default!;
+
     [Parameter]
     public Breakpoint Breakpoint { get; set; }
-    
     [Parameter]
     public bool ShortLinkDisabled { get; set; }
-
+    
+    private IJSObjectReference? module;
     private bool showModules;
     private bool showCaptainSkills = true;
     private bool showUpgrades = true;
@@ -152,18 +156,14 @@
     private bool showSignals = true;
     private bool twoColumns = true;
 
-    private IJSObjectReference? module;
-    
     protected override void OnInitialized()
     {
         base.OnInitialized();
         GetScreenSize();
-        ViewModel = ShipBuildViewModel.Create(ShipBuildContainer);
     }
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
-    // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
         string imgName = shipIndex;
         if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
         {
@@ -206,7 +206,7 @@
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
-            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(ShipBuildContainer.Ship.Index + "_FULL").Localization}_{BuildName}");
+            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}");
             MudDialog.Close(BuildName);
         }
     }

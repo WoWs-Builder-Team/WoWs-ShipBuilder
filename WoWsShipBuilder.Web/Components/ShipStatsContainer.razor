@@ -307,10 +307,15 @@
         
         var parameters = new DialogParameters
         {
-            ["Breakpoint"] = Breakpoint,
-            ["ShipBuildContainer"] = ShipBuildContainer.CreateNew(AppData.FindShipFromSummary(ViewModel!.CurrentShip), ViewModel!.CreateBuild(buildName), null),
+            ["Ship"] = ViewModel!.CurrentShip,
             ["BuildName"] = buildName,
+            ["ShipModuleViewModel"] = ViewModel!.ShipModuleViewModel,
+            ["CaptainSkillSelectorViewModel"] = ViewModel!.CaptainSkillSelectorViewModel,
+            ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
+            ["ConsumableViewModel"] = ViewModel!.ConsumableViewModel,
+            ["SignalSelectorViewModel"] = ViewModel!.SignalSelectorViewModel,
             ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
+            ["Breakpoint"] = Breakpoint,
         };
         
         var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>(string.Empty , parameters, options);
