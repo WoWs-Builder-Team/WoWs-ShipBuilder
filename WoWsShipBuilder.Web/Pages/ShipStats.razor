@@ -31,7 +31,9 @@
                     <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Secondary"/>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.SsidChart" OnClick="@OpenBallisticCharts" Color="Color.Secondary"/>
+                    <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Secondary">
+                        <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -4 24 24"/>
+                    </MudIconButton>
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
                     <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
@@ -45,6 +47,8 @@
 </MudScrollToTop>
 
 @code {
+    
+    private const string DispersionAndBallisticChartsPath = @"<path d=""M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"" stroke-width="".053058""/>";
 
     private MudTabs mudTabs = default!;
 

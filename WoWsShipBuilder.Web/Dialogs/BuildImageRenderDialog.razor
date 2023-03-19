@@ -159,7 +159,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        GetScreenSize();
+        CheckScreenSize();
     }
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
@@ -237,7 +237,7 @@
         }
     }
     
-    private void GetScreenSize()
+    private void CheckScreenSize()
     {
         if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
         {
