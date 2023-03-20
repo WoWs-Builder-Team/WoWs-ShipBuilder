@@ -135,6 +135,8 @@
     [Parameter, EditorRequired]
     public string BuildName { get; set; } = default!;
     [Parameter, EditorRequired]
+    public string BuildString { get; set; } = default!;
+    [Parameter, EditorRequired]
     public ShipModuleViewModel ShipModuleViewModel { get; set; } = default!;
     [Parameter, EditorRequired]
     public CaptainSkillSelectorViewModel CaptainSkillSelectorViewModel { get; set; } = default!;
@@ -210,7 +212,7 @@
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
-            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}");
+            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             MudDialog.Close(BuildName);
         }
     }

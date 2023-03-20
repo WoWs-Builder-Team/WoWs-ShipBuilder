@@ -309,6 +309,7 @@
         {
             ["Ship"] = ViewModel!.CurrentShip,
             ["BuildName"] = buildName,
+            ["BuildString"] = ViewModel!.CreateBuild(buildName).CreateShortStringFromBuild(),
             ["ShipModuleViewModel"] = ViewModel!.ShipModuleViewModel,
             ["CaptainSkillSelectorViewModel"] = ViewModel!.CaptainSkillSelectorViewModel,
             ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
