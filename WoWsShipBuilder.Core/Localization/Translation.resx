@@ -1647,7 +1647,7 @@ You can use the Change builds button to manage the builds of single ships. You c
       <value>Show acceleration charts</value>
   </data>
   <data name="BuildStringInputDialog_EnterBuildString" xml:space="preserve">
-      <value>Enter build string</value>
+      <value>Enter build string or link</value>
   </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
       <value>Load Build</value>

@@ -56,7 +56,7 @@
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="buildName" Label="Build:" Immediate Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense"/>
+                        <MudTextField @bind-Value="buildName" Label="Build:" Immediate Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(ValidateBuildName))"/>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
@@ -308,8 +308,8 @@
         var parameters = new DialogParameters
         {
             ["Ship"] = ViewModel!.CurrentShip,
-            ["BuildName"] = buildName,
-            ["BuildString"] = ViewModel!.CreateBuild(buildName).CreateShortStringFromBuild(),
+            ["BuildName"] = buildName.Contains(';') ? string.Empty : buildName,
+            ["BuildString"] = ViewModel!.CreateBuild(buildName.Contains(';') ? string.Empty : buildName).CreateShortStringFromBuild(),
             ["ShipModuleViewModel"] = ViewModel!.ShipModuleViewModel,
             ["CaptainSkillSelectorViewModel"] = ViewModel!.CaptainSkillSelectorViewModel,
             ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
@@ -370,5 +370,15 @@
     public string GetBuildName()
     {
         return buildName;
+    }
+    
+    private string? ValidateBuildName(string buildStr)
+    {
+        if (string.IsNullOrWhiteSpace(buildStr))
+        {
+            return null;
+        }
+
+        return buildStr.Contains(';') ? "invalid character: '' ; ''" : null;
     }
 }

@@ -423,7 +423,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter build string.
+        ///   Looks up a localized string similar to Enter build string or link.
         /// </summary>
         public static string BuildStringInputDialog_EnterBuildString {
             get {

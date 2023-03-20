@@ -3,12 +3,12 @@
 <MudDialog>
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="BuildName" Label="Build Name" Immediate Placeholder="Enter build name"/>
+            <MudTextField @bind-Value="BuildName" Label="Build Name" Immediate Placeholder="Enter build name" Validation="@(new Func<string, string?>(ValidateBuildName))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(BuildName)" Color="Color.Success">
+        <MudButton OnClick="@OnConfirm" Disabled="!validBuildName" Color="Color.Success">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
         </MudButton>
     </DialogActions>
@@ -22,6 +22,8 @@
     [Parameter]
     public string BuildName { get; set; } = default!;
 
+    private bool validBuildName;
+
     private void Cancel()
     {
         MudDialog.Cancel();
@@ -30,5 +32,22 @@
     private void OnConfirm()
     {
         MudDialog.Close(BuildName);
+    }
+    
+    private string? ValidateBuildName(string buildName)
+    {
+        validBuildName = false;
+        if (string.IsNullOrWhiteSpace(buildName))
+        {
+            return null;
+        }
+
+        if (!buildName.Contains(';'))
+        {
+            validBuildName = true;
+            return null;
+        }
+
+        return "invalid character: '' ; ''";
     }
 }
