@@ -1,4 +1,4 @@
-﻿export async function downloadBuildImage(id, imgName, buildString, encodeBuild){
+﻿export async function downloadBuildImage (id, imgName, buildString, encodeBuild) {
     let img = "";
     await html2canvas(document.querySelector("#" + id), {
         backgroundColor: "#282828",
@@ -20,7 +20,7 @@
     d.click();
 }
 
-function encodeBuildString(canvas, buildString){
+function encodeBuildString (canvas, buildString) {
     const ctx = canvas.getContext("2d");
     const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = pixels.data;
