@@ -22,14 +22,17 @@
             <div id="image" class="pa-2" style="@GetImageWidth()">
                 <MudStack Spacing="2">
                     <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
-                        <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{Ship.Index}.png")" Style="@GetBackgroundFlag(Ship.Nation, Ship.Index)"/>
+                        <div style="align-self: start; width: 151px;">
+                            <MudImage Height="89" ObjectFit="ObjectFit.ScaleDown" Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{Ship.Index}.png")" Style="position: absolute; z-index: 10"/>
+                            <MudImage Height="89" Width="151" ObjectFit="ObjectFit.Cover" Src="@GetBackgroundFlag(Ship.Nation, Ship.Index)" Style="position: absolute; z-index: 9"/>
+                        </div>
                         <MudStack Class="align-center">
                             <MudStack Row Class="align-center">
-                                <MudIcon Icon="@Helpers.GetIconFromClass(Ship.ShipClass, Ship.Category)" Size="Size.Medium" ViewBox="-1 0 24 10" Style="alignment: bottom"/>
-                                <MudText Typo="Typo.body2" Style="font-size: large; alignment: bottom;" Align="Align.Center">
+                                <MudIcon Icon="@Helpers.GetIconFromClass(Ship.ShipClass, Ship.Category)" Size="Size.Medium" ViewBox="-1 -1 24 10" Style="align-self: center;"/>
+                                <MudText Typo="Typo.body2" Style="font-size: x-large; font-weight: bold; align-self: center;" Align="Align.Center">
                                     @Ship.Tier.ToTierString()
                                 </MudText>
-                                <MudText Typo="Typo.body2" Style="font-size: x-large">
+                                <MudText Typo="Typo.body2" Style="font-size: x-large; font-weight: bold;">
                                     @Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization
                                 </MudText>
                             </MudStack>
@@ -175,7 +178,7 @@
         {
             imgName = shipNation.ToString();
         }
-        return $"background-image: url(\"/assets/nation_flags/flag_{imgName}.png\"); background-size: cover";
+        return $"/assets/nation_flags/flag_{imgName}.png";
     }
 
     private void Cancel()
@@ -211,9 +214,8 @@
         
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
-            bool encodeBuildString = false;
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
-            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName, encodeBuildString);
+            await module.InvokeVoidAsync("downloadBuildImage", "image", $"{Localizer.GetGameLocalization(Ship.Index + "_FULL").Localization}_{BuildName}", BuildString[..(BuildString.LastIndexOf(';') + 1)] + BuildName);
             MudDialog.Close(BuildName);
         }
     }

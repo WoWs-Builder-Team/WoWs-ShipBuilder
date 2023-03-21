@@ -1,26 +1,26 @@
-﻿export async function downloadBuildImage (id, imgName, buildString, encodeBuild) {
+﻿export async function downloadBuildImage(id, imgName, buildString) {
     let img = "";
     await html2canvas(document.querySelector("#" + id), {
         backgroundColor: "#282828",
         useCORS: true,
         allowTaint: true,
-        ignoreElements: function( element ) {
-            if( 'editBuildNameIcon' === element.id ) {
+        scale: 1.8,
+        ignoreElements: function (element) {
+            if ('editBuildNameIcon' === element.id) {
                 return true;
-            }},
-    }).then( function( canvas ) {
-        if (encodeBuild) {
-            encodeBuildString(canvas, buildString);
-        }
+            }
+        },
+    }).then(function (canvas) {
+        encodeBuildString(canvas, buildString);
         img = canvas.toDataURL("image/png", 1.0);
-        });
+    });
     let d = document.createElement("a");
     d.href = img;
     d.download = imgName + ".png";
     d.click();
 }
 
-function encodeBuildString (canvas, buildString) {
+function encodeBuildString(canvas, buildString) {
     const ctx = canvas.getContext("2d");
     const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = pixels.data;
@@ -30,13 +30,13 @@ function encodeBuildString (canvas, buildString) {
     let pixelElementIndex = 0;
     let zeros = 0;
     for (let i = 0; i < data.length; i += 4) {
-        let red = data[i] - (data[i] % 2);
-        let green = data[i + 1] - (data[i + 1] % 2);
-        let blue = data[i + 2] - (data[i + 2] % 2);
+        let red = data[i] - Math.floor(data[i] % 2);
+        let green = data[i + 1] - Math.floor(data[i + 1] % 2);
+        let blue = data[i + 2] - Math.floor(data[i + 2] % 2);
         for (let n = 0; n < 3; n++) {
-            if (pixelElementIndex % 8 === 0) {
+            if (Math.floor(pixelElementIndex % 8) === 0) {
                 if (state === 'finishing' && zeros === 8) {
-                    if ((pixelElementIndex - 1) % 3 < 2) {
+                    if (Math.floor((pixelElementIndex - 1) % 3) < 2) {
                         data[i] = red;
                         data[i + 1] = green;
                         data[i + 2] = blue;
@@ -46,28 +46,27 @@ function encodeBuildString (canvas, buildString) {
                 }
                 if (charIndex >= buildString.length) {
                     state = 'finishing';
-                }
-                else {
-                    charValue = buildString[charIndex++];
+                } else {
+                    charValue = buildString[charIndex++].charCodeAt(0);
                 }
             }
             switch (pixelElementIndex % 3) {
                 case 0:
                     if (state === 'encoding') {
-                        red += charValue % 2;
-                        charValue /= 2;
+                        red += Math.floor(charValue % 2);
+                        charValue = Math.floor(charValue / 2);
                     }
                     break;
                 case 1:
                     if (state === 'encoding') {
-                        green += charValue % 2;
-                        charValue /= 2;
+                        green += Math.floor(charValue % 2);
+                        charValue = Math.floor(charValue / 2);
                     }
                     break;
                 case 2:
                     if (state === 'encoding') {
-                        blue += charValue % 2;
-                        charValue /= 2;
+                        blue += Math.floor(charValue % 2);
+                        charValue = Math.floor(charValue / 2);
                     }
                     data[i] = red;
                     data[i + 1] = green;
