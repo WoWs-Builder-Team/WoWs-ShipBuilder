@@ -43,7 +43,17 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
 
             PingerGun pingerGun;
-            var pingerUpgrade = shipConfiguration.First(c => c.UcType == ComponentType.Sonar);
+            var pingerUpgrade = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Sonar);
+            if (pingerUpgrade is null && ship.PingerGunList.Count is 1)
+            {
+                Logging.Logger.Warn("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available.", ship.Name);
+                return null;
+            }
+
+            if (pingerUpgrade is null)
+            {
+                throw new InvalidOperationException($"No sonar upgrade information found for ship {ship.Name} but there is more than one sonar module.");
+            }
 
             // Safe approach is necessary because data up until 0.11.9#1 does not include this data due to an issue in the data converter
             if (pingerUpgrade.Components.TryGetValue(ComponentType.Sonar, out string[]? pingerGunInfo))
