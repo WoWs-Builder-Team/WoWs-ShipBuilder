@@ -2,8 +2,10 @@
 
 <MudDialog>
     <DialogContent>
-        <MudSwitch @bind-Checked="@TwoColumns" Label="Two Columns" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="GetScreenSize()" @onclick="@SetLayoutLimitations"/>
-        <MudDivider Light DividerType="DividerType.FullWidth" Class="my-2"/>
+        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">FORMAT</MudText>
+        <MudSwitch @bind-Checked="@TwoColumns" Label="Large" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="GetScreenSize()" @onclick="@SetLayoutLimitations"/>
+        <MudDivider Light DividerType="DividerType.FullWidth" Class="my-3"/>
+        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-2">ELEMENTS</MudText>
         <MudSwitch @bind-Checked="@ShowModules" Label="Modules" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
         <MudSwitch @bind-Checked="@ShowCaptainSkills" Label="Captain Skills" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
         <MudSwitch @bind-Checked="@ShowUpgrades" Label="Upgrades" LabelPosition="LabelPosition.Start" Color="Color.Warning"/>
@@ -11,12 +13,12 @@
         <MudSwitch @bind-Checked="@ShowSignals" Label="Signals" LabelPosition="LabelPosition.Start" Color="Color.Warning" Disabled="TwoColumns"/>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Primary">
+        <MudButton OnClick="Cancel" Variant="Variant.Text" Color="Color.Primary">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
-        <MudButton Color="Color.Success" OnClick="Confirm" Variant="Variant.Filled">
+        <MudButton Color="Color.Success" OnClick="Confirm" Variant="Variant.Text">
             <MudText Typo="Typo.button">
-                Save
+                @Localizer.GetAppLocalization(nameof(Translation.Dialog_Save)).Localization
             </MudText>
         </MudButton>
     </DialogActions>
