@@ -10,6 +10,8 @@ namespace WoWsShipBuilder.Web.Utility;
 
 public static class Helpers
 {
+    private static readonly Random Random = new Random();
+
     public static string GetIconFromClass(ShipClass shipClass, ShipCategory category)
     {
         string path = ClassToPathHelper.GetSvgPathFromClass(shipClass);
@@ -83,5 +85,17 @@ public static class Helpers
         }
 
         return results;
+    }
+
+    public static bool IsAprilFool()
+    {
+        //For debugging
+        //return DateTime.Now.Minute > 30;
+        return DateTime.Now is {Month: 4, Day: 1};
+    }
+
+    public static string GenerateRandomColor()
+    {
+        return $"#{Random.Next(0x1000000):X6}";
     }
 }
