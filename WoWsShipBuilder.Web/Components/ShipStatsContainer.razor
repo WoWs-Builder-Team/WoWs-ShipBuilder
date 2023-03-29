@@ -61,7 +61,7 @@
                         {
                             foreach (var ship in ViewModel.NextShips)
                             {
-                                <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
+                                <MudStack key="@(ViewModel.CurrentShipIndex + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                         <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -107,7 +107,7 @@
             <MudItem xs="12" md="6" lg="8" xl="9">
                 @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
                 {
-                    <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringIntoLocal())"/>
+                    <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringToLocalStorage())"/>
                 }
             </MudItem>
         }
@@ -289,7 +289,7 @@
         }
     }
     
-    private async Task SaveBuildStringIntoLocal()
+    private async Task SaveBuildStringToLocalStorage()
     {
         await BuildHelper.StoreBuildContainers(new() { GetBuildContainer() });
     }

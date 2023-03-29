@@ -67,7 +67,6 @@
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
-            var indexes = shipIndexesFromUrl.Split(",").ToList();
             var buildContainers = await BuildHelper.RetrieveBuildContainers();
             List<BuildHelper.BuildHelperContainer>? buildList;
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
@@ -83,6 +82,7 @@
                 buildList = null;
             }
             
+            var indexes = shipIndexesFromUrl.Split(",").ToList();
             AddNewIndexes(indexes, buildList);
         }
         UpdateUrl();

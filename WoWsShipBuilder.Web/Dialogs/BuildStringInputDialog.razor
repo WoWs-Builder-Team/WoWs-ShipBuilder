@@ -1,11 +1,16 @@
 ﻿@using WoWsShipBuilder.Core.Builds
 @using System.Net
+@using System.Net.Http.Headers
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Web.LinkShortening
 @inject ILocalizer Localizer
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 
 <MudDialog Style="width: 600px">
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="buildString" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)).Localization" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))"/>
+            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
@@ -26,7 +31,7 @@
     [Parameter]
     public string SelectedShipIndex { get; set; } = default!;
     
-    private string buildString = string.Empty;
+    private string inputBuild = string.Empty;
 
     private bool validBuild;
 
@@ -37,18 +42,7 @@
 
     private void OnConfirm()
     {
-        string buildStr;
-        if (buildString.Contains("build="))
-        {
-            int index = buildString.IndexOf("build=", StringComparison.Ordinal);
-            buildStr = WebUtility.UrlDecode(buildString[(index + 6)..]);
-        }
-        else
-        {
-            buildStr = buildString;
-        }
-        
-        MudDialog.Close(buildStr.Trim());
+        MudDialog.Close(inputBuild.Trim());
     }
 
     private string? ValidateBuildString(string buildStr)
@@ -59,12 +53,44 @@
             return null;
         }
         
-        if (buildStr.Contains("share.wowssb.com"))
+        if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
         {
-            return "Short links are not supported";
+            //this allows you to set the settings so that we can get the redirect url
+            var handler = new HttpClientHandler
+            {
+                AllowAutoRedirect = false,
+            };
+
+            using HttpClient client = new(handler);
+            using HttpResponseMessage response = client.GetAsync(buildStr).Result;
+            using HttpContent content = response.Content;
+
+            //Read the response to see if we have the redirected url
+            string? redirectedUrl = null;
+            if (response.StatusCode == HttpStatusCode.Found)
+            {
+                HttpResponseHeaders headers = response.Headers;
+                if (headers.Location is not null)
+                {
+                    redirectedUrl = headers.Location.AbsoluteUri;
+                }
+            }
+            if (redirectedUrl is not null && QueryHelpers.ParseQuery(redirectedUrl).TryGetValue("build", out var buildString))
+            {
+                buildStr = buildString.ToString(); 
+            }
+            else
+            {
+                return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+            }
         }
-        
-        if (buildStr.Contains(";"))
+
+        if (QueryHelpers.ParseQuery(buildStr).TryGetValue("build", out var buildStringFromUrl))
+        {
+            buildStr = buildStringFromUrl.ToString();
+        }
+
+        if (buildStr.Contains(';'))
         {
             try
             {
@@ -72,37 +98,18 @@
                 if (SelectedShipIndex.Equals(build.ShipIndex))
                 {
                     validBuild = true;
+                    inputBuild = buildStr;
                     return null;
                 }
                 
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+                return $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
             }
             catch (FormatException)
             {
-                return "Invalid build";
+                return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
             }
         }
-        
-        if (buildStr.Contains("&build="))
-        {
-            int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
-            string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
-            try
-            {
-                var build = Build.CreateBuildFromString(decodedBuildString);
-                if (SelectedShipIndex.Equals(build.ShipIndex))
-                {
-                    validBuild = true;
-                    return null;
-                }
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-            }
-            catch (FormatException)
-            {
-                return "Invalid build";
-            }
-        }
-        
-        return "Invalid build";
+
+        return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
     }
 }

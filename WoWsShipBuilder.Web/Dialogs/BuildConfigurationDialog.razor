@@ -180,7 +180,7 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Class="mt-n1 mb-0">
-                                    <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="Paste build string" Variant="Variant.Outlined"/>
+                                    <MudTextField @bind-Value="currentBuildString" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
                                     <MudButton Disabled="@string.IsNullOrWhiteSpace(currentBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="() => ImportBuild(SelectedContainer.Ship)">
                                         Import
                                     </MudButton>
