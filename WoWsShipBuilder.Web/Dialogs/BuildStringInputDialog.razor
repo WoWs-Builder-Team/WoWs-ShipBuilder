@@ -1,16 +1,15 @@
 ﻿@using WoWsShipBuilder.Core.Builds
-@using System.Net
-@using System.Net.Http.Headers
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Web.LinkShortening
+@using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
 @inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 
 <MudDialog Style="width: 600px">
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))"/>
+            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate Validation="@(new Func<string, Task<string?>>(ValidateBuildString))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
@@ -33,6 +32,8 @@
     
     private string inputBuild = string.Empty;
 
+    private string inputBuildCache = string.Empty;
+
     private string buildString = string.Empty;
 
     private void Cancel()
@@ -45,9 +46,17 @@
         MudDialog.Close(buildString.Trim());
     }
 
-    private string? ValidateBuildString(string buildStr)
+    private async Task<string?> ValidateBuildString(string buildStr)
     {
+        if (buildStr.Equals(inputBuildCache))
+        {
+            // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
+            return null;
+        }
+        
+        inputBuildCache = buildStr;
         buildString = string.Empty;
+        
         if (string.IsNullOrWhiteSpace(buildStr))
         {
             return null;
@@ -55,30 +64,9 @@
         
         if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
         {
-            // this allows you to set the settings so that we can get the redirect url
-            var handler = new HttpClientHandler
-            {
-                AllowAutoRedirect = false,
-            };
-
-            var shortUrl = buildStr;
-            using HttpClient client = new(handler);
-            // ReSharper disable once AccessToDisposedClosure
-            using HttpResponseMessage response = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default).StartNew<Task<HttpResponseMessage>>(async () => await client.GetAsync(shortUrl).ConfigureAwait(false)).Unwrap().GetAwaiter().GetResult();
-            using HttpContent content = response.Content;
-
-            // Read the response to see if we have the redirected url
-            string? redirectedUrl = null;
-            if (response.StatusCode == HttpStatusCode.Found)
-            {
-                HttpResponseHeaders headers = response.Headers;
-                if (headers.Location is not null)
-                {
-                    redirectedUrl = headers.Location.AbsoluteUri;
-                }
-            }
+            string? longUrl = await Helpers.RetrieveLongUrl(buildStr);
             
-            if (redirectedUrl is not null && QueryHelpers.ParseQuery(redirectedUrl).TryGetValue("build", out var buildStrFromUrl))
+            if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
             {
                 buildStr = buildStrFromUrl.ToString(); 
             }
@@ -101,6 +89,11 @@
                 if (SelectedShipIndex.Equals(build.ShipIndex))
                 {
                     buildString = buildStr;
+                    
+                    await Task.Delay(1);
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    
                     return null;
                 }
                 
