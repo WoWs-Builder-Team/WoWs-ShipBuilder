@@ -34,7 +34,7 @@
 
     private string inputBuildCache = string.Empty;
     
-    private string? inputBuildValidationResultCache = null;
+    private string? inputBuildValidationResultCache;
 
     private string buildString = string.Empty;
 
@@ -94,6 +94,7 @@
                 {
                     buildString = buildStr;
                     
+                    // needed to update UI
                     await Task.Delay(1);
                     StateHasChanged();
                     await Task.Delay(1);
@@ -101,7 +102,7 @@
                     return null;
                 }
                 
-                inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";;
+                inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
                 return inputBuildValidationResultCache;
             }
             catch (FormatException)
