@@ -33,6 +33,8 @@
     private string inputBuild = string.Empty;
 
     private string inputBuildCache = string.Empty;
+    
+    private string? inputBuildValidationResultCache = null;
 
     private string buildString = string.Empty;
 
@@ -51,7 +53,7 @@
         if (buildStr.Equals(inputBuildCache))
         {
             // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
-            return null;
+            return inputBuildValidationResultCache;
         }
         
         inputBuildCache = buildStr;
@@ -59,7 +61,8 @@
         
         if (string.IsNullOrWhiteSpace(buildStr))
         {
-            return null;
+            inputBuildValidationResultCache = null;
+            return inputBuildValidationResultCache;
         }
         
         if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
@@ -72,7 +75,8 @@
             }
             else
             {
-                return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildValidationResultCache;
             }
         }
 
@@ -97,14 +101,17 @@
                     return null;
                 }
                 
-                return $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+                inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";;
+                return inputBuildValidationResultCache;
             }
             catch (FormatException)
             {
-                return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildValidationResultCache;
             }
         }
 
-        return Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+        inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+        return inputBuildValidationResultCache;
     }
 }
