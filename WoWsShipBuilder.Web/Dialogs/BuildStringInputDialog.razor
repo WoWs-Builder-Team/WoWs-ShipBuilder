@@ -17,7 +17,7 @@
         <MudButton OnClick="@Cancel">
             @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="!validBuild">
+        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(buildString))">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
         </MudButton>
     </DialogActions>
@@ -33,7 +33,7 @@
     
     private string inputBuild = string.Empty;
 
-    private bool validBuild;
+    private string buildString = string.Empty;
 
     private void Cancel()
     {
@@ -42,12 +42,12 @@
 
     private void OnConfirm()
     {
-        MudDialog.Close(inputBuild.Trim());
+        MudDialog.Close(buildString.Trim());
     }
 
     private string? ValidateBuildString(string buildStr)
     {
-        validBuild = false;
+        buildString = string.Empty;
         if (string.IsNullOrWhiteSpace(buildStr))
         {
             return null;
@@ -55,17 +55,19 @@
         
         if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
         {
-            //this allows you to set the settings so that we can get the redirect url
+            // this allows you to set the settings so that we can get the redirect url
             var handler = new HttpClientHandler
             {
                 AllowAutoRedirect = false,
             };
 
+            var shortUrl = buildStr;
             using HttpClient client = new(handler);
-            using HttpResponseMessage response = client.GetAsync(buildStr).Result;
+            // ReSharper disable once AccessToDisposedClosure
+            using HttpResponseMessage response = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default).StartNew<Task<HttpResponseMessage>>(async () => await client.GetAsync(shortUrl).ConfigureAwait(false)).Unwrap().GetAwaiter().GetResult();
             using HttpContent content = response.Content;
 
-            //Read the response to see if we have the redirected url
+            // Read the response to see if we have the redirected url
             string? redirectedUrl = null;
             if (response.StatusCode == HttpStatusCode.Found)
             {
@@ -75,9 +77,10 @@
                     redirectedUrl = headers.Location.AbsoluteUri;
                 }
             }
-            if (redirectedUrl is not null && QueryHelpers.ParseQuery(redirectedUrl).TryGetValue("build", out var buildString))
+            
+            if (redirectedUrl is not null && QueryHelpers.ParseQuery(redirectedUrl).TryGetValue("build", out var buildStrFromUrl))
             {
-                buildStr = buildString.ToString(); 
+                buildStr = buildStrFromUrl.ToString(); 
             }
             else
             {
@@ -97,8 +100,7 @@
                 var build = Build.CreateBuildFromString(buildStr);
                 if (SelectedShipIndex.Equals(build.ShipIndex))
                 {
-                    validBuild = true;
-                    inputBuild = buildStr;
+                    buildString = buildStr;
                     return null;
                 }
                 
