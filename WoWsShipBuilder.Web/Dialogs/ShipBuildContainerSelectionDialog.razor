@@ -94,9 +94,9 @@
     [Parameter]
     public List<ShipBuildContainer>? ShipList { get; set; }
 
-    private readonly ObservableCollection<string> selectedShips = new();
+    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
 
-    bool processing = false;
+    bool processing;
 
     protected override void OnInitialized()
     {
@@ -122,9 +122,9 @@
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems![0] is string shipIndex)
+        if (e.NewItems![0] is ShipSelector.ShipSelectorContainer container)
         {
-            var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
+            var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(container.ShipIndex));
             var ship = AppData.FindShipFromSummary(shipSummary);
 
             var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);

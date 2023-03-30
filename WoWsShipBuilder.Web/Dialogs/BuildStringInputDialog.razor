@@ -1,0 +1,119 @@
+﻿@using WoWsShipBuilder.Core.Builds
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Web.LinkShortening
+@using WoWsShipBuilder.Web.Utility
+@inject ILocalizer Localizer
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
+
+<MudDialog Style="width: 600px">
+    <DialogContent>
+        <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
+            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate Validation="@(new Func<string, Task<string?>>(ValidateBuildString))"/>
+        </MudFocusTrap>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@Cancel">
+            @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(buildString))">
+            @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public string SelectedShipIndex { get; set; } = default!;
+    
+    private string inputBuild = string.Empty;
+
+    private string inputBuildCache = string.Empty;
+    
+    private string? inputBuildValidationResultCache;
+
+    private string buildString = string.Empty;
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void OnConfirm()
+    {
+        MudDialog.Close(buildString.Trim());
+    }
+
+    private async Task<string?> ValidateBuildString(string buildStr)
+    {
+        if (buildStr.Equals(inputBuildCache))
+        {
+            // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
+            return inputBuildValidationResultCache;
+        }
+        
+        inputBuildCache = buildStr;
+        buildString = string.Empty;
+        
+        if (string.IsNullOrWhiteSpace(buildStr))
+        {
+            inputBuildValidationResultCache = null;
+            return inputBuildValidationResultCache;
+        }
+        
+        if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
+        {
+            string? longUrl = await Helpers.RetrieveLongUrl(buildStr);
+            
+            if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
+            {
+                buildStr = buildStrFromUrl.ToString(); 
+            }
+            else
+            {
+                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildValidationResultCache;
+            }
+        }
+
+        if (QueryHelpers.ParseQuery(buildStr).TryGetValue("build", out var buildStringFromUrl))
+        {
+            buildStr = buildStringFromUrl.ToString();
+        }
+
+        // this is needed to avoid executing the try/catch even when we already know it is going to fail and so get a better performance
+        if (buildStr.Contains(';'))
+        {
+            try
+            {
+                var build = Build.CreateBuildFromString(buildStr);
+                if (SelectedShipIndex.Equals(build.ShipIndex))
+                {
+                    buildString = buildStr;
+                    
+                    // needed to update UI
+                    await Task.Delay(1);
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    
+                    return null;
+                }
+                
+                inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+                return inputBuildValidationResultCache;
+            }
+            catch (FormatException)
+            {
+                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildValidationResultCache;
+            }
+        }
+
+        inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+        return inputBuildValidationResultCache;
+    }
+}

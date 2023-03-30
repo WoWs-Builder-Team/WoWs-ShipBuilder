@@ -5,15 +5,15 @@
     <DialogContent>
         <MudText Typo="Typo.body1">@Localizer.SimpleAppLocalization(nameof(Translation.Build_EnterBuildName))</MudText>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="buildName" Label="Build Name" Immediate/>
+            <MudTextField @bind-Value="BuildName" Label="Build Name" Immediate/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyUrl))</MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@string.IsNullOrWhiteSpace(BuildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyUrl))</MudButton>
         @if (!ShortLinkDisabled)
         {
-            <MudButton OnClick="@OnConfirmShortLink" Disabled="@string.IsNullOrWhiteSpace(buildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyShortUrl))</MudButton>
+            <MudButton OnClick="@OnConfirmShortLink" Disabled="@string.IsNullOrWhiteSpace(BuildName)">@Localizer.SimpleAppLocalization(nameof(Translation.Build_CopyShortUrl))</MudButton>
         }
     </DialogActions>
 </MudDialog>
@@ -25,8 +25,9 @@
     
     [Parameter]
     public bool ShortLinkDisabled { get; set; }
-    
-    private string buildName = string.Empty;
+
+    [Parameter]
+    public string BuildName { get; set; } = default!;
 
     private void Cancel()
     {
@@ -35,11 +36,11 @@
 
     private void OnConfirm()
     {
-        MudDialog.Close(new BuildShareResult(buildName));
+        MudDialog.Close(new BuildShareResult(BuildName));
     }
 
     private void OnConfirmShortLink()
     {
-        MudDialog.Close(new BuildShareResult(buildName, true));
+        MudDialog.Close(new BuildShareResult(BuildName, true));
     }
 }

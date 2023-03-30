@@ -1646,4 +1646,28 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Show acceleration charts</value>
   </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>Enter build string or link</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>Load Build</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>Go to ships page</value>
+  </data>
+  <data name="ShipStats_ShowInCharts" xml:space="preserve">
+      <value>Show in Charts</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>Invalid build</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>Incompatibility</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>Selected ship</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>Ship in the build</value>
+  </data>
 </root>

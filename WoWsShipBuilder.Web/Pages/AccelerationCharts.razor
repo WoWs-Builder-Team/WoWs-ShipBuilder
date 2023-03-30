@@ -113,7 +113,7 @@
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartAsync();
 
-            var buildContainers = await BuildHelper.LoadBuildContainers();
+            var buildContainers = await BuildHelper.RetrieveBuildContainers();
 
             if (buildContainers is not null)
             {

@@ -423,6 +423,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter build string or link.
+        /// </summary>
+        public static string BuildStringInputDialog_EnterBuildStringOrLink {
+            get {
+                return ResourceManager.GetString("BuildStringInputDialog_EnterBuildStringOrLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -3603,6 +3612,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show in Charts.
+        /// </summary>
+        public static string ShipStats_ShowInCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowInCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Launchers Angles.
         /// </summary>
         public static string ShipStats_ShowLaunchersAngles {
@@ -4486,6 +4504,42 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incompatibility.
+        /// </summary>
+        public static string Validation_Incompatibility {
+            get {
+                return ResourceManager.GetString("Validation_Incompatibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid build.
+        /// </summary>
+        public static string Validation_InvalidBuild {
+            get {
+                return ResourceManager.GetString("Validation_InvalidBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected ship.
+        /// </summary>
+        public static string Validation_SelectedShip {
+            get {
+                return ResourceManager.GetString("Validation_SelectedShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship in the build.
+        /// </summary>
+        public static string Validation_ShipInBuild {
+            get {
+                return ResourceManager.GetString("Validation_ShipInBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical.
         /// </summary>
         public static string VerticalPlane {
@@ -4546,6 +4600,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string WebApp_ExpanderSettingHeader {
             get {
                 return ResourceManager.GetString("WebApp_ExpanderSettingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to ships page.
+        /// </summary>
+        public static string WebApp_GoToShipsPage {
+            get {
+                return ResourceManager.GetString("WebApp_GoToShipsPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Build.
+        /// </summary>
+        public static string WebApp_LoadBuild {
+            get {
+                return ResourceManager.GetString("WebApp_LoadBuild", resourceCulture);
             }
         }
         

@@ -2,8 +2,14 @@
 @using WoWsShipBuilder.Core.DataProvider
 @using System.Globalization
 @using System.Collections.ObjectModel
+@using System.Net
+@using DynamicData
 @using WoWsShipBuilder.Core.Localization
+@using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Web.Dialogs
 @inject ILocalizer Localizer
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <MudGrid Justify="Justify.Center" Spacing="2">
     <MudItem xs="6" md="3">
@@ -56,7 +62,7 @@
                 <MudVirtualize IsEnabled="true" Items="@filteredSummaryList" Context="pair">
                     <MudListItem Style="text-align: center" Value="@pair.Value.Index">
                         <MudText Color="Color.Secondary">
-                            @(pair.Key)
+                            @pair.Key
                         </MudText>
                     </MudListItem>
                 </MudVirtualize>
@@ -68,20 +74,39 @@
         <MudItem xs="12" md="4">
             <MudButton StartIcon="@Icons.Outlined.Cancel" Color="Color.Primary" DisableElevation="true" FullWidth Style="height: 14.6%; outline: inherit" Class="mt-4 mb-2" Variant="Variant.Filled" OnClick="RemoveAllShips" >Clear all</MudButton>
             <MudPaper Outlined="true" Style="height: 300px; max-height: 300px; overflow: auto">
-                @if (SelectedShips.Any())
-                {
-                    @if (MultiSelect)
+                <MudList Style="max-height: 300px;" Dense>
+                    @if (!SelectedShips.Any())
                     {
-                        @foreach (var ship in SelectedShips)
+                        <MudListItem>
+                            <MudText Color="Color.Primary" Align="Align.Center">
+                                @Localizer.GetAppLocalization(Translation.ShipAndShellsSelectionDialog_NoShipSelected).Localization
+                            </MudText>
+                        </MudListItem>
+                    }
+                    else
+                    {
+                        foreach (var shipContainer in SelectedShips)
                         {
-                            <MudChip Text="@Localizer.GetGameLocalization(ship + "_FULL").Localization" Label="true" OnClose="@(() => RemoveShip(ship))"/>
+                            <MudListItem key="@shipContainer.Id">
+                                <MudStack Style="align-items: stretch" Class="mt-n2">
+                                    <MudStack Row Justify="Justify.SpaceBetween">
+                                        <MudText>
+                                            @Localizer.GetGameLocalization(shipContainer.ShipIndex + "_FULL").Localization
+                                        </MudText>
+                                        <MudIcon Icon="@Icons.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
+                                    </MudStack>
+                                    <MudStack Row AlignItems="AlignItems.Baseline">
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuildString(shipContainer))">
+                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(GetBuildName(shipContainer.BuildString)) ? GetBuildName(shipContainer.BuildString) : ShipComparisonViewModel.DefaultBuildName))
+                                        </MudText>
+                                        <MudIcon Size="Size.Small" Icon="@Icons.Filled.Edit" @onclick="@(_ => AddBuildString(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                    </MudStack>
+                                </MudStack>
+                                <MudDivider Class="mt-1"/>
+                            </MudListItem>
                         }
                     }
-                }
-                else
-                {
-                    <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5" Style="position: relative; top: 50%; transform: translateY(-50%);">No ship selected</MudText>
-                }
+                </MudList>
             </MudPaper>
         </MudItem>
     }
@@ -91,7 +116,7 @@
 {
 
     [Parameter]
-    public IList<string> SelectedShips { get; set; } = default!;
+    public IList<ShipSelectorContainer> SelectedShips { get; set; } = default!;
 
     [Parameter]
     public bool MultiSelect { get; set; } = true;
@@ -225,9 +250,9 @@
         return result;
     }
 
-    private void RemoveShip(string shipIndex)
+    private void RemoveShip(ShipSelectorContainer container)
     {
-        SelectedShips.Remove(shipIndex);
+        SelectedShips.Remove(container);
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
 #pragma warning restore BL0005
@@ -235,14 +260,14 @@
 
     private void AddShip(object? obj)
     {
-        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Contains(shipIndex)) return;
+        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.ShipIndex.Equals(shipIndex))) return;
         if (MultiSelect)
         {
-            SelectedShips.Add(shipIndex);
+            SelectedShips.Add(new(Guid.NewGuid(), shipIndex, null));
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
-            SelectedShips.Add(shipIndex);
+            SelectedShips.Add(new(Guid.NewGuid(), shipIndex, null));
         }
         if (AllowCopies)
         {
@@ -259,4 +284,31 @@
         mudList.SelectedValue = null;
 #pragma warning restore BL0005
     }
+
+    private string? GetBuildName(string? buildString)
+    {
+        if (buildString == null)
+        {
+            return null;
+        }
+        
+        var index = buildString.LastIndexOf(';');
+        return index != -1 ? buildString[(index + 1)..] : null;
+    }
+    
+    private async Task AddBuildString(ShipSelectorContainer ship)
+    {
+        var parameters = new DialogParameters
+        {
+            ["SelectedShipIndex"] = ship.ShipIndex,
+        };
+        var dialog = DialogService.Show<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled && result.Data is string buildStr)
+        {
+            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { BuildString = buildStr });
+        }
+    }
+
+    public sealed record ShipSelectorContainer(Guid Id, string ShipIndex, string? BuildString);
 }

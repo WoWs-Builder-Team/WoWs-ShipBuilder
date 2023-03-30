@@ -3,22 +3,37 @@
 @using WoWsShipBuilder.Web.Utility
 @using DynamicData
 @using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Web.Services
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
+@inject BuildHelper BuildHelper
 
 <PageTitle>Ship stats</PageTitle>
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive AddTab="@OpenAddDialogAsync" CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
-        @foreach (var shipIndex in shipIndexes)
-        {
-            <MudTabPanel Style="@(GetStyle(shipIndex))" Text="@Localizer.GetGameLocalization(shipIndex + "_FULL").Localization" Tag="@shipIndex" ID="@shipIndex" @key="@indexIdMapper[shipIndex]">
-                <ShipStatsContainer ShipIndex="@shipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@shipBuildMapper.GetValueOrDefault(shipIndex, null)"/>
-            </MudTabPanel>
-        }
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+        <ChildContent>
+            @foreach (var container in shipContainers)
+            {
+                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@indexIdMapper[container.Id]">
+                    <ShipStatsContainer @ref="shipStatsContainerCache[container.Id]" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                </MudTabPanel>
+            }
+        </ChildContent>
+        <Header>
+            <MudStack Row>
+                <MudDivider Vertical/>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync"/>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInCharts).Localization" Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllToCharts"/>
+                </MudTooltip>
+            </MudStack>
+        </Header>
     </MudDynamicTabs>
 </MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
@@ -29,62 +44,77 @@
 
     private MudTabs mudTabs = default!;
 
-    private readonly List<string> shipIndexes = new();
+    private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
 
-    private readonly Dictionary<string, string?> shipBuildMapper = new();
+    private readonly Dictionary<Guid, ShipStatsContainer> shipStatsContainerCache = new();
+
+    private string shipIndexesFromUrl = default!;
+
+    private string shipBuildFromUrl = default!;
 
     private bool updateTab;
 
-    private string selectedTabId = string.Empty;
+    private Guid selectedTabId;
 
     private int idCount;
 
-    private readonly Dictionary<string, string> indexIdMapper = new();
+    private readonly Dictionary<Guid, string> indexIdMapper = new();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        NavManager.TryGetQueryString("shipIndexes", out string ships);
-        NavManager.TryGetQueryString("build", out string buildString);
-        if (!string.IsNullOrWhiteSpace(ships))
+        NavManager.TryGetQueryString("shipIndexes", out shipIndexesFromUrl);
+        NavManager.TryGetQueryString("build", out shipBuildFromUrl);
+        if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
-            string[] indexes = ships.Split(",");
-            shipBuildMapper[indexes[0]] = buildString;
-            AddNewIndexes(indexes);
+            var buildContainers = await BuildHelper.RetrieveBuildContainers();
+            List<BuildHelper.BuildHelperContainer>? buildList;
+            if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
+            {
+                buildList = new() { new(shipIndexesFromUrl, shipBuildFromUrl, null, null) };
+            }
+            else if (buildContainers is not null)
+            {
+                buildList = buildContainers;
+            }
+            else
+            {
+                buildList = null;
+            }
+            
+            var indexes = shipIndexesFromUrl.Split(",").ToList();
+            AddNewIndexes(indexes, buildList);
         }
         UpdateUrl();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
+        base.OnAfterRender(firstRender);
         if (!updateTab) return;
         mudTabs.ActivatePanel(selectedTabId, true);
         updateTab = false;
         StateHasChanged();
     }
 
-    private bool OnShipIndexChanged(string? oldIndex, string newIndex)
+    private bool OnShipIndexChanged(Guid? oldId, string newShipIndex)
     {
         var update = false;
-        if (!indexIdMapper.ContainsKey(newIndex))
+        if (oldId is not null)
         {
-            if (oldIndex is not null)
-            {
-                shipIndexes.Replace(oldIndex, newIndex);
-                shipBuildMapper.Remove(oldIndex);
-                indexIdMapper[newIndex] = indexIdMapper[oldIndex];
-                indexIdMapper.Remove(oldIndex);
-                update = true;
-            }
-            else
-            {
-                shipIndexes.Add(newIndex);
-                indexIdMapper[newIndex] = (idCount++).ToString();
-            }
-            UpdateUrl();
+            var ship = shipContainers.First(x => x.Id.Equals(oldId));
+            shipContainers.Replace(ship, ship with { ShipIndex = newShipIndex, BuildString = null });
+            selectedTabId = (Guid) oldId;
+            update = true;
         }
-
-        selectedTabId = newIndex;
+        else
+        {
+            var newId = Guid.NewGuid();
+            shipContainers.Add(new(newId, newShipIndex, null));
+            indexIdMapper[newId] = (idCount++).ToString();
+            selectedTabId = newId;
+        }
+        UpdateUrl();
         updateTab = true;
         StateHasChanged();
         return update;
@@ -92,25 +122,26 @@
 
     private void RemoveTab(MudTabPanel panel)
     {
-        string shipIndex = (string)panel.Tag;
-        int index = shipIndexes.IndexOf(shipIndex);
-        shipIndexes.Remove(shipIndex);
-        indexIdMapper.Remove(shipIndex);
-        shipBuildMapper.Remove(shipIndex);
+        var id = (Guid)panel.Tag;
+        var ship = shipContainers.First(x => x.Id.Equals(id));
+        int index = shipContainers.IndexOf(ship);
+        shipContainers.Remove(ship);
+        indexIdMapper.Remove(id);
+        shipStatsContainerCache.Remove(id);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
-    // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
-    // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
-    // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
-    // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
-            if (shipIndexes.Count > index && index != -1)
+            // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
+            // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
+            // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
+            // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
+            if (shipContainers.Count > index && index != -1)
             {
-                mudTabs.ActivatePanel(shipIndexes[index]);
+                mudTabs.ActivatePanel(shipContainers[index].Id);
             }
-            else if (shipIndexes.Count > 0)
+            else if (shipContainers.Count > 0)
             {
-                mudTabs.ActivatePanel(shipIndexes.Last());
+                mudTabs.ActivatePanel(shipContainers.Last().Id);
             }
         }
         UpdateUrl();
@@ -125,10 +156,11 @@
             DisableBackdropClick = false,
         };
         var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
-        if (!result.Cancelled && result.Data is List<string> newIndexes)
+        if (!result.Cancelled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
         {
-            AddNewIndexes(newIndexes);
-            selectedTabId = newIndexes.FirstOrDefault() ?? selectedTabId;
+            AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
+            selectedTabId = shipContainers.Last().Id;
+            AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildHelper.BuildHelperContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
             updateTab = true;
 
             UpdateUrl();
@@ -136,30 +168,59 @@
         }
     }
 
-    private void AddNewIndexes(IEnumerable<string> indexList)
+    private void AddNewIndexes(List<string> indexList, List<BuildHelper.BuildHelperContainer>? buildContainers)
     {
-        List<string> newIndexes = indexList.ToList();
-        newIndexes.Remove(shipIndexes);
-        shipIndexes.AddRange(newIndexes);
-        foreach (string newIndex in newIndexes)
+        List<ShipSelector.ShipSelectorContainer> newShips = new();
+        if (buildContainers is null)
         {
-            indexIdMapper[newIndex] = (idCount++).ToString();
+            foreach (var index in indexList)
+            {
+                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null);
+                newShips.Add(newShip);
+                indexIdMapper[newShip.Id] = (idCount++).ToString();
+                shipStatsContainerCache.Add(newShip.Id, default!);
+            }
         }
+        else
+        {
+            foreach (var container in buildContainers)
+            {
+                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString);
+                newShips.Add(newShip);
+                indexIdMapper[newShip.Id] = (idCount++).ToString();
+                shipStatsContainerCache.Add(newShip.Id, default!);
+            }
+        }
+        
+        shipContainers.AddRange(newShips);
+    }
+
+    private async Task SendAllToCharts()
+    {
+        List<BuildHelper.BuildHelperContainer> buildContainers = new();
+        List<string> shipIndexes = new();
+        foreach (var shipStatsContainer in shipStatsContainerCache)
+        {
+            buildContainers.Add(shipStatsContainer.Value.GetBuildContainer());
+            shipIndexes.Add(shipStatsContainer.Value.ShipIndex);
+        }
+        
+        await BuildHelper.StoreBuildContainers(buildContainers);
+        NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
     }
 
     private void UpdateUrl()
     {
-        var shipsString = string.Join(",", shipIndexes);
+        var shipsString = string.Join(",", shipContainers.Select(x => x.ShipIndex));
         NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
     }
 
-    private string GetStyle(string shipIndex)
+    private string GetStyle(Guid id)
     {
-        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(shipIndex))
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(id))
         {
             return " background-color: rgba(0, 0, 0, 0.4);";
         }
         return string.Empty;
     }
-
 }

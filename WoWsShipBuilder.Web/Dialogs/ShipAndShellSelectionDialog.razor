@@ -2,7 +2,6 @@
 @using WoWsShipBuilder.Web.Utility
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
-@using DynamicData
 @using System.Linq
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
@@ -62,7 +61,7 @@
                                 </MudText>
                             }
                             <MudText Typo="Typo.caption" Class="my-1">
-                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {dataWrapper.ShipContainer.Build?.BuildName ?? ShipComparisonViewModel.DefaultBuildName}")
+                                @($"{Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(!string.IsNullOrWhiteSpace(dataWrapper.ShipContainer.Build?.BuildName) ? dataWrapper.ShipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName)}")
                             </MudText>
                             <MudDivider Light="true"/>
                         </MudItem>
@@ -119,7 +118,7 @@
     public List<ChartsDataWrapper> InputData { get; set; } = new();
     
     private readonly List<ChartsDataWrapper> dataWrappers = new();
-    private readonly ObservableCollection<string> selectedShips = new();
+    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
     private readonly Dictionary<Guid, Dictionary<string, List<string>>> disabledShells = new();
     private bool processing;
     
@@ -127,7 +126,6 @@
     {
         base.OnInitialized();
         dataWrappers.AddRange(InputData.Select(x => x with { SelectedShells = x.SelectedShells.ToDictionary(y => y.Key, y => y.Value) }));
-        selectedShips.AddRange(InputData.Select(x => x.ShipContainer.Ship.Index));
         selectedShips.CollectionChanged += SelectedShipsOnCollectionChanged;
         foreach (var wrapper in dataWrappers)
         {
@@ -143,9 +141,9 @@
         if (e.Action.Equals(NotifyCollectionChangedAction.Add) && e.NewItems is not null)
         {
             //manage newly added items
-            foreach (string ship in e.NewItems)
+            foreach (ShipSelector.ShipSelectorContainer ship in e.NewItems)
             {
-                AddWrapper(ship);
+                AddWrapper(ship.ShipIndex);
             }
 
             //Removed ships are managed by the RemoveShip method.
@@ -207,7 +205,6 @@
     private void RemoveShip(ChartsDataWrapper ship)
     {
         dataWrappers.Remove(ship);
-        selectedShips.Remove(ship.ShipContainer.Ship.Index);
     }
     
     private static List<ChartsDataWrapper> SetCompatibleModules(List<ChartsDataWrapper> wrappers)

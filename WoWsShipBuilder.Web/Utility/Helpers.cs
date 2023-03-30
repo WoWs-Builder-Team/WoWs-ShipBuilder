@@ -1,4 +1,5 @@
-﻿using DynamicData;
+﻿using System.Net;
+using DynamicData;
 using MudBlazor;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
@@ -75,6 +76,7 @@ public static class Helpers
             shipUpgrades.Add(shipUpgrade);
         }
     }
+  
     public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, List<ShipUpgrade> upgrades)
     {
         var results = new List<ShipUpgrade>();
@@ -87,11 +89,35 @@ public static class Helpers
         return results;
     }
 
+    public static async Task<string?> RetrieveLongUrl(string shortUrl)
+    {
+        // this allows you to set the settings so that we can get the redirect url
+        using HttpClient client = new(new HttpClientHandler
+        {
+            AllowAutoRedirect = false,
+        });
+        using var response = await client.GetAsync(shortUrl);
+        using var content = response.Content;
+
+        // Read the response to see if we have the redirected url
+        string? redirectedUrl = null;
+        if (response.StatusCode == HttpStatusCode.Found)
+        {
+            var headers = response.Headers;
+            if (headers.Location is not null)
+            {
+                redirectedUrl = headers.Location.AbsoluteUri;
+            }
+        }
+
+        return redirectedUrl;
+    }
+  
     public static bool IsAprilFool()
     {
         //For debugging
         //return DateTime.Now.Minute > 30;
-        return DateTime.Now is {Month: 4, Day: 1};
+        return DateTime.Now is { Month: 4, Day: 1 };
     }
 
     public static string GenerateRandomColor()
