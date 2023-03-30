@@ -78,7 +78,7 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         var timeForward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, forward, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
         var timeBackward = AccelerationHelper.CalculateAcceleration(ship.Index, hull, engine, ship.ShipClass, reverse, accelerationModifiers, speedBoostAccelerationModifiers).TimeForGear.Single();
 
-        bool isSub = hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
+        hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.Periscope, out decimal speedAtPeriscopeCoeff);
         hull.MaxSpeedAtBuoyancyStateCoeff.TryGetValue(SubsBuoyancyStates.DeepWater, out decimal speedAtMaxDepthCoeff);
 
         decimal maxSpeed = hull.MaxSpeed * (engine.SpeedCoef + 1) * maxSpeedModifier;
@@ -87,7 +87,7 @@ public partial record ManeuverabilityDataContainer : DataContainerBase
         decimal maxSpeedAtPeriscope = 0;
         decimal maxSpeedAtMaxDepth = 0;
 
-        if (isSub)
+        if (ship.ShipClass == ShipClass.Submarine)
         {
             maxSpeedOnSurface = maxSpeed * enlargedPropellerShaftSpeedModifier;
             maxSpeedAtPeriscope = maxSpeed * speedAtPeriscopeCoeff * enlargedPropellerShaftSpeedModifier;

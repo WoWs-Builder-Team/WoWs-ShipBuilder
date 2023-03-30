@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using WoWsShipBuilder.Web.Utility
 @namespace WoWsShipBuilder.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -26,7 +27,7 @@ Custom builds." property="og:description">
     <link rel="alternate" type="application/json+oembed" href="/oembed.json" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
-<body style="background-color: #282828">
+<body style="background-color: @(Helpers.IsAprilFool() ? Helpers.GenerateRandomColor() : "#282828")">
 @RenderBody()
 
 <span style="opacity: 0; height: 0;">
