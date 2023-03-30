@@ -2,12 +2,14 @@
 @using Prometheus
 @using WoWsShipBuilder.Core.Services
 @using System.Collections.Concurrent
-@using System.Net
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Extensions
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Other
+@using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
 
 @inherits ReactiveComponentBase<ShipBuildViewModel>
@@ -16,6 +18,7 @@
 @inject IMetricsService MetricsService
 @inject IHostEnvironment Environment
 @inject ISnackbar Snackbar
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 
 <MudDialog Style="overflow-y: auto; max-height: 100vh;">
     <DialogContent>
@@ -117,7 +120,7 @@
 
     private readonly ConcurrentDictionary<Guid, ShipBuildViewModel> vmCache = new();
 
-    private string currentBuildString = string.Empty;
+    private string inputBuildString = string.Empty;
 
     private readonly Dictionary<Guid, string> buildNameDictionary = new();
 
@@ -126,8 +129,12 @@
     private MudTabs desktopTabs = default!;
 
     private object selectedListValue = 0;
+
+    private string inputBuildStringCache = string.Empty;
     
-    private bool validBuildString;
+    private string? inputBuildStringValidationResultCache;
+
+    private string buildString = string.Empty;
 
     public BuildConfigurationDialog()
     {
@@ -183,8 +190,8 @@
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudStack Row="true" Class="mt-n1 mb-0">
-                                    <MudTextField @bind-Value="currentBuildString" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
-                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(currentBuildString) && !validBuildString)" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
+                                    <MudTextField @bind-Value="inputBuildString" Immediate Validation="@(new Func<string, Task<string?>>(ValidateBuildString))" Clearable="true" FullWidth="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Edit" Label="Alternative" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink))" Variant="Variant.Outlined"/>
+                                    <MudButton Disabled="@(string.IsNullOrWhiteSpace(buildString))" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Style="margin-top: 6px" OnClick="async () => await ImportBuild(SelectedContainer.Ship)">
                                         @Localizer.GetAppLocalization(Translation.BuildImport_Import).Localization
                                     </MudButton>
                                 </MudStack>
@@ -282,21 +289,11 @@
 
     private async Task ImportBuild(Ship ship)
     {
-        string buildStr;
-        if (currentBuildString.Contains("build="))
-        {
-            int index = currentBuildString.IndexOf("build=", StringComparison.Ordinal);
-            buildStr = WebUtility.UrlDecode(currentBuildString[(index + 6)..]);
-        }
-        else
-        {
-            buildStr = currentBuildString;
-        }
-        
         try
         {
-            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(buildStr), null));
-            currentBuildString = string.Empty;
+            ViewModel = LoadShipViewModel(ShipBuildContainer.CreateNew(ship, Build.CreateBuildFromString(buildString), null));
+            inputBuildString = string.Empty;
+            buildString = string.Empty;
             vmCache[SelectedContainer.Id] = ViewModel;
             Snackbar.Add("Build successfully imported", Severity.Success);
             await Task.Delay(1); // needed for the captain skill selector to rerender properly
@@ -317,63 +314,78 @@
         buildNameDictionary[SelectedContainer.Id] = string.IsNullOrEmpty(ViewModel!.BuildName) ? ShipComparisonViewModel.DefaultBuildName : ViewModel.BuildName;
         ViewModel = null;
         StateHasChanged();
-        currentBuildString = string.Empty;
+        inputBuildString = string.Empty;
         selectedTab = newIndex;
         UpdateViewModel();
     }
-    
-    private string? ValidateBuildString(string buildStr)
+
+    private async Task<string?> ValidateBuildString(string buildStr)
     {
-        validBuildString = false;
+        if (buildStr.Equals(inputBuildStringCache))
+        {
+            // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
+            return inputBuildStringValidationResultCache;
+        }
+        
+        inputBuildStringCache = buildStr;
+        buildString = string.Empty;
+        
         if (string.IsNullOrWhiteSpace(buildStr))
         {
-            return null;
+            inputBuildStringValidationResultCache = null;
+            return inputBuildStringValidationResultCache;
         }
         
-        if (buildStr.Contains("share.wowssb.com"))
+        if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
         {
-            return "Short links are not supported";
+            string? longUrl = await Helpers.RetrieveLongUrl(buildStr);
+            
+            if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
+            {
+                buildStr = buildStrFromUrl.ToString(); 
+            }
+            else
+            {
+                inputBuildStringValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildStringValidationResultCache;
+            }
         }
-        
-        if (buildStr.Contains(";"))
+
+        if (QueryHelpers.ParseQuery(buildStr).TryGetValue("build", out var buildStringFromUrl))
+        {
+            buildStr = buildStringFromUrl.ToString();
+        }
+
+        // this is needed to avoid executing the try/catch even when we already know it is going to fail and so get a better performance
+        if (buildStr.Contains(';'))
         {
             try
             {
                 var build = Build.CreateBuildFromString(buildStr);
                 if (SelectedContainer.Ship.Index.Equals(build.ShipIndex))
                 {
-                    validBuildString = true;
-                    return null;
+                    buildString = buildStr;
+                    
+                    // needed to update UI
+                    await Task.Delay(1);
+                    StateHasChanged();
+                    await Task.Delay(1);
+                    
+                    inputBuildStringValidationResultCache = null;
+                    return inputBuildStringValidationResultCache;
                 }
                 
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+                inputBuildStringValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
+                return inputBuildStringValidationResultCache;
             }
             catch (FormatException)
             {
-                return "Invalid build";
+                inputBuildStringValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+                return inputBuildStringValidationResultCache;
             }
         }
-        
-        if (buildStr.Contains("&build="))
-        {
-            int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
-            string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
-            try
-            {
-                var build = Build.CreateBuildFromString(decodedBuildString);
-                if (SelectedContainer.Ship.Index.Equals(build.ShipIndex))
-                {
-                    validBuildString = true;
-                    return null;
-                }
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedContainer.Ship.Index + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-            }
-            catch (FormatException)
-            {
-                return "Invalid build";
-            }
-        }
-        
-        return "Invalid build";
+
+        inputBuildStringValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+        return inputBuildStringValidationResultCache;
     }
 }

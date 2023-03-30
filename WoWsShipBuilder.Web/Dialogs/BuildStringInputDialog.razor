@@ -99,8 +99,9 @@
                     await Task.Delay(1);
                     StateHasChanged();
                     await Task.Delay(1);
-                    
-                    return null;
+
+                    inputBuildValidationResultCache = null;
+                    return inputBuildValidationResultCache;
                 }
                 
                 inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";

@@ -320,7 +320,7 @@
             if (shipIndexesFromUrl.Any())
             {
                 var buildContainers = await BuildHelper.RetrieveBuildContainers();
-                if (shellIndexFromUrl.Any() && buildContainers is not null)
+                if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();
                     foreach (var container in buildContainers)
