@@ -85,6 +85,7 @@
             buildStr = buildStringFromUrl.ToString();
         }
 
+        // this is needed to avoid executing the try/catch even when we already know it is going to fail and so get a better performance
         if (buildStr.Contains(';'))
         {
             try
