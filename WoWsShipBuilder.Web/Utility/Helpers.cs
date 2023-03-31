@@ -76,7 +76,7 @@ public static class Helpers
             shipUpgrades.Add(shipUpgrade);
         }
     }
-  
+
     public static List<ShipUpgrade> GetShipConfigurationFromBuild(IEnumerable<string> storedData, List<ShipUpgrade> upgrades)
     {
         var results = new List<ShipUpgrade>();
@@ -112,11 +112,11 @@ public static class Helpers
 
         return redirectedUrl;
     }
-  
+
     public static bool IsAprilFool()
     {
-        //For debugging
-        //return DateTime.Now.Minute > 30;
+        // For debugging
+        // Return DateTime.Now.Minute > 30;
         return DateTime.Now is { Month: 4, Day: 1 };
     }
 

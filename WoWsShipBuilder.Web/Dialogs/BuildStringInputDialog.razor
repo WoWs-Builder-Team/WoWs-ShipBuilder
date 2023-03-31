@@ -61,8 +61,7 @@
         
         if (string.IsNullOrWhiteSpace(buildStr))
         {
-            inputBuildValidationResultCache = null;
-            return inputBuildValidationResultCache;
+            return inputBuildValidationResultCache = null;
         }
         
         if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
@@ -75,8 +74,7 @@
             }
             else
             {
-                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
-                return inputBuildValidationResultCache;
+                return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
             }
         }
 
@@ -99,22 +97,18 @@
                     await Task.Delay(1);
                     StateHasChanged();
                     await Task.Delay(1);
-
-                    inputBuildValidationResultCache = null;
-                    return inputBuildValidationResultCache;
+                    
+                    return  inputBuildValidationResultCache = null;
                 }
                 
-                inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-                return inputBuildValidationResultCache;
+                return inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
             }
             catch (FormatException)
             {
-                inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
-                return inputBuildValidationResultCache;
+                return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
             }
         }
-
-        inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
-        return inputBuildValidationResultCache;
+        
+        return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
     }
 }
