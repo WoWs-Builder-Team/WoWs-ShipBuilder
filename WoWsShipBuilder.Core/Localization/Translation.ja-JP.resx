@@ -627,6 +627,9 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>最低速度</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>攻撃中隊のサイズ</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>中隊の機数</value>
   </data>
@@ -1504,6 +1507,57 @@
   <data name="BetaAccess_Duplicate" xml:space="preserve">
       <value>は既に有効になっています。</value>
   </data>
+  <data name="ShipStats_MaxSpeedTime" xml:space="preserve">
+      <value>最高速度到達時間</value>
+  </data>
+  <data name="ShipStats_ForwardMaxSpeedTime" xml:space="preserve">
+      <value>最大全速</value>
+  </data>
+  <data name="ShipStats_ReverseMaxSpeedTime" xml:space="preserve">
+      <value>後進</value>
+  </data>
+  <data name="AccelerationChart_Acceleration" xml:space="preserve">
+      <value>加速</value>
+  </data>
+  <data name="AccelerationChart_Time" xml:space="preserve">
+      <value>時間</value>
+  </data>
+  <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
+      <value>艦艇の追加/削除</value>
+  </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>ビルドを変更</value>
+  </data>
+  <data name="AccelerationChart_Explanation" xml:space="preserve">
+      <value>加速チャートの説明</value>
+  </data>
+  <data name="AccelerationChart_CustomDataTitle" xml:space="preserve">
+      <value>カスタムデータを追加</value>
+  </data>
+  <data name="ShipStats_EnginePower" xml:space="preserve">
+      <value>エンジン出力</value>
+  </data>
+  <data name="ShipStats_Tonnage" xml:space="preserve">
+      <value>トン数</value>
+  </data>
+  <data name="ShipStats_ForwardEngineUpTime" xml:space="preserve">
+      <value>前進時エンジン始動時間</value>
+  </data>
+  <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
+      <value>後進時エンジン始動時間</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>前進開始時のエンジンブースト</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>後進開始時のエンジンブースト倍率</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>前進開始時のエンジンブースト作動速度</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>後進開始時のエンジンブースト作動速度</value>
+  </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1558,6 +1612,15 @@
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>戦術反跳爆撃機</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>ビルド</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>ビルドを編集</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>艦艇が選択されていません</value>
+  </data>
   <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
       <value>ターゲット半径</value>
   </data>
@@ -1572,5 +1635,32 @@
   </data>
   <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
       <value>1回の進捗損失</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>加速チャートを表示</value>
+  </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>ビルド文字列またはリンクを入力してください</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>ビルドを読み込む</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>艦艇ページに移動</value>
+  </data>
+  <data name="ShipStats_ShowInCharts" xml:space="preserve">
+      <value>チャートに表示</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>無効なビルド</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>互換性なし</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>選択された艦艇</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>ビルド内の艦艇</value>
   </data>
 </root>
