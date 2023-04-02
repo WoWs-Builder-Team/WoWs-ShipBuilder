@@ -8,9 +8,10 @@ public static class Validation
 {
     public static async Task<BuildStringValidationResult> ValidateBuildString(string buildStr, string selectedShipIndex, ILocalizer localizer, string shortUrlUriPrefix)
     {
+        var validatedBuildString = string.Empty;
         if (string.IsNullOrWhiteSpace(buildStr))
         {
-            return new(false, null);
+            return new(null, validatedBuildString);
         }
 
         if (buildStr.Contains(shortUrlUriPrefix))
@@ -23,7 +24,7 @@ public static class Validation
             }
             else
             {
-                return new(false, localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)));
+                return new( localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)), validatedBuildString);
             }
         }
 
@@ -40,19 +41,20 @@ public static class Validation
                 var build = Build.CreateBuildFromString(buildStr);
                 if (selectedShipIndex.Equals(build.ShipIndex))
                 {
-                    return new(true, buildStr);
+                    validatedBuildString = buildStr;
+                    return new(null, validatedBuildString);
                 }
 
-                return new(false, $"{localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {localizer.GetGameLocalization(selectedShipIndex + "_FULL").Localization} ≠ {localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}");
+                return new($"{localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {localizer.GetGameLocalization(selectedShipIndex + "_FULL").Localization} ≠ {localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}", validatedBuildString);
             }
             catch (FormatException)
             {
-                return new(false, localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)));
+                return new(localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)), validatedBuildString);
             }
         }
 
-        return new(false, localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)));
+        return new(localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)), validatedBuildString);
     }
 
-    public sealed record BuildStringValidationResult(bool IsValidBuildString, string? ValidationMessage);
+    public sealed record BuildStringValidationResult(string? ValidationMessage, string ValidatedBuildString);
 }

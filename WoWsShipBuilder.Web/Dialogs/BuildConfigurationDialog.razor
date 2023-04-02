@@ -327,20 +327,14 @@
         }
 
         inputBuildStringCache = buildStr;
-        buildString = string.Empty;
-
+        
         var validationResult = await Validation.ValidateBuildString(buildStr, SelectedContainer.Ship.Index, Localizer, LinkShorteningOptions.Value.UriPrefix);
         
-        if (validationResult.IsValidBuildString)
-        {
-            buildString = validationResult.ValidationMessage!;
+        buildString = validationResult.ValidatedBuildString;
 
-            await Task.Delay(1);
-            StateHasChanged();
-            await Task.Delay(1);
-
-            return inputBuildStringValidationResultCache = null;
-        }
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
 
         return inputBuildStringValidationResultCache = validationResult.ValidationMessage;
     }
