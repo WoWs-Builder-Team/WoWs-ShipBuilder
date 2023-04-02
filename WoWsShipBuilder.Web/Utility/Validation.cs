@@ -56,5 +56,13 @@ public static class Validation
         return new(localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild)), validatedBuildString);
     }
 
+    public static string? ValidateBuildName(string buildName)
+    {
+        var invalidChars = Path.GetInvalidFileNameChars().ToList();
+        invalidChars.Add(';');
+        var invalidCharsInBuildName = invalidChars.FindAll(buildName.Contains);
+        return invalidCharsInBuildName.Any() ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
+    }
+
     public sealed record BuildStringValidationResult(string? ValidationMessage, string ValidatedBuildString);
 }
