@@ -1,6 +1,4 @@
-﻿@using WoWsShipBuilder.Core.Builds
-@using Microsoft.AspNetCore.WebUtilities
-@using Microsoft.Extensions.Options
+﻿@using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
@@ -47,7 +45,7 @@
     {
         MudDialog.Close(buildString.Trim());
     }
-
+    
     private async Task<string?> ValidateBuildString(string buildStr)
     {
         if (buildStr.Equals(inputBuildCache))
@@ -55,60 +53,18 @@
             // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
             return inputBuildValidationResultCache;
         }
-        
+
         inputBuildCache = buildStr;
-        buildString = string.Empty;
         
-        if (string.IsNullOrWhiteSpace(buildStr))
-        {
-            return inputBuildValidationResultCache = null;
-        }
+        var validationResult = await Validation.ValidateBuildString(buildStr, SelectedShipIndex, Localizer, LinkShorteningOptions.Value.UriPrefix);
         
-        if (buildStr.Contains(LinkShorteningOptions.Value.UriPrefix))
-        {
-            string? longUrl = await Helpers.RetrieveLongUrl(buildStr);
-            
-            if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
-            {
-                buildStr = buildStrFromUrl.ToString(); 
-            }
-            else
-            {
-                return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
-            }
-        }
+        buildString = validationResult.ValidatedBuildString;
 
-        if (QueryHelpers.ParseQuery(buildStr).TryGetValue("build", out var buildStringFromUrl))
-        {
-            buildStr = buildStringFromUrl.ToString();
-        }
+        // needed to update UI
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
 
-        // this is needed to avoid executing the try/catch even when we already know it is going to fail and so get a better performance
-        if (buildStr.Contains(';'))
-        {
-            try
-            {
-                var build = Build.CreateBuildFromString(buildStr);
-                if (SelectedShipIndex.Equals(build.ShipIndex))
-                {
-                    buildString = buildStr;
-                    
-                    // needed to update UI
-                    await Task.Delay(1);
-                    StateHasChanged();
-                    await Task.Delay(1);
-                    
-                    return  inputBuildValidationResultCache = null;
-                }
-                
-                return inputBuildValidationResultCache = $"{Localizer.SimpleAppLocalization(nameof(Translation.Validation_Incompatibility))}. {Localizer.SimpleAppLocalization(nameof(Translation.Validation_SelectedShip))}: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ {Localizer.SimpleAppLocalization(nameof(Translation.Validation_ShipInBuild))}: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-            }
-            catch (FormatException)
-            {
-                return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
-            }
-        }
-        
-        return inputBuildValidationResultCache = Localizer.SimpleAppLocalization(nameof(Translation.Validation_InvalidBuild));
+        return inputBuildValidationResultCache = validationResult.ValidationMessage;
     }
 }

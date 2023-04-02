@@ -89,7 +89,7 @@ public static class Helpers
         return results;
     }
 
-    public static async Task<string?> RetrieveLongUrl(string shortUrl)
+    public static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)
     {
         // this allows you to set the settings so that we can get the redirect url
         using HttpClient client = new(new HttpClientHandler

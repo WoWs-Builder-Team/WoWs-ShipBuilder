@@ -16,7 +16,7 @@ public static class Validation
 
         if (buildStr.Contains(shortUrlUriPrefix))
         {
-            string? longUrl = await Helpers.RetrieveLongUrl(buildStr);
+            string? longUrl = await Helpers.RetrieveLongUrlFromShortLink(buildStr);
 
             if (longUrl is not null && QueryHelpers.ParseQuery(longUrl).TryGetValue("build", out var buildStrFromUrl))
             {
