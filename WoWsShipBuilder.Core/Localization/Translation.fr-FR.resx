@@ -987,4 +987,7 @@ Si "module de protection de projection de module" + "pénétration de projection
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SAP</value>
   </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destroyer</value>
+  </data>
 </root>
