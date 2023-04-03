@@ -7,7 +7,7 @@
 <MudDialog Style="width: 600px">
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate Validation="@(new Func<string, Task<string?>>(ValidateBuildString))"/>
+            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate DebounceInterval="100" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>

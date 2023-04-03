@@ -57,12 +57,12 @@
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="Build:" Immediate Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
+                        <MudTextField @bind-Value="BuildName" Label="Build:" Immediate DebounceInterval="100" Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
                         {
-                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index + "_" + CurrentTabId)">
+                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ViewModel.PreviousShip.Index)">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -81,7 +81,7 @@
                         {
                             foreach (var ship in ViewModel.NextShips)
                             {
-                                <MudStack key="@(ViewModel.CurrentShipIndex + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index + "_" + CurrentTabId)">
+                                <MudStack key="@(CurrentTabId + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ship.Index)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                         <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -184,15 +184,17 @@
             var elementIds = new List<string>();
             if (ViewModel.PreviousShip is not null)
             {
-                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index + "_" + CurrentTabId);
+                elementIds.Add(CurrentTabId + "_" + ViewModel.PreviousShip.Index);
             }
+            
             if (ViewModel.NextShips is not null)
             {
-                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index + "_" + CurrentTabId));
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
             }
-            
-            StateHasChanged();
-            
+
+            // needed to prevent the script being run before the DOM has been loaded
+            await Task.Delay(1);
+
             if (elementIds.Any())
             {
                 await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);

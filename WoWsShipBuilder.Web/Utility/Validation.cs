@@ -14,7 +14,7 @@ public static class Validation
             return new(null, validatedBuildString);
         }
 
-        if (buildStr.Contains(shortUrlUriPrefix))
+        if (buildStr.Contains(shortUrlUriPrefix.Last().Equals('/') ? shortUrlUriPrefix : shortUrlUriPrefix + '/'))
         {
             string? longUrl = await Helpers.RetrieveLongUrlFromShortLink(buildStr);
 
@@ -58,9 +58,9 @@ public static class Validation
 
     public static string? ValidateBuildName(string buildName)
     {
-        var invalidChars = Path.GetInvalidFileNameChars().ToList();
+        List<char> invalidChars = Path.GetInvalidFileNameChars().ToList();
         invalidChars.Add(';');
-        var invalidCharsInBuildName = invalidChars.FindAll(buildName.Contains);
+        List<char> invalidCharsInBuildName = invalidChars.FindAll(buildName.Contains);
         return invalidCharsInBuildName.Any() ? $"Invalid characters {string.Join(' ', invalidCharsInBuildName)}" : null;
     }
 
