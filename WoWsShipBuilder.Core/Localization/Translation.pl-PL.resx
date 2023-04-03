@@ -594,4 +594,19 @@
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>Uszkodzenia</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Lotniskowiec</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Okręt podwodny</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Krążownik</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Pancernik</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Niszczyciel</value>
+  </data>
 </root>
