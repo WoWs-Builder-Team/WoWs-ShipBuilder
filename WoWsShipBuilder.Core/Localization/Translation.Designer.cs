@@ -1980,6 +1980,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aircraft Carrier.
+        /// </summary>
+        public static string ShipStats_AirCarrier {
+            get {
+                return ResourceManager.GetString("ShipStats_AirCarrier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aircrafts.
         /// </summary>
         public static string ShipStats_Aircraft {
@@ -2142,6 +2151,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        public static string ShipStats_Battery {
+            get {
+                return ResourceManager.GetString("ShipStats_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battleship.
+        /// </summary>
+        public static string ShipStats_Battleship {
+            get {
+                return ResourceManager.GetString("ShipStats_Battleship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blast.
         /// </summary>
         public static string ShipStats_Blast {
@@ -2213,6 +2240,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Bow {
             get {
                 return ResourceManager.GetString("ShipStats_Bow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bow.
+        /// </summary>
+        public static string ShipStats_BowLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_BowLoaders", resourceCulture);
             }
         }
         
@@ -2370,11 +2406,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cruiser.
+        /// </summary>
+        public static string ShipStats_Cruiser {
+            get {
+                return ResourceManager.GetString("ShipStats_Cruiser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cruising.
         /// </summary>
         public static string ShipStats_CruisingSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_CruisingSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut-off Distances.
+        /// </summary>
+        public static string ShipStats_CutOffDistances {
+            get {
+                return ResourceManager.GetString("ShipStats_CutOffDistances", resourceCulture);
             }
         }
         
@@ -2429,6 +2483,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_DepthExplosion {
             get {
                 return ResourceManager.GetString("ShipStats_DepthExplosion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destroyer.
+        /// </summary>
+        public static string ShipStats_Destroyer {
+            get {
+                return ResourceManager.GetString("ShipStats_Destroyer", resourceCulture);
             }
         }
         
@@ -2492,6 +2555,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_DiveBomber {
             get {
                 return ResourceManager.GetString("ShipStats_DiveBomber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Capacity.
+        /// </summary>
+        public static string ShipStats_DiveCapacity {
+            get {
+                return ResourceManager.GetString("ShipStats_DiveCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recharge rate.
+        /// </summary>
+        public static string ShipStats_DiveCapacityRechargeRate {
+            get {
+                return ResourceManager.GetString("ShipStats_DiveCapacityRechargeRate", resourceCulture);
             }
         }
         
@@ -2631,11 +2712,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First.
+        /// </summary>
+        public static string ShipStats_First {
+            get {
+                return ResourceManager.GetString("ShipStats_First", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Option 1.
         /// </summary>
         public static string ShipStats_FirstOption {
             get {
                 return ResourceManager.GetString("ShipStats_FirstOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 ping.
+        /// </summary>
+        public static string ShipStats_FirstPing {
+            get {
+                return ResourceManager.GetString("ShipStats_FirstPing", resourceCulture);
             }
         }
         
@@ -2937,6 +3036,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loaders.
+        /// </summary>
+        public static string ShipStats_Loaders {
+            get {
+                return ResourceManager.GetString("ShipStats_Loaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Long range aura.
         /// </summary>
         public static string ShipStats_LongAura {
@@ -2978,6 +3086,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_ManeuverabilityRudderShiftTime {
             get {
                 return ResourceManager.GetString("ShipStats_ManeuverabilityRudderShiftTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diving plane shift time.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsDivingPlaneShiftTime {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsDivingPlaneShiftTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max dive speed.
+        /// </summary>
+        public static string ShipStats_ManeuverabilitySubsMaxDiveSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_ManeuverabilitySubsMaxDiveSpeed", resourceCulture);
             }
         }
         
@@ -3117,6 +3243,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max turning speed.
+        /// </summary>
+        public static string ShipStats_MaxTurningSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxTurningSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max vertical speed.
+        /// </summary>
+        public static string ShipStats_MaxVerticalSpeed {
+            get {
+                return ResourceManager.GetString("ShipStats_MaxVerticalSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max view distance on ships.
         /// </summary>
         public static string ShipStats_MaxViewDistance {
@@ -3158,6 +3302,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_MinSpeed {
             get {
                 return ResourceManager.GetString("ShipStats_MinSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More Details.
+        /// </summary>
+        public static string ShipStats_MoreDetails {
+            get {
+                return ResourceManager.GetString("ShipStats_MoreDetails", resourceCulture);
             }
         }
         
@@ -3477,6 +3630,33 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search angle.
+        /// </summary>
+        public static string ShipStats_SearchAngle {
+            get {
+                return ResourceManager.GetString("ShipStats_SearchAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search radius.
+        /// </summary>
+        public static string ShipStats_SearchRadius {
+            get {
+                return ResourceManager.GetString("ShipStats_SearchRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second.
+        /// </summary>
+        public static string ShipStats_Second {
+            get {
+                return ResourceManager.GetString("ShipStats_Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Secondary Battery.
         /// </summary>
         public static string ShipStats_SecondaryBattery {
@@ -3491,6 +3671,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_SecondOption {
             get {
                 return ResourceManager.GetString("ShipStats_SecondOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2 pings.
+        /// </summary>
+        public static string ShipStats_SecondPing {
+            get {
+                return ResourceManager.GetString("ShipStats_SecondPing", resourceCulture);
             }
         }
         
@@ -3612,11 +3801,20 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show in Charts.
+        ///   Looks up a localized string similar to Show in Acceleration Charts.
         /// </summary>
-        public static string ShipStats_ShowInCharts {
+        public static string ShipStats_ShowInAccelerationCharts {
             get {
-                return ResourceManager.GetString("ShipStats_ShowInCharts", resourceCulture);
+                return ResourceManager.GetString("ShipStats_ShowInAccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show in Ballistic Charts.
+        /// </summary>
+        public static string ShipStats_ShowInBallisticCharts {
+            get {
+                return ResourceManager.GetString("ShipStats_ShowInBallisticCharts", resourceCulture);
             }
         }
         
@@ -3789,6 +3987,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Stern {
             get {
                 return ResourceManager.GetString("ShipStats_Stern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stern.
+        /// </summary>
+        public static string ShipStats_SternLoaders {
+            get {
+                return ResourceManager.GetString("ShipStats_SternLoaders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submarine.
+        /// </summary>
+        public static string ShipStats_Submarine {
+            get {
+                return ResourceManager.GetString("ShipStats_Submarine", resourceCulture);
             }
         }
         
@@ -4081,6 +4297,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turning acceleration.
+        /// </summary>
+        public static string ShipStats_TurningAcceleration {
+            get {
+                return ResourceManager.GetString("ShipStats_TurningAcceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 180° turn time.
         /// </summary>
         public static string ShipStats_TurnTime {
@@ -4104,6 +4329,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_Type {
             get {
                 return ResourceManager.GetString("ShipStats_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical acceleration.
+        /// </summary>
+        public static string ShipStats_VerticalAcceleration {
+            get {
+                return ResourceManager.GetString("ShipStats_VerticalAcceleration", resourceCulture);
             }
         }
         
@@ -4351,6 +4585,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to °/s².
+        /// </summary>
+        public static string Unit_DegreePerSecond2 {
+            get {
+                return ResourceManager.GetString("Unit_DegreePerSecond2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to dps.
         /// </summary>
         public static string Unit_DPS {
@@ -4432,6 +4675,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to m/s².
+        /// </summary>
+        public static string Unit_MPS2 {
+            get {
+                return ResourceManager.GetString("Unit_MPS2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         public static string Unit_PerCent {
@@ -4455,6 +4707,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string Unit_ShotsPerMinute {
             get {
                 return ResourceManager.GetString("Unit_ShotsPerMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unit.
+        /// </summary>
+        public static string Unit_U {
+            get {
+                return ResourceManager.GetString("Unit_U", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unit/s.
+        /// </summary>
+        public static string Unit_UPS {
+            get {
+                return ResourceManager.GetString("Unit_UPS", resourceCulture);
             }
         }
         

@@ -24,6 +24,9 @@ public partial record ConsumableDataContainer : DataContainerBase
     public string NumberOfUses { get; set; } = default!;
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
+    public decimal PreparationTime { get; set; }
+
+    [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal Cooldown { get; set; }
 
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
@@ -250,13 +253,8 @@ public partial record ConsumableDataContainer : DataContainerBase
             else if (name.Contains("PCY045", StringComparison.InvariantCultureIgnoreCase))
             {
                 var hydrophoneUpdateFrequencyModifiers = modifiers.FindModifiers("hydrophoneUpdateFrequencyCoeff");
-                if (!consumableModifiers.TryGetValue("hydrophoneUpdateFrequencyCoeff", out float baseUpdateFrequency))
-                {
-                    consumableModifiers.TryGetValue("updateFrequency", out baseUpdateFrequency);
-                }
-
-                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(baseUpdateFrequency, (current, modifier) => current * modifier);
-                consumableModifiers["hydrophoneUpdateFrequencyCoeff"] = hydrophoneUpdateFrequency;
+                var hydrophoneUpdateFrequency = hydrophoneUpdateFrequencyModifiers.Aggregate(consumableModifiers["hydrophoneUpdateFrequency"], (current, modifier) => current * modifier);
+                consumableModifiers["hydrophoneUpdateFrequency"] = hydrophoneUpdateFrequency;
             }
         }
         else if (usingFallback)
@@ -272,6 +270,7 @@ public partial record ConsumableDataContainer : DataContainerBase
             Slot = slot,
             Desc = "",
             Cooldown = Math.Round((decimal)cooldown, 1),
+            PreparationTime = Math.Round((decimal)consumable.PreparationTime, 1),
             WorkTime = Math.Round((decimal)workTime, 1),
             Modifiers = consumableModifiers,
         };

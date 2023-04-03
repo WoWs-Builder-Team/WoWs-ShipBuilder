@@ -12,7 +12,6 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.ViewModels.Other
-@using System.Collections.Immutable
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -255,7 +254,7 @@
     </MudTabPanel>
 </MudTabs>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
-    <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+    <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
 <BuildConfigurationDialogHelper @ref="buildConfigurationHelper" MaxWidth="MaxWidth.Large" FullWidth NoHeader />
 
@@ -321,7 +320,7 @@
             if (shipIndexesFromUrl.Any())
             {
                 var buildContainers = await BuildHelper.RetrieveBuildContainers();
-                if (shellIndexFromUrl.Any() && buildContainers is not null)
+                if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();
                     foreach (var container in buildContainers)
@@ -342,7 +341,7 @@
                         }
                         
                         var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers} , new());
+                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers } , new());
                         
                         if (shellIndexFromUrl.Any())
                         {
@@ -607,7 +606,7 @@
     {
         SetProcessing(true);
         var selectedShipList = await GetSelectedShipsAsync();
-        if (selectedShipList is null || selectedShipList.Cancelled)
+        if (selectedShipList is null || selectedShipList.Canceled)
         {
             SetProcessing(false);
             return;
@@ -681,7 +680,7 @@
         {
             ["InputData"] = displayedShips.Values.ToList(),
         };
-        var dialog = DialogService.Show<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
+        var dialog = await DialogService.ShowAsync<ShipAndShellSelectionDialog>("ShipAndShellSelectionDialog", parameters, options);
         return await dialog.Result;
     }
 
@@ -755,9 +754,9 @@
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm;
     }
 
-    private ImmutableDictionary<Guid, DispersionEllipse> GetDataForDispersionPlot()
+    private Dictionary<Guid, DispersionEllipse> GetDataForDispersionPlot()
     {
-        return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToImmutableDictionary(_ => Guid.NewGuid());
+        return displayedShips.Values.SelectMany(wrapper => wrapper.SelectedShells.Where(shell => shell.Value.DispPlotShipsCache is not null).Select(y => y.Value.DispPlotShipsCache!)).ToDictionary(_ => Guid.NewGuid());
     }
 
     private static string GenerateJsShipId(Guid id, string shellIndex)

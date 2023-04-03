@@ -20,7 +20,7 @@
                             <ActivatorContent>
                                 <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
                                     <ChildContent>
-                                        <MudButton @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
+                                        <MudButton @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                                         </MudButton>
                                     </ChildContent>
@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmouseup="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Delay="400">
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Delay="400">
                             <ChildContent>
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                             </ChildContent>
@@ -80,8 +80,12 @@
     {
         <MudPaper Outlined="true" Style="min-width: 300px; max-width: 300px">
             <MudStack Spacing="0" Class="pa-2">
-                <MudText Align="Align.Center" Typo="Typo.h6">@pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization</MudText>
-                <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">@pair.localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + pair.consumableData.Name).Localization</MudText>
+                <MudText Align="Align.Center" Typo="Typo.h6">
+                    @pair.localizer.GetGameLocalization("DOCK_CONSUME_TITLE_" + pair.consumableData.Name).Localization
+                </MudText>
+                <MudText Align="Align.Center" Typo="Typo.body2" Style="white-space: break-spaces">
+                    @pair.localizer.GetGameLocalization("DOCK_CONSUME_DESCRIPTION_" + pair.consumableData.Name).Localization
+                </MudText>
                 <MudDivider Light="true" Class="ma-1"/>
                 @foreach (var data in pair.consumableData.DataElements)
                 {
@@ -93,11 +97,15 @@
                     // this is here so we can have the call to the ModifierProcessor only once, to share the value between the if and the mudtext
                     string modifierDesc = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Description, pair.localizer);
                     string modifierValueString = ModifierProcessor.GetUiModifierString(modifierName, modifierValue, ReturnFilter.Value, pair.localizer);
-                    @if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
+                    if (!string.IsNullOrWhiteSpace(modifierDesc) && !string.IsNullOrWhiteSpace(modifierValueString))
                     {
                         <div class="d-flex justify-space-between">
-                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">@modifierDesc</MudText>
-                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">@modifierValueString</MudText>
+                            <MudText Typo="Typo.body2" Class="flex-grow-0 flex-shrink-1">
+                                @modifierDesc
+                            </MudText>
+                            <MudText Typo="Typo.body2" Align="Align.End" Class="flex-grow-1 flex-shrink-0 pl-2 align-self-center">
+                                @modifierValueString
+                            </MudText>
                         </div>
                     }
                 }

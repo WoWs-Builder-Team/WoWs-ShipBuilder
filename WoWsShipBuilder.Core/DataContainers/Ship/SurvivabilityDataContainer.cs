@@ -58,6 +58,12 @@ namespace WoWsShipBuilder.Core.DataContainers
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Hull", UnitKey = "PerCent", NameLocalizationKey = "RegenRatio")]
         public decimal HullRegenRatio { get; set; }
 
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battery", UnitKey = "U")]
+        public decimal DiveCapacity { get; set; }
+
+        [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValueUnit, GroupKey = "Battery", UnitKey = "UPS")]
+        public decimal DiveCapacityRechargeRate { get; set; }
+
         [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Fire")]
         public decimal FireAmount { get; set; }
 
@@ -130,6 +136,9 @@ namespace WoWsShipBuilder.Core.DataContainers
             decimal floodDps = hitPoints * shipHull.FloodingTickDamage / 100;
             decimal floodTotalDamage = floodDuration * floodDps;
 
+            decimal diveCapacityRechargeRateModifier = modifiers.FindModifiers("batteryRegenCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
+            decimal diveCapacityModifier = modifiers.FindModifiers("batteryCapacityCoeff").Aggregate(1M, (current, modifier) => current * (decimal)modifier);
+
             var survivability = new SurvivabilityDataContainer
             {
                 HitPoints = (int)hitPoints,
@@ -143,6 +152,8 @@ namespace WoWsShipBuilder.Core.DataContainers
                 FloodTorpedoProtection = Math.Round(100 - modifiedFloodingCoeff, 1),
                 FloodDPS = Math.Round(floodDps),
                 FloodTotalDamage = Math.Round(floodTotalDamage),
+                DiveCapacity = Math.Round(shipHull.SubBatteryCapacity * diveCapacityModifier, 1),
+                DiveCapacityRechargeRate = Math.Round(shipHull.SubBatteryRegenRate * diveCapacityRechargeRateModifier, 1),
             };
 
             foreach (var location in shipHull.HitLocations)

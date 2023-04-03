@@ -17,7 +17,7 @@
                         <MudStack AlignItems="AlignItems.Center">
                             @if (columnUpgrade.IndexOf(upgrade) != 0)
                             {
-                                <MudIcon Icon="@Icons.Filled.ArrowDropDown"/>
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown"/>
                             }
                             <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="@GetImageStyle()" Variant="Variant.Outlined" >
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>

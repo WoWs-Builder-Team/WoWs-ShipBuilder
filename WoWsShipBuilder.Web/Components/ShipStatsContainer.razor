@@ -30,6 +30,25 @@
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
+@if (!(initialized && SettingsInitialized))
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="166px"/>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudStack>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="8" xl="9">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
+        </MudItem>
+    </MudGrid>
+}
 @if (ViewModel is not null)
 {
     <MudGrid>
@@ -37,12 +56,12 @@
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="buildName" Label="Build:" Immediate Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense"/>
+                        <MudTextField @bind-Value="BuildName" Label="Build:" Immediate DebounceInterval="100" Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
                         {
-                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index)">
+                            <MudStack Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ViewModel.PreviousShip))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ViewModel.PreviousShip.Index)">
                                 <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.PreviousShip.Index + ".png")"/>
                                 <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                     <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.PreviousShip.ShipClass, ViewModel.PreviousShip.Category)"/>
@@ -61,7 +80,7 @@
                         {
                             foreach (var ship in ViewModel.NextShips)
                             {
-                                <MudStack key="@(ViewModel.CurrentShipIndex + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(ViewModel.CurrentShipIndex + "_" + ship.Index)">
+                                <MudStack key="@(CurrentTabId + "_" + ship.Index)" Class="px-2 cursor-pointer" @onmouseup="@(args => UpdateToShip(args, CurrentTabId, ship))" AlignItems="AlignItems.Center" id="@(CurrentTabId + "_" + ship.Index)">
                                     <MudImage Width="@GetImageWidth(false)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ship.Index + ".png")"/>
                                     <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                         <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ship.ShipClass, ship.Category)"/>
@@ -72,45 +91,28 @@
                         }
                     </MudItem>
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Filled.Share" OnClick="@OnShareBuildClicked">
+                        <MudButton Size="Size.Large" Variant="Variant.Filled" Color="Color.Primary" FullWidth StartIcon="@Icons.Material.Filled.Share" OnClick="@OnShareBuildClicked">
                             @Localizer.GetAppLocalization(Translation.MainWindow_ShareBuild).Localization
                         </MudButton>
                     </MudItem>
                 </MudGrid>
             </MudPaper>
         </MudItem>
-        @if (!(initialized && SettingsInitialized))
-        {
-            <MudItem xs="12" md="6" lg="4" xl="3">
-                <MudStack>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="250px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="450px"/>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12" md="6" lg="8" xl="9">
-                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="100%"/>
-            </MudItem>
-        }
-        else
-        {
-            <MudItem xs="12" md="6" lg="4" xl="3">
-                <MudStack>
-                    <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
-                    <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
-                    <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
-                    <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
-                    <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="12" md="6" lg="8" xl="9">
-                @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
-                {
-                    <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringToLocalStorage())"/>
-                }
-            </MudItem>
-        }
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudStack>
+                <ShipModulesSelector ViewModel="@ViewModel.ShipModuleViewModel"/>
+                <ShipUpgradeSelector ViewModel="@ViewModel.UpgradePanelViewModel"/>
+                <ConsumableSelector ViewModel="@ViewModel.ConsumableViewModel"/>
+                <CaptainSkillSelector ViewModel="@ViewModel.CaptainSkillSelectorViewModel" ShipClass="@ViewModel.CurrentShip.ShipClass"/>
+                <SignalSelector ViewModel="@ViewModel.SignalSelectorViewModel"/>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="12" md="6" lg="8" xl="9">
+            @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
+            {
+                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringToLocalStorage())"/>
+            }
+        </MudItem>
     </MudGrid>
 }
 
@@ -130,6 +132,9 @@
     [Parameter]
     public string? BuildString { get; set; }
 
+    [Parameter, EditorRequired]
+    public VmCache Cache { get; set; } = default!;
+
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
 
@@ -142,35 +147,55 @@
 
     private bool shipChanged;
 
-    private string buildName = string.Empty;
+    private string BuildName
+    {
+        get => Cache[CurrentTabId]!.BuildName;
+        set => Cache[CurrentTabId]!.BuildName = value;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         MetricsService.ShipPageCount.Inc();
         initialized = false;
-        ViewModel = await LoadShipViewModel(ShipIndex);
-        await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+
+        var cacheEntry = Cache.GetOrDefault(CurrentTabId);
+        if (cacheEntry is not null)
+        {
+            ViewModel = cacheEntry.ViewModel;
+            shipChanged = true;
+        }
+        else
+        {
+            ViewModel = await LoadShipViewModel(ShipIndex);
+            await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
+            Cache[CurrentTabId] = new(ViewModel);
+        }
+        
         initialized = true;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (shipChanged && ViewModel is not null)
+        if (!firstRender && shipChanged && ViewModel is not null)
         {
             shipChanged = false;
             var elementIds = new List<string>();
             if (ViewModel.PreviousShip is not null)
             {
-                elementIds.Add(ViewModel.CurrentShipIndex + "_" + ViewModel.PreviousShip.Index);
+                elementIds.Add(CurrentTabId + "_" + ViewModel.PreviousShip.Index);
             }
+            
             if (ViewModel.NextShips is not null)
             {
-                elementIds.AddRange(ViewModel.NextShips.Select(ship => ViewModel.CurrentShipIndex + "_" + ship.Index));
+                elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
             }
-            StateHasChanged();
-            await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
+            
+            if (elementIds.Any())
+            {
+                await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
+            }
         }
     }
 
@@ -184,15 +209,10 @@
             {
                 build = Build.CreateBuildFromString(BuildString);
                 BuildString = null;
-                buildName = build.BuildName;
+                BuildName = build.BuildName;
             }
 
-            var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
-            var ship = AppData.FindShipFromSummary(shipSummary);
-            var vmParams = new ShipViewModelParams(ship, shipSummary, build);
-
-            ShipViewModel vm = new(null!, Localizer, vmParams);
-            await vm.InitializeData(vmParams);
+            var vm = await CreateViewModel(shipIndex, build, Localizer);
             shipChanged = true;
             return vm;
         }
@@ -259,11 +279,11 @@
             {
                 ShipIndex = updateToShipSummary.Index;
                 ViewModel = await LoadShipViewModel(ShipIndex);
+                Cache[CurrentTabId] = new(ViewModel);
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
         }
-
     }
 
     private async Task OnShareBuildClicked()
@@ -275,13 +295,13 @@
         var parameters = new DialogParameters
         {
             ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
-            ["BuildName"] = buildName,
+            ["BuildName"] = BuildName,
         };
-        var dialog = DialogService.Show<BuildShareDialog>(string.Empty, parameters, options);
+        var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
         var result = await dialog.Result;
-        if (!result.Cancelled && result.Data is BuildShareResult shareResult)
+        if (!result.Canceled && result.Data is BuildShareResult shareResult)
         {
-            buildName = shareResult.BuildName;
+            BuildName = shareResult.BuildName;
             var build = ViewModel!.CreateBuild(shareResult.BuildName);
             var buildString = build.CreateShortStringFromBuild();
             var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
@@ -291,19 +311,31 @@
     
     private async Task SaveBuildStringToLocalStorage()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildContainer() });
+        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(Cache[CurrentTabId]!) });
     }
 
-    public BuildHelper.BuildHelperContainer GetBuildContainer()
+    public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
     {
-        List<(string, float)>? modifiers = ViewModel?.UpgradePanelViewModel.GetModifierList();
-        modifiers?.AddRange(ViewModel?.ConsumableViewModel.GetModifiersList() ?? new List<(string, float)>());
-        modifiers?.AddRange(ViewModel?.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
-        modifiers?.AddRange(ViewModel?.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+        List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
+        modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+        modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
         
-        var build = ViewModel!.CreateBuild(buildName);
+        var build = cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName);
         var buildString = build.CreateShortStringFromBuild();
-        BuildHelper.BuildHelperContainer container = new(ShipIndex, buildString, modifiers, ViewModel?.ConsumableViewModel.ActivatedSlots);
+        BuildHelper.BuildHelperContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
         return container;
+    }
+
+    public static async Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    {
+        var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
+        var ship = AppData.FindShipFromSummary(shipSummary);
+        var vmParams = new ShipViewModelParams(ship, shipSummary, build);
+
+        ShipViewModel vm = new(null!, localizer, vmParams);
+        await vm.InitializeData(vmParams);
+        
+        return vm;
     }
 }

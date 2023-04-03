@@ -8,7 +8,6 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
@@ -19,6 +18,7 @@
 @inject IMetricsService MetricsService
 @inject IBreakpointService BreakpointService
 @inject BuildHelper BuildHelper
+@inject NavigationManager NavManager
 
 
 <PageTitle>WoWs ShipBuilder: Acceleration Charts</PageTitle>
@@ -27,7 +27,7 @@
 <MudExpansionPanel IsInitiallyExpanded Class="my-4 mx-4 header-border border border-solid rounded-0">
     <TitleContent>
         <div class="d-flex">
-            <MudIcon Icon="@Icons.Outlined.Info" class="mr-3"/>
+            <MudIcon Icon="@Icons.Material.Outlined.Info" class="mr-3"/>
             <MudText>@Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Explanation)).Localization</MudText>
         </div>
     </TitleContent>
@@ -112,25 +112,27 @@
         {
             Breakpoint = await BreakpointService.GetBreakpoint();
             await SetupChartAsync();
+            
+            NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = await BuildHelper.RetrieveBuildContainers();
+            var buildContainers = await BuildHelper.RetrieveBuildContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => new BuildHelper.BuildHelperContainer(x, string.Empty, null, null)) : null);
 
             if (buildContainers is not null)
             {
                 foreach (var container in buildContainers)
                 {
-                    Build build = Build.CreateBuildFromString(container.BuildString);
-                    var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(build.ShipIndex));
+                    Build? build = !string.IsNullOrWhiteSpace(container.BuildString) ? Build.CreateBuildFromString(container.BuildString) : null;
+                    var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(container.ShipIndex));
                     var ship = AppData.FindShipFromSummary(shipSummary);
-                    var shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
+                    var shipConfiguration = build is null ? Helpers.GetStockShipConfiguration(ship) : Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
                     var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                    var shipContainer = ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer };
+                    var shipContainer = ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers ?? new() };
                     
                     shipBuildCache.Add(counter, shipContainer);
                     counter++;
                 }
             }
-            
+
             await AddShipsBatchAsync(shipBuildCache);
             StateHasChanged();
         }
@@ -238,9 +240,9 @@
             { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList },
         };
         
-        var result = await DialogService.Show<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options).Result;
+        var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options)).Result;
 
-        if (!result.Cancelled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
+        if (!result.Canceled && result.Data is ShipBuildContainerSelectionDialogOutput dialogOutput)
         {
             var newShipList = dialogOutput.ShipList;
             
@@ -305,20 +307,20 @@
                 await AddShipsBatchAsync(shipsToAdd);
             }
             
-            await ChartJsInterop.BatchRemoveDataAsync(new() {AccelerationId}, guidsToRemove);
+            await ChartJsInterop.BatchRemoveDataAsync(new() { AccelerationId }, guidsToRemove);
+            UpdateUrl();
         }
     }
     
     private async Task AddCustomShip()
     {
-        var result = await DialogService.Show<CustomAccelerationDataDialog>("Custom data").Result;
+        var result = await (await DialogService.ShowAsync<CustomAccelerationDataDialog>("Custom data")).Result;
         
-        if (!result.Cancelled && result.Data is ShipBuildContainer shipBuildContainer)
+        if (!result.Canceled && result.Data is ShipBuildContainer shipBuildContainer)
         {
             // add the new one 
-            Dictionary<int, ShipBuildContainer> shipsToAdd = new();
-            
-            shipsToAdd.Add(counter, shipBuildContainer);
+            Dictionary<int, ShipBuildContainer> shipsToAdd = new() { { counter, shipBuildContainer } };
+
             shipBuildCache.Add(counter, shipBuildContainer);
             counter++;
             
@@ -372,5 +374,11 @@
             }
         }
         return filteredList;
+    }
+    
+    private void UpdateUrl()
+    {
+        var shipsString = string.Join(",", shipBuildCache.Values.Select(x => x.Ship.Index));
+        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={shipsString}");
     }
 }

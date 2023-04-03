@@ -1655,8 +1655,11 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Go to ships page</value>
   </data>
-  <data name="ShipStats_ShowInCharts" xml:space="preserve">
-      <value>Show in Charts</value>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Show in Ballistic Charts</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Show in Acceleration Charts</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
       <value>Invalid build</value>
@@ -1669,5 +1672,92 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="Validation_ShipInBuild" xml:space="preserve">
       <value>Ship in the build</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>Loaders</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>Bow</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>Stern</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>First</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Second</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>unit</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>unit/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>Max dive speed</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Diving plane shift time</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>Capacity</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>Recharge rate</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>Battery</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 pings</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Max turning speed</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Turning acceleration</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Max vertical speed</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Vertical acceleration</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Search radius</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Search angle</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Aircraft Carrier</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarine</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cruiser</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Battleship</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destroyer</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>More Details</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Cut-off Distances</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
   </data>
 </root>

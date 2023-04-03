@@ -2,6 +2,7 @@
 
 @using WoWsShipBuilder.Web.Utility
 @using DynamicData
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 
@@ -14,39 +15,46 @@
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider KeepPanelsAlive CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
         <ChildContent>
             @foreach (var container in shipContainers)
             {
-                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@indexIdMapper[container.Id]">
-                    <ShipStatsContainer @ref="shipStatsContainerCache[container.Id]" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
+                    <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
                 </MudTabPanel>
             }
         </ChildContent>
         <Header>
             <MudStack Row>
                 <MudDivider Vertical/>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync"/>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.DispersionGraphWindow_AddShip).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" OnClick="@OpenAddDialogAsync" Color="Color.Secondary"/>
                 </MudTooltip>
-                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInCharts).Localization" Delay="350">
-                    <MudIconButton Icon="@Icons.Material.Filled.BarChart" OnClick="@SendAllToCharts"/>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInBallisticCharts).Localization" Arrow Delay="350">
+                    <MudIconButton OnClick="@OpenBallisticCharts" Color="Color.Secondary" Style="width: 48px; height: 48px">
+                        <MudIcon Icon="@DispersionAndBallisticChartsPath" ViewBox="-4 -7 24 24"/>
+                    </MudIconButton>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
     </MudDynamicTabs>
 </MudBreakpointProvider>
 <MudScrollToTop TopOffset="100" Style="z-index:2001">
-     <MudFab Color="Color.Info" StartIcon="@Icons.Filled.KeyboardDoubleArrowUp"/>
+    <MudFab Color="Color.Info" StartIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"/>
 </MudScrollToTop>
 
 @code {
+    
+    private const string DispersionAndBallisticChartsPath = @"<path d=""M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"" stroke-width="".053058""/>";
 
     private MudTabs mudTabs = default!;
 
     private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
 
-    private readonly Dictionary<Guid, ShipStatsContainer> shipStatsContainerCache = new();
+    private readonly VmCache cache = new();
 
     private string shipIndexesFromUrl = default!;
 
@@ -55,10 +63,6 @@
     private bool updateTab;
 
     private Guid selectedTabId;
-
-    private int idCount;
-
-    private readonly Dictionary<Guid, string> indexIdMapper = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -109,10 +113,8 @@
         }
         else
         {
-            var newId = Guid.NewGuid();
-            shipContainers.Add(new(newId, newShipIndex, null));
-            indexIdMapper[newId] = (idCount++).ToString();
-            selectedTabId = newId;
+            AddNewIndexes(new() { newShipIndex }, null);
+            selectedTabId = shipContainers.Last().Id;
         }
         UpdateUrl();
         updateTab = true;
@@ -122,12 +124,11 @@
 
     private void RemoveTab(MudTabPanel panel)
     {
-        var id = (Guid)panel.Tag;
+        var id = (Guid) panel.Tag;
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
-        indexIdMapper.Remove(id);
-        shipStatsContainerCache.Remove(id);
+        cache.RemoveEntry(id);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
@@ -155,8 +156,8 @@
             CloseOnEscapeKey = true,
             DisableBackdropClick = false,
         };
-        var result = await DialogService.Show<ShipSelectionDialog>("Add ships", options).Result;
-        if (!result.Cancelled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
+        var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
+        if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> { Count: > 0 } newShips)
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
             selectedTabId = shipContainers.Last().Id;
@@ -171,42 +172,57 @@
     private void AddNewIndexes(List<string> indexList, List<BuildHelper.BuildHelperContainer>? buildContainers)
     {
         List<ShipSelector.ShipSelectorContainer> newShips = new();
-        if (buildContainers is null)
-        {
-            foreach (var index in indexList)
-            {
-                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null);
-                newShips.Add(newShip);
-                indexIdMapper[newShip.Id] = (idCount++).ToString();
-                shipStatsContainerCache.Add(newShip.Id, default!);
-            }
-        }
-        else
-        {
-            foreach (var container in buildContainers)
-            {
-                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString);
-                newShips.Add(newShip);
-                indexIdMapper[newShip.Id] = (idCount++).ToString();
-                shipStatsContainerCache.Add(newShip.Id, default!);
-            }
-        }
-        
+        newShips.AddRange(buildContainers is null ? indexList.Select(index => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null)) : buildContainers.Select(container => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString)));
         shipContainers.AddRange(newShips);
     }
 
-    private async Task SendAllToCharts()
+    private async Task<List<string>> StoreBuildsForCharts()
     {
         List<BuildHelper.BuildHelperContainer> buildContainers = new();
         List<string> shipIndexes = new();
-        foreach (var shipStatsContainer in shipStatsContainerCache)
+        foreach (var container in shipContainers)
         {
-            buildContainers.Add(shipStatsContainer.Value.GetBuildContainer());
-            shipIndexes.Add(shipStatsContainer.Value.ShipIndex);
+            var vmCacheEntry = cache.GetOrDefault(container.Id);
+            if (vmCacheEntry is not null)
+            {
+                buildContainers.Add(ShipStatsContainer.GetBuildHelperContainer(vmCacheEntry));
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(container.BuildString))
+                {
+                    buildContainers.Add(new(container.ShipIndex, string.Empty, null, null));
+                }
+                else
+                {
+                    var viewModel = await ShipStatsContainer.CreateViewModel(container.ShipIndex, Build.CreateBuildFromString(container.BuildString), Localizer);
+
+                    List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
+                    modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
+                    modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
+                    modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
+
+                    buildContainers.Add(new(container.ShipIndex, container.BuildString, modifiers, viewModel.ConsumableViewModel.ActivatedSlots));
+                }
+            }
+
+            shipIndexes.Add(container.ShipIndex);
         }
-        
+
         await BuildHelper.StoreBuildContainers(buildContainers);
+        return shipIndexes;
+    }
+
+    private async Task OpenBallisticCharts()
+    {
+        var shipIndexes = await StoreBuildsForCharts();
         NavManager.NavigateTo($"/charts?shipIndex={string.Join(",", shipIndexes)}");
+    }
+
+    private async Task OpenAccelerationCharts()
+    {
+        var shipIndexes = await StoreBuildsForCharts();
+        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
     }
 
     private void UpdateUrl()

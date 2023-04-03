@@ -18,6 +18,12 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public List<string> LauncherNames { get; set; } = new();
 
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string BowLoaders { get; set; } = default!;
+
+    [DataElementType(DataElementTypes.Grouped | DataElementTypes.KeyValue, GroupKey = "Loaders")]
+    public string SternLoaders { get; set; } = default!;
+
     [DataElementType(DataElementTypes.KeyValueUnit, UnitKey = "S")]
     public decimal TurnTime { get; set; }
 
@@ -127,6 +133,11 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             TorpFullSalvoDmg = torpFullSalvoDmg,
             AltTorpFullSalvoDmg = altTorpFullSalvoDmg,
         };
+
+        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.BowLoaders, out List<string>? bowLoaders);
+        torpedoModule.TorpedoLoaders.TryGetValue(SubTorpLauncherLoaderPosition.SternLoaders, out List<string>? sternLoaders);
+        torpedoArmamentDataContainer.BowLoaders = bowLoaders is not null ? string.Join(" + ", bowLoaders) : default!;
+        torpedoArmamentDataContainer.SternLoaders = sternLoaders is not null ? string.Join(" + ", sternLoaders) : default!;
 
         torpedoArmamentDataContainer.Torpedoes.Last().IsLast = true;
 

@@ -39,9 +39,9 @@
 
 @code {
 
-    [Parameter, EditorRequired]
-    public ImmutableDictionary<Guid, DispersionEllipse> Ships { get; set; } = default!;
-    [Parameter, EditorRequired]
+    [Parameter]
+    public Dictionary<Guid, DispersionEllipse> Ships { get; set; } = new(); //cant use ImmutableDictionary because it causes the loss of the items oder which is very important in this case
+    [Parameter]
     public double PlotScaling { get; set; }
     [Parameter, EditorRequired]
     public ChartsHelper.EllipsePlanes EllipsePlane { get; set; }
