@@ -1520,4 +1520,19 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>Occultamento dai sottomarini ad altezza di periscopio</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Portaerei</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Sottomarino</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Incrociatore</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Corazzata</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Cacciatorpediniere</value>
+  </data>
 </root>
