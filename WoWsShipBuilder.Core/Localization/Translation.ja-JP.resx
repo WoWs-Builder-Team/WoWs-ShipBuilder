@@ -1648,9 +1648,6 @@
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>艦艇ページに移動</value>
   </data>
-  <data name="ShipStats_ShowInCharts" xml:space="preserve">
-      <value>チャートに表示</value>
-  </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
       <value>無効なビルド</value>
   </data>
@@ -1662,5 +1659,20 @@
   </data>
   <data name="Validation_ShipInBuild" xml:space="preserve">
       <value>ビルド内の艦艇</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>航空母船</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>潜水艦</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>巡洋艦</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>戦艦</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>駆逐艦</value>
   </data>
 </root>
