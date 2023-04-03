@@ -178,7 +178,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (shipChanged && ViewModel is not null)
+        if (!firstRender && shipChanged && ViewModel is not null)
         {
             shipChanged = false;
             var elementIds = new List<string>();
@@ -191,10 +191,7 @@
             {
                 elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
             }
-
-            // needed to prevent the script being run before the DOM has been loaded
-            await Task.Delay(1);
-
+            
             if (elementIds.Any())
             {
                 await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
