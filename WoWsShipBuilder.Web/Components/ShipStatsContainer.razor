@@ -149,7 +149,7 @@
 
     private string BuildName
     {
-        get => Cache[CurrentTabId]!.BuildName;
+        get => Cache[CurrentTabId]?.BuildName ?? string.Empty;
         set => Cache[CurrentTabId]!.BuildName = value;
     }
 
