@@ -12,6 +12,7 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.ViewModels.Other
+
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
@@ -525,7 +526,7 @@
         var label = $"{Localizer.GetGameLocalization($"{shipIndex}_FULL").Localization} - {gunCaliber} {Localizer.GetAppLocalization(Translation.Unit_MM).Localization} {shellType.ShellTypeToString()}";
         if (build is not null)
         {
-            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(string.IsNullOrWhiteSpace(build.BuildName) ? ShipComparisonViewModel.DefaultBuildName : build.BuildName)}";
+            label += $" - {Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization}: {(string.IsNullOrEmpty(build.BuildName) ? ShipComparisonViewModel.DefaultBuildName : build.BuildName)}";
         }
         return label;
     }

@@ -425,9 +425,9 @@ namespace WoWsShipBuilder.Core.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Enter build string or link.
         /// </summary>
-        public static string BuildStringInputDialog_EnterBuildString {
+        public static string BuildStringInputDialog_EnterBuildStringOrLink {
             get {
-                return ResourceManager.GetString("BuildStringInputDialog_EnterBuildString", resourceCulture);
+                return ResourceManager.GetString("BuildStringInputDialog_EnterBuildStringOrLink", resourceCulture);
             }
         }
         
@@ -4770,6 +4770,42 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string Validation_BuildName {
             get {
                 return ResourceManager.GetString("Validation_BuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatibility.
+        /// </summary>
+        public static string Validation_Incompatibility {
+            get {
+                return ResourceManager.GetString("Validation_Incompatibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid build.
+        /// </summary>
+        public static string Validation_InvalidBuild {
+            get {
+                return ResourceManager.GetString("Validation_InvalidBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected ship.
+        /// </summary>
+        public static string Validation_SelectedShip {
+            get {
+                return ResourceManager.GetString("Validation_SelectedShip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship in the build.
+        /// </summary>
+        public static string Validation_ShipInBuild {
+            get {
+                return ResourceManager.GetString("Validation_ShipInBuild", resourceCulture);
             }
         }
         

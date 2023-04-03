@@ -1,18 +1,20 @@
-﻿@using WoWsShipBuilder.Core.Builds
-@using System.Net
+﻿@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Web.LinkShortening
+@using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
+@inject IOptions<LinkShorteningOptions> LinkShorteningOptions
 
 <MudDialog Style="width: 600px">
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="buildString" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)).Localization" Immediate Validation="@(new Func<string, string?>(ValidateBuildString))"/>
+            <MudTextField @bind-Value="inputBuild" Label="@Localizer.GetAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)).Localization" Immediate DebounceInterval="100" Validation="@(new Func<string, Task<string?>>(ValidateBuildString))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="@Cancel">
             @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
         </MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="!validBuild">
+        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(buildString))">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
         </MudButton>
     </DialogActions>
@@ -26,9 +28,13 @@
     [Parameter]
     public string SelectedShipIndex { get; set; } = default!;
     
-    private string buildString = string.Empty;
+    private string inputBuild = string.Empty;
 
-    private bool validBuild;
+    private string inputBuildCache = string.Empty;
+    
+    private string? inputBuildValidationResultCache;
+
+    private string buildString = string.Empty;
 
     private void Cancel()
     {
@@ -37,72 +43,28 @@
 
     private void OnConfirm()
     {
-        string buildStr;
-        if (buildString.Contains("build="))
-        {
-            int index = buildString.IndexOf("build=", StringComparison.Ordinal);
-            buildStr = WebUtility.UrlDecode(buildString[(index + 6)..]);
-        }
-        else
-        {
-            buildStr = buildString;
-        }
-        
-        MudDialog.Close(buildStr.Trim());
+        MudDialog.Close(buildString.Trim());
     }
-
-    private string? ValidateBuildString(string buildStr)
+    
+    private async Task<string?> ValidateBuildString(string buildStr)
     {
-        validBuild = false;
-        if (string.IsNullOrWhiteSpace(buildStr))
+        if (buildStr.Equals(inputBuildCache))
         {
-            return null;
+            // in this case there is no need to run the validation again since there were no changes to the input. Needed because validation is called also when the text field looses focus.
+            return inputBuildValidationResultCache;
         }
+
+        inputBuildCache = buildStr;
         
-        if (buildStr.Contains("share.wowssb.com"))
-        {
-            return "Short links are not supported";
-        }
+        var validationResult = await Validation.ValidateBuildString(buildStr, SelectedShipIndex, Localizer, LinkShorteningOptions.Value.UriPrefix);
         
-        if (buildStr.Contains(";"))
-        {
-            try
-            {
-                var build = Build.CreateBuildFromString(buildStr);
-                if (SelectedShipIndex.Equals(build.ShipIndex))
-                {
-                    validBuild = true;
-                    return null;
-                }
-                
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-            }
-            catch (FormatException)
-            {
-                return "Invalid build";
-            }
-        }
-        
-        if (buildStr.Contains("&build="))
-        {
-            int index = buildStr.IndexOf("build=", StringComparison.Ordinal);
-            string decodedBuildString = WebUtility.UrlDecode(buildStr[(index + 6)..]);
-            try
-            {
-                var build = Build.CreateBuildFromString(decodedBuildString);
-                if (SelectedShipIndex.Equals(build.ShipIndex))
-                {
-                    validBuild = true;
-                    return null;
-                }
-                return $"Incompatibility: Selected Ship: {Localizer.GetGameLocalization(SelectedShipIndex + "_FULL").Localization} ≠ Ship in Build: {Localizer.GetGameLocalization(build.ShipIndex + "_FULL").Localization}";
-            }
-            catch (FormatException)
-            {
-                return "Invalid build";
-            }
-        }
-        
-        return "Invalid build";
+        buildString = validationResult.ValidatedBuildString;
+
+        // needed to update UI
+        await Task.Delay(1);
+        StateHasChanged();
+        await Task.Delay(1);
+
+        return inputBuildValidationResultCache = validationResult.ValidationMessage;
     }
 }

@@ -184,6 +184,8 @@ public partial record ShellDataContainer : DataContainerBase
 
             var fireChancePerSalvo = (decimal)(1 - Math.Pow((double)(1 - ((decimal)shellFireChance / 100)), barrelCount));
 
+            float splashRadius = modifiers.FindModifiers("dcSplashRadiusMultiplier").Aggregate(shell.DepthSplashRadius, (current, modifier) => current * modifier);
+
             var shellDataContainer = new ShellDataContainer
             {
                 Name = shell.Name,
@@ -201,7 +203,7 @@ public partial record ShellDataContainer : DataContainerBase
                 ArmingThreshold = armingThreshold,
                 FuseTimer = fuseTimer,
                 ShowBlastPenetration = showBlastPenetration,
-                SplashRadius = (decimal)shell.DepthSplashRadius,
+                SplashRadius = Math.Round((decimal)splashRadius, 1),
                 SplashDmg = Math.Round((decimal)(shellDamage * shell.SplashDamageCoefficient)),
                 Krupp = (decimal)shell.Krupp,
             };

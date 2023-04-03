@@ -87,7 +87,7 @@
                     {
                         foreach (var shipContainer in SelectedShips)
                         {
-                            <MudListItem>
+                            <MudListItem key="@shipContainer.Id">
                                 <MudStack Style="align-items: stretch" Class="mt-n2">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>
@@ -252,7 +252,7 @@
 
     private void RemoveShip(ShipSelectorContainer container)
     {
-        SelectedShips.Remove(SelectedShips.Single(x => x.Id.Equals(container.Id)));
+        SelectedShips.Remove(container);
 #pragma warning disable BL0005
         mudList.SelectedValue = null;
 #pragma warning restore BL0005
@@ -292,19 +292,8 @@
             return null;
         }
         
-        string? buildName;
-        if (!buildString.Contains(';'))
-        {
-            var index = buildString.LastIndexOf("%3B", StringComparison.Ordinal);
-            buildName = index != -1 ? buildString[(index + 3)..] : null;
-        }
-        else
-        {
-            var index = buildString.LastIndexOf(';');
-            buildName = index != -1 ? buildString[(index + 1)..] : null;
-        }
-        
-        return buildName;
+        var index = buildString.LastIndexOf(';');
+        return index != -1 ? buildString[(index + 1)..] : null;
     }
     
     private async Task AddBuildString(ShipSelectorContainer ship)
@@ -313,7 +302,7 @@
         {
             ["SelectedShipIndex"] = ship.ShipIndex,
         };
-        var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildString)), parameters);
+        var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
         var result = await dialog.Result;
         if (!result.Canceled && result.Data is string buildStr)
         {

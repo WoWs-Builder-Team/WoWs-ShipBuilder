@@ -19,8 +19,8 @@
         <ChildContent>
             @foreach (var container in shipContainers)
             {
-                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@indexIdMapper[container.Id]">
-                    <ShipStatsContainer @ref="@shipStatsContainerCache[container.Id]" CachedInstance="@shipStatsContainerCache[container.Id]" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
+                    <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
                 </MudTabPanel>
             }
         </ChildContent>
@@ -54,7 +54,7 @@
 
     private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
 
-    private readonly Dictionary<Guid, ShipStatsContainer?> shipStatsContainerCache = new();
+    private readonly VmCache cache = new();
 
     private string shipIndexesFromUrl = default!;
 
@@ -64,10 +64,6 @@
 
     private Guid selectedTabId;
 
-    private int idCount;
-
-    private readonly Dictionary<Guid, string> indexIdMapper = new();
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -75,7 +71,6 @@
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
-            var indexes = shipIndexesFromUrl.Split(",").ToList();
             var buildContainers = await BuildHelper.RetrieveBuildContainers();
             List<BuildHelper.BuildHelperContainer>? buildList;
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
@@ -90,7 +85,8 @@
             {
                 buildList = null;
             }
-
+            
+            var indexes = shipIndexesFromUrl.Split(",").ToList();
             AddNewIndexes(indexes, buildList);
         }
         UpdateUrl();
@@ -118,7 +114,7 @@
         else
         {
             AddNewIndexes(new() { newShipIndex }, null);
-            selectedTabId = indexIdMapper.Last().Key;
+            selectedTabId = shipContainers.Last().Id;
         }
         UpdateUrl();
         updateTab = true;
@@ -132,15 +128,14 @@
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
-        indexIdMapper.Remove(id);
-        shipStatsContainerCache.Remove(id);
+        cache.RemoveEntry(id);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
-    // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
-    // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
-    // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
-    // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
+            // If shipIndexes contains more element than index (meaning, index is not out of bound for the shipIndexes list), then we select the ship at the same index.
+            // We do it with the ID because using the index makes the tab appear as blank ("display: none" in the style).
+            // If the index is out of bound, we check if the shipIndexes has any element, in which case we take the last element of the list, since it means we removed the old last element.
+            // Finally, if the list is empty, we check if the new ship tab is present. If it is, we select that one, otherwise we do nothing.
             if (shipContainers.Count > index && index != -1)
             {
                 mudTabs.ActivatePanel(shipContainers[index].Id);
@@ -162,10 +157,10 @@
             DisableBackdropClick = false,
         };
         var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
-        if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> {Count: > 0 } newShips)
+        if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> { Count: > 0 } newShips)
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
-            selectedTabId = indexIdMapper.Last().Key;
+            selectedTabId = shipContainers.Last().Id;
             AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildHelper.BuildHelperContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
             updateTab = true;
 
@@ -177,27 +172,7 @@
     private void AddNewIndexes(List<string> indexList, List<BuildHelper.BuildHelperContainer>? buildContainers)
     {
         List<ShipSelector.ShipSelectorContainer> newShips = new();
-        if (buildContainers is null)
-        {
-            foreach (var index in indexList)
-            {
-                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null);
-                newShips.Add(newShip);
-                indexIdMapper[newShip.Id] = (idCount++).ToString();
-                shipStatsContainerCache.Add(newShip.Id, default!);
-            }
-        }
-        else
-        {
-            foreach (var container in buildContainers)
-            {
-                var newShip = new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString);
-                newShips.Add(newShip);
-                indexIdMapper[newShip.Id] = (idCount++).ToString();
-                shipStatsContainerCache.Add(newShip.Id, default!);
-            }
-        }
-
+        newShips.AddRange(buildContainers is null ? indexList.Select(index => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null)) : buildContainers.Select(container => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString)));
         shipContainers.AddRange(newShips);
     }
 
@@ -207,10 +182,10 @@
         List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
-            var shipStatsContainer = shipStatsContainerCache[container.Id];
-            if (shipStatsContainer is not null)
+            var vmCacheEntry = cache.GetOrDefault(container.Id);
+            if (vmCacheEntry is not null)
             {
-                buildContainers.Add(shipStatsContainer.CreateBuildHelperContainer());
+                buildContainers.Add(ShipStatsContainer.GetBuildHelperContainer(vmCacheEntry));
             }
             else
             {
@@ -264,5 +239,4 @@
         }
         return string.Empty;
     }
-
 }
