@@ -1101,4 +1101,19 @@ Si el resultado "protección ante explosión del módulo" + "penetración explos
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SAP</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Portaaviones</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarino</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Crucero</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Acorazado</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Destructor</value>
+  </data>
 </root>
