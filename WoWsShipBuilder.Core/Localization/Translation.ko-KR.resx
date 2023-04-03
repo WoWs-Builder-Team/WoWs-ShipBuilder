@@ -786,4 +786,19 @@
   <data name="ShipStats_SplashDmg" xml:space="preserve">
       <value>피해</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>항공모함</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>잠수함</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>순양함</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>전함</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>구축함</value>
+  </data>
 </root>
