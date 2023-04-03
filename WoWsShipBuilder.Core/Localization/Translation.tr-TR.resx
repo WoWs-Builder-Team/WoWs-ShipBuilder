@@ -1378,4 +1378,19 @@ Yüzey gemilerine herhangi bir etkileri yoktur.</value>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>Periskop Derinliğinde</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Uçak Gemisi</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Denizaltı</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Kruvazör</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Savaş Gemisi</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Muhrip</value>
+  </data>
 </root>
