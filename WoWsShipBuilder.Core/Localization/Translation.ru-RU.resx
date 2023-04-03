@@ -1615,4 +1615,19 @@
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Тактические Топмачтовики</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Авианосец</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Подводная Лодка</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Крейсер</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Линкор</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Эсминец</value>
+  </data>
 </root>
