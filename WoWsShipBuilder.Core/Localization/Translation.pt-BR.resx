@@ -1646,4 +1646,19 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Mostrar gráficos de aceleração</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Porta Aviões</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarino</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cruzador</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Encouraçado</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Contratorpedeiro</value>
+  </data>
 </root>
