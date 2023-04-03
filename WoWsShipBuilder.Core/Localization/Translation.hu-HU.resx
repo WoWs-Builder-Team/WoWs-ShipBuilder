@@ -1631,4 +1631,19 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Gyorsulási diagram megjelenítése</value>
   </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Repülőgép-hordozó</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Tengeralattjáró</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cirkáló</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Csatahajó</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Romboló</value>
+  </data>
 </root>
