@@ -10,7 +10,6 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Net
 @using System.Diagnostics
-@using Microsoft.Extensions.Caching.Memory
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Extensions
@@ -134,7 +133,7 @@
     public string? BuildString { get; set; }
 
     [Parameter, EditorRequired]
-    public VmCacheService CacheService { get; set; } = default!;
+    public VmCache Cache { get; set; } = default!;
 
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
@@ -150,8 +149,8 @@
 
     private string BuildName
     {
-        get => CacheService[CurrentTabId]?.BuildName ?? string.Empty;
-        set => CacheService[CurrentTabId]!.BuildName = value;
+        get => Cache[CurrentTabId]!.BuildName;
+        set => Cache[CurrentTabId]!.BuildName = value;
     }
 
     protected override async Task OnInitializedAsync()
@@ -160,7 +159,7 @@
         MetricsService.ShipPageCount.Inc();
         initialized = false;
 
-        var cacheEntry = CacheService.GetOrDefault(CurrentTabId);
+        var cacheEntry = Cache.GetOrDefault(CurrentTabId);
         if (cacheEntry is not null)
         {
             ViewModel = cacheEntry.ViewModel;
@@ -170,7 +169,7 @@
         {
             ViewModel = await LoadShipViewModel(ShipIndex);
             await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
-            CacheService[CurrentTabId] = new(ViewModel);
+            Cache[CurrentTabId] = new(ViewModel);
         }
         
         initialized = true;
@@ -280,7 +279,7 @@
             {
                 ShipIndex = updateToShipSummary.Index;
                 ViewModel = await LoadShipViewModel(ShipIndex);
-                CacheService[CurrentTabId] = new(ViewModel);
+                Cache[CurrentTabId] = new(ViewModel);
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -312,7 +311,7 @@
     
     private async Task SaveBuildStringToLocalStorage()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(CacheService[CurrentTabId]!) });
+        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(Cache[CurrentTabId]!) });
     }
 
     public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)

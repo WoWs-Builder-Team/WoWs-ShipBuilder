@@ -20,7 +20,7 @@
             @foreach (var container in shipContainers)
             {
                 <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
-                    <ShipStatsContainer CacheService="@cacheService" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                    <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
                 </MudTabPanel>
             }
         </ChildContent>
@@ -54,7 +54,7 @@
 
     private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
 
-    private readonly VmCacheService cacheService = new();
+    private readonly VmCache cache = new();
 
     private string shipIndexesFromUrl = default!;
 
@@ -128,7 +128,7 @@
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
-        cacheService.RemoveEntry(id);
+        cache.RemoveEntry(id);
 
         if (mudTabs.ActivePanel.ID.Equals(panel.ID))
         {
@@ -182,7 +182,7 @@
         List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
-            var vmCacheEntry = cacheService.GetOrDefault(container.Id);
+            var vmCacheEntry = cache.GetOrDefault(container.Id);
             if (vmCacheEntry is not null)
             {
                 buildContainers.Add(ShipStatsContainer.GetBuildHelperContainer(vmCacheEntry));

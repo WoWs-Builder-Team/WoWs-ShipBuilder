@@ -2,7 +2,7 @@
 
 namespace WoWsShipBuilder.Web.Services;
 
-public class VmCacheService
+public class VmCache
 {
     private readonly Dictionary<Guid, VmCacheEntry?> cacheEntries = new();
 
