@@ -150,7 +150,7 @@
     private string BuildName
     {
         get => Cache[CurrentTabId]?.BuildName ?? string.Empty;
-        set => Cache[CurrentTabId]!.BuildName = value;
+        set => Cache[CurrentTabId] = Cache[CurrentTabId]! with { BuildName = value };
     }
 
     protected override async Task OnInitializedAsync()
@@ -167,9 +167,9 @@
         }
         else
         {
-            Cache[CurrentTabId] = new();
+            Cache[CurrentTabId] = new(null!);
             ViewModel = await LoadShipViewModel(ShipIndex);
-            Cache[CurrentTabId]!.ViewModel = ViewModel;
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel};
             await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         }
 
@@ -279,11 +279,9 @@
             if (OnShipChanged?.Invoke(currentTabId, updateToShipSummary.Index) ?? false)
             {
                 ShipIndex = updateToShipSummary.Index;
+                BuildName = string.Empty;
                 ViewModel = await LoadShipViewModel(ShipIndex);
-                Cache[CurrentTabId] = new()
-                {
-                    ViewModel = ViewModel,
-                };
+                Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -320,7 +318,7 @@
 
     public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
     {
-        List<(string, float)> modifiers = cacheEntry.ViewModel!.UpgradePanelViewModel.GetModifierList();
+        List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
         modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
