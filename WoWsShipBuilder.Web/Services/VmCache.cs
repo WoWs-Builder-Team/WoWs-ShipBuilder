@@ -17,7 +17,9 @@ public class VmCache
     public bool RemoveEntry(Guid id) => cacheEntries.Remove(id);
 }
 
-public sealed record VmCacheEntry(ShipViewModel ViewModel)
+public sealed class VmCacheEntry
 {
+    public ShipViewModel? ViewModel { get; set; }
+
     public string BuildName { get; set; } = string.Empty;
 }

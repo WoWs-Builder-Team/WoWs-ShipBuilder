@@ -121,7 +121,7 @@
     [Parameter]
     [EditorRequired]
     public string ShipIndex { get; set; } = default!;
-    
+
     [Parameter]
     [EditorRequired]
     public Guid CurrentTabId { get; set; }
@@ -140,7 +140,7 @@
 
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
-        
+
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
@@ -167,11 +167,12 @@
         }
         else
         {
+            Cache[CurrentTabId] = new();
             ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId]!.ViewModel = ViewModel;
             await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
-            Cache[CurrentTabId] = new(ViewModel);
         }
-        
+
         initialized = true;
     }
 
@@ -186,12 +187,12 @@
             {
                 elementIds.Add(CurrentTabId + "_" + ViewModel.PreviousShip.Index);
             }
-            
+
             if (ViewModel.NextShips is not null)
             {
                 elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
             }
-            
+
             if (elementIds.Any())
             {
                 await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
@@ -240,7 +241,7 @@
                 return isCurrentShip ? 150 : 105;
         }
     }
-    
+
     private string GetShipAlign()
     {
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? "align-start" : "align-end";
@@ -279,7 +280,10 @@
             {
                 ShipIndex = updateToShipSummary.Index;
                 ViewModel = await LoadShipViewModel(ShipIndex);
-                Cache[CurrentTabId] = new(ViewModel);
+                Cache[CurrentTabId] = new()
+                {
+                    ViewModel = ViewModel,
+                };
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -308,7 +312,7 @@
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
     }
-    
+
     private async Task SaveBuildStringToLocalStorage()
     {
         await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(Cache[CurrentTabId]!) });
@@ -316,11 +320,11 @@
 
     public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
     {
-        List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
+        List<(string, float)> modifiers = cacheEntry.ViewModel!.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
         modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-        
+
         var build = cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName);
         var buildString = build.CreateShortStringFromBuild();
         BuildHelper.BuildHelperContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
@@ -335,7 +339,7 @@
 
         ShipViewModel vm = new(null!, localizer, vmParams);
         await vm.InitializeData(vmParams);
-        
+
         return vm;
     }
 }

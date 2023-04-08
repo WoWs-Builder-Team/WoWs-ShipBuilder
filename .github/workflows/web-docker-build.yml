@@ -5,6 +5,7 @@ on:
     branches:
       - 'development'
       - 'main'
+      - 'release/web/v*'
     paths-ignore:
       - 'deployment/**/*.*'
   workflow_dispatch:
