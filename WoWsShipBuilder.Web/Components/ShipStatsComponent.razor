@@ -504,7 +504,7 @@
 
 @code {
     [Parameter, EditorRequired]
-    public EventCallback SaveBuildStringIntoLocal { get; set; }
+    public EventCallback StoreBuildsForTransfer { get; set; }
 
     private bool showDepthChargeDamageDistributionChart;
 
@@ -554,6 +554,6 @@
 
     private async Task SendBuildToCharts()
     {
-        await SaveBuildStringIntoLocal.InvokeAsync();
+        await StoreBuildsForTransfer.InvokeAsync();
     }
 }

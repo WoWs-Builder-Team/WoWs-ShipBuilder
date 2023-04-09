@@ -26,7 +26,7 @@
 @inject NavigationManager NavManager
 @inject IClipboardService ClipboardService
 @inject ILinkShortener LinkShortener
-@inject BuildHelper BuildHelper
+@inject SessionStateCache SessionStateCache
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -110,7 +110,7 @@
         <MudItem xs="12" md="6" lg="8" xl="9">
             @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
             {
-                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringToLocalStorage())"/>
+                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
             }
         </MudItem>
     </MudGrid>
@@ -169,7 +169,7 @@
         {
             Cache[CurrentTabId] = new(null!);
             ViewModel = await LoadShipViewModel(ShipIndex);
-            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel};
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
             await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
         }
 
@@ -311,12 +311,12 @@
         }
     }
 
-    private async Task SaveBuildStringToLocalStorage()
+    private void StoreBuildsForTransfer()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(Cache[CurrentTabId]!) });
+        SessionStateCache.SetBuildTransferContainers(GetBuildHelperContainer(Cache[CurrentTabId]!));
     }
 
-    public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
+    public static BuildTransferContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
     {
         List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
@@ -325,7 +325,7 @@
 
         var build = cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName);
         var buildString = build.CreateShortStringFromBuild();
-        BuildHelper.BuildHelperContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
+        BuildTransferContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
         return container;
     }
 

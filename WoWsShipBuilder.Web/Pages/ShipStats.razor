@@ -3,13 +3,14 @@
 @using WoWsShipBuilder.Web.Utility
 @using DynamicData
 @using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
-@inject BuildHelper BuildHelper
+@inject SessionStateCache SessionStateCache
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -71,8 +72,8 @@
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
-            var buildContainers = await BuildHelper.RetrieveBuildContainers();
-            List<BuildHelper.BuildHelperContainer>? buildList;
+            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
+            List<BuildTransferContainer>? buildList;
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
             {
                 buildList = new() { new(shipIndexesFromUrl, shipBuildFromUrl, null, null) };
@@ -161,7 +162,7 @@
         {
             AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
             selectedTabId = shipContainers.Last().Id;
-            AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildHelper.BuildHelperContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
+            AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildTransferContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
             updateTab = true;
 
             UpdateUrl();
@@ -169,7 +170,7 @@
         }
     }
 
-    private void AddNewIndexes(List<string> indexList, List<BuildHelper.BuildHelperContainer>? buildContainers)
+    private void AddNewIndexes(List<string> indexList, List<BuildTransferContainer>? buildContainers)
     {
         List<ShipSelector.ShipSelectorContainer> newShips = new();
         newShips.AddRange(buildContainers is null ? indexList.Select(index => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null)) : buildContainers.Select(container => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString)));
@@ -178,7 +179,7 @@
 
     private async Task<List<string>> StoreBuildsForCharts()
     {
-        List<BuildHelper.BuildHelperContainer> buildContainers = new();
+        List<BuildTransferContainer> buildContainers = new();
         List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
@@ -209,7 +210,7 @@
             shipIndexes.Add(container.ShipIndex);
         }
 
-        await BuildHelper.StoreBuildContainers(buildContainers);
+        SessionStateCache.SetBuildTransferContainers(buildContainers);
         return shipIndexes;
     }
 
