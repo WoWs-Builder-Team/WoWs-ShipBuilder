@@ -1525,6 +1525,9 @@
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Добавить/удалить корабли</value>
   </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>Изменить билды</value>
+  </data>
   <data name="AccelerationChart_ExplanationText" xml:space="preserve">
       <value>После выбора корабля у вас есть возможность выбрать 3 передачи, которые будут использоваться в графике.
 График будет идти в порядке Начальная передача --&gt; Средняя передача --&gt; Конечная передача, переключаясь на следующую только после достижения максимальной скорости текущей передачи.
@@ -1615,6 +1618,123 @@
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Тактические Топмачтовики</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Билд</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Редактировать билды</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>Корабль не выбран</value>
+  </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Радиус целевой области</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Прогресс за действие</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>Время бездействия до потери прогресса</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>Интервал между потерями прогресса</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>Прогресс теряющийся за интервал</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Показать графики ускорения</value>
+  </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>Введите ссылку на билд</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>Загрузить билд</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>Перейти на страницу кораблей</value>
+  </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Показать в графиках баллистики</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Показать в графиках ускорения</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>Неверный билд</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>Несовместимо</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>Выбранный корабль</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>Корабль в билде</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>Кол-во заряжающих</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>Нос</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>Корма</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>Первый</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Второй</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>единица</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>единиц/c</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>Макс. скорость погружения</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Время погружения и всплытия</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>Автономность</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>Восстановление автономности</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>Автономность</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 импульс</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 импульса</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>м/с²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Макс. скорость поворота</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Ускорение при повороте</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Макс. вертикальная скорость</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Вертикальное ускорение</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Радиус поиска</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Угол поиска</value>
+  </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>Авианосец</value>
   </data>
@@ -1629,5 +1749,14 @@
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Эсминец</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>Подробнее</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Расстояние отключения наведения</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/с²</value>
   </data>
 </root>
