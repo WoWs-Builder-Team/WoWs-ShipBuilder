@@ -1628,6 +1628,21 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
       <value>Nincs kiválasztott hajó</value>
   </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Célterület sugara</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Akciónkénti előrehaladás</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>Türelmi idő az előrehaladás elvesztése előtt</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>Előrehaladás-veszteségi ütem</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>Előrehaladási veszteség</value>
+  </data>
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Gyorsulási diagram megjelenítése</value>
   </data>
