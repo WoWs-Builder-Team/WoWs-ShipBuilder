@@ -1,5 +1,7 @@
 ﻿@using WoWsShipBuilder.DataElements.DataElements
 @using WoWsShipBuilder.Core.Utility
+@using System.Text.RegularExpressions
+@using System.Web
 
 @code {
 
@@ -54,7 +56,9 @@
                 <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
                 break;
             case FormattedTextDataElement element:
-                <MudText Typo="Typo.body2">@ConvertFormattedText(element, group.localizer)</MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    @((MarkupString)Regex.Replace(HttpUtility.HtmlEncode(ConvertFormattedText(element, group.localizer)), "\r?\n|\r", "<br />"))
+                </MudText>
                 break;
         }
     };

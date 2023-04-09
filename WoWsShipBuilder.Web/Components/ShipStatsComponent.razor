@@ -145,7 +145,7 @@
                                             for(int i = 0; i < torpedo.DataElements.Count - 11; i++)
                                             {
                                                 @DataElementFragment((torpedo.DataElements[i]!, Localizer))
-                                            }   
+                                            }
                                         }
                                         else
                                         {
@@ -185,7 +185,7 @@
                                                         @DataElementFragment((torpedo.DataElements[i]!, Localizer))
                                                     }
                                                 </MudStack>
-                                            </MudExpansionPanel>   
+                                            </MudExpansionPanel>
                                         }
                                     </MudStack>
                                 </MudExpansionPanel>
@@ -325,7 +325,7 @@
                                 </MudStack>
                             </MudExpansionPanel>
                         }
-                        
+
                         <!--Short range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura is not null)
                         {
@@ -363,7 +363,7 @@
                     </MudStack>
                 </MudExpansionPanel>
             }
-            
+
             @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
             {
                 var dcDataContext = ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Weapon as DepthChargeDataContainer ?? throw new InvalidOperationException("Expected DepthChargeDataContainer but found another type.");
