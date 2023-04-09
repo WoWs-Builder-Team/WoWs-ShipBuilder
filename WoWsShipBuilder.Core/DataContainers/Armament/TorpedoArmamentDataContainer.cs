@@ -56,7 +56,7 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
 
     public IEnumerable<TorpedoLauncher> TorpedoLaunchers { get; private set; } = default!;
 
-    public static TorpedoArmamentDataContainer? FromShip(Ship ship, IEnumerable<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
+    public static TorpedoArmamentDataContainer? FromShip(Ship ship, List<ShipUpgrade> shipConfiguration, List<(string name, float value)> modifiers)
     {
         var torpConfiguration = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Torpedoes);
         if (torpConfiguration == null)
@@ -64,7 +64,20 @@ public partial record TorpedoArmamentDataContainer : DataContainerBase
             return null;
         }
 
-        var torpedoModule = ship.TorpedoModules[torpConfiguration.Components[ComponentType.Torpedoes].First()];
+        string[] torpedoOptions = torpConfiguration.Components[ComponentType.Torpedoes];
+        string[] supportedModules = torpConfiguration.Components[ComponentType.Torpedoes];
+
+        TorpedoModule? torpedoModule;
+        if (torpedoOptions.Length == 1)
+        {
+            torpedoModule = ship.TorpedoModules[supportedModules.First()];
+        }
+        else
+        {
+            string hullTorpedoName = shipConfiguration.First(c => c.UcType == ComponentType.Hull).Components[ComponentType.Torpedoes].First(torpedoName => supportedModules.Contains(torpedoName));
+            torpedoModule = ship.TorpedoModules[hullTorpedoName];
+        }
+
         var launcher = torpedoModule.TorpedoLaunchers.First();
 
         List<(int BarrelCount, int LauncherCount, string LauncherName)> arrangementList = torpedoModule.TorpedoLaunchers
