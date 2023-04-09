@@ -17,7 +17,7 @@ FROM base AS final
 ENV APPLICATION_USER_ID 1001
 ENV APPLICATION_USER appuser
 LABEL org.opencontainers.image.source=https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder
-LABEL org.opencntainers.image.description="Container iamge for ShipBuilder Web"
+LABEL org.opencontainers.image.description="Container iamge for ShipBuilder Web"
 LABEL org.opencontainers.image.licenses=MIT
 
 RUN groupadd --gid $APPLICATION_USER_ID $APPLICATION_USER \
