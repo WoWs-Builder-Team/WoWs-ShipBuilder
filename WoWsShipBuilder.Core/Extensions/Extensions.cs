@@ -172,7 +172,7 @@ public static class Extensions
             Nation.Netherlands => "Netherlands",
             Nation.Spain => "Spain",
             Nation.PanAsia => "PanAsia",
-            Nation.PanAmerica => "PanAmericaPanAmerica",
+            Nation.PanAmerica => "PanAmerica",
             Nation.Commonwealth => "Commonwealth",
             Nation.Common => "Common",
             _ => shipNation.ToString(),
