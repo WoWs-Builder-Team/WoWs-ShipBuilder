@@ -47,6 +47,7 @@
 @inject NavigationManager NavManager
 @inject IJSRuntime JsRuntime
 @inject IMetricsService MetricsService
+@inject SessionStateCache SessionStateCache
 
 <PageTitle>WoWs ShipBuilder: Ship Comparison</PageTitle>
 
@@ -54,7 +55,7 @@
 {
     <MudStack Class="mb-3 mt-3">
         <MudText Style="white-space: break-spaces; color: yellow" Class="my-n6">
-            WARNING: This feature is in BETA. Some functions (like "View Stats", "View Ballistic" and "View Acceleration") are still under active development. If you happen to find a bug please report it. Impressions and suggestions are also very welcomed!
+            WARNING: This feature is in BETA and still under active development. If you happen to find a bug please report it. Impressions and suggestions are also very welcomed!
         </MudText>
         <MudExpansionPanel IsInitiallyExpanded Style="border-bottom: initial" Class="header-border border border-solid rounded-0">
             <TitleContent>
@@ -198,13 +199,13 @@
                 <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="RemoveBuilds" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                     Remove builds
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="OpenShipStats" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                     View stats
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="OpenBallisticCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                     View ballistic
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="true">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="OpenAccelerationCharts" Disabled="@(ViewModel.SelectedShipList.Count == 0)">
                     View acceleration
                 </MudButton>
             </MudStack>
@@ -229,7 +230,7 @@
     <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
 
         <ToolBarContent>
-            <MudTextField T="string" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Style="alignment: right" Clearable="true" Immediate="true" DebounceInterval="150"/>
+            <MudTextField T="string" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Clearable="true" Immediate="true" DebounceInterval="150"/>
             <div style="width: 45%">
                 <MudSpacer/>
             </div>
@@ -683,9 +684,48 @@
                     }
                 }
             }
-            
+
             return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
+    }
+
+    private bool CheckSelectionAmount()
+    {
+        return ViewModel!.SelectedShipList.Count <= 250;
+    }
+
+    private void StoreBuildsForTransfer()
+    {
+        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Select(x => new BuildTransferContainer(x.ShipIndex, x.Build?.CreateShortStringFromBuild() ?? string.Empty, x.GetShipBuildContainer().Modifiers, x.GetShipBuildContainer().ActivatedConsumableSlots)).ToList());
+    }
+
+    private void SetupAndOpenNewTab(string url)
+    {
+        if (!CheckSelectionAmount())
+        {
+            Snackbar.Add($"Too many ships selected. Selected: {ViewModel!.SelectedShipList.Count}. Max limit is 250", Severity.Error);
+            return;
+        }
+
+        StoreBuildsForTransfer();
+        NavManager.NavigateTo(url);
+
+        // cant use await JsRuntime.InvokeAsync<object>("open", NavManager.BaseUri + url, "_blank"); to open in a new tab because builds are not carried over.
+    }
+
+    private void OpenShipStats()
+    {
+        SetupAndOpenNewTab("ship?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
+    }
+
+    private void OpenBallisticCharts()
+    {
+        SetupAndOpenNewTab("charts?shipIndex=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
+    }
+
+    private void OpenAccelerationCharts()
+    {
+        SetupAndOpenNewTab("acceleration-charts?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
     }
 
     private async Task UpdateUrl()
