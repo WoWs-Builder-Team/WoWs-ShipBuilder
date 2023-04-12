@@ -1660,6 +1660,69 @@
   <data name="Validation_ShipInBuild" xml:space="preserve">
       <value>ビルド内の艦艇</value>
   </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>装填手</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>艦首</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>艦尾</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>1番目</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>2番目</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>単位</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>単位/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>最大垂直速度</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>潜航舵の転舵所要時間</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>容量</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>リチャージ速度</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>バッテリー</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 ping</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>最大旋回速度</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>旋回加速度</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>最大垂直速度</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>垂直加速度</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>探知半径</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>探知角度</value>
+  </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>航空母船</value>
   </data>
@@ -1674,5 +1737,14 @@
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>駆逐艦</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>詳細</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>誘導停止距離</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
   </data>
 </root>
