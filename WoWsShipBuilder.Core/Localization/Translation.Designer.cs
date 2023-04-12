@@ -3801,7 +3801,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show in Acceleration Charts.
+        ///   Looks up a localized string similar to Show all in Acceleration Charts.
         /// </summary>
         public static string ShipStats_ShowInAccelerationCharts {
             get {
@@ -3810,7 +3810,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show in Ballistic Charts.
+        ///   Looks up a localized string similar to Show all in Ballistic Charts.
         /// </summary>
         public static string ShipStats_ShowInBallisticCharts {
             get {

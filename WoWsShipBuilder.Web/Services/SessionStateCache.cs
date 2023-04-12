@@ -1,27 +1,27 @@
-﻿using WoWsShipBuilder.Web.Data;
+﻿using WoWsShipBuilder.Core.Data;
 
 namespace WoWsShipBuilder.Web.Services;
 
 /**
- * A caching service that stores <see cref="BuildTransferContainer"/> instances when navigating between pages.
+ * A caching service that stores <see cref="ShipBuildContainer"/> instances when navigating between pages.
  */
 public class SessionStateCache
 {
-    private List<BuildTransferContainer>? buildTransferContainers;
+    private List<ShipBuildContainer>? buildTransferContainers;
 
-    public List<BuildTransferContainer>? GetAndResetBuildTransferContainers()
+    public List<ShipBuildContainer>? GetAndResetBuildTransferContainers()
     {
         var result = buildTransferContainers;
         buildTransferContainers = null;
         return result;
     }
 
-    public void SetBuildTransferContainers(List<BuildTransferContainer> containers)
+    public void SetBuildTransferContainers(List<ShipBuildContainer> containers)
     {
         buildTransferContainers = containers;
     }
 
-    public void SetBuildTransferContainers(BuildTransferContainer container)
+    public void SetBuildTransferContainers(ShipBuildContainer container)
     {
         buildTransferContainers = new() { container };
     }

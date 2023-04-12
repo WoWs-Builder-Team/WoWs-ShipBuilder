@@ -696,7 +696,7 @@
 
     private void StoreBuildsForTransfer()
     {
-        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Select(x => new BuildTransferContainer(x.ShipIndex, x.Build?.CreateShortStringFromBuild() ?? string.Empty, x.GetShipBuildContainer().Modifiers, x.GetShipBuildContainer().ActivatedConsumableSlots)).ToList());
+        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Select(x => x.GetShipBuildContainer()).ToList());
     }
 
     private void SetupAndOpenNewTab(string url)

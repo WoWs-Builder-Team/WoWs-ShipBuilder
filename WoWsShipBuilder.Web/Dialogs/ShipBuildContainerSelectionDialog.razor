@@ -1,7 +1,6 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
 @using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Utility
 
@@ -94,7 +93,7 @@
     [Parameter]
     public List<ShipBuildContainer>? ShipList { get; set; }
 
-    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
+    private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
 
     bool processing;
 
@@ -119,13 +118,9 @@
 
     private void SelectedShipsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.NewItems![0] is ShipSelector.ShipSelectorContainer container)
+        if (e.NewItems![0] is ShipBuildContainer container)
         {
-            var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(container.ShipIndex));
-            var ship = AppData.FindShipFromSummary(shipSummary);
-
-            var shipContainer = ShipBuildContainer.CreateNew(ship, null, null);
-            ShipList!.Add(shipContainer);
+            ShipList!.Add(container);
         }
         StateHasChanged();
     }

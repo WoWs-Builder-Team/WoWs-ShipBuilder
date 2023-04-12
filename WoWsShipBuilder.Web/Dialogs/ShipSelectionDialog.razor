@@ -1,5 +1,6 @@
 ﻿@using System.Collections.Specialized
 @using System.Collections.ObjectModel
+@using WoWsShipBuilder.Core.Data
 
 @implements IDisposable
 
@@ -22,7 +23,7 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = null!;
 
-    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
+    private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
 
     protected override void OnInitialized()
     {

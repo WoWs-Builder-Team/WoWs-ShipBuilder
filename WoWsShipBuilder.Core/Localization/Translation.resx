@@ -1656,10 +1656,10 @@ You can use the Change builds button to manage the builds of single ships. You c
       <value>Go to ships page</value>
   </data>
   <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-      <value>Show in Ballistic Charts</value>
+      <value>Show all in Ballistic Charts</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
-      <value>Show in Acceleration Charts</value>
+      <value>Show all in Acceleration Charts</value>
   </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
       <value>Invalid build</value>
