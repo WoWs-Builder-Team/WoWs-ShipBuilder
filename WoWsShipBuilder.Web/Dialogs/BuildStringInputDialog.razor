@@ -1,4 +1,5 @@
 ﻿@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
@@ -27,11 +28,11 @@
 
     [Parameter]
     public string SelectedShipIndex { get; set; } = default!;
-    
+
     private string inputBuild = string.Empty;
 
     private string inputBuildCache = string.Empty;
-    
+
     private string? inputBuildValidationResultCache;
 
     private string buildString = string.Empty;
@@ -43,9 +44,9 @@
 
     private void OnConfirm()
     {
-        MudDialog.Close(buildString.Trim());
+        MudDialog.Close(Build.CreateBuildFromString(buildString.Trim()));
     }
-    
+
     private async Task<string?> ValidateBuildString(string buildStr)
     {
         if (buildStr.Equals(inputBuildCache))
@@ -55,9 +56,9 @@
         }
 
         inputBuildCache = buildStr;
-        
+
         var validationResult = await Validation.ValidateBuildString(buildStr, SelectedShipIndex, Localizer, LinkShorteningOptions.Value.UriPrefix);
-        
+
         buildString = validationResult.ValidatedBuildString;
 
         // needed to update UI

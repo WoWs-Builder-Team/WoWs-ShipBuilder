@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.Builds
-@using WoWsShipBuilder.Web.Data
+@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Services
 @inject NavigationManager NavManager
@@ -54,7 +54,7 @@
 
 @code
 {
-    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
+    private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
 
     private string buildString = string.Empty;
 
@@ -77,9 +77,8 @@
 
     private void GoToShipPage()
     {
-        string indexes = string.Join(",", selectedShips.Select(x => x.ShipIndex));
-        var containers = selectedShips.Select(ship => new BuildTransferContainer(ship.ShipIndex, ship.BuildString ?? string.Empty, null, null)).ToList();
-        SessionStateCache.SetBuildTransferContainers(containers);
+        string indexes = string.Join(",", selectedShips.Select(x => x.Ship.Index));
+        SessionStateCache.SetBuildTransferContainers(selectedShips.ToList());
         NavManager.NavigateTo("/ship?shipIndexes=" + indexes);
     }
 

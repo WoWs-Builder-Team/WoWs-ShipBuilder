@@ -12,7 +12,6 @@
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.DataStructures.Projectile
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Web.Data
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
@@ -320,29 +319,13 @@
             await SetupChartsAsync();
             if (shipIndexesFromUrl.Any())
             {
-                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x => new BuildTransferContainer(x, string.Empty, null, null)) : null);
+                var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (shipIndexesFromUrl.Any() ? shipIndexesFromUrl.Select(x =>  ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
                 if (buildContainers is not null)
                 {
                     List<ChartsDataWrapper> shipsToAdd = new();
                     foreach (var container in buildContainers)
                     {
-                        var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(container.ShipIndex));
-                        var ship = AppData.FindShipFromSummary(shipSummary);
-                        Build? build;
-                        List<ShipUpgrade> shipConfiguration;
-                        if (string.IsNullOrWhiteSpace(container.BuildString))
-                        {
-                            build = null;
-                            shipConfiguration = Helpers.GetStockShipConfiguration(ship);
-                        }
-                        else
-                        {
-                            build = Build.CreateBuildFromString(container.BuildString);
-                            shipConfiguration = Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
-                        }
-
-                        var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                        ChartsDataWrapper wrapper = new(ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers } , new());
+                        ChartsDataWrapper wrapper = new(container , new());
 
                         if (shellIndexFromUrl.Any())
                         {
@@ -534,9 +517,9 @@
 
     private Dictionary<double, Ballistic> GetBallistic(ChartsDataWrapper wrapper, string shellIndex, ArtilleryShell shell, double maxRange, int penetration)
     {
-        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.ContainsKey(shellIndex))
+        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.TryGetValue(shellIndex, out var selectedShell))
         {
-            var ballisticCache = displayedShips[wrapper.ShipContainer.Id].SelectedShells[shellIndex].BallisticCache;
+            var ballisticCache = selectedShell.BallisticCache;
             if (ballisticCache is not null)
             {
                 return ballisticCache;
@@ -550,9 +533,9 @@
 
     private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(ChartsDataWrapper wrapper, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
     {
-        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.ContainsKey(shellIndex))
+        if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.TryGetValue(shellIndex, out var shell))
         {
-            var verticalDispersionsCache = displayedShips[wrapper.ShipContainer.Id].SelectedShells[shellIndex].VerticalDispersionsCache;
+            var verticalDispersionsCache = shell.VerticalDispersionsCache;
             if (verticalDispersionsCache is not null)
             {
                 return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersionsCache, selectedVertDispersionPlane);

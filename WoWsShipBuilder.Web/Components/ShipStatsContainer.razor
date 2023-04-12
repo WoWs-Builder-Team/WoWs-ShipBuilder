@@ -13,6 +13,7 @@
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Extensions
+@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
@@ -130,7 +131,7 @@
     public Func<Guid?, string, bool>? OnShipChanged { get; set; }
 
     [Parameter]
-    public string? BuildString { get; set; }
+    public Build? Build { get; set; }
 
     [Parameter, EditorRequired]
     public VmCache Cache { get; set; } = default!;
@@ -203,17 +204,11 @@
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
-        Build? build = null;
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            if (!string.IsNullOrWhiteSpace(BuildString))
-            {
-                build = Build.CreateBuildFromString(BuildString);
-                BuildString = null;
-                BuildName = build.BuildName;
-            }
-
-            var vm = await CreateViewModel(shipIndex, build, Localizer);
+            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            BuildName = Build?.BuildName ?? string.Empty;
+            Build = null;
             shipChanged = true;
             return vm;
         }
@@ -313,19 +308,32 @@
 
     private void StoreBuildsForTransfer()
     {
-        SessionStateCache.SetBuildTransferContainers(GetBuildHelperContainer(Cache[CurrentTabId]!));
+        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!));
     }
 
-    public static BuildTransferContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
+    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry)
     {
         List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
         modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
 
-        var build = cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName);
-        var buildString = build.CreateShortStringFromBuild();
-        BuildTransferContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
+        bool isCustomBuild = cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
+                             cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
+                             (cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.SkillOrderList.Any() ?? false) || (cacheEntry.ViewModel.SignalSelectorViewModel?.SelectedSignals.Any() ?? false);
+
+        var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
+        var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
+
+        var container = new ShipBuildContainer(
+            ship,
+            build,
+            containerId,
+            cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null,
+            false,
+            build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers),
+            modifiers);
+
         return container;
     }
 

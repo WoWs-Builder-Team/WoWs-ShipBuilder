@@ -1,6 +1,5 @@
 @page "/acceleration-charts"
 @using MudBlazor.Services
-@using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
@@ -8,7 +7,6 @@
 @using WoWsShipBuilder.DataStructures
 @using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.ViewModels.Other
-@using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
@@ -114,20 +112,13 @@
 
             NavManager.TryGetQueryString("shipIndexes", out string shipIndexesFromUrl);
 
-            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => new BuildTransferContainer(x, string.Empty, null, null)) : null);
+            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers() ?? (!string.IsNullOrWhiteSpace(shipIndexesFromUrl) ? shipIndexesFromUrl.Split(',').Select(x => ShipBuildContainer.CreateNew(AppData.ShipDictionary[x], null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(AppData.ShipDictionary[x]) }) : null);
 
             if (buildContainers is not null)
             {
                 foreach (var container in buildContainers)
                 {
-                    Build? build = !string.IsNullOrWhiteSpace(container.BuildString) ? Build.CreateBuildFromString(container.BuildString) : null;
-                    var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(container.ShipIndex));
-                    var ship = AppData.FindShipFromSummary(shipSummary);
-                    var shipConfiguration = build is null ? Helpers.GetStockShipConfiguration(ship) : Helpers.GetShipConfigurationFromBuild(build.Modules, ship.ShipUpgradeInfo.ShipUpgrades);
-                    var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, container.Modifiers ?? new());
-                    var shipContainer = ShipBuildContainer.CreateNew(ship, build, container.ActivatedConsumables) with { ShipDataContainer = dataContainer, Modifiers = container.Modifiers ?? new() };
-
-                    shipBuildCache.Add(counter, shipContainer);
+                    shipBuildCache.Add(counter, container);
                     counter++;
                 }
             }

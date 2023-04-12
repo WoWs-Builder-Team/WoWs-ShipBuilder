@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using DynamicData;
 using MudBlazor;
+using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.Core.Utility;
@@ -87,6 +88,16 @@ public static class Helpers
         }
 
         return results;
+    }
+
+    public static ShipDataContainer GetShipDataContainerFromBuild(Ship ship, IEnumerable<string> selectedModules, List<ShipUpgrade> shipConfiguration, List<(string, float)> modifiers)
+    {
+        return ShipDataContainer.CreateFromShip(ship, GetShipConfigurationFromBuild(selectedModules, shipConfiguration), modifiers);
+    }
+
+    public static ShipDataContainer GetStockShipDataContainer(Ship ship)
+    {
+        return ShipDataContainer.CreateFromShip(ship, GetStockShipConfiguration(ship), new());
     }
 
     public static async Task<string?> RetrieveLongUrlFromShortLink(string shortUrl)
