@@ -1654,12 +1654,6 @@
   <data name="WebApp_GoToShipsPage" xml:space="preserve">
       <value>Перейти на страницу кораблей</value>
   </data>
-  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
-      <value>Показать в графиках баллистики</value>
-  </data>
-  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
-      <value>Показать в графиках ускорения</value>
-  </data>
   <data name="Validation_InvalidBuild" xml:space="preserve">
       <value>Неверный билд</value>
   </data>
