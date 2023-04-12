@@ -100,7 +100,7 @@
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
                                         <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
-                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build.BuildName) ? shipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
+                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
                                         </MudText>
                                         <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
                                     </MudStack>
