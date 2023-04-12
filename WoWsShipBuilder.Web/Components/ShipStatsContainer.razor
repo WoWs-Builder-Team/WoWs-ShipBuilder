@@ -216,7 +216,7 @@
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
-    // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
         string imgName = shipIndex;
         if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
         {
@@ -324,17 +324,10 @@
 
         var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
         var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
+        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        var shipDataContainer = build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
 
-        var container = new ShipBuildContainer(
-            ship,
-            build,
-            containerId,
-            cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null,
-            false,
-            build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers),
-            modifiers);
-
-        return container;
+        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
     public static async Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
