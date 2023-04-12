@@ -1,5 +1,4 @@
-﻿@using WoWsShipBuilder.Core.DataProvider
-@using WoWsShipBuilder.Web.Utility
+﻿@using WoWsShipBuilder.Web.Utility
 @using System.Collections.ObjectModel
 @using System.Collections.Specialized
 @using System.Linq
@@ -116,12 +115,12 @@
 
     [Parameter]
     public List<ChartsDataWrapper> InputData { get; set; } = new();
-    
+
     private readonly List<ChartsDataWrapper> dataWrappers = new();
-    private readonly ObservableCollection<ShipSelector.ShipSelectorContainer> selectedShips = new();
+    private readonly ObservableCollection<ShipBuildContainer> selectedShips = new();
     private readonly Dictionary<Guid, Dictionary<string, List<string>>> disabledShells = new();
     private bool processing;
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -131,7 +130,7 @@
         {
             foreach (var shell in wrapper.SelectedShells.Keys)
             {
-                AddDisableShells(wrapper, shell);   
+                AddDisableShells(wrapper, shell);
             }
         }
     }
@@ -141,9 +140,9 @@
         if (e.Action.Equals(NotifyCollectionChangedAction.Add) && e.NewItems is not null)
         {
             //manage newly added items
-            foreach (ShipSelector.ShipSelectorContainer ship in e.NewItems)
+            foreach (ShipBuildContainer ship in e.NewItems)
             {
-                AddWrapper(ship.ShipIndex);
+                AddWrapper(ship);
             }
 
             //Removed ships are managed by the RemoveShip method.
@@ -151,14 +150,9 @@
         StateHasChanged();
     }
 
-    private void AddWrapper(string shipIndex)
+    private void AddWrapper(ShipBuildContainer wrapper)
     {
-        var shipSummary = AppData.ShipSummaryList.First(x => x.Index.Equals(shipIndex));
-        var ship = AppData.FindShipFromSummary(shipSummary);
-        var dataContainer = ShipDataContainer.CreateFromShip(ship, Helpers.GetStockShipConfiguration(ship) , new());
-        var container = ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = dataContainer };
-        var wrapper = new ChartsDataWrapper(container, new());
-        dataWrappers.Add(wrapper);
+        dataWrappers.Add(new(wrapper, new()));
     }
 
     private void ReturnSelectedShells(bool shouldGoToBuildWindow)
@@ -168,25 +162,25 @@
         List<ChartsDataWrapper> shipsToAdd = new();
         List<ChartsDataWrapper> shipsToModify = new();
         List<Guid> shipsToRemove = new();
-        
+
         //newly added ships
         shipsToAdd.AddRange(dataWrappers.Where(current => !initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id) && current.SelectedShells.Count != 0));
-        
+
         //removed ships
         shipsToRemove.AddRange(initialShips.Where(current => !dataWrappers.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id)).Select(x => x.ShipContainer.Id));
-        
+
         //modified ship
         var commonShips = dataWrappers.Where(current => initialShips.Select(x => x.ShipContainer.Id).Contains(current.ShipContainer.Id));
         foreach (var ship in commonShips)
         {
-            
+
             var initialShip = initialShips.First(x => x.ShipContainer.Id.Equals(ship.ShipContainer.Id));
             //we sort the lists
             var initialShells = initialShip.SelectedShells.Keys.ToList();
             initialShells.Sort();
             var currentShells = ship.SelectedShells.Keys.ToList();
             currentShells.Sort();
-            
+
             if (ship.SelectedShells.Count == 0)
             {
                 shipsToRemove.Add(ship.ShipContainer.Id);
@@ -206,7 +200,7 @@
     {
         dataWrappers.Remove(ship);
     }
-    
+
     private static List<ChartsDataWrapper> SetCompatibleModules(List<ChartsDataWrapper> wrappers)
     {
         List<ChartsDataWrapper> newWrappers = new();
@@ -220,7 +214,7 @@
                 var shellModuleList = wrapper.ShipContainer.Ship.ShellCompatibilities.Where(x => selectedShells.Contains(x.Key)).Select(x => x.Value).SelectMany(x => x.CompatibleHullArtilleryModulesCombo);
                 var commonHulls = shellModuleList.GroupBy(x => x.Key).Where(x => x.Count() > 1).SelectMany(x => x).ToList();
                 commonHullName = commonHulls.MinBy(x => x.Key).Key;
-                commonArtilleryName = commonHulls.SelectMany(x => x.Value).GroupBy(x => x).Where(x => x.Count() > 1).SelectMany(x => x).MinBy(x => x)!;   
+                commonArtilleryName = commonHulls.SelectMany(x => x.Value).GroupBy(x => x).Where(x => x.Count() > 1).SelectMany(x => x).MinBy(x => x)!;
             }
             else
             {
@@ -231,7 +225,7 @@
             var ship = wrapper.ShipContainer.Ship;
             var commonHull = ship.ShipUpgradeInfo.ShipUpgrades.Single(x => x.UcType.Equals(ComponentType.Hull) && x.Components.Any(y => y.Value.Contains(commonHullName)) && x.Components.Any(y => y.Value.Contains(commonArtilleryName)));
             var commonArtillery = ship.ShipUpgradeInfo.ShipUpgrades.Single(x => x.UcType.Equals(ComponentType.Artillery) && x.Components.Any(y => y.Value.Contains(commonArtilleryName)));
-            
+
             if (wrapper.ShipContainer.Build is null)
             {
                 var shipConfiguration = Helpers.GetStockShipConfiguration(ship);
@@ -239,7 +233,7 @@
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
                 var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipContainer.Modifiers ?? new());
                 Build build = new(string.Empty, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), new(), Helpers.GetStockConsumableNames(ship), "PCW001", new(), new());
-                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = build};
+                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = build };
                 var newWrapper = wrapper with { ShipContainer = container };
                 newWrappers.Add(newWrapper);
             }
@@ -251,7 +245,7 @@
                 Helpers.UpgradeModuleInShipConfiguration(shipConfiguration, commonArtillery);
                 var dataContainer = ShipDataContainer.CreateFromShip(ship, shipConfiguration, wrapper.ShipContainer.Modifiers ?? new());
                 Build newBuild = new(build.BuildName, ship.Index, ship.ShipNation, shipConfiguration.Select(x => x.Name.NameToIndex()).ToList(), build.Upgrades.ToList(), build.Consumables.ToList(), build.Captain, build.Skills.ToList(), build.Signals.ToList());
-                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = newBuild};
+                var container = wrapper.ShipContainer with { ShipDataContainer = dataContainer, Build = newBuild };
                 var newWrapper = wrapper with { ShipContainer = container };
                 newWrappers.Add(newWrapper);
             }
@@ -299,9 +293,9 @@
             }
         }
         var id = wrapper.ShipContainer.Id;
-        if (disabledShells.ContainsKey(id))
+        if (disabledShells.TryGetValue(id, out Dictionary<string, List<string>>? disabledShell))
         {
-            disabledShells[id].Add(shellIndex, incompatibleShells);
+            disabledShell.Add(shellIndex, incompatibleShells);
         }
         else
         {
@@ -333,7 +327,7 @@
     {
         MudDialog.Cancel();
     }
-    
+
     public void Dispose()
     {
         selectedShips.CollectionChanged -= SelectedShipsOnCollectionChanged;

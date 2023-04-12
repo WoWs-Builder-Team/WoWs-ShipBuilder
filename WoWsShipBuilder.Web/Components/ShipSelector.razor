@@ -4,9 +4,12 @@
 @using System.Collections.ObjectModel
 @using System.Net
 @using DynamicData
+@using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Core.Data
 @using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.ViewModels.Other
 @using WoWsShipBuilder.Web.Dialogs
+@using WoWsShipBuilder.Web.Utility
 @inject ILocalizer Localizer
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -91,15 +94,15 @@
                                 <MudStack Style="align-items: stretch" Class="mt-n2">
                                     <MudStack Row Justify="Justify.SpaceBetween">
                                         <MudText>
-                                            @Localizer.GetGameLocalization(shipContainer.ShipIndex + "_FULL").Localization
+                                            @Localizer.GetGameLocalization(shipContainer.Ship.Index + "_FULL").Localization
                                         </MudText>
                                         <MudIcon Icon="@Icons.Material.Filled.Close" @onclick="@(_ => RemoveShip(shipContainer))" Style="cursor: pointer"/>
                                     </MudStack>
                                     <MudStack Row AlignItems="AlignItems.Baseline">
-                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuildString(shipContainer))">
-                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(GetBuildName(shipContainer.BuildString)) ? GetBuildName(shipContainer.BuildString) : ShipComparisonViewModel.DefaultBuildName))
+                                        <MudText Style="text-overflow: ellipsis; overflow: hidden" Typo="Typo.body2" Class="ml-2 mt-n1" @onclick="@(_ => AddBuild(shipContainer))">
+                                            @(Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (!string.IsNullOrWhiteSpace(shipContainer.Build?.BuildName) ? shipContainer.Build.BuildName : ShipComparisonViewModel.DefaultBuildName))
                                         </MudText>
-                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuildString(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
+                                        <MudIcon Size="Size.Small" Icon="@Icons.Material.Filled.Edit" @onclick="@(_ => AddBuild(shipContainer))" Style="cursor: pointer; alignment-baseline: hanging; font-size: small" ViewBox="0 -3 24 24"/>
                                     </MudStack>
                                 </MudStack>
                                 <MudDivider Class="mt-1"/>
@@ -116,7 +119,7 @@
 {
 
     [Parameter]
-    public IList<ShipSelectorContainer> SelectedShips { get; set; } = default!;
+    public IList<ShipBuildContainer> SelectedShips { get; set; } = default!;
 
     [Parameter]
     public bool MultiSelect { get; set; } = true;
@@ -250,7 +253,7 @@
         return result;
     }
 
-    private void RemoveShip(ShipSelectorContainer container)
+    private void RemoveShip(ShipBuildContainer container)
     {
         SelectedShips.Remove(container);
 #pragma warning disable BL0005
@@ -260,14 +263,16 @@
 
     private void AddShip(object? obj)
     {
-        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.ShipIndex.Equals(shipIndex))) return;
+        if (obj is not string shipIndex || !AllowCopies && SelectedShips.Any(x => x.Ship.Index.Equals(shipIndex))) return;
         if (MultiSelect)
         {
-            SelectedShips.Add(new(Guid.NewGuid(), shipIndex, null));
+            var ship = AppData.ShipDictionary[shipIndex];
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(ship) });
         }
         else if (!MultiSelect && SelectedShips.Count == 0)
         {
-            SelectedShips.Add(new(Guid.NewGuid(), shipIndex, null));
+            var ship = AppData.ShipDictionary[shipIndex];
+            SelectedShips.Add(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = Helpers.GetStockShipDataContainer(ship) });
         }
         if (AllowCopies)
         {
@@ -285,30 +290,17 @@
 #pragma warning restore BL0005
     }
 
-    private string? GetBuildName(string? buildString)
-    {
-        if (buildString == null)
-        {
-            return null;
-        }
-        
-        var index = buildString.LastIndexOf(';');
-        return index != -1 ? buildString[(index + 1)..] : null;
-    }
-    
-    private async Task AddBuildString(ShipSelectorContainer ship)
+    private async Task AddBuild(ShipBuildContainer ship)
     {
         var parameters = new DialogParameters
         {
-            ["SelectedShipIndex"] = ship.ShipIndex,
+            ["SelectedShipIndex"] = ship.Ship.Index,
         };
         var dialog = await DialogService.ShowAsync<BuildStringInputDialog>(Localizer.SimpleAppLocalization(nameof(Translation.BuildStringInputDialog_EnterBuildStringOrLink)), parameters);
         var result = await dialog.Result;
-        if (!result.Canceled && result.Data is string buildStr)
+        if (!result.Canceled && result.Data is Build build)
         {
-            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { BuildString = buildStr });
+            SelectedShips.Replace(SelectedShips.Single(x => x.Id.Equals(ship.Id)), ship with { Build = build, ShipDataContainer = null });
         }
     }
-
-    public sealed record ShipSelectorContainer(Guid Id, string ShipIndex, string? BuildString);
 }

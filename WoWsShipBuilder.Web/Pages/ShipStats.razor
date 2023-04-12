@@ -3,24 +3,27 @@
 @using WoWsShipBuilder.Web.Utility
 @using DynamicData
 @using WoWsShipBuilder.Core.Builds
+@using WoWsShipBuilder.Core.Data
+@using WoWsShipBuilder.Core.DataContainers
+@using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
 
 @inject NavigationManager NavManager
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
-@inject BuildHelper BuildHelper
+@inject SessionStateCache SessionStateCache
 
 <PageTitle>Ship stats</PageTitle>
 
 <MudBreakpointProvider>
     @* HideSlider is set to true because of an issue in MudBlazor. see https://github.com/MudBlazor/MudBlazor/issues/4742*@
-    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="px-md-6 py-6" Outlined Border Class="pt-3">
+    <MudDynamicTabs Color="Color.Primary" Position="Position.Top" HideSlider CloseTab="@RemoveTab" @ref="mudTabs" Elevation="2" PanelClass="py-6" Outlined Border Class="px-md-6 pt-3">
         <ChildContent>
             @foreach (var container in shipContainers)
             {
-                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.ShipIndex + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
-                    <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.ShipIndex" OnShipChanged="@OnShipIndexChanged" BuildString="@container.BuildString"/>
+                <MudTabPanel Style="@(GetStyle(container.Id))" Text="@Localizer.GetGameLocalization(container.Ship.Index + "_FULL").Localization" Tag="@container.Id" ID="@container.Id" @key="@container.Id">
+                    <ShipStatsContainer Cache="@cache" CurrentTabId="container.Id" ShipIndex="@container.Ship.Index" OnShipChanged="@OnShipIndexChanged" Build="@container.Build"/>
                 </MudTabPanel>
             }
         </ChildContent>
@@ -47,12 +50,12 @@
 </MudScrollToTop>
 
 @code {
-    
+
     private const string DispersionAndBallisticChartsPath = @"<path d=""M1.5 1.75V13.5h13.75a.75.75 0 0 1 0 1.5H.75a.75.75 0 0 1-.75-.75V1.75a.75.75 0 0 1 1.5 0Zm14.28 2.53-5.25 5.25a.75.75 0 0 1-1.06 0L7 7.06 4.28 9.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0L10 7.94l4.72-4.72a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"" stroke-width="".053058""/>";
 
     private MudTabs mudTabs = default!;
 
-    private readonly List<ShipSelector.ShipSelectorContainer> shipContainers = new();
+    private readonly List<ShipBuildContainer> shipContainers = new();
 
     private readonly VmCache cache = new();
 
@@ -71,11 +74,20 @@
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
-            var buildContainers = await BuildHelper.RetrieveBuildContainers();
-            List<BuildHelper.BuildHelperContainer>? buildList;
+            var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
+            List<ShipBuildContainer>? buildList;
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
             {
-                buildList = new() { new(shipIndexesFromUrl, shipBuildFromUrl, null, null) };
+                Build? build = null;
+                try
+                {
+                    build = Build.CreateBuildFromString(shipBuildFromUrl);
+                }
+                catch (FormatException)
+                {
+                }
+
+                buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, null) };
             }
             else if (buildContainers is not null)
             {
@@ -85,7 +97,7 @@
             {
                 buildList = null;
             }
-            
+
             var indexes = shipIndexesFromUrl.Split(",").ToList();
             AddNewIndexes(indexes, buildList);
         }
@@ -107,7 +119,7 @@
         if (oldId is not null)
         {
             var ship = shipContainers.First(x => x.Id.Equals(oldId));
-            shipContainers.Replace(ship, ship with { ShipIndex = newShipIndex, BuildString = null });
+            shipContainers.Replace(ship, ship with { Ship = AppData.ShipDictionary[newShipIndex], Build = null, ShipDataContainer = null, SpecialAbilityActive = false, ActivatedConsumableSlots = null, Modifiers = null });
             selectedTabId = (Guid) oldId;
             update = true;
         }
@@ -157,11 +169,11 @@
             DisableBackdropClick = false,
         };
         var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
-        if (!result.Canceled && result.Data is List<ShipSelector.ShipSelectorContainer> { Count: > 0 } newShips)
+        if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
         {
-            AddNewIndexes(new() { newShips.First().ShipIndex }, new() { new(newShips.First().ShipIndex, newShips.First().BuildString ?? string.Empty, null, null) });
+            AddNewIndexes(new() { newShips.First().Ship.Index }, new() { newShips.First() });
             selectedTabId = shipContainers.Last().Id;
-            AddNewIndexes(newShips.Skip(1).Select(x => x.ShipIndex).ToList(), newShips.Skip(1).Select(x => new BuildHelper.BuildHelperContainer(x.ShipIndex, x.BuildString ?? string.Empty, null, null)).ToList());
+            AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToList());
             updateTab = true;
 
             UpdateUrl();
@@ -169,47 +181,47 @@
         }
     }
 
-    private void AddNewIndexes(List<string> indexList, List<BuildHelper.BuildHelperContainer>? buildContainers)
+    private void AddNewIndexes(List<string> indexList, List<ShipBuildContainer>? buildContainers)
     {
-        List<ShipSelector.ShipSelectorContainer> newShips = new();
-        newShips.AddRange(buildContainers is null ? indexList.Select(index => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), index, null)) : buildContainers.Select(container => new ShipSelector.ShipSelectorContainer(Guid.NewGuid(), container.ShipIndex, container.BuildString)));
+        List<ShipBuildContainer> newShips = new();
+        newShips.AddRange(buildContainers ?? indexList.Select(index => ShipBuildContainer.CreateNew(AppData.ShipDictionary[index], null, null)));
         shipContainers.AddRange(newShips);
     }
 
     private async Task<List<string>> StoreBuildsForCharts()
     {
-        List<BuildHelper.BuildHelperContainer> buildContainers = new();
+        List<ShipBuildContainer> buildContainers = new();
         List<string> shipIndexes = new();
         foreach (var container in shipContainers)
         {
             var vmCacheEntry = cache.GetOrDefault(container.Id);
             if (vmCacheEntry is not null)
             {
-                buildContainers.Add(ShipStatsContainer.GetBuildHelperContainer(vmCacheEntry));
+                buildContainers.Add(ShipStatsContainer.GetBuildContainer(container.Id, vmCacheEntry));
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(container.BuildString))
+                if (container.Build is not null)
                 {
-                    buildContainers.Add(new(container.ShipIndex, string.Empty, null, null));
-                }
-                else
-                {
-                    var viewModel = await ShipStatsContainer.CreateViewModel(container.ShipIndex, Build.CreateBuildFromString(container.BuildString), Localizer);
+                    var viewModel = await ShipStatsContainer.CreateViewModel(container.Ship.Index, container.Build, Localizer);
 
                     List<(string, float)> modifiers = viewModel.UpgradePanelViewModel.GetModifierList();
                     modifiers.AddRange(viewModel.ConsumableViewModel.GetModifiersList());
                     modifiers.AddRange(viewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
                     modifiers.AddRange(viewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
 
-                    buildContainers.Add(new(container.ShipIndex, container.BuildString, modifiers, viewModel.ConsumableViewModel.ActivatedSlots));
+                    buildContainers.Add(container with { Modifiers = modifiers, ShipDataContainer = Helpers.GetShipDataContainerFromBuild(container.Ship, container.Build.Modules, container.Ship.ShipUpgradeInfo.ShipUpgrades, modifiers) });
+                }
+                else
+                {
+                    buildContainers.Add(container);
                 }
             }
 
-            shipIndexes.Add(container.ShipIndex);
+            shipIndexes.Add(container.Ship.Index);
         }
 
-        await BuildHelper.StoreBuildContainers(buildContainers);
+        SessionStateCache.SetBuildTransferContainers(buildContainers);
         return shipIndexes;
     }
 
@@ -227,7 +239,7 @@
 
     private void UpdateUrl()
     {
-        var shipsString = string.Join(",", shipContainers.Select(x => x.ShipIndex));
+        var shipsString = string.Join(",", shipContainers.Select(x => x.Ship.Index));
         NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
     }
 

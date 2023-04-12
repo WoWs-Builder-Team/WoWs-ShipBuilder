@@ -30,6 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Workflows", "GitHub 
 		.github\workflows\dotnet-build.yml = .github\workflows\dotnet-build.yml
 		.github\workflows\dotnet-dev-build.yml = .github\workflows\dotnet-dev-build.yml
 		.github\workflows\main-pr-check.yml = .github\workflows\main-pr-check.yml
+		.github\workflows\issue-opened-triage.yml = .github\workflows\issue-opened-triage.yml
+		.github\workflows\sonar-code-analysis.yml = .github\workflows\sonar-code-analysis.yml
+		.github\workflows\web-docker-build.yml = .github\workflows\web-docker-build.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WoWsShipBuilder.ReleaseTest", "WoWsShipBuilder.ReleaseTest\WoWsShipBuilder.ReleaseTest.csproj", "{282ECA58-2A33-40FC-9CD8-773E093BF8FD}"

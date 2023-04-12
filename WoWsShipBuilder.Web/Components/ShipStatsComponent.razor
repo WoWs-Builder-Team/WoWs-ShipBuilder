@@ -98,7 +98,9 @@
                                         {
                                             @DataElementFragment((data, Localizer))
                                         }
-                                        <MudLink Class="mb-n3" Style="color: paleturquoise !important; text-decoration: underline" @onclick="SendBuildToCharts" Target="_blank" Href="@($"/charts?shipIndex={ViewModel.CurrentShipStats.Index}&shellIndex={shell.Name}")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization</MudLink>
+                                        <MudText Typo="Typo.body2" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(async _ => await SendBuildToBallisticCharts(shell.Name))">
+                                            @Localizer.GetAppLocalization(nameof(Translation.ChartsWeb_ShowCharts)).Localization
+                                        </MudText>
                                     </MudStack>
                                 </MudExpansionPanel>
                             }
@@ -145,7 +147,7 @@
                                             for(int i = 0; i < torpedo.DataElements.Count - 11; i++)
                                             {
                                                 @DataElementFragment((torpedo.DataElements[i]!, Localizer))
-                                            }   
+                                            }
                                         }
                                         else
                                         {
@@ -185,7 +187,7 @@
                                                         @DataElementFragment((torpedo.DataElements[i]!, Localizer))
                                                     }
                                                 </MudStack>
-                                            </MudExpansionPanel>   
+                                            </MudExpansionPanel>
                                         }
                                     </MudStack>
                                 </MudExpansionPanel>
@@ -325,7 +327,7 @@
                                 </MudStack>
                             </MudExpansionPanel>
                         }
-                        
+
                         <!--Short range aura-->
                         @if (ViewModel.CurrentShipStats.AntiAirDataContainer.ShortRangeAura is not null)
                         {
@@ -363,7 +365,7 @@
                     </MudStack>
                 </MudExpansionPanel>
             }
-            
+
             @if (ViewModel.CurrentShipStats?.AswAirstrikeDataContainer is not null)
             {
                 var dcDataContext = ViewModel.CurrentShipStats.AswAirstrikeDataContainer.Weapon as DepthChargeDataContainer ?? throw new InvalidOperationException("Expected DepthChargeDataContainer but found another type.");
@@ -429,7 +431,9 @@
                         @DataElementFragment((data, Localizer))
                     }
                 </MudStack>
-                <MudLink Class="expander-content-padding mb-n3" Style="color: paleturquoise !important; text-decoration: underline" @onclick="SendBuildToCharts" Target="_blank" Href="@($"/acceleration-charts")" Typo="Typo.body2">@Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization</MudLink>
+                <MudText Typo="Typo.body2" Class="expander-content-padding mb-n3" Style="color: paleturquoise !important; text-decoration: underline; cursor: pointer" @onclick="@(async _ => await SendBuildToAccelerationCharts())">
+                    @Localizer.GetAppLocalization(nameof(Translation.ShipStats_ShowAccelerationCharts)).Localization
+                </MudText>
             </MudExpansionPanel>
 
             <!--Concealment-->
@@ -504,7 +508,7 @@
 
 @code {
     [Parameter, EditorRequired]
-    public EventCallback SaveBuildStringIntoLocal { get; set; }
+    public EventCallback StoreBuildsForTransfer { get; set; }
 
     private bool showDepthChargeDamageDistributionChart;
 
@@ -552,8 +556,15 @@
         return showDepthChargeDamageDistributionChart ? "align-content: center; visibility: visible; height:100%; width:100%" : "height: 0px; visibility: hidden";
     }
 
-    private async Task SendBuildToCharts()
+    private async Task SendBuildToBallisticCharts(string shellName)
     {
-        await SaveBuildStringIntoLocal.InvokeAsync();
+        await StoreBuildsForTransfer.InvokeAsync();
+        NavManager.NavigateTo($"/charts?shipIndex={ViewModel!.CurrentShipStats!.Index}&shellIndex={shellName}");
+    }
+
+    private async Task SendBuildToAccelerationCharts()
+    {
+        await StoreBuildsForTransfer.InvokeAsync();
+        NavManager.NavigateTo($"/acceleration-charts?shipIndexes={ViewModel!.CurrentShipStats!.Index}");
     }
 }

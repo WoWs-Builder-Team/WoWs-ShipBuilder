@@ -26,7 +26,7 @@
 @inject NavigationManager NavManager
 @inject IClipboardService ClipboardService
 @inject ILinkShortener LinkShortener
-@inject BuildHelper BuildHelper
+@inject SessionStateCache SessionStateCache
 
 @inherits ReactiveComponentBase<ShipViewModel>
 
@@ -110,7 +110,7 @@
         <MudItem xs="12" md="6" lg="8" xl="9">
             @if (ViewModel?.ShipStatsControlViewModel?.CurrentShipStats is not null)
             {
-                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" SaveBuildStringIntoLocal="@(_ => SaveBuildStringToLocalStorage())"/>
+                <ShipStatsComponent ViewModel="@ViewModel.ShipStatsControlViewModel" StoreBuildsForTransfer="@StoreBuildsForTransfer"/>
             }
         </MudItem>
     </MudGrid>
@@ -121,7 +121,7 @@
     [Parameter]
     [EditorRequired]
     public string ShipIndex { get; set; } = default!;
-    
+
     [Parameter]
     [EditorRequired]
     public Guid CurrentTabId { get; set; }
@@ -130,7 +130,7 @@
     public Func<Guid?, string, bool>? OnShipChanged { get; set; }
 
     [Parameter]
-    public string? BuildString { get; set; }
+    public Build? Build { get; set; }
 
     [Parameter, EditorRequired]
     public VmCache Cache { get; set; } = default!;
@@ -140,7 +140,7 @@
 
     [CascadingParameter(Name = "SettingsInitialized")]
     protected bool SettingsInitialized { get; set; }
-        
+
     private const string BaseAddress = @"https://cdn.wowssb.com/images/individual/";
 
     private bool initialized;
@@ -150,7 +150,7 @@
     private string BuildName
     {
         get => Cache[CurrentTabId]?.BuildName ?? string.Empty;
-        set => Cache[CurrentTabId]!.BuildName = value;
+        set => Cache[CurrentTabId] = Cache[CurrentTabId]! with { BuildName = value };
     }
 
     protected override async Task OnInitializedAsync()
@@ -167,11 +167,12 @@
         }
         else
         {
+            Cache[CurrentTabId] = new(null!);
             ViewModel = await LoadShipViewModel(ShipIndex);
+            Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
             await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
-            Cache[CurrentTabId] = new(ViewModel);
         }
-        
+
         initialized = true;
     }
 
@@ -186,12 +187,12 @@
             {
                 elementIds.Add(CurrentTabId + "_" + ViewModel.PreviousShip.Index);
             }
-            
+
             if (ViewModel.NextShips is not null)
             {
                 elementIds.AddRange(ViewModel.NextShips.Select(ship => CurrentTabId + "_" + ship.Index));
             }
-            
+
             if (elementIds.Any())
             {
                 await MouseEventInterop.PreventMiddleClickDefaultBatched(elementIds);
@@ -202,17 +203,11 @@
     private async Task<ShipViewModel> LoadShipViewModel(string shipIndex)
     {
         MetricsService.ShipCount.WithLabels(shipIndex, Localizer.GetGameLocalization(shipIndex + "_FULL", AppConstants.DefaultCultureDetails).Localization).Inc();
-        Build? build = null;
         using (MetricsService.ShipViewModelInitDuration.NewTimer())
         {
-            if (!string.IsNullOrWhiteSpace(BuildString))
-            {
-                build = Build.CreateBuildFromString(BuildString);
-                BuildString = null;
-                BuildName = build.BuildName;
-            }
-
-            var vm = await CreateViewModel(shipIndex, build, Localizer);
+            var vm = await CreateViewModel(shipIndex, Build, Localizer);
+            BuildName = Build?.BuildName ?? string.Empty;
+            Build = null;
             shipChanged = true;
             return vm;
         }
@@ -220,7 +215,7 @@
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
     {
-    // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
+        // "'background-image: url("/assets/nation_flags/flag_" + ViewModel.CurrentShip.Nation + ".png\")
         string imgName = shipIndex;
         if (!File.Exists(Path.Combine(Environment.ContentRootPath, "wwwroot", "assets", "nation_flags", $"flag_{shipIndex}.png")))
         {
@@ -240,7 +235,7 @@
                 return isCurrentShip ? 150 : 105;
         }
     }
-    
+
     private string GetShipAlign()
     {
         return Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? "align-start" : "align-end";
@@ -278,8 +273,9 @@
             if (OnShipChanged?.Invoke(currentTabId, updateToShipSummary.Index) ?? false)
             {
                 ShipIndex = updateToShipSummary.Index;
+                BuildName = string.Empty;
                 ViewModel = await LoadShipViewModel(ShipIndex);
-                Cache[CurrentTabId] = new(ViewModel);
+                Cache[CurrentTabId] = Cache[CurrentTabId]! with { ViewModel = ViewModel };
                 await ViewModel.ShipStatsControlViewModel!.UpdateShipStats(ViewModel.ShipModuleViewModel.SelectedModules.ToList(), new());
                 StateHasChanged();
             }
@@ -293,7 +289,7 @@
             NoHeader = true,
             CloseOnEscapeKey = true,
         };
-        
+
         var parameters = new DialogParameters
         {
             ["Ship"] = ViewModel!.CurrentShip,
@@ -319,29 +315,35 @@
             var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
         }
-        
+
         if (result is { Canceled: false, Data: string name })
         {
             BuildName = name;
         }
     }
-    
-    private async Task SaveBuildStringToLocalStorage()
+
+    private void StoreBuildsForTransfer()
     {
-        await BuildHelper.StoreBuildContainers(new() { GetBuildHelperContainer(Cache[CurrentTabId]!) });
+        SessionStateCache.SetBuildTransferContainers(GetBuildContainer(CurrentTabId, Cache[CurrentTabId]!));
     }
 
-    public static BuildHelper.BuildHelperContainer GetBuildHelperContainer(VmCacheEntry cacheEntry)
+    public static ShipBuildContainer GetBuildContainer(Guid containerId, VmCacheEntry cacheEntry)
     {
         List<(string, float)> modifiers = cacheEntry.ViewModel.UpgradePanelViewModel.GetModifierList();
         modifiers.AddRange(cacheEntry.ViewModel.ConsumableViewModel.GetModifiersList());
         modifiers.AddRange(cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.GetModifiersList() ?? new List<(string, float)>());
         modifiers.AddRange(cacheEntry.ViewModel.SignalSelectorViewModel?.GetModifierList() ?? new List<(string, float)>());
-        
-        var build = cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName);
-        var buildString = build.CreateShortStringFromBuild();
-        BuildHelper.BuildHelperContainer container = new(build.ShipIndex, buildString, modifiers, cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots);
-        return container;
+
+        bool isCustomBuild = !string.IsNullOrWhiteSpace(cacheEntry.BuildName) || cacheEntry.ViewModel.ShipModuleViewModel.SelectedModules.Any(m => !string.IsNullOrEmpty(m.Prev)) ||
+                             cacheEntry.ViewModel.UpgradePanelViewModel.SelectedModernizationList.Any() || cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ||
+                             (cacheEntry.ViewModel.CaptainSkillSelectorViewModel?.SkillOrderList.Any() ?? false) || (cacheEntry.ViewModel.SignalSelectorViewModel?.SelectedSignals.Any() ?? false);
+
+        var ship = AppData.FindShipFromSummary(cacheEntry.ViewModel.CurrentShip);
+        var build = isCustomBuild ? cacheEntry.ViewModel.CreateBuild(cacheEntry.BuildName) : null;
+        var activeConsumables = cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots.Any() ? cacheEntry.ViewModel.ConsumableViewModel.ActivatedSlots : null;
+        var shipDataContainer = build is null ? Helpers.GetStockShipDataContainer(ship) : Helpers.GetShipDataContainerFromBuild(ship, build.Modules, ship.ShipUpgradeInfo.ShipUpgrades, modifiers);
+
+        return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
     public static async Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
@@ -352,7 +354,7 @@
 
         ShipViewModel vm = new(null!, localizer, vmParams);
         await vm.InitializeData(vmParams);
-        
+
         return vm;
     }
 }

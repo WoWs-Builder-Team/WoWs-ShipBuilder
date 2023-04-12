@@ -54,7 +54,9 @@
                 <MudText Typo="Typo.body2">@ConvertValue(element.Value, element.IsValueKey, element.IsValueAppLocalization, group.localizer)</MudText>
                 break;
             case FormattedTextDataElement element:
-                <MudText Typo="Typo.body2">@ConvertFormattedText(element, group.localizer)</MudText>
+                <MudText Typo="Typo.body2" Class="mb-2">
+                    <MultilineString InputString="@ConvertFormattedText(element, group.localizer)"/>
+                </MudText>
                 break;
         }
     };
