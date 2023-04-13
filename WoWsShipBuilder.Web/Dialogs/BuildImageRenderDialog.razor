@@ -110,20 +110,20 @@
         <MudButton OnClick="Cancel" Color="Color.Error">
             @Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization
         </MudButton>
+        <MudButton OnClick="@OpenSettingsDialog">
+            @Localizer.SimpleAppLocalization(nameof(Translation.SettingsWindow_Settings))
+        </MudButton>
         <MudButton OnClick="@OnConfirm" Color="Color.Info">
-            Get Url
+            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetUrl))
         </MudButton>
         @if (!ShortLinkDisabled)
         {
             <MudButton OnClick="@OnConfirmShortLink" Disabled="@string.IsNullOrWhiteSpace(BuildName)" Color="Color.Info">
-                Get Short-Link
+                @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_GetShortLink))
             </MudButton>
         }
-        <MudButton OnClick="@OpenSettingsDialog" Color="Color.Warning">
-            Settings
-        </MudButton>
         <MudButton Color="Color.Success" OnClick="@SaveImage">
-            Save Imange
+            @Localizer.SimpleAppLocalization(nameof(Translation.BuildImageRenderDialog_SaveImage))
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -132,7 +132,7 @@
 {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
-    
+
     [Parameter, EditorRequired]
     public ShipSummary Ship { get; set; } = default!;
     [Parameter, EditorRequired]
@@ -154,9 +154,9 @@
     public Breakpoint Breakpoint { get; set; }
     [Parameter]
     public bool ShortLinkDisabled { get; set; }
-    
+
     private IJSObjectReference? module;
-    
+
     private bool twoColumns = true;
     private bool showModules;
     private bool showCaptainSkills = true;
@@ -168,7 +168,7 @@
     {
         base.OnInitialized();
         CheckScreenSize();
-        LoadAppSettings();
+        LoadDialogSettings();
     }
 
     private string GetBackgroundFlag(Nation shipNation, string shipIndex)
@@ -202,16 +202,16 @@
             BuildName = buildName;
         }
     }
-    
+
     private async Task SaveImage()
     {
         if (string.IsNullOrWhiteSpace(BuildName))
         {
             await EditBuildName();
         }
-        
+
         StateHasChanged();
-        
+
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             module ??= await Runtime.InvokeAsync<IJSObjectReference>("import", "/Dialogs/BuildImageRenderDialog.razor.js");
@@ -219,17 +219,17 @@
             MudDialog.Close(BuildName);
         }
     }
-    
+
     private async Task OnConfirm()
     {
         if (string.IsNullOrWhiteSpace(BuildName))
         {
             await EditBuildName();
         }
-        
+
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
-            MudDialog.Close(new BuildShareResult(BuildName));   
+            MudDialog.Close(new BuildShareResult(BuildName));
         }
     }
 
@@ -239,18 +239,18 @@
         {
             await EditBuildName();
         }
-        
+
         if (!string.IsNullOrWhiteSpace(BuildName))
         {
             MudDialog.Close(new BuildShareResult(BuildName, true));
         }
     }
-    
+
     private void CheckScreenSize()
     {
         if (Breakpoint is Breakpoint.Xs or Breakpoint.Sm)
         {
-            twoColumns = false; 
+            twoColumns = false;
         }
     }
 
@@ -262,7 +262,7 @@
         }
         return "width: " + (twoColumns ? "944px;" : "544px;");
     }
-    
+
     private string GetDialogSize()
     {
         return "max-height: 100vh; max-width: " + (twoColumns ? "1000px;" : "600px;");
@@ -293,12 +293,12 @@
             showConsumables = result[3];
             showSignals = result[4];
             twoColumns = result[5];
-            
-            UpdateAppSettings();
+
+            SaveDialogSettings();
         }
     }
-    
-    private void UpdateAppSettings()
+
+    private void SaveDialogSettings()
     {
         if (AppSettings.WebAppSettings is not null)
         {
@@ -310,8 +310,8 @@
             AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
         }
     }
-    
-    private void LoadAppSettings()
+
+    private void LoadDialogSettings()
     {
         if (AppSettings.WebAppSettings is not null)
         {

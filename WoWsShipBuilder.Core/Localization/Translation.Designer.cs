@@ -369,6 +369,114 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get Short-Link.
+        /// </summary>
+        public static string BuildImageRenderDialog_GetShortLink {
+            get {
+                return ResourceManager.GetString("BuildImageRenderDialog_GetShortLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get URL.
+        /// </summary>
+        public static string BuildImageRenderDialog_GetUrl {
+            get {
+                return ResourceManager.GetString("BuildImageRenderDialog_GetUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Image.
+        /// </summary>
+        public static string BuildImageRenderDialog_SaveImage {
+            get {
+                return ResourceManager.GetString("BuildImageRenderDialog_SaveImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Captain skills.
+        /// </summary>
+        public static string BuildImageSettingsDialog_CaptainSkills {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_CaptainSkills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Consumables.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Consumables {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Consumables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ELEMENTS.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Elements {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LAYOUT.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Layout {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modules.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Modules {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Modules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signals.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Signals {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Signals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two columns.
+        /// </summary>
+        public static string BuildImageSettingsDialog_TwoColumns {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_TwoColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Widens the image layout by splitting elements into 2 side by side columns (captain skills and signals will not be concealable)..
+        /// </summary>
+        public static string BuildImageSettingsDialog_TwoColumnsTooltip {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_TwoColumnsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrades.
+        /// </summary>
+        public static string BuildImageSettingsDialog_Upgrades {
+            get {
+                return ResourceManager.GetString("BuildImageSettingsDialog_Upgrades", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
         public static string BuildImport_Import {
@@ -419,6 +527,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string BuildImport_Title {
             get {
                 return ResourceManager.GetString("BuildImport_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build name.
+        /// </summary>
+        public static string BuildNameDialog_BuildName {
+            get {
+                return ResourceManager.GetString("BuildNameDialog_BuildName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter build name.
+        /// </summary>
+        public static string BuildNameDialog_EnterBuildName {
+            get {
+                return ResourceManager.GetString("BuildNameDialog_EnterBuildName", resourceCulture);
             }
         }
         
@@ -770,11 +896,11 @@ namespace WoWsShipBuilder.Core.Localization {
         ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
         ///Plot planes:
-        ///1) HORIZONTAL: 
+        ///1) HORIZONTAL:
         ///    shows the shells impact point with the water;
         ///    by selecting this plane you get a view from above;
         ///    this is the plot you mainly want to look at when comparing ships dispersions;
-        ///    the ellipse on this plane is vertically stretched because of shells sp [rest of string was truncated]&quot;;.
+        ///    the ellipse on this plane is vertically stretched because of shells spe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DispersionGraphWindow_DispPlotDescription {
             get {
@@ -2178,7 +2304,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
+        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
         ///     The module can not be incapacitated..

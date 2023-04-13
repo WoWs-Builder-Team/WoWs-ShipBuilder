@@ -4,12 +4,14 @@
 <MudDialog>
     <DialogContent>
         <MudFocusTrap DefaultFocus="DefaultFocus.FirstChild">
-            <MudTextField @bind-Value="BuildName" Label="Build Name" Immediate Placeholder="Enter build name" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
+            <MudTextField @bind-Value="BuildName" Label="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_BuildName))" Immediate Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
         </MudFocusTrap>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="@Cancel">@Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization</MudButton>
-        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(BuildName) || BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || BuildName.Contains(';'))" Color="Color.Success">
+        <MudButton OnClick="@Cancel">
+            @Localizer.GetAppLocalization(nameof(Translation.Dialog_Cancel)).Localization
+        </MudButton>
+        <MudButton OnClick="@OnConfirm" Disabled="@(string.IsNullOrWhiteSpace(BuildName) || BuildName.Intersect(Path.GetInvalidFileNameChars()).Any() || BuildName.Contains(';'))">
             @Localizer.SimpleAppLocalization(nameof(Translation.ShipSelectionWindow_ConfirmButton))
         </MudButton>
     </DialogActions>

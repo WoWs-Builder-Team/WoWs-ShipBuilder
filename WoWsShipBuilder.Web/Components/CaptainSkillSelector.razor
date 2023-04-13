@@ -50,7 +50,7 @@
                             @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
                         </MudText>
                     </MudButton>
-                </MudItem>   
+                </MudItem>
             }
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
@@ -69,7 +69,7 @@
                                     {
                                         <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
-                                        </MudButton>   
+                                        </MudButton>
                                     }
                                 </MudBadge>
                             </MudBadge>
@@ -137,15 +137,15 @@
 
     [Parameter]
     public ShipClass ShipClass { get; set; }
-    
+
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
-    
+
     [Parameter]
     public bool IsBuildImage { get; set; }
 
     private string specialIconPath = @"<path style=""fill:#ffffff;fill-opacity:1;"" d=""m 9.1521727,1.5579681 h 5.6956543 v 7.5942036 h 7.594205 v 5.6956533 h -7.594205 v 7.594206 H 9.1521727 V 14.847825 H 1.5579678 V 9.1521717 h 7.5942049 z""/>";
-    
+
     private static string ToSnakeCase(string camelCaseString)
     {
         if (camelCaseString == null)
@@ -203,9 +203,26 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? Color.Error : IsBuildImage ? Color.Primary : !skillItem.CanExecute ? Color.Primary : Color.Secondary;
+        var color = Color.Secondary;
+
+        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
+        {
+            color = Color.Error;
+        }
+
+        if (IsBuildImage)
+        {
+            color =  Color.Primary;
+        }
+
+        if (!skillItem.CanExecute)
+        {
+            color =  Color.Primary;
+        }
+
+        return color;
     }
-    
+
     private void OnSkillClick(SkillItemViewModel skillItem)
     {
         if (!skillItem.CanExecute) return;
@@ -225,7 +242,7 @@
     {
         return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? "border: #BF0000FF solid 1px" : string.Empty;
     }
-    
+
     private int GetImageSize()
     {
         switch (Breakpoint)
@@ -237,7 +254,7 @@
                 return 40;
         }
     }
-    
+
     private string GetImageBreakpointStyle()
     {
         switch (Breakpoint)
@@ -249,10 +266,10 @@
                 return "min-width: 55px; width: 55px; height: 55px;";
         }
     }
-    
+
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
-        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";;
+        return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
     }
 
     private async Task OpenSkillDialog()

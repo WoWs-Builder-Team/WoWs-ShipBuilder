@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -942,16 +942,16 @@ The RED ellipse shows the area where 50% of the shells lands on average.
 The BLACK ellipse shows the size of a Fuso as reference.
 
 Plot planes:
-1) HORIZONTAL: 
+1) HORIZONTAL:
     shows the shells impact point with the water;
     by selecting this plane you get a view from above;
     this is the plot you mainly want to look at when comparing ships dispersions;
     the ellipse on this plane is vertically stretched because of shells speed.
-2) VERTICAL: 
+2) VERTICAL:
     shows the shells impact point with a vertical surface;
     by selecting this plane you get a view from the front;
     useful for very precise vertical accuracy analysis.
-3) IMPACT ANGLE: 
+3) IMPACT ANGLE:
     shows the shells impact point with a surface angled at the shells impact angle;
     by selecting this plane you get a view from the shells impact angle;
     it's the plane where the game actually draws the dispersion ellipse during battles;
@@ -997,7 +997,7 @@ Ships in game are twice as big as the environment so a 200m long ship takes the 
       <value>Rudder</value>
   </data>
   <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>If "module blast protection" + "armament blast penetration" &gt; 0 
+    <value>If "module blast protection" + "armament blast penetration" &gt; 0
      The module can be incapacitated.
 If "module blast protection" + "armament blast penetration" &lt;= 0
      The module can not be incapacitated.</value>
@@ -1759,5 +1759,47 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>°/s²</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Modules</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Captain skills</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signals</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Consumables</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Upgrades</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Two columns</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>LAYOUT</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>ELEMENTS</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Widens the image layout by splitting elements into 2 side by side columns (captain skills and signals will not be concealable).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Build name</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Enter build name</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Save Image</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Get URL</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Get Short-Link</value>
   </data>
 </root>
