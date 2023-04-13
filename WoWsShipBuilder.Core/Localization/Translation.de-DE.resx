@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -936,30 +936,6 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Referenz-Fuso</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>Die Weiße Ellipse zeigt die maximale Streuungsfläche für die ausgewählte Zieldistanz.
-Die Rote Ellipse zeigt den Bereich, in dem durchschnittlich 50% der Granaten landen.
-Die Schwarze Ellipse zeigt die Größe einer Fuso als Referenz an.
-
-Diagramm-Ebenen:
-1) HORIZONTAL: 
-    Zeigt den Einschlagpunkt der Granaten auf dem Wasser.
-    Diese Ansicht entspricht einer Ansicht aus der Vogelperspektive.
-    Dies ist die meistgenutzte Diagrammebene wenn verschiedene Schiffe verglichen werden sollen. 
-    Die Ellipse auf dieser Ebene ist wegen der Geschwindigkeit der Geschosse vertikal gestreckt.
-2) VERTIKAL: 
-    Zeigt den Einschlagpunkt der Granaten auf einer vertikalen Oberfläche.
-    Diese Ansicht entspricht einer Ansicht von vorne.
-    Nützlich für eine sehr präzise Analyse der vertikalen Streuung.
-3) Einschlags-Winkel: 
-    Zeigt den Einschlagpunkt der Granaten auf einer senkrecht zur Flugbahn der Granaten stehenden Ebene.
-    Diese Ansicht geht von der Perspektive der Granate aus.
-    Diese Ebene ist die tatsächlich während Gefechten relevante Ebene im Spiel.
-    Die Ellipse auf dieser Ebene ist nicht von der Granatengeschwindigkeit betroffen.
-    Nützlich, wenn Streuungen von Schiffen ohne Einfluss der Granatengeschwindigkeit verglichen werden sollen.
-
-Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes Schiff 400m lang ist.</value>
-  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Diagramm-Erklärung</value>
   </data>
@@ -995,12 +971,6 @@ Schiffe im Spiel sind doppelt so groß wie die Umwelt, so dass ein 200 m langes 
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>Ruder-Explosionsschutz</value>
-  </data>
-  <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &gt; 0
-     Das Modul kann beschädigt werden.
-Wenn "Modul-Explosionsschutz" + "Explosions-Durchschlag" &lt;= 0
-     Das Modul kann nicht beschädigt werden.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Neustart erforderlich</value>
@@ -1525,9 +1495,6 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Schiffe hinzufügen/entfernen</value>
   </data>
-  <data name="Charts_ChangeBuilds" xml:space="preserve">
-      <value>Builds ändern</value>
-  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Erklärung des Beschleunigungsdiagramms</value>
   </data>
@@ -1599,5 +1566,20 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Taktische Springbomber</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Flugzeugträger</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>U-Boot</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Kreuzer</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Schlachtschiff</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Zerstörer</value>
   </data>
 </root>
