@@ -770,11 +770,11 @@ namespace WoWsShipBuilder.Core.Localization {
         ///The BLACK ellipse shows the size of a Fuso as reference.
         ///
         ///Plot planes:
-        ///1) HORIZONTAL: 
+        ///1) HORIZONTAL:
         ///    shows the shells impact point with the water;
         ///    by selecting this plane you get a view from above;
         ///    this is the plot you mainly want to look at when comparing ships dispersions;
-        ///    the ellipse on this plane is vertically stretched because of shells sp [rest of string was truncated]&quot;;.
+        ///    the ellipse on this plane is vertically stretched because of shells spe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DispersionGraphWindow_DispPlotDescription {
             get {
@@ -1404,6 +1404,42 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration Charts.
+        /// </summary>
+        public static string NavigationAccelerationCharts {
+            get {
+                return ResourceManager.GetString("NavigationAccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion and Ballistic Charts.
+        /// </summary>
+        public static string NavigationCharts {
+            get {
+                return ResourceManager.GetString("NavigationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship Comparison.
+        /// </summary>
+        public static string NavigationComparison {
+            get {
+                return ResourceManager.GetString("NavigationComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Page.
+        /// </summary>
+        public static string NavigationHome {
+            get {
+                return ResourceManager.GetString("NavigationHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Netherlands.
         /// </summary>
         public static string Netherlands {
@@ -1526,6 +1562,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ScreenshotWindow_CaptainSkills {
             get {
                 return ResourceManager.GetString("ScreenshotWindow_CaptainSkills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live.
+        /// </summary>
+        public static string ServerTypeLive {
+            get {
+                return ResourceManager.GetString("ServerTypeLive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PTS.
+        /// </summary>
+        public static string ServerTypePts {
+            get {
+                return ResourceManager.GetString("ServerTypePts", resourceCulture);
             }
         }
         
@@ -2178,7 +2232,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0 
+        ///   Looks up a localized string similar to If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &gt; 0
         ///     The module can be incapacitated.
         ///If &quot;module blast protection&quot; + &quot;armament blast penetration&quot; &lt;= 0
         ///     The module can not be incapacitated..

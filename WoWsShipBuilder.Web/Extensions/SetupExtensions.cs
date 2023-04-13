@@ -103,6 +103,7 @@ public static class SetupExtensions
         builder.Services.Configure<AdminOptions>(builder.Configuration.GetSection(AdminOptions.SectionName));
         builder.Services.Configure<CdnOptions>(builder.Configuration.GetSection(CdnOptions.SectionName));
         builder.Services.Configure<LinkShorteningOptions>(builder.Configuration.GetSection(LinkShorteningOptions.SectionName));
+        builder.Services.Configure<ShipBuilderOptions>(builder.Configuration.GetSection(ShipBuilderOptions.SectionName));
         return builder;
     }
 }
