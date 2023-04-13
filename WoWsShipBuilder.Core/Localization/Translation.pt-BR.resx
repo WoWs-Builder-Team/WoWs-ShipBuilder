@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -627,6 +627,9 @@
   <data name="ShipStats_MinSpeed" xml:space="preserve">
     <value>Velocidade mínima</value>
   </data>
+  <data name="ShipStats_NumberDuringAttack" xml:space="preserve">
+      <value>Aeronaves por ataque</value>
+  </data>
   <data name="ShipStats_NumberInSquad" xml:space="preserve">
       <value>Em um esquadrão</value>
   </data>
@@ -933,30 +936,6 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Referência do Fuso</value>
   </data>
-  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
-    <value>A elipse BRANCA mostra a área máxima de dispersão no alcance de mira selecionado.
-A elipse VERMELHA mostra a área onde 50% dos projéteis caem, em média.
-A elipse PRETA mostra o tamanho de um Fuso como referência.
-
-Planos de plotagem:
-1) HORIZONTAL: 
-    mostra o ponto de impacto dos projéteis com a água;
-    selecionando este plano você obtém uma visão vinda de cima;
-    este é o plano que você quer dar mais atenção ao comparar as dispersões dos navios;
-    a elipse neste plano está verticalmente esticada devido à velocidade dos projéteis.
-2) VERTICAL: 
-    mostra o ponto de impacto dos projéteis com uma superfície vertical;
-    selecionando este plano você obtém uma visão vinda da frente;
-    útil para uma análise precisa da precisão vertical.
-3) ÂNGULO DE IMPACTO: 
-    mostra o ponto de impacto dos projéteis com uma superfície inclinada no ângulo de impacto dos projéteis;
-    selecionando este plano você obtém uma visão vinda do ângulo de impacto dos projéteis;
-    é o plano no qual o jogo realmente desenha a elipse de dispersão durante as batalhas;
-    a elipse neste plano não é afetada pela velocidade dos projéteis;
-    útil se você quiser comparar a dispersão dos navios sem levar em consideração a velocidade dos projéteis.
-
-Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200m de comprimento ocupa o espaço de 400m.</value>
-  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Explicação da plotagem</value>
   </data>
@@ -992,12 +971,6 @@ Navios no jogo são duas vezes maiores que o ambiente, por isso um navio com 200
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>Leme</value>
-  </data>
-  <data name="ShipStats_BlastExplanation" xml:space="preserve">
-    <value>Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &gt; 0 
-     O módulo pode ser incapacitado.
-Se "proteção de explosão do módulo" + "penetração de explosão do armamento" &lt;= 0
-     O módulo não pode ser incapacitado.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Reinicialização necessária</value>
@@ -1550,6 +1523,18 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_BackwardEngineUpTime" xml:space="preserve">
       <value>Tempo de retrocesso do motor</value>
   </data>
+  <data name="ShipStats_ForwardEngineForsag" xml:space="preserve">
+      <value>Engine forward forsage</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsag" xml:space="preserve">
+      <value>Engine backward forsage</value>
+  </data>
+  <data name="ShipStats_ForwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Forward forsage max speed</value>
+  </data>
+  <data name="ShipStats_BackwardEngineForsagMaxSpeed" xml:space="preserve">
+      <value>Backward forsage max speed</value>
+  </data>
   <data name="ShipStats_HeSalvo" xml:space="preserve">
       <value>HE</value>
   </data>
@@ -1559,10 +1544,91 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="ShipStats_SapSalvo" xml:space="preserve">
       <value>SAP</value>
   </data>
+  <data name="ShipStats_FullSalvoDamage" xml:space="preserve">
+      <value>Dano de salva completa</value>
+  </data>
+  <data name="ShipStats_FirstOption" xml:space="preserve">
+      <value>Opção 1</value>
+  </data>
+  <data name="ShipStats_SecondOption" xml:space="preserve">
+      <value>Opção 2</value>
+  </data>
+  <data name="ShipStats_DispersionAtMaxRange" xml:space="preserve">
+      <value>Dispersão no alcance máximo</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxSpeedOnSurface" xml:space="preserve">
+      <value>Na superfície</value>
+  </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth" xml:space="preserve">
       <value>Na profundidade de máxima</value>
   </data>
   <data name="ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope" xml:space="preserve">
       <value>Na profundidade de periscópio</value>
+  </data>
+  <data name="ShipStats_Fighter" xml:space="preserve">
+      <value>Foguetes</value>
+  </data>
+  <data name="ShipStats_TacticalFighter" xml:space="preserve">
+      <value>Foguetes Táticos</value>
+  </data>
+  <data name="ShipStats_DiveBomber" xml:space="preserve">
+      <value>Bombardeiros de Mergulho</value>
+  </data>
+  <data name="ShipStats_TacticalDiveBomber" xml:space="preserve">
+      <value>Bombardeiros Táticos de Mergulho</value>
+  </data>
+  <data name="ShipStats_TorpedoBomber" xml:space="preserve">
+      <value>Bombardeiros Torpedeiros</value>
+  </data>
+  <data name="ShipStats_TacticalTorpedoBomber" xml:space="preserve">
+      <value>Bombardeiros Torpedeiros Tático</value>
+  </data>
+  <data name="ShipStats_SkipBomber" xml:space="preserve">
+      <value>Bombardeiros "Skip"</value>
+  </data>
+  <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
+      <value>Bombardeiros Táticos "Skip"</value>
+  </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Editar builds</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>Nenhum navio selecionado</value>
+  </data>
+  <data name="ShipStats_TargetAreaRadius" xml:space="preserve">
+      <value>Raio da área do alvo</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Progresso por ação</value>
+  </data>
+  <data name="ShipStats_InactivityDelay" xml:space="preserve">
+      <value>Tempo de inatividade antes da perda do progresso</value>
+  </data>
+  <data name="ShipStats_ProgressLossInterval" xml:space="preserve">
+      <value>Intervalo entre perdas de progresso</value>
+  </data>
+  <data name="ShipStats_ProgressLossPerInterval" xml:space="preserve">
+      <value>Perda de progresso por intervalo</value>
+  </data>
+  <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
+      <value>Mostrar gráficos de aceleração</value>
+  </data>
+  <data name="ShipStats_AirCarrier" xml:space="preserve">
+      <value>Porta Aviões</value>
+  </data>
+  <data name="ShipStats_Submarine" xml:space="preserve">
+      <value>Submarino</value>
+  </data>
+  <data name="ShipStats_Cruiser" xml:space="preserve">
+      <value>Cruzador</value>
+  </data>
+  <data name="ShipStats_Battleship" xml:space="preserve">
+      <value>Encouraçado</value>
+  </data>
+  <data name="ShipStats_Destroyer" xml:space="preserve">
+      <value>Contratorpedeiro</value>
   </data>
 </root>
