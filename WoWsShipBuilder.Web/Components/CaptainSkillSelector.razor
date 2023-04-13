@@ -203,24 +203,22 @@
 
     private Color GetColorFromState(SkillItemViewModel skillItem)
     {
-        var color = Color.Secondary;
-
         if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
         {
-            color = Color.Error;
+            return Color.Error;
         }
 
         if (IsBuildImage)
         {
-            color =  Color.Primary;
+            return Color.Primary;
         }
 
         if (!skillItem.CanExecute)
         {
-            color =  Color.Primary;
+            return Color.Primary;
         }
 
-        return color;
+        return Color.Secondary;
     }
 
     private void OnSkillClick(SkillItemViewModel skillItem)
