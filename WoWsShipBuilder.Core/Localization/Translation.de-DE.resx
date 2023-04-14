@@ -1495,6 +1495,9 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="AccelerationChart_AddRemoveShip" xml:space="preserve">
       <value>Schiffe hinzufügen/entfernen</value>
   </data>
+  <data name="Charts_ChangeBuilds" xml:space="preserve">
+      <value>Builds ändern</value>
+  </data>
   <data name="AccelerationChart_Explanation" xml:space="preserve">
       <value>Erklärung des Beschleunigungsdiagramms</value>
   </data>
@@ -1567,6 +1570,90 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="ShipStats_TacticalSkipBomber" xml:space="preserve">
       <value>Taktische Springbomber</value>
   </data>
+  <data name="ChartsWeb_Build" xml:space="preserve">
+      <value>Build</value>
+  </data>
+  <data name="ShipSelectionWindow_EditBuilds" xml:space="preserve">
+      <value>Builds bearbeiten</value>
+  </data>
+  <data name="ShipAndShellsSelectionDialog_NoShipSelected" xml:space="preserve">
+      <value>Kein Schiff ausgewählt</value>
+  </data>
+  <data name="ShipStats_ProgressPerAction" xml:space="preserve">
+      <value>Fortschritt pro Aktion</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>Build laden</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>Gehe zur Schiffs-Seite</value>
+  </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Im Ballistik-Diagramm anzeigen</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>In Beschleunigungsdiagrammen anzeigen</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>Ungültiger Build</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>Inkompatibilität</value>
+  </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>Ausgewähltes Schiff</value>
+  </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>Schiff im Build</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>Lader</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>Bug</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>Heck</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>Einheit</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>Einheit/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>Maximale Tauchgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>Tauchkapazität</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>Batterie</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 Ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 Pings</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Maximale Drehgeschwindigkeit</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Maximale vertikale Geschwindigkeit</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Vertikale Beschleunigung</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Suchradius</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Suchwinkel</value>
+  </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>Flugzeugträger</value>
   </data>
@@ -1581,5 +1668,29 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   </data>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Zerstörer</value>
+  </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>Weitere Details</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>^/s²</value>
+  </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+      <value>Live</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+      <value>PTS</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+      <value>Streuungs- und Ballistikdiagramme</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+      <value>Beschleunigungsdiagramme</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+      <value>Schiffsvergleich</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+      <value>Startseite</value>
   </data>
 </root>
