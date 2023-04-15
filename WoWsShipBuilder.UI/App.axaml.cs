@@ -6,9 +6,15 @@ using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Config;
+using NLog.Extensions.Logging;
 using ReactiveUI;
 using Splat;
 using Splat.Autofac;
@@ -31,6 +37,7 @@ using WoWsShipBuilder.UI.ViewModels.ShipVm;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.Other;
 using Localizer = WoWsShipBuilder.Core.Localization.Localizer;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WoWsShipBuilder.UI
 {
@@ -39,6 +46,8 @@ namespace WoWsShipBuilder.UI
     public class App : Application
     {
         private IContainer container = null!;
+
+        private ILogger<App> logger = default!;
 
         public App()
         {
@@ -54,13 +63,15 @@ namespace WoWsShipBuilder.UI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                container = SetupDependencyInjection();
-
+                container = SetupDependencyInjection(LogManager.Configuration);
+                Logging.Initialize(container.Resolve<ILoggerFactory>());
                 AppSettingsHelper.LoadSettings();
-                LoggingSetup.InitializeLogging(ApplicationSettings.ApplicationOptions.SentryDsn, AppSettingsHelper.Settings, true);
+                LogManager.ReconfigExistingLoggers();
+                logger = container.Resolve<ILogger<App>>();
+
                 desktop.Exit += OnExit;
                 desktop.MainWindow = new SplashScreen();
-                Logging.Logger.Info($"AutoUpdate Enabled: {AppSettingsHelper.Settings.AutoUpdateEnabled}");
+                logger.LogInformation("AutoUpdate Enabled: {SettingsAutoUpdateEnabled}", AppSettingsHelper.Settings.AutoUpdateEnabled);
 
                 if (AppSettingsHelper.Settings.AutoUpdateEnabled)
                 {
@@ -69,11 +80,11 @@ namespace WoWsShipBuilder.UI
                         if (OperatingSystem.IsWindows())
                         {
                             await UpdateCheck(container.Resolve<AppNotificationService>());
-                            Logging.Logger.Info("Finished updatecheck");
+                            logger.LogInformation("Finished updatecheck");
                         }
                         else
                         {
-                            Logging.Logger.Warn("Skipped updatecheck");
+                            logger.LogInformation("Skipped updatecheck");
                         }
                     });
                 }
@@ -82,9 +93,17 @@ namespace WoWsShipBuilder.UI
             base.OnFrameworkInitializationCompleted();
         }
 
-        private static IContainer SetupDependencyInjection()
+        private static IContainer SetupDependencyInjection(LoggingConfiguration configuration)
         {
+            var services = new ServiceCollection();
+            services.AddLogging(options =>
+            {
+                options.ClearProviders();
+                options.SetMinimumLevel(LogLevel.Trace);
+                options.AddNLog(configuration, new() { ParseMessageTemplates = true });
+            });
             var builder = new ContainerBuilder();
+            builder.Populate(services);
 
             builder.RegisterType<AppSettings>().SingleInstance();
             builder.RegisterInstance(new FileSystem()).As<IFileSystem>().SingleInstance();
@@ -120,33 +139,33 @@ namespace WoWsShipBuilder.UI
         private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
         {
             using var scope = container.BeginLifetimeScope();
-            Logging.Logger.Info("Closing app, saving setting and builds");
+            logger.LogInformation("Closing app, saving setting and builds");
             AppSettingsHelper.SaveSettings();
             scope.Resolve<IUserDataService>().SaveBuilds();
-            Logging.Logger.Info("Exiting...");
-            Logging.Logger.Info(new string('-', 30));
+            logger.LogInformation("Exiting...");
+            logger.LogInformation("------------------------------");
         }
 
         [SupportedOSPlatform("windows")]
         private async Task UpdateCheck(AppNotificationService notificationService)
         {
-            Logging.Logger.Info($"Current version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            logger.LogInformation("Current version: {Version}", Assembly.GetExecutingAssembly().GetName().Version);
 
             using UpdateManager updateManager = new GithubUpdateManager("https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder");
             if (!updateManager.IsInstalledApp)
             {
-                Logging.Logger.Info("No update.exe found, aborting update check.");
+                logger.LogInformation("No update.exe found, aborting update check");
                 return;
             }
 
-            Logging.Logger.Info("Update manager initialized.");
+            logger.LogInformation("Update manager initialized");
             try
             {
                 // Can throw a null-reference-exception, no idea why.
                 var updateInfo = await updateManager.CheckForUpdate();
                 if (!updateInfo.ReleasesToApply.Any())
                 {
-                    Logging.Logger.Info("No app update found.");
+                    logger.LogInformation("No app update found");
                     return;
                 }
 
@@ -154,16 +173,16 @@ namespace WoWsShipBuilder.UI
                 var release = await updateManager.UpdateApp();
                 if (release == null)
                 {
-                    Logging.Logger.Info("No app update found.");
+                    logger.LogInformation("No app update found");
                     return;
                 }
 
-                Logging.Logger.Info($"App updated to version {release.Version}");
+                logger.LogInformation("App updated to version {ReleaseVersion}", release.Version);
                 await notificationService.NotifyAppUpdateComplete();
                 var result = await UpdateHelpers.ShowUpdateRestartDialog((ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow);
                 if (result.Equals(MessageBox.MessageBoxResult.Yes))
                 {
-                    Logging.Logger.Info("User decided to restart after update.");
+                    logger.LogInformation("User decided to restart after update");
                     if (OperatingSystem.IsWindows())
                     {
                         UpdateManager.RestartApp();
@@ -172,14 +191,14 @@ namespace WoWsShipBuilder.UI
             }
             catch (NullReferenceException)
             {
-                Logging.Logger.Debug("NullReferenceException during app update.");
+                logger.LogDebug("NullReferenceException during app update");
             }
             catch (Exception e)
             {
 #if DEBUG
-                Logging.Logger.Warn(e);
+                logger.LogWarning(e, "Exception during app update");
 #else
-                Logging.Logger.Error(e);
+                logger.LogError(e, "Exception during app update");
 #endif
                 await notificationService.NotifyAppUpdateError(nameof(Translation.NotificationService_ErrorMessage));
             }

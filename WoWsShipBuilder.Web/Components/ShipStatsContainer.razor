@@ -10,6 +10,7 @@
 @using WoWsShipBuilder.Web.Dialogs
 @using System.Net
 @using System.Diagnostics
+@using WoWsShipBuilder.Core
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Extensions
@@ -352,7 +353,7 @@
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
-        ShipViewModel vm = new(null!, localizer, vmParams);
+        ShipViewModel vm = new(null!, localizer, Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
         await vm.InitializeData(vmParams);
 
         return vm;

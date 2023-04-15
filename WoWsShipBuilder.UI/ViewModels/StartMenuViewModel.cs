@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.UI.Services;
-using WoWsShipBuilder.UI.Settings;
 using WoWsShipBuilder.UI.ViewModels.Dialog;
 using WoWsShipBuilder.ViewModels.Helper;
 using WoWsShipBuilder.ViewModels.Other;
@@ -15,7 +14,7 @@ namespace WoWsShipBuilder.UI.ViewModels
         private readonly IFileSystem fileSystem;
 
         public StartMenuViewModel(IFileSystem fileSystem, INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer, AppNotificationService notificationService)
-            : base(navigationService, clipboardService, appDataService, userDataService, localizer, AppSettingsHelper.Settings)
+            : base(navigationService, clipboardService, appDataService, userDataService, localizer)
         {
             this.fileSystem = fileSystem;
             NotificationService = notificationService;

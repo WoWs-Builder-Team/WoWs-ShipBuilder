@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WoWsShipBuilder.Core;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataProvider;
@@ -22,17 +22,20 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
 
         private readonly ILocalizer localizer;
 
-        public ShipWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, ILocalizer localizer, ShipViewModelParams viewModelParams)
-            : base(navigationService, localizer, viewModelParams)
+        private readonly ILogger<ShipWindowViewModel> logger;
+
+        public ShipWindowViewModel(INavigationService navigationService, IClipboardService clipboardService, ILocalizer localizer, ILogger<ShipWindowViewModel> logger, ShipViewModelParams viewModelParams)
+            : base(navigationService, localizer, logger, viewModelParams)
         {
             this.clipboardService = clipboardService;
             this.localizer = localizer;
             screenshotRenderService = new();
+            this.logger = logger;
         }
 
         public async void OpenSaveBuild()
         {
-            Logging.Logger.Info("Saving build");
+            logger.LogInformation("Saving build");
             string shipName = localizer.GetGameLocalization(CurrentShipIndex).Localization;
             var dialogResult = await BuildCreationInteraction.Handle(new(AppSettingsHelper.Settings, shipName, CurrentBuildName)) ?? BuildCreationResult.Canceled;
             if (!dialogResult.Save)
@@ -44,7 +47,7 @@ namespace WoWsShipBuilder.UI.ViewModels.ShipVm
             var oldBuild = AppData.Builds.FirstOrDefault(existingBuild => existingBuild.BuildName.Equals(currentBuild.BuildName) && existingBuild.ShipIndex.Equals(currentBuild.ShipIndex));
             if (oldBuild != null)
             {
-                Logging.Logger.Info("Removing old build with identical name from list of saved builds to replace with new build.");
+                logger.LogInformation("Removing old build with identical name from list of saved builds to replace with new build");
                 AppData.Builds.Remove(oldBuild);
             }
 

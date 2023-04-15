@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Squirrel;
 using WoWsShipBuilder.Core;
@@ -100,7 +101,7 @@ namespace WoWsShipBuilder.UI.Views
             var result = await UpdateHelpers.ShowUpdateRestartDialog(this);
             if (result == MessageBox.MessageBoxResult.Yes)
             {
-                Logging.Logger.Info("User decided to restart after update.");
+                Logging.Logger.LogInformation("User decided to restart after update");
                 if (OperatingSystem.IsWindows())
                 {
                     UpdateManager.RestartApp();

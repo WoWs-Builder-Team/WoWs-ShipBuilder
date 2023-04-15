@@ -1,6 +1,7 @@
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
@@ -40,15 +41,15 @@ public partial class BuildImportViewModelBase : ViewModelBase
     private async Task Import()
     {
         Build build;
-        Logging.Logger.Info("Trying to import build string: {0}", BuildString);
+        Logging.Logger.LogInformation("Trying to import build string: {BuildString}", BuildString);
         try
         {
             build = Build.CreateBuildFromString(BuildString!);
-            Logging.Logger.Info("Build correctly created");
+            Logging.Logger.LogInformation("Build correctly created");
         }
         catch (Exception e)
         {
-            Logging.Logger.Warn(e, "Error in creating the build.");
+            Logging.Logger.LogWarning(e, "Error in creating the build");
             await MessageBoxInteraction.Handle(("The Build string is not in the correct format.", "Invalid string."));
             return;
         }
@@ -60,7 +61,7 @@ public partial class BuildImportViewModelBase : ViewModelBase
     {
         if (!ImportOnly)
         {
-            Logging.Logger.Info("Adding build to saved ones.");
+            Logging.Logger.LogInformation("Adding build to saved ones");
             AppData.Builds.Insert(0, build);
         }
 

@@ -8,8 +8,8 @@ using WoWsShipBuilder.ViewModels.ShipVm;
 
 public class ShipViewModel : ShipViewModelBase
 {
-    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ShipViewModelParams viewModelParams)
-        : base(navigationService, localizer, viewModelParams)
+    public ShipViewModel(INavigationService navigationService, ILocalizer localizer, ILogger<ShipViewModel> logger, ShipViewModelParams viewModelParams)
+        : base(navigationService, localizer, logger, viewModelParams)
     {
     }
 }

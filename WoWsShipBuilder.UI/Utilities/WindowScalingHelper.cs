@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core;
-using WoWsShipBuilder.UI.Extensions;
 
 namespace WoWsShipBuilder.UI.Utilities
 {
@@ -49,13 +49,13 @@ namespace WoWsShipBuilder.UI.Utilities
                 shouldScale = true;
             }
 
-            Logging.Logger.Info("Checked scaling for window {} with result {} and factor {}.", currentWindow.Title, shouldScale, scalingFactor);
+            Logging.Logger.LogInformation("Checked scaling for window {Title} with result {ShouldScale} and factor {ScalingFactor}", currentWindow.Title, shouldScale, scalingFactor);
             return new(shouldScale, scalingFactor);
         }
 
         private static void RepositionWindow(Window window, double scaling, Screen currentScreen)
         {
-            Logging.Logger.Info("Rearranging window position and scaling window size.");
+            Logging.Logger.LogInformation("Rearranging window position and scaling window size");
             var newWidth = window.Width * scaling;
             var newHeight = window.Height * scaling;
             var pixelSize = PixelSize.FromSize(new(newWidth, newHeight), currentScreen.PixelDensity);
@@ -75,7 +75,7 @@ namespace WoWsShipBuilder.UI.Utilities
             }
             else
             {
-                Logging.Logger.Warn("Window resizing was triggered on a window that is not scalable.");
+                Logging.Logger.LogWarning("Window resizing was triggered on a window that is not scalable");
             }
         }
     }

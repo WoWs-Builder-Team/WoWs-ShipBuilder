@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
         [Test]
         public async Task DownloadFile_LocalDirectoryDoesNotExist()
         {
-            var client = new AwsClient(mockDataService, appDataHelper, messageHandlerMock.Object);
+            var client = new AwsClient(mockDataService, appDataHelper, NullLogger<AwsClient>.Instance, messageHandlerMock.Object);
             var filePath = @"json/live/VersionInfo.json";
             var requestUri = new Uri("https://cloudfront/api/live/VersionInfo.json");
             mockFileSystem.FileExists(filePath).Should().BeFalse();
@@ -65,7 +66,7 @@ namespace WoWsShipBuilder.Core.Test.HttpTest
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
-            var client = new AwsClient(mockDataService, appDataHelper, messageHandlerMock.Object);
+            var client = new AwsClient(mockDataService, appDataHelper, NullLogger<AwsClient>.Instance, messageHandlerMock.Object);
             var filePath = @"json/live/VersionInfo.json";
             var requestUri = new Uri("https://cloudfront/api/live/VersionInfo.json");
             mockFileSystem.FileExists(filePath).Should().BeFalse();

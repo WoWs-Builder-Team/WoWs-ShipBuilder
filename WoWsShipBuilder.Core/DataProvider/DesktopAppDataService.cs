@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Core.Settings;
@@ -114,13 +115,13 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
     public async Task LoadLocalFilesAsync(ServerType serverType)
     {
         var sw = Stopwatch.StartNew();
-        Logging.Logger.Debug("Loading local files from disk.");
+        Logging.Logger.LogDebug("Loading local files from disk");
         AppData.ResetCaches();
         var localVersionInfo = await GetCurrentVersionInfo(serverType) ?? throw new InvalidOperationException("No local data found");
         AppData.DataVersion = localVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + localVersionInfo.CurrentVersion.DataIteration;
 
         var dataRootInfo = fileSystem.DirectoryInfo.New(GetDataPath(serverType));
-        IDirectoryInfo[]? categories = dataRootInfo.GetDirectories();
+        IDirectoryInfo[] categories = dataRootInfo.GetDirectories();
 
         // Multiple categories can be loaded simultaneously without concurrency issues because every cache is only used by one category.
         await Parallel.ForEachAsync(categories, async (category, ct) =>
@@ -138,7 +139,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
         });
 
         sw.Stop();
-        Logging.Logger.Debug("Loaded local files in {}", sw.Elapsed);
+        Logging.Logger.LogDebug("Loaded local files in {}", sw.Elapsed);
     }
 
     public async Task<T?> DeserializeFile<T>(string filePath)
@@ -150,7 +151,7 @@ public class DesktopAppDataService : IAppDataService, IUserDataService
 
         if (!fileSystem.File.Exists(filePath))
         {
-            Logging.Logger.Warn($"Tried to load file {filePath}, but it was not found.");
+            Logging.Logger.LogWarning("Tried to load file {FilePath}, but it was not found", filePath);
             return default;
         }
 
