@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
@@ -51,7 +52,7 @@ public class ServerAwsClientTest
 
         var cdnOptions = new CdnOptions { Host = "https://example.com"};
         IOptions<CdnOptions>? options = Options.Create(cdnOptions);
-        var client = new ServerAwsClient(new(messageHandlerMock.Object), options);
+        var client = new ServerAwsClient(new(messageHandlerMock.Object), options, NullLogger<ServerAwsClient>.Instance);
 
         var versionInfo = await client.DownloadVersionInfo(ServerType.Live);
         var files = versionInfo.Categories.SelectMany(category => category.Value.Select(file => (category.Key, file.FileName))).ToList();

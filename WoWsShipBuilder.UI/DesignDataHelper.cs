@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using Avalonia.Controls;
+using Microsoft.Extensions.Logging.Abstractions;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
@@ -38,7 +39,7 @@ public static class DesignDataHelper
 
     public static SettingsWindowViewModel SettingsWindowViewModel { get; } = new(new FileSystem(), new AvaloniaClipboardService(), PreviewAppDataService);
 
-    public static ShipWindowViewModel ShipWindowViewModel { get; } = new(new NavigationService(), new AvaloniaClipboardService(), DemoLocalizer, GetPreviewViewModelParams(ShipClass.Cruiser, 10, Nation.Usa));
+    public static ShipWindowViewModel ShipWindowViewModel { get; } = new(new NavigationService(), new AvaloniaClipboardService(), DemoLocalizer, NullLogger<ShipWindowViewModel>.Instance, GetPreviewViewModelParams(ShipClass.Cruiser, 10, Nation.Usa));
 
     public static Build CreateTestBuild(string name = "test-build") => new(name, null!, Nation.Common, null!, null!, null!, null!, null!, null!);
 

@@ -2,9 +2,12 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.VisualTree;
+using Microsoft.Extensions.Logging;
+using Splat;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures.Projectile;
+using WoWsShipBuilder.UI.Extensions;
 using WoWsShipBuilder.UI.ViewModels.DispersionPlot;
 using WoWsShipBuilder.UI.Views;
 using WoWsShipBuilder.ViewModels.ShipVm;
@@ -63,7 +66,7 @@ namespace WoWsShipBuilder.UI.UserControls
             var textBlock = (TextBlock)sender;
             string shellIndex = ((ShellDataContainer)textBlock.DataContext!).Name;
             var shell = AppData.FindProjectile<ArtilleryShell>(shellIndex);
-            win.DataContext = new DispersionGraphViewModel(win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
+            win.DataContext = new DispersionGraphViewModel(Locator.Current.GetRequiredService<ILogger<DispersionGraphViewModel>>(), win, mainBattery.DispersionData, (double)mainBattery.Range * 1000, dc.CurrentShipStats.Index, shell, tab, mainBattery.Sigma);
             win.Show((Window)this.GetVisualRoot());
             e.Handled = true;
         }

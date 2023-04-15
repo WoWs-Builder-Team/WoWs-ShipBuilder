@@ -39,7 +39,7 @@ public class ServerAppDataService : IAppDataService
 
     public async Task FetchData()
     {
-        logger.LogInformation("Starting to fetch data with server type {server}...", options.Server);
+        logger.LogInformation("Starting to fetch data with server type {Server}...", options.Server);
         const string undefinedMarker = "undefined";
         AppData.ResetCaches();
 
@@ -47,7 +47,7 @@ public class ServerAppDataService : IAppDataService
         if (onlineVersionInfo.CurrentVersion is not null)
         {
             AppData.DataVersion = onlineVersionInfo.CurrentVersion.MainVersion.ToString(3) + "#" + onlineVersionInfo.CurrentVersion.DataIteration;
-            logger.LogInformation("Found online version info with version {version}", AppData.DataVersion);
+            logger.LogInformation("Found online version info with version {Version}", AppData.DataVersion);
         }
         else
         {

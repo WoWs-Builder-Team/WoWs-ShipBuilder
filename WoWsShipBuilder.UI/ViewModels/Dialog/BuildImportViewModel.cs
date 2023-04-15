@@ -2,6 +2,7 @@
 using System.IO.Abstractions;
 using System.Reactive;
 using System.Reactive.Linq;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
@@ -42,7 +43,7 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
                 {
                     if (args.ErrorContext.Error is JsonReaderException)
                     {
-                        Logging.Logger.Info("Tried to load an invalid build string from an image file. Message: {}", args.ErrorContext.Error.Message);
+                        Logging.Logger.LogInformation("Tried to load an invalid build string from an image file. Message: {}", args.ErrorContext.Error.Message);
                         args.ErrorContext.Handled = true;
                     }
                 },

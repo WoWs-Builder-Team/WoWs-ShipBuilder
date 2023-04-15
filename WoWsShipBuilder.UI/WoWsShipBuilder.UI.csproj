@@ -47,6 +47,7 @@
         <None Remove="Assets\Question_Full.png" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Avalonia" Version="0.10.18" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.18" />
@@ -54,6 +55,7 @@
         <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
         <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
         <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-Preview1" />
         <PackageReference Include="Roslyn.System.IO.Abstractions.Analyzers" Version="12.2.19">
             <PrivateAssets>all</PrivateAssets>

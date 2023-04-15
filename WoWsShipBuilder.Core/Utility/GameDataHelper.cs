@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Aircraft;
 using WoWsShipBuilder.DataStructures.Captain;
@@ -17,7 +18,7 @@ public static class GameDataHelper
     {
         if (index.Length < 7)
         {
-            Logging.Logger.Error("Invalid index, received value {}.", index);
+            Logging.Logger.LogError("Invalid index, received value {Index}", index);
             return Nation.Common;
         }
 

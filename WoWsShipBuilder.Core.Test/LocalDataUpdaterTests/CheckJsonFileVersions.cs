@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
@@ -24,7 +25,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             mockFileSystem.AddDirectory(appDataHelper.Object.GetDataPath(ServerType.Live));
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should()
@@ -55,7 +56,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should().HaveCount(2);
@@ -74,7 +75,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(testVersionInfo);
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should().BeEmpty();
@@ -116,7 +117,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(localVersionInfo);
 
             // Act
-            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new()).CheckJsonFileVersions(ServerType.Live);
+            var result = await new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance).CheckJsonFileVersions(ServerType.Live);
 
             // Assert
             result.AvailableFileUpdates.Should().BeEmpty();

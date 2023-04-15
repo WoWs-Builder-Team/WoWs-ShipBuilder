@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Splat;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataProvider;
@@ -31,11 +32,11 @@ public static class AppSettingsHelper
     {
         if (File.Exists(SettingFile))
         {
-            Logging.Logger.Info("Trying to load settings from settings file...");
+            Logging.Logger.LogInformation("Trying to load settings from settings file...");
             var settings = Locator.Current.GetRequiredService<IDataService>().Load<AppSettings>(SettingFile);
             if (settings == null)
             {
-                Logging.Logger.Error("Unable to parse local settings file. Creating empty settings instance.");
+                Logging.Logger.LogError("Unable to parse local settings file. Creating empty settings instance");
                 settings = new();
             }
 
@@ -43,12 +44,12 @@ public static class AppSettingsHelper
         }
         else
         {
-            Logging.Logger.Info("No settings file found, creating new settings...");
+            Logging.Logger.LogInformation("No settings file found, creating new settings...");
             Settings.UpdateFromSettings(new());
         }
 
         AppData.IsInitialized = true;
-        Logging.Logger.Info("Settings initialized.");
+        Logging.Logger.LogInformation("Settings initialized");
         UpdateThreadCulture(Settings.SelectedLanguage.CultureInfo);
     }
 

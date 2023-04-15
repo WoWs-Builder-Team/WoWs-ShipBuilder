@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using NLog;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.DataStructures.Versioning;
@@ -16,12 +16,13 @@ public class AwsClient : ClientBase, IAwsClient
 {
     private const string Host = "https://d2nzlaerr9l5k3.cloudfront.net";
 
-    private static readonly Logger Logger = Logging.GetLogger("AwsClient");
+    private readonly ILogger<AwsClient> logger;
 
-    public AwsClient(IDataService dataService, IAppDataService appDataService, HttpMessageHandler? handler = null)
+    public AwsClient(IDataService dataService, IAppDataService appDataService, ILogger<AwsClient> logger, HttpMessageHandler? handler = null)
         : base(dataService, appDataService)
     {
         Client = new(new RetryHttpHandler(handler ?? new HttpClientHandler()));
+        this.logger = logger;
     }
 
     protected override HttpClient Client { get; }
@@ -37,7 +38,7 @@ public class AwsClient : ClientBase, IAwsClient
     [UnsupportedOSPlatform("browser")]
     public async Task DownloadImages(IFileSystem fileSystem, string? fileName = null)
     {
-        Logger.Debug("Downloading ship images");
+        logger.LogDebug("Downloading ship images");
         string zipUrl;
         string localFolder;
         string zipName;
@@ -62,7 +63,7 @@ public class AwsClient : ClientBase, IAwsClient
         }
         catch (HttpRequestException e)
         {
-            Logger.Warn(e, "Failed to download images from uri {}.", zipUrl);
+            logger.LogWarning(e, "Failed to download images from uri {}", zipUrl);
         }
     }
 
@@ -74,7 +75,7 @@ public class AwsClient : ClientBase, IAwsClient
 
     public async Task DownloadFiles(ServerType serverType, List<(string, string)> relativeFilePaths, IProgress<int>? downloadProgress = null)
     {
-        Logger.Debug("Downloading files for server type {}.", serverType);
+        logger.LogWarning("Downloading files for server type {ServerType}", serverType);
         string baseUrl = @$"{Host}/api/{serverType.StringName()}/";
         var taskList = new List<Task>();
         int totalFiles = relativeFilePaths.Count;
@@ -96,7 +97,7 @@ public class AwsClient : ClientBase, IAwsClient
                 }
                 catch (HttpRequestException e)
                 {
-                    Logger.Warn(e, "Encountered an exception while downloading a file with uri {} and filename {}.", uri, localFileName);
+                    logger.LogWarning(e, "Encountered an exception while downloading a file with uri {} and filename {}", uri, localFileName);
                 }
 
                 progress.Report(1);
