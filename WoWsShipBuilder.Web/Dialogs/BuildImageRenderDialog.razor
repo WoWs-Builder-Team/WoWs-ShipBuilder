@@ -6,6 +6,7 @@
 @using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Utility
+@using WoWsShipBuilder.Web.Components.BuildImageRender
 
 @implements IAsyncDisposable
 
@@ -52,7 +53,7 @@
                     </MudStack>
                     @if (showModules)
                     {
-                        <ShipModulesSelector ViewModel="@ShipModuleViewModel" IsBuildImage/>
+                        <ShipModulesSelectorImageRender ViewModel="@ShipModuleViewModel"/>
                     }
                     @if (twoColumns)
                     {
@@ -60,24 +61,24 @@
                             <MudStack Spacing="2" Style="width: 50%">
                                 @if (showCaptainSkills)
                                 {
-                                    <CaptainSkillSelector ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass" IsBuildImage/>
+                                    <CaptainSkillSelectorImageRender ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass"/>
                                 }
                                 @if (showUpgrades)
                                 {
-                                    <ShipUpgradeSelector ViewModel="@UpgradePanelViewModel" IsBuildImage/>
+                                    <ShipUpgradeSelectorImageRender ViewModel="@UpgradePanelViewModel"/>
                                 }
                             </MudStack>
                             <MudStack Spacing="2" Style="width: 50%">
                                 @if (showSignals)
                                 {
                                     <div style="@((showConsumables ? "height: 83.13%;" : "height: 100%;") + "display: flex")">
-                                        <SignalSelector ViewModel="@SignalSelectorViewModel" IsBuildImage/>
+                                        <SignalSelectorImageRender ViewModel="@SignalSelectorViewModel"/>
                                     </div>
                                 }
                                 @if (showConsumables)
                                 {
                                     <div style="height: 16.87%; display: flex">
-                                        <ConsumableSelector ViewModel="@ConsumableViewModel" IsBuildImage/>
+                                        <ConsumableSelectorImageRender ViewModel="@ConsumableViewModel"/>
                                     </div>
                                 }
                             </MudStack>
@@ -87,19 +88,19 @@
                     {
                         if (showCaptainSkills)
                         {
-                            <CaptainSkillSelector ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass" IsBuildImage/>
+                            <CaptainSkillSelectorImageRender ViewModel="@CaptainSkillSelectorViewModel" ShipClass="@Ship.ShipClass"/>
                         }
                         if (showUpgrades)
                         {
-                            <ShipUpgradeSelector ViewModel="@UpgradePanelViewModel" IsBuildImage/>
+                            <ShipUpgradeSelectorImageRender ViewModel="@UpgradePanelViewModel"/>
                         }
                         if (showConsumables)
                         {
-                            <ConsumableSelector ViewModel="@ConsumableViewModel" IsBuildImage/>
+                            <ConsumableSelectorImageRender ViewModel="@ConsumableViewModel"/>
                         }
                         if (showSignals)
                         {
-                            <SignalSelector ViewModel="@SignalSelectorViewModel" IsBuildImage/>
+                            <SignalSelectorImageRender ViewModel="@SignalSelectorViewModel"/>
                         }
                     }
                 </MudStack>

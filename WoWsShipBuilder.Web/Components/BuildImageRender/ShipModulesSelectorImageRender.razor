@@ -1,6 +1,4 @@
 ﻿@using WoWsShipBuilder.ViewModels.ShipVm;
-@using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.DataStructures.Ship
 @inherits ReactiveComponentBase<ShipModuleViewModel>
 @inject ILocalizer Localizer
@@ -19,9 +17,7 @@
                             {
                                 <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown"/>
                             }
-                            <MudButton OnClick="@(_ => ViewModel.SelectModuleExecute(upgrade))" Class="pa-2" Style="@GetImageStyle()" Variant="Variant.Outlined" >
-                                <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))"/>
-                            </MudButton>
+                            <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetModuleIcon(upgrade, ViewModel.SelectedModules.Contains(upgrade))" Style="@GetImageStyle(ViewModel.SelectedModules.Contains(upgrade))"/>
                             <MudText Style="max-width: 80px; max-height: 40px; min-height: 40px; overflow: hidden;
                                                                                                    white-space: break-spaces;
                                                                                                    text-overflow: ellipsis;
@@ -43,14 +39,14 @@
     [CascadingParameter]
     private Breakpoint Breakpoint { get; set; }
 
-    private string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
+    private static string GetModuleIcon(ShipUpgrade upgrade, bool isSelected)
     {
         string uriSuffix = isSelected ? "_installed" : string.Empty;
         var path = $"/assets/modules/icon_module_{upgrade.UcType.ToString()}{uriSuffix}.png";
         return path;
     }
 
-    private string GetImageStyle(bool isSelected)
+    private static string GetImageStyle(bool isSelected)
     {
         return isSelected ? string.Empty : "opacity: 0.4;";
     }
@@ -64,18 +60,6 @@
                 return 30;
             default:
                 return 40;
-        }
-    }
-
-    private string GetImageStyle()
-    {
-        switch (Breakpoint)
-        {
-            case Breakpoint.Xs:
-            case Breakpoint.Sm:
-                return "min-width: 45px; width: 45px; height: 45px;";
-            default:
-                return "min-width: 55px; width: 55px; height: 55px;";
         }
     }
 }
