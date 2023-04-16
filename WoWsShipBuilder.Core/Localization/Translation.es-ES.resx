@@ -1086,4 +1086,10 @@
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Destructor</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Habilidades de capitán</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Señales</value>
+  </data>
 </root>
