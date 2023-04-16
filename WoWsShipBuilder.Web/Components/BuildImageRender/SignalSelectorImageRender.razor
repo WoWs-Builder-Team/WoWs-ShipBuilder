@@ -12,8 +12,7 @@
             </MudItem>
             @foreach (var (_, signal) in ViewModel.SignalList.Where(x => !string.IsNullOrEmpty(x.Key)))
             {
-
-                <MudItem xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
+                <MudItem @key="signal.Signal.Index" xs="2" Class="d-flex justify-center" Style="@GetOrder(signal.Signal.SortOrder)">
                     <MudTooltip Placement="Placement.Right" Color="Color.Transparent" Delay="350">
                         <ChildContent>
                             <MudPaper Outlined Square Elevation="0" Style="@(GetImageBreakpointStyle() + GetMudPaperStyle(ViewModel!.SelectedSignals.Any(x => x.Name.Equals(signal.Signal.Name))))">

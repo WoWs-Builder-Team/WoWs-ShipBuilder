@@ -12,7 +12,7 @@
                 <MudStack>
                     @foreach (var upgrade in columnUpgrade)
                     {
-                        <MudStack AlignItems="AlignItems.Center">
+                        <MudStack @key="upgrade.Name" AlignItems="AlignItems.Center">
                             @if (columnUpgrade.IndexOf(upgrade) != 0)
                             {
                                 <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown"/>

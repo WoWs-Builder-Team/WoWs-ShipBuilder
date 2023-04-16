@@ -1,6 +1,6 @@
 ﻿@inject ILocalizer Localizer
 
-<MudDialog>
+<MudDialog DefaultFocus="DefaultFocus.Element">
     <DialogContent>
         <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_Layout))</MudText>
         <MudTooltip Text="@Localizer.SimpleAppLocalization(nameof(Translation.BuildImageSettingsDialog_TwoColumnsTooltip))" Arrow Delay="350">

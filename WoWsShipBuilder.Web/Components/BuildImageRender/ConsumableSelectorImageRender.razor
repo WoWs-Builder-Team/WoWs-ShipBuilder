@@ -11,7 +11,7 @@
             {
                 if (consumableSlot.ConsumableData.Count > 1)
                 {
-                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350" RootStyle="@GetImageBreakpointStyle()">
+                    <MudTooltip @key="consumableSlot.Slot" Color="Color.Transparent" Placement="Placement.Right" Delay="350" RootStyle="@GetImageBreakpointStyle()">
                         <ChildContent>
                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                         </ChildContent>
@@ -22,7 +22,7 @@
                 }
                 else
                 {
-                    <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@GetImageBreakpointStyle()" Delay="350">
+                    <MudTooltip @key="consumableSlot.Slot" Color="Color.Transparent" Placement="Placement.Right" RootStyle="@GetImageBreakpointStyle()" Delay="350">
                         <ChildContent>
                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)"/>
                         </ChildContent>
