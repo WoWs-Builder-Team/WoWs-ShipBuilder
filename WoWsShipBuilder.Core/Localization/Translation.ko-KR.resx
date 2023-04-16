@@ -801,4 +801,7 @@
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>구축함</value>
   </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>신호기</value>
+  </data>
 </root>
