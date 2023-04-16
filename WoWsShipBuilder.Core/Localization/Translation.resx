@@ -1802,4 +1802,22 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
       <value>Get Short-Link</value>
   </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+      <value>Live</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+      <value>PTS</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+      <value>Dispersion and Ballistic Charts</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+      <value>Acceleration Charts</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+      <value>Ship Comparison</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+      <value>Start Page</value>
+  </data>
 </root>

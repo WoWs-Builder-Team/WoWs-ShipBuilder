@@ -2,12 +2,16 @@
 @using WoWsShipBuilder.Core.Settings
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.Services
+@using Microsoft.Extensions.Options
+@using WoWsShipBuilder.Core.DataProvider
 
 @implements IDisposable
 
 @inject ILocalizer Localizer
 @inject RefreshNotifierService RefreshNotifierService
 @inject AppSettings AppSettings
+@inject IOptions<CdnOptions> CdnOptions
+@inject IOptions<ShipBuilderOptions> ShipBuilderOptionsContainer
 
 <MudAppBar Fixed>
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
@@ -15,11 +19,65 @@
             <MudIcon Icon="@shipBuilderIcon" Size="Size.Large"/>
             <MudText Typo="Typo.h5">WoWs&#x2011;ShipBuilder</MudText>
         </NavLink>
-        <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">Dispersion and Ballistic Charts</NavLink>
-        <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">Acceleration Charts</NavLink>
+        <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</NavLink>
+        <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
         @if (shipComparisonEnabled)
         {
-            <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">Ship Comparison</NavLink>
+            <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
+        }
+        <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
+        @switch (CdnOptions.Value.Server)
+        {
+            case ServerType.Live:
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the PTS client of the game.</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <NavLink class="d-flex me-4" href="@ShipBuilderOptions.PtsServerUrl" target="_blank">
+                            <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
+                            <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudText>
+                        </NavLink>
+                    </ChildContent>
+                </MudTooltip>
+                break;
+            case ServerType.Pts:
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the Live client of the game.</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <NavLink class="d-flex me-4" href="@ShipBuilderOptions.LiveServerUrl" target="_blank">
+                            <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
+                            <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudText>
+                        </NavLink>
+                    </ChildContent>
+                </MudTooltip>
+                break;
+            default:
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the PTS client of the game.</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <NavLink class="d-flex me-4" href="https://pts.wowssb.com/" target="_blank">
+                            <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
+                            <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudText>
+                        </NavLink>
+                    </ChildContent>
+                </MudTooltip>
+                <MudTooltip>
+                    <TooltipContent>
+                        <MudText Typo="@Typo.body1">WoWs-ShipBuilder for the Live client of the game.</MudText>
+                    </TooltipContent>
+                    <ChildContent>
+                        <NavLink class="d-flex me-4" href="https://app.wowssb.com/" target="_blank">
+                            <MudIcon Icon="@shipBuilderIcon" Size="@Size.Large"/>
+                            <MudText Class="align-self-center">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudText>
+                        </NavLink>
+                    </ChildContent>
+                </MudTooltip>
+                break;
         }
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         <MudTooltip>
@@ -27,7 +85,7 @@
                 <MudText Typo="Typo.body1">The replay renderer tool created by notyourfather and Trackpad.</MudText>
             </TooltipContent>
             <ChildContent>
-                <NavLink class="d-flex me-4" href="https://github.com/WoWs-Builder-Team/minimap_renderer" target="_blank">
+                <NavLink class="d-flex me-4" href="@ShipBuilderOptions.MinimapRendererUrl" target="_blank">
                     <MudImage Class="px-2" Src="/assets/render_logo.png" Height="35"/>
                     <MudText Class="align-self-center">Replay Renderer</MudText>
                 </NavLink>
@@ -62,13 +120,13 @@
             <MudText Typo="Typo.h6">WoWs&#x2011;ShipBuilder</MudText>
         </MudDrawerHeader>
         <MudNavMenu Bordered Color="Color.Info">
-            <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">Homepage</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">Acceleration Charts</MudNavLink>
+            <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationHome))</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
             @if (shipComparisonEnabled)
             {
-                <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">Ship Comparison</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
             }
-            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">Dispersion and Ballistic Charts</MudNavLink>
+            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
             <MudDivider Class="my-4"/>
@@ -76,7 +134,21 @@
             <MudDivider Class="my-4"/>
             <MudNavLink Style="text-transform: none !important;" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/WoWs-ShipBuilder#wows-shipbuilder" Target="_blank">GitHub Repository</MudNavLink>
             <MudDivider Class="my-4"/>
-            <MudButton Style="text-transform: none !important;" Size="Size.Large" Color="Color.Inherit" Href="https://github.com/WoWs-Builder-Team/minimap_renderer" Target="_blank">
+            @switch (CdnOptions.Value.Server)
+            {
+                case ServerType.Live:
+                    <MudNavLink Href="@ShipBuilderOptions.PtsServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
+                    break;
+                case ServerType.Pts:
+                    <MudNavLink Href="@ShipBuilderOptions.LiveServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
+                    break;
+                default:
+                    <MudNavLink Href="@ShipBuilderOptions.PtsServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypePts))</MudNavLink>
+                    <MudNavLink Href="@ShipBuilderOptions.LiveServerUrl" Target="_blank" Icon="@shipBuilderIcon">@Localizer.SimpleAppLocalization(nameof(Translation.ServerTypeLive))</MudNavLink>
+                    break;
+            }
+            <MudDivider Class="my-4"/>
+            <MudButton Style="text-transform: none !important;" Size="Size.Large" Color="Color.Inherit" Href="@ShipBuilderOptions.MinimapRendererUrl" Target="_blank">
                 <MudImage Class="px-2" Src="/assets/render_logo.png" Height="35"/>
                 Minimap Renderer
             </MudButton>
@@ -93,6 +165,8 @@
     bool open = false;
 
     private bool shipComparisonEnabled = false;
+
+    private ShipBuilderOptions ShipBuilderOptions => ShipBuilderOptionsContainer.Value;
 
     protected override void OnInitialized()
     {

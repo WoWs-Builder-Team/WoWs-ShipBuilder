@@ -1530,6 +1530,42 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceleration Charts.
+        /// </summary>
+        public static string NavigationAccelerationCharts {
+            get {
+                return ResourceManager.GetString("NavigationAccelerationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion and Ballistic Charts.
+        /// </summary>
+        public static string NavigationCharts {
+            get {
+                return ResourceManager.GetString("NavigationCharts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship Comparison.
+        /// </summary>
+        public static string NavigationComparison {
+            get {
+                return ResourceManager.GetString("NavigationComparison", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Page.
+        /// </summary>
+        public static string NavigationHome {
+            get {
+                return ResourceManager.GetString("NavigationHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Netherlands.
         /// </summary>
         public static string Netherlands {
@@ -1652,6 +1688,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ScreenshotWindow_CaptainSkills {
             get {
                 return ResourceManager.GetString("ScreenshotWindow_CaptainSkills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live.
+        /// </summary>
+        public static string ServerTypeLive {
+            get {
+                return ResourceManager.GetString("ServerTypeLive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PTS.
+        /// </summary>
+        public static string ServerTypePts {
+            get {
+                return ResourceManager.GetString("ServerTypePts", resourceCulture);
             }
         }
         
