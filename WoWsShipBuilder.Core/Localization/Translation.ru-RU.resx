@@ -1724,4 +1724,13 @@
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>°/с²</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Перки капитана</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Сигналы</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Расходники</value>
+  </data>
 </root>
