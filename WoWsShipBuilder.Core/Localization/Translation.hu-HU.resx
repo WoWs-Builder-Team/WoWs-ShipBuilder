@@ -1631,4 +1631,13 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Romboló</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Kapitánypontok</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Zászlók</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Fogyóeszközök</value>
+  </data>
 </root>
