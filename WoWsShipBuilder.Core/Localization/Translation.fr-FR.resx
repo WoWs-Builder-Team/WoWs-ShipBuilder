@@ -960,4 +960,10 @@ HE-&gt;SAP-&gt;AP.</value>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Destroyer</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Compétences du Capitaine</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Pavillons</value>
+  </data>
 </root>
