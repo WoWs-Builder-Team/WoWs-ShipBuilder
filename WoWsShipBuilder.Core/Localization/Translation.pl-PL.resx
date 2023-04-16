@@ -609,4 +609,7 @@
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Niszczyciel</value>
   </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Sygnały</value>
+  </data>
 </root>
