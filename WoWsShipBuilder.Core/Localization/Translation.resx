@@ -1760,6 +1760,48 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>°/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Modules</value>
+  </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Captain skills</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signals</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Consumables</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Upgrades</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Two columns</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>LAYOUT</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>ELEMENTS</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Widens the image layout by splitting elements into 2 side by side columns (captain skills and signals will not be concealable).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Build name</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Enter build name</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Save Image</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Get URL</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Get Short-Link</value>
+  </data>
   <data name="ServerTypeLive" xml:space="preserve">
       <value>Live</value>
   </data>

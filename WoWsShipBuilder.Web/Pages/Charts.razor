@@ -706,7 +706,7 @@
             {
                 var dispPlotShipsCache = shellData.DispPlotShipsCache;
                 var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Label, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
-                wrapper.SelectedShells[shellIndex] = shellData with {DispPlotShipsCache = dispersionPlotParameter};
+                wrapper.SelectedShells[shellIndex] = shellData with { DispPlotShipsCache = dispersionPlotParameter };
             }
         }
     }

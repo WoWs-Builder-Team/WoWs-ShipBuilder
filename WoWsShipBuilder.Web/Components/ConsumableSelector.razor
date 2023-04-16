@@ -9,7 +9,7 @@
 
 @if (ViewModel is not null)
 {
-    <MudCard Outlined="true" Class="pa-2">
+    <MudCard Outlined="true" Class="pa-2" Style="flex: content">
         <MudStack Spacing="1">
             <MudStack Row="true" Justify="Justify.Center">
                 @foreach (var consumableSlot in ViewModel.ConsumableSlots)
@@ -18,7 +18,7 @@
                     {
                         <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" PopoverClass="mt-1" ListClass="pa-0">
                             <ActivatorContent>
-                                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="400">
+                                <MudTooltip Color="Color.Transparent" Placement="Placement.Right" Delay="350">
                                     <ChildContent>
                                         <MudButton @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Style="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, true))" Variant="Variant.Outlined">
                                             <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Delay="400">
+                        <MudTooltip Color="Color.Transparent" Placement="Placement.Right" RootStyle="@(GetImageBreakpointStyle() + GetColorFromStatus(consumableSlot, false))" @onmousedown="@(args => ActivateConsumable(args, consumableSlot))" @oncontextmenu:preventDefault="true" Delay="350">
                             <ChildContent>
                                 <MudImage Width="@GetImageSize()" Height="@GetImageSize()" Src="@GetConsumableIcon(consumableSlot.SelectedConsumable)" @ontouchend="StopTimer" @ontouchstart="@(_ => StartTimer(consumableSlot))" draggable="false" Style="-webkit-touch-callout: none; -webkit-user-select: none;"/>
                             </ChildContent>
@@ -61,7 +61,9 @@
                     }
                 }
             </MudStack>
-            <MudText Align="Align.Center" Typo="Typo.caption">@(Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? Localizer.GetAppLocalization(nameof(Translation.Consumable_HoldToggle)).Localization : Localizer.GetAppLocalization(nameof(Translation.Consumable_RightClickToggle)).Localization)</MudText>
+            <MudText Align="Align.Center" Typo="Typo.caption">
+                @(Breakpoint is Breakpoint.Xs or Breakpoint.Sm ? Localizer.GetAppLocalization(nameof(Translation.Consumable_HoldToggle)).Localization : Localizer.GetAppLocalization(nameof(Translation.Consumable_RightClickToggle)).Localization)
+            </MudText>
         </MudStack>
     </MudCard>
 }

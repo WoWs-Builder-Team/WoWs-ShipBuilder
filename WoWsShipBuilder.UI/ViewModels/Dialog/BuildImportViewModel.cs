@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Reactive;
 using System.Reactive.Linq;
 using Newtonsoft.Json;
@@ -46,12 +47,20 @@ namespace WoWsShipBuilder.UI.ViewModels.Dialog
                     }
                 },
             };
+
             var build = JsonConvert.DeserializeObject<Build>(buildJson, serializerSettings);
 
             if (build == null)
             {
-                await MessageBoxInteraction.Handle(("Could not read build data from file. Has the file been compressed?", "Invalid file"));
-                return;
+                try
+                {
+                    build = Build.CreateBuildFromString(buildJson);
+                }
+                catch (FormatException)
+                {
+                    await MessageBoxInteraction.Handle(("Could not read build data from file. Has the file been compressed?", "Invalid file"));
+                    return;
+                }
             }
 
             await ProcessLoadedBuild(build);

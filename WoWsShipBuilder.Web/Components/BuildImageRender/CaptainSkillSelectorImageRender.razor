@@ -1,19 +1,10 @@
 ﻿@using WoWsShipBuilder.ViewModels.ShipVm
 @using WoWsShipBuilder.DataStructures
-@using WoWsShipBuilder.Core.Services
-@using WoWsShipBuilder.Core.DataProvider
 @using System.Text
-@using System.Collections.Specialized
-@using System.Reflection
-@using System.Reflection.Metadata.Ecma335
-@using NLog.LayoutRenderers
 @using WoWsShipBuilder.Core.DataContainers
-@using WoWsShipBuilder.Core.Localization
 @using WoWsShipBuilder.DataStructures.Captain
-@using WoWsShipBuilder.Web.Dialogs
 @inherits ReactiveComponentBase<CaptainSkillSelectorViewModel>
 @inject ILocalizer Localizer
-@inject IDialogService DialogService
 
 @if (ViewModel is not null)
 {
@@ -23,25 +14,9 @@
                 <MudText Typo="Typo.body2" Align="Align.Center">
                     @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_Points)).Localization @ViewModel.AssignedPoints/21
                 </MudText>
-            </MudItem>
-            <MudItem xs="7">
-                <MudSelect Margin="Margin.Dense" T="Captain" Variant="Variant.Outlined" Dense="true" Strict="true" @bind-Value="@ViewModel.SelectedCaptain">
-                    @foreach (var captain in ViewModel.CaptainList!)
-                    {
-                        <MudSelectItem Value="captain">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">
-                                @Localizer.GetGameLocalization(captain.Name).Localization
-                            </MudText>
-                        </MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
-            <MudItem xs="5" Style="text-align: center">
-                <MudButton Disabled="@(!ViewModel.SkillActivationButtonEnabled)" Variant="Variant.Filled" Color="Color.Primary" Style="@GetSkillOrTalentsEnabledIndicator()" OnClick="@OpenSkillDialog">
-                    <MudText Typo="Typo.body2">
-                        @Localizer.GetAppLocalization(nameof(Translation.CaptainSkillSelector_SkillTalent)).Localization
-                    </MudText>
-                </MudButton>
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Align="Align.Center" Class="mt-1">
+                    @Localizer.GetAppLocalization(Translation.ScreenshotWindow_Captain).Localization @Localizer.GetGameLocalization(ViewModel.SelectedCaptain!.Name).Localization
+                </MudText>
             </MudItem>
             @foreach ((string skillName, var skill) in ViewModel.SkillList!)
             {
@@ -50,9 +25,9 @@
                         <ChildContent>
                             <MudBadge Origin="Origin.TopRight" Color="Color.Success" Icon="@specialIconPath" BadgeClass="skill-special-icon" Overlap="true" Visible="@skill.Skill.IsEpic" Style="@GetImageStyle(skill)">
                                 <MudBadge Content="@(ViewModel.SkillOrderList.IndexOf(skill.Skill) + 1)" Color="Color.Error" Origin="Origin.TopLeft" Overlap="true" BadgeClass="skill-order-number" Visible="@ShouldShowBadge(skill.Skill)">
-                                    <MudButton Class="pa-2" Variant="Variant.Outlined" Color="@(GetColorFromState(skill))" OnClick="@(() => OnSkillClick(skill))" Style="@GetImageBreakpointStyle()">
-                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")"/>
-                                    </MudButton>
+                                    <MudPaper Outlined Square Elevation="0" Style="@(GetImageBreakpointStyle() + GetMudPaperBorderColor(skill))">
+                                        <MudImage Width="@GetImageSize()" Height="@GetImageSize()" ObjectFit="ObjectFit.ScaleDown" Src="@("/assets/Skills/" + ToSnakeCase(skillName) + ".png")" Style="@GetImageBreakpointStyle()" Class="pa-1"/>
+                                    </MudPaper>
                                 </MudBadge>
                             </MudBadge>
                         </ChildContent>
@@ -156,15 +131,6 @@
         return sb.ToString();
     }
 
-    private int GetColumnSize(int column)
-    {
-        if (ShipClass != ShipClass.Submarine)
-        {
-            return 2;
-        }
-        return column is 0 or 4 ? 3 : 2;
-    }
-
     private string GetSubFix()
     {
         return ShipClass != ShipClass.Submarine ? "" : "flex-basis: 20%; max-width: 20%;";
@@ -180,35 +146,9 @@
         return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skill.SkillNumber));
     }
 
-    private Color GetColorFromState(SkillItemViewModel skillItem)
-    {
-        if (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)))
-        {
-            return Color.Error;
-        }
-
-        if (!skillItem.CanExecute)
-        {
-            return Color.Primary;
-        }
-
-        return Color.Secondary;
-    }
-
-    private void OnSkillClick(SkillItemViewModel skillItem)
-    {
-        if (!skillItem.CanExecute) return;
-        ViewModel!.AddSkill(skillItem.Skill);
-    }
-
     private string GetImageStyle(SkillItemViewModel skillItem)
     {
-        return !skillItem.CanExecute && !ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? @"opacity: 0.4" : string.Empty;
-    }
-
-    private string GetSkillOrTalentsEnabledIndicator()
-    {
-        return ViewModel!.ArHpPercentage < 100 || ViewModel.TalentOrConditionalSkillEnabled ? "border: #BF0000FF solid 1px" : string.Empty;
+        return ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? string.Empty : @"opacity: 0.4";
     }
 
     private int GetImageSize()
@@ -238,24 +178,5 @@
     private string GetMudPaperBorderColor(SkillItemViewModel skillItem)
     {
         return " border-color: " + (ViewModel!.SkillOrderList.Any(x => x.SkillNumber.Equals(skillItem.Skill.SkillNumber)) ? "#BC0606" : "#3C3C3C") + ";";
-    }
-
-    private async Task OpenSkillDialog()
-    {
-        ViewModel!.SkillActivationPopupOpen = true;
-        DialogOptions options = new()
-        {
-            FullWidth = true,
-        };
-
-        var parameters = new DialogParameters
-        {
-            ["ViewModel"] = ViewModel,
-        };
-
-        var dialog = await DialogService.ShowAsync<CaptainTalentsAndConditionalSkillDialog>("CaptainTalentsAndConditionalSkillDialog", parameters, options);
-        // this is needed to wait for the dialog to close to change the SkillActivationPopupOpen, to get the values to update
-        await dialog.Result;
-        ViewModel!.SkillActivationPopupOpen = false;
     }
 }

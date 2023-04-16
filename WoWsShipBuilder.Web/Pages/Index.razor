@@ -90,7 +90,7 @@
 
     private void OnLoadBuild()
     {
-        if (buildString.Contains(LinkShorteningOptions.Value.UriPrefix))
+        if (buildString.Contains(LinkShorteningOptions.Value.UriPrefix + '/'))
         {
             NavManager.NavigateTo(buildString);
         }

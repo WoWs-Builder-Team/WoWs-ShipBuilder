@@ -13,7 +13,6 @@
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.Extensions
-@using WoWsShipBuilder.DataStructures.Ship
 @using WoWsShipBuilder.Web.Data
 @using WoWsShipBuilder.Web.LinkShortening
 @using WoWsShipBuilder.Web.Utility
@@ -57,7 +56,7 @@
             <MudPaper Outlined="true" Class="py-2 px-15">
                 <MudGrid Justify="Justify.Center">
                     <MudItem xs="12" md="2" Class="align-self-center d-flex justify-center">
-                        <MudTextField @bind-Value="BuildName" Label="Build:" Immediate DebounceInterval="100" Placeholder="Enter build name" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
+                        <MudTextField @bind-Value="BuildName" Label="@($"{Localizer.SimpleAppLocalization(nameof(Translation.ChartsWeb_Build))}:")" Immediate DebounceInterval="100" Placeholder="@Localizer.SimpleAppLocalization(nameof(Translation.BuildNameDialog_EnterBuildName))" Variant="Variant.Outlined" Margin="Margin.Dense" Validation="@(new Func<string, string?>(Validation.ValidateBuildName))"/>
                     </MudItem>
                     <MudItem xs="12" md="8" Class="@(GetShipAlign() + " d-flex justify-center")">
                         @if (ViewModel.PreviousShip is not null)
@@ -74,7 +73,7 @@
                             <MudImage Width="@GetImageWidth(true)" ObjectFit="ObjectFit.ScaleDown" Src="@(BaseAddress + ViewModel.CurrentShipIndex + ".png")" Style="@GetBackgroundFlag(ViewModel.CurrentShip.Nation, ViewModel.CurrentShipIndex)"/>
                             <MudStack Row="true" Justify="Justify.Center" Spacing="1">
                                 <MudIcon ViewBox="-1 0 24 10" Icon="@Helpers.GetIconFromClass(ViewModel.CurrentShip.ShipClass, ViewModel.CurrentShip.Category)"/>
-                                <MudText Align="Align.Center" >@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
+                                <MudText Align="Align.Center">@GetShipTier(ViewModel.CurrentShip.Tier) @Localizer.GetGameLocalization(ViewModel.CurrentShipIndex + "_FULL").Localization</MudText>
                             </MudStack>
                         </MudStack>
                         @if (ViewModel.NextShips is not null)
@@ -288,21 +287,38 @@
         DialogOptions options = new()
         {
             NoHeader = true,
+            CloseOnEscapeKey = true,
         };
+
         var parameters = new DialogParameters
         {
+            ["Ship"] = ViewModel!.CurrentShip,
+            ["BuildName"] = BuildName.Contains(';') ? string.Empty : BuildName,
+            ["BuildString"] = ViewModel!.CreateBuild(BuildName.Contains(';') ? string.Empty : BuildName).CreateShortStringFromBuild(),
+            ["ShipModuleViewModel"] = ViewModel!.ShipModuleViewModel,
+            ["CaptainSkillSelectorViewModel"] = ViewModel!.CaptainSkillSelectorViewModel,
+            ["UpgradePanelViewModel"] = ViewModel!.UpgradePanelViewModel,
+            ["ConsumableViewModel"] = ViewModel!.ConsumableViewModel,
+            ["SignalSelectorViewModel"] = ViewModel!.SignalSelectorViewModel,
             ["ShortLinkDisabled"] = !LinkShortener.IsAvailable,
-            ["BuildName"] = BuildName,
+            ["Breakpoint"] = Breakpoint,
         };
-        var dialog = await DialogService.ShowAsync<BuildShareDialog>(string.Empty, parameters, options);
+
+        var dialog = await DialogService.ShowAsync<BuildImageRenderDialog>(string.Empty , parameters, options);
         var result = await dialog.Result;
-        if (!result.Canceled && result.Data is BuildShareResult shareResult)
+
+        if (result is { Canceled: false, Data: BuildShareResult shareResult })
         {
             BuildName = shareResult.BuildName;
             var build = ViewModel!.CreateBuild(shareResult.BuildName);
             var buildString = build.CreateShortStringFromBuild();
             var buildUrl = $"{NavManager.BaseUri}ship?shipIndexes={build.ShipIndex}&build={WebUtility.UrlEncode(buildString)}";
             await ClipboardService.SetTextAsync(shareResult.CreateShortLink ? (await LinkShortener.CreateShortLink(buildUrl)).Link : buildUrl);
+        }
+
+        if (result is { Canceled: false, Data: string name })
+        {
+            BuildName = name;
         }
     }
 
