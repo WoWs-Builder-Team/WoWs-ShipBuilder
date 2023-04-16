@@ -1089,4 +1089,10 @@
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Torpedobootjager</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Kapitein vaardigheden</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signalen</value>
+  </data>
 </root>
