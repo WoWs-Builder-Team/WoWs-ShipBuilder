@@ -1505,4 +1505,13 @@ Non hanno alcun effetto sulle navi di superficie.</value>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Cacciatorpediniere</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Abilità capitano</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Segnali</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Consumabili</value>
+  </data>
 </root>
