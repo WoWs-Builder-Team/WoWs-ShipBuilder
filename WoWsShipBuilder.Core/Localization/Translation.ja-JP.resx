@@ -1717,4 +1717,13 @@
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>°/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>艦長スキル</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>信号旗</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>消耗品</value>
+  </data>
 </root>
