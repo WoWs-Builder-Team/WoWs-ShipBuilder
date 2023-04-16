@@ -1760,6 +1760,15 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>º/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Habilidades do Comandante</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Sinais</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Consumíveis</value>
+  </data>
   <data name="ServerTypeLive" xml:space="preserve">
       <value>Live</value>
   </data>
