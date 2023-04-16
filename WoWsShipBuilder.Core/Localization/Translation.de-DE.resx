@@ -1675,6 +1675,15 @@ Sie haben keinerlei Auswirkungen auf Oberflächenschiffe.</value>
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>^/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Kapitänsfertigkeiten</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Signale</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Verbrauchsmaterialien</value>
+  </data>
   <data name="ServerTypeLive" xml:space="preserve">
       <value>Live</value>
   </data>
