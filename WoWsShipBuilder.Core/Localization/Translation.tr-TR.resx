@@ -1363,4 +1363,13 @@ Yüzey gemilerine herhangi bir etkileri yoktur.</value>
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Muhrip</value>
   </data>
+  <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
+      <value>Komutan Yetenekleri</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Signals" xml:space="preserve">
+      <value>Sancaklar</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
+      <value>Sarf Malzemeleri</value>
+  </data>
 </root>
