@@ -5,11 +5,7 @@
 @using Microsoft.Extensions.Options
 @using WoWsShipBuilder.Core.DataProvider
 
-@implements IDisposable
-
 @inject ILocalizer Localizer
-@inject RefreshNotifierService RefreshNotifierService
-@inject AppSettings AppSettings
 @inject IOptions<CdnOptions> CdnOptions
 @inject IOptions<ShipBuilderOptions> ShipBuilderOptionsContainer
 
@@ -21,10 +17,7 @@
         </NavLink>
         <NavLink href="/charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</NavLink>
         <NavLink href="/acceleration-charts" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</NavLink>
-        @if (shipComparisonEnabled)
-        {
-            <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
-        }
+        <NavLink href="/comparison" class="main-nav-link" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</NavLink>
         <MudDivider DividerType="DividerType.Middle" FlexItem Vertical/>
         @switch (CdnOptions.Value.Server)
         {
@@ -122,10 +115,7 @@
         <MudNavMenu Bordered Color="Color.Info">
             <MudNavLink Icon="@shipBuilderIcon" Match="NavLinkMatch.All" Href="/">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationHome))</MudNavLink>
             <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/acceleration-charts" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationAccelerationCharts))</MudNavLink>
-            @if (shipComparisonEnabled)
-            {
-                <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
-            }
+            <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/comparison" ActiveClass="nav-link-active">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationComparison))</MudNavLink>
             <MudNavLink Icon="@Icons.Material.Filled.SsidChart" Href="/charts">@Localizer.SimpleAppLocalization(nameof(Translation.NavigationCharts))</MudNavLink>
             <MudNavLink Icon="@kofiIcon" Href="https://ko-fi.com/L4L3DT7EM" Target="_blank">Donate</MudNavLink>
             @* <MudNavLink Icon="@Icons.Filled.Science" Href="/test">Test page</MudNavLink> *@
@@ -164,29 +154,10 @@
 
     bool open = false;
 
-    private bool shipComparisonEnabled = false;
-
     private ShipBuilderOptions ShipBuilderOptions => ShipBuilderOptionsContainer.Value;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        RefreshNotifierService.RefreshRequested += UpdateComponent;
-    }
-
-    private void UpdateComponent()
-    {
-        shipComparisonEnabled = AppSettings.WebAppSettings?.BetaAccessCodes.Contains(BetaAccessManager.ShipComparison.Code) ?? false;
-        StateHasChanged();
-    }
 
     void ToggleDrawer()
     {
         open = !open;
-    }
-
-    public void Dispose()
-    {
-        RefreshNotifierService.RefreshRequested -= UpdateComponent;
     }
 }
