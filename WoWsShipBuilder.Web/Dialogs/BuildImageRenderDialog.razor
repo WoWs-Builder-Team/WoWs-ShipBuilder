@@ -16,8 +16,9 @@
 @inject IJSRuntime Runtime
 @inject IDialogService DialogService
 @inject AppSettings AppSettings
+@inject AppSettingsHelper AppSettingsHelper
 
-<MudDialog Style="@GetDialogSize()" DefaultFocus="DefaultFocus.Element">
+<MudDialog Style="max-height: 100vh;  max-width: 1000px" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
         <MudBreakpointProvider>
             <div id="image" class="pa-2" style="@GetImageWidth()">
@@ -265,11 +266,6 @@
         return "width: " + (twoColumns ? "944px;" : "544px;");
     }
 
-    private string GetDialogSize()
-    {
-        return "max-height: 100vh; max-width: " + (twoColumns ? "1000px;" : "600px;");
-    }
-
     private async Task OpenSettingsDialog()
     {
         DialogOptions options = new()
@@ -297,11 +293,11 @@
             showSignals = result[4];
             twoColumns = result[5];
 
-            SaveDialogSettings();
+            await SaveDialogSettings();
         }
     }
 
-    private void SaveDialogSettings()
+    private async Task SaveDialogSettings()
     {
         if (AppSettings.WebAppSettings is not null)
         {
@@ -311,6 +307,7 @@
             AppSettings.WebAppSettings.BuildImageLayoutSettings[3] = showUpgrades;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[4] = showConsumables;
             AppSettings.WebAppSettings.BuildImageLayoutSettings[5] = showSignals;
+            await AppSettingsHelper.SaveSettings(AppSettings);
         }
     }
 
