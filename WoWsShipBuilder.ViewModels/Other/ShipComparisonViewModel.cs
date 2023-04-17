@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using DynamicData;
 using ReactiveUI;
-using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
@@ -13,7 +12,6 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
-using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
@@ -111,33 +109,26 @@ public partial class ShipComparisonViewModel : ViewModelBase
                                                                                             SelectedNations.Contains(data.Value.Ship.ShipNation) &&
                                                                                             SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
 
-        dictionary.AddRange(filteredShips.Where(x => !dictionary.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value));
+        dictionary.AddRange(filteredShips.Where(x => !dictionary.ContainsKey(x.Key)));
 
         Dictionary<Guid, ShipBuildContainer> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Value.Ship.Tier) &&
                                                                                           SelectedClasses.Contains(data.Value.Ship.ShipClass) &&
                                                                                           SelectedNations.Contains(data.Value.Ship.ShipNation) &&
                                                                                           SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
 
-        dictionary.AddRange(cachedWrappers.Where(x => !dictionary.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value));
+        dictionary.AddRange(cachedWrappers.Where(x => !dictionary.ContainsKey(x.Key)));
 
         dictionary.AddRange(InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
                                                                                                      !ContainsShipIndex(data.Index, cachedWrappers) &&
                                                                                                      SelectedTiers.Contains(data.Tier) &&
                                                                                                      SelectedClasses.Contains(data.ShipClass) &&
                                                                                                      SelectedNations.Contains(data.ShipNation) &&
-                                                                                                     SelectedCategories.Contains(data.ShipCategory)).ToList()));
+                                                                                                     SelectedCategories.Contains(data.ShipCategory))));
 
-        foreach (var shipBuildContainer in cachedWrappers)
-        {
-            wrappersCache.Remove(shipBuildContainer.Key);
-        }
-        foreach (var shipBuildContainer in filteredShips)
-        {
-            FilteredShipList.Remove(shipBuildContainer.Key);
-        }
-
-        FilteredShipList.Where(x => SelectedShipList.ContainsKey(x.Key) && !PinnedShipList.ContainsKey(x.Key)).ToList().ForEach(x => SelectedShipList.Remove(x.Key));
-        wrappersCache.AddRange(FilteredShipList.Where(x => !wrappersCache.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value));
+        wrappersCache.RemoveMany(cachedWrappers);
+        FilteredShipList.RemoveMany(filteredShips);
+        SelectedShipList.RemoveMany(FilteredShipList.Where(x => SelectedShipList.ContainsKey(x.Key) && !PinnedShipList.ContainsKey(x.Key)));
+        wrappersCache.AddRange(FilteredShipList.Where(x => !wrappersCache.ContainsKey(x.Key)));
 
         SetSelectAndPinAllButtonsStatus(dictionary);
 
@@ -280,12 +271,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
         return list;
     }
 
-    public void EditBuilds(Dictionary<Guid, ShipBuildContainer> newWrappers)
+    public void EditBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> newWrappers)
     {
         EditBuilds(newWrappers, false);
     }
 
-    private void EditBuilds(Dictionary<Guid, ShipBuildContainer> newWrappers, bool clearCache)
+    private void EditBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> newWrappers, bool clearCache)
     {
         foreach (var wrapper in newWrappers)
         {
@@ -317,7 +308,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public Dictionary<Guid, ShipBuildContainer> RemoveBuilds(Dictionary<Guid, ShipBuildContainer> wrappers)
+    public Dictionary<Guid, ShipBuildContainer> RemoveBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> wrappers)
     {
         Dictionary<Guid, ShipBuildContainer> warnings = new();
         Dictionary<Guid, ShipBuildContainer> buildList = wrappers.ToDictionary(x => x.Key, x=> x.Value);
@@ -342,7 +333,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
                 if (wrapper.Value.Build is not null)
                 {
                     var err = ResetBuild(wrapper.Value);
-                    EditBuilds(new() { { err.Id, err } });
+                    EditBuilds(new Dictionary<Guid, ShipBuildContainer> { { err.Id, err } });
                     warnings.Add(err.Id, err);
                 }
                 else
@@ -408,7 +399,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         SelectedShipList.Remove(wrapper.Id);
     }
 
-    private static bool ContainsShipIndex(string shipIndex, Dictionary<Guid, ShipBuildContainer> list)
+    private static bool ContainsShipIndex(string shipIndex, IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> list)
     {
         return list.Select(x => x.Value.Ship.Index).Contains(shipIndex);
     }
@@ -498,7 +489,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         };
     }
 
-    private Dictionary<Guid, ShipBuildContainer> HideShipsIfNoSelectedSection(Dictionary<Guid, ShipBuildContainer> list)
+    private Dictionary<Guid, ShipBuildContainer> HideShipsIfNoSelectedSection(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> list)
     {
         if (!HideShipsWithoutSelectedSection)
         {
@@ -506,7 +497,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         }
 
         Dictionary<Guid, ShipBuildContainer> newList = list.Where(x => HasDataSection(x.Value)).ToDictionary(x => x.Key, x => x.Value);
-        newList.AddRange(PinnedShipList.Where(x => newList.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value));
+        newList.AddRange(PinnedShipList.Where(x => newList.ContainsKey(x.Key)));
         return newList;
     }
 
@@ -552,11 +543,11 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
         if (SelectAllShips)
         {
-            SelectedShipList.AddRange(list.Where(x => !SelectedShipList.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value));
+            SelectedShipList.AddRange(list.Where(x => !SelectedShipList.ContainsKey(x.Key)));
         }
         else
         {
-            list.Where(x => SelectedShipList.ContainsKey(x.Key)).ToList().ForEach(x => SelectedShipList.Remove(x.Key));
+            SelectedShipList.RemoveMany(list.Where(x => SelectedShipList.ContainsKey(x.Key)));
         }
     }
 
@@ -568,16 +559,16 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
         if (!string.IsNullOrEmpty(searchString))
         {
-            list = list.Where(x => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(x.ShipIndex + "_FULL").Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+            list = list.Where(x => appSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(localizer.GetGameLocalization(x.Value.Ship.Index + "_FULL").Localization, searchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToDictionary(x => x.Key, x => x.Value);
         }
 
         if (PinAllShips)
         {
-            PinnedShipList.AddRange(list.Where(x => !ContainsWrapper(x, PinnedShipList)));
+            PinnedShipList.AddRange(list.Where(x => !PinnedShipList.ContainsKey(x.Key)));
         }
         else
         {
-            list.Where(x => ContainsWrapper(x, PinnedShipList)).ToList().ForEach(x => PinnedShipList.Remove(x));
+            PinnedShipList.RemoveMany(list.Where(x => PinnedShipList.ContainsKey(x.Key)));
             await ApplyFilters();
         }
     }
@@ -597,11 +588,11 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         foreach (var selectedShip in SelectedShipList)
         {
-            ShipComparisonDataWrapper newWrapper = new(selectedShip.GetShipBuildContainer());
-            FilteredShipList.Add(newWrapper);
-            if (ContainsWrapper(selectedShip, PinnedShipList))
+            var newWrapper = selectedShip.Value with { Id = Guid.NewGuid() };
+            FilteredShipList.Add(newWrapper.Id, newWrapper);
+            if (PinnedShipList.ContainsKey(selectedShip.Key))
             {
-                PinnedShipList.Add(newWrapper);
+                PinnedShipList.Add(newWrapper.Id, newWrapper);
             }
         }
 
