@@ -17,6 +17,15 @@ public static class Extensions
         }
     }
 
+    // ReSharper disable once InconsistentNaming
+    public static void AddRange<T, S>(this Dictionary<T, S> thisDict, Dictionary<T, S> otherDict) where T : struct where S : class
+    {
+        foreach ((T key, S value) in otherDict)
+        {
+            thisDict.Add(key, value);
+        }
+    }
+
     public static int FindModifierIndex(this List<(string Key, float Value)> dataSource, string filter, bool strict = false)
     {
         if (strict)
