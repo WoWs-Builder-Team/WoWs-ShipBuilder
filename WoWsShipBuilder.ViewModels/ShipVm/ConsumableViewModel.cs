@@ -1,6 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using DynamicData;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
@@ -16,14 +19,17 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
 {
     private readonly Ship ship;
 
+    private readonly ILogger<ConsumableViewModel> logger;
+
     public ConsumableViewModel()
-        : this(new())
+        : this(new(), NullLogger<ConsumableViewModel>.Instance)
     {
     }
 
-    private ConsumableViewModel(Ship ship)
+    private ConsumableViewModel(Ship ship, ILogger<ConsumableViewModel> logger)
     {
         this.ship = ship;
+        this.logger = logger;
         ConsumableSlots = new();
     }
 
@@ -59,10 +65,11 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     /// </summary>
     /// <param name="ship">The ship associated with the new viewmodel instance.</param>
     /// <param name="disabledConsumables">A list of consumables that are currently disabled.</param>
+    /// <param name="loggerFactory">The logger factory used to create a logger for the viewmodel.</param>
     /// <returns>A new instance of the <see cref="ConsumableViewModel"/> with initialized data.</returns>
-    public static ConsumableViewModel Create(Ship ship, IEnumerable<string> disabledConsumables)
+    public static ConsumableViewModel Create(Ship ship, IEnumerable<string> disabledConsumables, ILoggerFactory loggerFactory)
     {
-        var vm = new ConsumableViewModel(ship);
+        var vm = new ConsumableViewModel(ship, loggerFactory.CreateLogger<ConsumableViewModel>());
         vm.UpdateSlotViewModels(disabledConsumables);
         return vm;
     }
@@ -108,7 +115,7 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
             .Select(group => group.Where(c => !disabledConsumables.Contains(c.ConsumableName)))
             .Where(consumables => consumables.Any());
         var slots = new ConcurrentBag<ConsumableSlotViewModel>();
-        rawSlots.AsParallel().ForAll(consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, ConsumableActivationChanged)));
+        rawSlots.AsParallel().ForAll(consumables => slots.Add(ConsumableSlotViewModel.Create(consumables, Logging.LoggerFactory, ConsumableActivationChanged)));
 
         ConsumableSlots.Clear();
         ConsumableSlots.AddRange(slots.OrderBy(vm => vm.Slot));
@@ -118,10 +125,12 @@ public class ConsumableViewModel : ViewModelBase, IBuildComponentProvider
     {
         if (activationState)
         {
+            logger.LogDebug("Consumable slot {Slot} activated", slot);
             ActivatedSlots.Add(slot);
         }
         else
         {
+            logger.LogDebug("Consumable slot {Slot} deactivated", slot);
             ActivatedSlots.Remove(slot);
         }
     }

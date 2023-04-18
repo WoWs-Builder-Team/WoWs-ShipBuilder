@@ -12,6 +12,7 @@
 @inject ILocalizer Localizer
 @inject IDialogService DialogService
 @inject SessionStateCache SessionStateCache
+@inject ILogger<ShipStats> Logger
 
 <PageTitle>Ship stats</PageTitle>
 
@@ -76,27 +77,33 @@
         NavManager.TryGetQueryString("build", out shipBuildFromUrl);
         if (!string.IsNullOrEmpty(shipIndexesFromUrl))
         {
+            Logger.LogTrace("Ship indexes found in url");
             var buildContainers = SessionStateCache.GetAndResetBuildTransferContainers();
             List<ShipBuildContainer>? buildList;
             if (!string.IsNullOrWhiteSpace(shipBuildFromUrl))
             {
+                Logger.LogTrace("Build found in url, trying to parse it");
                 Build? build = null;
                 try
                 {
                     build = Build.CreateBuildFromString(shipBuildFromUrl);
+                    Logger.LogTrace("Build loaded from url");
                 }
                 catch (FormatException)
                 {
+                    Logger.LogTrace("Build could not be loaded from url because it was not in the correct format");
                 }
 
                 buildList = new() { ShipBuildContainer.CreateNew(AppData.ShipDictionary[shipIndexesFromUrl], build, null) };
             }
             else if (buildContainers is not null)
             {
+                Logger.LogTrace("Ship configurations found in session state cache, initializing from them");
                 buildList = buildContainers;
             }
             else
             {
+                Logger.LogTrace("Initializing without builds");
                 buildList = null;
             }
 
@@ -110,6 +117,7 @@
     {
         base.OnAfterRender(firstRender);
         if (!updateTab) return;
+        Logger.LogDebug("Tab update requested");
         mudTabs.ActivatePanel(selectedTabId, true);
         updateTab = false;
         StateHasChanged();
@@ -164,6 +172,7 @@
 
     private async Task OpenAddDialogAsync()
     {
+        Logger.LogTrace("Add ship dialog opened");
         var options = new DialogOptions
         {
             MaxWidth = MaxWidth.Large,
@@ -171,8 +180,10 @@
             DisableBackdropClick = false,
         };
         var result = await (await DialogService.ShowAsync<ShipSelectionDialog>("Add ships", options)).Result;
+        Logger.LogTrace("Result received from add ship dialog");
         if (!result.Canceled && result.Data is List<ShipBuildContainer> { Count: > 0 } newShips)
         {
+            Logger.LogTrace("Adding new ships");
             AddNewIndexes(new() { newShips.First().Ship.Index }, new() { newShips.First() });
             selectedTabId = shipContainers.Last().Id;
             AddNewIndexes(newShips.Skip(1).Select(x => x.Ship.Index).ToList(), newShips.Skip(1).ToList());
@@ -248,6 +259,7 @@
     private void UpdateUrl()
     {
         var shipsString = string.Join(",", shipContainers.Select(x => x.Ship.Index));
+        Logger.LogTrace("Updating URL with shipIndexes: {ShipIndexes}", shipsString);
         NavManager.NavigateTo($"/ship?shipIndexes={shipsString}");
     }
 
