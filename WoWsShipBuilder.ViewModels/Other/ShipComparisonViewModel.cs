@@ -254,12 +254,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
         await ApplyFilters();
     }
 
-    public Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayedList()
+    public Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayed()
     {
-        return GetShipsToBeDisplayedList(false);
+        return GetShipsToBeDisplayed(false);
     }
 
-    private Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayedList(bool disableHideShipsIfNoSelectedSection)
+    private Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
     {
         Dictionary<Guid, ShipBuildContainer> list = ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
 
@@ -504,7 +504,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     private void GetDataSectionsToDisplay()
     {
         List<ShipComparisonDataSections> dataSections = Enum.GetValues<ShipComparisonDataSections>().ToList();
-        Dictionary<Guid, ShipBuildContainer> shipList = GetShipsToBeDisplayedList(true);
+        Dictionary<Guid, ShipBuildContainer> shipList = GetShipsToBeDisplayed(true);
 
         if (!shipList.Any())
         {
@@ -534,7 +534,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         SelectAllShips = !SelectAllShips;
 
-        var list = GetShipsToBeDisplayedList();
+        var list = GetShipsToBeDisplayed();
 
         if (!string.IsNullOrEmpty(searchString))
         {
@@ -614,7 +614,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         SearchedShips.Clear();
     }
 
-    private void SetSelectAndPinAllButtonsStatus() => SetSelectAndPinAllButtonsStatus(GetShipsToBeDisplayedList());
+    private void SetSelectAndPinAllButtonsStatus() => SetSelectAndPinAllButtonsStatus(GetShipsToBeDisplayed());
     private void SetSelectAndPinAllButtonsStatus(IReadOnlyDictionary<Guid, ShipBuildContainer> list)
     {
         SelectAllShips = list.All(wrapper => SelectedShipList.ContainsKey(wrapper.Key));

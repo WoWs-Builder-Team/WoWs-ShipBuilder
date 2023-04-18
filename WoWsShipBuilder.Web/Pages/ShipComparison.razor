@@ -16,7 +16,7 @@
 @using WoWsShipBuilder.Web.Services
 @using WoWsShipBuilder.Web.Utility
 
-@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
+@*@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.MainBatteryFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.HeShellFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.ApShellFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.SapShellFragment
@@ -35,7 +35,7 @@
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.TorpedoBombersFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.AerialTorpedoesFragment
 @using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombersFragment
-@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombsFragment
+@using static WoWsShipBuilder.Web.Components.ShipComparisonSectionsRenderFragments.BombsFragment*@
 
 @inherits ReactiveComponentBase<ShipComparisonViewModel>
 
@@ -181,10 +181,10 @@
             </MudStack>
 
             <MudStack Row>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ViewModel.SelectAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)">
                     @GetSelectAllButtonText()
                 </MudButton>
-                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayedList().Count == 0)">
+                <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="PinAllDisplayedShips" Disabled="@(ViewModel.GetShipsToBeDisplayed().Count == 0)">
                     @GetPinAllButtonText()
                 </MudButton>
                 <MudButton FullWidth="true" DisableElevation="true" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="ResetAllBuilds">
@@ -227,67 +227,57 @@
         </MudStack>
     </MudStack>
 
-    <MudDataGrid @ref="dataGrid" T="ShipComparisonDataWrapper" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
+    <MudDataGrid @ref="dataGrid" T="ShipBuildContainer" ServerData="@ReloadData" Groupable="false" SortMode="SortMode.Multiple" Filterable="false" ShowFilterIcons="true" FilterMode="DataGridFilterMode.Simple" Hover Outlined Bordered Dense Breakpoint="Breakpoint.None" Virtualize ColumnResizeMode="ResizeMode.Column" ShowColumnOptions="false">
 
         <ToolBarContent>
             <MudTextField T="string" ValueChanged="Search" Placeholder="@Localizer.GetAppLocalization(nameof(Translation.ShipSelectionWindow_SearchShip)).Localization" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-n3" Clearable="true" Immediate="true" DebounceInterval="150"/>
             <div style="width: 45%">
                 <MudSpacer/>
             </div>
-            <MudDataGridPager T="ShipComparisonDataWrapper" PageSizeOptions="GridPagination" Class="mt-n3"/>
+            <MudDataGridPager T="ShipBuildContainer" PageSizeOptions="GridPagination" Class="mt-n3"/>
         </ToolBarContent>
 
         <Columns>
-            <Column T="ShipComparisonDataWrapper" Field="Ship" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.SelectedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <TemplateColumn T="ShipBuildContainer" Title="" StickyLeft SortBy="@(x => !ViewModel.SelectedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipSelectedIcon(context.Item)" Size="Size.Medium" Color="@IsShipSelectedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddSelectedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipDataContainer" Title="" StickyLeft="false" SortBy="@(x => !ShipComparisonViewModel.ContainsWrapper(x, ViewModel.PinnedShipList))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
+            <TemplateColumn T="ShipBuildContainer" Title="" StickyLeft SortBy="@(x => !ViewModel.PinnedShipList.ContainsKey(x.Id))" HeaderStyle="width:70px" CellStyle="@($"width:70px; {StickyColumnsBackgroundColor}")" Resizable="false" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudIcon Icon="@IsShipPinnedIcon(context.Item)" Size="Size.Medium" Color="@IsShipPinnedColor(context.Item)" Style="cursor: pointer" onclick="@(() => AddPinnedShip(context.Item))" ViewBox="-1 -1 24 24"/>
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipIndex" Title="Name" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.ShipIndex))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center">
-                <CellTemplate>
-                    <MudText Typo="Typo.body2" Style="cursor: pointer">
-                        @LocalizeShipName(context.Item.ShipIndex)
-                    </MudText>
-                </CellTemplate>
-            </Column>
+            <PropertyColumn T="ShipBuildContainer" TProperty="string" Title="Name" Property="@(x => LocalizeShipName(x.Ship.Index))" StickyLeft HeaderStyle="background-clip: padding-box; background-color: #282828;" CellStyle="@($"cursor: pointer; background-clip: padding-box; {StickyColumnsBackgroundColor}")" SortBy="@(x => LocalizeShipName(x.Ship.Index))" InitialDirection="SortDirection.Ascending" HeaderClass="column-text-center" CellClass="column-text-center"/>
 
-            <Column T="ShipComparisonDataWrapper" Field="Build" Title="Image" SortBy="@(x => LocalizeShipName(x.ShipIndex))" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <TemplateColumn T="ShipBuildContainer" Title="Image" SortBy="@(x => LocalizeShipName(x.Ship.Index))" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
                     <MudImage Src="@($"{CdnOptions.Value.Host}{CdnOptions.Value.ShipImagePath}/{context.Item.Ship.Index}.png")" Height="37" ObjectPosition="ObjectPosition.Center"/>
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipTier" Title="Tier" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <PropertyColumn T="ShipBuildContainer" TProperty="string" Title="Tier" Property="@(x => x.Ship.Tier.ToTierString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center"/>
+
+            <TemplateColumn T="ShipBuildContainer" Title="Class" SortBy="@(x => x.Ship.ShipClass.ShipClassToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    @context.Item.ShipTier.ToTierString()
+                    <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.Ship.ShipClass, context.Item.Ship.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipClass" Title="Class" SortBy="@(x => x.Ship.ShipClass.ShipClassToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <TemplateColumn T="ShipBuildContainer" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ShipNationToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudIcon Icon="@(Helpers.GetIconFromClass(context.Item.ShipClass, context.Item.ShipCategory))" Size="Size.Medium" ViewBox="-1 -3 24 10"/>
+                    <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.Ship.ShipNation, context.Item.Ship.Index))" Height="37"/>
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            <Column T="ShipComparisonDataWrapper" Field="ShipNation" Title="Nation" SortBy="@(x => x.Ship.ShipNation.ShipNationToString())" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
+            <TemplateColumn T="ShipBuildContainer" Title="Build" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
                 <CellTemplate>
-                    <MudImage Src="@(Helpers.GetNationFlag(Environment, context.Item.ShipNation, context.Item.Ship.Index))" Height="37"/>
-                </CellTemplate>
-            </Column>
-
-            <Column T="ShipComparisonDataWrapper" Field="BuildName" Title="Build" CellStyle="@StickyColumnsBackgroundColor" HeaderClass="column-text-center" CellClass="column-text-center">
-                <CellTemplate>
-                    @if (!string.IsNullOrEmpty(context.Item.BuildName))
+                    @if (!string.IsNullOrEmpty(context.Item.Build?.BuildName))
                     {
                         <MudText Typo="Typo.body2" Style="cursor: pointer" @onclick="@(() => EditBuilds(context.Item))">
-                            @context.Item.BuildName
+                            @context.Item.Build.BuildName
                         </MudText>
                     }
                     else
@@ -297,9 +287,9 @@
                         </MudText>
                     }
                 </CellTemplate>
-            </Column>
+            </TemplateColumn>
 
-            @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @*@MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer))
             @HeShellDataFragment((ViewModel.SelectedDataSection, Localizer))
             @ApShellDataFragment((ViewModel.SelectedDataSection, Localizer))
             @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer))
@@ -318,7 +308,7 @@
             @TorpedoBombersDataFragment((ViewModel.SelectedDataSection, Localizer))
             @AerialTorpedoDataFragment((ViewModel.SelectedDataSection, Localizer))
             @BombersDataFragment((ViewModel.SelectedDataSection, Localizer))
-            @BombsDataFragment((ViewModel.SelectedDataSection, Localizer))
+            @BombsDataFragment((ViewModel.SelectedDataSection, Localizer))*@
         </Columns>
 
         <PagerContent>
@@ -339,7 +329,7 @@
 
 @code {
 
-    private MudDataGrid<ShipComparisonDataWrapper> dataGrid = default!;
+    private MudDataGrid<ShipBuildContainer> dataGrid = default!;
 
     private static readonly int[] GridPagination = { 15, 25, 50, 75, 100 };
 
@@ -430,27 +420,27 @@
         }
     }
 
-    private Color IsShipPinnedColor(ShipComparisonDataWrapper wrapper)
+    private Color IsShipPinnedColor(ShipBuildContainer wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Color.Info : Color.Default;
+        return ViewModel!.PinnedShipList.ContainsKey(wrapper.Id) ? Color.Info : Color.Default;
     }
 
-    private string IsShipPinnedIcon(ShipComparisonDataWrapper wrapper)
+    private string IsShipPinnedIcon(ShipBuildContainer wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.PinnedShipList) ? Icons.Material.Filled.PushPin : Icons.Material.Outlined.PushPin;
+        return ViewModel!.PinnedShipList.ContainsKey(wrapper.Id) ? Icons.Material.Filled.PushPin : Icons.Material.Outlined.PushPin;
     }
 
-    private Color IsShipSelectedColor(ShipComparisonDataWrapper wrapper)
+    private Color IsShipSelectedColor(ShipBuildContainer wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Color.Info : Color.Default;
+        return ViewModel!.SelectedShipList.ContainsKey(wrapper.Id) ? Color.Info : Color.Default;
     }
 
-    private string IsShipSelectedIcon(ShipComparisonDataWrapper wrapper)
+    private string IsShipSelectedIcon(ShipBuildContainer wrapper)
     {
-        return ShipComparisonViewModel.ContainsWrapper(wrapper, ViewModel!.SelectedShipList) ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
+        return ViewModel!.SelectedShipList.ContainsKey(wrapper.Id) ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
     }
 
-    private async Task EditBuilds(ShipComparisonDataWrapper? wrapper = null)
+    private async Task EditBuilds(ShipBuildContainer? wrapper = null)
     {
         if (isDialogOpen)
         {
@@ -460,19 +450,18 @@
         var shipBuildContainers = new List<ShipBuildContainer>();
         if (wrapper is not null)
         {
-            shipBuildContainers.Add(wrapper.GetShipBuildContainer());
+            shipBuildContainers.Add(wrapper);
         }
         else
         {
-            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Select(x => x.GetShipBuildContainer()).OrderBy(x => LocalizeShipName(x.Ship.Index)));
+            shipBuildContainers.AddRange(ViewModel!.SelectedShipList.Values.OrderBy(x => LocalizeShipName(x.Ship.Index)));
         }
         IEnumerable<ShipBuildContainer>? results = await buildConfigurationHelper.ShowDialogAsync(shipBuildContainers);
         isDialogOpen = false;
 
         if (results is not null)
         {
-            List<ShipComparisonDataWrapper> list = results.Select(x => new ShipComparisonDataWrapper(x)).ToList();
-            ViewModel!.EditBuilds(list);
+            ViewModel!.EditBuilds(results.ToDictionary(x => x.Id, x => x));
         }
 
         await dataGrid.ReloadServerData();
@@ -485,11 +474,11 @@
             return;
         }
 
-        List<ShipComparisonDataWrapper> warnings = ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
+        var warnings = ViewModel!.RemoveBuilds(ViewModel!.SelectedShipList);
         await dataGrid.ReloadServerData();
         if (warnings.Count > 0)
         {
-            string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.ShipIndex)));
+            string shipNames = string.Join(", ", warnings.Select(x => LocalizeShipName(x.Value.Ship.Index)));
             Snackbar.Add($"The build on < {shipNames} > has been reset without removing the last instance.", Severity.Success);
         }
     }
@@ -508,13 +497,13 @@
         await dataGrid.ReloadServerData();
     }
 
-    private async Task AddPinnedShip(ShipComparisonDataWrapper wrapper)
+    private async Task AddPinnedShip(ShipBuildContainer wrapper)
     {
         await ViewModel!.AddPinnedShip(wrapper);
         await dataGrid.ReloadServerData();
     }
 
-    private void AddSelectedShip(ShipComparisonDataWrapper wrapper)
+    private void AddSelectedShip(ShipBuildContainer wrapper)
     {
         ViewModel!.AddSelectedShip(wrapper);
         StateHasChanged();
@@ -623,7 +612,7 @@
     {
         ViewModel!.DuplicateSelectedShips();
         await dataGrid.ReloadServerData();
-        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.ShipIndex).ToDictionary(ship => ship.ShipIndex, ship => ViewModel!.SelectedShipList.Count(x => x.ShipIndex.Equals(ship.ShipIndex))).Select(ship => $"{ship.Value} instance of ''{LocalizeShipName(ship.Key)}''"))} > duplicated.", Severity.Success);
+        Snackbar.Add($"< {string.Join(", ", ViewModel!.SelectedShipList.DistinctBy(x => x.Value.Ship.Index).ToDictionary(ship => ship.Value.Ship.Index, ship => ViewModel!.SelectedShipList.Count(x => x.Value.Ship.Index.Equals(ship.Value.Ship.Index))).Select(ship => $"{ship.Value} instance of ''{LocalizeShipName(ship.Key)}''"))} > duplicated.", Severity.Success);
     }
 
     private bool IsAnyShipSelected()
@@ -648,22 +637,22 @@
         return Localizer.GetGameLocalization(shipIndex + "_FULL").Localization;
     }
 
-    private Task<GridData<ShipComparisonDataWrapper>> ReloadData(GridState<ShipComparisonDataWrapper> state)
+    private Task<GridData<ShipBuildContainer>> ReloadData(GridState<ShipBuildContainer> state)
     {
         using (MetricsService.ComparisonLoadDuration.NewTimer())
         {
-            List<ShipComparisonDataWrapper> data = ViewModel!.GetShipsToBeDisplayedList();
+            var data = ViewModel!.GetShipsToBeDisplayed().Values.ToList();
 
             if (!string.IsNullOrWhiteSpace(ViewModel!.SearchString))
             {
-                data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.ShipIndex), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
+                data = data.Where(x => AppSettings.SelectedLanguage.CultureInfo.CompareInfo.IndexOf(LocalizeShipName(x.Ship.Index), ViewModel!.SearchString, CompareOptions.IgnoreNonSpace | CompareOptions.IgnoreCase) != -1).ToList();
             }
 
             if (data.Any())
             {
-                foreach (SortDefinition<ShipComparisonDataWrapper>? sortDefinition in state.SortDefinitions)
+                foreach (SortDefinition<ShipBuildContainer>? sortDefinition in state.SortDefinitions)
                 {
-                    object? sortItem = sortDefinition.SortFunc.Invoke(data.First());
+                    object sortItem = sortDefinition.SortFunc.Invoke(data.First());
                     switch (sortItem)
                     {
                         case List<decimal> when sortDefinition.Descending:
@@ -685,7 +674,7 @@
                 }
             }
 
-            return Task.FromResult<GridData<ShipComparisonDataWrapper>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
+            return Task.FromResult<GridData<ShipBuildContainer>>(new() { TotalItems = data.Count, Items = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToList() });
         }
     }
 
@@ -696,7 +685,7 @@
 
     private void StoreBuildsForTransfer()
     {
-        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Select(x => x.GetShipBuildContainer()).ToList());
+        SessionStateCache.SetBuildTransferContainers(ViewModel!.SelectedShipList.Values.ToList());
     }
 
     private void SetupAndOpenNewTab(string url)
@@ -715,17 +704,17 @@
 
     private void OpenShipStats()
     {
-        SetupAndOpenNewTab("ship?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
+        SetupAndOpenNewTab("ship?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 
     private void OpenBallisticCharts()
     {
-        SetupAndOpenNewTab("charts?shipIndex=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
+        SetupAndOpenNewTab("charts?shipIndex=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 
     private void OpenAccelerationCharts()
     {
-        SetupAndOpenNewTab("acceleration-charts?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.ShipIndex)));
+        SetupAndOpenNewTab("acceleration-charts?shipIndexes=" + string.Join(",", ViewModel!.SelectedShipList.Select(x => x.Value.Ship.Index)));
     }
 
     private async Task UpdateUrl()

@@ -136,7 +136,7 @@
 
     private void RemoveTab(MudTabPanel panel)
     {
-        var id = (Guid) panel.Tag;
+        var id = (Guid) panel.Tag!;
         var ship = shipContainers.First(x => x.Id.Equals(id));
         int index = shipContainers.IndexOf(ship);
         shipContainers.Remove(ship);
@@ -245,7 +245,7 @@
 
     private string GetStyle(Guid id)
     {
-        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag.Equals(id))
+        if (mudTabs.ActivePanel is not null && mudTabs.ActivePanel.Tag!.Equals(id))
         {
             return " background-color: rgba(0, 0, 0, 0.4);";
         }
