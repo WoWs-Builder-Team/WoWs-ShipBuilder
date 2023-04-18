@@ -936,6 +936,30 @@
   <data name="DispersionGraphWindow_DrawFusoReference" xml:space="preserve">
     <value>Fusō mint hivatkozás</value>
   </data>
+  <data name="DispersionGraphWindow_DispPlotDescription" xml:space="preserve">
+    <value>A FEHÉR ellipszis a maximális szóródási területet mutatja a kiválasztott célzási távolságban.
+A PIROS ellipszis azt a területet mutatja, ahol a lövedékek 50%-a landol.
+A FEKETE ellipszis a Fuso méretét mutatja, referenciaként.
+
+Ábranézetek:
+1) VÍZSZINTES:
+     megmutatja a lövedékek becsapódási pontját a vízzel;
+     ennek a síknak a kiválasztásával a szórást felülről látod;
+     ez az a nézet, amelyet elsősorban a hajók szórásának összehasonlításakor ajánlott használni;
+     az ellipszis ezen a síkon függőlegesen meg van feszítve a lövedékek sebessége miatt.
+2) FÜGGŐLEGES:
+     ezzel a nézettel mutatja a lövedékek becsapódási pontját egy függőleges felülettel;
+     ennek a síknak a kiválasztásával szemből látod a szórást;
+     nagyon precíz függőleges pontosság elemzéshez hasznos.
+3) BECSAPÓDÁSI SZÖG:
+     a lövedék becsapódási pontját a lövedék becsapódási szögével megegyező szögben elhelyezett felülettel mutatja;
+     ennek a síknak a kiválasztásával képet kapunk a lövedék becsapódási szögéből;
+     ez az a sík, ahol a játék ténylegesen megrajzolja a szórási ellipszist a csaták során;
+     az ellipszist ezen a síkon nem befolyásolja a lövedék sebessége;
+     hasznos, ha összehasonlítani szeretné a hajók diszperzióját anélkül, hogy figyelembe venné a lövedékek sebességét.
+
+A játékban lévő hajók kétszer akkorák, mint a környezet, így egy 200 méter hosszú hajó 400 métert foglal el.</value>
+  </data>
   <data name="DispersionGraphWindow_DispPlotExplanation" xml:space="preserve">
     <value>Szóráskép magyarázat</value>
   </data>
@@ -971,6 +995,12 @@
   </data>
   <data name="ShipStats_RudderBlastProtection" xml:space="preserve">
       <value>Kormányvédelem</value>
+  </data>
+  <data name="ShipStats_BlastExplanation" xml:space="preserve">
+    <value>Ha a "modul robbanás elleni védelem" + "fegyverzet átütése" &gt; 0
+      A modul működésképtelenné válhat.
+Ha "modul robbanásvédelem" + "fegyverzet átütése" &lt;= 0
+      A modul nem tehető működésképtelenné.</value>
   </data>
   <data name="SettingsWindow_LanguageChanged_Title" xml:space="preserve">
     <value>Újraindítás szükséges</value>
@@ -1615,6 +1645,27 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Gyorsulási diagram megjelenítése</value>
+  </data>
+  <data name="WebApp_LoadBuild" xml:space="preserve">
+      <value>Felépítés betöltése</value>
+  </data>
+  <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
+      <value>Gyorsulási diagram megjelenítése</value>
+  </data>
+  <data name="Validation_InvalidBuild" xml:space="preserve">
+      <value>Helytelen build</value>
+  </data>
+  <data name="Validation_Incompatibility" xml:space="preserve">
+      <value>Inkompatibilitás</value>
+  </data>
+  <data name="ShipStats_Loaders" xml:space="preserve">
+      <value>Betöltők</value>
+  </data>
+  <data name="ShipStats_BowLoaders" xml:space="preserve">
+      <value>Orr</value>
+  </data>
+  <data name="ShipStats_SternLoaders" xml:space="preserve">
+      <value>Tat</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>Repülőgép-hordozó</value>
