@@ -1646,8 +1646,17 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_ShowAccelerationCharts" xml:space="preserve">
       <value>Gyorsulási diagram megjelenítése</value>
   </data>
+  <data name="BuildStringInputDialog_EnterBuildStringOrLink" xml:space="preserve">
+      <value>Felépítési leírás vagy link beszúrása</value>
+  </data>
   <data name="WebApp_LoadBuild" xml:space="preserve">
       <value>Felépítés betöltése</value>
+  </data>
+  <data name="WebApp_GoToShipsPage" xml:space="preserve">
+      <value>Ugrás a hajók oldalra</value>
+  </data>
+  <data name="ShipStats_ShowInBallisticCharts" xml:space="preserve">
+      <value>Összes ballisztikus diagram megjelenítése</value>
   </data>
   <data name="ShipStats_ShowInAccelerationCharts" xml:space="preserve">
       <value>Gyorsulási diagram megjelenítése</value>
@@ -1658,6 +1667,9 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="Validation_Incompatibility" xml:space="preserve">
       <value>Inkompatibilitás</value>
   </data>
+  <data name="Validation_SelectedShip" xml:space="preserve">
+      <value>Kiválasztott hajó</value>
+  </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
       <value>Betöltők</value>
   </data>
@@ -1666,6 +1678,57 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="ShipStats_SternLoaders" xml:space="preserve">
       <value>Tat</value>
+  </data>
+  <data name="ShipStats_First" xml:space="preserve">
+      <value>Első</value>
+  </data>
+  <data name="ShipStats_Second" xml:space="preserve">
+      <value>Második</value>
+  </data>
+  <data name="Unit_U" xml:space="preserve">
+      <value>egység</value>
+  </data>
+  <data name="Unit_UPS" xml:space="preserve">
+      <value>egység/s</value>
+  </data>
+  <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
+      <value>Max. merülési sebesség</value>
+  </data>
+  <data name="ShipStats_DiveCapacity" xml:space="preserve">
+      <value>Kapacitás</value>
+  </data>
+  <data name="ShipStats_DiveCapacityRechargeRate" xml:space="preserve">
+      <value>Újratöltési sebesség</value>
+  </data>
+  <data name="ShipStats_Battery" xml:space="preserve">
+      <value>Akkumulátor</value>
+  </data>
+  <data name="ShipStats_FirstPing" xml:space="preserve">
+      <value>1 ping</value>
+  </data>
+  <data name="ShipStats_SecondPing" xml:space="preserve">
+      <value>2 ping</value>
+  </data>
+  <data name="Unit_MPS2" xml:space="preserve">
+      <value>m/s²</value>
+  </data>
+  <data name="ShipStats_MaxTurningSpeed" xml:space="preserve">
+      <value>Max. fordulási sebesség</value>
+  </data>
+  <data name="ShipStats_TurningAcceleration" xml:space="preserve">
+      <value>Fordulási gyorsulás</value>
+  </data>
+  <data name="ShipStats_MaxVerticalSpeed" xml:space="preserve">
+      <value>Max. függőleges sebesség</value>
+  </data>
+  <data name="ShipStats_VerticalAcceleration" xml:space="preserve">
+      <value>Függőleges gyorsulás</value>
+  </data>
+  <data name="ShipStats_SearchRadius" xml:space="preserve">
+      <value>Keresési sugár</value>
+  </data>
+  <data name="ShipStats_SearchAngle" xml:space="preserve">
+      <value>Keresési szög</value>
   </data>
   <data name="ShipStats_AirCarrier" xml:space="preserve">
       <value>Repülőgép-hordozó</value>
@@ -1682,6 +1745,18 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_Destroyer" xml:space="preserve">
       <value>Romboló</value>
   </data>
+  <data name="ShipStats_MoreDetails" xml:space="preserve">
+      <value>További részletek</value>
+  </data>
+  <data name="ShipStats_CutOffDistances" xml:space="preserve">
+      <value>Levágási távolság</value>
+  </data>
+  <data name="Unit_DegreePerSecond2" xml:space="preserve">
+      <value>°/s²</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Modulok</value>
+  </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
       <value>Kapitánypontok</value>
   </data>
@@ -1690,5 +1765,50 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
       <value>Fogyóeszközök</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Fejlesztések</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Két oszlop</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>Elrendezés</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>Elemek</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Összeállítás neve</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Összeállítás elnevezése</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Kép mentése</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Link megszerzése</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Rövid-link megszerzése</value>
+  </data>
+  <data name="ServerTypeLive" xml:space="preserve">
+      <value>Élő</value>
+  </data>
+  <data name="ServerTypePts" xml:space="preserve">
+      <value>PONT</value>
+  </data>
+  <data name="NavigationCharts" xml:space="preserve">
+      <value>Szórási kép és ballisztikus ábrák mutatása</value>
+  </data>
+  <data name="NavigationAccelerationCharts" xml:space="preserve">
+      <value>Gyorsulási diagram megjelenítése</value>
+  </data>
+  <data name="NavigationComparison" xml:space="preserve">
+      <value>Hajó összehasonlítás</value>
+  </data>
+  <data name="NavigationHome" xml:space="preserve">
+      <value>Kezdőlap</value>
   </data>
 </root>
