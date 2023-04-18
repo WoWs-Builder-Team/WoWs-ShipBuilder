@@ -219,7 +219,7 @@
                     {
                         bool isSelected = ViewModel.SelectedDataSection.Equals(dataSection);
                         <MudButton DisableElevation="true" Variant="Helpers.GetVariantFromBool(isSelected, Variant.Filled, Variant.Outlined)" Color="Helpers.GetColorFromBool(isSelected, Color.Primary, Color.Secondary)" OnClick="@(() => SelectDataSection(dataSection))">
-                            @ViewModel.ShipComparisonDataSectionToString(dataSection)
+                            @ShipComparisonViewModel.ShipComparisonDataSectionToString(dataSection)
                         </MudButton>
                     }
                 </MudButtonGroup>
@@ -396,13 +396,13 @@
             ViewModel.SelectedCategories.AddRange(selectedCategories.Split(',').Select(Enum.Parse<ShipCategory>));
         }
 
-        if (!string.IsNullOrEmpty(upgradedModules) && upgradedModules.Equals("true"))
+        if (!string.IsNullOrEmpty(upgradedModules))
         {
             applyFilters = true;
             ViewModel.UseUpgradedModules = true;
         }
 
-        if (!string.IsNullOrEmpty(hideUnfittingShips) && hideUnfittingShips.Equals("true"))
+        if (!string.IsNullOrEmpty(hideUnfittingShips))
         {
             applyFilters = true;
             ViewModel.HideShipsWithoutSelectedSection = true;
@@ -719,16 +719,35 @@
 
     private async Task UpdateUrl()
     {
-        QueryBuilder url = new()
+        QueryBuilder url = new();
+        if (ViewModel!.SelectedTiers.Any())
         {
-            { TiersUrlParameter, string.Join(',', ViewModel!.SelectedTiers) },
-            { ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses) },
-            { NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations) },
-            { CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories) },
-            { UpgradedModulesUrlParameter, ViewModel!.UseUpgradedModules ? "true" : "false" },
-            { HideUnfittingShipsUrlParameter, ViewModel!.HideShipsWithoutSelectedSection ? "true" : "false" },
-            { SectionUrlParameter, string.Join(',', ViewModel!.SelectedDataSection) },
-        };
+            url.Add(TiersUrlParameter, string.Join(',', ViewModel!.SelectedTiers));
+        }
+        if (ViewModel!.SelectedClasses.Any())
+        {
+            url.Add(ClassesUrlParameter, string.Join(',', ViewModel!.SelectedClasses));
+        }
+        if (ViewModel!.SelectedNations.Any())
+        {
+            url.Add(NationsUrlParameter, string.Join(',', ViewModel!.SelectedNations));
+        }
+        if (ViewModel!.SelectedCategories.Any())
+        {
+            url.Add(CategoriesUrlParameter, string.Join(',', ViewModel!.SelectedCategories));
+        }
+        if (ViewModel!.UseUpgradedModules)
+        {
+            url.Add(UpgradedModulesUrlParameter, "true");
+        }
+        if (ViewModel!.HideShipsWithoutSelectedSection)
+        {
+            url.Add(HideUnfittingShipsUrlParameter, "true");
+        }
+        if (ViewModel!.SelectedDataSection != ShipComparisonDataSections.General)
+        {
+            url.Add(SectionUrlParameter, ShipComparisonViewModel.ShipComparisonDataSectionToString(ViewModel!.SelectedDataSection));
+        }
 
         // Required instead of NavManager.NavigateTo in order to keep scroll state of the current page
         await JsRuntime.InvokeVoidAsync("window.history.replaceState", new { }, string.Empty, $"/comparison{url}");

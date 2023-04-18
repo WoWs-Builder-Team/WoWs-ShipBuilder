@@ -626,7 +626,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         return wrapper with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null };
     }
 
-    public string ShipComparisonDataSectionToString(ShipComparisonDataSections dataSection)
+    public static string ShipComparisonDataSectionToString(ShipComparisonDataSections dataSection)
     {
         return dataSection switch
         {
