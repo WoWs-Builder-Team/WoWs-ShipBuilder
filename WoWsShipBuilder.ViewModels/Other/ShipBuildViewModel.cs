@@ -1,4 +1,5 @@
-﻿using WoWsShipBuilder.Core.Builds;
+﻿using WoWsShipBuilder.Core;
+using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.Data;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.Core.DataProvider;
@@ -47,7 +48,7 @@ public partial class ShipBuildViewModel : ViewModelBase
             CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation)),
             ShipModuleViewModel = new(ship.ShipUpgradeInfo),
             UpgradePanelViewModel = new(ship, AppData.ModernizationCache),
-            ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>()),
+            ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>(), Logging.LoggerFactory),
             SpecialAbilityActive = shipBuildContainer.SpecialAbilityActive,
         };
 

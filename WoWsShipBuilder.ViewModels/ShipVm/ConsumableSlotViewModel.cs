@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using ReactiveUI;
 using WoWsShipBuilder.Core.DataContainers;
 using WoWsShipBuilder.DataStructures.Ship;
@@ -10,6 +12,7 @@ public class ConsumableSlotViewModel : ViewModelBase
 {
     private readonly Action<int, bool>? activationChangeHandler;
     private readonly List<ShipConsumable> shipConsumables;
+    private readonly ILogger<ConsumableSlotViewModel> logger;
 
     private bool consumableActivated;
 
@@ -18,13 +21,14 @@ public class ConsumableSlotViewModel : ViewModelBase
     private int selectedIndex;
 
     public ConsumableSlotViewModel()
-        : this(new List<ShipConsumable>(), null)
+        : this(new List<ShipConsumable>(), null, NullLogger<ConsumableSlotViewModel>.Instance)
     {
     }
 
-    private ConsumableSlotViewModel(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler)
+    private ConsumableSlotViewModel(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler, ILogger<ConsumableSlotViewModel> logger)
     {
         this.activationChangeHandler = activationChangeHandler;
+        this.logger = logger;
         this.shipConsumables = new(shipConsumables);
         Slot = this.shipConsumables.First().Slot;
     }
@@ -48,6 +52,7 @@ public class ConsumableSlotViewModel : ViewModelBase
         {
             this.RaiseAndSetIfChanged(ref selectedIndex, value);
             this.RaisePropertyChanged(nameof(SelectedConsumable));
+            logger.LogDebug("Selected consumable changed to index {Index}", value);
             ConsumableActivated = false;
         }
     }
@@ -64,9 +69,9 @@ public class ConsumableSlotViewModel : ViewModelBase
 
     public ConsumableDataContainer SelectedConsumable => ConsumableData[SelectedIndex];
 
-    public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, Action<int, bool>? activationChangeHandler = null)
+    public static ConsumableSlotViewModel Create(IEnumerable<ShipConsumable> shipConsumables, ILoggerFactory loggerFactory, Action<int, bool>? activationChangeHandler = null)
     {
-        var vm = new ConsumableSlotViewModel(shipConsumables, activationChangeHandler);
+        var vm = new ConsumableSlotViewModel(shipConsumables, activationChangeHandler, loggerFactory.CreateLogger<ConsumableSlotViewModel>());
         vm.UpdateDataContainers(new(), 0);
         return vm;
     }
