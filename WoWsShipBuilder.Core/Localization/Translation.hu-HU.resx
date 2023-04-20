@@ -1670,6 +1670,9 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="Validation_SelectedShip" xml:space="preserve">
       <value>Kiválasztott hajó</value>
   </data>
+  <data name="Validation_ShipInBuild" xml:space="preserve">
+      <value>Hajó felszerelés alatt</value>
+  </data>
   <data name="ShipStats_Loaders" xml:space="preserve">
       <value>Betöltők</value>
   </data>
