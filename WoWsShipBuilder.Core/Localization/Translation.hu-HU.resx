@@ -1694,6 +1694,9 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   <data name="ShipStats_ManeuverabilitySubsMaxDiveSpeed" xml:space="preserve">
       <value>Max. merülési sebesség</value>
   </data>
+  <data name="ShipStats_ManeuverabilitySubsDivingPlaneShiftTime" xml:space="preserve">
+      <value>Merülőkormány fordulási ideje</value>
+  </data>
   <data name="ShipStats_DiveCapacity" xml:space="preserve">
       <value>Kapacitás</value>
   </data>
@@ -1777,6 +1780,9 @@ A buildek módosítása gombbal kezelheti az egyes hajók kiosztásá. Többszö
   </data>
   <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
       <value>Elemek</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Szélesíti a kép elrendezését az elemek 2 egymás melletti oszlopra való felosztásával (a kapitány képességei és a zászlók nem lesznek elrejthetők).</value>
   </data>
   <data name="BuildNameDialog_BuildName" xml:space="preserve">
       <value>Összeállítás neve</value>
