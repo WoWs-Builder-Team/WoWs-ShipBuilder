@@ -6,15 +6,15 @@
         <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns)).ToUpper()</MudText>
         @foreach(var (section, columns) in structure)
         {
-            <MudPaper Outlined Elevation="0" Square="true" @key="@section.ShipComparisonDataSectionToString()">
+            <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
                 <MudStack Row>
                     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
                         <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
-                            @section.LocalizeShipComparisonDataSection(Localizer).ToUpper()
+                            @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
                         </MudText>
                         @foreach (var column in columns)
                         {
-                            <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section.ShipComparisonDataSectionToString()}_{column}")"/>
+                            <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")"/>
                         }
                     </MudStack>
                 </MudStack>
