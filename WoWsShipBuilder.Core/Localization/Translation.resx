@@ -1820,4 +1820,97 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="NavigationHome" xml:space="preserve">
       <value>Start Page</value>
   </data>
+  <data name="ShipComparison_Image" xml:space="preserve">
+      <value>Image</value>
+  </data>
+  <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
+      <value>No matching ships found</value>
+  </data>
+  <data name="ShipComparison_HideColumns" xml:space="preserve">
+      <value>Hide columns</value>
+  </data>
+  <data name="ShipComparison_Section" xml:space="preserve">
+      <value>Section</value>
+  </data>
+  <data name="ShipComparison_Filters" xml:space="preserve">
+      <value>Filters</value>
+  </data>
+  <data name="ShipComparison_All" xml:space="preserve">
+      <value>All</value>
+  </data>
+  <data name="ShipComparison_None" xml:space="preserve">
+      <value>None</value>
+  </data>
+  <data name="ShipComparison_ResetAll" xml:space="preserve">
+      <value>Reset all</value>
+  </data>
+  <data name="ShipComparison_Duplicate" xml:space="preserve">
+      <value>Duplicate</value>
+  </data>
+  <data name="ShipComparison_RemoveBuilds" xml:space="preserve">
+      <value>Remove builds</value>
+  </data>
+  <data name="ShipComparison_ViewStats" xml:space="preserve">
+      <value>View stats</value>
+  </data>
+  <data name="ShipComparison_ViewBallistic" xml:space="preserve">
+      <value>View ballistic</value>
+  </data>
+  <data name="ShipComparison_ViewAcceleration" xml:space="preserve">
+      <value>View acceleration</value>
+  </data>
+  <data name="ShipComparison_DisplayOnlyPinnedShips" xml:space="preserve">
+      <value>Display only pinned ships</value>
+  </data>
+  <data name="ShipComparison_UseUpgradedModules" xml:space="preserve">
+      <value>Use upgraded modules if no build</value>
+  </data>
+  <data name="ShipComparison_HideIfNoSection" xml:space="preserve">
+      <value>Hide ships without selected section</value>
+  </data>
+  <data name="ShipComparison_SelectAll" xml:space="preserve">
+      <value>Select all</value>
+  </data>
+  <data name="ShipComparison_UnselectAll" xml:space="preserve">
+      <value>Unselect all</value>
+  </data>
+  <data name="ShipComparison_PinAll" xml:space="preserve">
+      <value>Pin all</value>
+  </data>
+  <data name="ShipComparison_UnpinAll" xml:space="preserve">
+      <value>Unpin all</value>
+  </data>
+  <data name="ShipStats_ShowInShipComparison" xml:space="preserve">
+      <value>Show all in ship comparison</value>
+  </data>
+  <data name="ShipComparison_General" xml:space="preserve">
+      <value>General</value>
+  </data>
+  <data name="ShipComparison_SecondaryBatteryShells" xml:space="preserve">
+      <value>Secondary Battery Shells</value>
+  </data>
+  <data name="ShipComparison_Asw" xml:space="preserve">
+      <value>ASW</value>
+  </data>
+  <data name="ShipComparison_RocketPlanes" xml:space="preserve">
+      <value>Rocket Planes</value>
+  </data>
+  <data name="ShipComparison_AerialTorpedoes" xml:space="preserve">
+      <value>Aerial Torpedoes</value>
+  </data>
+  <data name="ShipComparison_Bombers" xml:space="preserve">
+      <value>Bombers</value>
+  </data>
+  <data name="ShipComparison_Bombs" xml:space="preserve">
+      <value>Bombs</value>
+  </data>
+  <data name="ShipComparison_Caliber" xml:space="preserve">
+      <value>Caliber</value>
+  </data>
+  <data name="ShipComparison_Barrels" xml:space="preserve">
+      <value>Barrels</value>
+  </data>
+  <data name="ShipComparison_MaxRange" xml:space="preserve">
+      <value>Max Range</value>
+  </data>
 </root>

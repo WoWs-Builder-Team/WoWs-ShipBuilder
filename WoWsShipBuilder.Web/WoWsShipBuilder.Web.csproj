@@ -48,4 +48,8 @@
       <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\TorpedoesFragment.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="Components\ShipComparisonSectionsRenderFragments\MainBatteryFragment.razor" />
+    </ItemGroup>
+
 </Project>

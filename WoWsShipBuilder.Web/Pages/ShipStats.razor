@@ -4,7 +4,6 @@
 @using DynamicData
 @using WoWsShipBuilder.Core.Builds
 @using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.DataContainers
 @using WoWsShipBuilder.Core.DataProvider
 @using WoWsShipBuilder.Web.Dialogs
 @using WoWsShipBuilder.Web.Services
@@ -40,6 +39,9 @@
                 </MudTooltip>
                 <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInAccelerationCharts).Localization" Arrow Delay="350">
                     <MudIconButton Icon="@Icons.Material.Filled.Speed" OnClick="@OpenAccelerationCharts" Color="Color.Secondary"/>
+                </MudTooltip>
+                <MudTooltip Text="@Localizer.GetAppLocalization(Translation.ShipStats_ShowInShipComparison).Localization" Arrow Delay="350">
+                    <MudIconButton Icon="@Icons.Material.Filled.FormatListBulleted" OnClick="@OpenShipComparison" Color="Color.Secondary"/>
                 </MudTooltip>
             </MudStack>
         </Header>
@@ -235,6 +237,12 @@
     {
         var shipIndexes = await StoreBuildsForCharts();
         NavManager.NavigateTo($"/acceleration-charts?shipIndexes={string.Join(",", shipIndexes)}");
+    }
+
+    private async Task OpenShipComparison()
+    {
+        await StoreBuildsForCharts();
+        NavManager.NavigateTo("/comparison");
     }
 
     private void UpdateUrl()

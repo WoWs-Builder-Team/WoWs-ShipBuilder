@@ -59,6 +59,8 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public List<Ship> SearchedShips { get; } = new();
 
+    public double Range { private set; get; }
+
     private readonly Dictionary<Guid, ShipBuildContainer> wrappersCache = new();
 
     private string researchedShip = string.Empty;
@@ -118,7 +120,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
         dictionary.AddRange(cachedWrappers.Where(x => !dictionary.ContainsKey(x.Key)));
 
-        dictionary.AddRange(InitialiseShipComparisonDataWrapper(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
+        dictionary.AddRange(InitialiseShipBuildContainers(fullShipList.Where(data => !ContainsShipIndex(data.Index, filteredShips) &&
                                                                                                      !ContainsShipIndex(data.Index, cachedWrappers) &&
                                                                                                      SelectedTiers.Contains(data.Tier) &&
                                                                                                      SelectedClasses.Contains(data.ShipClass) &&
@@ -404,7 +406,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         return list.Select(x => x.Value.Ship.Index).Contains(shipIndex);
     }
 
-    private Dictionary<Guid, ShipBuildContainer> InitialiseShipComparisonDataWrapper(IEnumerable<Ship> ships)
+    private Dictionary<Guid, ShipBuildContainer> InitialiseShipBuildContainers(IEnumerable<Ship> ships)
     {
         return ships.Select(ship => ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = GetShipDataContainer(ship) }).ToDictionary(x => x.Id, x => x);
     }
@@ -601,9 +603,21 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public void AddShip(object? obj)
     {
-        if (obj is not Ship ship) return;
+        ShipBuildContainer newWrapper;
 
-        var newWrapper = ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) };
+        if (obj is ShipBuildContainer container)
+        {
+            newWrapper = container;
+        }
+        else if (obj is not Ship ship)
+        {
+            return;
+        }
+        else
+        {
+            newWrapper = ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) };
+        }
+
         FilteredShipList.Add(newWrapper.Id, newWrapper);
         PinnedShipList.Add(newWrapper.Id, newWrapper);
 
@@ -653,5 +667,39 @@ public partial class ShipComparisonViewModel : ViewModelBase
             ShipComparisonDataSections.Sonar => "Sonar",
             _ => dataSection.ToString(),
         };
+    }
+
+    public static string LocalizeShipComparisonDataSection(ShipComparisonDataSections dataSection, ILocalizer localizer)
+    {
+        return dataSection switch
+        {
+            ShipComparisonDataSections.General => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_General)),
+            ShipComparisonDataSections.MainBattery => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MainBattery)),
+            ShipComparisonDataSections.He => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE)),
+            ShipComparisonDataSections.Ap => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP)),
+            ShipComparisonDataSections.Sap => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP)),
+            ShipComparisonDataSections.Torpedo => localizer.SimpleAppLocalization(nameof(Translation.Torpedo)),
+            ShipComparisonDataSections.SecondaryBattery => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)),
+            ShipComparisonDataSections.SecondaryBatteryShells => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SecondaryBatteryShells)),
+            ShipComparisonDataSections.AntiAir => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AADefense)),
+            ShipComparisonDataSections.Asw => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Asw)),
+            ShipComparisonDataSections.AirStrike => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Airstrike)),
+            ShipComparisonDataSections.Maneuverability => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Maneuverability)),
+            ShipComparisonDataSections.Concealment => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment)),
+            ShipComparisonDataSections.Survivability => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Survivability)),
+            ShipComparisonDataSections.RocketPlanes => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RocketPlanes)),
+            ShipComparisonDataSections.Rockets => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fighter)),
+            ShipComparisonDataSections.TorpedoBombers => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoBomber)),
+            ShipComparisonDataSections.AerialTorpedoes => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AerialTorpedoes)),
+            ShipComparisonDataSections.Bombers => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombers)),
+            ShipComparisonDataSections.Bombs => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombs)),
+            ShipComparisonDataSections.Sonar => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingerGun)),
+            _ => ShipComparisonDataSectionToString(dataSection),
+        };
+    }
+
+    public void UpdateRange(double selectedValue)
+    {
+        Range = selectedValue;
     }
 }
