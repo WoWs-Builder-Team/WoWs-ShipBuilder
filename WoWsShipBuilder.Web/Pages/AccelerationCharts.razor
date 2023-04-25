@@ -141,11 +141,29 @@
         {
             var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
 
+            Hull hull;
+            Engine engine;
+            if (shipWrapper.Build is not null)
+            {
+                var modules = new List<ShipUpgrade>();
+                foreach (List<ShipUpgrade> upgradeList in ShipModuleHelper.GroupAndSortUpgrades(shipWrapper.Ship.ShipUpgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList())
+                {
+                    modules.AddRange(upgradeList.Where(upgrade => shipWrapper.Build.Modules.Contains(upgrade.Name.NameToIndex())));
+                }
+                hull = shipWrapper.Ship.Hulls[modules.First(x => x.UcType == ComponentType.Hull).Components.First(x => x.Key == ComponentType.Hull).Value.Single()];
+                engine = shipWrapper.Ship.Engines[modules.First(x => x.UcType == ComponentType.Engine).Components.First(x => x.Key == ComponentType.Engine).Value.First()];
+            }
+            else
+            {
+                engine = shipWrapper.Ship.Engines.First().Value;
+                hull = shipWrapper.Ship.Hulls.First().Value;
+            }
+
             List<IEnumerable<ChartsHelper.Point>> shipData = new()
             {
-                GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList),
+                GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers ?? new(), throttleList),
             };
-            NewChartDataInput newChartData = new NewChartDataInput(shipWrapper.Id.ToString(), label, shipData, chartShipCounter);
+            var newChartData = new NewChartDataInput(shipWrapper.Id.ToString(), label, shipData, chartShipCounter);
             newData.Add(newChartData);
         }
         await ChartJsInterop.BatchAddDataAsync(chartIds, newData);
@@ -159,7 +177,25 @@
         {
             var label = Localizer.GetGameLocalization(shipWrapper.Ship.Index + "_FULL").Localization + " - " +  Localizer.GetAppLocalization(Translation.ChartsWeb_Build).Localization + ": " + (string.IsNullOrEmpty(shipWrapper.Build?.BuildName) ? ShipComparisonViewModel.DefaultBuildName : shipWrapper.Build.BuildName);
 
-            UpdateChartDataLabelInput updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, shipWrapper.Modifiers ?? new(), throttleList));
+            Hull hull;
+            Engine engine;
+            if (shipWrapper.Build is not null)
+            {
+                var modules = new List<ShipUpgrade>();
+                foreach (List<ShipUpgrade> upgradeList in ShipModuleHelper.GroupAndSortUpgrades(shipWrapper.Ship.ShipUpgradeInfo.ShipUpgrades).OrderBy(entry => entry.Key).Select(entry => entry.Value).ToList())
+                {
+                    modules.AddRange(upgradeList.Where(upgrade => shipWrapper.Build.Modules.Contains(upgrade.Name.NameToIndex())));
+                }
+                hull = shipWrapper.Ship.Hulls[modules.First(x => x.UcType == ComponentType.Hull).Components.First(x => x.Key == ComponentType.Hull).Value.First()];
+                engine = shipWrapper.Ship.Engines[modules.First(x => x.UcType == ComponentType.Engine).Components.First(x => x.Key == ComponentType.Engine).Value.First()];
+            }
+            else
+            {
+                engine = shipWrapper.Ship.Engines.First().Value;
+                hull = shipWrapper.Ship.Hulls.First().Value;
+            }
+
+            var updateChartData = new UpdateChartDataLabelInput(shipWrapper.Id.ToString(), shipWrapper.Id.ToString(), label, GetAccelerationData(shipWrapper.Ship, hull, engine, shipWrapper.Modifiers ?? new(), throttleList));
             updatedData.Add(updateChartData);
         }
 
@@ -182,11 +218,8 @@
         await ChartJsInterop.CreateChartAsync(AccelerationId, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Acceleration)).Localization, Localizer.GetAppLocalization(nameof(Translation.AccelerationChart_Time)).Localization, Localizer.GetAppLocalization(nameof(Translation.ShipStats_Speed)).Localization, s, knots);
     }
 
-    private IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, List<(string modifierName, float ModifierValue)> modifiers, List<int> throttles)
+    private static IEnumerable<ChartsHelper.Point> GetAccelerationData(Ship ship, Hull hull, Engine engine, IReadOnlyCollection<(string modifierName, float ModifierValue)> modifiers, List<int> throttles)
     {
-        var engine = ship.Engines.First().Value;
-        var hull = ship.Hulls.First().Value;
-
         var speedMultiplier = modifiers.FindModifiers("speedCoef", true).Aggregate(1d, (current, modifier) => current * modifier);
         speedMultiplier = modifiers.FindModifiers("shipSpeedCoeff", true).Aggregate(speedMultiplier, (current, modifier) => current * modifier);
         speedMultiplier = modifiers.FindModifiers("boostCoeff").Aggregate(speedMultiplier, (current, modifier) => current + modifier);
