@@ -406,6 +406,7 @@
         {
             var shipId = shipToAdd.ShipContainer.Id;
             var dispersionData = shipToAdd.ShipContainer.ShipDataContainer!.MainBatteryDataContainer!.DispersionData;
+            var dispersionModifier = shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.DispersionModifier;
             var maxRange = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Range * 1000;
             var shellCaliber = (float) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.GunCaliber;
             var sigma = (double) shipToAdd.ShipContainer.ShipDataContainer.MainBatteryDataContainer.Sigma;
@@ -423,8 +424,8 @@
 
                 List<IEnumerable<ChartsHelper.Point>> shipData = new()
                 {
-                    ChartsHelper.CreateHorizontalDispersionChartDataset(dispersionData, maxRange),
-                    CreateVerticalDispersionChartDataset(shipToAdd, shellIndex, dispersionData, maxRange, ballisticSeries),
+                    ChartsHelper.CreateHorizontalDispersionChartDataset(dispersionData, maxRange, dispersionModifier),
+                    CreateVerticalDispersionChartDataset(shipToAdd, shellIndex, dispersionData, maxRange, ballisticSeries, dispersionModifier),
                     ChartsHelper.CreateTrajectoryDataset(ballisticSeries, range),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.Penetration),
                     ChartsHelper.CreateBallisticChartDataset(ballisticSeries, ChartsHelper.BallisticParameter.FlightTime),
@@ -434,7 +435,7 @@
 
                 string label = GenerateLocalizedLabel(shipToAdd.ShipContainer.Ship.Index, (decimal)shellCaliber, shell.ShellType, shipToAdd.ShipContainer.Build);
 
-                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, shell, maxRange, aimingRange * 1000, sigma, shotsNumber);
+                var dispersionPlotData = DispersionPlotHelper.CalculateDispersionPlotParameters(label, dispersionData, shell, maxRange, aimingRange * 1000, sigma, shotsNumber, dispersionModifier);
                 shipToAdd.SelectedShells[shellIndex] = shipToAdd.SelectedShells[shellIndex] with { DispPlotShipsCache = dispersionPlotData };
 
                 var newJsShipId = GenerateJsShipId(shipId, shellIndex);
@@ -531,7 +532,7 @@
         return ballisticSeries;
     }
 
-    private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(ChartsDataWrapper wrapper, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries)
+    private IEnumerable<ChartsHelper.Point> CreateVerticalDispersionChartDataset(ChartsDataWrapper wrapper, string shellIndex, Dispersion dispersionValues, double maxRange, Dictionary<double, Ballistic> ballisticSeries, double modifier)
     {
         if (displayedShips.ContainsKey(wrapper.ShipContainer.Id) && displayedShips[wrapper.ShipContainer.Id].SelectedShells.TryGetValue(shellIndex, out var shell))
         {
@@ -542,7 +543,7 @@
             }
         }
 
-        var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries);
+        var verticalDispersions = ChartsHelper.CreateVerticalDispersionSeries(dispersionValues, maxRange, ballisticSeries, modifier);
         wrapper.SelectedShells[shellIndex] = wrapper.SelectedShells[shellIndex] with { VerticalDispersionsCache = verticalDispersions };
         return ChartsHelper.SelectVerticalDispersionDataset(verticalDispersions, selectedVertDispersionPlane);
     }
@@ -705,7 +706,7 @@
             foreach (var (shellIndex, shellData) in wrapper.SelectedShells.ToDictionary(x => x.Key, x => x.Value))
             {
                 var dispPlotShipsCache = shellData.DispPlotShipsCache;
-                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Label, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber);
+                var dispersionPlotParameter = DispersionPlotHelper.CalculateDispersionPlotParameters(dispPlotShipsCache!.Label, dispPlotShipsCache.DispersionData, dispPlotShipsCache.Shell, dispPlotShipsCache.MaxRange, aimingRange * 1000, dispPlotShipsCache.Sigma, shotsNumber, dispPlotShipsCache.Modifier);
                 wrapper.SelectedShells[shellIndex] = shellData with { DispPlotShipsCache = dispersionPlotParameter };
             }
         }

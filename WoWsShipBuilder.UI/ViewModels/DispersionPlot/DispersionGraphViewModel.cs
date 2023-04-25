@@ -117,7 +117,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
                 shipNames.Add(name);
 
-                var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber));
+                // TODO: get rid of hardcoded dispersion modifier
+                var plotItemViewModel = new DispersionPlotItemViewModel(DispersionPlotHelper.CalculateDispersionPlotParameters(name, disp, shell, maxRange, AimingRange * 1000, (double)sigma, ShotsNumber, 1));
                 DispersionPlotList.Add(plotItemViewModel);
             }
 
@@ -534,7 +535,9 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
                         }
 
                         DispersionPlotList.LastOrDefault()?.UpdateIsLast(false);
-                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber);
+
+                        // TODO: get rid of hardcoded dispersion modifier
+                        var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(name, guns.DispersionValues, shell, (double)guns.MaxRange, AimingRange * 1000, (double)guns.Sigma, ShotsNumber, 1);
                         DispersionPlotList.Add(new(newPlot));
 
                         PenetrationModel!.Series.Add(ballisticSeries.Penetration);
@@ -643,7 +646,9 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
             foreach (var itemViewModel in DispersionPlotList)
             {
                 var dispersionPlot = itemViewModel.DispersionEllipse;
-                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Label, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber);
+
+                // TODO: get rid of hardcoded dispersion modifier
+                var newPlot = DispersionPlotHelper.CalculateDispersionPlotParameters(dispersionPlot.Label, dispersionPlot.DispersionData, dispersionPlot.Shell, dispersionPlot.MaxRange, AimingRange * 1000, dispersionPlot.Sigma, ShotsNumber, 1);
                 itemViewModel.DispersionEllipse = newPlot;
                 itemViewModel.IsLast = false;
             }
@@ -798,7 +803,8 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <returns>The horizontal dispersion series for the given parameter.</returns>
         private FunctionSeries CreateHorizontalDispersionSeries(Dispersion dispersion, double maxRange, string name)
         {
-            var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
+            // TODO: get rid of hardcoded dispersion modifier
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateHorizontalDispersion(range * 1000, 1), 0, (maxRange * 1.5) / 1000, 0.01, name)
             {
                 TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
                 StrokeThickness = 4,
@@ -816,7 +822,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
         /// <returns>The vertical dispersion series for the given parameter.</returns>
         private (FunctionSeries VertDispAtImpactAngle, LineSeries VertDispOnWater, LineSeries VertDispOnPerpendicularToWater) CreateVerticalDispersionSeries(Dispersion dispersion, double maxRange, string name, Dictionary<double, Ballistic> impactAngles)
         {
-            var dispSeries = new FunctionSeries(range => dispersion.CalculateVerticalDispersion(maxRange, range * 1000), 0, (maxRange * 1.5) / 1000, 0.01, name)
+            var dispSeries = new FunctionSeries(range => dispersion.CalculateDispersion(maxRange, 1, range * 1000).Vertical, 0, (maxRange * 1.5) / 1000, 0.01, name)
             {
                 TrackerFormatString = "{0}\n{1}: {2:0.00}" + $" {Translation.Unit_KM}" + "\n{3}: {4:0.00}" + $" {Translation.Unit_M}",
                 StrokeThickness = 4,
@@ -827,7 +833,7 @@ namespace WoWsShipBuilder.UI.ViewModels.DispersionPlot
 
             foreach ((double range, var data) in impactAngles)
             {
-                double disp = dispersion.CalculateVerticalDispersion(maxRange, range);
+                double disp = dispersion.CalculateDispersion(maxRange, 1, range).Vertical;
                 vertDispOnWater.Add(new(range / 1000, disp / Math.Sin(Math.PI / 180 * data.ImpactAngle)));
                 vertDispOnPerpendicularToWater.Add(new(range / 1000, disp / Math.Cos(Math.PI / 180 * data.ImpactAngle)));
             }
