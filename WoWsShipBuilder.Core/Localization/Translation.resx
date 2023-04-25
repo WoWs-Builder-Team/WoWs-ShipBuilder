@@ -1913,4 +1913,28 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_MaxRange" xml:space="preserve">
       <value>Max Range</value>
   </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>DPM</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Salvo</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>1st</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>2nd</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Amount</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>On Fire</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Smoke Firing</value>
+  </data>
 </root>

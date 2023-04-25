@@ -4,74 +4,32 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> SurvivabilityDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> SurvivabilityDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Survivability;
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityShipHp" Title="HP" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityShipHp
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireMaxAmount" Title="Fire max amount" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFireMaxAmount
-            </CellTemplate>
-        </Column>
+        var columnTitleHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.Unit_HP))}";
+        var columnTitleFireMaxAmount = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
+        var columnTitleFireMaxDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))})";
+        var columnTitleFireDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
+        var columnTitleFireMaxDmg = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fire))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Max)} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitleFireChanceReduction = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireReduction))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleFloodingMaxAmount = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flooding))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))}";
+        var columnTitleFloodingMaxDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flooding))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Max))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))})";
+        var columnTitleFloodingDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flooding))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
+        var columnTitleFloodingMaxDmg = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Flooding))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Max)} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitleFloodingChanceReduction = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoProtection))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireDuration" Title="Fire max duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFireDuration
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireDps" Title="Fire DPS" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFireDps
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireMaxDmg" Title="Fire max damage" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFireMaxDmg
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFireChanceReduction" Title="Fire chance reduction (%)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFireChanceReduction
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingMaxAmount" Title="Flooding max amount" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFloodingMaxAmount
-            </CellTemplate>
-        </Column>
-
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingDuration" Title="Flooding max duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFloodingDuration
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingDps" Title="Flooding DPS" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFloodingDps
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingMaxDmg" Title="Flooding max damage" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFloodingMaxDmg
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SurvivabilityFloodingTorpedoProtection" Title="Torpedo protection (%)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.SurvivabilityFloodingTorpedoProtection
-            </CellTemplate>
-        </Column>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleHp}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityShipHp)" Title="@columnTitleHp" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFireMaxAmount}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFireMaxAmount)" Title="@columnTitleFireMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFireMaxDuration}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFireDuration)" Title="@columnTitleFireMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFireDps}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFireDps)" Title="@columnTitleFireDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFireMaxDmg}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFireMaxDmg)" Title="@columnTitleFireMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFireChanceReduction}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFireChanceReduction)" Title="@columnTitleFireChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFloodingMaxAmount}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFloodingMaxAmount)" Title="@columnTitleFloodingMaxAmount" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFloodingMaxDuration}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFloodingDuration)" Title="@columnTitleFloodingMaxDuration" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFloodingDps}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFloodingDps)" Title="@columnTitleFloodingDps" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFloodingMaxDmg}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFloodingMaxDmg)" Title="@columnTitleFloodingMaxDmg" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Survivability.ShipComparisonDataSectionToString()}_{columnTitleFloodingChanceReduction}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.SurvivabilityFloodingTorpedoProtection)" Title="@columnTitleFloodingChanceReduction" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

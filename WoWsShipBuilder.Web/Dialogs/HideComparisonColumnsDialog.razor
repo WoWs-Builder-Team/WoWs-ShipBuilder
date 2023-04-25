@@ -6,13 +6,15 @@
         <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns)).ToUpper()</MudText>
         @foreach(var (section, columns) in structure)
         {
-            <MudPaper Outlined Elevation="0" Square="true" @key="section">
+            <MudPaper Outlined Elevation="0" Square="true" @key="@section.ShipComparisonDataSectionToString()">
                 <MudStack Row>
                     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
-                        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">@ShipComparisonViewModel.LocalizeShipComparisonDataSection(section, Localizer).ToUpper()</MudText>
+                        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
+                            @section.LocalizeShipComparisonDataSection(Localizer).ToUpper()
+                        </MudText>
                         @foreach (var column in columns)
                         {
-                            <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")"/>
+                            <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section.ShipComparisonDataSectionToString()}_{column}")"/>
                         }
                     </MudStack>
                 </MudStack>
@@ -66,7 +68,7 @@
         {
             foreach (var column in section.Value)
             {
-                result.Add($"{ShipComparisonViewModel.ShipComparisonDataSectionToString(section.Key)}_{column.Key}", column.Value);
+                result.Add($"{section.Key.ShipComparisonDataSectionToString()}_{column.Key}", column.Value);
             }
         }
 

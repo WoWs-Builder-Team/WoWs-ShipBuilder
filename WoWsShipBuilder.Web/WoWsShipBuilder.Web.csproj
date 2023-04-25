@@ -26,30 +26,5 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\chartJs\dist\Chart.min.js" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\AaDefenseFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\AerialTorpedoesFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\AirStrikeFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\ApShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\AswFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\BombersFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\BombsFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\ConcealmentFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\HeShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\MainBatteryFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\ManeuverabilityFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\RocketPlanesFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\RocketsFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\SapShellFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\SecondaryBatteryFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\SecondaryBatteryShellsFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\SonarFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\SurvivabilityFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\TorpedoBombersFragment.razor" />
-      <_ContentIncludedByDefault Remove="Components\ShipComparisonSectionsRenderFragments\TorpedoesFragment.razor" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Components\ShipComparisonSectionsRenderFragments\MainBatteryFragment.razor" />
-    </ItemGroup>
-
 </Project>

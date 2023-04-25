@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using DynamicData;
 using ReactiveUI;
 using WoWsShipBuilder.Core.Data;
@@ -12,6 +11,7 @@ using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.DataStructures.Ship;
 using WoWsShipBuilder.ViewModels.Base;
+using WoWsShipBuilder.ViewModels.Helper;
 
 namespace WoWsShipBuilder.ViewModels.Other;
 
@@ -27,17 +27,17 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     private readonly IEnumerable<Ship> fullShipList = AppData.ShipDictionary.Values;
 
-    private Dictionary<Guid, ShipBuildContainer> filteredShipList = new();
+    private Dictionary<Guid, GridDataWrapper> filteredShipList = new();
 
-    private Dictionary<Guid, ShipBuildContainer> FilteredShipList
+    private Dictionary<Guid, GridDataWrapper> FilteredShipList
     {
         get => filteredShipList;
         set => this.RaiseAndSetIfChanged(ref filteredShipList, value);
     }
 
-    public Dictionary<Guid, ShipBuildContainer> SelectedShipList { get; } = new();
+    public Dictionary<Guid, GridDataWrapper> SelectedShipList { get; } = new();
 
-    public Dictionary<Guid, ShipBuildContainer> PinnedShipList { get; } = new();
+    public Dictionary<Guid, GridDataWrapper> PinnedShipList { get; } = new();
 
     public List<ShipComparisonDataSections> DataSections { get; private set; } = new() { ShipComparisonDataSections.General };
 
@@ -61,7 +61,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public double Range { private set; get; }
 
-    private readonly Dictionary<Guid, ShipBuildContainer> wrappersCache = new();
+    private readonly Dictionary<Guid, GridDataWrapper> wrappersCache = new();
 
     private string researchedShip = string.Empty;
 
@@ -102,7 +102,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public Task ApplyFilters()
     {
-        Dictionary<Guid, ShipBuildContainer> dictionary = new();
+        Dictionary<Guid, GridDataWrapper> dictionary = new();
 
         dictionary.AddRange(PinnedShipList);
 
@@ -113,10 +113,10 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
         dictionary.AddRange(filteredShips.Where(x => !dictionary.ContainsKey(x.Key)));
 
-        Dictionary<Guid, ShipBuildContainer> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Value.Ship.Tier) &&
-                                                                                          SelectedClasses.Contains(data.Value.Ship.ShipClass) &&
-                                                                                          SelectedNations.Contains(data.Value.Ship.ShipNation) &&
-                                                                                          SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
+        Dictionary<Guid, GridDataWrapper> cachedWrappers = wrappersCache.Where(data => SelectedTiers.Contains(data.Value.Ship.Tier) &&
+                                                                                       SelectedClasses.Contains(data.Value.Ship.ShipClass) &&
+                                                                                       SelectedNations.Contains(data.Value.Ship.ShipNation) &&
+                                                                                       SelectedCategories.Contains(data.Value.Ship.ShipCategory)).ToDictionary(x => x.Key, x => x.Value);
 
         dictionary.AddRange(cachedWrappers.Where(x => !dictionary.ContainsKey(x.Key)));
 
@@ -256,14 +256,14 @@ public partial class ShipComparisonViewModel : ViewModelBase
         await ApplyFilters();
     }
 
-    public Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayed()
+    public Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed()
     {
         return GetShipsToBeDisplayed(false);
     }
 
-    private Dictionary<Guid, ShipBuildContainer> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
+    private Dictionary<Guid, GridDataWrapper> GetShipsToBeDisplayed(bool disableHideShipsIfNoSelectedSection)
     {
-        Dictionary<Guid, ShipBuildContainer> list = ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
+        Dictionary<Guid, GridDataWrapper> list = ShowPinnedShipsOnly ? PinnedShipList : FilteredShipList;
 
         if (!disableHideShipsIfNoSelectedSection)
         {
@@ -273,12 +273,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
         return list;
     }
 
-    public void EditBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> newWrappers)
+    public void EditBuilds(IEnumerable<KeyValuePair<Guid, GridDataWrapper>> newWrappers)
     {
         EditBuilds(newWrappers, false);
     }
 
-    private void EditBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> newWrappers, bool clearCache)
+    private void EditBuilds(IEnumerable<KeyValuePair<Guid, GridDataWrapper>> newWrappers, bool clearCache)
     {
         foreach (var wrapper in newWrappers)
         {
@@ -310,10 +310,10 @@ public partial class ShipComparisonViewModel : ViewModelBase
         }
     }
 
-    public Dictionary<Guid, ShipBuildContainer> RemoveBuilds(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> wrappers)
+    public Dictionary<Guid, GridDataWrapper> RemoveBuilds(IEnumerable<KeyValuePair<Guid, GridDataWrapper>> wrappers)
     {
-        Dictionary<Guid, ShipBuildContainer> warnings = new();
-        Dictionary<Guid, ShipBuildContainer> buildList = wrappers.ToDictionary(x => x.Key, x=> x.Value);
+        Dictionary<Guid, GridDataWrapper> warnings = new();
+        Dictionary<Guid, GridDataWrapper> buildList = wrappers.ToDictionary(x => x.Key, x=> x.Value);
         foreach (var wrapper in buildList)
         {
             if (FilteredShipList.Count(x => x.Value.Ship.Index.Equals(wrapper.Value.Ship.Index)) > 1)
@@ -335,7 +335,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
                 if (wrapper.Value.Build is not null)
                 {
                     var err = ResetBuild(wrapper.Value);
-                    EditBuilds(new Dictionary<Guid, ShipBuildContainer> { { err.Id, err } });
+                    EditBuilds(new Dictionary<Guid, GridDataWrapper> { { err.Id, err } });
                     warnings.Add(err.Id, err);
                 }
                 else
@@ -357,12 +357,12 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         RemoveBuilds(FilteredShipList);
         SelectedShipList.Clear();
-        Dictionary<Guid, ShipBuildContainer> list = FilteredShipList.Where(x => x.Value.Build is not null).ToDictionary(x => x.Key, x => ResetBuild(x.Value));
+        Dictionary<Guid, GridDataWrapper> list = FilteredShipList.Where(x => x.Value.Build is not null).ToDictionary(x => x.Key, x => ResetBuild(x.Value));
         EditBuilds(list, true);
         SetSelectAndPinAllButtonsStatus();
     }
 
-    public async Task AddPinnedShip(ShipBuildContainer wrapper)
+    public async Task AddPinnedShip(GridDataWrapper wrapper)
     {
         if (!PinnedShipList.ContainsKey(wrapper.Id))
         {
@@ -376,13 +376,13 @@ public partial class ShipComparisonViewModel : ViewModelBase
         SetSelectAndPinAllButtonsStatus();
     }
 
-    private async Task RemovePinnedShip(ShipBuildContainer wrapper)
+    private async Task RemovePinnedShip(GridDataWrapper wrapper)
     {
         PinnedShipList.Remove(wrapper.Id);
         await ApplyFilters();
     }
 
-    public void AddSelectedShip(ShipBuildContainer wrapper)
+    public void AddSelectedShip(GridDataWrapper wrapper)
     {
         if (!SelectedShipList.ContainsKey(wrapper.Id))
         {
@@ -396,19 +396,19 @@ public partial class ShipComparisonViewModel : ViewModelBase
         SetSelectAndPinAllButtonsStatus();
     }
 
-    private void RemoveSelectedShip(ShipBuildContainer wrapper)
+    private void RemoveSelectedShip(GridDataWrapper wrapper)
     {
         SelectedShipList.Remove(wrapper.Id);
     }
 
-    private static bool ContainsShipIndex(string shipIndex, IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> list)
+    private static bool ContainsShipIndex(string shipIndex, IEnumerable<KeyValuePair<Guid, GridDataWrapper>> list)
     {
-        return list.Select(x => x.Value.Ship.Index).Contains(shipIndex);
+        return list.Select(x => x.Value.ShipIndex).Contains(shipIndex);
     }
 
-    private Dictionary<Guid, ShipBuildContainer> InitialiseShipBuildContainers(IEnumerable<Ship> ships)
+    private Dictionary<Guid, GridDataWrapper> InitialiseShipBuildContainers(IEnumerable<Ship> ships)
     {
-        return ships.Select(ship => ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = GetShipDataContainer(ship) }).ToDictionary(x => x.Id, x => x);
+        return ships.Select(ship => new GridDataWrapper(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = GetShipDataContainer(ship) })).ToDictionary(x => x.Id, x => x);
     }
 
     private void ChangeModulesBatch()
@@ -448,65 +448,44 @@ public partial class ShipComparisonViewModel : ViewModelBase
         HideShipsWithoutSelectedSection = !HideShipsWithoutSelectedSection;
     }
 
-    private bool HasDataSection(ShipBuildContainer shipBuildContainer) => HasDataSection(shipBuildContainer, SelectedDataSection);
-
-    private static bool HasDataSection(ShipBuildContainer shipBuildContainer, ShipComparisonDataSections dataSection)
-    {
-        var shipDataContainer = shipBuildContainer.ShipDataContainer ?? throw new InvalidDataException("ShipDataContainer is null. ShipDataContainer must not be null.");
-        var mainBattery = shipDataContainer.MainBatteryDataContainer;
-        var heShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.HE.ShellTypeToString()}"));
-        var apShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.AP.ShellTypeToString()}"));
-        var sapShellData = mainBattery?.ShellData.FirstOrDefault(x => x.Type.Equals($"ArmamentType_{ShellType.SAP.ShellTypeToString()}"));
-        var torpedoArmament = shipBuildContainer.ShipDataContainer.TorpedoArmamentDataContainer;
-        var secondaryBattery = shipBuildContainer.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries;
-        var aaData = shipBuildContainer.ShipDataContainer.AntiAirDataContainer;
-        var airStrike = shipBuildContainer.ShipDataContainer.AirstrikeDataContainer;
-        var aswAirStrike = shipBuildContainer.ShipDataContainer.AswAirstrikeDataContainer;
-        var depthChargeLauncher = shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer;
-        var sonar = shipBuildContainer.ShipDataContainer.PingerGunDataContainer;
-        var rocketPlanes = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Rocket.ProjectileTypeToString()));
-        var torpedoBombers = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Torpedo.ProjectileTypeToString()));
-        var bombers = shipBuildContainer.ShipDataContainer.CvAircraftDataContainer?.Where(x => x.WeaponType.Equals(ProjectileType.Bomb.ProjectileTypeToString()) || x.WeaponType.Equals(ProjectileType.SkipBomb.ProjectileTypeToString()));
-
-        return dataSection switch
-        {
-            ShipComparisonDataSections.MainBattery => mainBattery is not null,
-            ShipComparisonDataSections.He => heShellData is not null,
-            ShipComparisonDataSections.Ap => apShellData is not null,
-            ShipComparisonDataSections.Sap => sapShellData is not null,
-            ShipComparisonDataSections.Torpedo => torpedoArmament is not null,
-            ShipComparisonDataSections.RocketPlanes => rocketPlanes is not null && rocketPlanes.Any(),
-            ShipComparisonDataSections.Rockets => rocketPlanes is not null && rocketPlanes.Any(),
-            ShipComparisonDataSections.TorpedoBombers => torpedoBombers is not null && torpedoBombers.Any(),
-            ShipComparisonDataSections.AerialTorpedoes => torpedoBombers is not null && torpedoBombers.Any(),
-            ShipComparisonDataSections.Bombers => bombers is not null && bombers.Any(),
-            ShipComparisonDataSections.Bombs => bombers is not null && bombers.Any(),
-            ShipComparisonDataSections.Sonar => sonar is not null,
-            ShipComparisonDataSections.SecondaryBattery => secondaryBattery is not null,
-            ShipComparisonDataSections.SecondaryBatteryShells => secondaryBattery is not null,
-            ShipComparisonDataSections.AntiAir => aaData is not null,
-            ShipComparisonDataSections.AirStrike => airStrike is not null,
-            ShipComparisonDataSections.Asw => aswAirStrike is not null || depthChargeLauncher is not null,
-            _ => true,
-        };
-    }
-
-    private Dictionary<Guid, ShipBuildContainer> HideShipsIfNoSelectedSection(IEnumerable<KeyValuePair<Guid, ShipBuildContainer>> list)
+    private Dictionary<Guid, GridDataWrapper> HideShipsIfNoSelectedSection(IEnumerable<KeyValuePair<Guid, GridDataWrapper>> list)
     {
         if (!HideShipsWithoutSelectedSection)
         {
             return list.ToDictionary(x => x.Key, x => x.Value);
         }
 
-        Dictionary<Guid, ShipBuildContainer> newList = list.Where(x => HasDataSection(x.Value)).ToDictionary(x => x.Key, x => x.Value);
-        newList.AddRange(PinnedShipList.Where(x => newList.ContainsKey(x.Key)));
+        Dictionary<Guid, GridDataWrapper> newList = SelectedDataSection switch
+        {
+            ShipComparisonDataSections.MainBattery => list.Where(x => x.Value.ShipDataContainer.MainBatteryDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.He => list.Where(x => x.Value.HeDamage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Ap => list.Where(x => x.Value.ApDamage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Sap => list.Where(x => x.Value.SapDamage is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Torpedo => list.Where(x => x.Value.ShipDataContainer.TorpedoArmamentDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.RocketPlanes => list.Where(x => x.Value.RocketPlanesType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Rockets => list.Where(x => x.Value.RocketPlanesWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.TorpedoBombers => list.Where(x => x.Value.TorpedoBombersType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.AerialTorpedoes => list.Where(x => x.Value.TorpedoBombersWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Bombers => list.Where(x => x.Value.BombersType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Bombs => list.Where(x => x.Value.BombersWeaponType.Any()).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Sonar => list.Where(x => x.Value.ShipDataContainer.PingerGunDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.SecondaryBattery => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.SecondaryBatteryShells => list.Where(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.AntiAir => list.Where(x => x.Value.ShipDataContainer.AntiAirDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.AirStrike => list.Where(x => x.Value.ShipDataContainer.AirstrikeDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            ShipComparisonDataSections.Asw => list.Where(x => x.Value.ShipDataContainer.AswAirstrikeDataContainer is not null || x.Value.ShipDataContainer.DepthChargeLauncherDataContainer is not null).ToDictionary(x => x.Key, x => x.Value),
+            _ => list.ToDictionary(x => x.Key, x => x.Value),
+        };
+
+        newList.AddRange(PinnedShipList.Where(x => !newList.ContainsKey(x.Key)));
+
         return newList;
     }
 
     private void GetDataSectionsToDisplay()
     {
         List<ShipComparisonDataSections> dataSections = Enum.GetValues<ShipComparisonDataSections>().ToList();
-        Dictionary<Guid, ShipBuildContainer> shipList = GetShipsToBeDisplayed(true);
+        Dictionary<Guid, GridDataWrapper> shipList = GetShipsToBeDisplayed(true);
 
         if (!shipList.Any())
         {
@@ -516,9 +495,105 @@ public partial class ShipComparisonViewModel : ViewModelBase
         {
             foreach (var dataSection in Enum.GetValues<ShipComparisonDataSections>().Except(new[] { ShipComparisonDataSections.Maneuverability, ShipComparisonDataSections.Concealment, ShipComparisonDataSections.Survivability, ShipComparisonDataSections.General }))
             {
-                if (!shipList.Any(item => HasDataSection(item.Value, dataSection)))
+                switch (dataSection)
                 {
-                    dataSections.Remove(dataSection);
+                    case ShipComparisonDataSections.MainBattery:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.MainBatteryDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.He:
+                        if (!shipList.Any(x => x.Value.HeDamage is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Ap:
+                        if (!shipList.Any(x => x.Value.ApDamage is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Sap:
+                        if (!shipList.Any(x => x.Value.SapDamage is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Torpedo:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.TorpedoArmamentDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.SecondaryBattery:
+                    case ShipComparisonDataSections.SecondaryBatteryShells:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.SecondaryBatteryUiDataContainer.Secondaries is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.AntiAir:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.AntiAirDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Asw:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.AswAirstrikeDataContainer is not null || x.Value.ShipDataContainer.DepthChargeLauncherDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.AirStrike:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.AirstrikeDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.RocketPlanes:
+                        if (!shipList.Any(x => x.Value.RocketPlanesType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Rockets:
+                        if (!shipList.Any(x => x.Value.RocketPlanesWeaponType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.TorpedoBombers:
+                        if (!shipList.Any(x => x.Value.TorpedoBombersType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.AerialTorpedoes:
+                        if (!shipList.Any(x => x.Value.TorpedoBombersWeaponType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Bombers:
+                        if (!shipList.Any(x => x.Value.BombersType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Bombs:
+                        if (!shipList.Any(x => x.Value.BombersWeaponType.Any()))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
+                    case ShipComparisonDataSections.Sonar:
+                        if (!shipList.Any(x => x.Value.ShipDataContainer.PingerGunDataContainer is not null))
+                        {
+                            dataSections.Remove(dataSection);
+                        }
+                        break;
                 }
             }
 
@@ -590,7 +665,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
     {
         foreach (var selectedShip in SelectedShipList)
         {
-            var newWrapper = selectedShip.Value with { Id = Guid.NewGuid() };
+            var newWrapper = new GridDataWrapper(selectedShip.Value.GetShipBuildContainer() with { Id = Guid.NewGuid() });
             FilteredShipList.Add(newWrapper.Id, newWrapper);
             if (PinnedShipList.ContainsKey(selectedShip.Key))
             {
@@ -603,9 +678,9 @@ public partial class ShipComparisonViewModel : ViewModelBase
 
     public void AddShip(object? obj)
     {
-        ShipBuildContainer newWrapper;
+        GridDataWrapper newWrapper;
 
-        if (obj is ShipBuildContainer container)
+        if (obj is GridDataWrapper container)
         {
             newWrapper = container;
         }
@@ -615,7 +690,7 @@ public partial class ShipComparisonViewModel : ViewModelBase
         }
         else
         {
-            newWrapper = ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) };
+            newWrapper = new (ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer =  GetShipDataContainer(ship) });
         }
 
         FilteredShipList.Add(newWrapper.Id, newWrapper);
@@ -629,73 +704,15 @@ public partial class ShipComparisonViewModel : ViewModelBase
     }
 
     private void SetSelectAndPinAllButtonsStatus() => SetSelectAndPinAllButtonsStatus(GetShipsToBeDisplayed());
-    private void SetSelectAndPinAllButtonsStatus(IReadOnlyDictionary<Guid, ShipBuildContainer> list)
+    private void SetSelectAndPinAllButtonsStatus(IReadOnlyDictionary<Guid, GridDataWrapper> list)
     {
         SelectAllShips = list.All(wrapper => SelectedShipList.ContainsKey(wrapper.Key));
         PinAllShips = list.All(wrapper => PinnedShipList.ContainsKey(wrapper.Key));
     }
 
-    private ShipBuildContainer ResetBuild(ShipBuildContainer wrapper)
+    private GridDataWrapper ResetBuild(GridDataWrapper wrapper)
     {
-        return wrapper with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null };
-    }
-
-    public static string ShipComparisonDataSectionToString(ShipComparisonDataSections dataSection)
-    {
-        return dataSection switch
-        {
-            ShipComparisonDataSections.General => "General",
-            ShipComparisonDataSections.MainBattery => "MainBattery",
-            ShipComparisonDataSections.He => "He",
-            ShipComparisonDataSections.Ap => "Ap",
-            ShipComparisonDataSections.Sap => "Sap",
-            ShipComparisonDataSections.Torpedo => "Torpedo",
-            ShipComparisonDataSections.SecondaryBattery => "SecondaryBattery",
-            ShipComparisonDataSections.SecondaryBatteryShells => "SecondaryBatteryShells",
-            ShipComparisonDataSections.AntiAir => "AntiAir",
-            ShipComparisonDataSections.Asw => "Asw",
-            ShipComparisonDataSections.AirStrike => "AirStrike",
-            ShipComparisonDataSections.Maneuverability => "Maneuverability",
-            ShipComparisonDataSections.Concealment => "Concealment",
-            ShipComparisonDataSections.Survivability => "Survivability",
-            ShipComparisonDataSections.RocketPlanes => "RocketPlanes",
-            ShipComparisonDataSections.Rockets => "Rockets",
-            ShipComparisonDataSections.TorpedoBombers => "TorpedoBombers",
-            ShipComparisonDataSections.AerialTorpedoes => "AerialTorpedoes",
-            ShipComparisonDataSections.Bombers => "Bombers",
-            ShipComparisonDataSections.Bombs => "Bombs",
-            ShipComparisonDataSections.Sonar => "Sonar",
-            _ => dataSection.ToString(),
-        };
-    }
-
-    public static string LocalizeShipComparisonDataSection(ShipComparisonDataSections dataSection, ILocalizer localizer)
-    {
-        return dataSection switch
-        {
-            ShipComparisonDataSections.General => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_General)),
-            ShipComparisonDataSections.MainBattery => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MainBattery)),
-            ShipComparisonDataSections.He => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE)),
-            ShipComparisonDataSections.Ap => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP)),
-            ShipComparisonDataSections.Sap => localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP)),
-            ShipComparisonDataSections.Torpedo => localizer.SimpleAppLocalization(nameof(Translation.Torpedo)),
-            ShipComparisonDataSections.SecondaryBattery => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SecondaryBattery)),
-            ShipComparisonDataSections.SecondaryBatteryShells => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SecondaryBatteryShells)),
-            ShipComparisonDataSections.AntiAir => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AADefense)),
-            ShipComparisonDataSections.Asw => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Asw)),
-            ShipComparisonDataSections.AirStrike => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Airstrike)),
-            ShipComparisonDataSections.Maneuverability => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Maneuverability)),
-            ShipComparisonDataSections.Concealment => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment)),
-            ShipComparisonDataSections.Survivability => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Survivability)),
-            ShipComparisonDataSections.RocketPlanes => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_RocketPlanes)),
-            ShipComparisonDataSections.Rockets => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fighter)),
-            ShipComparisonDataSections.TorpedoBombers => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TorpedoBomber)),
-            ShipComparisonDataSections.AerialTorpedoes => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AerialTorpedoes)),
-            ShipComparisonDataSections.Bombers => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombers)),
-            ShipComparisonDataSections.Bombs => localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Bombs)),
-            ShipComparisonDataSections.Sonar => localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PingerGun)),
-            _ => ShipComparisonDataSectionToString(dataSection),
-        };
+        return new(wrapper.GetShipBuildContainer() with { Build = null, ActivatedConsumableSlots = null, SpecialAbilityActive = false, ShipDataContainer = GetShipDataContainer(wrapper.Ship), Modifiers = null });
     }
 
     public void UpdateRange(double selectedValue)

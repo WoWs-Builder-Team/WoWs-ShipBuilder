@@ -9,19 +9,14 @@ using WoWsShipBuilder.DataStructures.Ship;
 
 namespace WoWsShipBuilder.ViewModels.Helper;
 
-public sealed class ShipComparisonDataWrapper
+public sealed class GridDataWrapper
 {
-    public static ShipComparisonDataWrapper CreateNew(Ship ship, ShipDataContainer shipDataContainer)
-    {
-        return new(ShipBuildContainer.CreateNew(ship, null, null) with { ShipDataContainer = shipDataContainer });
-    }
-
     public ShipBuildContainer GetShipBuildContainer()
     {
         return shipBuildContainer;
     }
 
-    public ShipComparisonDataWrapper(ShipBuildContainer shipBuildContainer)
+    public GridDataWrapper(ShipBuildContainer shipBuildContainer)
     {
         this.shipBuildContainer = shipBuildContainer;
 
