@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Projectile;
 using WoWsShipBuilder.DataStructures.Ship;
 
@@ -14,12 +15,11 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <param name="dispersionData">Contains the parameters to calculate horizontal and vertical dispersions.</param>
         /// <param name="maxRange">Max range a ship can fire at.</param>
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
+        /// <param name="modifier">The current dispersion modifier</param>
         /// <returns>The length of the horizontal and vertical radii of the dispersion ellipse.</returns>
-        private static (double horizontalRadius, double verticalRadius) GetDispersionEllipse(Dispersion dispersionData, double maxRange, double aimingRange)
+        private static (double horizontalRadius, double verticalRadius) GetDispersionEllipse(Dispersion dispersionData, double maxRange, double aimingRange, double modifier)
         {
-            var verticalRadius = dispersionData.CalculateVerticalDispersion(maxRange, aimingRange);
-            var horizontalRadius = dispersionData.CalculateHorizontalDispersion(aimingRange);
-
+            (double horizontalRadius, double verticalRadius) = dispersionData.CalculateDispersion(maxRange, modifier, aimingRange);
             return (horizontalRadius, verticalRadius);
         }
 
@@ -113,21 +113,22 @@ namespace WoWsShipBuilder.Core.DataContainers
         /// <param name="aimingRange">Range the ship is currently aiming at.</param>
         /// <param name="sigma">The sigma of the ship.</param>
         /// <param name="shotsNumber">The number of shots to simulate.</param>
+        /// <param name="modifier">The dispersion modifier</param>
         /// <returns>A DispersionEllipse object containing all the information.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
-        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber)
+        public static DispersionEllipse CalculateDispersionPlotParameters(string name, Dispersion dispersionData, ArtilleryShell shell, double maxRange, double aimingRange, double sigma, int shotsNumber, double modifier)
         {
-            (double horizontalRadius, double verticalRadius) = GetDispersionEllipse(dispersionData, maxRange, aimingRange);
+            (double horizontalRadius, double verticalRadius) = GetDispersionEllipse(dispersionData, maxRange, aimingRange, modifier);
             var projectedEllipse = GetProjectedEllipse(shell, maxRange, aimingRange, verticalRadius);
             if (projectedEllipse == (0, 0, 0, 0))
             {
-                return new(name, dispersionData, shell, sigma, maxRange);
+                return new(name, dispersionData, shell, sigma, maxRange, modifier);
             }
 
             double halfRatio = GetHalfHitsRatio(sigma);
             (List<Point> realPlane, List<Point> onWaterLine, List<Point> perpendicularToWaterLine) = GetHitPoints(sigma, horizontalRadius, verticalRadius, shotsNumber, projectedEllipse.waterLineProjection, projectedEllipse.perpendicularToWaterProjection);
 
-            return new(name, dispersionData, shell, sigma, maxRange, horizontalRadius, verticalRadius,
+            return new(name, dispersionData, shell, sigma, maxRange, modifier, horizontalRadius, verticalRadius,
                        projectedEllipse.projectedOnWaterVerticalRadius, projectedEllipse.perpendicularToWaterVerticalRadius,
                        realPlane, onWaterLine, perpendicularToWaterLine,
                        horizontalRadius * halfRatio, verticalRadius * halfRatio, projectedEllipse.projectedOnWaterVerticalRadius * halfRatio,
@@ -137,15 +138,15 @@ namespace WoWsShipBuilder.Core.DataContainers
         public readonly record struct Point(double X, double Y);
     }
 
-    public sealed record DispersionEllipse(string Label, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange)
+    public sealed record DispersionEllipse(string Label, Dispersion DispersionData, ArtilleryShell Shell, double Sigma, double MaxRange, double Modifier)
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Way too long.")]
-        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange,
+        public DispersionEllipse(string name, Dispersion dispersionData, ArtilleryShell shell, double sigma, double maxRange, double modifier,
                                  double horizontalRadius, double verticalRadius, double projectedOnWaterVerticalRadius, double projectedOnPerpendicularToWaterVerticalRadius,
                                  List<DispersionPlotHelper.Point> realHitPoints, List<DispersionPlotHelper.Point> onWaterHitPoints, List<DispersionPlotHelper.Point> onPerpendicularToWaterHitPoints,
                                  double horizontalRadiusHalfHitPoints, double verticalRadiusHalfHitPoints, double projectedOnWaterVerticalRadiusHalfHitPoints,
                                  double projectedOnPerpendicularToWaterVerticalRadiusHalfHitPoints)
-        : this(name, dispersionData, shell, sigma, maxRange)
+        : this(name, dispersionData, shell, sigma, maxRange, modifier)
         {
             HorizontalRadius = horizontalRadius;
             VerticalRadius = verticalRadius;
