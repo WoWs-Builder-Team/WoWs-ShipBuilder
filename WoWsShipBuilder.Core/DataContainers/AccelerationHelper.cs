@@ -102,44 +102,63 @@ public static class AccelerationHelper
 
         // calculate initial stats
         // throttle goes from -1 to 4, depending on the gear.
-        double oldThrottle = throttleList.First();
+        int oldThrottle = throttleList.First();
 
         // initial speed is equal to the speed limit
         double speed = GetSpeedLimit(oldThrottle, maxForwardSpeed, maxReverseSpeed);
         double power = GetPowerFromThrottle(oldThrottle, maxPowerForward, maxPowerBackwards);
         double time = 0;
 
+        var maxSpeedStart = speed > maxForwardSpeed - Margin;
+
         result.Add(new(speed, time));
 
-        foreach (var throttle in throttleList.Skip(1))
+        if (throttleList.Any(x => x != oldThrottle))
         {
-            // get new throttle speedLimit
-            double speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
-
-            int isDown = (throttle < oldThrottle && throttle > 0) ? 1 : 0;
-
-            int iterations = 0;
-            while (ShouldCycle(throttle, oldThrottle, speed, speedLimit))
+            foreach (var throttle in throttleList.Skip(1))
             {
-                GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, throttle > oldThrottle);
+                // get new throttle speedLimit
+                double speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
 
-                // isDown needs to be 1 only for one cycle, so we set it to 0.
-                isDown = 0;
+                int isDown = throttle < oldThrottle && throttle > 0 ? 1 : 0;
 
-                // infinite iterations failsafe.
-                iterations++;
-                if (iterations > MaxIterations)
+                var iterations = 0;
+                var cycle = true;
+                while (cycle)
                 {
-                    throw new OverflowException("Too many iterations for ship " + shipIndex);
+                    GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, throttle > oldThrottle);
+
+                    // isDown needs to be 1 only for one cycle, so we set it to 0.
+                    isDown = 0;
+                    if (Math.Abs(speedLimit - speed) < 0.001 || (!maxSpeedStart && speed > maxForwardSpeed - Margin))
+                    {
+                        cycle = false;
+                    }
+
+                    if (maxSpeedStart && speed < maxForwardSpeed - Margin)
+                    {
+                        maxSpeedStart = false;
+                    }
+
+                    // infinite iterations failsafe.
+                    iterations++;
+                    if (iterations > MaxIterations)
+                    {
+                        throw new OverflowException("Too many iterations for ship " + shipIndex);
+                    }
                 }
+
+                // update data for next cycle
+                oldThrottle = throttle;
+
+                // set the power to max of the current throttle. This is done because the speed function is asymptotic to MaxSpeed, so we force it to finish slightly earlier.
+                if (throttle < 0 && throttle < throttleList.Last())
+                {
+                    power = GetPowerFromThrottle(throttle, maxForwardSpeed, maxPowerBackwards);
+                }
+
+                timeForGear.Add(time);
             }
-
-            // update data for next cycle
-            oldThrottle = throttle;
-
-            // set the power to max of the current throttle. This is done because the speed function is asymptotic to MaxSpeed, so we force it to finish slightly earlier.
-            power = GetPowerFromThrottle(throttle, maxForwardSpeed, maxPowerBackwards);
-            timeForGear.Add(time);
         }
 
         return new(timeForGear, result);
@@ -233,30 +252,8 @@ public static class AccelerationHelper
         {
             return maxPowerForward * Math.Pow(throttle / 4, 2);
         }
-        else
-        {
-            return maxPowerBackwards;
-        }
-    }
 
-    /// <summary>
-    /// Return if the calculation cycle should continue or stop.
-    /// </summary>
-    /// <param name="newThrottle">Current throttle to reach.</param>
-    /// <param name="oldThrottle">Starting throttle.</param>
-    /// <param name="speed">Current speed.</param>
-    /// <param name="speedLimit">Current Speed limit.</param>
-    /// <returns>If the cycle should continue.</returns>
-    private static bool ShouldCycle(double newThrottle, double oldThrottle, double speed, double speedLimit)
-    {
-        // we are accelerating/going towards max speed. Graph is going upwards
-        if (newThrottle > oldThrottle)
-        {
-            return speed < speedLimit - Margin;
-        }
-
-        // we are decelerating/going towards reverse speed. Graph is going downwards.
-        return speed > speedLimit + Margin;
+        return maxPowerBackwards;
     }
 
     /// <summary>
