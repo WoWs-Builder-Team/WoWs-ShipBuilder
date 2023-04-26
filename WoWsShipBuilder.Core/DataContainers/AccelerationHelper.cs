@@ -109,7 +109,7 @@ public static class AccelerationHelper
         double power = GetPowerFromThrottle(oldThrottle, maxPowerForward, maxPowerBackwards);
         double time = 0;
 
-        var maxSpeedStart = speed > maxForwardSpeed - Margin;
+        bool maxSpeedStart = speed > maxForwardSpeed - Margin;
 
         result.Add(new(speed, time));
 
@@ -135,6 +135,7 @@ public static class AccelerationHelper
                         cycle = false;
                     }
 
+                    // needed to not have the threshold breaking the cycle at first iteration when starting from gear 4
                     if (maxSpeedStart && speed < maxForwardSpeed - Margin)
                     {
                         maxSpeedStart = false;
@@ -148,14 +149,14 @@ public static class AccelerationHelper
                     }
                 }
 
-                // update data for next cycle
-                oldThrottle = throttle;
-
-                // set the power to max of the current throttle. This is done because the speed function is asymptotic to MaxSpeed, so we force it to finish slightly earlier.
+                // set the power to max of the current throttle. When starting going forward from full speed backwards the engine keeps the same amount power but positive instead of negative.
                 if (throttle < 0 && throttle < throttleList.Last())
                 {
-                    power = GetPowerFromThrottle(throttle, maxForwardSpeed, maxPowerBackwards);
+                    power = -power;
                 }
+
+                // update data for next cycle
+                oldThrottle = throttle;
 
                 timeForGear.Add(time);
             }
