@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
 using WoWsShipBuilder.DataStructures.Ship;
 
@@ -10,8 +11,8 @@ public static class AccelerationHelper
 {
     private const string CaraccioloId = "PISB107";
     private const double Dt = 0.01;
-    private const double Margin = 0.05;
-    private const int MaxIterations = 10000;
+    private const double Margin = 0.055;
+    private const int MaxIterations = 20000;
 
     public const int FullReverse = -1;
     public const int Zero = 0;
@@ -42,7 +43,7 @@ public static class AccelerationHelper
     /// <param name="hull">Hull module of the ship.</param>
     /// <param name="engine">Engine module of the ship.</param>
     /// <param name="shipClass">Class of the ship.</param>
-    /// <param name="throttleList">List of throttle to use. First is the starting throttle.</param>
+    /// <param name="initialThrottleList">List of throttle to use. First is the starting throttle.</param>
     /// <param name="accelerationModifiers"> Modifiers affecting the acceleration.</param>
     /// <param name="speedBoostModifiers"> Modifiers coming from speed boost.</param>
     /// <exception cref="InvalidOperationException">Thrown when the throttleList contains invalid numbers.</exception>
@@ -53,14 +54,20 @@ public static class AccelerationHelper
         Hull hull,
         Engine engine,
         ShipClass shipClass,
-        List<int> throttleList,
+        List<int> initialThrottleList,
         AccelerationModifiers accelerationModifiers,
         SpeedBoostAccelerationModifiers speedBoostModifiers)
     {
         // check that only valid values are contained in throttleList
-        if (throttleList.Any(throttle => throttle is > 4 or < -1))
+        if (initialThrottleList.Any(throttle => throttle is > 4 or < -1))
         {
             throw new InvalidOperationException("Throttles must be between -1 and 4. Use the constant of AccelerationHelper for safety.");
+        }
+
+        var throttleList = new List<int>();
+        foreach (int element in initialThrottleList.Where(element => throttleList.Count == 0 || throttleList.Last() != element))
+        {
+            throttleList.Add(element);
         }
 
         var result = new List<AccelerationPoints>();
@@ -108,8 +115,7 @@ public static class AccelerationHelper
         double speed = GetSpeedLimit(oldThrottle, maxForwardSpeed, maxReverseSpeed);
         double power = GetPowerFromThrottle(oldThrottle, maxPowerForward, maxPowerBackwards);
         double time = 0;
-
-        bool maxSpeedStart = speed > maxForwardSpeed - Margin;
+        var isDown = 0;
 
         result.Add(new(speed, time));
 
@@ -119,8 +125,16 @@ public static class AccelerationHelper
             {
                 // get new throttle speedLimit
                 double speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
+                bool speedLimitCrossing = speed > speedLimit - Margin;
 
-                int isDown = throttle < oldThrottle && throttle > 0 ? 1 : 0;
+                if (throttle < oldThrottle && throttle > 0)
+                {
+                    isDown = 1;
+                }
+                else if (throttle > oldThrottle)
+                {
+                    isDown = 0;
+                }
 
                 var iterations = 0;
                 var cycle = true;
@@ -128,31 +142,15 @@ public static class AccelerationHelper
                 {
                     GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, throttle > oldThrottle);
 
-                    // isDown needs to be 1 only for one cycle, so we set it to 0.
-                    isDown = 0;
-                    if (Math.Abs(speedLimit - speed) < 0.001 || (!maxSpeedStart && speed > maxForwardSpeed - Margin))
-                    {
-                        cycle = false;
-                    }
-
-                    // needed to not have the threshold breaking the cycle at first iteration when starting from gear 4
-                    if (maxSpeedStart && speed < maxForwardSpeed - Margin)
-                    {
-                        maxSpeedStart = false;
-                    }
+                    cycle = ShouldCycle(throttle, speed, speedLimit, ref speedLimitCrossing);
 
                     // infinite iterations failsafe.
                     iterations++;
                     if (iterations > MaxIterations)
                     {
-                        throw new OverflowException("Too many iterations for ship " + shipIndex);
+                        cycle = false;
+                        Console.WriteLine(@"Gear: " + throttle + @" Overflow - " + AppData.ShipDictionary[shipIndex].Name);
                     }
-                }
-
-                // set the power to max of the current throttle. When starting going forward from full speed backwards the engine keeps the same amount power but positive instead of negative.
-                if (throttle < 0 && throttle < throttleList.Last())
-                {
-                    power = -power;
                 }
 
                 // update data for next cycle
@@ -163,6 +161,47 @@ public static class AccelerationHelper
         }
 
         return new(timeForGear, result);
+    }
+
+    /// <summary>
+    /// Return if the calculation cycle should continue or stop.
+    /// </summary>
+    /// <param name="throttle">Current throttle to reach.</param>
+    /// <param name="speed">Current speed.</param>
+    /// <param name="speedLimit">Current Speed limit.</param>
+    /// <param name="speedLimitCrossing">Check if the initial speed is over the current intermediate gear speed limit.</param>
+    /// <returns>If the cycle should continue.</returns>
+    private static bool ShouldCycle(int throttle, double speed, double speedLimit, ref bool speedLimitCrossing)
+    {
+        switch (throttle)
+        {
+            case 4:
+            {
+                // we are accelerating/going towards max speed. Graph is going upwards
+                return speed < speedLimit - Margin;
+            }
+
+            case -1:
+            {
+                // we are decelerating/going towards reverse speed. Graph is going downwards.
+                return speed > speedLimit + Margin;
+            }
+
+            default:
+            {
+                if (speedLimitCrossing && speed < speedLimit - Margin)
+                {
+                    speedLimitCrossing = false;
+                }
+
+                if (!speedLimitCrossing)
+                {
+                    return speed < speedLimit - Margin;
+                }
+
+                return true;
+            }
+        }
     }
 
     /// <summary>
@@ -204,13 +243,11 @@ public static class AccelerationHelper
         double drag;
         if (speed > 0)
         {
-            double speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxForwardSpeed, 2);
-            drag = speedRatio * maxPowerForward;
+            drag = (-speed * Math.Abs(speed)) / Math.Pow(maxForwardSpeed, 2) * maxPowerForward;
         }
         else
         {
-            double speedRatio = (-speed * Math.Abs(speed)) / Math.Pow(maxReverseSpeed, 2);
-            drag = -speedRatio * maxPowerBackwards;
+            drag = (-speed * Math.Abs(speed)) / Math.Pow(maxReverseSpeed, 2) * maxPowerBackwards;
         }
 
         return drag;
@@ -249,12 +286,12 @@ public static class AccelerationHelper
     /// <returns>The power of the given throttle.</returns>
     private static double GetPowerFromThrottle(double throttle, double maxPowerForward, double maxPowerBackwards)
     {
-        if (throttle > 0)
+        if (throttle >= 0)
         {
             return maxPowerForward * Math.Pow(throttle / 4, 2);
         }
 
-        return maxPowerBackwards;
+        return -maxPowerBackwards;
     }
 
     /// <summary>
@@ -298,7 +335,7 @@ public static class AccelerationHelper
         double forsageBackwards,
         bool stoppingFromBackward)
     {
-        int acc;
+        var acc = 0;
         if (speedLimit > speed)
         {
             power = Math.Min(Math.Max(power, 0) + powerIncreaseForward, maxPowerForward * Math.Pow(Math.Pow(throttle / 4, 2), isReversingDirection));
@@ -311,7 +348,8 @@ public static class AccelerationHelper
         }
         else
         {
-            if (speed > 0)
+            // power=PF*(throttle(i)/4)^2*(V(i-1)>0)+(-PB)*(V(i-1)<0);
+            if (speed >= 0)
             {
                 power = maxPowerForward * Math.Pow(throttle / 4, 2);
             }
@@ -319,35 +357,23 @@ public static class AccelerationHelper
             {
                 power = -maxPowerBackwards;
             }
-
-            acc = 0;
         }
 
         double drag = GetDrag(speed, maxForwardSpeed, maxPowerForward, maxReverseSpeed, maxPowerBackwards);
         double acceleration = (power + drag) * Math.Abs(acc);
 
-        // this is needed to avoid getting an oscillating speed when at maxForsageSpeed (due to low sampling rate)
-        double previousSpeed = speed;
-        speed += Dt * acceleration;
-
         // forsage part
-        var isForsageForward = false;
-        var isForsageBackward = false;
         if (speed < forsageForwardMaxSpeed && speed >= 0 && power > 0)
         {
-            acceleration = (maxPowerForward * forsageForward) - drag;
-            isForsageForward = true;
+            acceleration = (maxPowerForward * forsageForward) + drag;
         }
         else if (speed > -forsageBackwardsMaxSpeed && speed <= 0 && power < 0)
         {
             acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
-            isForsageBackward = true;
         }
 
-        if (isForsageBackward || isForsageForward)
-        {
-            speed = previousSpeed + (Dt * acceleration);
-        }
+        double previousSpeed = speed;
+        speed += Dt * acceleration;
 
         if (speedLimit < speed && acc == 1 && power * previousSpeed > 0)
         {
@@ -356,14 +382,6 @@ public static class AccelerationHelper
         else if (speedLimit > speed && acc == -1 && power * previousSpeed > 0)
         {
             speed = speedLimit;
-        }
-        else if (isForsageForward && speed > forsageForwardMaxSpeed)
-        {
-            speed = forsageForwardMaxSpeed;
-        }
-        else if (isForsageBackward && speed < -forsageBackwardsMaxSpeed)
-        {
-            speed = -forsageBackwardsMaxSpeed;
         }
 
         switch (stoppingFromBackward)
