@@ -125,7 +125,6 @@ public static class AccelerationHelper
             {
                 // get new throttle speedLimit
                 double speedLimit = GetSpeedLimit(throttle, maxForwardSpeed, maxReverseSpeed);
-                bool speedLimitCrossing = speed > speedLimit - Margin;
 
                 if (throttle < oldThrottle && throttle > 0)
                 {
@@ -140,9 +139,9 @@ public static class AccelerationHelper
                 var cycle = true;
                 while (cycle)
                 {
-                    GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards, throttle > oldThrottle);
-
-                    cycle = ShouldCycle(throttle, speed, speedLimit, ref speedLimitCrossing);
+                    cycle = GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
+                    
+                    //cycle = ShouldCycle(throttle, speed, speedLimit, ref speedLimitCrossing);
 
                     // infinite iterations failsafe.
                     iterations++;
@@ -314,8 +313,7 @@ public static class AccelerationHelper
     /// <param name="maxReverseSpeed">Maximum speed backwards.</param>
     /// <param name="forsageBackwardsMaxSpeed">Maximum forsage speed backwards.</param>
     /// <param name="forsageBackwards">Forsage backwards.</param>
-    /// <param name="stoppingFromBackward">If the ship is stopping from backward.</param>
-    private static void GenerateAccelerationPoints(
+    private static bool GenerateAccelerationPoints(
         ICollection<AccelerationPoints> pointList,
         double throttle,
         double isReversingDirection,
@@ -332,9 +330,9 @@ public static class AccelerationHelper
         double maxPowerBackwards,
         double maxReverseSpeed,
         double forsageBackwardsMaxSpeed,
-        double forsageBackwards,
-        bool stoppingFromBackward)
+        double forsageBackwards)
     {
+        bool shouldContinue = true;
         var acc = 0;
         if (speedLimit > speed)
         {
@@ -374,27 +372,30 @@ public static class AccelerationHelper
 
         double previousSpeed = speed;
         speed += Dt * acceleration;
-
-        if (speedLimit < speed && acc == 1 && power * previousSpeed > 0)
+        // the last part of the following two comparison is done with previousSpeed in the nga code, but seems to work better with speed.
+        if (speedLimit < speed && acc == 1 && power * speed > 0)
         {
             speed = speedLimit;
+            shouldContinue = false;
+
         }
-        else if (speedLimit > speed && acc == -1 && power * previousSpeed > 0)
+        else if (speedLimit > speed && acc == -1 && power * speed > 0)
         {
             speed = speedLimit;
+            shouldContinue = false;
         }
 
-        switch (stoppingFromBackward)
+        if (Math.Abs(speed - speedLimit) < Margin && Math.Abs(acceleration) < 0.5)
         {
-            case true when throttle == 0 && speed > 0:
-            case false when throttle == 0 && speed < 0:
-                speed = 0;
-                break;
+            speed = speedLimit;
+            shouldContinue = false;
+
+            //power = GetPowerFromThrottle(throttle, maxPowerForward, maxPowerBackwards);
         }
 
         time += Dt;
-
         pointList.Add(new (speed, time));
+        return shouldContinue;
     }
 
     /// <summary>
