@@ -85,7 +85,7 @@
 
     private readonly Dictionary<int, ShipBuildContainer> shipBuildCache = new();
 
-    private readonly List<int> throttleList = new() {AccelerationHelper.Zero, AccelerationHelper.FullAhead, AccelerationHelper.FullReverse};
+    private readonly List<int> throttleList = new() { AccelerationHelper.Zero, AccelerationHelper.FullAhead, AccelerationHelper.FullReverse };
 
     private int firstGear = AccelerationHelper.Zero;
 
@@ -256,11 +256,10 @@
             CloseOnEscapeKey = true,
             DisableBackdropClick = false,
         };
-        // make a copy to pass
-        var shipList = shipBuildCache.Select(x => x.Value).ToList();
+
         var parameters = new DialogParameters
         {
-            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipList },
+            { nameof(ShipBuildContainerSelectionDialog.ShipList), shipBuildCache.Select(x => x.Value).ToList() },
         };
 
         var result = await (await DialogService.ShowAsync<ShipBuildContainerSelectionDialog>("Add and remove ships", parameters, options)).Result;
