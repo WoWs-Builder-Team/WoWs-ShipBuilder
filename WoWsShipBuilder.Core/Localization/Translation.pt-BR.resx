@@ -1760,6 +1760,9 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   <data name="Unit_DegreePerSecond2" xml:space="preserve">
       <value>º/s²</value>
   </data>
+  <data name="BuildImageSettingsDialog_Modules" xml:space="preserve">
+      <value>Módulos</value>
+  </data>
   <data name="BuildImageSettingsDialog_CaptainSkills" xml:space="preserve">
       <value>Habilidades do Comandante</value>
   </data>
@@ -1768,6 +1771,36 @@ Você pode usar o botão de Mudar builds para gerenciar as builds de navios. Voc
   </data>
   <data name="BuildImageSettingsDialog_Consumables" xml:space="preserve">
       <value>Consumíveis</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Upgrades" xml:space="preserve">
+      <value>Atualizações</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumns" xml:space="preserve">
+      <value>Duas colunas</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Layout" xml:space="preserve">
+      <value>LAYOUT</value>
+  </data>
+  <data name="BuildImageSettingsDialog_Elements" xml:space="preserve">
+      <value>ELEMENTOS</value>
+  </data>
+  <data name="BuildImageSettingsDialog_TwoColumnsTooltip" xml:space="preserve">
+      <value>Amplia o layout da imagem dividindo elementos em 2 colunas (as habilidades do capitão e sinais não serão ocultáveis).</value>
+  </data>
+  <data name="BuildNameDialog_BuildName" xml:space="preserve">
+      <value>Nome da build</value>
+  </data>
+  <data name="BuildNameDialog_EnterBuildName" xml:space="preserve">
+      <value>Digite o nome da build</value>
+  </data>
+  <data name="BuildImageRenderDialog_SaveImage" xml:space="preserve">
+      <value>Salvar Imagem</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetUrl" xml:space="preserve">
+      <value>Obter URL</value>
+  </data>
+  <data name="BuildImageRenderDialog_GetShortLink" xml:space="preserve">
+      <value>Obter Link Curto</value>
   </data>
   <data name="ServerTypeLive" xml:space="preserve">
       <value>Live</value>
