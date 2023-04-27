@@ -140,8 +140,6 @@ public static class AccelerationHelper
                 while (cycle)
                 {
                     cycle = GenerateAccelerationPoints(result, throttle, isDown, ref time, ref speed, speedLimit, ref power, powerIncreaseForward, maxPowerForward, maxForwardSpeed, forsageForwardMaxSpeed, forsageForward, powerIncreaseBackward, maxPowerBackwards, maxReverseSpeed, forsageBackwardsMaxSpeed, forsageBackwards);
-                    
-                    //cycle = ShouldCycle(throttle, speed, speedLimit, ref speedLimitCrossing);
 
                     // infinite iterations failsafe.
                     iterations++;
@@ -163,47 +161,6 @@ public static class AccelerationHelper
     }
 
     /// <summary>
-    /// Return if the calculation cycle should continue or stop.
-    /// </summary>
-    /// <param name="throttle">Current throttle to reach.</param>
-    /// <param name="speed">Current speed.</param>
-    /// <param name="speedLimit">Current Speed limit.</param>
-    /// <param name="speedLimitCrossing">Check if the initial speed is over the current intermediate gear speed limit.</param>
-    /// <returns>If the cycle should continue.</returns>
-    private static bool ShouldCycle(int throttle, double speed, double speedLimit, ref bool speedLimitCrossing)
-    {
-        switch (throttle)
-        {
-            case 4:
-            {
-                // we are accelerating/going towards max speed. Graph is going upwards
-                return speed < speedLimit - Margin;
-            }
-
-            case -1:
-            {
-                // we are decelerating/going towards reverse speed. Graph is going downwards.
-                return speed > speedLimit + Margin;
-            }
-
-            default:
-            {
-                if (speedLimitCrossing && speed < speedLimit - Margin)
-                {
-                    speedLimitCrossing = false;
-                }
-
-                if (!speedLimitCrossing)
-                {
-                    return speed < speedLimit - Margin;
-                }
-
-                return true;
-            }
-        }
-    }
-
-    /// <summary>
     /// Returns the ratio between power forward and power backward. General value is 4 for BBs, 3 for cruiser, 2 for destroyers.<br/>
     /// Caracciolo is the only current exception, with a value of 3.
     /// </summary>
@@ -222,6 +179,7 @@ public static class AccelerationHelper
             ShipClass.Battleship => 4,
             ShipClass.Cruiser => 3,
             ShipClass.Destroyer => 2,
+            ShipClass.Submarine => 2,
             _ => 4,
         };
     }
@@ -370,14 +328,13 @@ public static class AccelerationHelper
             acceleration = (-maxPowerBackwards * forsageBackwards) + drag;
         }
 
-        double previousSpeed = speed;
         speed += Dt * acceleration;
+
         // the last part of the following two comparison is done with previousSpeed in the nga code, but seems to work better with speed.
         if (speedLimit < speed && acc == 1 && power * speed > 0)
         {
             speed = speedLimit;
             shouldContinue = false;
-
         }
         else if (speedLimit > speed && acc == -1 && power * speed > 0)
         {
@@ -385,12 +342,10 @@ public static class AccelerationHelper
             shouldContinue = false;
         }
 
-        if (Math.Abs(speed - speedLimit) < Margin && Math.Abs(acceleration) < 0.5)
+        if (Math.Abs(speed - speedLimit) < Margin && Math.Abs(acceleration) < 0.25)
         {
             speed = speedLimit;
             shouldContinue = false;
-
-            //power = GetPowerFromThrottle(throttle, maxPowerForward, maxPowerBackwards);
         }
 
         time += Dt;
