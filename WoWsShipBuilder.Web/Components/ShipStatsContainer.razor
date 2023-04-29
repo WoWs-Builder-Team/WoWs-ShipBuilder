@@ -347,15 +347,16 @@
         return new(ship, build, containerId, activeConsumables, false, shipDataContainer, modifiers);
     }
 
-    public static async Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
+    public static Task<ShipViewModel> CreateViewModel(string shipIndex, Build? build, ILocalizer localizer)
     {
         var shipSummary = AppData.ShipSummaryList.Single(x => x.Index.Equals(shipIndex));
         var ship = AppData.FindShipFromSummary(shipSummary);
         var vmParams = new ShipViewModelParams(ship, shipSummary, build);
 
         ShipViewModel vm = new(null!, localizer, Logging.LoggerFactory.CreateLogger<ShipViewModel>(), vmParams);
-        await vm.InitializeData(vmParams);
+        vm.InitializeData(vmParams);
 
-        return vm;
+        // workaround to keep method signature compatible even though InitializeData is no longer async
+        return Task.FromResult(vm);
     }
 }
