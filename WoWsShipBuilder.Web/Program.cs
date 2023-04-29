@@ -13,10 +13,7 @@ using WoWsShipBuilder.Web.Services;
 using WoWsShipBuilder.Web.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.ConfigureAppConfiguration((_, config) =>
-{
-    config.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
-});
+builder.Configuration.AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(options =>
@@ -60,13 +57,10 @@ app.UseHttpMetrics(options =>
 });
 app.UseReferrerTracking();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapMetrics();
-    endpoints.MapBlazorHub();
-    endpoints.MapFallbackToPage("/_Host");
-});
+app.MapControllers();
+app.MapMetrics();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 var culture = AppConstants.DefaultCultureDetails.CultureInfo;
 CultureInfo.DefaultThreadCurrentCulture = culture;

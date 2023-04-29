@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
         <ApplicationIcon>Assets\ShipBuilderIcon_bg.ico</ApplicationIcon>
         <Win32Resource />
         <SignAssembly>false</SignAssembly>
