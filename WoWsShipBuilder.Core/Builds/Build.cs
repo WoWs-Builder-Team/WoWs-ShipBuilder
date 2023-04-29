@@ -4,8 +4,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using NLog;
 using WoWsShipBuilder.Core.Utility;
 using WoWsShipBuilder.DataStructures;
 
@@ -104,7 +104,7 @@ public class Build
         }
         catch (Exception e)
         {
-            effectiveLogger.Warn(e, $"The string {buildString} is not in a valid format for a Build object");
+            effectiveLogger.LogWarning(e, "The string {BuildString} is not in a valid format for a Build object", buildString);
             throw new FormatException("Invalid build string format", e);
         }
     }
@@ -141,18 +141,18 @@ public class Build
         if (oldBuild.BuildVersion < 3)
         {
             oldBuild.Signals = ReduceToIndex(oldBuild.Signals).ToList();
-            logger.Debug("Reducing signal names to index for build {}", oldBuild.Hash);
+            logger.LogDebug("Reducing signal names to index for build {}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < 4)
         {
             oldBuild.Modules = ReduceToIndex(oldBuild.Modules).ToList();
-            logger.Debug("Reducing module names to index for build {}", oldBuild.Hash);
+            logger.LogDebug("Reducing module names to index for build {}", oldBuild.Hash);
         }
 
         if (oldBuild.BuildVersion < CurrentBuildVersion)
         {
-            logger.Info("Upgrading build {}({}) from build version {} to current version.", oldBuild.BuildName, oldBuild.Hash, oldBuild.BuildVersion);
+            logger.LogInformation("Upgrading build {OldBuildName}({OldBuildHash}) from build version {OldBuildVersion} to current version", oldBuild.BuildName, oldBuild.Hash, oldBuild.BuildVersion);
             oldBuild.BuildVersion = CurrentBuildVersion;
         }
 

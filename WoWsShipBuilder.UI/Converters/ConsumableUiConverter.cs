@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.DataContainers;
 
@@ -44,7 +45,7 @@ namespace WoWsShipBuilder.UI.Converters
                 }
             }
 
-            Logging.Logger.Trace("No matching processing path for consumable data conversion found. Element 1: {0}, Element 2: {1}", values[0], values[1]);
+            Logging.Logger.LogTrace("No matching processing path for consumable data conversion found. Element 1: {Values0}, Element 2: {Values1}", values[0], values[1]);
             return new BindingNotification(new NotSupportedException());
         }
     }

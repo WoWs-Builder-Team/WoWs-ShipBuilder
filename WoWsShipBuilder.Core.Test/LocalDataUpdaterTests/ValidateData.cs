@@ -2,6 +2,7 @@
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using WoWsShipBuilder.Core.DataProvider;
@@ -16,7 +17,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
         public async Task ValidateData_NoLocalVersionInfo_False()
         {
             // Arrange
-            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
+            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
             // Act
             var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -32,7 +33,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             var versionInfo = CreateTestVersionInfo(1, GameVersion.Default);
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddDirectory(@"json/live/Ability");
-            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
+            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
             // Act
             var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -59,7 +60,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Germany.json", new("test"));
-            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
+            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
             // Act
             var result = await updater.ValidateData(ServerType.Live, @"json/live");
@@ -76,7 +77,7 @@ namespace WoWsShipBuilder.Core.Test.LocalDataUpdaterTests
             appDataHelper.Setup(x => x.GetCurrentVersionInfo(ServerType.Live)).ReturnsAsync(versionInfo);
             mockFileSystem.AddFile(@"json/live/Ability/Common.json", new MockFileData("test"));
             mockFileSystem.AddFile(@"json/live/Ship/Japan.json", new MockFileData("test"));
-            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new());
+            var updater = new LocalDataUpdater(mockFileSystem, awsClientMock.Object, appDataHelper.Object, new(), NullLogger<LocalDataUpdater>.Instance);
 
             // Act
             var result = await updater.ValidateData(ServerType.Live, @"json/live");

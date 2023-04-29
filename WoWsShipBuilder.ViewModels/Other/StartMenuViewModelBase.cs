@@ -2,14 +2,13 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.Core.Services;
-using WoWsShipBuilder.Core.Settings;
 using WoWsShipBuilder.ViewModels.Base;
 using WoWsShipBuilder.ViewModels.Helper;
 
@@ -25,17 +24,14 @@ namespace WoWsShipBuilder.ViewModels.Other
 
         private readonly ILocalizer localizer;
 
-        protected readonly AppSettings AppSettings;
-
         private int? selectedBuild;
 
-        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer, AppSettings appSettings)
+        public StartMenuViewModelBase(INavigationService navigationService, IClipboardService clipboardService, IAppDataService appDataService, IUserDataService userDataService, ILocalizer localizer)
         {
             NavigationService = navigationService;
             ClipboardService = clipboardService;
             AppDataService = appDataService;
             this.localizer = localizer;
-            AppSettings = appSettings;
             if (!AppData.Builds.Any())
             {
                 userDataService.LoadBuilds();
@@ -81,7 +77,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             var result = (await SelectShipInteraction.Handle(dc))?.FirstOrDefault();
             if (result != null)
             {
-                Logging.Logger.Info("Selected ship with index {}", result.Index);
+                Logging.Logger.LogInformation("Selected ship with index {}", result.Index);
                 try
                 {
                     var ship = AppData.FindShipFromSummary(result);
@@ -89,7 +85,7 @@ namespace WoWsShipBuilder.ViewModels.Other
                 }
                 catch (Exception e)
                 {
-                    Logging.Logger.Error(e, "Error during the loading of the local json files");
+                    Logging.Logger.LogError(e, "Error during the loading of the local json files");
                     await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
                 }
             }
@@ -116,7 +112,7 @@ namespace WoWsShipBuilder.ViewModels.Other
                 }
             }
 
-            Logging.Logger.Info("Loading build {0}", JsonConvert.SerializeObject(build));
+            Logging.Logger.LogInformation("Loading build {@Build}", build);
 
             var summary = AppData.ShipSummaryList.SingleOrDefault(ship => ship.Index.Equals(build.ShipIndex));
             if (summary is null)
@@ -132,7 +128,7 @@ namespace WoWsShipBuilder.ViewModels.Other
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e, "Error during the loading of the local json files");
+                Logging.Logger.LogError(e, "Error during the loading of the local json files");
                 await MessageBoxInteraction.Handle((Translation.MessageBox_Error, Translation.MessageBox_LoadingError, true));
             }
         }

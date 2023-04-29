@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace WoWsShipBuilder.Core.HttpClients;
 
@@ -23,10 +24,10 @@ public class RetryHttpHandler : DelegatingHandler
                 return response;
             }
 
-            Logging.Logger.Info("Http request for uri {0} failed. Retry attempt {1}", request.RequestUri, i + 1);
+            Logging.Logger.LogInformation("Http request for uri {RequestUri} failed. Retry attempt {Attempt}", request.RequestUri, i + 1);
         }
 
-        Logging.Logger.Warn("Reached maximum number of retry requests for uri {0}. Continuing with last result.", request.RequestUri);
+        Logging.Logger.LogWarning("Reached maximum number of retry requests for uri {RequestUri}. Continuing with last result", request.RequestUri);
         return await base.SendAsync(request, cancellationToken);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Builds;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.DataStructures;
@@ -75,7 +76,7 @@ namespace WoWsShipBuilder.UI.ViewModels
                 CaptainSkillSelectorViewModel = new(ship.ShipClass, CaptainSkillSelectorViewModel.LoadParams(ship.ShipNation), true),
                 SignalSelectorViewModel = new(),
                 UpgradePanelViewModel = new UpgradePanelViewModel(ship, AppData.ModernizationCache),
-                ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>()),
+                ConsumableViewModel = ConsumableViewModel.Create(ship, new List<string>(), Logging.LoggerFactory),
             };
             vm.LoadBuilds(build);
             return vm;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.DataProvider;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
@@ -50,7 +51,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         var usingFallback = false;
         if (!(AppData.ConsumableList?.TryGetValue(consumableIdentifier, out var consumable) ?? false))
         {
-            Logging.Logger.Error("Consumable {} not found in cached consumable list. Using dummy consumable instead.", consumableIdentifier);
+            Logging.Logger.LogError("Consumable {Identifier} not found in cached consumable list. Using dummy consumable instead", consumableIdentifier);
             usingFallback = true;
             consumable = new()
             {
@@ -259,7 +260,7 @@ public partial record ConsumableDataContainer : DataContainerBase
         }
         else if (usingFallback)
         {
-            Logging.Logger.Warn("Skipping consumable modifier calculation due to fallback consumable.");
+            Logging.Logger.LogWarning("Skipping consumable modifier calculation due to fallback consumable.");
         }
 
         var consumableDataContainer = new ConsumableDataContainer

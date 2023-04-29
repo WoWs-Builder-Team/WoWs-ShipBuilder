@@ -35,7 +35,7 @@ public class FirebaseLinkShortener : ILinkShortener
 
     public async Task<ShorteningResult> CreateLinkForBuild(Build build)
     {
-        logger.LogInformation("Creating short link for build {}", build.Hash);
+        logger.LogInformation("Creating short link for build {BuildHash}", build.Hash);
         string buildString = build.CreateShortStringFromBuild();
         string encodedBuild = WebUtility.UrlEncode(buildString);
 
@@ -47,7 +47,7 @@ public class FirebaseLinkShortener : ILinkShortener
 
     public async Task<ShorteningResult> CreateShortLink(string link)
     {
-        logger.LogInformation("Creating short link for link {}", link);
+        logger.LogInformation("Creating short link for link {Link}", link);
         var request = new DynamicLinkRequest(new(options.UriPrefix, link), new(LinkSuffixType.SHORT));
         return await SendRequestAsync(request);
     }
@@ -70,9 +70,9 @@ public class FirebaseLinkShortener : ILinkShortener
 
     private async Task ResetLock()
     {
-        logger.LogDebug("Scheduling reset for semaphore permit. Available permits: {}", semaphore.CurrentCount);
+        logger.LogDebug("Scheduling reset for semaphore permit. Available permits: {PermitCount}", semaphore.CurrentCount);
         await Task.Delay(1000);
         semaphore.Release();
-        logger.LogDebug("Permit released. Available permits: {}", semaphore.CurrentCount);
+        logger.LogDebug("Permit released. Available permits: {PermitCount}", semaphore.CurrentCount);
     }
 }

@@ -6,6 +6,7 @@ using Prometheus;
 using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
+using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Services;
 using WoWsShipBuilder.Web.Extensions;
 using WoWsShipBuilder.Web.Services;
@@ -25,7 +26,7 @@ builder.Services.AddServerSideBlazor(options =>
 builder.ConfigureShipBuilderOptions();
 
 builder.Logging.ClearProviders();
-builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false });
+builder.Host.UseNLog(new() { RemoveLoggerFactoryFilter = false, ParseMessageTemplates = true });
 SetupExtensions.ConfigureNlog(builder.Configuration.GetValue<bool>("DisableLoki"), builder.Environment.IsDevelopment());
 
 PlatformRegistrationManager.SetRegistrationNamespaces(RegistrationNamespace.Blazor);
@@ -40,6 +41,7 @@ builder.Services.AddShipBuilderServerServices();
 
 var app = builder.Build();
 app.Services.UseMicrosoftDependencyResolver();
+Logging.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

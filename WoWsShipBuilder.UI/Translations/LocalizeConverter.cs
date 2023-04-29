@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core;
 using WoWsShipBuilder.Core.Localization;
 using WoWsShipBuilder.UI.Settings;
@@ -42,7 +43,7 @@ namespace WoWsShipBuilder.UI.Translations
                     // TODO: fix properly by handling Unit property in TooltipDataElement generation
                     if (localization == null && !string.IsNullOrWhiteSpace(localizerKey))
                     {
-                        Logging.Logger.Warn($"Missing localization for key {localizerKey}.");
+                        Logging.Logger.LogWarning("Missing localization for key {LocalizerKey}", localizerKey);
                         Debug.WriteLine(localizerKey);
                     }
 

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core;
 
 namespace WoWsShipBuilder.UI.Utilities
@@ -23,7 +24,7 @@ namespace WoWsShipBuilder.UI.Utilities
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e, "Error while writing image to clipboard.");
+                Logging.Logger.LogError(e, "Error while writing image to clipboard");
             }
         }
 
@@ -57,7 +58,7 @@ namespace WoWsShipBuilder.UI.Utilities
             }
             catch (Exception e)
             {
-                Logging.Logger.Error(e, "Error while accessing clipboard.");
+                Logging.Logger.LogError(e, "Error while accessing clipboard");
             }
         }
 

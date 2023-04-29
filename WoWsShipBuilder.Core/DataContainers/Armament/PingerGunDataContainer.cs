@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using WoWsShipBuilder.Core.Extensions;
 using WoWsShipBuilder.DataElements.DataElementAttributes;
 using WoWsShipBuilder.DataElements.DataElements;
@@ -46,7 +47,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             var pingerUpgrade = shipConfiguration.FirstOrDefault(c => c.UcType == ComponentType.Sonar);
             if (pingerUpgrade is null && ship.PingerGunList.Count is 1)
             {
-                Logging.Logger.Warn("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available.", ship.Name);
+                Logging.Logger.LogWarning("No sonar upgrade information found for ship {ShipName} even though there is one sonar module available", ship.Name);
                 return null;
             }
 
@@ -62,7 +63,7 @@ namespace WoWsShipBuilder.Core.DataContainers
             }
             else
             {
-                Logging.Logger.Warn("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
+                Logging.Logger.LogWarning("Unable to retrieve sonar component from upgrade info for ship {} and ship upgrade {}", ship.Index, pingerUpgrade.Name);
                 pingerGun = ship.PingerGunList.First().Value;
             }
 
