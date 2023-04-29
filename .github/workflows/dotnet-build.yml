@@ -1,6 +1,6 @@
 name: Build and run tests.
 
-on: 
+on:
   push:
     branches-ignore:
       - main
@@ -13,7 +13,7 @@ on:
       - 'workflows/*.yml'
       - 'deployment/**/*.*'
 
-jobs: 
+jobs:
   build-and-test:
     runs-on: ubuntu-latest
     name: Build application
@@ -25,7 +25,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          global-json-file: global.json
       - name: Restore dependencies
         run: dotnet restore
       - name: Build application in Debug mode
