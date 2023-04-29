@@ -53,7 +53,7 @@ public class NavigationService : INavigationService
         await using var subScope = scope.BeginLifetimeScope();
         var vmParams = new ShipViewModelParams(ship, summary, build);
         var vm = subScope.Resolve<ShipWindowViewModel>(new TypedParameter(typeof(ShipViewModelParams), vmParams));
-        await vm.InitializeData(vmParams);
+        vm.InitializeData(vmParams);
 
         MainWindow win = new()
         {

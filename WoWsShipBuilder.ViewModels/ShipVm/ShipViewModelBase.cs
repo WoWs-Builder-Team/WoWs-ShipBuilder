@@ -138,12 +138,12 @@ public partial class ShipViewModelBase : ViewModelBase
         disposables.Clear();
         var ship = AppData.FindShipFromSummary(summary);
 
-        await InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
+        InitializeData(ship, summary.PrevShipIndex, summary.NextShipsIndex);
     }
 
-    public async Task InitializeData(ShipViewModelParams viewModelParams)
+    public void InitializeData(ShipViewModelParams viewModelParams)
     {
-        await InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
+        InitializeData(viewModelParams.Ship, viewModelParams.ShipSummary.PrevShipIndex, viewModelParams.ShipSummary.NextShipsIndex, viewModelParams.Build);
     }
 
     public Build CreateBuild(string buildName)
@@ -151,7 +151,7 @@ public partial class ShipViewModelBase : ViewModelBase
         return new(buildName, CurrentShipIndex, RawShipData.ShipNation, ShipModuleViewModel.SaveBuild(), UpgradePanelViewModel.SaveBuild(), ConsumableViewModel.SaveBuild(), CaptainSkillSelectorViewModel!.GetCaptainIndex(), CaptainSkillSelectorViewModel!.GetSkillNumberList(), SignalSelectorViewModel!.GetFlagList());
     }
 
-    private async Task InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
+    private void InitializeData(Ship ship, string? previousIndex, List<string>? nextShipsIndexes, Build? build = null)
     {
         logger.LogInformation("Loading data for ship {Index}", ship.Index);
         logger.LogDebug("Build is null: {BuildIsNull}", build is null);
@@ -172,7 +172,6 @@ public partial class ShipViewModelBase : ViewModelBase
         ConsumableViewModel = ConsumableViewModel.Create(RawShipData, new List<string>(), Logging.LoggerFactory);
 
         ShipStatsControlViewModel = new(EffectiveShipData);
-        await ShipStatsControlViewModel.UpdateShipStats(ShipModuleViewModel.SelectedModules.ToList(), GenerateModifierList());
 
         if (build != null)
         {
@@ -192,7 +191,7 @@ public partial class ShipViewModelBase : ViewModelBase
         NextShips = nextShipsIndexes?.Select(index => AppData.ShipSummaryList.First(sum => sum.Index == index)).ToList();
 
         AddChangeListeners();
-        UpdateStatsViewModel();
+        UpdateStatsViewModel(true);
         if (build != null)
         {
             CurrentBuildName = build.BuildName;
@@ -219,7 +218,7 @@ public partial class ShipViewModelBase : ViewModelBase
         }
     }
 
-    private void UpdateStatsViewModel()
+    private void UpdateStatsViewModel(bool skipDelay = false)
     {
         tokenSource.Cancel();
         tokenSource.Dispose();
@@ -231,7 +230,11 @@ public partial class ShipViewModelBase : ViewModelBase
             {
                 try
                 {
-                    await Task.Delay(250, token);
+                    if (!skipDelay)
+                    {
+                        await Task.Delay(250, token);
+                    }
+
                     if (!token.IsCancellationRequested)
                     {
                         await semaphore.WaitAsync(token);
