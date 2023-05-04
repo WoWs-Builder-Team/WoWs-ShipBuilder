@@ -4,17 +4,22 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> ManeuverabilityDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> ManeuverabilityDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Maneuverability;
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeed" Title="Max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityMaxSpeed
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeedAtPeriscopeDepth" Title="Periscope max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleMaxSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxSpeedAtPeriscopeDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtPeriscope))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxSpeedAtMaxDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityMaxSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilitySubsMaxSpeedAtMaxDepth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleRudderShiftTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityRudderShiftTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleTurningCircle = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ManeuverabilityTurningCircle))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleFullAhead = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleFullReverse = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_FullReverseTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleRudderProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RudderBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
+        var columnTitleEngineProtection = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_EngineBlastProtection))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BlastProtection))}";
+
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleMaxSpeed}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityMaxSpeed)" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleMaxSpeedAtPeriscopeDepth}"])" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtPeriscopeDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityMaxSpeedAtPeriscopeDepth != 0)
                 {
@@ -29,9 +34,8 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityMaxSpeedAtMaxDepth" Title="Max depth max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleMaxSpeedAtMaxDepth}"])" T="GridDataWrapper" Title="@columnTitleMaxSpeedAtMaxDepth" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ManeuverabilityMaxSpeedAtMaxDepth != 0)
                 {
@@ -46,42 +50,12 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityRudderShiftTime" Title="Rudder shift time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityRudderShiftTime
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTurningCircle" Title="Turning circle (m)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityTurningCircle
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTimeToFullAhead" Title="Full ahead time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityTimeToFullAhead
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityTimeToFullReverse" Title="Full reverse time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-               @context.Item.ManeuverabilityTimeToFullReverse
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityRudderProtection" Title="Rudder protection" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityRudderProtection
-            </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="ManeuverabilityEngineProtection" Title="Engine protection" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @context.Item.ManeuverabilityEngineProtection
-            </CellTemplate>
-        </Column>
+        </TemplateColumn>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleRudderShiftTime}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityRudderShiftTime)" Title="@columnTitleRudderShiftTime" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleTurningCircle}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTurningCircle)" Title="@columnTitleTurningCircle" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleFullAhead}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTimeToFullAhead)" Title="@columnTitleFullAhead" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleFullReverse}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityTimeToFullReverse)" Title="@columnTitleFullReverse" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleRudderProtection}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityRudderProtection)" Title="@columnTitleRudderProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Maneuverability.ShipComparisonDataSectionToString()}_{columnTitleEngineProtection}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ManeuverabilityEngineProtection)" Title="@columnTitleEngineProtection" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

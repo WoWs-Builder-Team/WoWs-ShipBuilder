@@ -634,7 +634,7 @@
       <value>In squadron</value>
   </data>
   <data name="ShipStats_PlaneHp" xml:space="preserve">
-    <value>Hp per plane</value>
+      <value>HP per plane</value>
   </data>
   <data name="ShipStats_RestorationTime" xml:space="preserve">
     <value>Restoration time</value>
@@ -1912,5 +1912,83 @@ You can use the Change builds button to manage the builds of single ships. You c
   </data>
   <data name="ShipComparison_MaxRange" xml:space="preserve">
       <value>Max Range</value>
+  </data>
+  <data name="ShipStats_Dpm" xml:space="preserve">
+      <value>DPM</value>
+  </data>
+  <data name="ShipStats_Salvo" xml:space="preserve">
+      <value>Salvo</value>
+  </data>
+  <data name="ShipComparison_Fpm" xml:space="preserve">
+      <value>FPM</value>
+  </data>
+  <data name="ShipComparison_1st" xml:space="preserve">
+      <value>1st</value>
+  </data>
+  <data name="ShipComparison_2nd" xml:space="preserve">
+      <value>2nd</value>
+  </data>
+  <data name="ShipComparison_Amount" xml:space="preserve">
+      <value>Amount</value>
+  </data>
+  <data name="ShipComparison_OnFire" xml:space="preserve">
+      <value>On Fire</value>
+  </data>
+  <data name="ShipComparison_SmokeFiring" xml:space="preserve">
+      <value>Smoke Firing</value>
+  </data>
+  <data name="ShipComparison_FullReverseTime" xml:space="preserve">
+      <value>Full Reverse Time</value>
+  </data>
+  <data name="ShipComparison_Charges" xml:space="preserve">
+      <value>Charges</value>
+  </data>
+  <data name="ShipComparison_DropRange" xml:space="preserve">
+      <value>Drop range</value>
+  </data>
+  <data name="ShipComparison_PlanesInSquadron" xml:space="preserve">
+      <value>Planes in squadron</value>
+  </data>
+  <data name="ShipComparison_SplashRadius" xml:space="preserve">
+      <value>Splash radius</value>
+  </data>
+  <data name="ShipComparison_InitialSpeed" xml:space="preserve">
+      <value>Initial speed</value>
+  </data>
+  <data name="ShipComparison_PlaneHp" xml:space="preserve">
+      <value>Plane HP</value>
+  </data>
+  <data name="ShipComparison_Spread" xml:space="preserve">
+      <value>Spread</value>
+  </data>
+  <data name="ShipComparison_SwitchTime" xml:space="preserve">
+      <value>Switch time</value>
+  </data>
+  <data name="ShipComparison_Plane" xml:space="preserve">
+      <value>Plane</value>
+  </data>
+  <data name="ShipComparison_Planes" xml:space="preserve">
+      <value>Planes</value>
+  </data>
+  <data name="ShipComparison_OnDeck" xml:space="preserve">
+      <value>On Deck</value>
+  </data>
+  <data name="ShipComparison_EngineBoostDuration" xml:space="preserve">
+      <value>Engine boost duration</value>
+  </data>
+  <data name="ShipComparison_Invulnerability" xml:space="preserve">
+      <value>Invulnerability</value>
+  </data>
+  <data name="ShipComparison_ViewDistance" xml:space="preserve">
+      <value>View distance</value>
+  </data>
+  <data name="ShipComparison_AreaChange" xml:space="preserve">
+      <value>Area Change</value>
+  </data>
+  <data name="ShipComparison_PerPlane" xml:space="preserve">
+      <value>Per Plane</value>
+  </data>
+  <data name="ShipComparison_TorpsPerPlane" xml:space="preserve">
+      <value>Torpedoes per plane</value>
   </data>
 </root>

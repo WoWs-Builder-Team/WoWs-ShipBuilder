@@ -4,11 +4,38 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> RocketPlanesDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> RocketPlanesDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.RocketPlanes;
+        string dataSectionString = ShipComparisonDataSections.RocketPlanes.ShipComparisonDataSectionToString();
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesType" Title="Type" SortBy="@(x=> !x.RocketPlanesType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanesType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
+        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
+        var columnTitlePlanesPerAttack = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_NumberDuringAttack))}";
+        var columnTitlePlanesOnDeck = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Planes))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_OnDeck))}";
+        var columnTitleRestorationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RestorationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleCruisingSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CruisingSpeed))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Speed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMaxSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaxSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleMinSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MinSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Knots)})";
+        var columnTitleEngineBoost = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_EngineBoostDuration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInitialBoostDuration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Duration))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInitialBoostSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_InitialBoost))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Amount))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
+        var columnTitleSquadronHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SquadronHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
+        var columnTitleAttackGroupHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackGroupHp))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_HP))}";
+        var columnTitleDamageTakenWhileAttacking = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DamageTakenDuringAttack))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleRocketsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Fighter))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PerPlane))}";
+        var columnTitlePreparationTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_PreparationTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleAimingTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleFullyAimedTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TimeToFullyAimed))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleInvulnerabilityTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Invulnerability))} {element.localizer.SimpleAppLocalization(nameof(Translation.AccelerationChart_Time))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleAttackCooldown = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AttackCd))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleConcealment = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Concealment))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleViewRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ViewDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.RocketPlanesType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.RocketPlanesType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesType.Any())
                 {
@@ -32,9 +59,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesInSquadron.Any())
                 {
@@ -58,9 +85,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesPerAttack" Title="Planes per attack" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesPerAttack}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlanesPerAttack}"])" T="GridDataWrapper" Title="@columnTitlePlanesPerAttack" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesPerAttack.Any())
                 {
@@ -84,9 +111,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesOnDeck" Title="Planes on deck" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesOnDeck}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlanesOnDeck}"])" T="GridDataWrapper" Title="@columnTitlePlanesOnDeck" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesOnDeck.Any())
                 {
@@ -110,9 +137,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesRestorationTime" Title="Restoration time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRestorationTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleRestorationTime}"])" T="GridDataWrapper" Title="@columnTitleRestorationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesRestorationTime.Any())
                 {
@@ -136,9 +163,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesCruisingSpeed" Title="Cruising speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCruisingSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCruisingSpeed}"])" T="GridDataWrapper" Title="@columnTitleCruisingSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesCruisingSpeed.Any())
                 {
@@ -162,9 +189,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesMaxSpeed" Title="Max speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMaxSpeed}"])" T="GridDataWrapper" Title="@columnTitleMaxSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesMaxSpeed.Any())
                 {
@@ -188,9 +215,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesMinSpeed" Title="Min speed (kts)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMinSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMinSpeed}"])" T="GridDataWrapper" Title="@columnTitleMinSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesMinSpeed.Any())
                 {
@@ -214,9 +241,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesEngineBoostDuration" Title="Engine boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleEngineBoost}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleEngineBoost}"])" T="GridDataWrapper" Title="@columnTitleEngineBoost" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesEngineBoostDuration.Any())
                 {
@@ -240,9 +267,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesInitialBoostDuration" Title="Initial boost duration (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostDuration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleInitialBoostDuration}"])" T="GridDataWrapper" Title="@columnTitleInitialBoostDuration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesInitialBoostDuration.Any(x => x != 0))
                 {
@@ -266,9 +293,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesInitialBoostValue" Title="Initial boost amount (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialBoostSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleInitialBoostSpeed}"])" T="GridDataWrapper" Title="@columnTitleInitialBoostSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesInitialBoostValue.Any(x => x != 0))
                 {
@@ -292,9 +319,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesPlaneHp" Title="Plane HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlaneHp}"])" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesPlaneHp.Any())
                 {
@@ -318,9 +345,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesSquadronHp" Title="Squadron HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSquadronHp}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSquadronHp}"])" T="GridDataWrapper" Title="@columnTitleSquadronHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesSquadronHp.Any())
                 {
@@ -344,9 +371,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesAttackGroupHp" Title="Attack group HP" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackGroupHp}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAttackGroupHp}"])" T="GridDataWrapper" Title="@columnTitleAttackGroupHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesAttackGroupHp.Any())
                 {
@@ -370,9 +397,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesDamageDuringAttack" Title="Damage taken while attacking (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDamageTakenWhileAttacking}"])" T="GridDataWrapper" Title="@columnTitleDamageTakenWhileAttacking" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesDamageDuringAttack.Any())
                 {
@@ -396,9 +423,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesWeaponsPerPlane" Title="Rockets per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRocketsPerPlane}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleRocketsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleRocketsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesWeaponsPerPlane.Any())
                 {
@@ -422,9 +449,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesPreparationTime" Title="Preparation time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePreparationTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePreparationTime}"])" T="GridDataWrapper" Title="@columnTitlePreparationTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesPreparationTime.Any())
                 {
@@ -448,9 +475,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesAimingTime" Title="Aiming time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAimingTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAimingTime}"])" T="GridDataWrapper" Title="@columnTitleAimingTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesAimingTime.Any())
                 {
@@ -474,9 +501,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesTimeToFullyAimed" Title="To fully aimed time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFullyAimedTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFullyAimedTime}"])" T="GridDataWrapper" Title="@columnTitleFullyAimedTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesTimeToFullyAimed.Any())
                 {
@@ -500,9 +527,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesPostAttackInvulnerability" Title="Invulnerability time (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInvulnerabilityTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleInvulnerabilityTime}"])" T="GridDataWrapper" Title="@columnTitleInvulnerabilityTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesPostAttackInvulnerability.Any())
                 {
@@ -526,9 +553,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesAttackCooldown" Title="Attack cooldown (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAttackCooldown}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAttackCooldown}"])" T="GridDataWrapper" Title="@columnTitleAttackCooldown" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesAttackCooldown.Any())
                 {
@@ -552,9 +579,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesConcealment" Title="Concealment (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleConcealment}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleConcealment}"])" T="GridDataWrapper" Title="@columnTitleConcealment" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesConcealment.Any())
                 {
@@ -578,9 +605,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesSpotting" Title="View range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleViewRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleViewRange}"])" T="GridDataWrapper" Title="@columnTitleViewRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesSpotting.Any())
                 {
@@ -604,9 +631,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesAreaChangeAiming" Title="Area change while aiming (%)" SortBy="@(x => !x.RocketPlanesAreaChangeAiming.Any() ? double.MinValue : x.RocketPlanesAreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeWhileAiming}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAreaChangeWhileAiming}"])" T="GridDataWrapper" Title="@columnTitleAreaChangeWhileAiming" SortBy="@(x => !x.RocketPlanesAreaChangeAiming.Any() ? double.MinValue : x.RocketPlanesAreaChangeAiming.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesAreaChangeAiming.Any())
                 {
@@ -630,9 +657,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="RocketPlanesAreaChangePreparation" Title="Area change during preparation (%)" SortBy="@(x => !x.RocketPlanesAreaChangePreparation.Any() ? double.MinValue : x.RocketPlanesAreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAreaChangeDuringPreparation}"])" T="GridDataWrapper" Title="@columnTitleAreaChangeDuringPreparation" SortBy="@(x => !x.RocketPlanesAreaChangePreparation.Any() ? double.MinValue : x.RocketPlanesAreaChangePreparation.Select(decimal.Parse).ToList())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.RocketPlanesAreaChangePreparation.Any())
                 {
@@ -656,6 +683,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

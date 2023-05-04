@@ -4,11 +4,27 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> AswDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> AswDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Asw;
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcType" Title="Type" HeaderClass="column-text-center" CellClass="column-text-center">
+        var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
+        var columnTitleCharges = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Charges))}";
+        var columnTitleDropRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DropRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitleDropLenght = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_MaximumFlightDistance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
+        var columnTitlePlanesInSquadron = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlanesInSquadron))}";
+        var columnTitleBombsPerPlane = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerPlane))}";
+        var columnTitleBombsPerCharge = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_BombsPerCharge))}";
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleFloodChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FloodingChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DcSplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSinkSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_SinkSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
+        var columnTitleDetonationTimer = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DetonationTimer))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleDetonationDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DetonationDepth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcType is not null)
                 {
@@ -23,9 +39,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcUses" Title="Charges" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleCharges}"])" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcUses is not null)
                 {
@@ -40,9 +56,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswRange" Title="Drop Range (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDropRange}"])" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswRange is not null)
                 {
@@ -57,9 +73,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswMaxDropLength" Title="Max Drop Length (km)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDropLenght}"])" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswMaxDropLength is not null)
                 {
@@ -74,9 +90,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswPlanesInSquadron" Title="Planes in squadron" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswPlanesInSquadron is not null)
                 {
@@ -91,9 +107,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswBombsPerPlane" Title="Bombs per plane" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleBombsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswBombsPerPlane is not null)
                 {
@@ -108,9 +124,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcPerAttack" Title="Bombs in a charge" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleBombsPerCharge}"])" T="GridDataWrapper" Title="@columnTitleBombsPerCharge" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcPerAttack is not null)
                 {
@@ -125,9 +141,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="AswDcReload" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcReload is not null)
                 {
@@ -142,9 +158,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcDamage is not null)
                 {
@@ -159,9 +175,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcFireChance is not null)
                 {
@@ -176,9 +192,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcFloodingChance" Title="Flood chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleFloodChance}"])" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcFloodingChance is not null)
                 {
@@ -193,9 +209,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcSplashRadius is not null)
                 {
@@ -210,9 +226,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcSinkSpeed" Title="Sink speed (m/s)" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleSinkSpeed}"])" T="GridDataWrapper" Title="@columnTitleSinkSpeed" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcSinkSpeed))
                 {
@@ -227,9 +243,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationTimer" Title="Detonation timer (s)" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDetonationTimer}"])" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
                 {
@@ -244,9 +260,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="DcDetonationDepth" Title="Detonation depth (m)" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDetonationDepth}"])" T="GridDataWrapper" Title="@columnTitleDetonationDepth" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcDetonationDepth))
                 {
@@ -261,6 +277,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

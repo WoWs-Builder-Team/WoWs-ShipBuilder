@@ -4,11 +4,24 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> HeShellDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> HeShellDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.He;
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+
+        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleMass = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Mass))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KG)})";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleInitialSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_InitialSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
+        var columnTitleAirDrag = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AirDrag))}";
+        var columnTitleFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleSalvoFireChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Salvo))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FireChance))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
+        var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeDamage is not null)
                 {
@@ -23,9 +36,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleMass}"])" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeMass is not null)
                 {
@@ -40,9 +53,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeDamage is not null)
                 {
@@ -57,9 +70,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeSplashRadius is not null)
                 {
@@ -74,9 +87,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleSplashDamage}"])" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeSplashDamage is not null)
                 {
@@ -91,9 +104,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HePenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitlePenetration}"])" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HePenetration is not null)
                 {
@@ -108,9 +121,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleInitialSpeed}"])" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeSpeed is not null)
                 {
@@ -125,9 +138,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleAirDrag}"])" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeAirDrag is not null)
                 {
@@ -142,9 +155,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeShellFireChance" Title="Fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeShellFireChance is not null)
                 {
@@ -159,9 +172,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeSalvoFireChance" Title="Salvo fire chance (%)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleSalvoFireChance}"])" T="GridDataWrapper" Title="@columnTitleSalvoFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeSalvoFireChance is not null)
                 {
@@ -176,9 +189,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastRadius" Title="Blast radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeBlastRadius is not null)
                 {
@@ -193,9 +206,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="HeBlastPenetration" Title="Blast penetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.He.ShipComparisonDataSectionToString()}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.HeBlastPenetration is not null)
                 {
@@ -210,6 +223,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

@@ -172,7 +172,7 @@ public sealed class GridDataWrapper
         var depthChargeLauncher = shipBuildContainer.ShipDataContainer.DepthChargeLauncherDataContainer;
         var depthCharge = depthChargeLauncher?.DepthCharge ?? aswAirStrike?.Weapon as DepthChargeDataContainer;
 
-        AswDcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? "DepthCharge" : null;
+        AswDcType = aswAirStrike is not null ? nameof(Translation.ShipStats_AswAirstrike) : depthChargeLauncher is not null ? nameof(Translation.DepthCharge) : null;
         AswRange = aswAirStrike?.MaximumDistance;
         AswMaxDropLength = aswAirStrike?.MaximumFlightDistance;
         AswDcReload = depthChargeLauncher?.Reload ?? aswAirStrike?.ReloadTime;

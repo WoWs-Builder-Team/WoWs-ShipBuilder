@@ -4,11 +4,22 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer)> SapShellDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> SapShellDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Sap;
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="MainBatteryCaliber" Title="Caliber (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+
+        var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleMass = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Mass))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KG)})";
+        var columnTitleDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Damage))}";
+        var columnTitleSplashRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_SplashRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
+        var columnTitleSplashDamage = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Splash))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Damage)}";
+        var columnTitlePenetration = $"{element.localizer.SimpleAppLocalization(Translation.ShipStats_Penetration)} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleInitialSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_InitialSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MPS)})";
+        var columnTitleAirDrag = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AirDrag))}";
+        var columnTitleOvermatch = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Overmatch))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
+        var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapDamage is not null)
                 {
@@ -23,9 +34,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapMass" Title="Mass (kg)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleMass}"])" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapMass is not null)
                 {
@@ -40,9 +51,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapDamage" Title="Damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapDamage is not null)
                 {
@@ -57,9 +68,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSplashRadius" Title="Splash radius (m)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapSplashRadius is not null)
                 {
@@ -74,9 +85,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSplashDamage" Title="Splash damage" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleSplashDamage}"])" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapSplashDamage is not null)
                 {
@@ -91,9 +102,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapPenetration" Title="Penetration (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitlePenetration}"])" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapPenetration is not null)
                 {
@@ -108,9 +119,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapSpeed" Title="Initial Speed (m/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleInitialSpeed}"])" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapSpeed is not null)
                 {
@@ -125,9 +136,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapAirDrag" Title="Air drag" HeaderClass="column-text-center" CellClass="column-text-center">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleAirDrag}"])" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapAirDrag is not null)
                 {
@@ -142,9 +153,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
 
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapOvermatch" Title="Overmatch (mm)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleOvermatch}"])" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SapOvermatch is not null)
                 {
@@ -159,9 +170,9 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
-        
-        <Column Hidden="hide" T="ShipComparisonDataWrapper" Field="SapRicochet" Title="Ricochet angles (°)" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
+        </TemplateColumn>
+
+        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Sap.ShipComparisonDataSectionToString()}_{columnTitleRicochetAngles}"])" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => double.Parse(x.SapRicochet?.Split(" - ").First() ?? "0"))">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.SapRicochet))
                 {
@@ -176,6 +187,6 @@
                     </MudText>
                 }
             </CellTemplate>
-        </Column>
+        </TemplateColumn>
     };
 }

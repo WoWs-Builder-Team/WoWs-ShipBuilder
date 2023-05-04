@@ -2025,6 +2025,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1st.
+        /// </summary>
+        public static string ShipComparison_1st {
+            get {
+                return ResourceManager.GetString("ShipComparison_1st", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2nd.
+        /// </summary>
+        public static string ShipComparison_2nd {
+            get {
+                return ResourceManager.GetString("ShipComparison_2nd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aerial Torpedoes.
         /// </summary>
         public static string ShipComparison_AerialTorpedoes {
@@ -2039,6 +2057,24 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipComparison_All {
             get {
                 return ResourceManager.GetString("ShipComparison_All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amount.
+        /// </summary>
+        public static string ShipComparison_Amount {
+            get {
+                return ResourceManager.GetString("ShipComparison_Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area Change.
+        /// </summary>
+        public static string ShipComparison_AreaChange {
+            get {
+                return ResourceManager.GetString("ShipComparison_AreaChange", resourceCulture);
             }
         }
         
@@ -2088,11 +2124,29 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charges.
+        /// </summary>
+        public static string ShipComparison_Charges {
+            get {
+                return ResourceManager.GetString("ShipComparison_Charges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display only pinned ships.
         /// </summary>
         public static string ShipComparison_DisplayOnlyPinnedShips {
             get {
                 return ResourceManager.GetString("ShipComparison_DisplayOnlyPinnedShips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drop range.
+        /// </summary>
+        public static string ShipComparison_DropRange {
+            get {
+                return ResourceManager.GetString("ShipComparison_DropRange", resourceCulture);
             }
         }
         
@@ -2106,11 +2160,38 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engine boost duration.
+        /// </summary>
+        public static string ShipComparison_EngineBoostDuration {
+            get {
+                return ResourceManager.GetString("ShipComparison_EngineBoostDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filters.
         /// </summary>
         public static string ShipComparison_Filters {
             get {
                 return ResourceManager.GetString("ShipComparison_Filters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FPM.
+        /// </summary>
+        public static string ShipComparison_Fpm {
+            get {
+                return ResourceManager.GetString("ShipComparison_Fpm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Reverse Time.
+        /// </summary>
+        public static string ShipComparison_FullReverseTime {
+            get {
+                return ResourceManager.GetString("ShipComparison_FullReverseTime", resourceCulture);
             }
         }
         
@@ -2151,6 +2232,24 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initial speed.
+        /// </summary>
+        public static string ShipComparison_InitialSpeed {
+            get {
+                return ResourceManager.GetString("ShipComparison_InitialSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invulnerability.
+        /// </summary>
+        public static string ShipComparison_Invulnerability {
+            get {
+                return ResourceManager.GetString("ShipComparison_Invulnerability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Range.
         /// </summary>
         public static string ShipComparison_MaxRange {
@@ -2178,11 +2277,74 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Deck.
+        /// </summary>
+        public static string ShipComparison_OnDeck {
+            get {
+                return ResourceManager.GetString("ShipComparison_OnDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Fire.
+        /// </summary>
+        public static string ShipComparison_OnFire {
+            get {
+                return ResourceManager.GetString("ShipComparison_OnFire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Per Plane.
+        /// </summary>
+        public static string ShipComparison_PerPlane {
+            get {
+                return ResourceManager.GetString("ShipComparison_PerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pin all.
         /// </summary>
         public static string ShipComparison_PinAll {
             get {
                 return ResourceManager.GetString("ShipComparison_PinAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plane.
+        /// </summary>
+        public static string ShipComparison_Plane {
+            get {
+                return ResourceManager.GetString("ShipComparison_Plane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plane HP.
+        /// </summary>
+        public static string ShipComparison_PlaneHp {
+            get {
+                return ResourceManager.GetString("ShipComparison_PlaneHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes.
+        /// </summary>
+        public static string ShipComparison_Planes {
+            get {
+                return ResourceManager.GetString("ShipComparison_Planes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planes in squadron.
+        /// </summary>
+        public static string ShipComparison_PlanesInSquadron {
+            get {
+                return ResourceManager.GetString("ShipComparison_PlanesInSquadron", resourceCulture);
             }
         }
         
@@ -2241,6 +2403,51 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smoke Firing.
+        /// </summary>
+        public static string ShipComparison_SmokeFiring {
+            get {
+                return ResourceManager.GetString("ShipComparison_SmokeFiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Splash radius.
+        /// </summary>
+        public static string ShipComparison_SplashRadius {
+            get {
+                return ResourceManager.GetString("ShipComparison_SplashRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spread.
+        /// </summary>
+        public static string ShipComparison_Spread {
+            get {
+                return ResourceManager.GetString("ShipComparison_Spread", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch time.
+        /// </summary>
+        public static string ShipComparison_SwitchTime {
+            get {
+                return ResourceManager.GetString("ShipComparison_SwitchTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Torpedoes per plane.
+        /// </summary>
+        public static string ShipComparison_TorpsPerPlane {
+            get {
+                return ResourceManager.GetString("ShipComparison_TorpsPerPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unpin all.
         /// </summary>
         public static string ShipComparison_UnpinAll {
@@ -2282,6 +2489,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipComparison_ViewBallistic {
             get {
                 return ResourceManager.GetString("ShipComparison_ViewBallistic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View distance.
+        /// </summary>
+        public static string ShipComparison_ViewDistance {
+            get {
+                return ResourceManager.GetString("ShipComparison_ViewDistance", resourceCulture);
             }
         }
         
@@ -3023,6 +3239,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_DiveCapacityRechargeRate {
             get {
                 return ResourceManager.GetString("ShipStats_DiveCapacityRechargeRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPM.
+        /// </summary>
+        public static string ShipStats_Dpm {
+            get {
+                return ResourceManager.GetString("ShipStats_Dpm", resourceCulture);
             }
         }
         
@@ -3864,7 +4089,7 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hp per plane.
+        ///   Looks up a localized string similar to HP per plane.
         /// </summary>
         public static string ShipStats_PlaneHp {
             get {
@@ -4058,6 +4283,15 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipStats_RudderBlastProtection {
             get {
                 return ResourceManager.GetString("ShipStats_RudderBlastProtection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salvo.
+        /// </summary>
+        public static string ShipStats_Salvo {
+            get {
+                return ResourceManager.GetString("ShipStats_Salvo", resourceCulture);
             }
         }
         
