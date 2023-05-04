@@ -7,6 +7,7 @@
     public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> AirStrikeDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.AirStrike;
+        string dataSectionString = ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString();
 
         var columnTitlePlaneHp = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_PlaneHp))}";
         var columnTitleDropRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_DropRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
@@ -24,7 +25,7 @@
         var columnTitleBlastRadius = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ExplosionRadius))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
         var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitlePlaneHp}"])" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlaneHp}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlaneHp}"])" T="GridDataWrapper" Title="@columnTitlePlaneHp" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikePlanesHp is not null)
                 {
@@ -41,7 +42,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleDropRange}"])" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDropRange}"])" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeRange is not null)
                 {
@@ -58,7 +59,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleDropLenght}"])" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropLenght}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDropLenght}"])" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeMaxDropLength is not null)
                 {
@@ -75,7 +76,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikePlanesInSquadron is not null)
                 {
@@ -92,7 +93,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleBombsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBombsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeBombsPerPlane is not null)
                 {
@@ -109,7 +110,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleCharges}"])" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCharges}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCharges}"])" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeUses is not null)
                 {
@@ -126,7 +127,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeReload is not null)
                 {
@@ -143,7 +144,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleBombType}"])" T="GridDataWrapper" Title="@columnTitleBombType" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBombType}"])" T="GridDataWrapper" Title="@columnTitleBombType" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.AirStrikeBombType))
                 {
@@ -160,7 +161,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeDamage is not null)
                 {
@@ -177,7 +178,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeFireChance is not null)
                 {
@@ -194,7 +195,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeSplashRadius is not null)
                 {
@@ -211,7 +212,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleSplashDamage}"])" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSplashDamage}"])" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeSplashDamage is not null)
                 {
@@ -228,7 +229,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitlePenetration}"])" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePenetration}"])" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikePenetration is not null)
                 {
@@ -245,7 +246,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeBlastRadius is not null)
                 {
@@ -262,7 +263,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.AirStrike.ShipComparisonDataSectionToString()}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AirStrikeBlastDamage is not null)
                 {

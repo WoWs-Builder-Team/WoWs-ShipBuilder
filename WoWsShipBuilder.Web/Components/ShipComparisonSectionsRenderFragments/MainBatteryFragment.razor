@@ -1,15 +1,14 @@
 ﻿@using WoWsShipBuilder.ViewModels.Helper
 @using WoWsShipBuilder.ViewModels.Other
 @using System.Globalization
-@using WoWsShipBuilder.Core.Data
-@using WoWsShipBuilder.Core.DataContainers
 @code {
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns, int range)> MainBatteryDataFragment = element => __builder =>
+    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns, double range)> MainBatteryDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.MainBattery;
+        string dataSectionString = ShipComparisonDataSections.MainBattery.ShipComparisonDataSectionToString();
 
         NumberFormatInfo nfi = default!;
         if (!hide)
@@ -22,13 +21,41 @@
         var columnTitleBarrels = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Barrels))}";
         var columnTitleMaxRange = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_MaxRange))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
         var columnTitleTurnTime = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TurnTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleTraverseSpeed = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_TraverseSpeed))} ({element.localizer.SimpleAppLocalization(Translation.Unit_DegreePerSecond)})";
+        var columnTitleReload = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ReloadTime))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
+        var columnTitleRof = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RoF))} ({element.localizer.SimpleAppLocalization(Translation.Unit_ShotsPerMinute)})";
+        var columnTitleHeDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleApDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleSapDpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Dpm)}";
+        var columnTitleHeSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_HE))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleApSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_AP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleSapSalvo = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ArmamentType_SAP))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_Salvo)}";
+        var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
+        var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{element.section}_{columnTitleCaliber}"])" T="ShipBuildContainer" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+           <CellTemplate>
+               @if (context.Item.MainBatteryCaliber is not null)
+               {
+                   <MudText Typo="Typo.body2">
+                       @context.Item.MainBatteryCaliber
+                   </MudText>
+               }
+               else
+               {
+                   <MudText Typo="Typo.body2" Color="Color.Primary">
+                       @ShipComparisonViewModel.DataNotAvailable
+                   </MudText>
+               }
+           </CellTemplate>
+        </TemplateColumn>
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBarrels}"])" T="GridDataWrapper" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer is not null)
+                @if (context.Item.MainBatteryBarrelCount is not null && context.Item.MainBatteryBarrelsLayout is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.GunCaliber
+                        @($"{context.Item.MainBatteryBarrelCount} ({context.Item.MainBatteryBarrelsLayout})")
                     </MudText>
                 }
                 else
@@ -40,12 +67,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{element.section}_{columnTitleBarrels}"])" T="ShipBuildContainer" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMaxRange}"])" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.BarrelsCount is not null && context.Item.ShipDataContainer?.MainBatteryDataContainer?.BarrelsLayout is not null)
+                @if (context.Item.MainBatteryRange is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @($"{context.Item.ShipDataContainer.MainBatteryDataContainer.BarrelsCount} ({context.Item.ShipDataContainer.MainBatteryDataContainer.BarrelsLayout})")
+                        @context.Item.MainBatteryRange
                     </MudText>
                 }
                 else
@@ -57,12 +84,13 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{element.section}_{columnTitleMaxRange}"])" T="ShipBuildContainer" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleTurnTime}"])" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.Range is not null)
+                @if (context.Item.MainBatteryTurnTime is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.Range
+                        @context.Item.MainBatteryTurnTime
                     </MudText>
                 }
                 else
@@ -74,12 +102,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{element.section}_{columnTitleTurnTime}"])" T="ShipBuildContainer" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleTraverseSpeed}"])" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.TurnTime is not null)
+                @if (context.Item.MainBatteryTraverseSpeed is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.TurnTime
+                        @context.Item.MainBatteryTraverseSpeed
                     </MudText>
                 }
                 else
@@ -91,12 +119,13 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="Traverse speed (°/s)" HeaderClass="column-text-center" CellClass="column-text-center">
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.TraverseSpeed is not null)
+                @if (context.Item.MainBatteryReload is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.TraverseSpeed
+                        @context.Item.MainBatteryReload
                     </MudText>
                 }
                 else
@@ -108,12 +137,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="Reload (s)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleRof}"])" T="GridDataWrapper" Title="@columnTitleRof" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.Reload is not null)
+                @if (context.Item.MainBatteryRoF is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.Reload
+                        @context.Item.MainBatteryRoF
                     </MudText>
                 }
                 else
@@ -125,12 +154,13 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="ROF (shots/min)" HeaderClass="column-text-center" CellClass="column-text-center">
+
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeDpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleHeDpm}"])" T="GridDataWrapper" Title="@columnTitleHeDpm" SortBy="@(x => int.Parse(x.MainBatteryHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.RoF is not null)
+                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.RoF
+                        @context.Item.MainBatteryHeDpm
                     </MudText>
                 }
                 else
@@ -142,12 +172,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="HE DPM" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalHeDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApDpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleApDpm}"])" T="GridDataWrapper" Title="@columnTitleApDpm" SortBy="@(x => int.Parse(x.MainBatteryApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalHeDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.TheoreticalHeDpm
+                        @context.Item.MainBatteryApDpm
                     </MudText>
                 }
                 else
@@ -159,12 +189,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="AP DPM" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalApDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapDpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSapDpm}"])" T="GridDataWrapper" Title="@columnTitleSapDpm" SortBy="@(x => int.Parse(x.MainBatterySapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalApDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapDpm))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.TheoreticalApDpm
+                        @context.Item.MainBatterySapDpm
                     </MudText>
                 }
                 else
@@ -176,12 +206,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="SAP DPM" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalSapDpm ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleHeSalvo}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleHeSalvo}"])" T="GridDataWrapper" Title="@columnTitleHeSalvo" SortBy="@(x => int.Parse(x.MainBatteryHeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.TheoreticalSapDpm))
+                @if (!string.IsNullOrEmpty(context.Item.MainBatteryHeSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.TheoreticalSapDpm
+                        @context.Item.MainBatteryHeSalvo
                     </MudText>
                 }
                 else
@@ -193,12 +223,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="HE Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.HeSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleApSalvo}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleApSalvo}"])" T="GridDataWrapper" Title="@columnTitleApSalvo" SortBy="@(x => int.Parse(x.MainBatteryApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.HeSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.MainBatteryApSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.HeSalvo
+                        @context.Item.MainBatteryApSalvo
                     </MudText>
                 }
                 else
@@ -210,12 +240,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="AP Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.ApSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSapSalvo}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSapSalvo}"])" T="GridDataWrapper" Title="@columnTitleSapSalvo" SortBy="@(x => int.Parse(x.MainBatterySapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.ApSalvo))
+                @if (!string.IsNullOrEmpty(context.Item.MainBatterySapSalvo))
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.ApSalvo
+                        @context.Item.MainBatterySapSalvo
                     </MudText>
                 }
                 else
@@ -227,12 +257,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Title="SAP Salvo" SortBy="@(x => int.Parse(x.ShipDataContainer?.MainBatteryDataContainer?.SapSalvo ?? "0", NumberStyles.AllowThousands, nfi))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFpm}"])" T="GridDataWrapper" Title="@columnTitleFpm" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (!string.IsNullOrEmpty(context.Item.ShipDataContainer?.MainBatteryDataContainer?.SapSalvo))
+                @if (context.Item.MainBatteryFpm is not null && context.Item.MainBatteryFpm != 0)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.ApSalvo
+                        @context.Item.MainBatteryFpm
                     </MudText>
                 }
                 else
@@ -244,29 +274,12 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Field="MainBatteryFpm" Title="FPM (fires/min)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSigma}"])" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.PotentialFpm is not null && context.Item.ShipDataContainer.MainBatteryDataContainer.PotentialFpm != 0)
+                @if (context.Item.MainBatterySigma is not null)
                 {
                     <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.PotentialFpm
-                    </MudText>
-                }
-                else
-                {
-                    <MudText Typo="Typo.body2" Color="Color.Primary">
-                        @ShipComparisonViewModel.DataNotAvailable
-                    </MudText>
-                }
-            </CellTemplate>
-        </TemplateColumn>
-
-        <TemplateColumn Hidden="hide" T="ShipBuildContainer" Field="MainBatterySigma" Title="Sigma" HeaderClass="column-text-center" CellClass="column-text-center">
-            <CellTemplate>
-                @if (context.Item.ShipDataContainer?.MainBatteryDataContainer?.Sigma is not null)
-                {
-                    <MudText Typo="Typo.body2">
-                        @context.Item.ShipDataContainer.MainBatteryDataContainer.Sigma
+                        @context.Item.MainBatterySigma
                     </MudText>
                 }
                 else

@@ -10,6 +10,7 @@
     public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> TorpedoDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Torpedo;
+        string dataSectionString = ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString();
 
         NumberFormatInfo nfi = default!;
         if (!hide)
@@ -37,7 +38,7 @@
         var columnTitleBlastPenetration = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Blast))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Penetration))}";
         var columnTitleCanHit = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_CanHitClasses))}";
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleAmount}"])" T="GridDataWrapper" Title="@columnTitleAmount" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAmount}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAmount}"])" T="GridDataWrapper" Title="@columnTitleAmount" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoCount is not null && context.Item.TorpedoLayout is not null)
                 {
@@ -54,7 +55,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleTurnTime}"])" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTurnTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleTurnTime}"])" T="GridDataWrapper" Title="@columnTitleTurnTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoTurnTime is not null)
                 {
@@ -71,7 +72,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleTraverseSpeed}"])" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleTraverseSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleTraverseSpeed}"])" T="GridDataWrapper" Title="@columnTitleTraverseSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoTraverseSpeed is not null)
                 {
@@ -88,7 +89,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoReload is not null)
                 {
@@ -105,7 +106,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleSpread}"])" T="GridDataWrapper" Title="@columnTitleSpread" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[1] - x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[0] ?? -1)">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpread}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSpread}"])" T="GridDataWrapper" Title="@columnTitleSpread" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[1] - x.ShipDataContainer.TorpedoArmamentDataContainer?.TorpedoLaunchers.First().TorpedoAngles[0] ?? -1)">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.TorpedoSpread))
                 {
@@ -122,7 +123,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleSwitchTime}"])" T="GridDataWrapper" Title="@columnTitleSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSwitchTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSwitchTime}"])" T="GridDataWrapper" Title="@columnTitleSwitchTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoTimeToSwitch is not null && context.Item.TorpedoType.Count > 1)
                 {
@@ -139,7 +140,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoType.Any() ? string.Empty : element.localizer.GetAppLocalization(x.TorpedoType.First()).Localization)">
             <CellTemplate>
                 @if (context.Item.TorpedoType.Any())
                 {
@@ -165,7 +166,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoDamage.Any())
                 {
@@ -191,7 +192,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleSalvoDamage}"])" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.TorpedoFullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSalvoDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSalvoDamage}"])" T="GridDataWrapper" Title="@columnTitleSalvoDamage" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.TorpedoFullSalvoDamage.Where(y => !string.IsNullOrEmpty(y)).Select(z => int.Parse(z ?? "0", NumberStyles.AllowThousands, nfi)).ToList())">
             <CellTemplate>
                 @{
                    List<string?> torps = context.Item.TorpedoFullSalvoDamage.Where(x => !string.IsNullOrEmpty(x)).ToList();
@@ -219,7 +220,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleMaxRange}"])" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMaxRange}"])" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoRange.Any())
                 {
@@ -245,7 +246,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleSpeed}"])" T="GridDataWrapper" Field="TorpedoSpeed" Title="@columnTitleSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSpeed}"])" T="GridDataWrapper" Field="TorpedoSpeed" Title="@columnTitleSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoSpeed.Any())
                 {
@@ -271,7 +272,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleDetectionRange}"])" T="GridDataWrapper" Title="@columnTitleDetectionRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetectionRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDetectionRange}"])" T="GridDataWrapper" Title="@columnTitleDetectionRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoDetectRange.Any())
                 {
@@ -297,7 +298,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleArmingDistance}"])" T="GridDataWrapper" Title="@columnTitleArmingDistance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleArmingDistance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleArmingDistance}"])" T="GridDataWrapper" Title="@columnTitleArmingDistance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoArmingDistance.Any())
                 {
@@ -323,7 +324,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleReactionTime}"])" T="GridDataWrapper" Title="@columnTitleReactionTime" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReactionTime}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReactionTime}"])" T="GridDataWrapper" Title="@columnTitleReactionTime" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoReactionTime.Any())
                 {
@@ -349,7 +350,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleFloodChance}"])" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFloodChance}"])" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoFloodingChance.Any())
                 {
@@ -375,7 +376,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBlastRadius.Any())
                 {
@@ -401,7 +402,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBlastPenetration.Any())
                 {
@@ -427,7 +428,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Torpedo.ShipComparisonDataSectionToString()}_{columnTitleCanHit}"])" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCanHit}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCanHit}"])" T="GridDataWrapper" Title="@columnTitleCanHit" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x=> !x.TorpedoCanHit.Any() ? 0 : x.TorpedoCanHit.First()?.Count ?? (x.TorpedoDamage.Any() ? 5 : 0))">
             <CellTemplate>
                 @if (context.Item.TorpedoCanHit.Any())
                 {

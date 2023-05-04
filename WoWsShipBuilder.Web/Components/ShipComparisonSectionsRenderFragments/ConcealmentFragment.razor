@@ -7,6 +7,7 @@
     public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> ConcealmentDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Concealment;
+        string dataSectionString = ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString();
 
         var columnTitleFromShipBase = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySea)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)}";
         var columnTitleFromShipOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromShips))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_OnFire)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)}";
@@ -15,9 +16,9 @@
         var columnTitleFromPlanesOnFire = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ConcealmentFromPlanes))}: {element.localizer.SimpleAppLocalization(Translation.ShipComparison_OnFire)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)}";
         var columnTitleFromSubs = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FromSubs))}: {element.localizer.SimpleAppLocalization(Translation.ShipStats_ConcealmentBySubPeriscope)} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)}";
 
-        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromShipBase}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsBase)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromShipOnFire}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsOnFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromShipSmokeFiring}"])" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipBase}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromShipBase}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsBase)" Title="@columnTitleFromShipBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromShipOnFire}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromShipOnFire}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromShipsOnFire)" Title="@columnTitleFromShipOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFromShipSmokeFiring}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromShipSmokeFiring}"])" T="GridDataWrapper" Title="@columnTitleFromShipSmokeFiring" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ConcealmentFromShipsSmokeFiring != 0)
                 {
@@ -33,8 +34,8 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromPlanesBase}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesBase)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromPlanesOnFire}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesOnFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
-        <PropertyColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Concealment.ShipComparisonDataSectionToString()}_{columnTitleFromSubs}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromSubsPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesBase}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromPlanesBase}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesBase)" Title="@columnTitleFromPlanesBase" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromPlanesOnFire}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromPlanesOnFire}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromPlanesOnFire)" Title="@columnTitleFromPlanesOnFire" HeaderClass="column-text-center" CellClass="column-text-center"/>
+        <PropertyColumn ID="@($"{dataSectionString}_{columnTitleFromSubs}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFromSubs}"])" T="GridDataWrapper" TProperty="decimal" Property="@(x => x.ConcealmentFromSubsPeriscopeDepth)" Title="@columnTitleFromSubs" HeaderClass="column-text-center" CellClass="column-text-center"/>
     };
 }

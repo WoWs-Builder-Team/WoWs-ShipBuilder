@@ -35,7 +35,6 @@
         var columnTitleAreaChangeWhileAiming = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
         var columnTitleAreaChangeDuringPreparation = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_AreaChange))} {element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_AimingPreparationRateMoving))} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
-
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> !x.TorpedoBombersType.Any() ? string.Empty : element.localizer.GetAppLocalization($"ShipStats_{x.TorpedoBombersType.First()}").Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.TorpedoBombersType.Any())

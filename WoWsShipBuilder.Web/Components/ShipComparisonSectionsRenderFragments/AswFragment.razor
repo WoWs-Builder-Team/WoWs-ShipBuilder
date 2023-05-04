@@ -7,6 +7,7 @@
     public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> AswDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.Asw;
+        string dataSectionString = ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString();
 
         var columnTitleType = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Type))}";
         var columnTitleCharges = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Charges))}";
@@ -24,7 +25,7 @@
         var columnTitleDetonationTimer = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DetonationTimer))} ({element.localizer.SimpleAppLocalization(Translation.Unit_S)})";
         var columnTitleDetonationDepth = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_DetonationDepth))} ({element.localizer.SimpleAppLocalization(Translation.Unit_M)})";
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcType is not null)
                 {
@@ -41,7 +42,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleCharges}"])" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCharges}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCharges}"])" T="GridDataWrapper" Title="@columnTitleCharges" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcUses is not null)
                 {
@@ -58,7 +59,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDropRange}"])" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDropRange}"])" T="GridDataWrapper" Title="@columnTitleDropRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswRange is not null)
                 {
@@ -75,7 +76,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDropLenght}"])" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDropLenght}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDropLenght}"])" T="GridDataWrapper" Title="@columnTitleDropLenght" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswMaxDropLength is not null)
                 {
@@ -92,7 +93,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePlanesInSquadron}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePlanesInSquadron}"])" T="GridDataWrapper" Title="@columnTitlePlanesInSquadron" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswPlanesInSquadron is not null)
                 {
@@ -109,7 +110,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleBombsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerPlane}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBombsPerPlane}"])" T="GridDataWrapper" Title="@columnTitleBombsPerPlane" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswBombsPerPlane is not null)
                 {
@@ -126,7 +127,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleBombsPerCharge}"])" T="GridDataWrapper" Title="@columnTitleBombsPerCharge" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBombsPerCharge}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBombsPerCharge}"])" T="GridDataWrapper" Title="@columnTitleBombsPerCharge" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcPerAttack is not null)
                 {
@@ -143,7 +144,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.AswDcReload is not null)
                 {
@@ -160,7 +161,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcDamage is not null)
                 {
@@ -177,7 +178,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcFireChance is not null)
                 {
@@ -194,7 +195,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleFloodChance}"])" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFloodChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFloodChance}"])" T="GridDataWrapper" Title="@columnTitleFloodChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcFloodingChance is not null)
                 {
@@ -211,7 +212,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.DcSplashRadius is not null)
                 {
@@ -228,7 +229,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleSinkSpeed}"])" T="GridDataWrapper" Title="@columnTitleSinkSpeed" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSinkSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSinkSpeed}"])" T="GridDataWrapper" Title="@columnTitleSinkSpeed" SortBy="@(x => double.Parse(x.DcSinkSpeed?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcSinkSpeed))
                 {
@@ -245,7 +246,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDetonationTimer}"])" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationTimer}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDetonationTimer}"])" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
                 {
@@ -262,7 +263,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.Asw.ShipComparisonDataSectionToString()}_{columnTitleDetonationDepth}"])" T="GridDataWrapper" Title="@columnTitleDetonationDepth" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationDepth}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDetonationDepth}"])" T="GridDataWrapper" Title="@columnTitleDetonationDepth" SortBy="@(x => double.Parse(x.DcDetonationDepth?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcDetonationDepth))
                 {

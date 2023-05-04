@@ -8,6 +8,7 @@
     public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> SecondaryBatteryDataFragment = element => __builder =>
     {
         bool hide = element.section != ShipComparisonDataSections.SecondaryBattery;
+        string dataSectionString = ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString();
 
         NumberFormatInfo nfi = default!;
         if (!hide)
@@ -25,7 +26,7 @@
         var columnTitleFpm = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Fpm))} ({element.localizer.SimpleAppLocalization(Translation.Unit_FPM)})";
         var columnTitleSigma = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Sigma))}";
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryCaliber.Any())
                 {
@@ -51,7 +52,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleBarrels}"])" T="GridDataWrapper" SortBy="@(x => x.SecondaryBatteryBarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBarrels}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBarrels}"])" T="GridDataWrapper" SortBy="@(x => x.SecondaryBatteryBarrelCount.Sum())" Title="@columnTitleBarrels" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryBarrelCount.Any() && context.Item.SecondaryBatteryBarrelsLayout.Any())
                 {
@@ -78,7 +79,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleMaxRange}"])" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMaxRange}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMaxRange}"])" T="GridDataWrapper" Title="@columnTitleMaxRange" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryRange is not null)
                 {
@@ -95,7 +96,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleReload}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleReload}"])" T="GridDataWrapper" Title="@columnTitleReload" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryReload.Any())
                 {
@@ -121,7 +122,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleRof}"])" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRof}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleRof}"])" T="GridDataWrapper" Title="@columnTitleRof" SortBy="@(x => x.SecondaryBatteryRoF.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryRoF.Any())
                 {
@@ -147,7 +148,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleDpm}"])" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.SecondaryBatteryDpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDpm}"])" T="GridDataWrapper" Title="@columnTitleDpm" SortBy="@(x => x.SecondaryBatteryDpm.Select(y => int.Parse(y, NumberStyles.AllowThousands, nfi)).Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryDpm.Any())
                 {
@@ -173,7 +174,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleFpm}"])" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.SecondaryBatteryFpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFpm}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFpm}"])" T="GridDataWrapper" Title="@columnTitleFpm" SortBy="@(x => x.SecondaryBatteryFpm.Sum())" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryFpm.Any())
                 {
@@ -199,7 +200,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn Hidden="@(hide && element.hiddenColumns[$"{ShipComparisonDataSections.SecondaryBattery.ShipComparisonDataSectionToString()}_{columnTitleSigma}"])" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSigma}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSigma}"])" T="GridDataWrapper" Title="@columnTitleSigma" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatterySigma is not null)
                 {
