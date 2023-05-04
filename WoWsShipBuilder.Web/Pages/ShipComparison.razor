@@ -647,10 +647,11 @@
 
     private async Task OpenHideColumnsDialog()
     {
+        isDialogOpen = true;
         DialogOptions options = new()
         {
             NoHeader = true,
-            MaxWidth = MaxWidth.ExtraExtraLarge,
+            MaxWidth = MaxWidth.ExtraLarge,
             CloseOnEscapeKey = true,
         };
         var parameters = new DialogParameters
@@ -666,6 +667,7 @@
             }
             StateHasChanged();
         }
+        isDialogOpen = false;
     }
 
     private Task<GridData<GridDataWrapper>> ReloadData(GridState<GridDataWrapper> state)

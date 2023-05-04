@@ -18,7 +18,7 @@
         var columnTitleOvermatch = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Overmatch))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
         var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
         var columnTitleArmingThreshold = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ArmingThreshold))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
-        var columnTitleFuseTimer = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FuseTimer))} {element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))}";
+        var columnTitleFuseTimer = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_FuseTimer))} ({element.localizer.SimpleAppLocalization(nameof(Translation.Unit_S))})";
 
         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
