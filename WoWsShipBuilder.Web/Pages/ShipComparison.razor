@@ -238,8 +238,8 @@
             <div style="width: 25%">
                 <MudSpacer/>
             </div>
-            <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="mt-n2">
-                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns))
+            <MudButton OnClick="@(async () => await OpenHideColumnsDialog())" DisableElevation="true" Variant="Variant.Text" StartIcon="@Icons.Material.Outlined.Settings" Size="Size.Small" Color="Color.Secondary" Class="mt-n2">
+                @Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ActiveColumns))
             </MudButton>
             <div style="width: 5%">
                 <MudSpacer/>
@@ -650,7 +650,7 @@
         DialogOptions options = new()
         {
             NoHeader = true,
-            MaxWidth = MaxWidth.Large,
+            MaxWidth = MaxWidth.ExtraExtraLarge,
             CloseOnEscapeKey = true,
         };
         var parameters = new DialogParameters

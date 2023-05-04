@@ -2043,6 +2043,15 @@ namespace WoWsShipBuilder.Core.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active columns.
+        /// </summary>
+        public static string ShipComparison_ActiveColumns {
+            get {
+                return ResourceManager.GetString("ShipComparison_ActiveColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aerial Torpedoes.
         /// </summary>
         public static string ShipComparison_AerialTorpedoes {
@@ -2201,15 +2210,6 @@ namespace WoWsShipBuilder.Core.Localization {
         public static string ShipComparison_General {
             get {
                 return ResourceManager.GetString("ShipComparison_General", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hide columns.
-        /// </summary>
-        public static string ShipComparison_HideColumns {
-            get {
-                return ResourceManager.GetString("ShipComparison_HideColumns", resourceCulture);
             }
         }
         

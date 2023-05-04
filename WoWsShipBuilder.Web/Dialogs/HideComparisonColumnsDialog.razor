@@ -3,23 +3,25 @@
 
 <MudDialog Style="max-height: 95vh" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
-        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns)).ToUpper()</MudText>
-        <MudStack Row>
-        @foreach(var (section, columns) in structure)
-        {
-            <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
-                <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
-                    <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
-                        @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
-                    </MudText>
-                    @foreach (var column in columns)
-                    {
-                        <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")"/>
-                    }
-                </MudStack>
-            </MudPaper>
-        }
-        </MudStack>
+        <div style="max-height: 85vh; overflow: scroll;">
+            <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_ActiveColumns)).ToUpper()</MudText>
+            <MudStack Row>
+                @foreach (var (section, columns) in structure)
+                {
+                    <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
+                                @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
+                            </MudText>
+                            @foreach (var column in columns)
+                            {
+                                <MudSwitch @bind-Checked="@(structure[section][column.Key])" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")" Style="width: 100%; padding-right: 4px;" />
+                            }
+                        </MudStack>
+                    </MudPaper>
+                }
+            </MudStack>
+        </div>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Text">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>
@@ -47,11 +49,11 @@
             var section = Enum.Parse<ShipComparisonDataSections>(split[0]);
             if (structure.TryGetValue(section, out Dictionary<string, bool>? dataSection))
             {
-                dataSection.Add(split[1], HiddenColumns[key]);
+                dataSection.Add(split[1], !HiddenColumns[key]);
             }
             else
             {
-                structure.Add(section, new() { { split[1], HiddenColumns[key] } });
+                structure.Add(section, new() { { split[1], !HiddenColumns[key] } });
             }
         }
     }
@@ -68,7 +70,7 @@
         {
             foreach (var column in section.Value)
             {
-                result.Add($"{section.Key.ShipComparisonDataSectionToString()}_{column.Key}", column.Value);
+                result.Add($"{section.Key.ShipComparisonDataSectionToString()}_{column.Key}", !column.Value);
             }
         }
 

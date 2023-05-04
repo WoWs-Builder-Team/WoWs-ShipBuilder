@@ -245,7 +245,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationDepth}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationDepth)" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDetonationTimer}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDetonationTimer)" T="GridDataWrapper" Title="@columnTitleDetonationTimer" SortBy="@(x => double.Parse(x.DcDetonationTimer?.Split(" ~ ").First() ?? "0"))" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.DcDetonationTimer))
                 {

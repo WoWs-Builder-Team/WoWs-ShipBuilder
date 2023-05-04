@@ -1826,8 +1826,8 @@ You can use the Change builds button to manage the builds of single ships. You c
   <data name="ShipComparison_NoMatchingShipsFound" xml:space="preserve">
       <value>No matching ships found</value>
   </data>
-  <data name="ShipComparison_HideColumns" xml:space="preserve">
-      <value>Hide columns</value>
+  <data name="ShipComparison_ActiveColumns" xml:space="preserve">
+      <value>Active columns</value>
   </data>
   <data name="ShipComparison_Section" xml:space="preserve">
       <value>Section</value>
