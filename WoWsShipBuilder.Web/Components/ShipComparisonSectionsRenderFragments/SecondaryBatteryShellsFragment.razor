@@ -4,9 +4,8 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> SecondaryBatteryShellsDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> SecondaryBatteryShellsDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.SecondaryBatteryShells;
         string dataSectionString = ShipComparisonDataSections.SecondaryBatteryShells.ShipComparisonDataSectionToString();
 
         var columnTitleCaliber = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_Caliber))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
@@ -24,7 +23,7 @@
         var columnTitleOvermatch = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_Overmatch))} ({element.localizer.SimpleAppLocalization(Translation.Unit_MM)})";
         var columnTitleRicochetAngles = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_RicochetAngles))} ({element.localizer.SimpleAppLocalization(Translation.Unit_Degree)})";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleCaliber}"])" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleCaliber}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleCaliber)" T="GridDataWrapper" Title="@columnTitleCaliber" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryBatteryCaliber.Any())
                 {
@@ -50,7 +49,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleType}"])" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> string.IsNullOrEmpty(x.SecondaryType) ? string.Empty : element.localizer.GetAppLocalization(x.SecondaryType).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleType}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleType)" T="GridDataWrapper" Title="@columnTitleType" SortBy="@(x=> string.IsNullOrEmpty(x.SecondaryType) ? string.Empty : element.localizer.GetAppLocalization(x.SecondaryType).Localization)" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.SecondaryType))
                 {
@@ -67,7 +66,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMass}"])" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMass}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMass)" T="GridDataWrapper" Title="@columnTitleMass" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryMass.Any())
                 {
@@ -93,7 +92,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleDamage}"])" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleDamage)" T="GridDataWrapper" Title="@columnTitleDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryDamage.Any())
                 {
@@ -119,7 +118,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSplashRadius}"])" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashRadius)" T="GridDataWrapper" Title="@columnTitleSplashRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondarySplashRadius.Any())
                 {
@@ -145,7 +144,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleSplashDamage}"])" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleSplashDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleSplashDamage)" T="GridDataWrapper" Title="@columnTitleSplashDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondarySplashDamage.Any())
                 {
@@ -171,7 +170,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitlePenetration}"])" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitlePenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitlePenetration)" T="GridDataWrapper" Title="@columnTitlePenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryPenetration.Any())
                 {
@@ -197,7 +196,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleInitialSpeed}"])" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleInitialSpeed}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleInitialSpeed)" T="GridDataWrapper" Title="@columnTitleInitialSpeed" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondarySpeed.Any())
                 {
@@ -223,7 +222,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleAirDrag}"])" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleAirDrag}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleAirDrag)" T="GridDataWrapper" Title="@columnTitleAirDrag" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryAirDrag.Any())
                 {
@@ -249,7 +248,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFireChance}"])" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFireChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFireChance)" T="GridDataWrapper" Title="@columnTitleFireChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryHeShellFireChance.Any(x => x != 0))
                 {
@@ -275,7 +274,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastRadius}"])" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastRadius}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastRadius)" T="GridDataWrapper" Title="@columnTitleBlastRadius" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryHeBlastRadius.Any(x => x != 0))
                 {
@@ -301,7 +300,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleBlastPenetration}"])" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleBlastPenetration}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleBlastPenetration)" T="GridDataWrapper" Title="@columnTitleBlastPenetration" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondaryHeBlastPenetration.Any(x => x != 0))
                 {
@@ -327,7 +326,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleOvermatch}"])" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
+         <TemplateColumn ID="@($"{dataSectionString}_{columnTitleOvermatch}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleOvermatch)" T="GridDataWrapper" Title="@columnTitleOvermatch" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.SecondarySapOvermatch.Any(x => x != 0))
                 {
@@ -353,7 +352,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleRicochetAngles}"])" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.SecondarySapRicochet.Select(y => double.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleRicochetAngles}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleRicochetAngles)" T="GridDataWrapper" Title="@columnTitleRicochetAngles" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => x.SecondarySapRicochet.Select(y => double.Parse(string.IsNullOrEmpty(y) ? "0" : y.Split(" - ").First())).ToList())">
             <CellTemplate>
                 @if (context.Item.SecondarySapRicochet.Any() && !context.Item.SecondarySapRicochet.Any(string.IsNullOrEmpty))
                 {
