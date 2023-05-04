@@ -305,26 +305,26 @@
                 </CellTemplate>
             </TemplateColumn>
 
-            @MainBatteryDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns, ViewModel.Range))
-            @HeShellDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @ApShellDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @SapShellDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @TorpedoDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @SecondaryBatteryDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @SecondaryBatteryShellsDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @AaDefenseDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @AswDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @AirStrikeDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @ManeuverabilityDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @ConcealmentDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @SurvivabilityDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @SonarDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @RocketPlanesDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @RocketsDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @TorpedoBombersDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @AerialTorpedoDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @BombersDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
-            @BombsDataFragment((ViewModel.SelectedDataSection, Localizer, hiddenColumns))
+            @MainBatteryDataFragment((IsColumnHidden, Localizer, ViewModel.Range))
+            @* @HeShellDataFragment((IsColumnHidden, Localizer)) *@
+            @* @ApShellDataFragment((IsColumnHidden, Localizer)) *@
+            @* @SapShellDataFragment((IsColumnHidden, Localizer)) *@
+            @* @TorpedoDataFragment((IsColumnHidden, Localizer)) *@
+            @* @SecondaryBatteryDataFragment((IsColumnHidden, Localizer)) *@
+            @* @SecondaryBatteryShellsDataFragment((IsColumnHidden, Localizer)) *@
+            @* @AaDefenseDataFragment((IsColumnHidden, Localizer)) *@
+            @* @AswDataFragment((IsColumnHidden, Localizer)) *@
+            @* @AirStrikeDataFragment((IsColumnHidden, Localizer)) *@
+            @* @ManeuverabilityDataFragment((IsColumnHidden, Localizer)) *@
+            @* @ConcealmentDataFragment((IsColumnHidden, Localizer)) *@
+            @* @SurvivabilityDataFragment((IsColumnHidden, Localizer)) *@
+            @* @SonarDataFragment((IsColumnHidden, Localizer)) *@
+            @* @RocketPlanesDataFragment((IsColumnHidden, Localizer)) *@
+            @* @RocketsDataFragment((IsColumnHidden, Localizer)) *@
+            @* @TorpedoBombersDataFragment((IsColumnHidden, Localizer)) *@
+            @* @AerialTorpedoDataFragment((IsColumnHidden, Localizer)) *@
+            @* @BombersDataFragment((IsColumnHidden, Localizer)) *@
+            @* @BombsDataFragment((IsColumnHidden, Localizer)) *@
         </Columns>
 
         <PagerContent>
@@ -752,6 +752,11 @@
     {
         SessionStateCache.SetBuildTransferContainers(container);
         NavManager.NavigateTo("ship?shipIndexes=" + container.Ship.Index);
+    }
+
+    private bool IsColumnHidden(string section, string columnTitle)
+    {
+        return !ViewModel!.SelectedDataSection.ShipComparisonDataSectionToString().Equals(section) || hiddenColumns.TryGetValue($"{section}_{columnTitle}", out bool hidden) && hidden;
     }
 
     private async Task UpdateUrl()

@@ -4,22 +4,22 @@
 <MudDialog Style="max-height: 95vh" DefaultFocus="DefaultFocus.Element">
     <DialogContent>
         <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold" Class="mb-1">@Localizer.SimpleAppLocalization(nameof(Translation.ShipComparison_HideColumns)).ToUpper()</MudText>
+        <MudStack Row>
         @foreach(var (section, columns) in structure)
         {
             <MudPaper Outlined Elevation="0" Square="true" @key="@(section.ShipComparisonDataSectionToString())">
-                <MudStack Row>
-                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
-                        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
-                            @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
-                        </MudText>
-                        @foreach (var column in columns)
-                        {
-                            <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")"/>
-                        }
-                    </MudStack>
+                <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                    <MudText Typo="Typo.body2" Align="Align.Center" Style="font-weight: bold">
+                        @(section.LocalizeShipComparisonDataSection(Localizer).ToUpper())
+                    </MudText>
+                    @foreach (var column in columns)
+                    {
+                        <MudSwitch @bind-Checked="@structure[section][column.Key]" Label="@column.Key" LabelPosition="LabelPosition.Start" Size="Size.Medium" Color="Color.Warning" @key="@($"{section}_{column}")"/>
+                    }
                 </MudStack>
             </MudPaper>
         }
+        </MudStack>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Variant="Variant.Text">@Localizer.GetAppLocalization(nameof(Translation.Cancel)).Localization</MudButton>

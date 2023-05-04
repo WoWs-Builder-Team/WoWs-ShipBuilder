@@ -4,9 +4,8 @@
 
     // Parameter needs to be named __builder, otherwise compilation will fail.
     // ReSharper disable once InconsistentNaming UnusedParameter.Local
-    public static readonly RenderFragment<(ShipComparisonDataSections section, ILocalizer localizer, Dictionary<string, bool> hiddenColumns)> AaDefenseDataFragment = element => __builder =>
+    public static readonly RenderFragment<(Func<string, string, bool> IsColumnHidden, ILocalizer localizer)> AaDefenseDataFragment = element => __builder =>
     {
-        bool hide = element.section != ShipComparisonDataSections.AntiAir;
         string dataSectionString = ShipComparisonDataSections.AntiAir.ShipComparisonDataSectionToString();
 
         var columnTitleLongAura = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_LongAura))} ({element.localizer.SimpleAppLocalization(Translation.Unit_KM)})";
@@ -21,7 +20,7 @@
         var columnTitleShortAuraDps = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.Unit_DPS)}";
         var columnTitleShortAuraHitChance = $"{element.localizer.SimpleAppLocalization(nameof(Translation.ShipStats_ShortAura))} {element.localizer.SimpleAppLocalization(Translation.ShipStats_HitChance)} ({element.localizer.SimpleAppLocalization(Translation.Unit_PerCent)})";
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAura}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleLongAura}"])" T="GridDataWrapper" Title="@columnTitleLongAura" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAura)" T="GridDataWrapper" Title="@columnTitleLongAura" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.LongAaRange is not null)
                 {
@@ -38,7 +37,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraDps}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleLongAuraDps}"])" T="GridDataWrapper" Title="@columnTitleLongAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAuraDps)" T="GridDataWrapper" Title="@columnTitleLongAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.LongAaConstantDamage is not null)
                 {
@@ -55,7 +54,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraHitChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleLongAuraHitChance}"])" T="GridDataWrapper" Title="@columnTitleLongAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleLongAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleLongAuraHitChance)" T="GridDataWrapper" Title="@columnTitleLongAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.LongAaHitChance is not null)
                 {
@@ -72,7 +71,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaks}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFlaks}"])" T="GridDataWrapper" Title="@columnTitleFlaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.Flak?.Split(" ± ").First() ?? "0"))">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaks}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaks)" T="GridDataWrapper" Title="@columnTitleFlaks" HeaderClass="column-text-center" CellClass="column-text-center" SortBy="@(x => int.Parse(x.Flak?.Split(" ± ").First() ?? "0"))">
             <CellTemplate>
                 @if (!string.IsNullOrEmpty(context.Item.Flak))
                 {
@@ -89,7 +88,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaksDamage}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleFlaksDamage}"])" T="GridDataWrapper" Title="@columnTitleFlaksDamage" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleFlaksDamage}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleFlaksDamage)" T="GridDataWrapper" Title="@columnTitleFlaksDamage" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.FlakDamage is not null)
                 {
@@ -106,7 +105,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAura}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMediumAura}"])" T="GridDataWrapper" Title="@columnTitleMediumAura" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAura)" T="GridDataWrapper" Title="@columnTitleMediumAura" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MediumAaRange is not null)
                 {
@@ -123,7 +122,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraDps}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMediumAuraDps}"])" T="GridDataWrapper" Title="@columnTitleMediumAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAuraDps)" T="GridDataWrapper" Title="@columnTitleMediumAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MediumAaConstantDamage is not null)
                 {
@@ -140,7 +139,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraHitChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleMediumAuraHitChance}"])" T="GridDataWrapper" Title="@columnTitleMediumAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleMediumAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleMediumAuraHitChance)" T="GridDataWrapper" Title="@columnTitleMediumAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.MediumAaHitChance is not null)
                 {
@@ -157,7 +156,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAura}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleShortAura}"])" T="GridDataWrapper" Title="@columnTitleShortAura" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAura}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAura)" T="GridDataWrapper" Title="@columnTitleShortAura" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ShortAaRange is not null)
                 {
@@ -174,7 +173,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraDps}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleShortAuraDps}"])" T="GridDataWrapper" Title="@columnTitleShortAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraDps}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAuraDps)" T="GridDataWrapper" Title="@columnTitleShortAuraDps" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ShortAaConstantDamage is not null)
                 {
@@ -191,7 +190,7 @@
             </CellTemplate>
         </TemplateColumn>
 
-        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraHitChance}")" Hidden="@(hide && element.hiddenColumns[$"{dataSectionString}_{columnTitleShortAuraHitChance}"])" T="GridDataWrapper" Title="@columnTitleShortAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
+        <TemplateColumn ID="@($"{dataSectionString}_{columnTitleShortAuraHitChance}")" Hidden="@element.IsColumnHidden.Invoke(dataSectionString, columnTitleShortAuraHitChance)" T="GridDataWrapper" Title="@columnTitleShortAuraHitChance" HeaderClass="column-text-center" CellClass="column-text-center">
             <CellTemplate>
                 @if (context.Item.ShortAaHitChance is not null)
                 {
