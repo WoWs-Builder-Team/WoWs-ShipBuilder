@@ -184,7 +184,7 @@ public partial record MainBatteryDataContainer : DataContainerBase
         var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
         nfi.NumberGroupSeparator = "'";
 
-        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount, decimal.ToDouble(range * 1000), true);
+        var shellData = ShellDataContainer.FromShellName(mainBattery.Guns.First().AmmoList, modifiers, barrelCount, true);
 
         var (horizontalDispersion, verticalDispersion) = dispersion.CalculateDispersion((double)range * 1000, dispersionModifier);
 
